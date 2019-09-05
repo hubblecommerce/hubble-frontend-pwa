@@ -11,5 +11,6 @@
 
 ## Links
 
+* [Documentation](https://hubblecommerce-1.gitbook.io/hubble-docs/)
 * [Demo](https://demo.hubblecommerce.io/)
 * [hubblecommerce.io](https://www.hubblecommerce.io)
