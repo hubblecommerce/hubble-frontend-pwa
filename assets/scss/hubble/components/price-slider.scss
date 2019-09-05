@@ -1,0 +1,18 @@
+.price-slider {
+    display: block;
+    position: relative;
+}
+.price.text-left {
+    float: left;
+}
+.price.text-right {
+    float: right;
+}
+
+.vue-slider-component {
+    margin-top: 30px;
+
+    .vue-slider-process {
+        background-color: $primary !important;
+    }
+}

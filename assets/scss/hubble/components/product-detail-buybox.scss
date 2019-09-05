@@ -1,0 +1,181 @@
+.buybox-wrp {
+  padding: 0;
+  background: $background-light;
+  border-top: none !important;
+
+  .wishlist-cpt-wrp {
+    background: $background;
+    border-radius: 50%;
+  }
+}
+
+.product-info-wrp {
+
+  //------ Product headline --------
+  .product-headline {
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    border-bottom: 1px solid $border-color;
+    padding: 0 10px 20px;
+
+    .manufacturer-name {
+      margin-bottom: 8px;
+    }
+
+    .button-icon {
+      width: 40px;
+      height: 40px;
+      padding-top: 8px;
+
+      .icon-heart {
+        font-size: 21px;
+      }
+    }
+  }
+
+  .product-headline-info {
+    max-width: 85%;
+    padding-top: 10px;
+  }
+
+  .product-name {
+    padding: 0;
+    margin-bottom: 8px;
+    max-width: 100% !important;
+  }
+
+  .options-wrp {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 0 -3px 10px;
+  }
+
+  //------ Size table --------
+  .size-wrp {
+    padding: 0 10px;
+  }
+
+  .selected-size {
+    font-weight: $font-weight-regular;
+  }
+
+  .size-label {
+    display: inline;
+  }
+
+  .size-list {
+    list-style: none;
+    display: flex;
+    flex-flow: wrap;
+    padding-left: 0px;
+    margin-bottom: 0px;
+
+    li {
+      cursor: pointer;
+    }
+  }
+
+  .option-val {
+    border: 1px solid $border-color;
+    padding: 8px 15px;
+    margin: 10px 10px 10px 0;
+    min-width: 64px;
+    text-align: center;
+  }
+
+  .unavailable {
+    opacity: 0.3;
+  }
+
+  .selected {
+    border-color: $accent;
+  }
+
+  //------ Description link --------
+  .description-link-wrp {
+    border-bottom: 1px solid $border-color;
+    padding: 0 10px 20px;
+    margin-bottom: 20px;
+  }
+
+  .brand {
+    text-align: right;
+    img {
+      max-width: 55px;
+    }
+  }
+
+  //------ Price-Cart-Delivery --------
+  .price-cart-delivery-wrp {
+    padding: 0 10px;
+  }
+}
+
+//------ Price-Cart-Wrapper --------
+.price-cart-wrp {
+  display: flex;
+  width: 100%;
+
+  .price-wrp {
+    width: 32%;
+  }
+
+  .cart-button-wrp {
+    width: 68%;
+  }
+}
+
+//------ Tablet --------
+@media(min-width: 768px) {
+  .buybox-wrp {
+    width: 100%;
+    border: none !important;
+  }
+
+  .product-info-wrp {
+    padding: 30px 40px 40px;
+
+    //------ Product headline --------
+    .product-headline {
+      padding-left: 0;
+      padding-right: 0;
+      align-items: flex-start;
+
+      .manufacturer-name {
+        font-size: 18px;
+      }
+
+      .product-name {
+        font-size: $font-size-subtitle;
+      }
+
+      .sku {
+        font-size: 12px;
+      }
+    }
+
+    .size-wrp {
+      padding: 0;
+    }
+
+    .description-link-wrp {
+      padding: 10px 0 20px;
+    }
+
+    .price-cart-delivery-wrp {
+      padding: 0;
+    }
+
+    .options-wrp {
+      display: block;
+      margin: 20px 0 30px;
+
+      .option-wrp {
+        justify-content: flex-start;
+      }
+    }
+  }
+}

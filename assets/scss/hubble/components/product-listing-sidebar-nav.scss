@@ -1,0 +1,28 @@
+.sidebar-nav-wrp {
+    .sidebar-nav-title {
+        font-weight: $font-weight-bold;
+        margin-bottom: 8px;
+    }
+
+    .level1-category-item {
+        a {
+            line-height: 16px;
+            margin-bottom: 10px;
+            display: block;
+        }
+    }
+
+    .level2-category-item {
+        a {
+            font-size: $font-size-body;
+            margin: 8px 15px 10px;
+        }
+    }
+
+    .current {
+        > a {
+            color: $text-primary !important;
+            font-weight: $font-weight-bold;
+        }
+    }
+}

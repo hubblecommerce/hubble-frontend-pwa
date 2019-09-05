@@ -1,0 +1,258 @@
+.minicart-wrapper {
+  a {
+    color: $text-primary !important;
+  }
+
+  .item {
+    border-bottom: 1px solid $border-color;
+    padding: 15px 0;
+
+    .actions-wrp {
+      margin-bottom: auto;
+
+      .hbl-select {
+        width: 65px;
+        margin-bottom: 40px;
+        margin-left: auto;
+
+        .select-label {
+          display: none;
+        }
+      }
+    }
+
+    .img-minicart {
+      max-width: 60px !important;
+      max-height: 60px !important;
+    }
+  }
+
+  .product-qty {
+    margin-bottom: 20px;
+  }
+
+  .qty-summary {
+    font-size: 14px;
+    line-height: 17px;
+    font-weight: 600;
+    padding: 12px 15px;
+    border-bottom: 1px solid $border-color;
+  }
+
+  .product-name {
+    font-size: $font-size-caption;
+    margin-bottom: 3px;
+  }
+
+  .product-price, .product-qty, .separator {
+    font-size: 14px;
+    font-weight: $font-weight-bold;
+  }
+
+  .old-price {
+    font-weight: 400;
+    text-decoration: line-through;
+
+    & + .sale-price {
+      color: $error-accent;
+      margin-left: 15px;
+    }
+  }
+
+  .separator {
+    margin: 0 3px;
+  }
+
+  .no-items {
+    margin: 0 !important;
+  }
+
+}
+
+.summary-wrp {
+  .old-price {
+    font-weight: 400;
+    text-decoration: line-through;
+
+    & + .sale-price {
+      color: $error-accent;
+      margin-left: 15px;
+    }
+  }
+}
+
+.minicart-cpt-wrp {
+  position: relative;
+  transition: all .2s ease;
+  top: 0;
+
+  .cart-icon {
+    .icon {
+      &:before {
+        font-size: 21px;
+      }
+    }
+
+    &.active {
+      color: $accent;
+      border-radius: 0;
+      overflow: visible;
+
+      &:before {
+        content: '';
+        width: 100%;
+        height: 2px;
+        background: $accent;
+        position: absolute;
+        bottom: -22px;
+        left: 0;
+        border-radius: 0;
+      }
+    }
+  }
+
+  &.inCart {
+    width: 40px;
+    height: 40px;
+
+    .cart-icon {
+      width: 40px;
+      height: 40px;
+    }
+
+  }
+
+  .totals {
+    font-size: 14px;
+    line-height: 21px;
+    padding: 12px 0;
+    border-bottom: 1px solid $border-color;
+  }
+
+}
+
+/* Item count */
+.item-count {
+  position: absolute;
+  background: $accent;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  text-align: center;
+  border-radius: 100%;
+  font-size: $font-size-caption;
+  font-weight: $font-weight-medium;
+  top: 11px;
+  right: 0;
+  color: #fff;
+}
+
+/* Animate remove cart item from list */
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.5s;
+}
+.list-enter,
+.list-leave-to {
+  background-color: $error-accent;
+  transform: translateX(100%);
+}
+
+.remove-item {
+  font-size: 13px;
+  line-height: 16px;
+  font-weight: 600;
+  text-decoration: underline;
+  transition: all 0.2s;
+  transform: rotate(0deg);
+  cursor: pointer;
+}
+
+/* Fixed checkout button */
+.checkout-btn {
+  position: relative;
+  margin: 15px 0 10px;
+  width: 100%;
+}
+
+.shopping-button {
+  width: 100%;
+}
+
+/* Animate Checkout Button fade in*/
+.expand-enter-active .checkout-btn, .expand-leave-active .checkout-btn {
+  transition: all .2s ease;
+  transition-delay: 0.5s;
+}
+.expand-leave-active .checkout-btn {
+  transition-delay: 0s;
+}
+.expand-enter .checkout-btn, .expand-leave-to .checkout-btn {
+  opacity: 0;
+}
+.expand-enter-to .checkout-btn, .expand-leave .checkout-btn{
+  opacity: 1;
+}
+
+/* Tablet */
+@media(min-width: 768px) {
+  .minicart-cpt-wrp {
+    position: relative;
+
+    &.inCart {
+      top: 0;
+      width: auto;
+      height: auto;
+
+      .cart-icon {
+        position: relative;
+        background: transparent;
+      }
+
+      .item-count {
+        color: #fff;
+      }
+
+    }
+  }
+
+  /* Relative checkout button */
+  .checkout-btn {
+    position: relative;
+    top: unset; bottom: unset;
+    width: 100%;
+    margin: 20px 0 !important;
+  }
+}
+
+/* Desktop */
+@media(min-width: 1024px) {
+  .minicart-cpt-wrp {
+    .qty-summary {
+      padding-left: 40px;
+      padding-right: 40px;
+    }
+
+    .item {
+      padding-left: 25px;
+      padding-right: 25px;
+    }
+
+    .totals {
+      padding-left: 25px;
+      padding-right: 25px;
+    }
+
+    .checkout-btn {
+      float: right;
+      width: 45%;
+      margin: 20px 20px 0 0 !important;
+    }
+
+    .shopping-button {
+      float: left;
+      width: 45%;
+      margin: 20px 0 0 20px !important;
+    }
+  }
+}

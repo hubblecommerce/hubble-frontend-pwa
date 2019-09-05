@@ -1,0 +1,89 @@
+/* Price box */
+.price-cart-wrp {
+  .sale-price {
+    font-size: 18px;
+    font-weight: 600;
+  }
+  .old-price {
+    font-size: $font-size-caption;
+    text-decoration: line-through;
+
+    & + .sale-price {
+      color: $error-accent;
+      font-weight: $font-weight-bold;
+    }
+  }
+
+  .info {
+    font-size: 10px;
+  }
+}
+
+/* Add to Cart button */
+.add-to-cart {
+  height: 50px;
+  padding: 0 5px;
+  color: white;
+  background: $accent;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  i {
+    padding-right: 10px;
+    font-size: 22px;
+  }
+}
+
+.cart-button-label {
+  min-width: 82%;
+  padding-right: 9%;
+}
+
+.sku {
+  font-size: $font-size-caption;
+  line-height: 21px;
+  margin-bottom: 0;
+}
+
+//------ Price-Cart-Delivery --------
+.product-row {
+  display: flex;
+  flex-direction: column-reverse;
+
+  .delivery-info {
+    padding-top: 45px;
+    text-align: left;
+    margin-bottom: 15px;
+
+    * {
+      font-size: 12px;
+      line-height: 15px;
+      margin-bottom: 5px;
+    }
+
+    .bold-text {
+      font-weight: $font-weight-bold;
+    }
+  }
+}
+
+//------ Tablet --------
+@media(min-width: 768px) {
+  .product-row {
+    flex-direction: column;
+
+    .price-wrp {
+      width: 100%;
+
+      .info {
+        font-size: 12px;
+      }
+    }
+
+    .delivery-info {
+      width: 100%;
+      padding-top: 20px;
+    }
+  }
+}

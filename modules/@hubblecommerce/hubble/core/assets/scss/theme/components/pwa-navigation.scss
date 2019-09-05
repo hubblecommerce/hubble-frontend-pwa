@@ -1,0 +1,175 @@
+.nav-wrp {
+  width: 100%;
+  background-color: $background;
+
+  .customer-account-cpt-wrp {
+    .link-wrp {
+      @include flex;
+      flex-direction: column;
+      justify-content: center;
+
+      button {
+        width: 100%;
+        margin: 0 0 10px;
+      }
+    }
+
+    .collapse-wrp {
+      > button {
+        color: $text-primary;
+      }
+    }
+
+    .content-wrp {
+      button {
+        margin-bottom: 15px;
+      }
+      a {
+        @include flex;
+
+        button {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+.navbar {
+  height: 56px;
+  flex-wrap: nowrap;
+
+  &.fixed-bottom {
+    width: 100%;
+    box-shadow: 0px 3px 7px -1px #ccc;
+  }
+}
+
+.scrolling-navbar {
+  transition: padding .5s;
+}
+.nav-item {
+  position: relative;
+}
+.navbar-toggler {
+  order: 0 !important;
+  padding:0 !important;
+}
+.navbar-collapse {
+  order: 2;
+}
+
+/* Fixed navigation bar bottom */
+.halfcircle{
+  width: 100%;
+  left: 0;
+  top: 0;
+  height: 100%;
+  overflow: hidden;
+  position: absolute;
+  margin: 0 auto;
+
+  &::before, &::after {
+    content:'';
+    position:absolute;
+  }
+
+  &::before {
+    top: -70px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    border-radius: 50%;
+    width: 66px;
+    height: 66px;
+    box-shadow: 0 0 0 500px #fff;
+    @include transition(all .2s ease);
+  }
+
+  &::after {
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+  }
+
+  &.inCart {
+    &::before {
+      top: -33px;
+    }
+  }
+
+}
+
+/* Desktop */
+@media(min-width: 768px) {
+  .header-wrp {
+    background-color: $primary;
+  }
+  .nav-wrp {
+    background-color: $primary;
+    margin: 0 auto;
+    padding: 0 15px;
+    @include flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    position: relative;
+    @include make-container-max-widths($max-widths: $container-max-widths, $breakpoints: $grid-breakpoints);
+    align-items: center;
+
+    .customer-account-cpt-wrp {
+      position: relative;
+      z-index: 25;
+      background: transparent;
+      margin: 0;
+
+      > button {
+        font-size: 18px;
+      }
+
+      .customer-account-wrp {
+        @include flex;
+        flex-direction: column;
+        justify-content: center;
+        background-color: #fff;
+        flex-wrap: wrap;
+
+        position: absolute;
+        width: 300px;
+        height: auto;
+        z-index: 100;
+        right: 0;
+        left: unset;
+        top: 100%;
+        box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.3);
+        padding: 15px;
+
+        button {
+          margin-bottom: 15px;
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+
+        .link-wrp {
+          margin: 0;
+          @include flex;
+          flex-direction: column;
+          width: 100%;
+          padding: 7px;
+
+          button {
+            margin: 0 0 5px !important;
+          }
+        }
+      }
+    }
+  }
+
+  .halfcircle{
+    &::before {
+      box-shadow: 0 0 0 500px $primary;
+    }
+  }
+}

@@ -1,0 +1,77 @@
+$expand-layer-width-mobile: 100%;
+$expand-layer-width-tablet: 60%;
+$expand-layer-width-desktop: 600px;
+
+.transition-expand-wrp {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: $expand-layer-width-mobile;
+    height: 100%;
+    background-color: $background;
+    z-index: 100;
+    max-width: none;
+}
+
+/* Wrapper to be able to scroll in overlay */
+.expand-content {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    background-color: $background;
+}
+
+/* Header section of expanded layer */
+.overlay-header {
+    position: relative;
+    opacity: 1;
+    transition: all .2s ease;
+    transition-delay: .2s;
+    border-bottom: 1px solid $border-color;
+    height: 56px;
+    background-color: $background;
+
+    .overlay-headline {
+        height: 20px;
+        margin: auto;
+        font-size: 16px;
+        font-weight: 600;
+    }
+}
+
+/* Tablet */
+@media(min-width: 768px) {
+    .transition-expand-wrp {
+        width: $expand-layer-width-tablet;
+    }
+    .overlay-header {
+        height: $header-height-desktop + 1px;
+
+        .button-close-menu {
+            top: 0;
+            bottom: 0;
+        }
+    }
+}
+
+/* Desktop */
+@media(min-width: 1024px) {
+    .transition-expand-wrp {
+        width: $expand-layer-width-desktop;
+        top: $header-height-desktop + 1px;
+    }
+    .expand-content {
+        overflow-y: inherit;
+    }
+    .overlay-header {
+        height: 100px;
+
+        .button-close-menu {
+            top: 0;
+            bottom: 0;
+            left: 25px;
+        }
+    }
+}

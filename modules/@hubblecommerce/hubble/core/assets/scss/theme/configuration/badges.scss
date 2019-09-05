@@ -1,0 +1,42 @@
+.badge-wrp {
+  left: 0;
+  top: 20px;
+  position: absolute;
+  z-index: 1;
+}
+
+.badge {
+  text-transform: uppercase;
+  font-size: $font-size-body-small;
+  padding: 5px 10px;
+  display: block !important;
+  margin-bottom: 5px;
+  @include border-radius(0 2px 2px 0px !important);
+
+  // Sale
+  &.sale {
+    color: #fff;
+    background-color: $error-accent;
+  }
+  // Tipp
+  &.tip {
+    color: #fff;
+    background-color: $warning-accent;
+  }
+  // New
+  &.new {
+    color: #fff;
+    background-color: $info-accent;
+  }
+}
+
+@media(min-width: 768px) {
+  .product-card {
+    .badge-wrp {
+      top: 20px;
+    }
+  }
+  .badge-wrp {
+    top: 65px;
+  }
+}

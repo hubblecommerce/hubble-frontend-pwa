@@ -1,0 +1,21 @@
+.md-field {
+  label {
+    font-size: $font-size-body-small;
+  }
+
+  &.md-focused, &.md-has-value {
+    .md-input, .md-textarea {
+      font-size: $font-size-body-small;
+    }
+  }
+}
+
+.md-field {
+  @include md-theme-component() {
+    .md-helper-text,
+    .md-count,
+    label {
+      color: md-theme(text-primary);
+    }
+  }
+}

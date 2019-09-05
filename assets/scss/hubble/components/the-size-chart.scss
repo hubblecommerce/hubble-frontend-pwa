@@ -1,0 +1,46 @@
+.size-chart {
+  display: inline;
+  float: right;
+}
+
+.size-table-container {
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.size-table-container {
+  table {
+    margin-bottom: 30px;
+
+    tr > :first-child {
+      width: 40px;
+    }
+
+    tr > :nth-child(2) {
+      width: 120px;
+      text-align: center;
+    }
+    tr > :nth-child(3) {
+      border-left: 1px solid $border-color;
+    }
+
+    tr > :nth-child(n+3) {
+      width: 60px;
+      padding: 10px;
+      text-align: center;
+      border-right: 1px solid $border-color;
+
+      .size-value {
+        font-weight: $font-weight-bold;
+      }
+
+      sup {
+        font-weight: $font-weight-light;
+      }
+    }
+
+    td {
+      display: inline-block;
+    }
+  }
+}

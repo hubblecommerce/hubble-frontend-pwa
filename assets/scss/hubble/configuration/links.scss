@@ -1,0 +1,17 @@
+.link-primary {
+  font-size: $font-size-subtitle-small;
+  line-height: 17px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.hidden-link-name {
+  position: absolute;
+  text-indent: -100000px;
+  width: 1px;
+  height: 1px;
+}
+
+a.nuxt-link-exact-active {
+  color: $accent !important;
+}

@@ -1,0 +1,62 @@
+*,
+*::before,
+*::after {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: $font-family;
+  color: $accent;
+  padding-bottom: 58px;
+  background-color: #fff;
+  overflow-x: hidden;
+}
+
+a {
+  color: $text-primary;
+}
+
+a:hover, a:focus {
+  color: $primary;
+}
+
+a, a:hover, a:focus {
+  text-decoration: none;
+}
+
+.desktop-layout {
+  min-height: 100vh; /* will cover the 100% of viewport */
+  overflow: hidden;
+  display: block;
+  position: relative;
+  padding-bottom: 375px; /* height of your footer */
+}
+
+
+
+@media(min-width: 768px) {
+  body {
+    padding-bottom: 0;
+  }
+
+  .desktop-layout {
+    padding-bottom: 445px;
+    .main-container {
+      margin-bottom: 15px;
+    }
+  }
+}
+
+@media(min-width: 992px) {
+  .desktop-layout {
+    padding-bottom: 308px;
+  }
+}
+
+@media(min-width: 1200px) {
+  .desktop-layout {
+    padding-bottom: 308px;
+  }
+}

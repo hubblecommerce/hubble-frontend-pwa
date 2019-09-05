@@ -1,0 +1,109 @@
+/*
+Checkbox example:
+<div class="hbl-checkbox">
+    <input id="checkboxId" type="checkbox" checked>
+    <label for="checkboxId">Item 1</label>
+</div>
+*/
+
+$hbl-checkbox-checked-color: $primary;
+$hbl-checkbox-border-color: $border-color;
+$hbl-checkbox-border-color-disabled: $border-color;
+$hbl-checkbox-checked-color-disabled: $border-color;
+
+$hbl-checkbox-size: 26px;
+$hbl-checkbox-padding: 10px;
+$hbl-checkbox-border-width: 1px;
+$hbl-checkbox-border-radius: 8px;
+$hbl-checkmark-width: 16px;
+$hbl-checkbox-label-padding: 10px;
+$hbl-checkmark-color: #fff;
+$hbl-checkbox-label-font-size: $font-size-body;
+
+.hbl-checkbox {
+    position: relative;
+    text-align: left;
+
+    &.hbl-checkbox-inline {
+        display: inline-block;
+    }
+
+    label {
+        cursor: pointer;
+        display: inline-block;
+        line-height: $hbl-checkbox-size;
+        vertical-align: top;
+        clear: both;
+        padding-left: 1px;
+        position: relative;
+        margin: 0;
+        font-size: $hbl-checkbox-label-font-size;
+
+        &:not(:empty) {
+            padding-left: $hbl-checkbox-size+$hbl-checkbox-label-padding;
+        }
+
+        &:before, &:after {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+        }
+
+        &:before {
+            // box
+            width: $hbl-checkbox-size;
+            height: $hbl-checkbox-size;
+            background: #fff;
+            border: $hbl-checkbox-border-width solid $hbl-checkbox-border-color;
+            border-radius: $hbl-checkbox-border-radius;
+            cursor: pointer;
+            transition: background .3s;
+        }
+
+        &:after {
+            // checkmark
+        }
+    }
+
+    input[type="checkbox"] {
+        outline: 0;
+        visibility: hidden;
+        width: 0;
+        margin: 0;
+        display: block;
+        float: left;
+        font-size: inherit;
+
+        &:checked {
+            + label:before{
+                background: $hbl-checkbox-checked-color;
+                border: 2px solid $hbl-checkbox-border-color;
+            }
+            + label:after {
+                font-family: 'icons';
+                content: '\e903';
+                width: $hbl-checkbox-size;
+                height: $hbl-checkbox-size;
+                line-height: $hbl-checkbox-size;
+                text-align: center;
+                color: $hbl-checkmark-color;
+                font-size: $hbl-checkmark-width;
+            }
+        }
+
+        &:disabled {
+            + label:before{
+                border-color: $hbl-checkbox-border-color-disabled;
+            }
+            &:checked {
+                + label:before{
+                    background: $hbl-checkbox-checked-color-disabled;
+                }
+            }
+        }
+    }
+
+}

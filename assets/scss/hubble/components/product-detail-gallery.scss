@@ -1,0 +1,141 @@
+.product-img-box {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 10px 0;
+
+  .media {
+    width: 100%;
+
+    .product-pics {
+      width: 100%;
+
+      .tns-controls {
+        button:first-child {
+          left: 0;
+        }
+
+        button:last-child {
+          right: 0;
+        }
+
+        i {
+          font-size: 30px;
+        }
+      }
+
+      .tns-ovh {
+        margin-left: 30px;
+        margin-right: 30px;
+      }
+    }
+  }
+
+  .v--modal-overlay {
+    z-index: 10000;
+
+    .v--modal-box {
+      overflow: visible;
+      height: 100vh !important;
+    }
+  }
+}
+
+img {
+  width: auto;
+  max-width: 100%;
+  max-height: 300px;
+  margin: auto;
+  display: block;
+}
+
+.v--modal-background-click {
+  display: flex !important;
+  align-items: center !important;
+}
+
+.v--modal-box.v--modal {
+  height: auto !important;
+  top: 0 !important;
+  padding: 40px;
+
+  .tns-outer {
+    width: 100%;
+  }
+
+  .tns-item {
+    min-height: 0;
+  }
+}
+
+.gallery-item {
+  img {
+    cursor: pointer;
+  }
+}
+
+.detail-gallery {
+  height: 100%;
+  display: flex;
+  align-items: center;
+
+  .close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    opacity: 1;
+  }
+}
+
+//------ Tablet --------
+@media(min-width: 768px) {
+  /* Product gallery */
+  .gallery {
+    .product-img-box .v--modal-overlay .v--modal-box.v--modal {
+      height: 630px !important;
+    }
+  }
+
+  .product-img-box {
+    padding: 0 0 20px;
+  }
+
+  img {
+    width: auto;
+    max-width: 100%;
+    max-height: 500px;
+  }
+
+  //------ Thumbnails --------
+  .image-thumbnails-container {
+    margin: 0 auto;
+
+    .tns-item {
+      margin: 0 5px;
+    }
+  }
+
+  .thumbnail-image-wrp {
+    border: 1px solid $border-color;
+    height: 80px;
+    padding: 0 10px;
+
+    img {
+      max-height: 60px;
+      cursor: pointer;
+    }
+  }
+
+  .selected {
+    border: 1px solid $accent;
+  }
+}
+
+//------ Desktop --------
+@media(min-width: 1024px) {
+
+  .product-img-box {
+    padding: 0 100px 0 0;
+  }
+}

@@ -1,0 +1,49 @@
+.breadcrumbs {
+    display: none;
+    padding: 15px 0;
+
+    ul {
+        align-items: center;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+
+        li {
+            margin-right: 5px;
+            font-size: 14px;
+        }
+    }
+
+    .breadcrumb-item {
+        a {
+            vertical-align: middle;
+            color: $text-light;
+        }
+    }
+
+    .breadcrumb-item + .breadcrumb-item {
+        padding-left: 0;
+    }
+
+    .breadcrumb-item + .breadcrumb-item::before {
+        font-family: 'icons';
+        content: "\e941";
+        width: 15px;
+        display: inline-block;
+        margin-right: 5px;
+        padding: 0;
+        font-size: 17px;
+        line-height: 21px;
+        vertical-align: middle;
+    }
+}
+
+@media(min-width: 768px) {
+    .breadcrumbs-wrp {
+        padding: 0 20px;
+    }
+
+    .breadcrumbs {
+        display: block;
+    }
+}

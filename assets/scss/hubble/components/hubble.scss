@@ -1,0 +1,125 @@
+/* Layout */
+.mobile-layout {
+    position: relative;
+    min-height: 100vh; /* will cover the 100% of viewport */
+    overflow: hidden;
+    display: block;
+}
+
+.desktop-layout {
+    min-height: 100vh; /* will cover the 100% of viewport */
+    overflow: hidden;
+    display: block;
+    position: relative;
+    padding-bottom: 375px; /* height of your footer */
+}
+
+.header-wrp {
+    position: relative;
+    opacity: 1;
+    min-height: 56px;
+    background: $background;
+    border-bottom: 1px solid $border-color;
+    z-index: 60;
+}
+
+/* Navigation */
+.nav-wrp {
+    height: 65px;
+    width: 100%;
+    background-color: $background;
+    border-bottom: 1px solid $border-color;
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    .button-icon {
+        font-size: 20px;
+        padding: 8px;
+    }
+
+    .customer-account-wrp {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #fff;
+        z-index: 1;
+        max-width: none;
+    }
+}
+
+/* Tablet */
+@media(min-width: 768px) {
+    .mobile-layout {
+        padding-bottom: 495px;
+    }
+
+    .desktop-layout {
+        padding-bottom: 445px;
+        .main-container {
+            margin-bottom: 15px;
+        }
+    }
+
+    .header-wrp {
+        position: fixed;
+        margin: 0 auto;
+        width: 100%;
+        z-index: 100;
+    }
+
+    .nav-wrp {
+        margin: 0 auto;
+        padding: 0 15px;
+        display: flex;
+        justify-content: flex-start;
+        position: relative;
+        @include make-container-max-widths($max-widths: $container-max-widths, $breakpoints: $grid-breakpoints);
+        align-items: center;
+        border: none;
+        height: $header-height-desktop;
+
+        .button-icon {
+            margin-left: 10px;
+
+            &:first-child {
+                margin-left: 0;
+            }
+        }
+    }
+}
+
+/* Desktop */
+@media(min-width: 1024px) {
+    .nav-wrp {
+        .action-wrp {
+            .wishlist-cpt-wrp {
+                margin: 0 5px 0 15px;
+            }
+            .minicart-cpt-wrp {
+                margin: 0 0 0 5px;
+            }
+        }
+    }
+}
+
+@media(min-width: 992px) {
+    .mobile-layout {
+        padding-bottom: 495px;
+    }
+    .desktop-layout {
+        padding-bottom: 620px;
+    }
+}
+
+@media(min-width: 1200px) {
+    .mobile-layout {
+        padding-bottom: 495px;
+    }
+    .desktop-layout {
+        padding-bottom: 580px;
+    }
+}

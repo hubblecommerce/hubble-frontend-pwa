@@ -1,0 +1,35 @@
+.collapse-wrp {
+  width: 100%;
+
+  button {
+    @include flex;
+    text-align: center;
+
+    &.align-left {
+      justify-content: flex-start;
+      align-items: center;
+      padding-right: 50px;
+    }
+  }
+
+  .rct-chevron-down,
+  .rct-chevron-up {
+    position: absolute;
+    right: 20px;
+  }
+
+  .collapse-item {
+    overflow: hidden;
+    transition: max-height .3s;
+    @include flex;
+    flex-direction: column;
+
+    button {
+      justify-content: center;
+    }
+
+    >* {
+      padding: 15px;
+    }
+  }
+}
