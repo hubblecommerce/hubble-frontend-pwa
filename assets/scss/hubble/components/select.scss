@@ -13,7 +13,7 @@
 */
 
 $hbl-select-background-color: $background-light;
-$hbl-select-height: 32px;
+$hbl-select-height: 40px;
 $hbl-select-width: 32px;
 $hbl-select-height-md: 40px;
 $hbl-select-font-size: $font-size-body;
@@ -22,7 +22,8 @@ $hbl-select-label-height: 17px;
 
 .hbl-select {
     position: relative;
-    width: auto;
+    display: inline-block;
+    width: 100%;
     height: $hbl-select-height;
     margin-bottom: 10px;
     background: $hbl-select-background-color;
@@ -60,6 +61,10 @@ $hbl-select-label-height: 17px;
         border: 1px solid $border-color;
         z-index: 10;
         cursor: pointer;
+
+        &.invalid {
+            border-bottom: 1px solid red;
+        }
     }
 
     /* Remove focus */

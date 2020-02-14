@@ -1,4 +1,4 @@
-var cacheVersion = 'v1'
+let cacheVersion = 'v1';
 
 // Cache needed files
 self.addEventListener('install', function(event) {

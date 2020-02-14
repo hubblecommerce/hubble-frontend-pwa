@@ -1,122 +1,164 @@
 <template>
-    <div>
+    <div @mouseenter="startUserInteraction()">
+        <img-lazy v-if="load && $mq === 'sm'" src="//:0" style="background: #fff;
+                         height: 100vh;
+                         position: sticky;
+                         top: 0;
+                         left: 0;
+                         z-index: 100;"
+        />
 
         <noscript>Please enable JavaScript and refresh this page, to use this application.</noscript>
 
-        <div class="mobile-layout" v-if="$mq === 'sm' || $mq === 'md'">
-            <background-blur/>
+        <client-only>
+            <trusted-shops-badge v-if="userInteraction" />
+        </client-only>
+
+        <div v-if="$mq === 'sm' || $mq === 'md'" class="mobile-layout">
+            <background-blur />
             <div class="header-wrp">
                 <div class="nav-wrp">
-                    <the-mobile-menu :data-items="menuItems"></the-mobile-menu>
-                    <the-logo></the-logo>
+                    <the-mobile-menu :data-items="menu" />
+                    <the-logo />
                     <template v-if="$mq === 'md'">
-                        <the-search-direct></the-search-direct>
+                        <the-search-direct />
                     </template>
-                    <the-wishlist/>
-                    <customer-menu></customer-menu>
-                    <the-mini-cart></the-mini-cart>
+                    <div class="action-wrp d-flex">
+                        <the-wishlist />
+                        <customer-menu />
+                        <the-mini-cart />
+                    </div>
                 </div>
                 <template v-if="$mq === 'sm'">
-                    <the-search-direct></the-search-direct>
+                    <the-search-direct />
                 </template>
-                <flash-message/>
+                <flash-message />
             </div>
 
             <main>
-                <nuxt/>
+                <nuxt />
             </main>
 
-            <div class="footer">
-                <the-footer-social/>
-                <the-footer-mobile></the-footer-mobile>
-                <the-footer-copyright/>
+            <div class="footer" v-view.once="onceHandler">
+                <div class="white-border" />
+                <the-footer-social v-if="inView" />
+                <the-footer-mobile v-if="inView" />
+                <the-footer-copyright v-if="inView" />
             </div>
-
-            <scroll-to-top/>
+            <scroll-to-top />
         </div>
 
-        <div class="desktop-layout" v-if="$mq === 'lg'">
-            <background-blur/>
+        <div v-if="$mq === 'lg'" class="desktop-layout">
+            <background-blur />
             <div class="header-wrp">
                 <div class="nav-wrp">
-                    <the-logo></the-logo>
-                    <the-mega-menu :data-items="menuItems" />
-                    <the-search-direct></the-search-direct>
+                    <the-logo />
+                    <the-mega-menu :data-items="menu" />
+                    <the-search-direct />
                     <div class="action-wrp d-flex align-items-center">
-                        <the-wishlist/>
-                        <customer-menu></customer-menu>
-                        <the-mini-cart></the-mini-cart>
+                        <the-wishlist />
+                        <customer-menu />
+                        <the-mini-cart />
                     </div>
-                    <flash-message/>
+                    <flash-message />
                 </div>
             </div>
 
             <main>
-                <nuxt/>
+                <nuxt />
             </main>
 
-            <div class="footer">
-                <the-footer-social/>
-                <div class="white-border"/>
-                <the-footer-desktop></the-footer-desktop>
-                <the-footer-copyright/>
+            <div class="footer" v-view.once="onceHandler">
+                <the-footer-social v-if="inView" />
+                <div class="white-border" />
+                <the-footer-desktop v-if="inView" />
+                <the-footer-copyright v-if="inView" />
             </div>
         </div>
-
+        <client-only>
+            <div v-if="showCookieNotice" class="cookie-notice">
+                <cookie-notice />
+            </div>
+        </client-only>
     </div>
 </template>
 
 <script>
     import { mapState } from 'vuex';
-    import LayoutMobile from '@hubblecommerce/hubble/core/layouts/mobile';
-    import ScrollToTop from "../components/ScrollToTop";
-    import TheLogo from "../components/TheLogo";
-    import TheSearch from "../components/TheSearch";
-    import TheSearchDirect from "../components/TheSearchDirect";
-    import TheMiniCart from "../components/TheMiniCart";
-    import CustomerMenu from '../components/CustomerMenu';
-    import TheLanguageSwitch from "../components/TheLanguageSwitch";
+    import ScrollToTop from "../components/utils/ScrollToTop";
+    import TheLogo from "../components/navigation/TheLogo";
+    import TheSearchDirect from "../components/search/TheSearchDirect";
+    import TheMiniCart from "../components/navigation/TheMiniCart";
+    import CustomerMenu from '../components/navigation/CustomerMenu';
 
-    import TheFooterMobile from "../components/TheFooterMobile";
-    import TheMobileMenu from "../components/TheMobileMenu";
+    import TheMobileMenu from "../components/navigation/TheMobileMenu";
 
-    import TheFooterDesktop from "../components/TheFooterDesktop";
-    import TheDesktopMenu from "../components/TheDesktopMenu";
-    import TheMegaMenu from "../components/TheMegaMenu";
-    import BackgroundBlur from "../components/BackgroundBlur";
-    import TheFooterSocial from "../components/TheFooterSocial";
-    import TheFooterCopyright from "../components/TheFooterCopyright";
-    import TheWishlist from "../components/TheWishlist";
+    import TheMegaMenu from "../components/navigation/TheMegaMenu";
+    import BackgroundBlur from "../components/utils/BackgroundBlur";
+    import TheWishlist from "../components/navigation/TheWishlist";
+    import CookieNotice from "../components/utils/CookieNotice";
 
     export default {
         components: {
+            TrustedShopsBadge: () => import('../components/utils/TrustedShopsBadge'),
+            TheFooterSocial: () => import('../components/footer/TheFooterSocial'),
+            TheFooterMobile: () => import('../components/footer/TheFooterMobile'),
+            TheFooterCopyright: () => import('../components/footer/TheFooterCopyright'),
+            TheFooterDesktop: () => import('../components/footer/TheFooterDesktop'),
             TheWishlist,
-            TheFooterCopyright,
-            TheFooterSocial,
             BackgroundBlur,
             TheMegaMenu,
             ScrollToTop,
             TheMiniCart,
-            TheSearch,
             TheSearchDirect,
             TheMobileMenu,
-            TheFooterMobile,
             TheLogo,
-            TheLanguageSwitch,
-            TheDesktopMenu,
-            TheFooterDesktop,
-            CustomerMenu
+            CustomerMenu,
+            CookieNotice
         },
-        mixins: [LayoutMobile],
+
+        data() {
+          return {
+              load: true,
+              menu: {},
+              userInteraction: false,
+              inView: false
+          }
+        },
+
         computed: {
             ...mapState({
                 apiAuthResponse: state => state.modApiResources.apiAuthResponse,
                 dataMenu: state => state.modApiResources.dataMenu,
-                isHubble: state => state.modHubbleSwitch.isHubble
-            }),
-            menuItems() {
-                return this.dataMenu.result.items;
+                showCookieNotice: state => state.modCookie.showCookieNotice
+            })
+        },
+
+        created() {
+            this.setMenuItems();
+        },
+
+        mounted() {
+            this.load = false;
+        },
+
+        methods: {
+            setMenuItems: function() {
+                if(! _.isEmpty(this.dataMenu.result)) {
+                    this.menu = this.dataMenu.result.items;
+                }
+            },
+            startUserInteraction: function() {
+                // Track userinteraction to lazy load some components like trusted shops
+                this.userInteraction = true;
+            },
+            onceHandler: function() {
+                this.inView = true;
             }
+        },
+
+        head () {
+            return this.$nuxtI18nSeo()
         }
     }
 </script>

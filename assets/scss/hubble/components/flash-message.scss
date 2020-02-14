@@ -1,10 +1,13 @@
 .flash-message-wrp {
-    position: relative;
-    bottom: 0;
+    position: fixed;
+    bottom: inherit;
+    top: 0;
+    z-index: 1;
     width: 100%;
     left: 0;
-    padding: 20px;
+    padding: 20px 40px;
     opacity: 1;
+    box-shadow: 0 4px 10px 0 rgba(41, 40, 47, .1);
 
     &.info {
         background: $background;
@@ -42,7 +45,7 @@
     }
 
     &.error {
-        background: lighten( $error-accent, 10% );
+        background: lighten( $error-accent, 40% );
         color: $error-accent;
 
         i {

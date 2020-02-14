@@ -10,9 +10,6 @@ export default function (ctx) {
         getters: {
             getLastVisited: (state) => {
                 let cutLastElement = state.clickPath.slice(-1);
-
-                console.log(cutLastElement);
-
                 return false;
             },
         },

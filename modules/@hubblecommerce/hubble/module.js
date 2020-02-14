@@ -6,6 +6,11 @@ export default function nuxtHubble(moduleOptions) {
     // Register toplevel options of nuxt.config.js
     const options = Object.assign({}, this.options.hubble, moduleOptions);
 
+    // Set default apiType value
+    if (!options.apiType) {
+        options.apiType = 'api';
+    }
+
     /*
      * Store modules need to be loaded first, the addPlugin function adds plugins to first of plugins[] option.
      * That's why we have to add store modules before the plugins like:
@@ -18,12 +23,36 @@ export default function nuxtHubble(moduleOptions) {
     Helper.getFilesFromDir('/plugins').then((files) => {
         Helper.registerPlugins(this, files, 'plugins', options.deactivatePlugins).then(() => {
 
-            // Register store from /store as plugin if not blacklisted
-            Helper.getFilesFromDir('/store').then((files) => {
-                Helper.registerPlugins(this, files, 'store', options.deactivateStores).then(() => {
+            // Register API type based plugins
+            Helper.getFilesFromDir(`/plugins/${options.apiType}`).then((files) => {
+                Helper.registerPlugins(this, files, `/plugins/${options.apiType}`, options.deactivatePlugins).then(() => {
 
-                    // Register nuxt.js modules
-                    this.addModule('cookie-universal-nuxt', true);
+                    // Register store from /store as plugin if not blacklisted
+                    Helper.getFilesFromDir('/store').then((files) => {
+                        Helper.registerPlugins(this, files, 'store', options.deactivateStores).then(() => {
+
+                            // Register API type based stores
+                            Helper.getFilesFromDir(`/store/${options.apiType}`).then((files) => {
+                                Helper.registerPlugins(this, files, `/store/${options.apiType}`, options.deactivateStores).then(() => {
+
+                                    // Register nuxt.js modules
+                                    this.addModule('localforage-nuxt');
+                                    this.addModule('cookie-universal-nuxt', true);
+
+                                    if(options.gtmId !== null) {
+                                        this.addModule(['@nuxtjs/google-tag-manager', {
+                                            id: options.gtmId,
+                                            layer: 'dataLayer',
+                                            pageTracking: true,
+                                            pageViewEventName: 'hubbleRoute'
+                                        }]);
+                                    }
+
+                                });
+                            });
+
+                        });
+                    });
 
                 });
             });
@@ -37,8 +66,13 @@ export default function nuxtHubble(moduleOptions) {
         Helper.registerPlugins(this, files, 'middleware', options.deactivateMiddleware);
     });
 
+    // Register API type based middleware
+    Helper.getFilesFromDir(`/middleware/${options.apiType}`).then((files) => {
+        Helper.registerPlugins(this, files, `/middleware/${options.apiType}`, options.deactivateMiddleware);
+    });
+
     // Add middleware to nuxt.config.js
-    this.options.router.middleware.push('hubbleDelay');
+    //this.options.router.middleware.push('hubbleDelay');
 
     // Add hubble Theme
     if (options.useTheme !== false) {
@@ -46,3 +80,6 @@ export default function nuxtHubble(moduleOptions) {
     }
 
 }
+
+// avoid registering the same module twice
+module.exports.meta = require('./package.json');

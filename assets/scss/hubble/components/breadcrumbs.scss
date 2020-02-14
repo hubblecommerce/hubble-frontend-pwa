@@ -14,10 +14,26 @@
         }
     }
 
+    .row {
+        // Do not highlight Home (/) on link active
+        .breadcrumb-item:first-child {
+            .nuxt-link-active {
+                color: $text-light !important;
+                font-weight: normal;
+            }
+        }
+    }
+
     .breadcrumb-item {
         a {
             vertical-align: middle;
             color: $text-light;
+        }
+
+        // Highlight every link active to highlight paginated urls
+        .nuxt-link-active {
+            color: $primary !important;
+            font-weight: bold;
         }
     }
 

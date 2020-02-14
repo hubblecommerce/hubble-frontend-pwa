@@ -2,6 +2,7 @@ $megamenu-columns: 5;
 
 .mega-menu-wrp {
     margin: 0 auto 0 30px;
+    position: relative;
 
     .level-0-wrp {
         display: flex;
@@ -19,6 +20,10 @@ $megamenu-columns: 5;
 
             &.active {
                 border-bottom: 2px solid $primary;
+            }
+
+            &:nth-child(6) {
+                color: $highlight;
             }
         }
     }
@@ -71,7 +76,7 @@ $megamenu-columns: 5;
 
     .category-teaser {
         width: 25%;
-        height: 250px;
+        max-height: 390px;
         background-size: cover;
         background-repeat: no-repeat;
         background-position: 50% 50%;
@@ -89,5 +94,17 @@ $megamenu-columns: 5;
     .slide-top-bottom-enter-to, .slide-top-bottom-leave {
         top: $header-height-desktop + 1px;
         opacity: 1;
+    }
+
+    .manufacturer-sub-col {
+        width: 25%;
+
+        .spacer {
+            margin-top: 20px;
+        }
+
+        a {
+            display: block;
+        }
     }
 }

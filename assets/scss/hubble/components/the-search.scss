@@ -27,6 +27,15 @@
 
 .no-results {
   margin-bottom: 20px;
+    border: none !important;
+
+    .text {
+        margin-top: 20px;
+
+        a {
+            font-weight: $font-weight-bold;
+        }
+    }
 }
 
 .search-cpt-wrp {
@@ -67,6 +76,14 @@
       font-size: 14px;
       background-color: #F8F8F8;
       padding: 10px;
+    }
+
+    .loader {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        height: 30px;
     }
   }
 
@@ -139,7 +156,7 @@
     z-index: 25;
   }
   .search-wrapper {
-    position: static;
+    position: relative;
     width: 280px;
     height: auto;
     background-color: transparent;
@@ -232,6 +249,10 @@
       padding: 20px;
     }
   }
+
+    .no-results {
+        margin-top: 20px !important;
+    }
 }
 
 /* Desktop */

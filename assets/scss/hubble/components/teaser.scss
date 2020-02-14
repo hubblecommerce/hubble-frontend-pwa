@@ -1,0 +1,209 @@
+.teaser-card-wrp {
+  .teaser-description-container{
+    position: relative;
+
+    .teaser-description-wrp {
+      position: absolute;
+      z-index: 2;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+      width: 80%;
+
+      .teaser-box {
+        padding: 10px;
+        background-color: $background;
+
+        .teaser-description {
+          text-align: center;
+
+          .description-headline {
+            text-transform: uppercase;
+            font-size: $font-size-h4;;
+            line-height: $line-height-h4;
+            margin-bottom: 4px;
+          }
+        }
+      }
+
+      .arrow-up {
+        width: 0;
+        height: 0;
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        border-bottom: 8px solid $background;
+        margin: auto;
+      }
+
+      .arrow-down {
+        width: 0;
+        height: 0;
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        border-top: 8px solid $background;
+        margin: auto;
+      }
+    }
+
+    .active-link {
+      font-weight: $font-weight-bold;
+      color: $accent;
+    }
+
+    .description-top{
+      top: 0;
+    }
+
+    .description-bottom {
+      bottom: 0;
+    }
+  }
+
+  .teaser-picture{
+    margin: 0 auto;
+    z-index: 1;
+    vertical-align: middle;
+  }
+
+  .teaser-picture-bottom {
+    padding-top: 30px;
+  }
+
+  .teaser-picture-top {
+    padding-bottom: 30px;
+  }
+
+  img {
+    height: auto;
+    max-width: 95%;
+    max-height: 100%;
+    display: block;
+    margin: auto;
+  }
+}
+
+@media(min-width: 500px) {
+  .teaser-description-container {
+    .teaser-description-wrp {
+      .teaser-box {
+        .teaser-description {
+          text-align: center;
+
+          .description-headline {
+            text-transform: uppercase;
+            font-size: $font-size-h3;
+            line-height: $line-height-h3;
+            margin-bottom: 6px;
+          }
+
+          .teaser-description-text {
+            margin-bottom: 4px;
+          }
+        }
+      }
+    }
+  }
+}
+
+
+// Tablet
+@media(min-width: 768px) {
+  .teaser-card-wrp {
+    .teaser-description-container {
+      .teaser-description-wrp {
+        .teaser-box {
+          .teaser-description {
+            text-align: center;
+
+            .description-headline {
+              text-transform: uppercase;
+              font-size: $font-size-h3;
+              line-height: $line-height-h3;
+              margin-bottom: 6px;
+            }
+
+            .teaser-description-text {
+              margin-bottom: 4px;
+            }
+          }
+        }
+
+        .arrow-up {
+          border-left: 15px solid transparent;
+          border-right: 15px solid transparent;
+          border-bottom: 15px solid $background;
+        }
+
+        .arrow-down {
+          border-left: 15px solid transparent;
+          border-right: 15px solid transparent;
+          border-top: 15px solid $background;
+        }
+      }
+    }
+
+    .teaser-picture-bottom {
+      padding-top: 40px;
+    }
+
+    .teaser-picture-top {
+      padding-bottom: 40px;
+    }
+  }
+}
+
+// Desktop
+@media(min-width: 1024px) {
+  .teaser-card-wrp {
+    .teaser-description-container {
+      img {
+        width: auto;
+        max-width: 100%;
+        max-height: 600px;
+      }
+    }
+  }
+}
+
+@media(min-width: 1200px) {
+  .teaser-card-wrp {
+    .teaser-description-container {
+      .teaser-description-wrp {
+        .teaser-box {
+          padding: 20px 30px 10px 30px;
+        }
+      }
+    }
+
+    img {
+      width: auto;
+      max-width: 100%;
+      max-height: 680px;
+    }
+  }
+}
+@media(min-width: 1600px) {
+  .teaser-card-wrp {
+    .teaser-description-container {
+      .teaser-description-wrp {
+        .teaser-box {
+          padding: 40px 90px 40px 90px;
+
+          .teaser-description {
+            .teaser-description-text {
+              margin-bottom: 20px;
+            }
+          }
+        }
+      }
+    }
+
+    .teaser-picture-bottom {
+      padding-top: 60px;
+    }
+
+    .teaser-picture-top {
+      padding-bottom: 60px;
+    }
+  }
+}

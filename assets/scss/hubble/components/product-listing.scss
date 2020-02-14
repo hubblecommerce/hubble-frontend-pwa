@@ -39,3 +39,12 @@ $product-listing-gutter: 5px;
     font-size: 30px;
   }
 }
+
+/* Desktop */
+@media(min-width: 1024px) {
+  .listing-wrp {
+    &.offset-top {
+      padding-top: 91px;
+    }
+  }
+}

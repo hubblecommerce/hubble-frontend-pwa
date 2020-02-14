@@ -21,7 +21,7 @@ button {
 
     &:disabled,
     &[disabled] {
-        color: #9c9c9c;
+        //color: $button-primary-background-color !important;
     }
 
     &:hover {
@@ -72,6 +72,11 @@ button {
             background-color: #fff;
             opacity: 0.8;
         }
+
+        &:disabled,
+        &[disabled] {
+            color: $button-primary-background-color !important;
+        }
     }
 
     &.button-secondary {
@@ -83,12 +88,31 @@ button {
             background-color: $secondary;
             opacity: 0.5;
         }
+
+        &:disabled,
+        &[disabled] {
+            color: $button-secondary-background-color !important;
+        }
+    }
+
+    &.button-primary, &.button-secondary {
+        &:disabled,
+        &[disabled] {
+            background-color: $border-color !important;
+            border: 2px solid $border-color !important;
+
+            &:hover {
+                box-shadow: none !important;
+                border: 2px solid $border-color !important;
+                cursor: not-allowed;
+            }
+        }
     }
 
     &.button-icon {
         min-width: 40px;
         min-height: 40px;
-        padding: 10px;
+        padding: 12px;
         display: flex;
         justify-content: center;
         align-items: center;

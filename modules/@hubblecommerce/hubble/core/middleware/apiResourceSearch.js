@@ -6,11 +6,6 @@ import Middleware from './middleware'
 // Register a new middleware with key 'hubbleware' to get used in pages or layouts
 Middleware.apiResourceSearch = function ({ store, route }) {
 
-    // ignore if called from hot module replacement
-    // if (isHMR) {
-    //     return;
-    // }
-
     return new Promise((resolve, reject) => {
 
         let _outerReject = reject;

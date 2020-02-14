@@ -7,6 +7,7 @@ export default function (ctx) {
             flashVisible: false,
             flashMessage: '',
             flashType: 'info',
+            keepOnRouteChange: false
         }),
         mutations: {
             showFlash: (state) => {
@@ -14,6 +15,9 @@ export default function (ctx) {
             },
             hideFlash: (state) => {
                 state.flashVisible = false;
+            },
+            setKeepOnRouteChange: (state, val) => {
+                state.keepOnRouteChange = !!val;
             },
             setFlashMessage: (state, message) => {
                 state.flashMessage = message;
@@ -28,6 +32,7 @@ export default function (ctx) {
                     commit('showFlash');
                     commit('setFlashMessage', payload.flashMessage);
                     commit('setFlashType', payload.flashType);
+                    commit('setKeepOnRouteChange', payload.keepOnRouteChange);
                     resolve('Message flashed');
                 })
             },
@@ -38,6 +43,9 @@ export default function (ctx) {
                     commit('setFlashType', 'info');
                     resolve('Message resetted');
                 })
+            },
+            resetKeepOnRouteChange({commit}) {
+                commit('setKeepOnRouteChange', false);
             }
         }
     };

@@ -10,6 +10,13 @@
     .footer-link-wrp {
         padding-top: 15px;
         padding-bottom: 15px;
+
+        .links {
+            a {
+                display: block;
+                margin: 5px 0;
+            }
+        }
     }
 
     .follow-us-wrp {
@@ -35,7 +42,7 @@
         }
     }
 
-    .newsletter-wrp {
+    .newsletter-footer-wrp {
 
         .newsletter-headline {
             text-transform: uppercase;
@@ -57,7 +64,7 @@
             text-align: left;
         }
         .content-wrp {
-            padding: 10px 20px;
+            padding: 10px 15px;
         }
     }
 
@@ -75,6 +82,8 @@
             margin-left: 20px;
         }
     }
+
+
 }
 
 .sub-footer {
@@ -91,6 +100,10 @@
 
         .seal {
             margin-right: 10px;
+
+            img {
+                width: 85px;
+            }
         }
 
         .copyright-text {
@@ -116,9 +129,6 @@
 
 @media(min-width: 768px) {
     .footer {
-        padding: 0;
-        position: absolute;
-        bottom: 0;
         width: 100%;
 
         .pre-footer-wrp {
@@ -137,7 +147,7 @@
             }
         }
 
-        .newsletter-wrp {
+        .newsletter-footer-wrp {
             border-bottom: 0;
             display: flex;
             align-items: center;
@@ -174,7 +184,6 @@
                 top: 0;
                 bottom: 0;
                 margin: auto 0;
-                height: 55px;
             }
 
             .copyright-text {
@@ -182,15 +191,25 @@
                 max-width: inherit;
             }
         }
+
+        &.hubble-light {
+            .footer-hint {
+                padding: 0 80px;
+            }
+        }
     }
 }
 
 @media(min-width: 1024px) {
     .footer {
+        padding: 0;
+        position: absolute;
+        bottom: 0;
+
         .pre-footer-wrp {
             border: none;
         }
-        .newsletter-wrp {
+        .newsletter-footer-wrp {
             .text-wrp {
                 margin-right: 90px;
             }
@@ -224,6 +243,33 @@
                     &:hover {
                         text-decoration: none;
                     }
+                }
+            }
+        }
+
+        &.hubble-light {
+            .sub-footer {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
+                .copyright {
+                    padding: 20px 60px 20px 100px;
+
+                    .seal {
+                        img {
+                            width: 70px;
+                        }
+                    }
+                }
+
+                .copyright-text {
+                    text-align: left;
+                }
+
+                .footer-hint {
+                    margin: 0;
+                    text-align: right;
                 }
             }
         }

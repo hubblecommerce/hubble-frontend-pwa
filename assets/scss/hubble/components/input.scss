@@ -1,12 +1,22 @@
 /*
 Input Example:
+
+Without Validation:
 <div class="hbl-input-group input-icon">
-  <input type="text" required>
+  <input type="text" placeholder=" " required>
   <span class="highlight"></span>
   <span class="bar"></span>
   <label>Name</label>
   <i class="icon icon-optional"></i>
 </div>
+
+With Validation:
+<validation-provider v-slot="{ errors }" rules="rule1|rule2" mode="passive" tag="div" class="hbl-input-group input-icon">
+  <input type="text" name="name" :class="{invalid: errors.length > 0}" placeholder=" " required>
+  <label>Name></label>
+  <i class="icon icon-optional"></i>
+  <div class="validation-msg" v-text="$t(errors[0])" />
+</validation-provider>
 */
 
 $hbl-input-border: 1px solid $border-color;
@@ -21,9 +31,9 @@ $hbl-input-icon-size: 19px;
 /* form starting stylings ------------------------------- */
 .hbl-input-group {
     position: relative;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
 
-    input {
+    input, textarea {
         background: $hbl-input-background;
         font-size: $hbl-input-font-size;
         padding: $hbl-input-padding;
@@ -36,7 +46,7 @@ $hbl-input-icon-size: 19px;
         }
     }
 
-    input:focus {
+    input:focus, textarea:focus {
         outline: 1px solid $hbl-input-label-color;
     }
 
@@ -49,8 +59,7 @@ $hbl-input-icon-size: 19px;
 
     .icon {
         position: absolute;
-        top: 0;
-        bottom: 0;
+        top: 10px;
         margin: auto;
         right: $hbl-input-padding;
         width: $hbl-input-icon-size;
@@ -74,10 +83,15 @@ $hbl-input-icon-size: 19px;
         -webkit-transition: 0.2s ease all;
     }
 
+    textarea + label {
+        display: none;
+    }
+
     /* active state */
-    input:focus ~ label, input:valid ~ label {
+    input:focus ~ label, input:not(:placeholder-shown) ~ label {
         top: 0;
         font-size: 10px;
+        line-height: 14px;
         color: rgba(0, 0, 0, 0.6);
     }
 
@@ -132,11 +146,6 @@ $hbl-input-icon-size: 19px;
         animation:inputHighlighter 0.3s ease;
     }
 
-    .validation-msg {
-        font-size: 12px;
-        color: red;
-    }
-
     /* ANIMATIONS ================ */
     @-webkit-keyframes inputHighlighter {
         from { background:$hbl-input-highlight-color; }
@@ -150,5 +159,11 @@ $hbl-input-icon-size: 19px;
         from { background:$hbl-input-highlight-color; }
         to 	{ width:0; background:transparent; }
     }
+}
 
+.validation-msg {
+    width: 100%;
+    font-size: 12px;
+    color: red;
+    line-height: 18px;
 }

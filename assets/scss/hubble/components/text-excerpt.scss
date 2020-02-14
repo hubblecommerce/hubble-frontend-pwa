@@ -1,10 +1,10 @@
 .text-excerpt {
-    .collapsed {
-        display: inline-block;
+    .collapsed, p {
+        display: inline;
     }
 
     .show-more {
-        display: inline-block;
+        display: inline;
         font-size: $font-size-body;
         line-height: $line-height-body;
         color: $text-primary;

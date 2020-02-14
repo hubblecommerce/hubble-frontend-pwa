@@ -26,17 +26,15 @@ Middleware.apiResourceMenu = function ({ isHMR, app, store, error }) {
     // dispatch to vuex store by promise
     return new Promise((resolve, reject) => {
 
-        let _outerReject = reject;
-        let _outerResolve = resolve;
-
-        store.dispatch('modApiResources/apiGetMenu', {})
+        store.dispatch(`modApiResources/${process.env.API_TYPE}GetMenu`, {})
             .then(response => {
-                _outerResolve('OK');
+                resolve('OK');
             })
             .catch(response => {
                 error({ statusCode: 401, message: 'API authentication failed' });
-                resolve('Fail');
+                reject('Fail');
             });
+
     });
 
 };

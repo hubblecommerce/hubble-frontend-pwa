@@ -18,7 +18,7 @@ export default function (ctx) {
             },
             requestFacets: null,
 
-            queryWellKnown: ['term', 'page', 'limit', 'order', 'dir']
+            queryWellKnown: ['term', 'page', 'sort', 'limit']
         }),
         mutations: {
             setPaginationOffset: (state, value) => {
@@ -46,10 +46,9 @@ export default function (ctx) {
                 state.selectedFacets[payload.name] = payload.data;
             },
             resetSelectedFacetsParam: (state, payload) => {
-                state.selectedFacets = {
-                    priceMin: null,
-                    priceMax: null
-                };
+                state.selectedFacets = _.pick(state.selectedFacets, state.queryWellKnown);
+                state.selectedFacets.priceMax = null;
+                state.selectedFacets.priceMin = null;
             },
             setOptionsLimit: (state, payload) => {
                 state.optionsLimit = payload;
@@ -62,7 +61,18 @@ export default function (ctx) {
             },
             setParsedQuery: (state, items) => {
                 state.parsedQuery = items;
-            }
+            },
+            setRequestStringFacets: (state, payload) => {
+                state.requestFacets.string_facets = payload;
+            },
+            removeFacets: (state, payload) => {
+                console.log("remove");
+
+                //delete state.requestedFacets.string_facets[payload];
+                //delete state.requestedFacets.all[payload];
+
+                console.log(state.requestedFacets);
+            },
         },
         getters: {
             isNumeric: state => (value) => {
@@ -86,7 +96,7 @@ export default function (ctx) {
             isStringAlnum: state => (value) => {
                 return (/[a-z0-9]/.test(value.toLowerCase()));
             },
-            querySanatize: (state, getters) => (query) => {
+            querySanitize: (state, getters) => (query) => {
                 let _queryKnown = {
                     term: query.term
                 };
@@ -118,15 +128,15 @@ export default function (ctx) {
                     }
                 })
 
-                // merge known and sanatized unknown query params
+                // merge known and sanitized unknown query params
                 let _query = _.merge({}, _queryKnown, _queryUnknown);
 
                 return _query;
             },
             queryPaginate: (state, getters) => (query) => {
 
-                // sanatize query
-                let _queryClean = getters.querySanatize(query);
+                // sanitize query
+                let _queryClean = getters.querySanitize(query);
 
                 let _paginationPerPage = getters.getNumericOrDefault(query.limit, state.paginationPerPage);
 
@@ -142,12 +152,8 @@ export default function (ctx) {
                     _query = _.merge(_query, { _term: _queryClean.term });
                 }
 
-                if(_.has(_queryClean, 'dir')) {
-                    _query = _.merge(_query, { _dir: _queryClean.dir });
-                }
-
-                if(_.has(_queryClean, 'order')) {
-                    _query = _.merge(_query, { _order: _queryClean.order });
+                if(_.has(_queryClean, 'sort')) {
+                    _query = _.merge(_query, { _sort: _queryClean.sort });
                 }
 
                 if(_.has(_queryClean, 'price_to')) {
@@ -160,13 +166,16 @@ export default function (ctx) {
 
                 _query = _.merge(
                     _query,
-                    _.omit(_queryClean, ['term', 'page', 'limit', 'order', 'dir', 'price_to', 'price_from']),
+                    _.omit(_queryClean, ['term', 'page', 'sort', 'limit', 'price_to', 'price_from']),
                     {
                         _from: _paginationOffset,
                         _size: _paginationPerPage
                     });
 
                 return _query;
+            },
+            getSelectedFacetsParam: (state) => {
+                return state.selectedFacets;
             },
             getNumericOrDefault: (state, getters) => (requestValue, defaultValue) => {
                 return getters.isNumeric(requestValue) ? requestValue : defaultValue;
@@ -182,6 +191,7 @@ export default function (ctx) {
                 return null;
             },
             getRequestStringFacets: (state) => {
+
                 if(_.has(state.requestFacets, 'string_facets')) {
                     return _.map(state.requestFacets.string_facets, (item) => item);
                 }
@@ -250,12 +260,11 @@ export default function (ctx) {
                 });
             },
             parseRequestFacets({ commit, state }, payload) {
-                // console.log("store parseRequestFacets called! payload: %o", payload);
+                //console.log("store parseRequestFacets called! payload: %o", payload);
 
                 let _query = payload.query;
 
-                let _propertyName = payload.propertyName;
-                let _propertyFacets = payload.propertyFacets;
+                let _propertyFacets = _.cloneDeep(payload.propertyFacets);
 
                 return new Promise((resolve, reject) => {
 
@@ -264,14 +273,25 @@ export default function (ctx) {
 
                     // loop for string facets only ...
                     _.forEach(_propertyFacets.string_facets, (facet) => {
-
-                        // set nested dynamic reactive property
                         _parsed[facet.key] = _query[facet.key] ? _query[facet.key] : null;
-                    })
+                    });
+
+                    // special case 'price'
+                    if(_.has(_query, 'price_to')) {
+                        _parsed['priceMax'] = parseInt(_query['price_to']);
+                    }
+                    if(_.has(_query, 'price_from')) {
+                        _parsed['priceMin'] = parseInt(_query['price_from']);
+                    }
+
+                    // loop for string facets only ...
+                    _.forEach(_propertyFacets.category_facets, (facet) => {
+                        _parsed[facet.key] = _query[facet.key] ? _query[facet.key] : null;
+                    });
 
                     // commit to store
                     commit('setSelectedFacets', _parsed);
-                    commit('setRequestFacets', payload.propertyFacets);
+                    commit('setRequestFacets', _propertyFacets);
 
                     resolve("parseRequestFacets OK!");
                 });
@@ -294,10 +314,10 @@ export default function (ctx) {
                     })
 
                     // special case 'price'
-                    if(_query['price_to']) {
+                    if(_.has(_query, 'price_to')) {
                         _parsed['priceMax'] = parseInt(_query['price_to']);
                     }
-                    if(_query['price_from']) {
+                    if(_.has(_query, 'price_from')) {
                         _parsed['priceMin'] = parseInt(_query['price_from']);
                     }
 
@@ -305,6 +325,12 @@ export default function (ctx) {
                     commit('setParsedQuery', _parsed);
 
                     resolve("parseRequestQuery OK!");
+                });
+            },
+            actionSetRequestStringFacets({ commit, state }, payload) {
+                return new Promise((resolve, reject) => {
+                    commit('setRequestStringFacets', payload);
+                    resolve();
                 });
             }
         }

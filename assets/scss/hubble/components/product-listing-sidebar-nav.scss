@@ -1,4 +1,15 @@
 .sidebar-nav-wrp {
+    > div {
+        position: relative;
+    }
+
+    i {
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: -1;
+    }
+
     .sidebar-nav-title {
         font-weight: $font-weight-bold;
         margin-bottom: 8px;
@@ -14,14 +25,12 @@
 
     .level2-category-item {
         a {
-            font-size: $font-size-body;
             margin: 8px 15px 10px;
         }
     }
 
     .current {
         > a {
-            color: $text-primary !important;
             font-weight: $font-weight-bold;
         }
     }

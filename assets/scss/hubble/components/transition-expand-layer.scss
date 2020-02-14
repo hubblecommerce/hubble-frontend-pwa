@@ -46,6 +46,9 @@ $expand-layer-width-desktop: 600px;
     .transition-expand-wrp {
         width: $expand-layer-width-tablet;
     }
+    .expand-content {
+        height: calc(100vh - 81px);
+    }
     .overlay-header {
         height: $header-height-desktop + 1px;
 

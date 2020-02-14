@@ -14,7 +14,13 @@ export default class {
                 if (err) {
                     reject('Unable to scan directory: ' + err);
                 }
-                resolve(files);
+
+                // Filer for . to extract directories
+                let filesOnly = files.filter((file) => {
+                    return file.indexOf(".") !== -1;
+                });
+
+                resolve(filesOnly);
             });
         });
     }

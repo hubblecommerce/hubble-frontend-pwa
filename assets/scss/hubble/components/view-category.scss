@@ -10,11 +10,34 @@
         .title {
             text-transform: uppercase;
             margin-top: 5px;
+            margin-bottom: 10px;
         }
 
         .text-excerpt {
             p {
                 margin-bottom: 0;
+            }
+        }
+    }
+
+    .manufacturer-teaser {
+        margin-bottom: 20px;
+
+        img {
+            width: 100%;
+        }
+    }
+
+    .main-categories {
+        button {
+            margin-bottom: 20px;
+            margin-right: 10px;
+        }
+        .nuxt-link-exact-active {
+            button {
+                background: $primary;
+                color: $background;
+                border: 2px solid $primary;
             }
         }
     }
@@ -32,6 +55,21 @@
             .pagination-bottom {
                 margin-bottom: 20px;
             }
+
+            .category-description {
+                display: inline-block;
+                margin-bottom: 20px;
+
+                p {
+                    margin-bottom: 20px;
+                }
+
+                h3, h4, h5 {
+                    margin-top: 20px;
+                    margin-bottom: 20px;
+                    font-weight: $font-weight-bold;
+                }
+            }
         }
     }
 }
@@ -45,13 +83,19 @@
             border-bottom: 1px solid $background-light;
             margin-bottom: 20px;
 
-            .text-excerpt {
-                max-width: 1080px;
+            .title {
+                text-transform: uppercase;
+                margin-top: 0;
             }
         }
 
         .category-content-wrp, .search-content-wrp {
             padding: 0 $base-padding-md;
+
+            .pagination-bottom {
+                margin-bottom: 40px;
+                margin-top: 80px;
+            }
         }
     }
 }
@@ -73,6 +117,8 @@
                 flex: 1;
 
                 .pagination-bottom {
+                    margin-bottom: 40px;
+
                     .pagination {
                         justify-content: flex-end;
                     }

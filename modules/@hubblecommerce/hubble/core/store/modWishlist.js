@@ -2,6 +2,7 @@
 // modWishlist
 //
 import base64 from 'base-64'
+import localStorageHelper from "@hubblecommerce/hubble/core/utils/localStorageHelper";
 
 export default function (ctx) {
 
@@ -11,10 +12,12 @@ export default function (ctx) {
         state: () => ({
             wishlistItemsCount: 0,
             wishlistItemsObj: {},
+            wishlistId: false,
 
-            cookieName: 'rocketWishlist',
+            cookieName: 'hubbleWishlist',
             cookiePath: '/',
-            cookieTTL: 120 // minutes
+            cookieTTL: 120, // minutes
+            localStorageLifetime: 720 // 720 hours = 30 days
         }),
         getters: {
             getCookieExpires: (state) => {
@@ -26,10 +29,10 @@ export default function (ctx) {
             getWishlistItemsObj: state => {
                 return state.wishlistItemsObj;
             },
-            getWishlistEncoded: (state, getters) => (objJsonStr) => {
+            getWishlistEncoded: () => (objJsonStr) => {
                 return base64.encode(JSON.stringify(objJsonStr));
             },
-            getWishlistDecoded: (state, getters) => (objJsonB64) => {
+            getWishlistDecoded: () => (objJsonB64) => {
                 return JSON.parse(base64.decode(objJsonB64));
             }
         },
@@ -38,7 +41,7 @@ export default function (ctx) {
                 state.wishlistItemsCount = qty;
             },
             delWishlistItemObj: (state, item) => {
-                delete state.wishlistItemsObj[item.id];
+                state.wishlistItemsObj = _.omit(state.wishlistItemsObj, item.id)
             },
             setWishlistItemObj: (state, item) => {
                 state.wishlistItemsObj[item.id] = item;
@@ -48,13 +51,16 @@ export default function (ctx) {
             },
             setWishlistItemsObjQty: (state, payload) => {
                 state.wishlistItemsObj[payload.itemId]['qty'] = payload.itemQty;
-            }
+            },
+            setWishlistId: (state, payload) => {
+                state.wishlistId = payload;
+            },
         },
         actions: {
-            clearAll({commit, state}) {
+            clearAll({commit}) {
                 // console.log("clearAll called");
 
-                return new Promise((resolve, reject) => {
+                return new Promise((resolve) => {
 
                     commit('setWishlistItemsObj', {});
                     commit('setWishlistItemsCount', 0);
@@ -62,12 +68,12 @@ export default function (ctx) {
                     resolve('wishlist cleared!');
                 })
             },
-            addItem({commit, state, getters}, payload) {
+            addItem({commit, state, dispatch}, payload) {
                 // console.log("addItem ... payload: %o", payload);
 
                 return new Promise((resolve, reject) => {
 
-                    let item = _.pick(payload.item, ['id', 'sku', 'qty', 'name', 'image', 'final_price_item', 'url_pds']);
+                    let item = _.pick(payload.item, ['id', 'sku', 'qty', 'variants', 'name', 'image', 'final_price_item', 'url_pds']);
                     let qty = payload.qty;
 
                     // Set item to wishlist if not exists
@@ -87,48 +93,29 @@ export default function (ctx) {
                     // Increase global wishlist counter
                     commit('setWishlistItemsCount', state.wishlistItemsCount + qty);
 
-                    let _wishlist = getters.getWishlistEncoded({
-                        count: state.wishlistItemsCount,
-                        items: state.wishlistItemsObj
-                    });
-                    let _expires = new Date(new Date().getTime() + state.cookieTTL * 60 * 1000);
-
-                    this.$cookies.set(state.cookieName, _wishlist, {
-                        path: state.cookiePath,
-                        expires: getters.getCookieExpires
-                    });
+                    dispatch('saveToStore');
 
                     resolve('OK, item added!');
                 });
             },
-            updateItem({commit, state, getters}, payload) {
+            updateItem({commit, state, dispatch}, payload) {
                 // console.log("addItem ... payload: %o", payload);
 
-                return new Promise((resolve, reject) => {
+                return new Promise((resolve) => {
                     // Update global wishlist counter
                     commit('setWishlistItemsCount', state.wishlistItemsCount + payload.qty );
 
-                    let _wishlist = getters.getWishlistEncoded({
-                        count: state.wishlistItemsCount,
-                        items: state.wishlistItemsObj
-                    });
-
-                    let _expires = new Date(new Date().getTime() + state.cookieTTL * 60 * 1000);
-
-                    this.$cookies.set(state.cookieName, _wishlist, {
-                        path: state.cookiePath,
-                        expires: getters.getCookieExpires
-                    });
+                    dispatch('saveToStore');
 
                     resolve('OK, item added!');
                 });
             },
-            delItem({commit, state, getters}, payload) {
+            delItem({commit, state, dispatch}, payload) {
                 //console.log("delItem ... payload: %o", payload);
 
                 let item = payload.data;
 
-                return new Promise((resolve, reject) => {
+                return new Promise((resolve) => {
 
                     if(state.wishlistItemsObj[item.id]["qty"] > 1) {
                         commit('setWishlistItemsObjQty', {
@@ -141,54 +128,79 @@ export default function (ctx) {
 
                     commit('setWishlistItemsCount', state.wishlistItemsCount - 1);
 
-                    let _item = getters.getWishlistEncoded({
-                        count: state.wishlistItemsCount,
-                        items: state.wishlistItemsObj
-                    });
-                    let _expires = new Date(new Date().getTime() + state.cookieTTL * 60 * 1000);
-
-                    this.$cookies.set(state.cookieName, _item, {
-                        path: state.cookiePath,
-                        expires: getters.getCookieExpires
-                    });
+                    dispatch('saveToStore');
 
                     resolve('OK, item deleted!');
                 })
             },
-            setByCookie({commit, state, getters}, payload) {
-                // console.log("setCookieWishlist payload: %o", payload);
+            saveToStore({state}) {
+                return new Promise((resolve) => {
 
-                return new Promise((resolve, reject) => {
+                    let _item = {
+                        count: state.wishlistItemsCount,
+                        id: state.wishlistId,
+                        items: state.wishlistItemsObj
+                    };
 
-                    // try to retrieve auth user by cookie
-                    let _cookie = this.$cookies.get(state.cookieName);
+                    localStorageHelper.setCreatedAt(_item, state.localStorageLifetime).then(response => {
+                        // Store wishlist with all info in local storage
+                        this.$localForage.setItem(state.cookieName, response);
+                        resolve('wishlist stored');
+                    });
 
-                    // no cookie? ok!
-                    if(! _cookie) {
+                })
+            },
+            setByForage({commit, state}) {
+                return new Promise((resolve) => {
+                    this.$localForage.getItem(state.cookieName).then((response) => {
+
+                        if(response !== null) {
+
+                            // Remove local storage if its invalid (end of lifetime)
+                            if(!localStorageHelper.lifeTimeIsValid(response, state.localStorageLifetime)) {
+                                this.$localForage.removeItem(state.cookieName);
+                                resolve({
+                                    success: true,
+                                    message: 'local storage was cleared for its invalidity',
+                                    redirect: true
+                                });
+                            }
+
+                            commit('setWishlistItemsObj', response.items || {});
+                            commit('setWishlistItemsCount', response.count || 0);
+                            commit('setWishlistId', response.id || false);
+
+                            resolve({
+                                success: true,
+                                message: 'wishlist taken from forage.',
+                                redirect: true
+                            });
+                        }
+
                         resolve({
                             success: true,
-                            message: 'wishlist not known by cookie.'
+                            message: 'wishlist not known by forage.'
                         });
-                    }
 
-                    //
-                    let _item = getters.getWishlistDecoded(_cookie);
-
-                    commit('setWishlistItemsObj', _item.items || {});
-                    commit('setWishlistItemsCount', _item.count || 0);
-
-                    // set/send cookie to enforce lifetime
-                    this.$cookies.set(state.cookieName, getters.getWishlistEncoded(_item), {
-                        path: state.cookiePath,
-                        expires: getters.getCookieExpires
-                    });
-
-                    resolve({
-                        success: true,
-                        message: 'wishlist taken from cookie.',
-                        redirect: true
                     });
                 })
+            },
+            setWishlist({commit, state}, payload) {
+                return new Promise((resolve) => {
+
+                    console.log(payload);
+
+                });
+            },
+            deleteWishlist({commit, state}) {
+                return new Promise(() => {
+                    commit('setWishlistItemsCount', 0);
+                    commit('setWishlistItemsObj', {});
+                    commit('setWishlistId', false);
+
+                    // Remove wishlist from local storage
+                    this.$localForage.removeItem(state.cookieName);
+                });
             }
         }
     };

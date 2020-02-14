@@ -3,30 +3,6 @@
     color: $text-primary !important;
   }
 
-  .item {
-    border-bottom: 1px solid $border-color;
-    padding: 15px 0;
-
-    .actions-wrp {
-      margin-bottom: auto;
-
-      .hbl-select {
-        width: 65px;
-        margin-bottom: 40px;
-        margin-left: auto;
-
-        .select-label {
-          display: none;
-        }
-      }
-    }
-
-    .img-minicart {
-      max-width: 60px !important;
-      max-height: 60px !important;
-    }
-  }
-
   .product-qty {
     margin-bottom: 20px;
   }
@@ -39,26 +15,6 @@
     border-bottom: 1px solid $border-color;
   }
 
-  .product-name {
-    font-size: $font-size-caption;
-    margin-bottom: 3px;
-  }
-
-  .product-price, .product-qty, .separator {
-    font-size: 14px;
-    font-weight: $font-weight-bold;
-  }
-
-  .old-price {
-    font-weight: 400;
-    text-decoration: line-through;
-
-    & + .sale-price {
-      color: $error-accent;
-      margin-left: 15px;
-    }
-  }
-
   .separator {
     margin: 0 3px;
   }
@@ -67,6 +23,9 @@
     margin: 0 !important;
   }
 
+  .flash-message-wrp {
+    box-shadow: none;
+  }
 }
 
 .summary-wrp {
@@ -87,6 +46,7 @@
   top: 0;
 
   .cart-icon {
+    overflow: visible;
     .icon {
       &:before {
         font-size: 21px;
@@ -96,7 +56,6 @@
     &.active {
       color: $accent;
       border-radius: 0;
-      overflow: visible;
 
       &:before {
         content: '';
@@ -104,7 +63,7 @@
         height: 2px;
         background: $accent;
         position: absolute;
-        bottom: -22px;
+        bottom: -23px;
         left: 0;
         border-radius: 0;
       }
@@ -134,18 +93,19 @@
 /* Item count */
 .item-count {
   position: absolute;
-  background: $accent;
-  width: 20px;
-  height: 20px;
-  line-height: 20px;
+  background: $primary;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
   text-align: center;
   border-radius: 100%;
   font-size: $font-size-caption;
   font-weight: $font-weight-medium;
   top: 11px;
-  right: 0;
+  right: -5px;
   color: #fff;
 }
+
 
 /* Animate remove cart item from list */
 .list-enter-active,
@@ -155,23 +115,13 @@
 .list-enter,
 .list-leave-to {
   background-color: $error-accent;
-  transform: translateX(100%);
-}
-
-.remove-item {
-  font-size: 13px;
-  line-height: 16px;
-  font-weight: 600;
-  text-decoration: underline;
-  transition: all 0.2s;
-  transform: rotate(0deg);
-  cursor: pointer;
+  opacity: 0;
 }
 
 /* Fixed checkout button */
 .checkout-btn {
   position: relative;
-  margin: 15px 0 10px;
+  margin: 5px 0 10px;
   width: 100%;
 }
 
@@ -221,7 +171,6 @@
     position: relative;
     top: unset; bottom: unset;
     width: 100%;
-    margin: 20px 0 !important;
   }
 }
 
@@ -231,11 +180,6 @@
     .qty-summary {
       padding-left: 40px;
       padding-right: 40px;
-    }
-
-    .item {
-      padding-left: 25px;
-      padding-right: 25px;
     }
 
     .totals {

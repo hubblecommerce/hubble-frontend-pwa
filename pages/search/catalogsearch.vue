@@ -5,10 +5,14 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex';
+    import ViewCatalogsearch from "../../components/productlist/ViewCatalogsearch";
 
     export default {
-        name: "catalogsearch",
+        name: "Catalogsearch",
+
+        components: {
+            ViewCatalogsearch
+        },
 
         layout: 'hubble',
 
