@@ -27,64 +27,68 @@ module.exports = {
             {
                 'limit': '120',
                 'label': '120'
+            },
+            {
+                'limit': '500',
+                'label': 'all'
             }
         ],
         sorter: [
             {
-                'dir': 'desc',
-                'order': 'position',
-                'label': 'position',
-                'selected': false
+                'order': 'default',
+                'label': 'Relevance',
+                'selected': false,
+                'option_id': 0
             },
             {
-                'dir': 'asc',
-                'order': 'name',
-                'label': 'name',
-                'selected': false
-            },
-            {
-                'dir': 'asc',
                 'order': 'price',
-                'label': 'price',
-                'selected': false
+                'label': 'price_asc',
+                'selected': false,
+                'option_id': 3
             },
             {
-                'dir': 'desc',
-                'order': 'relevance',
-                'label': 'relevance',
-                'selected': false
+                'order': 'price',
+                'label': 'price_desc',
+                'selected': false,
+                'option_id': 4
+            },
+            {
+                'order': 'name',
+                'label': 'name_asc',
+                'selected': false,
+                'option_id': 1
             },
         ],
-        menu: {
-            0: {
-                id: 254,
-                name: "Damen"
+        meta: {
+            category: {
+                title: 'Category - Hubble Demo',
+                titleAdd: ' - buy now at hubble Demostore',
+                metaKeywords: 'PWA, ecommerce, hubble, headless, nuxt, vue, responsive, progressive',
+                metaDescription: 'Official hubble demo page.'
             },
-            1: {
-                id: 274,
-                name: "Herren"
+            product: {
+                title: 'Product Hubble Demo',
+                metaKeywords: 'PWA, ecommerce, hubble, headless, nuxt, vue, responsive, progressive',
+                metaDescription: 'Official hubble demo page.'
             },
-            2: {
-                id: 292,
-                name: "Kinder"
-            },
-            3: {
-                name: "Sale",
-                url_path: 'sale',
-                children: []
-            },
-            4: {
-                id: 4,
-                name: "Pflegemittel"
-            },
+            cms: {
+                title: 'CMS - Hubble Demo',
+                metaKeywords: 'PWA, ecommerce, hubble, headless, nuxt, vue, responsive, progressive',
+                metaDescription: 'Official hubble demo page.'
+            }
         }
     },
+
+    serverMiddleware: [
+        '~/api/hubble-logger',
+        '~/api/server-side-api-auth-call'
+    ],
 
     /*
     ** Headers of the page
     */
     head: {
-        title: 'Hubble Demo',
+        title: 'Buy now | Hubble Demo-Shop',
         htmlAttrs: {
             lang: 'de'
         },
@@ -124,22 +128,21 @@ module.exports = {
     css: [
         '~/assets/css/main.css',
         '~/assets/css/vue-tiny-slider.css',
-        '~/assets/scss/hubble/all.scss'
+        '~/assets/scss/' + process.env.THEME + '/all.scss'
     ],
 
     /*
     ** Plugins to load before mounting the App
     */
-    plugins: [
-        '~/plugins/axios-interceptor.js'
-    ],
+    plugins: [],
 
     /*
     ** Nuxt.js modules
     */
     modules: [
         ['@hubblecommerce/hubble'],
-        // Doc: https://github.com/nuxt-community/axios-module#usage
+        ['@hubblecommerce/payone'],
+        ['@hubblecommerce/amazon-pay'],
         '@nuxtjs/axios',
         [
             'nuxt-mq',
@@ -149,54 +152,93 @@ module.exports = {
                     md: 1024,
                     lg: Infinity
                 },
-                defaultBreakpoint: 'sm' // Default breakpoint for SSR
+                defaultBreakpoint: 'md' // Default breakpoint for SSR
             }
         ],
         ['nuxt-i18n', {
             defaultLocale: 'de',
             locales: [
                 {
-                    code: 'en',
-                    iso: 'en-US',
-                    file: 'en.js'
-                },
-                {
                     code: 'de',
                     iso: 'de-DE',
                     file: 'de.js'
+                },
+                {
+                    code: 'en',
+                    iso: 'en-US',
+                    file: 'en.js'
                 },
             ],
             langDir: 'locales/',
             lazy: true,
             seo: false
         }],
-        ['@nuxtjs/onesignal'],
-        ['@nuxtjs/pwa', { workbox: false }],
-        ['@nuxtjs/google-analytics', {
-            id: process.env.GOOGLE_ANALYTICS_ID || null
-        }],
-        '@nuxtjs/dotenv',
-        '@nuxtjs/sitemap'
+        ['@nuxtjs/pwa', { workbox: false, oneSignal: false }],
+        '@nuxtjs/sitemap',
+        '@nuxtjs/recaptcha'
+    ],
+
+    buildModules: [
+        ['@nuxtjs/dotenv', {
+            only: [
+                'APP_BASE_URL',
+                'IMG_BASE_URL',
+                'API_TYPE',
+                'API_SW_ACCESS_KEY',
+                'API_BASE_URL',
+                'API_BASE_URL',
+                'API_CLIENT_ID',
+                'API_CLIENT_SECRET',
+                'API_ENDPOINT_AUTH',
+                'API_PAYMENT_BASE_URL',
+                'API_PAYMENT_CLIENT_ID',
+                'API_PAYMENT_CLIENT_SECRET',
+                'API_PAYMENT_ENDPOINT_AUTH',
+                'PAYONE_MODE',
+                'PAYONE_MID',
+                'PAYONE_AID',
+                'PAYONE_PORTALID',
+                'AMAZON_PAY_SANDBOX',
+                'AMAZON_PAY_MERCHANT_ID',
+                'AMAZON_PAY_ACCESS_KEY',
+                'AMAZON_PAY_CURRENCY',
+                'LOGIN_WITH_AMAZON_CLIENT_ID',
+                'AMAZON_PAY_MODE',
+                'AMAZON_PAY_RETURN_URL',
+                'AMAZON_PAY_CANCEL_RETURN_URL',
+                'GOOGLE_ANALYTICS_ID',
+                'GOOGLE_TAG_MANAGER_ID',
+                'GOOGLE_RECAPTCHA_SITEKEY',
+                'TRUSTED_SHOPS_ID',
+                'ONESIGNAL_TOKEN',
+                'CUSTOMER_DOMAIN',
+                'THEME',
+                'STORE_ID',
+                'NO_CORS',
+                'DEFAULT_ERROR_PAGE',
+                'STREETINFO_INCLUDES_HOUSENO',
+            ]
+        }]
     ],
 
     /*
     ** hubble module configuration
     */
     hubble: {
+        apiType: process.env.API_TYPE,
         deactivateStores: [],
         deactivatePlugins: [],
         deactivateMiddleware: [],
-        useTheme: false
-    },
-
-    /*
-    ** Axios module configuration
-    */
-    axios: {
-        // See https://github.com/nuxt-community/axios-module#options
+        useTheme: false,
+        gtmId: process.env.GOOGLE_TAG_MANAGER_ID,
+        payone: {},
+        amazonPay: {
+            sandbox: true
+        }
     },
 
     router: {
+        prefetchLinks: false,
         middleware: [],
     },
 
@@ -205,64 +247,67 @@ module.exports = {
     */
     build: {
         //analyze: true,
+        optimization: {
+            splitChunks: {
+                chunks: 'all',
+                // tells webpack to try to split chunks bigger than maxSize into smaller parts
+                maxSize: 200000
+            }
+        },
         plugins: [
             new webpack.ProvidePlugin({
                 '_': 'lodash-core'
             }),
         ],
         transpile: [
-            '@hubblecommerce/hubble'
+            '@hubblecommerce/hubble',
+            'vee-validate/dist/rules'
         ],
-        extractCSS: true,
-        /*
-        ** You can extend webpack config here
-        */
-        // extend(config, ctx)
-        // {
-        //     // Run ESLint on save
-        //     if (ctx.isDev && ctx.isClient) {
-        //         config.module.rules.push({
-        //             enforce: 'pre',
-        //             test: /\.(js|vue)$/,
-        //             loader: 'eslint-loader',
-        //             exclude: /(node_modules)/,
-        //             options: {
-        //                 fix: true
-        //             }
-        //         })
-        //     }
-        // }
+        extractCSS: true
+    },
+
+    workbox: {
+        // Workbox options
+        offlinePage: '/offline.html',
+        cacheNames: {
+            prefix: 'hubble',
+            suffix: 'v1',
+            precache: 'precache',
+            runtime: 'runtime'
+        },
+        offlineStrategy: 'networkFirst',
+        runtimeCaching: [
+            {
+                urlPattern: 'http:localhost:3340/Unsere-AGB/.*',
+                handler: 'staleWhileRevalidate',
+                method: 'GET'
+            },
+            {
+                urlPattern: 'http:localhost:3340/Unsere-AGB/.*',
+                handler: 'staleWhileRevalidate',
+                method: 'GET'
+            },
+            {
+                urlPattern: 'http:localhost:3340/Impressum/.*',
+                handler: 'staleWhileRevalidate',
+                method: 'GET'
+            }]
     },
 
    /*
     ** Manifest Module
     */
     manifest: {
-        name: 'Hubble Demo',
+        name: 'hubble Demo',
         lang: 'de',
-        short_name: 'Hubble Demo',
+        short_name: 'hubble Demo',
         start_url: '/',
-        background_color: '#ffffff',
+        background_color: '#F8F8F8',
         display: 'standalone',
         scope: '/',
-        theme_color: '#1B1D1B',
+        theme_color: '#880E4F',
         gcm_sender_id: '482941778795',
         gcm_sender_id_comment: 'Do not change the GCM Sender ID'
-    },
-
-    workbox: {
-        // Workbox options
-        offlinePage: '/offline.html',
-        runtimeCaching: [
-            {
-                // Should be a regex string. Compiles into new RegExp('localhost:3000/.*')
-                urlPattern: 'localhost:' + process.env.DEV_PORT || 3000 + '/.*',
-                // Defaults to `networkFirst` if omitted
-                handler: 'networkFirst',
-                // Defaults to `GET` if omitted
-                method: 'GET'
-            }
-        ]
     },
 
     oneSignal: {
@@ -295,5 +340,17 @@ module.exports = {
         gzip: true,
         exclude: [],
         routes: []
+    },
+
+    recaptcha: {
+        version: 3,
+        siteKey: process.env.GOOGLE_RECAPTCHA_SITEKEY,
+        language: 'de',
+        hideBadge: true
+    },
+
+    layoutTransition: {
+        name: 'layout',
+        mode: 'out-in'
     }
 };
