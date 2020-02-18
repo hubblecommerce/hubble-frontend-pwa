@@ -156,7 +156,7 @@ module.exports = {
             }
         ],
         ['nuxt-i18n', {
-            defaultLocale: 'de',
+            defaultLocale: 'en',
             locales: [
                 {
                     code: 'de',
