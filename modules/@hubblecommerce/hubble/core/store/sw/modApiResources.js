@@ -364,7 +364,11 @@ export default function (ctx) {
                             obj.manufacturer_name = product.manufacturer.name;
                         }
                         if(product.seoUrls !== null) {
-                            obj.url_pds = product.seoUrls[(product.seoUrls.length - 1)].seoPathInfo;
+                            _.forEach(product.seoUrls, (seoUrl) => {
+                                if(seoUrl.isCanonical) {
+                                    obj.url_pds = seoUrl.seoPathInfo;
+                                }
+                            });
                         }
                         obj.stock_item = {
                             qty: product.stock,
