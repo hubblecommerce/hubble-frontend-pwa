@@ -26,7 +26,7 @@
                         <div v-if="qty <= 0" class="no-items col-12 p-3 mb-2 text-center">{{ $t('Your shopping cart is empty') }}</div>
                     </div>
                     <transition-group name="list">
-                        <v-touch @swiperight="confirmRemoveItem(item)" v-for="item in items" v-bind:key="item.id"
+                        <div @swiperight="confirmRemoveItem(item)" v-for="item in items" v-bind:key="item.id"
                             class="row item align-items-center">
                             <nuxt-link :to="'/'+item.url_pds" class="col-9">
                                 <div class="row align-items-center">
@@ -68,7 +68,7 @@
                                     <div></div>
                                 </div>
                             </div>
-                        </v-touch>
+                        </div>
                     </transition-group>
                     <div v-if="cartItemsQty > 0" class="row totals bg-light">
                         <div class="col-6">{{$t('Subtotal')}}</div>
