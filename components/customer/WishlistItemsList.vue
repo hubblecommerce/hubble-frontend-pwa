@@ -72,7 +72,7 @@
                 qty: state => state.modWishlist.wishlistItemsCount,
                 priceSwitcherIncludeVat: state => state.modPrices.priceSwitcherIncludeVat,
                 offcanvas: state => state.modNavigation.offcanvas,
-                customer: state => state.modApiPayment.customer,
+                customer: state => state.modApiCustomer.customer,
                 wishlistState: state => state.modWishlist.wishlistItemsObj,
                 wishlistId: state => state.modWishlist.wishlistId,
                 wishlistQty: state => state.modWishlist.wishlistItemsCount,

@@ -60,7 +60,7 @@
 
         computed: {
             ...mapState({
-                customer: state => state.modApiPayment.customer,
+                customer: state => state.modApiCustomer.customer,
                 qty: state => state.modWishlist.wishlistItemsCount,
                 wishlistId: state => state.modWishlist.wishlistId
             }),

@@ -43,7 +43,7 @@
 
         computed: {
             ...mapState({
-                customer: state => state.modApiPayment.customer,
+                customer: state => state.modApiCustomer.customer,
                 offcanvas: state => state.modNavigation.offcanvas,
                 cookieName: state => state.modApiPayment.cookieName,
                 cookieNameAddress: state => state.modApiPayment.cookieNameAddress,

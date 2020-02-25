@@ -57,7 +57,7 @@ export default {
 
     computed: {
         ...mapState({
-            customer: state => state.modApiPayment.customer,
+            customer: state => state.modApiCustomer.customer,
             offcanvas: state => state.modNavigation.offcanvas
         }),
         setButtonStates: function() {

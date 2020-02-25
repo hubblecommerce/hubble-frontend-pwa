@@ -92,7 +92,7 @@
 
         computed: {
             ...mapState({
-                customer: state => state.modApiPayment.customer,
+                customer: state => state.modApiCustomer.customer,
                 wishlistState: state => state.modWishlist.wishlistItemsObj
             }),
         },
@@ -108,7 +108,7 @@
                 this.error = null;
 
                 // Post request with login credentials
-                this.$store.dispatch('modApiPayment/logIn', validCreds).then((response) => {
+                this.$store.dispatch('modApiCustomer/logIn', validCreds).then((response) => {
 
                     // Get wishlist of current customer from api and save to store
                     this.$store.dispatch('modApiPayment/getWishlist').then(response => {
@@ -163,7 +163,7 @@
                     email: this.form.email
                 };
 
-                this.$store.dispatch('modApiPayment/passwordForgot', payload).then(response => {
+                this.$store.dispatch('modApiCustomer/passwordForgot', payload).then(response => {
                     // close off canvas if in offcanvas and show success message
                     this.$store.dispatch('modNavigation/hideOffcanvasAction').then(()=> {
                         this.$store.dispatch('modFlash/flashMessage', {

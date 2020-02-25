@@ -42,7 +42,7 @@
                 wishlistId: state => state.modWishlist.wishlistId,
                 wishlistQty: state => state.modWishlist.wishlistItemsCount,
                 selectedVariants: state => state.modApiResources.selectedVariants,
-                customer: state => state.modApiPayment.customer,
+                customer: state => state.modApiCustomer.customer,
             })
         },
 

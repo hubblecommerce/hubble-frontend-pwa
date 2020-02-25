@@ -386,8 +386,8 @@
 
         computed: {
             ...mapState({
-                customer: state => state.modApiPayment.customer,
-                countries: state => state.modApiPayment.availableCountries,
+                customer: state => state.modApiCustomer.customer,
+                countries: state => state.modApiCustomer.availableCountries,
                 offcanvas: state => state.modNavigation.offcanvas,
             }),
             showLayer: function() {
@@ -455,7 +455,7 @@
 
         mounted() {
             if(_.isEmpty(this.countries)) {
-                this.$store.dispatch('modApiPayment/getAvailableCountries');
+                this.$store.dispatch('modApiCustomer/getAvailableCountries');
             }
             this.getAddresses();
         },
@@ -496,7 +496,7 @@
                     this.loading = false;
                 } else {
                     // Get addresses from api if logged in user
-                    this.$store.dispatch('modApiPayment/getCustomerAddresses')
+                    this.$store.dispatch('modApiCustomer/getCustomerAddresses')
                     .then(() => {
                         this.mapAddresses();
                         this.loading = false;
@@ -603,7 +603,7 @@
                     address.payload = _.omit(address.payload, 'houseNo');
                 }
 
-                this.$store.dispatch('modApiPayment/storeCustomerAddress', address).then(() => {
+                this.$store.dispatch('modApiCustomer/storeCustomerAddress', address).then(() => {
                     // Refresh addresses and close offcanvas
                     this.getAddresses();
                     this.toggle();
@@ -626,7 +626,7 @@
                 // Do API call if is logged in user
                 if(!this.isGuest) {
                     // dispatch data to api ...
-                    this.$store.dispatch('modApiPayment/editAddress', address).then(() => {
+                    this.$store.dispatch('modApiCustomer/editAddress', address).then(() => {
                         // Refresh addresses and close offcanvas
                         this.getAddresses();
                         this.toggle();
@@ -640,7 +640,7 @@
                 } else {
                     // Edit cookie if is guest
                     // dispatch data to api ...
-                    this.$store.dispatch('modApiPayment/editGuestAddress', address).then(() => {
+                    this.$store.dispatch('modApiCustomer/editGuestAddress', address).then(() => {
                         this.getAddresses();
                         this.toggle();
                     })
@@ -663,7 +663,7 @@
                             newDefaultAddress = _.omit(newDefaultAddress, 'houseNo');
                         }
 
-                        this.$store.dispatch('modApiPayment/editAddress', newDefaultAddress).then(() => {
+                        this.$store.dispatch('modApiCustomer/editAddress', newDefaultAddress).then(() => {
                             this.getAddresses();
                             this.toggle();
                         }).catch(() => {
@@ -684,7 +684,7 @@
                             newDefaultAddress = _.omit(newDefaultAddress, 'houseNo');
                         }
 
-                        this.$store.dispatch('modApiPayment/editAddress', newDefaultAddress).then(() => {
+                        this.$store.dispatch('modApiCustomer/editAddress', newDefaultAddress).then(() => {
                             this.getAddresses();
                             this.toggle();
                         }).catch(() => {
@@ -697,7 +697,7 @@
 			submitDeleteAddress: function(){
                 // dispatch delete calls to api..
                 _.forEach(this.selectedDelete, (address) => {
-                    this.$store.dispatch('modApiPayment/deleteCustomerAddress', address).then(() => {
+                    this.$store.dispatch('modApiCustomer/deleteCustomerAddress', address).then(() => {
                         this.getAddresses();
                     }).catch(() => {
                         // Show api request error

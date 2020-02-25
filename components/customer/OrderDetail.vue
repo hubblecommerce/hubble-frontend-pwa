@@ -99,13 +99,13 @@
 
         computed: {
             ...mapState({
-                countries: state => state.modApiPayment.availableCountries,
+                countries: state => state.modApiCustomer.availableCountries,
             }),
         },
 
         mounted() {
             if(_.isEmpty(this.countries)) {
-                this.$store.dispatch('modApiPayment/getAvailableCountries');
+                this.$store.dispatch('modApiCustomer/getAvailableCountries');
             }
             this.orderData = JSON.parse(this.order.payload);
         },

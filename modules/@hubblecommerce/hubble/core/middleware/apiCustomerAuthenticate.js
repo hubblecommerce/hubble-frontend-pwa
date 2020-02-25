@@ -25,7 +25,7 @@ Middleware.apiCustomerAuthenticate = function ({ isHMR, store, error, redirect, 
             _customerAuth = cookie.customerAuth;
         }
     } else {
-        _customerAuth = store.getters['modApiPayment/getCustomerAuth'];
+        _customerAuth = store.getters['modApiCustomer/getCustomerAuth'];
     }
 
     // If cookie exists, check expiration date

@@ -31,7 +31,7 @@
         methods: {
             attemptLogout() {
                 let msg = this.$t('Successfully logged out');
-                this.$store.dispatch('modApiPayment/logOut')
+                this.$store.dispatch('modApiCustomer/logOut')
                     .then(() => {
                         // Clear wishlist from store
                         this.$store.dispatch('modWishlist/deleteWishlist');

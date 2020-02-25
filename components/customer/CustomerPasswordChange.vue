@@ -114,7 +114,7 @@
                     password_confirm: this.form.passwordConfirm
                 };
 
-                this.$store.dispatch('modApiPayment/passwordUpdate', payload).then(response => {
+                this.$store.dispatch('modApiCustomer/passwordUpdate', payload).then(response => {
 
                     this.$store.dispatch('modNavigation/toggleOffcanvasAction', {
                         component: this.name,

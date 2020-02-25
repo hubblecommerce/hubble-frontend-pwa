@@ -74,7 +74,7 @@
 
         computed: {
             ...mapState({
-                customer: state => state.modApiPayment.customer
+                customer: state => state.modApiCustomer.customer
             }),
             customerData() {
                 return this.customer.customerData;

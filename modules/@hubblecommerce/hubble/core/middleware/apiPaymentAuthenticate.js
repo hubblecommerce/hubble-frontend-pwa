@@ -16,7 +16,7 @@ Middleware.apiPaymentAuthenticate = function ({ isHMR, store, error }) {
         return;
     }
 
-    let _apiAuth = store.getters['modApiPayment/getApiAuthResponse'];
+    let _apiAuth = store.getters['modApiCustomer/getApiAuthResponse'];
 
     // check vuex store object first
     if(! _.isEmpty(_apiAuth)) {

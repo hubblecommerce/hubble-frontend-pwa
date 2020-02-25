@@ -465,14 +465,14 @@
             ...mapState({
                 wishlistState: state => state.modWishlist.wishlistItemsObj,
                 wishlistQty: state => state.modWishlist.wishlistItemsCount,
-                customer: state => state.modApiPayment.customer,
-                countries: state => state.modApiPayment.availableCountries
+                customer: state => state.modApiCustomer.customer,
+                countries: state => state.modApiCustomer.availableCountries
             })
         },
 
         mounted() {
             if(_.isEmpty(this.countries)) {
-                this.$store.dispatch('modApiPayment/getAvailableCountries');
+                this.$store.dispatch('modApiCustomer/getAvailableCountries');
             }
         },
 
@@ -512,7 +512,7 @@
                 };
 
                 // Register new customer
-                this.$store.dispatch('modApiPayment/register', userData).then(() => {
+                this.$store.dispatch('modApiCustomer/register', userData).then(() => {
 
                     let creds = {
                         email: userData.email,
@@ -535,11 +535,11 @@
                     // if double addressbook mode is true store address separately
                     if(this.alternativeShippingAddress) {
                         // Store Address
-                        this.$store.dispatch('modApiPayment/storeCustomerAddress', this.form.addresses[0]).then(() => {
+                        this.$store.dispatch('modApiCustomer/storeCustomerAddress', this.form.addresses[0]).then(() => {
 
                             // Store different shipping address
                             if(this.differentShippingAddress) {
-                                this.$store.dispatch('modApiPayment/storeCustomerAddress', this.form.addresses[1]).then(() => {
+                                this.$store.dispatch('modApiCustomer/storeCustomerAddress', this.form.addresses[1]).then(() => {
                                     this.redirectToCheckout();
                                 }).catch((error) => {
                                     // Show api request error
@@ -587,7 +587,7 @@
                 this.form.baseData.lastname = this.form.addresses[0].payload.lastName;
 
                 // Post request with login credentials
-                this.$store.dispatch('modApiPayment/registerGuest', this.form).then(() => {
+                this.$store.dispatch('modApiCustomer/registerGuest', this.form).then(() => {
                     // If current route is checkout, then do redirect to checkout
                     if(this.$router.history.current.path.includes('/checkout')) {
                         this.$router.push({

@@ -39,7 +39,7 @@
 
         computed: {
             ...mapState({
-                customer: state => state.modApiPayment.customer
+                customer: state => state.modApiCustomer.customer
             }),
         },
 
