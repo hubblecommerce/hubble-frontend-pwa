@@ -5,41 +5,42 @@
 
             <div class="card-media">
                 <img-lazy v-if="!isSlider" :src="routeUrlProductImg" :alt-info="itemData.name" :title-info="itemData.name" :classes="classesImg" />
-                <img v-if="isSlider" :src="routeUrlProductImg" :alt="itemData.name" :title="itemData.name" />
+                <img v-if="isSlider" :src="routeUrlProductImg" :alt="itemData.name" :title="itemData.name">
             </div>
 
             <div class="product-card-info-wrp-link">
                 <div class="product-card-info-wrp">
                     <div v-if="itemData.manufacturer_name !== null" class="manufacturer"
-                         v-text="itemData.manufacturer_name"/>
-                    <div v-if="itemData.name !== null" class="product-name text-small" v-text="itemData.name"/>
+                         v-text="itemData.manufacturer_name"
+                    />
+                    <div v-if="itemData.name !== null" class="product-name text-small" v-text="itemData.name" />
                     <div :class="classesExcl" class="price-box price-excluding-tax product-price">
 
                         <template v-if="itemIsSpecial">
                             <span class="old-price price">
-                                <span v-html="getPriceAndCurrency('display_price_brutto', priceSwitcherIncludeVat)"/>
+                                <span v-html="getPriceAndCurrency('display_price_brutto', priceSwitcherIncludeVat)" />
                             </span>
                             <span class="sale-price grey-label bodytext2">
-                                <span v-html="getPriceAndCurrency('display_price_brutto_special', priceSwitcherIncludeVat)"/>
+                                <span v-html="getPriceAndCurrency('display_price_brutto_special', priceSwitcherIncludeVat)" />
                             </span>
                         </template>
 
                         <template v-else-if="itemHasCheapPrice">
                             <span class="minimal cheapest-label">{{ $t('cheap_price_label') }}</span>
                             <span class="grey-label bodytext2">
-                                <span v-html="getCheapPriceAndCurrency(priceSwitcherIncludeVat)"/>
+                                <span v-html="getCheapPriceAndCurrency(priceSwitcherIncludeVat)" />
                             </span>
                         </template>
 
                         <template v-else>
                             <span class="grey-label bodytext2">
-                                <span v-html="getPriceAndCurrency('display_price_brutto', priceSwitcherIncludeVat)"/>
+                                <span v-html="getPriceAndCurrency('display_price_brutto', priceSwitcherIncludeVat)" />
                             </span>
                         </template>
 
                         <div v-if="itemOrig.final_price_item.priceinfo !== null" class="unit-price-wrp">
-                            <span class="price" v-text="getPriceAndCurrency('priceinfo', false)"/>
-                            <span class="label" v-text="'/l'"/>
+                            <span class="price" v-text="getPriceAndCurrency('priceinfo', false)" />
+                            <span class="label" v-text="'/l'" />
                         </div>
 
                     </div>
@@ -47,19 +48,19 @@
             </div>
 
             <div class="card-expand">
-                <product-listing-card-options-non-interactive :item="itemOrig" :facet-codes="['groesse']"/>
+                <product-listing-card-options-non-interactive :item="itemOrig" :facet-codes="['groesse']" />
             </div>
 
         </a>
 
         <div class="actions">
             <div class="badge-wrp">
-                <div v-if="itemIsSpecial" class="badge sale" v-text="itemDiscountPercent"/>
+                <div v-if="itemIsSpecial" class="badge sale" v-text="itemDiscountPercent" />
                 <div v-if="itemIsNew" class="badge new">
                     {{ $t('New') }}
                 </div>
             </div>
-            <add-to-wishlist :item="itemData"/>
+            <add-to-wishlist :item="itemData" />
         </div>
 
     </div>

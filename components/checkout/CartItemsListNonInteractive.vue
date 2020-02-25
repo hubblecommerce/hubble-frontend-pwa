@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-for="item in cart.items" :key="item.id" v-if="cart.items.length > 0" class="cart-items-list non-interactive item align-items-center">
+        <div v-for="item in cart.items" v-if="cart.items.length > 0" :key="item.id" class="cart-items-list non-interactive item align-items-center">
             <nuxt-link :to="'/'+hasLink(item)">
                 <img v-if="hasImage(item)" :src="itemImgPath(item)" class="product-img" alt="Product Image" :title="item.name" :class="classesImg">
                 <div class="product-info">

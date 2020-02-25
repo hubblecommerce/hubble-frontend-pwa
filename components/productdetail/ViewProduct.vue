@@ -98,7 +98,7 @@
                                     <p v-html="productData.description" />
                                 </div>
                             </client-only>
-                            <div class="description-content" v-if="!productData.description">
+                            <div v-if="!productData.description" class="description-content">
                                 <template v-if="productData.model">
                                     <p v-html="productData.model" />
                                 </template>

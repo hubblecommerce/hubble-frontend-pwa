@@ -3,25 +3,25 @@
         <div role="tablist" class="tabs-component-tabs">
             <div
                 v-for="(tab, i) in tabs"
+                v-show="tab.isVisible"
                 :key="i"
+                ref="tabs"
                 :class="{ 'is-active': tab.isActive, 'is-disabled': tab.isDisabled }"
                 class="tabs-component-tab"
                 role="presentation"
-                v-show="tab.isVisible"
-                ref="tabs"
             >
-                <a v-html="tab.header"
-                    @click="selectTab(tab.hash, $event)"
-                    class="tabs-component-tab-a"
+                <a class="tabs-component-tab-a"
                     role="tab"
-                ></a>
+                    @click="selectTab(tab.hash, $event)"
+                    v-html="tab.header"
+                />
             </div>
             <div>
-                <span class="active-bar" :style="{ width: activeWidth + 'px', left: activePosLeft + 'px' }"></span>
+                <span class="active-bar" :style="{ width: activeWidth + 'px', left: activePosLeft + 'px' }" />
             </div>
         </div>
         <div class="tabs-component-panels">
-            <slot/>
+            <slot />
         </div>
     </div>
 </template>

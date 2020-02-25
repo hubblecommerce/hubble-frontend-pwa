@@ -7,8 +7,8 @@
         >
             <i v-if="childCategory.children.length > 0" class="icon icon-chevron-right" />
             <nuxt-link :to="itemUrlPath(childCategory)" v-text="childCategory.name" />
-            <div v-for="grandChildCategory in childCategory.children" :key="grandChildCategory.id"
-                v-if="childCategory.id === categoryId || isInPath(grandChildCategory.parent_id)"
+            <div v-for="grandChildCategory in childCategory.children" v-if="childCategory.id === categoryId || isInPath(grandChildCategory.parent_id)"
+                :key="grandChildCategory.id"
                 class="level2-category-item"
                 :class="{current: grandChildCategory.id === categoryId}"
             >

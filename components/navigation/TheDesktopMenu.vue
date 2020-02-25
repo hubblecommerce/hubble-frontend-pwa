@@ -2,7 +2,7 @@
     <div class="menu-cpt-wrapper">
         <div class="menu-wrapper-desktop">
             <div class="tree-wrp">
-                <desktop-categories :data-item="rootItem" :depth="0"></desktop-categories>
+                <desktop-categories :data-item="rootItem" :depth="0" />
             </div>
         </div>
     </div>
@@ -18,16 +18,16 @@
             DesktopCategories
         },
 
-        data() {
-            return {
-                showMenu: false,
-            }
-        },
-
         props: {
             dataItems: {
                 type: Array,
                 required: true
+            }
+        },
+
+        data() {
+            return {
+                showMenu: false,
             }
         },
 

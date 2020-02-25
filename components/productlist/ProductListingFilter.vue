@@ -131,10 +131,10 @@
 
         <div class="item-count-wrp text-small">
             <span v-if="dataCategoryProducts.result.stats.total > 1">
-                {{ dataCategoryProducts.result.stats.total }} {{$t('shopping_cart_label_items')}}
+                {{ dataCategoryProducts.result.stats.total }} {{ $t('shopping_cart_label_items') }}
             </span>
             <span v-else>
-                {{ dataCategoryProducts.result.stats.total }} {{$t('shopping_cart_label_item')}}
+                {{ dataCategoryProducts.result.stats.total }} {{ $t('shopping_cart_label_item') }}
             </span>
         </div>
 

@@ -1,13 +1,13 @@
 <template>
   <div class="search-wrapper">
-    <form v-click-outside="clearQuery" id="search_mini_form" action="#">
+    <form id="search_mini_form" v-click-outside="clearQuery" action="#">
       <div class="input-wrp">
         <div class="hbl-input-group">
           <input
             id="autocomplete-search"
             ref="search"
-            :placeholder="$t('Search')"
             v-model="query"
+            :placeholder="$t('Search')"
             :disabled="queryIsDisabled"
             autocomplete="off"
             type="text"
@@ -16,14 +16,14 @@
             @keyup.esc="clearQuery"
             @focus="onFocus"
           >
-          <span class="highlight"/>
+          <span class="highlight" />
           <label class="hidden-link-name" for="autocomplete-search">{{ $t('Search') }}</label>
         </div>
         <button class="button-icon" type="submit" title="Search" @click.prevent="clearQuery">
           <div class="hidden-link-name">Search</div>
-          <i v-if="!focus" class="icon icon-search"/>
-          <i v-if="focus" class="icon icon-close"/>
-          <material-ripple/>
+          <i v-if="!focus" class="icon icon-search" />
+          <i v-if="focus" class="icon icon-close" />
+          <material-ripple />
         </button>
       </div>
 
@@ -33,24 +33,25 @@
             <div v-for="(group, groupIndex) in groupItem.items" id="livesearch-box-wrapper" :key="groupIndex" class="container">
                 <div class="row">
                   <div class="col-6 text-left">
-                    <div class="group-headline" v-html="$t(group.meta.label)+' (' + group.stats.total + ')'"/>
+                    <div class="group-headline" v-html="$t(group.meta.label)+' (' + group.stats.total + ')'" />
                   </div>
                   <div class="col-6 text-right">
-                    <div v-if="group.meta.name === 'catalog_product'" class="show-result-link" @mousedown="doCatalogSearchGrouped(group)" v-text="$t('Show all results')"></div>
+                    <div v-if="group.meta.name === 'catalog_product'" class="show-result-link" @mousedown="doCatalogSearchGrouped(group)" v-text="$t('Show all results')" />
                   </div>
                 </div>
-                <product-listing v-if="group.meta.name === 'catalog_product'" :data-items="group.items"/>
-                <div v-else v-for="(item, itemIndex) in group.items"
+                <product-listing v-if="group.meta.name === 'catalog_product'" :data-items="group.items" />
+                <div v-for="(item, itemIndex) in group.items" v-else
                   :key="itemIndex"
                   class="result-item border-bottom d-flex align-items-center pt-3 pb-3 row"
-                  @mousedown="selectItem(item, group)">
+                  @mousedown="selectItem(item, group)"
+                >
                   <div v-if="item.image" class="col-4">
                     <div class="image-wrapper border">
-                      <img :src="itemImgPath(group, item)" class="img-minicart" >
+                      <img :src="itemImgPath(group, item)" class="img-minicart">
                     </div>
                   </div>
                   <div class="col-8">
-                    <div v-html="highlight(item, 'name')"/>
+                    <div v-html="highlight(item, 'name')" />
                   </div>
                 </div>
             </div>
@@ -64,7 +65,7 @@
             <div class="container">
               <div class="row">
                 <div class="col-12">
-                  <span class="no-results"> {{$t('No search results for:')}} <i>{{ query }}</i></span>
+                  <span class="no-results"> {{ $t('No search results for:') }} <i>{{ query }}</i></span>
                 </div>
               </div>
             </div>

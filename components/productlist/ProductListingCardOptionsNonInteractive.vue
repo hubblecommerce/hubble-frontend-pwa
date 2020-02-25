@@ -1,12 +1,12 @@
 <template>
     <div class="options-wrp-non-interactive">
-        <div v-for="(facet, facetIndex) in facetsShow" :class="'option '+facet.code" :key="facetIndex">
+        <div v-for="(facet, facetIndex) in facetsShow" :key="facetIndex" :class="'option '+facet.code">
             <div v-for="(facetValue, facetValueIndex) in sortByKey(facet.values, 'value_id')"
-                :key="facetValueIndex"
                 v-if="checkStockQty(facetValue)"
+                :key="facetValueIndex"
                 class="option-value"
-                v-text="formatSize(facetValue.value_label)">
-            </div>
+                v-text="formatSize(facetValue.value_label)"
+            />
         </div>
     </div>
 </template>
@@ -29,13 +29,13 @@
                 facetsShow: {}
             }
         },
-        created() {
-            this.aggregateFacets();
-        },
         computed: {
             facetsOrig: function() {
                 return this.item;
             }
+        },
+        created() {
+            this.aggregateFacets();
         },
         methods: {
             checkStockQty(facetValue) {

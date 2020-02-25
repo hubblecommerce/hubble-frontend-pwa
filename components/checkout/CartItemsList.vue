@@ -5,7 +5,7 @@
                 <nuxt-link :to="'/'+item.url_pds" class="col-9">
                     <div class="row align-items-center">
                         <div class="col-4">
-                            <img :src="itemImgPath(item)" class="product-img" alt="Product Image" :title="item.name_orig" :class="classesImg" />
+                            <img :src="itemImgPath(item)" class="product-img" alt="Product Image" :title="item.name_orig" :class="classesImg">
                         </div>
                         <div class="col-8">
                             <div class="container">
@@ -25,7 +25,7 @@
                                         <span class="product-price sale-price" v-html="getPriceAndCurrency(item, 'display_price_brutto_special', priceSwitcherIncludeVat)" />
                                     </template>
                                     <template v-else>
-                                        <span class="product-price sale-price" v-html="getPriceAndCurrency(item, 'display_price_brutto', priceSwitcherIncludeVat)"></span>
+                                        <span class="product-price sale-price" v-html="getPriceAndCurrency(item, 'display_price_brutto', priceSwitcherIncludeVat)" />
                                     </template>
                                 </div>
                             </div>

@@ -48,7 +48,7 @@ export default {
 
 <template>
     <transition :name="transMode">
-        <slot></slot>
+        <slot />
     </transition>
 </template>
 

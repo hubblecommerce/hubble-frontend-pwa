@@ -39,7 +39,7 @@
                 <nuxt />
             </main>
 
-            <div class="footer" v-view.once="onceHandler">
+            <div v-view.once="onceHandler" class="footer">
                 <div class="white-border" />
                 <the-footer-social v-if="inView" />
                 <the-footer-mobile v-if="inView" />
@@ -68,7 +68,7 @@
                 <nuxt />
             </main>
 
-            <div class="footer" v-view.once="onceHandler">
+            <div v-view.once="onceHandler" class="footer">
                 <the-footer-social v-if="inView" />
                 <div class="white-border" />
                 <the-footer-desktop v-if="inView" />

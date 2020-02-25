@@ -1,6 +1,6 @@
 <template>
     <div>
-        <component :is="curComponent" v-if="pageType !== null"></component>
+        <component :is="curComponent" v-if="pageType !== null" />
     </div>
 </template>
 

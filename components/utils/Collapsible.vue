@@ -16,14 +16,14 @@
 
         <template v-if="displayViaIf">
             <transition @before-enter="beforeEnter" @after-enter="afterEnter" @before-leave="beforeLeave">
-                <div ref="collapseContent" v-if="collapse" class="collapse show collapse-item">
+                <div v-if="collapse" ref="collapseContent" class="collapse show collapse-item">
                     <slot />
                 </div>
             </transition>
         </template>
         <template v-else>
             <transition @before-enter="beforeEnter" @after-enter="afterEnter" @before-leave="beforeLeave">
-                <div ref="collapseContent" v-show="collapse" class="collapse show collapse-item">
+                <div v-show="collapse" ref="collapseContent" class="collapse show collapse-item">
                     <slot />
                 </div>
             </transition>

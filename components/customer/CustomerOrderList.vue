@@ -9,7 +9,7 @@
                 <div class="t-col">{{ $t('Status') }}</div>
                 <div class="t-col">{{ $t('Action') }}</div>
             </div>
-            <div v-for="(order, index) in orders" :key="index" v-if="index <= limit && orders.length > 0" class="t-row">
+            <div v-for="(order, index) in orders" v-if="index <= limit && orders.length > 0" :key="index" class="t-row">
                 <div class="t-col" v-text="'000'+order.id" />
                 <div class="t-col" v-text="formatDate(order.createdAt)" />
                 <div class="t-col">

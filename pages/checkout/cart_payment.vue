@@ -4,21 +4,21 @@
             <div class="col-sm-12">
                 <div class="success-wrp md-elevation-2">
                     <transition name="fade">
-                        <div class="content-wrp" v-if="isLoading">
+                        <div v-if="isLoading" class="content-wrp">
                             <div class="status-text">{{ $t('Your order is processing') }}</div>
                             <div class="lds-ring">
-                                <div></div>
-                                <div></div>
-                                <div></div>
-                                <div></div>
+                                <div />
+                                <div />
+                                <div />
+                                <div />
                             </div>
                         </div>
                     </transition>
 
                     <transition name="fade">
-                        <div class="content-wrp" v-if="!isLoading">
+                        <div v-if="!isLoading" class="content-wrp">
                             <div class="status-text">{{ $t('Thank you for shopping!') }}</div>
-                            <i class="icon rct-3x rct-check text-success"></i>
+                            <i class="icon rct-3x rct-check text-success" />
                         </div>
                     </transition>
                 </div>
@@ -57,15 +57,6 @@
             }),
         },
 
-        methods: {
-            showSuccess() {
-                this.$store.dispatch('modCart/clearAll', {})
-                .then(response => {
-                    this.isLoading = false;
-                });
-            }
-        },
-
         created() {
             //
             // => middleware protection required
@@ -81,6 +72,15 @@
             setTimeout(() => {
                 this.showSuccess();
             }, 3000);
+        },
+
+        methods: {
+            showSuccess() {
+                this.$store.dispatch('modCart/clearAll', {})
+                .then(response => {
+                    this.isLoading = false;
+                });
+            }
         }
     }
 </script>

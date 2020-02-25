@@ -1,9 +1,9 @@
 <template>
     <transition name="fade">
-        <button v-if="show" @click="scrollToTop()" class="scroll-to-top">
+        <button v-if="show" class="scroll-to-top" @click="scrollToTop()">
             <div class="hidden-link-name">Scroll to top</div>
-            <i class="icon chevron-up"></i>
-            <material-ripple/>
+            <i class="icon chevron-up" />
+            <material-ripple />
         </button>
     </transition>
 </template>

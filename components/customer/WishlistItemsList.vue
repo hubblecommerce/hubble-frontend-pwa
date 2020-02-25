@@ -4,7 +4,7 @@
             <nuxt-link :to="'/'+item.url_pds" class="col-9">
                 <div class="row align-items-center">
                     <div class="col-4">
-                        <img :src="itemImgPath(item)" alt="Product Image" :title="item.name" :class="classesImg" >
+                        <img :src="itemImgPath(item)" alt="Product Image" :title="item.name" :class="classesImg">
                     </div>
                     <div class="col-8">
                         <div class="container">
@@ -31,10 +31,10 @@
                 <div class="action-top">
                     <div v-if="itemHasOptions(item)">
                         <div v-if="itemIsAvailable(item)" class="remove-item" v-text="$t('Add to Cart')" />
-                        <div v-else v-text="$t('Sold Out')"></div>
+                        <div v-else v-text="$t('Sold Out')" />
                     </div>
                     <nuxt-link v-else :to="'/'+item.url_pds">
-                        <div class="details-item" v-text="$t('details')"></div>
+                        <div class="details-item" v-text="$t('details')" />
                     </nuxt-link>
                 </div>
                 <div class="remove-item" aria-hidden="true" @click="confirmRemoveItem(item)" v-text="$t('Remove')" />

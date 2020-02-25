@@ -1,22 +1,22 @@
 <template>
     <div class="collapse-wrp">
-        <button @click.prevent="collapseContent()" v-bind:class="toggleClass" class="toggle m-0 align-left headline-4">
-            <i v-if="toggleIconClass" v-bind:class="toggleIconClass"></i>
+        <button :class="toggleClass" class="toggle m-0 align-left headline-4" @click.prevent="collapseContent()">
+            <i v-if="toggleIconClass" :class="toggleIconClass" />
             {{ toggleText }}
 
             <transition-rotate-x>
-                <i v-if="!collapsedState" class="icon icon-minus"></i>
+                <i v-if="!collapsedState" class="icon icon-minus" />
             </transition-rotate-x>
 
             <transition-rotate-x>
-                <i v-if="collapsedState" class="icon icon-plus"></i>
+                <i v-if="collapsedState" class="icon icon-plus" />
             </transition-rotate-x>
 
-            <material-ripple></material-ripple>
+            <material-ripple />
         </button>
         <transition @before-enter="beforeEnter" @after-enter="afterEnter" @before-leave="beforeLeave">
-            <div ref="collapseContent" v-if="!collapsedState" class="collapse show collapse-item">
-                <slot></slot>
+            <div v-if="!collapsedState" ref="collapseContent" class="collapse show collapse-item">
+                <slot />
             </div>
         </transition>
     </div>

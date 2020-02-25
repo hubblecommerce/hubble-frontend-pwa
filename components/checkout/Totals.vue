@@ -1,21 +1,21 @@
 <template>
     <div>
         <div class="summary-row sub-totals bg-light">
-            <div>{{$t('Subtotal')}}</div>
+            <div>{{ $t('Subtotal') }}</div>
             <div>
-                <span class="float-right" v-html="getSubTotal()"></span>
+                <span class="float-right" v-html="getSubTotal()" />
             </div>
         </div>
         <div class="summary-row shipping-costs bg-light">
-            <div>{{$t('Shipping Costs')}}</div>
+            <div>{{ $t('Shipping Costs') }}</div>
             <div>
-                <span class="float-right" v-html="getShippingCosts()"></span>
+                <span class="float-right" v-html="getShippingCosts()" />
             </div>
         </div>
         <div class="summary-row totals bg-light">
-            <div>{{$t('Totals')}}</div>
+            <div>{{ $t('Totals') }}</div>
             <div>
-                <span class="float-right" v-html="getTotal()"></span>
+                <span class="float-right" v-html="getTotal()" />
             </div>
         </div>
     </div>

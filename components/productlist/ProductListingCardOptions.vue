@@ -1,8 +1,8 @@
 <template>
     <div>
         <div class="options-wrp">
-            <div class="option-wrp color" v-for="(facet, index) in facetsAvail" :key="index" :updating="isUpdating">
-                <div class="option-label" v-text="facet['facet-name']"></div>
+            <div v-for="(facet, index) in facetsAvail" :key="index" class="option-wrp color" :updating="isUpdating">
+                <div class="option-label" v-text="facet['facet-name']" />
                 <div class="option-val-wrp">
                     <div v-for="(facetValue, vIndex) in facet['facet-values']"
                         :key="vIndex"
@@ -10,11 +10,13 @@
                         :class="[facetValue.selected ? 'active' : '', 'not-active']"
                         @click="selectFacetOption(facet, facetValue)"
                         @mouseover="activeIndex = vIndex"
-                        @mouseleave="activeIndex = null">
-                        <div class="swatchable" v-html="getSwatchable(facetValue)"></div>
-                        <div class="option-tooltip"
-                            v-if="activeIndex === vIndex"
-                            v-text="getFacetOptionLabel(facet, facetValue)"></div>
+                        @mouseleave="activeIndex = null"
+                    >
+                        <div class="swatchable" v-html="getSwatchable(facetValue)" />
+                        <div v-if="activeIndex === vIndex"
+                            class="option-tooltip"
+                            v-text="getFacetOptionLabel(facet, facetValue)"
+                        />
                     </div>
                 </div>
             </div>
@@ -26,6 +28,13 @@
     //
     export default {
         name: "ProductListingCardOptions",
+
+        props: {
+            item: {
+                type: Object,
+                required: true
+            }
+        },
 
         data() {
             return {
@@ -79,13 +88,6 @@
                 //     }
                 // },
                 // selected: undefined
-            }
-        },
-
-        props: {
-            item: {
-                type: Object,
-                required: true
             }
         },
 

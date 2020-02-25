@@ -1,8 +1,8 @@
 <template>
     <div :class="hasItemsInWishlist" class="wishlist-cpt-wrp">
         <button class="button-icon wishlist-icon" :class="setButtonStates" @click="toggle()">
-            <i class="icon icon-heart" aria-hidden="true" /> <span
-            class="hidden-link-name">Toggle Wishlist</span>
+            <i class="icon icon-heart" aria-hidden="true" />
+            <span class="hidden-link-name">Toggle Wishlist</span>
             <material-ripple />
             <client-only>
                 <div v-if="wishlistItemsQtyAndLabel" class="item-count" v-text="wishlistItemsQtyAndLabel" />

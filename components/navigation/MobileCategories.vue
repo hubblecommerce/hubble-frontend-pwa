@@ -2,56 +2,54 @@
     <transition name="slide-in">
         <div class="tree-menu w-100 bg-white">
             <div class="back-tigger">
-                <button class="button-icon" v-if="depth > 1" @click="closeSubcategory">
-                    <i class="icon icon-chevron-left"></i>
+                <button v-if="depth > 1" class="button-icon" @click="closeSubcategory">
+                    <i class="icon icon-chevron-left" />
                     <span class="hidden-link-name">{{ $t('Back') }}</span>
-                    <material-ripple></material-ripple>
+                    <material-ripple />
                 </button>
             </div>
 
-            <nuxt-link :to="parentUrlPath" v-if="firstItem && $parent.dataItem.url_path">
+            <nuxt-link v-if="firstItem && $parent.dataItem.url_path" :to="parentUrlPath">
                 <button class="button-primary parent-link m-0 w-100">
                     <span v-if="$mq === 'sm'">{{ $t('Show parent', {parent: parentName}) }} </span>
                     <span v-if="$mq === 'md'">{{ $t('Show all parent', {parent: parentName}) }}</span>
-                    <material-ripple></material-ripple>
+                    <material-ripple />
                 </button>
             </nuxt-link>
 
-            <nuxt-link :to="itemUrlPath" v-if="!hasChildren && dataItem.name">
+            <nuxt-link v-if="!hasChildren && dataItem.name" :to="itemUrlPath">
                 <div v-if="depth !== 0" class="trigger bg-white m-0 w-100 d-flex justify-content-between align-items-center border-bottom">
                     {{ dataItem.name }}
                 </div>
             </nuxt-link>
 
-            <nuxt-link :to="manufacturerUrlPath" v-if="!hasChildren && dataItem.manufacturer_name">
+            <nuxt-link v-if="!hasChildren && dataItem.manufacturer_name" :to="manufacturerUrlPath">
                 <div v-if="depth !== 0" class="trigger bg-white m-0 w-100 d-flex justify-content-between align-items-center border-bottom">
                     {{ dataItem.manufacturer_name }}
                 </div>
             </nuxt-link>
 
-            <div v-if="depth !== 0 && hasChildren" @click="toggleChildren(dataItem)" class="trigger bg-white p-3 m-0 w-100 d-flex justify-content-between align-items-center border-bottom">
-                {{ dataItem.name }} <i class="icon icon-chevron-right"></i>
+            <div v-if="depth !== 0 && hasChildren" class="trigger bg-white p-3 m-0 w-100 d-flex justify-content-between align-items-center border-bottom" @click="toggleChildren(dataItem)">
+                {{ dataItem.name }} <i class="icon icon-chevron-right" />
             </div>
             <transition name="slide-in">
-                <div class="sub-categories" v-if="showChildren || depth === 0 || isInCurrentCategoryPath">
+                <div v-if="showChildren || depth === 0 || isInCurrentCategoryPath" class="sub-categories">
 
                     <mobile-categories
                         v-for="(node,index) of dataItem.children"
+                        :key="node.id"
                         :data-item="node"
                         :depth="depth + 1"
-                        :key="node.id"
-                        :firstItem="index === 0"
-                    >
-                    </mobile-categories>
+                        :first-item="index === 0"
+                    />
 
                     <mobile-categories
                         v-for="(node,index) of dataItem.menu_items"
+                        :key="node.id"
                         :data-item="node"
                         :depth="depth + 1"
-                        :key="node.id"
-                        :firstItem="index === 0"
-                    >
-                    </mobile-categories>
+                        :first-item="index === 0"
+                    />
                 </div>
             </transition>
         </div>

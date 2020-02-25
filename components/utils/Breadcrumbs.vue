@@ -4,7 +4,7 @@
             <li class="breadcrumb-item">
                 <nuxt-link to="/" title="Back to Home">Home</nuxt-link>
             </li>
-            <li class="breadcrumb-item" v-for="(element, index) in path" :key="index">
+            <li v-for="(element, index) in path" :key="index" class="breadcrumb-item">
                 <nuxt-link :to="'/'+element.url">
                     <span itemprop="title">{{ element.name }}</span>
                 </nuxt-link>

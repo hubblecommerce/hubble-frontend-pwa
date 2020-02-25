@@ -30,7 +30,7 @@
             <div class="variants-wrp">
                 <div v-if="attributeName" class="variant-label headline-4">
                     {{ attributeName }} {{ $t('select') }}:
-                    <span class="selected-variant" v-text="showSelectedOption"></span>
+                    <span class="selected-variant" v-text="showSelectedOption" />
                 </div>
 
                 <ul class="variant-list">

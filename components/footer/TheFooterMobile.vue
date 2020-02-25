@@ -4,29 +4,29 @@
             <collapsible :toggle-text="$t('Service')">
                 <div class="content-wrp">
                     <div class="links">
-                        <a href="https://www.hubblecommerce.io/">{{$t('About us')}}</a>
-                        <a href="https://www.hubblecommerce.io/performance">{{$t('Performance')}}</a>
-                        <a href="https://www.hubblecommerce.io/progressive-web-app">{{$t('PWA')}}</a>
-                        <a href="https://www.hubblecommerce.io/developer-experience">{{$t('Developer Experience')}}</a>
+                        <a href="https://www.hubblecommerce.io/">{{ $t('About us') }}</a>
+                        <a href="https://www.hubblecommerce.io/performance">{{ $t('Performance') }}</a>
+                        <a href="https://www.hubblecommerce.io/progressive-web-app">{{ $t('PWA') }}</a>
+                        <a href="https://www.hubblecommerce.io/developer-experience">{{ $t('Developer Experience') }}</a>
                     </div>
                 </div>
             </collapsible>
             <collapsible :toggle-text="$t('Information')">
                 <div class="content-wrp">
                     <div class="links">
-                        <a href="https://www.hubblecommerce.io/impressum">{{$t('Imprint')}}</a>
-                        <a href="https://www.hubblecommerce.io/datenschutz">{{$t('Privacy and Cookie Policy')}}</a>
-                        <a href="https://www.hubblecommerce.io/blog">{{$t('Blog')}}</a>
-                        <a href="https://www.hubblecommerce.io/kontakt">{{$t('Contact us')}}</a>
+                        <a href="https://www.hubblecommerce.io/impressum">{{ $t('Imprint') }}</a>
+                        <a href="https://www.hubblecommerce.io/datenschutz">{{ $t('Privacy and Cookie Policy') }}</a>
+                        <a href="https://www.hubblecommerce.io/blog">{{ $t('Blog') }}</a>
+                        <a href="https://www.hubblecommerce.io/kontakt">{{ $t('Contact us') }}</a>
                     </div>
                 </div>
             </collapsible>
             <collapsible :toggle-text="$t('Shipping methods')">
                 <div class="content-wrp">
                     <a href="#" class="logos">
-                        <span class="hidden-link-name">{{$t('Shipping methods')}}</span>
-                        <img alt="DHL" src="~/assets/images/shipping/dhl_200x120.png" />
-                        <img alt="GLS" src="~/assets/images/shipping/gls_200x120.png" />
+                        <span class="hidden-link-name">{{ $t('Shipping methods') }}</span>
+                        <img alt="DHL" src="~/assets/images/shipping/dhl_200x120.png">
+                        <img alt="GLS" src="~/assets/images/shipping/gls_200x120.png">
                     </a>
                 </div>
             </collapsible>

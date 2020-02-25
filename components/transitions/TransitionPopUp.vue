@@ -1,6 +1,6 @@
 <template>
     <transition name="popup">
-        <slot></slot>
+        <slot />
     </transition>
 </template>
 

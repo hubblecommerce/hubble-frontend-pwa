@@ -2,13 +2,32 @@
     <div
         class="material-ripple__component"
         :class="computedClasses"
-        :style="computedStyles">
-    </div>
+        :style="computedStyles"
+    />
 </template>
 
 <script>
     export default {
-        name: 'material-ripple',
+        name: 'MaterialRipple',
+        props: {
+            center: {
+                type: Boolean,
+                default: false
+            },
+            size: {
+                type: Number,
+                default: null
+            }
+        },
+        data () {
+            return {
+                isAnimated: false,
+                width: 0,
+                height: 0,
+                top: 0,
+                left: 0
+            }
+        },
         computed: {
             computedClasses () {
                 return {
@@ -22,25 +41,6 @@
                     width: this.width + 'px',
                     height: this.height + 'px'
                 }
-            }
-        },
-        data () {
-            return {
-                isAnimated: false,
-                width: 0,
-                height: 0,
-                top: 0,
-                left: 0
-            }
-        },
-        props: {
-            center: {
-                type: Boolean,
-                default: false
-            },
-            size: {
-                type: Number,
-                default: null
             }
         },
         mounted () {

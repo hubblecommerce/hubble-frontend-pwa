@@ -1,6 +1,6 @@
 <template>
     <transition name="rotateX" mode="out-in">
-        <slot></slot>
+        <slot />
     </transition>
 </template>
 

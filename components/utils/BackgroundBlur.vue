@@ -1,6 +1,6 @@
 <template>
     <transition name="fade-background">
-        <div v-if="layerIsExpanded" class="background-blur" @click="hideMenu()"></div>
+        <div v-if="layerIsExpanded" class="background-blur" @click="hideMenu()" />
     </transition>
 </template>
 

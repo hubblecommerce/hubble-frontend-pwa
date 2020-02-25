@@ -1,8 +1,8 @@
 <template>
         <section v-if="isActive"
+            :id="computedId"
             :aria-hidden="! isActive"
             class="tabs-component-panel"
-            :id="computedId"
             role="tabpanel"
         >
             <slot />
