@@ -11,10 +11,6 @@ Middleware.apiResourceRequest = function ({ isHMR, store, route, error }) {
         return;
     }
 
-    if(process.env.API_TYPE === 'sw') {
-        return;
-    }
-
     // skip, if page type is not 'category'
     if(store.state.modApiResources.pageType !== 'category') {
         // console.log("middleware api-resource-request NOT running for pageType %s", store.state.modApiResources.pageType);

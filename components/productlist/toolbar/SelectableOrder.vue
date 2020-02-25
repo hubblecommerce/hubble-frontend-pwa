@@ -31,8 +31,10 @@ export default {
     },
 
     created() {
-        if(this.$route.query.order) {
-            this.modelSelected = this.$route.query.order;
+        if(this.$route.query.sort) {
+            this.modelSelected = this.$route.query.sort;
+        } else {
+            this.modelSelected = _.find(process.env.sorter, (o) => { return o.selected === true; }).option_id;
         }
     },
 

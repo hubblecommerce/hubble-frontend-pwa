@@ -10,23 +10,23 @@ module.exports = {
             APP_BASE_URL: process.env.NODE_ENV === 'production' ? process.env.APP_BASE_URL : 'http://localhost/',
             IMG_BASE_URL: process.env.IMG_BASE_URL
         },
-        limiter_default: '20',
+        limiter_default: '10', // Only these limits are allowed in SW6: 1, 5, 9, 10, 25, 50, 75, 100, 500
         limiter: [
             {
-                'limit': '20',
-                'label': '20'
+                'limit': '5',
+                'label': '5'
             },
             {
-                'limit': '40',
-                'label': '40'
+                'limit': '10',
+                'label': '10'
             },
             {
-                'limit': '80',
-                'label': '80'
+                'limit': '25',
+                'label': '25'
             },
             {
-                'limit': '120',
-                'label': '120'
+                'limit': '50',
+                'label': '50'
             },
             {
                 'limit': '500',
@@ -35,26 +35,16 @@ module.exports = {
         ],
         sorter: [
             {
-                'order': 'default',
-                'label': 'Relevance',
-                'selected': false,
-                'option_id': 0
-            },
-            {
                 'order': 'price',
                 'label': 'price_asc',
-                'selected': false,
-                'option_id': 3
-            },
-            {
-                'order': 'price',
-                'label': 'price_desc',
-                'selected': false,
-                'option_id': 4
+                'direction': 'asc',
+                'selected': true,
+                'option_id': 0
             },
             {
                 'order': 'name',
                 'label': 'name_asc',
+                'direction': 'asc',
                 'selected': false,
                 'option_id': 1
             },

@@ -47,6 +47,8 @@ export default {
     created() {
         if(this.$route.query.limit) {
             this.modelSelected = this.$route.query.limit;
+        } else {
+            this.modelSelected = process.env.limiter_default;
         }
     }
 }

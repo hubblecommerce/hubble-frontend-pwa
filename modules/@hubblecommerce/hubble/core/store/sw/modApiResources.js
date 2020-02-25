@@ -41,6 +41,30 @@ export default function (ctx) {
             dataCategory: {},
             dataCategoryProducts: {},
             selectedVariants: [],
+            apiRequestBody: {
+                limit: process.env.limiter_default,
+                page: 1,
+                filter: [
+                    {
+                        type: 'equals',
+                        field: 'active',
+                        value: true
+                    },
+                    {
+                        type: 'range',
+                        field: 'stock',
+                        parameters: {
+                            gt: 0
+                        }
+                    }
+                ],
+                sort: [
+                    {
+                        field: 'price',
+                        direction: 'asc'
+                    }
+                ]
+            },
 
             // CMS
             dataContent: {},
@@ -194,6 +218,23 @@ export default function (ctx) {
                     state.dataProductUrls.expires_at_unixtime = datetimeUnixNowAddSecs(_ttl);
                 }
             },
+            addFilter: (state, payload) => {
+                state.apiRequestBody.filter.push(payload);
+            },
+            setLimit: (state, payload) => {
+                state.apiRequestBody.limit = payload;
+            },
+            setPage: (state, payload) => {
+                state.apiRequestBody.page = payload;
+            },
+            setSorting: (state, payload) => {
+                let sort = _.find(process.env.sorter, { 'option_id': parseInt(payload) });
+
+                state.apiRequestBody.sort = [{
+                    field: sort.order,
+                    direction: sort.direction
+                }];
+            }
         },
         getters:  {
             getApiLocale: state => {
@@ -344,7 +385,7 @@ export default function (ctx) {
 
                     // MAPPING
                     let mapped = [];
-                    _.forEach(payload, (product) => {
+                    _.forEach(payload.data, (product) => {
 
                         let obj = {};
 
@@ -391,7 +432,7 @@ export default function (ctx) {
                     let obj = {
                         items: mapped,
                         stats: {
-                            total: mapped.length
+                            total: payload.total
                         }
                     };
 
@@ -556,6 +597,46 @@ export default function (ctx) {
 
                 });
             },
+            async setApiRequestFilter({commit, state, dispatch}, payload) {
+                return new Promise(function(resolve, reject) {
+                    commit('addFilter', payload);
+                    resolve();
+                });
+            },
+            async swGetProducts({commit, state, dispatch}, payload) {
+                // console.log("store apiGetMenu called! payload: %o", payload);
+
+                return new Promise(function(resolve, reject) {
+
+                    let _endpoint = '/sales-channel-api/v1/product';
+
+                    dispatch('apiCall', {
+                        action: 'post',
+                        tokenType: 'sw',
+                        apiType: 'data',
+                        endpoint: _endpoint,
+                        data: state.apiRequestBody
+                    }, { root: true })
+                        .then(response => {
+
+                            dispatch('mappingCategoryProducts', response.data).then((res) => {
+                                commit('setDataCategoryProducts', {
+                                    data: {
+                                        result: res
+                                    }
+                                });
+
+                                resolve();
+                            });
+
+                        })
+                        .catch(response => {
+                            console.log("API get request failed: %o", response);
+                            reject('API request failed!');
+                        });
+
+                });
+            },
             async swGetCategoryProductsById({commit, state, dispatch}, payload) {
                 // console.log("store apiGetMenu called! payload: %o", payload);
 
@@ -616,14 +697,6 @@ export default function (ctx) {
                                         result: {
                                             item: res
                                         }
-                                    }
-                                });
-                            });
-
-                            dispatch('mappingCategoryProducts', response.data.data.products).then((res) => {
-                                commit('setDataCategoryProducts', {
-                                    data: {
-                                        result: res
                                     }
                                 });
                             });
