@@ -8,8 +8,6 @@ import base64 from "base-64";
  *
  */
 export default function (ctx) {
-
-    // Create vuex store module
     const modApiCustomer = {
         namespaced: true,
         state: () => ({
@@ -17,7 +15,6 @@ export default function (ctx) {
             apiAuthResponse: {},
             apiAuthToken: null,
 
-            // Customer
             customer: {
                 customerAuth: {},
                 customerData: {},
@@ -103,7 +100,5 @@ export default function (ctx) {
             },
         }
     };
-
-    // Register vuex store module
     ctx.store.registerModule('modApiCustomer', modApiCustomer);
 }

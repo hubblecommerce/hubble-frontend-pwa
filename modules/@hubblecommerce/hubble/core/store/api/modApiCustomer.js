@@ -8,8 +8,6 @@ import base64 from "base-64";
  *
  */
 export default function (ctx) {
-
-    // Create vuex store module
     const modApiCustomer = {
         namespaced: true,
         state: () => ({
@@ -17,7 +15,6 @@ export default function (ctx) {
             apiAuthResponse: {},
             apiAuthToken: null,
 
-            // Customer
             customer: {
                 customerAuth: {},
                 customerData: {},
@@ -26,7 +23,7 @@ export default function (ctx) {
                 shippingAddress: {}
             },
 
-            // availableCountries
+
             availableCountries: [],
 
             // Cookie
@@ -132,13 +129,13 @@ export default function (ctx) {
                         commit('clearCustomerData');
 
                         // Clear order Data
-                        commit('setChosenPaymentMethod', {});
-                        commit('setChosenShippingMethod', {});
+                        commit('modApiPayment/setChosenPaymentMethod', {}, {root: true});
+                        commit('modApiPayment/setChosenShippingMethod', {}, {root: true});
 
                         // Remove cookies
                         this.$cookies.remove(state.cookieName);
                         this.$cookies.remove(state.cookieNameOrder);
-                        this.$cookies.remove(state.cookieNameAddress);
+
 
                         // Save response to store
                         commit('setCustomerAuth', response.data.auth);
@@ -170,14 +167,13 @@ export default function (ctx) {
                         // Clear customer data
                         commit('clearCustomerData');
 
-                        // Clear order data
-                        commit('setChosenPaymentMethod', {});
-                        commit('setChosenShippingMethod', {});
+                        // Clear order Data
+                        commit('modApiPayment/setChosenPaymentMethod', {}, {root: true});
+                        commit('modApiPayment/setChosenShippingMethod', {}, {root: true});
 
                         // Remove cookies
                         this.$cookies.remove(state.cookieName);
                         this.$cookies.remove(state.cookieNameOrder);
-                        this.$cookies.remove(state.cookieNameAddress);
 
                         resolve('OK');
                     })
@@ -201,13 +197,13 @@ export default function (ctx) {
                         commit('clearCustomerData');
 
                         // Clear order Data
-                        commit('setChosenPaymentMethod', {});
-                        commit('setChosenShippingMethod', {});
+                        commit('modApiPayment/setChosenPaymentMethod', {}, {root: true});
+                        commit('modApiPayment/setChosenShippingMethod', {}, {root: true});
+
 
                         // Remove cookies
                         this.$cookies.remove(state.cookieName);
                         this.$cookies.remove(state.cookieNameOrder);
-                        this.$cookies.remove(state.cookieNameAddress);
 
                         // Save response to store
                         commit('setCustomerAuth', response.data.auth);
@@ -234,13 +230,12 @@ export default function (ctx) {
                     commit('clearCustomerData');
 
                     // Clear order Data
-                    commit('setChosenPaymentMethod', {});
-                    commit('setChosenShippingMethod', {});
+                    commit('modApiPayment/setChosenPaymentMethod', {}, {root: true});
+                    commit('modApiPayment/setChosenShippingMethod', {}, {root: true});
 
                     // Remove cookies
                     this.$cookies.remove(state.cookieName);
                     this.$cookies.remove(state.cookieNameOrder);
-                    this.$cookies.remove(state.cookieNameAddress);
 
                     let guestAuthData = {
                         created_at: getters.getCurrentDate,
@@ -409,58 +404,6 @@ export default function (ctx) {
                     }
                 })
             },
-            async setAddressByCookie({commit, state, getters}) {
-                return new Promise((resolve, reject) => {
-                    // try to retrieve address data by cookie
-                    let cookie = this.$cookies.get(state.cookieNameAddress);
-
-                    // no cookie? ok!
-                    if(! cookie) {
-                        resolve({
-                            success: false,
-                            message: 'adress not known by cookie.'
-                        });
-                    } else {
-                        let cookieAddresses = getters.getJsonDecoded(cookie);
-                        let billingAddress = cookieAddresses.billingAddress;
-                        let shippingAddress = cookieAddresses.shippingAddress;
-
-                        // Save addresses from cookie to store
-                        commit('setBillingAddress', billingAddress);
-                        commit('setShippingAddress', shippingAddress);
-
-                        // reset address cookie lifetime
-                        this.$cookies.set(state.cookieNameAddress, getters.getJsonEncoded({
-                            billingAddress: billingAddress,
-                            shippingAddress: shippingAddress
-                        }) , {
-                            path: state.addressCookiePath,
-                            expires: new Date(new Date().getTime() + state.addressCookieTTL * 60 * 1000)
-                        });
-
-                        resolve({
-                            success: true,
-                            message: 'order taken from cookie.',
-                        });
-                    }
-                })
-            },
-            async setAddressCookie({commit, state, getters}, payload) {
-                return new Promise((resolve, reject) => {
-
-                    // set address cookie
-                    this.$cookies.set(state.cookieNameAddress, getters.getJsonEncoded(payload) , {
-                        path: state.addressCookiePath,
-                        expires: new Date(new Date().getTime() + state.addressCookieTTL * 60 * 1000)
-                    });
-
-                    // Save addresses from cookie to store
-                    commit('setBillingAddress', payload.billingAddress);
-                    commit('setShippingAddress', payload.shippingAddress);
-
-                    resolve();
-                })
-            },
             async passwordForgot({dispatch}, payload) {
                 return new Promise((resolve, reject)  => {
                     dispatch('apiCall', {
@@ -519,7 +462,5 @@ export default function (ctx) {
             }
         }
     };
-
-    // Register vuex store module
     ctx.store.registerModule('modApiCustomer', modApiCustomer);
 }
