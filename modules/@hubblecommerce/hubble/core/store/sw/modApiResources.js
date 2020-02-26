@@ -63,7 +63,12 @@ export default function (ctx) {
                         field: 'price',
                         direction: 'asc'
                     }
-                ]
+                ],
+                associations: {
+                    manufacturer: {},
+                    media: {},
+                    cover: {}
+                }
             },
 
             // CMS
@@ -231,6 +236,9 @@ export default function (ctx) {
             setPage: (state, payload) => {
                 state.apiRequestBody.page = payload;
             },
+            setTerm: (state, payload) => {
+                state.apiRequestBody.term = payload;
+            },
             setSorting: (state, payload) => {
                 let sort = _.find(process.env.sorter, { 'option_id': parseInt(payload) });
                 let direction;
@@ -395,7 +403,7 @@ export default function (ctx) {
 
                     // MAPPING
                     let mapped = [];
-                    _.forEach(payload, (product) => {
+                    _.forEach(payload.data, (product) => {
 
                         let obj = {};
 
@@ -613,7 +621,7 @@ export default function (ctx) {
                     resolve();
                 });
             },
-            async swGetProducts({commit, state, dispatch}, payload) {
+            async swGetProducts({commit, state, dispatch, rootState}, payload) {
                 // console.log("store apiGetMenu called! payload: %o", payload);
 
                 return new Promise(function(resolve, reject) {
@@ -629,14 +637,34 @@ export default function (ctx) {
                     }, { root: true })
                         .then(response => {
 
+                            console.log(response)
+
                             dispatch('mappingCategoryProducts', response.data).then((res) => {
-                                commit('setDataCategoryProducts', {
-                                    data: {
-                                        result: res
-                                    }
+
+                                // Get all product urls to find urls of search result products
+                                dispatch('modApiResources/swGetProductUrls',{}, {root:true}).then(() => {
+
+                                    _.forEach(res.items, (item, key) => {
+
+                                        let matchingProduct = _.find(rootState.modApiResources.dataProductUrls, function(o) {
+                                            return o.foreignKey === item.id;
+                                        });
+
+                                        // Set urls of matches
+                                        res.items[key].url_pds = matchingProduct.seoPathInfo;
+
+                                        commit('setDataCategoryProducts', {
+                                            data: {
+                                                result: res
+                                            }
+                                        });
+
+                                        resolve();
+
+                                    });
+
                                 });
 
-                                resolve();
                             });
 
                         })
@@ -666,7 +694,7 @@ export default function (ctx) {
                         endpoint: _endpoint
                     }, { root: true })
                         .then(response => {
-                            dispatch('mappingCategoryProducts', response.data.data.products).then((res) => {
+                            dispatch('mappingCategoryProducts', {data: response.data.data.products}).then((res) => {
                                 resolve({
                                     data: {
                                         result: res
@@ -761,17 +789,14 @@ export default function (ctx) {
 
                 return new Promise(function(resolve, reject) {
 
-                    let _endpoint = `/sales-channel-api/v1/product?&associations[manufacturer][]`;
+                    let _endpoint = '/sales-channel-api/v1/product';
 
                     dispatch('apiCall', {
-                        action: 'get',
+                        action: 'post',
                         tokenType: 'sw',
                         apiType: 'data',
                         endpoint: _endpoint,
-                        params: {
-                            term: payload.query,
-                            limit: 500
-                        }
+                        data: state.apiRequestBody
                     }, { root: true })
                         .then(response => {
 
@@ -779,8 +804,7 @@ export default function (ctx) {
                                 resolve('OK');
                             }
                             // map product data
-                            dispatch('modApiResources/mappingCategoryProducts', response.data.data, {root:true})
-                                .then((res) => {
+                            dispatch('mappingCategoryProducts', response.data).then((res) => {
 
                                     // Get all product urls to find urls of search result products
                                     dispatch('modApiResources/swGetProductUrls',{}, {root:true}).then(() => {

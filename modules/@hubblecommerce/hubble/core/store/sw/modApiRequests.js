@@ -217,8 +217,6 @@ export default function (ctx) {
             parseRequest({ commit, state, dispatch, rootState, rootGetters }, payload) {
                 // console.log("store parseRequest called! payload: %o", payload);
 
-                return;
-
                 let _query = payload.query;
 
                 // If page is set in url set pagination page to query otherwise set to page 1
@@ -230,36 +228,21 @@ export default function (ctx) {
 
                 let _items = rootGetters['modApiResources/getDataCategoryProducts'];
 
-
                 return new Promise((resolve, reject) => {
 
-                    let _outerReject = reject;
-                    let _outerResolve = resolve;
-
                     // initialize nested properties of
-                    // possibly selected facets and set
-                    // to their query param value (or null)
-                    dispatch('parseRequestFacets', {
-                        propertyName: 'selectedFacets',
-                        propertyFacets: _items.result.facets,
+                    // well known and possibly selected
+                    // query parameters and set them to
+                    // their query param value (or null)
+                    dispatch('parseRequestQuery', {
                         query: _query
                     })
-                        .then(response => {
-
-                            // initialize nested properties of
-                            // well known and possibly selected
-                            // query parameters and set them to
-                            // their query param value (or null)
-                            dispatch('parseRequestQuery', {
-                                query: _query
-                            })
-                                .then(response => {
-                                    _outerResolve(response);
-                                })
-                                .catch(response => {
-                                    _outerReject(response);
-                                })
-                        })
+                    .then(response => {
+                        resolve(response);
+                    })
+                    .catch(response => {
+                        reject(response);
+                    })
                 });
             },
             parseRequestFacets({ commit, state }, payload) {
