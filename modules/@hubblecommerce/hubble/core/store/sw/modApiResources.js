@@ -218,7 +218,11 @@ export default function (ctx) {
                     state.dataProductUrls.expires_at_unixtime = datetimeUnixNowAddSecs(_ttl);
                 }
             },
-            addFilter: (state, payload) => {
+            setFilter: (state, payload) => {
+                _.remove(state.apiRequestBody.filter, function (o) {
+                    // remove by field
+                    return o.field === payload.field;
+                });
                 state.apiRequestBody.filter.push(payload);
             },
             setLimit: (state, payload) => {
@@ -391,7 +395,7 @@ export default function (ctx) {
 
                     // MAPPING
                     let mapped = [];
-                    _.forEach(payload.data, (product) => {
+                    _.forEach(payload, (product) => {
 
                         let obj = {};
 
@@ -605,7 +609,7 @@ export default function (ctx) {
             },
             async setApiRequestFilter({commit, state, dispatch}, payload) {
                 return new Promise(function(resolve, reject) {
-                    commit('addFilter', payload);
+                    commit('setFilter', payload);
                     resolve();
                 });
             },
@@ -683,11 +687,7 @@ export default function (ctx) {
                 return new Promise(function(resolve, reject) {
 
                     let _endpoint = '/sales-channel-api/v1/category/'+payload+
-                        '?associations[products][associations][seoUrls][]' +
-                        '&associations[products][associations][manufacturer][]' +
-                        '&associations[products][associations][options][]' +
-                        '&associations[products][associations][cover][]' +
-                        '&associations[media][]';
+                        '?associations[media][]';
 
                     dispatch('apiCall', {
                         action: 'get',
@@ -726,7 +726,6 @@ export default function (ctx) {
                         state.productId,
                         '?associations[manufacturer][associations][media][]',
                         '&associations[seoUrls][]',
-                        //'&associations[crossSellings][associations][product][]',
                         '&associations[media][]'
                     ], '');
 

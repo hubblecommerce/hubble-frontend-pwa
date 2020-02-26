@@ -217,6 +217,8 @@ export default function (ctx) {
             parseRequest({ commit, state, dispatch, rootState, rootGetters }, payload) {
                 // console.log("store parseRequest called! payload: %o", payload);
 
+                return;
+
                 let _query = payload.query;
 
                 // If page is set in url set pagination page to query otherwise set to page 1
@@ -228,7 +230,6 @@ export default function (ctx) {
 
                 let _items = rootGetters['modApiResources/getDataCategoryProducts'];
 
-                return;
 
                 return new Promise((resolve, reject) => {
 

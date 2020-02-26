@@ -13,10 +13,6 @@ module.exports = {
         limiter_default: '10', // Only these limits are allowed in SW6: 1, 5, 9, 10, 25, 50, 75, 100, 500
         limiter: [
             {
-                'limit': '5',
-                'label': '5'
-            },
-            {
                 'limit': '10',
                 'label': '10'
             },
