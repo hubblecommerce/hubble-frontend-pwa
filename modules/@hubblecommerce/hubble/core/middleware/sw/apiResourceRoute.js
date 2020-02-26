@@ -51,8 +51,8 @@ Middleware.apiResourceRoute = function({app, store, route, error}) {
 
                 // Filter by category id
                 store.dispatch('modApiResources/setApiRequestFilter', {
-                    type: 'contains',
-                    field: 'categoryTree',
+                    type: 'equals',
+                    field: 'product.categoriesRo.id',
                     value: matchingCategory.id
                 }).then(() => {
                     // Get products

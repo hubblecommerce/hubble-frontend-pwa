@@ -229,11 +229,17 @@ export default function (ctx) {
             },
             setSorting: (state, payload) => {
                 let sort = _.find(process.env.sorter, { 'option_id': parseInt(payload) });
+                let direction;
 
-                state.apiRequestBody.sort = [{
-                    field: sort.order,
-                    direction: sort.direction
-                }];
+                if(sort.direction === 'asc') {
+                    direction = '';
+                }
+
+                if(sort.direction === 'desc') {
+                    direction = '-';
+                }
+
+                state.apiRequestBody.sort = direction + sort.order;
             }
         },
         getters:  {

@@ -42,11 +42,25 @@ module.exports = {
                 'option_id': 0
             },
             {
+                'order': 'price',
+                'label': 'price_desc',
+                'direction': 'desc',
+                'selected': false,
+                'option_id': 1
+            },
+            {
                 'order': 'name',
                 'label': 'name_asc',
                 'direction': 'asc',
                 'selected': false,
-                'option_id': 1
+                'option_id': 2
+            },
+            {
+                'order': 'name',
+                'label': 'name_desc',
+                'direction': 'desc',
+                'selected': false,
+                'option_id': 3
             },
         ],
         meta: {
