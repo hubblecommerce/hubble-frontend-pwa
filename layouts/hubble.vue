@@ -18,7 +18,7 @@
             <background-blur />
             <div class="header-wrp">
                 <div class="nav-wrp">
-                    <the-mobile-menu :data-items="menu" />
+                    <the-mobile-menu v-if="!isEmpty(menu)" :data-items="menu" />
                     <the-logo />
                     <template v-if="$mq === 'md'">
                         <the-search-direct />
@@ -53,7 +53,7 @@
             <div class="header-wrp">
                 <div class="nav-wrp">
                     <the-logo />
-                    <the-mega-menu :data-items="menu" />
+                    <the-mega-menu v-if="!isEmpty(menu)" :data-items="menu" />
                     <the-search-direct />
                     <div class="action-wrp d-flex align-items-center">
                         <the-wishlist />
@@ -154,6 +154,9 @@
             },
             onceHandler: function() {
                 this.inView = true;
+            },
+            isEmpty: function(obj) {
+                return _.isEmpty(obj);
             }
         },
 

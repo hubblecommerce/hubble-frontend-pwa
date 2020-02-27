@@ -637,8 +637,6 @@ export default function (ctx) {
                     }, { root: true })
                         .then(response => {
 
-                            console.log(response)
-
                             dispatch('mappingCategoryProducts', response.data).then((res) => {
 
                                 // Get all product urls to find urls of search result products
