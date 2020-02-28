@@ -10,13 +10,12 @@
                     </h1>
 
                     <!-- SKU -->
-                    <div class="sku">
+                    <div v-if="productData.sku" class="sku">
                         {{ $t('sku_label') }}: {{ productData.sku }}
                     </div>
                 </div>
-                <div class="brand-logo-wrp">
-                    <img v-if="logoPath !== null"
-                         :src="logoPath"
+                <div v-if="logoPath !== null" class="brand-logo-wrp">
+                    <img :src="logoPath"
                          :alt="productData.manufacturer_item.name"
                          :title="productData.manufacturer_item.name"
                     >
