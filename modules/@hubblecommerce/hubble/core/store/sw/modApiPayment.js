@@ -23,8 +23,7 @@ export default function (ctx) {
                 shippingAddress: {}
             },
 
-            // availableCountries
-            availableCountries: [],
+            countries: null,
 
             // Payment
             paymentMethods: {},
@@ -114,6 +113,12 @@ export default function (ctx) {
             setCurrentOrder: (state, payload) => {
                 state.currentOrder = payload;
             },
+            setCountries: (state, payload) => {
+                // Sort countries by position
+                state.countries = payload.sort((a, b) => {
+                    return a.position - b.position;
+                });
+            },
             clearCustomerData: (state) => {
                 state.customer = {
                     customerAuth: {},
@@ -171,7 +176,10 @@ export default function (ctx) {
                         action: 'get',
                         tokenType: 'sw',
                         apiType: 'data',
-                        endpoint: _endpoint
+                        endpoint: _endpoint,
+                        params: {
+                            limit: 500
+                        }
                     }, { root: true })
                         .then(response => {
                             resolve(response);
@@ -194,7 +202,6 @@ export default function (ctx) {
                         data: payload.order
                     }, { root: true })
                         .then(response => {
-                            console.log(response);
                             resolve(response);
                         })
                         .catch(error => {
@@ -213,13 +220,6 @@ export default function (ctx) {
                 // Set salutation uuid
                 order.salutationId = salutation.id;
                 order.billingAddress.salutationId = salutation.id;
-
-                // Get country uuid
-                const countries = await dispatch('swGetCountries');
-                const country = _.find(countries.data.data, function(o) { return o.iso === 'DE'; });
-
-                // Set country uuid
-                order.billingAddress.countryId = country.id;
 
                 return new Promise((resolve, reject)  => {
                     dispatch('swGuestOrder', {order: order, swtc: payload.swtc}).then((res) => {

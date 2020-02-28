@@ -5,6 +5,13 @@
 
             <div class="checkout-login-desktop-wrp">
                 <div class="guest-login-wrp">
+
+                    <!--
+                    ************************
+                    Addressdata
+                    TODO: place in subcomponent
+                    ************************
+                    -->
                     <div class="headline headline-3 mb-3">Customerinformation</div>
                     <validation-observer ref="observer" v-slot="{ passes, invalid, validate }" tag="form" class="form-edit register-form" @submit.prevent="validate().then((e) => {submitForm(e)})">
                         <div class="base-data-wrp">
@@ -21,8 +28,94 @@
                                 <label for="email" v-text="$t('Email Address')+'*'" />
                                 <div class="validation-msg" v-text="$t(errors[0])" />
                             </validation-provider>
+
+                            <validation-provider v-slot="{ errors }" vid="firstName" name="firstName" rules="required" mode="passive" tag="div" class="hbl-input-group">
+                                <input id="firstName"
+                                       v-model="orderObj.firstName"
+                                       type="text"
+                                       name="firstName"
+                                       value=""
+                                       :class="{invalid: errors.length > 0}"
+                                       placeholder=" "
+                                       required
+                                >
+                                <label for="firstName" v-text="$t('First Name')+'*'" />
+                                <div class="validation-msg" v-text="$t(errors[0])" />
+                            </validation-provider>
+
+                            <validation-provider v-slot="{ errors }" vid="lastName" name="lastName" rules="required" mode="passive" tag="div" class="hbl-input-group">
+                                <input id="lastName"
+                                       v-model="orderObj.lastName"
+                                       type="text"
+                                       name="lastName"
+                                       value=""
+                                       :class="{invalid: errors.length > 0}"
+                                       placeholder=" "
+                                       required
+                                >
+                                <label for="lastName" v-text="$t('Last Name')+'*'" />
+                                <div class="validation-msg" v-text="$t(errors[0])" />
+                            </validation-provider>
+
+                            <validation-provider v-slot="{ errors }" vid="street" name="street" rules="required" mode="passive" tag="div" class="hbl-input-group">
+                                <input id="street"
+                                       v-model="orderObj.billingAddress.street"
+                                       type="text"
+                                       name="street"
+                                       value=""
+                                       :class="{invalid: errors.length > 0}"
+                                       placeholder=" "
+                                       required
+                                >
+                                <label for="street" v-text="$t('Street')+'*'" />
+                                <div class="validation-msg" v-text="$t(errors[0])" />
+                            </validation-provider>
+
+                            <div class="form-row zip-city">
+                                <validation-provider v-slot="{ errors }" name="zipcode" rules="required|numeric|max:5" mode="passive" tag="div" class="hbl-input-group">
+                                    <input id="zipCode"
+                                           v-model="orderObj.billingAddress.zipcode"
+                                           type="text"
+                                           name="zipCode"
+                                           value=""
+                                           :class="{invalid: errors.length > 0}"
+                                           placeholder=" "
+                                           required
+                                    >
+                                    <label for="zipCode" v-text="$t('Zipcode')+'*'" />
+                                    <div class="validation-msg" v-text="$t(errors[0])" />
+                                </validation-provider>
+
+                                <validation-provider v-slot="{ errors }" name="city" rules="required|max:30" mode="passive" tag="div" class="hbl-input-group">
+                                    <input id="city"
+                                           v-model="orderObj.billingAddress.city"
+                                           type="text"
+                                           name="city"
+                                           value=""
+                                           :class="{invalid: errors.length > 0}"
+                                           placeholder=" "
+                                           required
+                                    >
+                                    <label for="city" v-text="$t('City')+'*'" />
+                                    <div class="validation-msg" v-text="$t(errors[0])" />
+                                </validation-provider>
+
+                                <validation-provider v-slot="{ errors }" name="country" rules="required" mode="passive" tag="div" class="hbl-select">
+                                    <select v-model="orderObj.billingAddress.countryId" class="select-text" :class="{invalid: errors.length > 0}" required>
+                                        <option v-if="country.active && country.shippingAvailable" v-for="country in countries" :key="country.id" :value="country.id">{{ country.name }}</option>
+                                    </select>
+                                    <label class="select-label" v-text="$t('Country')+'*'" />
+                                    <div class="validation-msg" v-text="$t(errors[0])" />
+                                </validation-provider>
+                            </div>
                         </div>
 
+                        <!--
+                        ************************
+                        Payment
+                        TODO: place in subcomponent and connect to payment module (payone)
+                        ************************
+                        -->
                         <div class="checkout-payment-wrp">
                             <div class="payment-methods-wrp">
                                 <div class="headline headline-3" v-text="$t('Payment')" />
@@ -38,6 +131,12 @@
                             </div>
                         </div>
 
+                        <!--
+                        ************************
+                        Shipping
+                        TODO: place in subcomponent and get shipping methods from SW6 saleschannel api
+                        ************************
+                        -->
                         <div class="shipping-methods-wrp">
                             <div class="headline headline-3" v-text="$t('Shipping methods')" />
                             <div class="method-wrp hbl-checkbox">
@@ -50,6 +149,11 @@
                             </div>
                         </div>
 
+                        <!--
+                        ************************
+                        ToC
+                        ************************
+                        -->
                         <div class="terms-and-conditions text">
                             {{ $t('By submitting your order, you confirm that you have read and accepted our') }}
                             <nuxt-link :to="$t('link-terms-and-conditions')">
@@ -57,6 +161,11 @@
                             </nuxt-link>
                         </div>
 
+                        <!--
+                        ************************
+                        Summary
+                        ************************
+                        -->
                         <div class="summary-container">
                             <div class="summary-wrp">
                                 <totals />
@@ -86,7 +195,6 @@
 
 <script>
     import { mapState } from 'vuex';
-    import axios from 'axios';
     import Totals from "../../components/checkout/Totals";
 
     export default {
@@ -102,6 +210,13 @@
 
         layout: 'hubble_express',
 
+        fetch ({ store }) {
+            return store.dispatch('modApiPayment/swGetCountries')
+                .then((res) => {
+                    store.commit('modApiPayment/setCountries', res.data.data);
+                });
+        },
+
         data() {
             return {
                 chosenPaymentMethod: '1',
@@ -110,14 +225,14 @@
                 processingCheckout: false,
                 orderObj: {
                     salutationId: "",
-                    firstName: "Guest",
-                    lastName: "Customer",
+                    firstName: "",
+                    lastName: "",
                     email: "",
                     billingAddress: {
                         salutationId: "",
-                        street: "Test Street",
-                        zipcode: "12345",
-                        city: "City",
+                        street: "",
+                        zipcode: "",
+                        city: "",
                         countryId: ""
                     }
                 }
@@ -126,7 +241,8 @@
 
         computed: {
             ...mapState({
-                swtc: state => state.modCart.swtc
+                swtc: state => state.modCart.swtc,
+                countries: state => state.modApiPayment.countries,
             })
         },
 

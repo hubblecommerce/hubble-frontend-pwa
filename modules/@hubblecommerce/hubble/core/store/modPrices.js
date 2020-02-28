@@ -106,7 +106,7 @@ export default function (ctx) {
                 return true;
             },
             getTaxClassByLabel: (state) => (label) => {
-                //TODO replace placeholdr object with real data
+                //TODO replace placeholder object with real data
                 let placeholderObject = {
                     id: 2,
                     label: 'VAT 19',
