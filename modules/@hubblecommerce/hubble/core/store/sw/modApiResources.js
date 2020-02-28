@@ -239,6 +239,70 @@ export default function (ctx) {
             setTerm: (state, payload) => {
                 state.apiRequestBody.term = payload;
             },
+            setFilters: (state, query) => {
+                // Reset all filters
+                state.apiRequestBody.filter = [];
+
+                const paramBlackList = ['term', 'page', 'limit', 'sort', 'manufacturer', 'price_from', 'price_to'];
+
+                // Iterate all query params
+                _.forEach(query, (val, param) => {
+                    // Only proceed if parameter is not blacklisted apply only filter parameters (pagination, limiter, etc...)
+                    if(!paramBlackList.includes(param)) {
+                        // Build filter object
+                        // Turn comma seperated parameter values to array
+                        let filter = {
+                            type: 'multi',
+                            operator: 'OR',
+                            queries: [
+                                {
+                                    type: 'equalsAny',
+                                    field: 'propertyIds',
+                                    value: val.split(',')
+                                },
+                                {
+                                    type: 'equalsAny',
+                                    field: 'optionIds',
+                                    value: val.split(',')
+                                }
+                            ]
+                        };
+
+                        // Set filterobject to request body
+                        state.apiRequestBody.filter.push(filter);
+                    }
+
+                    // Special entity manufacturer
+                    if(param === 'manufacturer') {
+                        let filter = {
+                            type: 'equalsAny',
+                            field: 'manufacturerId',
+                            value: val.split(',')
+                        };
+
+                        state.apiRequestBody.filter.push(filter);
+                    }
+                });
+
+                // Special entity price_to
+                let priceRangeFilter = {
+                    type: 'range',
+                    field: 'price',
+                    parameters: {}
+                };
+
+                if(query['price_from'] != null) {
+                    priceRangeFilter.parameters.gte = query['price_from'];
+                }
+
+                if(query['price_to'] != null) {
+                    priceRangeFilter.parameters.lte = query['price_to'];
+                }
+
+                if(query['price_from'] != null || query['price_to'] != null) {
+                    state.apiRequestBody.filter.push(priceRangeFilter);
+                }
+            },
             setSorting: (state, payload) => {
                 let sort = _.find(process.env.sorter, { 'option_id': parseInt(payload) });
                 let direction;
@@ -349,8 +413,13 @@ export default function (ctx) {
                         // Map required properties from sw response to hubble requirements
                         obj.parentId = category.parentId;
                         obj.name = category.name;
-                        // As long as sw api doesn't response with seo_Urls build your own urls via slugify
-                        obj.url_path = slugify(category.name);
+
+                        if(!_.isEmpty(category.seoUrls)) {
+                            obj.url_path = category.seoUrls[0].seoPathInfo;
+                        } else {
+                            obj.url_path = '/';
+                        }
+
                         obj.level = category.level;
                         obj.active = category.is_active;
                         obj.id = category._uniqueIdentifier;
@@ -556,6 +625,10 @@ export default function (ctx) {
 
                 return new Promise(function(resolve, reject) {
 
+                    if(!_.isEmpty(state.dataProductUrls)) {
+                        resolve();
+                    }
+
                     let _endpoint = '/sales-channel-api/v1/dmf/seo-url?filter[routeName]=frontend.detail.page&limit=500';
 
                     dispatch('apiCall', {
@@ -582,16 +655,13 @@ export default function (ctx) {
 
                 return new Promise(function(resolve, reject) {
 
-                    let _endpoint = '/sales-channel-api/v1/category?&limit=100';
+                    let _endpoint = '/sales-channel-api/v1/category?limit=100&associations[seoUrls][]';
 
                     dispatch('apiCall', {
                         action: 'get',
                         tokenType: 'sw',
                         apiType: 'data',
-                        endpoint: _endpoint,
-                        params: {
-                            _size: 30
-                        }
+                        endpoint: _endpoint
                     }, { root: true })
                         .then(response => {
 
@@ -636,6 +706,17 @@ export default function (ctx) {
                         data: state.apiRequestBody
                     }, { root: true })
                         .then(response => {
+
+                            // If no products for this category set empty array as category products
+                            if(response.data.total === 0) {
+                                commit('setDataCategoryProducts', {
+                                    data: {
+                                        result: []
+                                    }
+                                });
+
+                                resolve();
+                            }
 
                             dispatch('mappingCategoryProducts', response.data).then((res) => {
 
@@ -839,6 +920,73 @@ export default function (ctx) {
                             reject('API request failed!');
                         });
                 })
+            },
+            async getPage({commit, state, rootState, dispatch, getters}, payload) {
+                return new Promise((resolve, reject) => {
+                    let _endpoint = '/sales-channel-api/v1/vsf/page';
+
+                    dispatch('apiCall', {
+                        action: 'post',
+                        tokenType: 'sw',
+                        apiType: 'data',
+                        endpoint: _endpoint,
+                        data: {
+                            path: payload
+                        }
+                    }, { root: true }).then(response => {
+                        resolve(response);
+                    });
+                });
+            },
+            async mapFilterToFacets({commit, state, rootState, dispatch, getters}, filters) {
+                return new Promise((resolve, reject) => {
+
+                    let facets = {
+                        all: {
+                            storeId: true,
+                            cat: true
+                        },
+                        selected: true,
+                        string_facets: {},
+                        price_facets: {}
+                    };
+
+                    Object.keys(filters).forEach(function (filter) {
+
+                        // Map string facets
+                        if(filters[filter].type === 'entity') {
+                            facets.string_facets[filter] = {
+                                key: filters[filter].name,
+                                label: filters[filter].name,
+                                selected: false,
+                                options: []
+                            };
+
+                            Object.keys(filters[filter].values).forEach(function (value) {
+                                facets.string_facets[filter].options.push({
+                                    key: value,
+                                    label: filters[filter].values[value].name
+                                })
+                            });
+                        }
+
+                        // Map price facet
+                        if(filter === 'price') {
+                            facets.price_facets[filter] = {
+                                key: filter,
+                                label: filter,
+                                selected: false,
+                                "facet-stats": {
+                                    min: filters[filter].values.min,
+                                    max: filters[filter].values.max
+                                },
+                            };
+                        }
+
+                    });
+
+                    resolve(facets);
+                });
             }
         }
     };

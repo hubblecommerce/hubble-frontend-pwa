@@ -286,29 +286,37 @@ export default function (ctx) {
                 // console.log("store parseRequestQuery called! payload: %o", payload);
 
                 let _query = payload.query;
-                let _params = state.queryWellKnown;
 
                 return new Promise((resolve, reject) => {
-
                     // start with empty object
                     let _parsed = {};
 
-                    _.forEach(_params, (paramName) => {
-
+                    _.forEach(state.queryWellKnown, (paramName) => {
                         // set nested property to either query parameter or null
                         _parsed[paramName] = _query[paramName] ? _query[paramName] : null;
-                    })
+                    });
 
                     // special case 'price'
                     if(_.has(_query, 'price_to')) {
                         _parsed['priceMax'] = parseInt(_query['price_to']);
                     }
+
                     if(_.has(_query, 'price_from')) {
                         _parsed['priceMin'] = parseInt(_query['price_from']);
                     }
 
-                    // commit to store
                     commit('setParsedQuery', _parsed);
+
+                    // Set selected filter from query
+                    let selectedFilters = {};
+                    Object.keys(_query).forEach((param) => {
+
+                        if(!state.queryWellKnown.includes(param)) {
+                            selectedFilters[param] = _query[param];
+                        }
+                    });
+
+                    commit('setSelectedFacets', selectedFilters);
 
                     resolve("parseRequestQuery OK!");
                 });

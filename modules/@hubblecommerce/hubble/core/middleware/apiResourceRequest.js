@@ -19,15 +19,11 @@ Middleware.apiResourceRequest = function ({ isHMR, store, route, error }) {
 
     // dispatch to vuex store by promise
     return new Promise((resolve, reject) => {
-
-        let _outerReject = reject;
-        let _outerResolve = resolve;
-
         store.dispatch('modApiRequests/parseRequest', {
             query: route.query
         })
             .then(response => {
-                _outerResolve('OK');
+                resolve('OK');
             })
             .catch(response => {
                 error({ statusCode: 401, message: 'API authentication failed' });

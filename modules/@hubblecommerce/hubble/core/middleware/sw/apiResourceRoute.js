@@ -26,8 +26,24 @@ Middleware.apiResourceRoute = function({app, store, route, error}) {
     if(matchingCategory) {
 
         return new Promise((resolve, reject) => {
+
+            // Get page to set available filters
+            store.dispatch('modApiResources/getPage', _path).then((pageResponse) => {
+
+                store.dispatch('modApiResources/mapFilterToFacets', pageResponse.data.listingConfiguration.availableFilters).then((facets) => {
+                    store.commit('modApiRequests/setRequestFacets', facets);
+                });
+
+            });
+
             // Get and store category
             store.dispatch('modApiResources/swGetCategory', matchingCategory.id).then(() => {
+
+                // Set filters from url query
+                // important to call it first because it resets all filters
+                if(route.query != null) {
+                    store.commit('modApiResources/setFilters', route.query);
+                }
 
                 // Set limit to request if isset in url
                 if(route.query.limit != null) {
