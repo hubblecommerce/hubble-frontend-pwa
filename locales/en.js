@@ -234,6 +234,7 @@ export default (context) => {
                 "Germany": "Germany",
                 "Mrs.": "Mrs.",
                 "Mr.": "Mr.",
+                "Not specified": "Not specified",
                 "My Shipping Address (not billing address)": "My Shipping Address (not billing address)",
                 "Do not register": "Do not register",
                 "Guest order": "Guest order",

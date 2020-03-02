@@ -16,6 +16,10 @@ Middleware.apiPaymentAuthenticate = function ({ isHMR, store, error }) {
         return;
     }
 
+    if(process.env.API_TYPE === 'sw') {
+        return;
+    }
+
     let _apiAuth = store.getters['modApiPayment/getApiAuthResponse'];
 
     // check vuex store object first

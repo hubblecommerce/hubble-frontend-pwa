@@ -519,6 +519,8 @@
                         password: userData.password
                     };
 
+                    console.log(this.customer);
+
                     // Save wishlist
                     this.$store.dispatch('modApiPayment/postWishlist', {
                         user_id: this.customer.customerData.id,
@@ -530,6 +532,8 @@
                         // Get newly created wishlist id and save to store
                         this.$store.commit('modWishlist/setWishlistId', response.data.item.id);
                         this.$store.dispatch('modWishlist/saveToStore');
+                    }).catch(response => {
+
                     });
 
                     // if double addressbook mode is true store address separately
@@ -558,6 +562,7 @@
                             this.processingRegister = false;
                         });
                     } else {
+                        console.log("redirect");
                         this.redirectToCheckout();
                     }
                 }).catch((error) => {
@@ -623,6 +628,8 @@
                 }
 
                 if(this.$router.history.current.path.includes('/customer')) {
+                    console.log("is customer route");
+
                     this.$router.push({
                         path: this.localePath('customer-dashboard')
                     }, () => {

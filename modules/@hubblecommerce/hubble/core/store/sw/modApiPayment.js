@@ -64,7 +64,8 @@ export default function (ctx) {
             amazonPayError: {},
 
             // SW
-            currentOrder: {}
+            currentOrder: {},
+            swtc: null
         }),
         mutations: {
             setApiAuthResponse: (state, payload) => {
@@ -114,6 +115,28 @@ export default function (ctx) {
             setCurrentOrder: (state, payload) => {
                 state.currentOrder = payload;
             },
+            setAvailableCountries: (state, payload) => {
+                state.availableCountries = payload;
+            },
+            setSwtc: (state, payload) => {
+                state.swtc = payload;
+            },
+            /*
+            * Customer mutations
+            * */
+            setCustomer: (state, payload) => {
+                state.customer = payload;
+            },
+            setCustomerAuth: (state, payload) => {
+                state.customer.customerAuth = payload;
+            },
+            setCustomerData: (state, payload) => {
+                state.customer.customerData = payload;
+            },
+            setCustomerId: (state, payload) => {
+                _.assign(state.customer.customerData, {id: payload} );
+                console.log(state.customer.customerData);
+            },
             clearCustomerData: (state) => {
                 state.customer = {
                     customerAuth: {},
@@ -122,7 +145,19 @@ export default function (ctx) {
                     billingAddress: {},
                     shippingAddress: {}
                 }
-            }
+            },
+            setCustomerAddresses: (state, payload) => {
+                state.customer.customerAddresses = payload;
+            },
+            /*
+            * Order mutations
+            * */
+            setChosenPaymentMethod: (state, payload) => {
+                state.order.chosenPaymentMethod = payload;
+            },
+            setChosenShippingMethod: (state, payload) => {
+                state.order.chosenShippingMethod = payload;
+            },
         },
         getters:  {
             getApiAuthToken: state => {
@@ -142,7 +177,10 @@ export default function (ctx) {
             },
             getJsonDecoded: () => (objJsonB64) => {
                 return JSON.parse(base64.decode(objJsonB64));
-            }
+            },
+            getCustomerAuth: state => {
+                return state.customer.customerAuth;
+            },
         },
         actions: {
             async swGetSalutations({commit, state, dispatch, rootState, getters}, payload) {
@@ -171,7 +209,10 @@ export default function (ctx) {
                         action: 'get',
                         tokenType: 'sw',
                         apiType: 'data',
-                        endpoint: _endpoint
+                        endpoint: _endpoint,
+                        params: {
+                            limit: 500
+                        }
                     }, { root: true })
                         .then(response => {
                             resolve(response);
@@ -319,7 +360,260 @@ export default function (ctx) {
                 return new Promise((resolve, reject)  => {
                     reject('Sorry, coupons are currently not available.');
                 });
-            }
+            },
+            async getAvailableCountries({commit, dispatch}) {
+                return new Promise(function(resolve, reject) {
+                    dispatch('swGetCountries').then((response) => {
+
+                        let mappedCountries = [];
+
+                        _.forEach(response.data.data, (country) => {
+                            mappedCountries.push({
+                                name: country.name,
+                                iso_code_2: country.id
+                            })
+                        });
+
+                        commit('setAvailableCountries', mappedCountries);
+                        resolve('OK');
+                    });
+                });
+            },
+            /*
+            * Customer Actions
+            */
+            async register({dispatch, commit, state, getters}, payload) {
+                return new Promise((resolve, reject)  => {
+
+                    // Map customer data to fit SW6 headless API
+                    const customer = {
+                        salutationId: payload.address.gender,
+                        email: payload.email,
+                        firstName: payload.address.firstName,
+                        lastName: payload.address.lastName,
+                        billingAddress: {
+                            street: payload.address.street,
+                            zipcode: payload.address.postal,
+                            city: payload.address.city,
+                            countryId: payload.address.country
+                        },
+                        password: payload.password
+                    };
+
+                    dispatch('apiCall', {
+                        action: 'post',
+                        tokenType: 'sw',
+                        apiType: 'data',
+                        endpoint: '/sales-channel-api/v1/customer',
+                        data: customer
+                    }, { root: true })
+                        .then((response) => {
+
+                            // Clear customer data
+                            commit('clearCustomerData');
+
+                            commit('setCustomerData', {
+                                id: response.data.data
+                            });
+
+                            const loginCreds = {
+                                username: payload.email,
+                                password: payload.password
+                            };
+
+                            dispatch('logIn', loginCreds).then(() => {
+                                resolve(response);
+                            })
+
+                        })
+                        .catch(response => {
+                            console.log("API post request failed: %o", response);
+                            reject(response);
+                        });
+                });
+            },
+            async logIn({commit, state, dispatch, getters}, payload) {
+                return new Promise((resolve, reject)  => {
+                    dispatch('apiCall', {
+                        action: 'post',
+                        tokenType: 'sw',
+                        apiType: 'data',
+                        endpoint: '/sales-channel-api/v1/customer/login',
+                        data: payload
+                    }, { root: true })
+                        .then(response => {
+
+                            // Clear order Data
+                            commit('setChosenPaymentMethod', {});
+                            commit('setChosenShippingMethod', {});
+
+                            // Remove cookies
+                            this.$cookies.remove(state.cookieName);
+                            this.$cookies.remove(state.cookieNameOrder);
+                            this.$cookies.remove(state.cookieNameAddress);
+
+                            let authData = {
+                                created_at: getters.getCurrentDate,
+                                expires_at: getters.getCookieExpires,
+                                expires_in: 86400,
+                                token: response.data['sw-context-token'],
+                                token_name: "swtc",
+                                token_type: "context",
+                                updated_at: ""
+                            };
+
+                            // Save response to store
+                            commit('setCustomerAuth', authData);
+
+                            // Save store to cookie
+                            this.$cookies.set(state.cookieName, state.customer, {
+                                path: state.cookiePath,
+                                expires: getters.getCookieExpires
+                            });
+
+                            resolve(response);
+                        })
+                        .catch(response => {
+                            //console.log('logIn failed: %o', response);
+                            reject(response);
+                        });
+                });
+            },
+            async mapAddresses({commit, state, getters, dispatch}, addresses) {
+                return new Promise((resolve, reject)  => {
+                    let mappedAddresses = [];
+
+                    _.forEach(addresses, (address) => {
+                        mappedAddresses.push({
+                            is_billing: true,
+                            is_billing_default: true,
+                            is_shipping: true,
+                            is_shipping_default: true,
+                            payload: {
+                                gender: address.salutationId,
+                                firstName: address.firstName,
+                                lastName: address.lastName,
+                                street: address.street,
+                                houseNo: '',
+                                postal: address.zipcode,
+                                city: address.city,
+                                country: address.countryId,
+                                company: address.company
+                            }
+                        })
+                    });
+
+                    resolve(mappedAddresses);
+                });
+            },
+            async getCustomerAddresses({commit, state, getters, dispatch}, payload) {
+
+                let _endpoint = '/sales-channel-api/v1/customer/address';
+
+                return new Promise((resolve, reject)  => {
+                    dispatch('apiCall', {
+                        action: 'get',
+                        tokenType: 'sw',
+                        apiType: 'data',
+                        swContext: state.customer.customerAuth.token,
+                        endpoint: _endpoint
+                    }, { root: true })
+                        .then(response => {
+                            console.log(response);
+                            dispatch('mapAddresses', response.data.data).then((mappedAddresses) => {
+                                commit('setCustomerAddresses', mappedAddresses);
+                                resolve('OK');
+                            });
+                        })
+                        .catch(response => {
+                            console.log('getCustomerAddresses failed: %o', response);
+                            reject('getCustomerAddresses failed!');
+                        });
+                });
+            },
+            async storeCustomerAddress({state, getters, dispatch}, address) {
+                return new Promise((resolve, reject)  => {
+
+                    let requestBody = {
+                        salutationId: address.payload.gender,
+                        firstName: address.payload.firstName,
+                        lastName: address.payload.lastName,
+                        street: address.payload.street,
+                        zipcode: address.payload.postal,
+                        city: address.payload.city,
+                        countryId: address.payload.country
+                    };
+
+                    dispatch('apiCall', {
+                        action: 'post',
+                        tokenType: 'sw',
+                        apiType: 'data',
+                        swContext: state.customer.customerAuth.token,
+                        endpoint: '/sales-channel-api/v1/customer/address',
+                        data: requestBody
+                    }, { root: true })
+                        .then((response) => {
+                            resolve(response);
+                        })
+                        .catch(response => {
+                            console.log('storeCustomerAddress failed: %o', response);
+                            reject(response);
+                        });
+                });
+            },
+            async editAddress({dispatch, state, getters}, payload) {
+                return new Promise((resolve, reject)  => {
+                    // TODO: Edit Address not implemented in SW6 headless API yet
+                    resolve('OK');
+                });
+            },
+            async mapOrders({commit, state, getters, dispatch}, orders) {
+                return new Promise((resolve, reject)  => {
+                    let mappedOrders= [];
+
+                    _.forEach(orders, (order) => {
+                        // TODO: set correct data when you can recieve order data
+                        mappedOrders.push({
+                            id: order.id,
+                            created_at: order.id,
+                            status_label: order.id,
+                            payload: order.id
+                        })
+                    });
+
+                    resolve(mappedOrders);
+                });
+            },
+            async getOrders({dispatch, getters, state}, payload) {
+                return new Promise((resolve, reject) => {
+                    dispatch('apiCall', {
+                        action: 'get',
+                        tokenType: 'sw',
+                        apiType: 'data',
+                        swContext: state.customer.customerAuth.token,
+                        endpoint: '/sales-channel-api/v1/customer/order',
+                        params: {
+                            limit: 500
+                        }
+                    }, { root: true })
+                        .then(response => {
+                            dispatch('mapOrders', response.data.data).then((mappedOrders) => {
+                                resolve(mappedOrders);
+                            });
+                        })
+                        .catch(response => {
+                            console.log('getOrders failed: %o', response);
+                            reject('getOrders failed!');
+                        });
+                })
+            },
+            async postWishlist({dispatch}, payload) {
+                return new Promise((resolve, reject)  => {
+                    // Saving wishlist to customeraccount is currently not implemented in SW6 headless API
+                    reject();
+                    resolve();
+                });
+            },
         }
     };
 

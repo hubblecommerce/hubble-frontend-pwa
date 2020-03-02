@@ -266,6 +266,7 @@ export default (context) => {
                 "Germany": "Deutschland",
                 "Mrs.": "Frau",
                 "Mr.": "Herr",
+                "Not specified": "Divers",
                 "My Shipping Address (not billing address)": "Meine abweichende Lieferadresse (nicht Rechnungsadresse)",
                 "Do not register": "Kein Konto anlegen",
                 "Guest order": "Als Gast bestellen",
