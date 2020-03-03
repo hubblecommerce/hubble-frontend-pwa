@@ -804,6 +804,28 @@ export default function (ctx) {
                         });
                 })
             },
+            async passwordUpdate({dispatch, getters, state}, payload) {
+                return new Promise((resolve, reject)  => {
+                    dispatch('apiCall', {
+                        action: 'patch',
+                        tokenType: 'sw',
+                        apiType: 'data',
+                        swContext: state.customer.customerAuth.token,
+                        endpoint: '/sales-channel-api/v1/customer/password',
+                        data: {
+                            password: payload.password_old,
+                            newPassword: payload.password,
+                            newPasswordConfirm: payload.password_confirm
+                        }
+                    }, { root: true })
+                        .then(response => {
+                            resolve(response);
+                        })
+                        .catch(error => {
+                            reject(error);
+                        });
+                });
+            },
             async postWishlist({dispatch}, payload) {
                 return new Promise((resolve, reject)  => {
                     // Saving wishlist to customeraccount is currently not implemented in SW6 headless API
