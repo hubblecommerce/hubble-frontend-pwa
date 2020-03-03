@@ -30,7 +30,8 @@
                 <div>
                     <span v-text="mapIsoToCountry(address.payload.country, countries)" />
                 </div>
-                <div class="link text-small edit-address" @click="updateAddress(address)" v-text="$t('Edit address')" />
+                <!-- TODO: Implement edit address when SW provides it -->
+                <div class="link text-small edit-address" v-if="!isShopware" @click="updateAddress(address)" v-text="$t('Edit address')" />
             </div>
             <div class="button-wrapper">
                 <button v-if="!isGuest && addresses.billing.length > 0"
@@ -61,7 +62,8 @@
                 <div>
                     <span v-text="mapIsoToCountry(address.payload.country, countries)" />
                 </div>
-                <div class="link text-small edit-address" @click="updateAddress(defaultShippingAddress)" v-text="$t('Edit address')" />
+                <!-- TODO: Implement edit address when SW provides it -->
+                <div class="link text-small edit-address" v-if="!isShopware" @click="updateAddress(defaultShippingAddress)" v-text="$t('Edit address')" />
             </div>
             <div class="button-wrapper">
                 <button
@@ -341,6 +343,7 @@
 
                 streetIncludesHouseNo: process.env.STREETINFO_INCLUDES_HOUSENO === 'true',
                 alternativeShippingAddress: process.env.ALTERNATIVE_SHIPPING_ADDRESS === 'true',
+                isShopware: process.env.API_TYPE === 'sw',
 
                 addresses: {
                     billing: [],
@@ -666,7 +669,8 @@
                         this.$store.dispatch('modApiPayment/editAddress', newDefaultAddress).then(() => {
                             this.getAddresses();
                             this.toggle();
-                        }).catch(() => {
+                        }).catch((error) => {
+                            console.log(error);
                             // Show api request error
                             this.error = this.$t('Select new billing address failed');
                         });
@@ -687,7 +691,8 @@
                         this.$store.dispatch('modApiPayment/editAddress', newDefaultAddress).then(() => {
                             this.getAddresses();
                             this.toggle();
-                        }).catch(() => {
+                        }).catch((error) => {
+                            console.log(error);
                             // Show api request error
                             this.error = this.$t('Select new shipping address failed');
                         });

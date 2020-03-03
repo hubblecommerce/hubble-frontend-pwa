@@ -519,8 +519,6 @@
                         password: userData.password
                     };
 
-                    console.log(this.customer);
-
                     // Save wishlist
                     this.$store.dispatch('modApiPayment/postWishlist', {
                         user_id: this.customer.customerData.id,
@@ -537,7 +535,8 @@
                     });
 
                     // if double addressbook mode is true store address separately
-                    if(this.alternativeShippingAddress) {
+                    // but not for SW API because the billing address is already set in register action
+                    if(this.alternativeShippingAddress && !process.env.API_TYPE === 'sw') {
                         // Store Address
                         this.$store.dispatch('modApiPayment/storeCustomerAddress', this.form.addresses[0]).then(() => {
 
@@ -562,7 +561,6 @@
                             this.processingRegister = false;
                         });
                     } else {
-                        console.log("redirect");
                         this.redirectToCheckout();
                     }
                 }).catch((error) => {
@@ -628,8 +626,6 @@
                 }
 
                 if(this.$router.history.current.path.includes('/customer')) {
-                    console.log("is customer route");
-
                     this.$router.push({
                         path: this.localePath('customer-dashboard')
                     }, () => {

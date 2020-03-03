@@ -217,6 +217,7 @@ module.exports = {
                 'NO_CORS',
                 'DEFAULT_ERROR_PAGE',
                 'STREETINFO_INCLUDES_HOUSENO',
+                'ALTERNATIVE_SHIPPING_ADDRESS'
             ]
         }]
     ],
