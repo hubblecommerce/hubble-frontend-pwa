@@ -76,10 +76,16 @@ export default function (ctx) {
             dataCustomContent: {},
 
             // stuff
-            pageType: null
+            pageType: null,
+
+            // cmsObject
+            cmsObject: {}
 
         }),
         mutations: {
+            setCmsObject: (state, value) => {
+                state.cmsObject = value;
+            },
             setOptionIsSelected: (state, variant) => {
                 state.optionIsSelected = true;
                 state.selectedVariants = [];
@@ -934,6 +940,7 @@ export default function (ctx) {
                             path: payload
                         }
                     }, { root: true }).then(response => {
+                        commit('setCmsObject', response.data.cmsPage)
                         resolve(response);
                     });
                 });

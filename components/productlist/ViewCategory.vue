@@ -1,6 +1,7 @@
 <template>
     <div class="view-category">
 
+
         <g-t-m-data-layer
             v-if="loaded"
             :event="'categoryLoaded'"
@@ -13,33 +14,48 @@
             <breadcrumbs :path="breadcrumbs" />
         </div>
 
-        <div class="container category-header">
-            <h1 class="title headline-1" v-text="categoryItem.name" />
-            <div>
-                <text-excerpt v-if="($mq === 'sm' || $mq === 'md') && categoryText" :text="categoryText" :limit="300" />
-            </div>
-            <div>
-                <client-only>
-                    <text-excerpt v-if="$mq === 'lg' && categoryText" :text="categoryText" :limit="900" />
-                </client-only>
-            </div>
-        </div>
-
-        <template v-if="!errorNoProducts">
-            <div class="container category-content-wrp">
-                <div class="category-products-wrp">
-                    <product-listing-filter :extra-class="{'fixed container': isSticky}" />
-                    <product-listing :data-items="categoryProductItems" list="Category" :extra-class="{'offset-top': isSticky}" :category="categoryItem.name" />
-                    <div class="pagination-bottom">
-                        <pagination />
-                    </div>
-                    <div v-if="categoryTextLong" class="category-description">
-                        <div v-if="$mq === 'sm' || $mq === 'md'" v-html="categoryTextLong" />
-                        <div v-if="$mq === 'lg'" v-html="categoryTextLong" />
-                    </div>
-                </div>
+        <template v-if="isShopware">
+            <div class="container">
+                 <sw-section v-for="cmsSection in cmsSections"
+                             :key="cmsSection.id"
+                             :content="cmsSection"
+                             :category-product-items="categoryProductItems"
+                             :category-name:="categoryItem.name"
+                 />
             </div>
         </template>
+
+        <template v-else>
+            <div class="container category-header">
+                <h1 class="title headline-1" v-text="categoryItem.name" />
+                <div>
+                    <text-excerpt v-if="($mq === 'sm' || $mq === 'md') && categoryText" :text="categoryText" :limit="300" />
+                </div>
+                <div>
+                    <client-only>
+                        <text-excerpt v-if="$mq === 'lg' && categoryText" :text="categoryText" :limit="900" />
+                    </client-only>
+                </div>
+            </div>
+
+            <template v-if="!errorNoProducts">
+                <div class="container category-content-wrp">
+                    <div class="category-products-wrp">
+                        <product-listing-filter :extra-class="{'fixed container': isSticky}" />
+                        <product-listing :data-items="categoryProductItems" list="Category" :extra-class="{'offset-top': isSticky}" :category="categoryItem.name" />
+                        <div class="pagination-bottom">
+                            <pagination />
+                        </div>
+                        <div v-if="categoryTextLong" class="category-description">
+                            <div v-if="$mq === 'sm' || $mq === 'md'" v-html="categoryTextLong" />
+                            <div v-if="$mq === 'lg'" v-html="categoryTextLong" />
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </template>
+
+
 
         <template v-else>
             <div class="error-listing container flex-center flex-column">
@@ -57,22 +73,23 @@
 <script>
 import {mapState, mapGetters} from 'vuex';
 import Breadcrumbs from "../utils/Breadcrumbs";
-import TextExcerpt from "../utils/TextExcerpt";
-import ProductListingFilter from "./ProductListingFilter";
-import Pagination from "./toolbar/Pagination";
-import ProductListing from "./ProductListing";
+//import TextExcerpt from "../utils/TextExcerpt";
+//import ProductListingFilter from "./ProductListingFilter";
+//import Pagination from "./toolbar/Pagination";
+//import ProductListing from "./ProductListing";
 
 export default {
     name: 'CategoryListing',
 
     components: {
-        ProductListing,
-        Pagination,
-        ProductListingFilter,
+        Breadcrumbs,
+        ProductListing: () => import('./ProductListing'),
+        Pagination: () => import('./toolbar/Pagination'),
+        ProductListingFilter: () => import('./ProductListingFilter'),
         GTMDataLayer: () => import('../utils/GTMDataLayer'),
         errorNoItems: () => import('~/components/error/noItems.vue'),
-        TextExcerpt,
-        Breadcrumbs,
+        TextExcerpt: () => import('../utils/TextExcerpt'),
+        swSection: () => import('~/components/swComponents/section.vue'),
     },
 
     data() {
@@ -91,7 +108,9 @@ export default {
             position: 0,
             isScrolling: false,
 
-            loaded: false
+            loaded: false,
+
+            isShopware: process.env.API_TYPE === 'sw'
         }
     },
 
@@ -99,11 +118,18 @@ export default {
         ...mapState({
             dataCategory: state => state.modApiResources.dataCategory,
             dataCategoryProducts: state => state.modApiResources.dataCategoryProducts,
-            dataMenu: state => state.modApiResources.dataMenu
+            dataMenu: state => state.modApiResources.dataMenu,
+            cmsObject: state => state.modApiResources.cmsObject
         }),
         ...mapGetters({
             requestCategoryFacets: 'modApiRequests/getRequestCategoryFacets'
         }),
+        cmsSections() {
+            if(this.isShopware && !_.isEmpty(this.cmsObject)) {
+                return this.cmsObject.sections;
+            }
+            return [];
+        },
         categoryProductItems() {
             if (_.isEmpty(this.dataCategoryProducts)) {
                 return this.dataCategoryProducts
