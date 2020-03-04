@@ -1,3 +1,4 @@
+<!-- Blurs the background -->
 <template>
     <transition name="fade-background">
         <div v-if="layerIsExpanded" class="background-blur" @click="hideMenu()"></div>
