@@ -820,8 +820,6 @@ export default function (ctx) {
                                 });
                             });
 
-                            commit('setPageType', 'category');
-
                             resolve('OK');
                         })
                         .catch(response => {

@@ -101,14 +101,14 @@
         </div>
 
         <!-- Dynamic payment methods from api -->
-<!--        <div v-for="method in paymentMethods" :key="method.id" class="method-wrp hbl-checkbox">-->
-<!--            <input :id="'payment-option-' + method.id" v-model="chosenMethod" type="radio" :value="method.id">-->
-<!--            <label :for="'payment-option-' + method.id" class="method-label">-->
-<!--                <span class="name" v-text="'API '+method.label" />-->
-<!--                <span class="description" v-text="method.description" />-->
-<!--                <span :class="'method-image-' + method.id" />-->
-<!--            </label>-->
-<!--        </div>-->
+        <div v-for="method in paymentMethods" :key="method.id" class="method-wrp hbl-checkbox">
+            <input :id="'payment-option-' + method.id" v-model="chosenMethod" type="radio" :value="method.id">
+            <label :for="'payment-option-' + method.id" class="method-label">
+                <span class="name" v-text="'API '+method.label" />
+                <span class="description" v-text="method.description" />
+                <span :class="'method-image-' + method.id" />
+            </label>
+        </div>
 
         <div class="validation-msg" v-text="$t(paymentError)" />
     </div>

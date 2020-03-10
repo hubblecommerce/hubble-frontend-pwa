@@ -134,9 +134,8 @@
                 this.$store.dispatch('modCart/precalculateShippingCost', order);
             },
             checkoutPath: function() {
-
                 if(process.env.API_TYPE === 'sw') {
-                    return this.localePath('checkout-shopware-guest');
+                    return this.localePath('checkout-shopware-onepage');
                 }
 
                 return this.localePath('checkout-payment');

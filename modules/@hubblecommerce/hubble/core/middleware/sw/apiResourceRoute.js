@@ -39,6 +39,8 @@ Middleware.apiResourceRoute = function({app, store, route, error}) {
             // Get and store category
             store.dispatch('modApiResources/swGetCategory', matchingCategory.id).then(() => {
 
+                store.commit('modApiResources/setPageType', 'category');
+
                 // Set filters from url query
                 // important to call it first because it resets all filters
                 if(route.query != null) {
@@ -85,13 +87,14 @@ Middleware.apiResourceRoute = function({app, store, route, error}) {
 
     }
 
+    // TODO: Find better solution to check if it's a valid product (path endpoint)
     let matchingProduct = findProductByUrl(store.getters['modApiResources/getDataProductUrls'], _path);
-    store.commit('modApiResources/setProductId', matchingProduct.foreignKey);
-
     if(matchingProduct) {
 
-        let openDetail = store.getters['modApiResources/getOpenDetail'];
-        if(openDetail) {
+        store.commit('modApiResources/setProductId', matchingProduct.foreignKey);
+
+        // Load detail page client side if its accessed via anchor
+        if(store.getters['modApiResources/getOpenDetail']) {
             store.commit('modApiResources/setPageType', 'product');
         } else {
             // dispatch to vuex store by promise

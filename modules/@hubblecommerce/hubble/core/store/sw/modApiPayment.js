@@ -158,6 +158,15 @@ export default function (ctx) {
             setChosenShippingMethod: (state, payload) => {
                 state.order.chosenShippingMethod = payload;
             },
+            setPaymentError: (state, payload) => {
+                state.paymentError = payload;
+            },
+            setShippingError: (state, payload) => {
+                state.shippingError = payload;
+            },
+            setOrder: (state, payload) => {
+                state.order = payload;
+            },
         },
         getters:  {
             getApiAuthToken: state => {
@@ -180,6 +189,18 @@ export default function (ctx) {
             },
             getCustomerAuth: state => {
                 return state.customer.customerAuth;
+            },
+            getOrderComment: state => {
+                return state.order.orderComment;
+            },
+            getShippingMethods: state => {
+                return state.shippingMethods;
+            },
+            getChosenPaymentMethod: state => {
+                return state.order.chosenPaymentMethod;
+            },
+            getChosenShippingMethod: state => {
+                return state.order.chosenShippingMethod;
             },
         },
         actions: {
@@ -638,6 +659,7 @@ export default function (ctx) {
                         endpoint: '/sales-channel-api/v1/customer/address'
                     }, { root: true })
                         .then(response => {
+                            // Get customerinfo to know which addresses are set as default
                             dispatch('getCustomerInfo').then(() => {
                                 dispatch('mapAddresses', response.data.data).then((mappedAddresses) => {
                                     commit('setCustomerAddresses', mappedAddresses);
@@ -842,6 +864,77 @@ export default function (ctx) {
                         }
                     });
                 });
+            },
+            /*
+            * Checkout Actions
+            */
+            async getPaymentMethods({commit, dispatch, rootState, state}, payload) {
+                return new Promise((resolve, reject)  => {
+                    dispatch('apiCall', {
+                        action: 'get',
+                        tokenType: 'sw',
+                        apiType: 'data',
+                        endpoint: '/sales-channel-api/v1/payment-method'
+                    }, { root: true })
+                        .then(response => {
+                            console.log(response);
+                            // Save payment methods to store
+                            //commit('setPaymentMethods', response.data.allowed_payments);
+                            resolve('OK');
+                        })
+                        .catch(response => {
+                            console.log('getPaymentMethods failed: %o', response);
+                            reject('getPaymentMethods failed!');
+                        });
+                });
+            },
+            async getShippingMethods({commit, dispatch, rootState, state}, payload) {
+                return new Promise((resolve, reject)  => {
+                    dispatch('apiCall', {
+                        action: 'get',
+                        tokenType: 'sw',
+                        apiType: 'data',
+                        endpoint: '/sales-channel-api/v1/shipping-method'
+                    }, { root: true })
+                        .then(response => {
+                            console.log(response);
+                            // Save payment methods to store
+                            //commit('setShippingMethods', response.data.allowed_shippings);
+                            resolve('OK');
+                        })
+                        .catch(response => {
+                            console.log('getShippingMethods failed: %o', response);
+                            reject('getShippingMethods failed!');
+                        });
+                });
+            },
+            async storeChosenPaymentMethod({commit, state, getters}, payload) {
+                return new Promise((resolve) => {
+
+                    commit('setChosenPaymentMethod', payload);
+
+                    // Save order from store to cookie
+                    this.$cookies.set(state.cookieNameOrder, state.order, {
+                        path: state.cookiePath,
+                        expires: getters.getCookieExpires
+                    });
+
+                    resolve();
+                })
+            },
+            async storeChosenShippingMethod({commit, state, getters}, payload) {
+                return new Promise((resolve) => {
+
+                    commit('setChosenShippingMethod', payload);
+
+                    // Save order from store to cookie
+                    this.$cookies.set(state.cookieNameOrder, state.order, {
+                        path: state.cookiePath,
+                        expires: getters.getCookieExpires
+                    });
+
+                    resolve();
+                })
             },
         }
     };
