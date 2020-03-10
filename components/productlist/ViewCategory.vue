@@ -71,22 +71,20 @@
 <script>
 import {mapState, mapGetters} from 'vuex';
 import Breadcrumbs from "../utils/Breadcrumbs";
-//import TextExcerpt from "../utils/TextExcerpt";
-//import ProductListingFilter from "./ProductListingFilter";
-//import Pagination from "./toolbar/Pagination";
-//import ProductListing from "./ProductListing";
+import TextExcerpt from "../utils/TextExcerpt";
+import ProductListingFilter from "./ProductListingFilter";
 
 export default {
     name: 'CategoryListing',
 
     components: {
         Breadcrumbs,
+        ProductListingFilter,
+        TextExcerpt,
         ProductListing: () => import('./ProductListing'),
         Pagination: () => import('./toolbar/Pagination'),
-        ProductListingFilter: () => import('./ProductListingFilter'),
         GTMDataLayer: () => import('../utils/GTMDataLayer'),
         errorNoItems: () => import('~/components/error/noItems.vue'),
-        TextExcerpt: () => import('../utils/TextExcerpt'),
         swSection: () => import('~/components/swComponents/section.vue'),
     },
 
