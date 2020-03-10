@@ -1,21 +1,30 @@
 <template>
-    <div class="col-12">
-        <product-listing-slot />
+    <div>
+        <div class="col-12">
+            <component :is="getSlot" :content="getContentByPosition(content.slots, 'content')" />
+        </div>
     </div>
 </template>
 
 <script>
-import ProductListingSlot from '../slots/product-listing'
+    import { blockMixins } from '../helper'
 
     export default {
         name: 'ProductListingBlock',
-        components: { ProductListingSlot },
+
+        mixins: [blockMixins],
+
         props: {
             content: {
                 type: Object,
                 default: () => ({})
             }
         },
+        computed: {
+            getSlot() {
+                return this.getSlotByPosition(this.content.slots, 'content');
+            }
+        }
     }
 </script>
 

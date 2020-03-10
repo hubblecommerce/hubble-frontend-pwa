@@ -1,46 +1,61 @@
+/*
+Shopware CMS Helper Functions
+*/
+
+function returnSlotByType(type) {
+    return () =>
+        import('./slots/' + type).catch(() => {
+            return import('./NoComponent')
+        });
+}
+
+function returnBlockByType(type) {
+    return () =>
+        import('./blocks/' + type).catch(() => {
+            return import('./NoComponent')
+        })
+}
+
+export const slotMixins = {
+    computed: {
+        elementClass() {
+            return 'cms-element-' + this.content.type;
+        },
+  }
+};
+
 export const blockMixins = {
     methods: {
         getSlotByPosition(slots, position) {
-            let type = '';
-            _.forEach(slots, (slot) => {
+            let typeName = ''
+            _.forEach(slots, slot => {
                 if (slot.slot === position) {
-                    type = slot.type;
+                    typeName = slot.type
                 }
-            });
-            return this.getSlotByType(type);
-        },
-        getSlotByType(type) {
-            return () => import('./slots/' + type).catch(() => {
-                return import('./NoComponent');
-            });
-        },
-        getContentByType(slots, type) {
-            let slotContent  = {};
-            _.forEach(slots, (slot) => {
-                if (slot.type === type) {
-                    slotContent = slot;
-                }
-            });
-            return slotContent;
+            })
+            return returnSlotByType(typeName)
         },
         getContentByPosition(slots, position) {
-            let slotContent  = {};
-            _.forEach(slots, (slot) => {
+            let slotContent = {}
+            _.forEach(slots, slot => {
                 if (slot.slot === position) {
-                    slotContent = slot;
+                    slotContent = slot
                 }
-            });
-            return slotContent;
+            })
+            return slotContent
         }
     }
-};
+}
 
 export const sectionMixins = {
+    computed: {
+        blockClass() {
+            return 'cms-block-' + this.content.type;
+        },
+    },
     methods: {
         getBlockByType(type) {
-            return () => import('./blocks/' + type).catch(() => {
-                return import('./NoComponent');
-            });
-        },
+            return returnBlockByType(type);
+        }
     }
-};
+}

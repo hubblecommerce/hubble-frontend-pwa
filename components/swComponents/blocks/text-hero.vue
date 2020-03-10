@@ -4,13 +4,14 @@
             <component :is="getSlot" :content="getContentByPosition(content.slots, 'content')" />
         </div>
     </div>
+
 </template>
 
 <script>
     import { blockMixins } from '../helper'
 
     export default {
-        name: 'SidebarFilterBlock',
+        name: 'TextHeroBlock',
 
         mixins: [blockMixins],
 
@@ -31,4 +32,3 @@
 <style scoped>
 
 </style>
-

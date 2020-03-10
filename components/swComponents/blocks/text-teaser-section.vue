@@ -3,19 +3,17 @@
         <div class="col-md-4">
             <component :is="leftSlot" :content="getContentByPosition(content.slots, 'left')" />
         </div>
-        <div class="col-md-4">
-            <component :is="centerSlot" :content="getContentByPosition(content.slots, 'center')" />
-        </div>
-        <div class="col-md-4">
+        <div class="col-md-8">
             <component :is="rightSlot" :content="getContentByPosition(content.slots, 'right')" />
         </div>
     </div>
 </template>
+
 <script>
-    import { blockMixins } from '../helper'
+    import {blockMixins} from '../helper'
 
     export default {
-        name: 'TextThreeColumnBlock',
+        name: 'TextTeaserSectionBlock',
 
         mixins: [blockMixins],
 
@@ -28,9 +26,6 @@
         computed: {
             leftSlot() {
                 return this.getSlotByPosition(this.content.slots, 'left');
-            },
-            centerSlot() {
-                return this.getSlotByPosition(this.content.slots, 'center');
             },
             rightSlot() {
                 return this.getSlotByPosition(this.content.slots, 'right');

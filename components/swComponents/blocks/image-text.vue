@@ -1,5 +1,5 @@
 <template>
-    <div class="row">
+    <div>
         <div class="col-md-6">
             <component :is="leftSlot" :content="getContentByPosition(content.slots, 'left')" />
         </div>
@@ -13,7 +13,7 @@
 import {blockMixins} from '../helper'
 
 export default {
-    name: 'ImageText',
+    name: 'ImageTextBlock',
 
     mixins: [blockMixins],
 

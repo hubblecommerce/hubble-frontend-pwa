@@ -17,10 +17,8 @@
         <template v-if="isShopware">
             <div class="container">
                  <sw-section v-for="cmsSection in cmsSections"
-                             :key="cmsSection.id"
-                             :content="cmsSection"
-                             :category-product-items="categoryProductItems"
-                             :category-name:="categoryItem.name"
+                            :key="cmsSection.id"
+                            :content="cmsSection"
                  />
             </div>
         </template>

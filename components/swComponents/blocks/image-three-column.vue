@@ -15,7 +15,7 @@
     import { blockMixins } from '../helper'
 
     export default {
-        name: 'TextThreeColumnBlock',
+        name: 'ImageThreeColumnBlock',
 
         mixins: [blockMixins],
 

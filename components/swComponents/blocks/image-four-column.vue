@@ -1,21 +1,25 @@
 <template>
     <div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <component :is="leftSlot" :content="getContentByPosition(content.slots, 'left')" />
         </div>
-        <div class="col-md-4">
-            <component :is="centerSlot" :content="getContentByPosition(content.slots, 'center')" />
+        <div class="col-md-3">
+            <component :is="centerLeftSlot" :content="getContentByPosition(content.slots, 'center-left')" />
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
+            <component :is="centerRightSlot" :content="getContentByPosition(content.slots, 'center-right')" />
+        </div>
+        <div class="col-md-3">
             <component :is="rightSlot" :content="getContentByPosition(content.slots, 'right')" />
         </div>
     </div>
 </template>
+
 <script>
     import { blockMixins } from '../helper'
 
     export default {
-        name: 'TextThreeColumnBlock',
+        name: 'ImageFourColumnBlock',
 
         mixins: [blockMixins],
 
@@ -29,8 +33,11 @@
             leftSlot() {
                 return this.getSlotByPosition(this.content.slots, 'left');
             },
-            centerSlot() {
-                return this.getSlotByPosition(this.content.slots, 'center');
+            centerLeftSlot() {
+                return this.getSlotByPosition(this.content.slots, 'center-left');
+            },
+            centerRightSlot() {
+                return this.getSlotByPosition(this.content.slots, 'center-right');
             },
             rightSlot() {
                 return this.getSlotByPosition(this.content.slots, 'right');

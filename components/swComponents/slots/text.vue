@@ -1,13 +1,17 @@
 <template>
-    <div class="">
-        <div class="" v-html="rawHtml"></div>
+    <div :class="elementClass">
+        <div>
+            <div class="" v-html="rawHtml"></div>
+        </div>
     </div>
 </template>
 
 <script>
+    import { slotMixins } from '../helper'
+
     export default {
-        name: 'ShopwareText',
-        components: {},
+        name: 'TextSlot',
+        mixins: [slotMixins],
         props: {
             content: {
                 type: Object,

@@ -10,7 +10,7 @@
     import { blockMixins } from '../helper'
 
     export default {
-        name: 'SidebarFilterBlock',
+        name: 'TextOnImageBlock',
 
         mixins: [blockMixins],
 
@@ -31,4 +31,3 @@
 <style scoped>
 
 </style>
-

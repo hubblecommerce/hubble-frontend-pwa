@@ -10,8 +10,7 @@
     import { blockMixins } from '../helper'
 
     export default {
-        name: 'SidebarFilterBlock',
-
+        name: 'CategoryNavigationBlock',
         mixins: [blockMixins],
 
         props: {
@@ -31,4 +30,3 @@
 <style scoped>
 
 </style>
-

@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="col-12">
-            <component :is="getSlot" :content="getContentByPosition(content.slots, 'content')" />
+            <component :is="getSlot" :content="getContentByPosition(content.slots, 'imageGallery')" />
         </div>
     </div>
 </template>
@@ -9,9 +9,9 @@
 <script>
     import { blockMixins } from '../helper'
 
-    export default {
-        name: 'SidebarFilterBlock',
 
+    export default {
+        name: 'ImageSliderBlock',
         mixins: [blockMixins],
 
         props: {
@@ -22,7 +22,7 @@
         },
         computed: {
             getSlot() {
-                return this.getSlotByPosition(this.content.slots, 'content');
+                return this.getSlotByPosition(this.content.slots, 'imageGallery');
             }
         }
     }
@@ -31,4 +31,3 @@
 <style scoped>
 
 </style>
-

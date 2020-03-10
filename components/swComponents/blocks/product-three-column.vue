@@ -1,12 +1,12 @@
 <template>
     <div>
-        <div class="col-md-4">
+        <div class="col-md-4 card-col">
             <component :is="leftSlot" :content="getContentByPosition(content.slots, 'left')" />
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4 card-col">
             <component :is="centerSlot" :content="getContentByPosition(content.slots, 'center')" />
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4 card-col">
             <component :is="rightSlot" :content="getContentByPosition(content.slots, 'right')" />
         </div>
     </div>
@@ -15,7 +15,7 @@
     import { blockMixins } from '../helper'
 
     export default {
-        name: 'TextThreeColumnBlock',
+        name: 'ProductThreeColumnBlock',
 
         mixins: [blockMixins],
 
