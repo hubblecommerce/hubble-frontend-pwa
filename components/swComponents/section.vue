@@ -36,7 +36,6 @@ export default {
 
     computed: {
         isBlock() {
-            console.log(this.content);
             return this.content.blocks && this.content.blocks.length;
         },
         cmsSlots() {

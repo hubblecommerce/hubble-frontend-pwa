@@ -45,9 +45,6 @@
 
 
         created() {
-            console.log('category nav: ', this.content)
-            console.log(this.dataCategory)
-            console.log(this.dataMenu)
             // Set data from store on create instead of use vuex store directly
             // This prevents showing data of next category if user switches between categories
             if(!_.isEmpty(this.dataCategory.result)) {

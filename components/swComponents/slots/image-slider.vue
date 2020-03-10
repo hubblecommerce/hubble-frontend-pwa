@@ -48,7 +48,6 @@
             /*this.$store.dispatch('modApiResources/mappingCategoryProducts', {
                 data: this.content.data.products
             }).then((response) => {
-                console.log(response)
                 this.dataItems = response.items;
                 this.loaded = true;
             });*/
