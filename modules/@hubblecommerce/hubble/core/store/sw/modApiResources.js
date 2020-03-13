@@ -927,7 +927,7 @@ export default function (ctx) {
             },
             async getPage({commit, state, rootState, dispatch, getters}, payload) {
                 return new Promise((resolve, reject) => {
-                    let _endpoint = '/sales-channel-api/v1/vsf/page';
+                    let _endpoint = '/sales-channel-api/v1/dmf/page';
 
                     dispatch('apiCall', {
                         action: 'post',
