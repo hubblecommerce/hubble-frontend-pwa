@@ -31,8 +31,8 @@ export default {
     },
 
     created() {
-        if(this.$route.query.order) {
-            this.modelSelected = this.$route.query.order;
+        if(this.$route.query.sort) {
+            this.modelSelected = this.$route.query.sort;
         }
     },
 

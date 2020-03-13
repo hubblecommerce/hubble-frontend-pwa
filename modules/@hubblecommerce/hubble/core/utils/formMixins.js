@@ -37,6 +37,8 @@ const mapIsoToCountry = {
 const addBackendErrors = {
     methods: {
         addBackendErrors: function(errors) {
+            // TODO: map sw6 api errors to hubble structure
+
             // get error Messages as array
             let errorMessages = _.mapValues(errors, val => {
                 return [val];
@@ -49,7 +51,35 @@ const addBackendErrors = {
 const salutations = {
     data() {
         return {
-            salutations: [{key: 'm', value: this.$t('Mr.')}, {key: 'f' , value: this.$t('Mrs.')}],
+            salutations: null,
+        }
+    },
+
+    created() {
+        if(process.env.API_TYPE === 'sw') {
+            this.$store.dispatch('modApiPayment/swGetSalutations').then((response) => {
+               let mappedSalutations = [];
+
+               _.forEach(response.data.data, (salutation) => {
+                   mappedSalutations.push({
+                       key: salutation.id,
+                       value: this.$t(salutation.displayName)
+                   })
+               });
+
+               this.salutations = mappedSalutations;
+           })
+        } else {
+            this.salutations = [
+                {
+                    key: 'm',
+                    value: this.$t('Mr.')
+                },
+                {
+                    key: 'f' ,
+                    value: this.$t('Mrs.')
+                }
+            ]
         }
     }
 };

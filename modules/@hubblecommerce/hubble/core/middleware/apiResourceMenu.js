@@ -15,7 +15,7 @@ Middleware.apiResourceMenu = function ({ isHMR, app, store, error }) {
     let _dataMenu = store.getters['modApiResources/getDataMenu'];
 
     // check vuex store object first (not empty and same locale)
-    if(! _.isEmpty(_dataMenu) && _dataMenu.locale === app.i18n.locale) {
+    if(! _.isEmpty(_dataMenu) ) {
 
         // check expiry of cachable object
         if(_dataMenu.expires_at_unixtime >= datetimeUnixNow()) {

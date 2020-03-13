@@ -199,6 +199,18 @@ $spacers: map-merge(
     align-items: center!important;
 }
 
+.align-self-start {
+    align-self: flex-start;
+}
+
+.align-self-center {
+    align-self: center;
+}
+
+.align-self-end {
+    align-self: flex-end;
+}
+
 .bg-light {
     background-color: $bg-light-grey;
 }

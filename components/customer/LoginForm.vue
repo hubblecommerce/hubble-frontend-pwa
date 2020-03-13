@@ -139,6 +139,13 @@
 
                         // If current route is checkout, then do redirect to checkout
                         if(this.$router.history.current.path.includes('/checkout')) {
+                            if(process.env.API_TYPE === 'sw') {
+                                this.$router.push({
+                                    path: this.localePath('checkout-shopware-onepage')
+                                });
+                                return;
+                            }
+
                             this.$router.push({
                                 path: this.localePath('checkout-payment')
                             });

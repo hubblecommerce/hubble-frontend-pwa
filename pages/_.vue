@@ -8,9 +8,9 @@
 
 <script>
     import { mapState } from 'vuex';
-    import ViewCategory from "../../components/productlist/ViewCategory";
-    import ViewProduct from "../../components/productdetail/ViewProduct";
-    import ViewContent from "../../components/cms/ViewContent";
+    import ViewCategory from "../components/productlist/ViewCategory";
+    import ViewProduct from "../components/productdetail/ViewProduct";
+    import ViewContent from "../components/cms/ViewContent";
 
     export default {
         name: "RouteResolver",

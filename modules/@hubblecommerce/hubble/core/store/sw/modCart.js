@@ -560,6 +560,33 @@ export default function (ctx) {
 
                 })
             },
+            async calculateShippingCosts({state, commit, dispatch}, payload) {
+                return new Promise((resolve, reject)  => {
+                    //// Get matching rules by country from tablerates
+                    //let matchingCountries = getShippingCostsByCountry(payload);
+                    //if(!matchingCountries) {
+                    //    reject('No matching countries in tablerates found for selected country');
+                    //    return;
+                    //}
+                    //
+                    //// Get shipping costs by subtotal in cart from tablerates
+                    //let matchingRule = getShippingCostsByCartVal(matchingCountries, state.cart.subtotal_with_discount);
+                    //if(!matchingRule) {
+                    //    reject('No matching condition in tablerates found for subtotal value in cart');
+                    //    return;
+                    //}
+                    //
+                    //let shippingCosts = matchingRule['Shipping Price'];
+                    //if(shippingCosts === null) {
+                    //    reject('Error calculating shipping costs');
+                    //    return;
+                    //}
+                    //
+                    //commit('setShippingCosts', shippingCosts);
+                    //commit('setTotals');
+                    resolve('Calculated shipping cost and setTotals');
+                });
+            },
             async precalculateShippingCost({commit, dispatch}, payload) {
                 return true;
             }

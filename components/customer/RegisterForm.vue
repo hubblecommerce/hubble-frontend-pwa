@@ -530,10 +530,13 @@
                         // Get newly created wishlist id and save to store
                         this.$store.commit('modWishlist/setWishlistId', response.data.item.id);
                         this.$store.dispatch('modWishlist/saveToStore');
+                    }).catch(response => {
+
                     });
 
                     // if double addressbook mode is true store address separately
-                    if(this.alternativeShippingAddress) {
+                    // but not for SW API because the billing address is already set in register action
+                    if(this.alternativeShippingAddress && !process.env.API_TYPE === 'sw') {
                         // Store Address
                         this.$store.dispatch('modApiPayment/storeCustomerAddress', this.form.addresses[0]).then(() => {
 
