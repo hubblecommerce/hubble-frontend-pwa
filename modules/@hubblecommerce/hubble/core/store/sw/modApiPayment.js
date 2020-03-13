@@ -865,6 +865,18 @@ export default function (ctx) {
                     });
                 });
             },
+            async updateWishlist({dispatch}, payload) {
+                return new Promise((resolve, reject)  => {
+                    // Updating wishlist from customer is currently not implemented in SW6 headless API
+                    resolve();
+                });
+            },
+            async deleteWishlist({dispatch}, payload) {
+                return new Promise((resolve, reject)  => {
+                    // Removing wishlist from customer is currently not implemented in SW6 headless API
+                    resolve();
+                });
+            },
             /*
             * Checkout Actions
             */
@@ -935,7 +947,7 @@ export default function (ctx) {
 
                     resolve();
                 })
-            },
+            }
         }
     };
 

@@ -14,7 +14,7 @@
             <breadcrumbs :path="breadcrumbs" />
         </div>
 
-        <template v-if="isShopware">
+        <template v-if="false">
             <div class="container">
                  <sw-section v-for="cmsSection in cmsSections"
                             :key="cmsSection.id"

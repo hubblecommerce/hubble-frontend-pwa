@@ -22,7 +22,6 @@ Middleware.apiResourceRoute = function({app, store, route, error}) {
 
     // Lookup if url matches one of the category urls
     let matchingCategory = findCategoryByUrl(store.getters['modApiResources/getDataMenu'].result.items, _path);
-
     if(matchingCategory) {
 
         return new Promise((resolve, reject) => {
