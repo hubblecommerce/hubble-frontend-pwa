@@ -296,6 +296,12 @@
 </script>
 
 <style lang="scss">
+    .summary-container {
+        max-width: none;
+        margin-left: 0;
+        width: 100%;
+    }
+
     .icon-payment, .icon-truck {
         position: absolute;
         right: 0;
