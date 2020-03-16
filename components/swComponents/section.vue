@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import Block from './Block';
+import Block from './block';
 
 export default {
     name: 'Section',
