@@ -176,6 +176,9 @@ export default function (ctx) {
             setPaymentMethods: (state, payload) => {
                 state.paymentMethods = payload;
             },
+            setShippingMethods: (state, payload) => {
+                state.shippingMethods = payload;
+            },
         },
         getters:  {
             getApiAuthToken: state => {
@@ -936,9 +939,8 @@ export default function (ctx) {
                         endpoint: '/sales-channel-api/v1/shipping-method'
                     }, { root: true })
                         .then(response => {
-                            console.log(response);
                             // Save payment methods to store
-                            //commit('setShippingMethods', response.data.allowed_shippings);
+                            commit('setShippingMethods', response.data.data);
                             resolve('OK');
                         })
                         .catch(response => {
