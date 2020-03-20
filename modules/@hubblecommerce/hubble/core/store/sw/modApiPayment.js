@@ -38,6 +38,7 @@ export default function (ctx) {
 
             // Shipping Country Error
             shippingCountryError: null,
+            availableCountries: {},
 
             // Order
             order: {
@@ -171,6 +172,9 @@ export default function (ctx) {
             },
             setOrder: (state, payload) => {
                 state.order = payload;
+            },
+            setPaymentMethods: (state, payload) => {
+                state.paymentMethods = payload;
             },
         },
         getters:  {
@@ -886,9 +890,35 @@ export default function (ctx) {
                         endpoint: '/sales-channel-api/v1/payment-method'
                     }, { root: true })
                         .then(response => {
-                            console.log(response);
+                            // Map Payone Keys to Payment Methods od Payone
+                            // No other way to set those keys at the moment
+                            // Need payone keys to call payone api
+                            // TODO: Implement payone key via api
+                            let mappedPayments = [];
+
+                            _.forEach(response.data.data, (val) => {
+
+                                if(val.name === 'Payone PayPal') {
+                                    val.payone_key = 'payone_wlt'
+                                }
+
+                                if(val.name === 'Payone Credit Card') {
+                                    val.payone_key = 'payone_cc'
+                                }
+
+                                if(val.name === 'Payone Paysafe Pay Later Invoice') {
+                                    val.payone_key = 'payone_rec'
+                                }
+
+                                if(val.name === 'Paid in advance') {
+                                    val.payone_key = 'payone_vor'
+                                }
+
+                                mappedPayments.push(val);
+                            });
+
                             // Save payment methods to store
-                            //commit('setPaymentMethods', response.data.allowed_payments);
+                            commit('setPaymentMethods', mappedPayments);
                             resolve('OK');
                         })
                         .catch(response => {

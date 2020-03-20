@@ -618,11 +618,19 @@
             redirectToCheckout: function() {
                 // If current route is checkout, then do redirect to checkout
                 if(this.$router.history.current.path.includes('/checkout')) {
-                    this.$router.push({
-                        path: this.localePath('checkout-payment')
-                    }, () => {
-                        this.processingRegister = false;
-                    });
+                    if(process.env.API_TYPE === 'sw') {
+                        this.$router.push({
+                            path: this.localePath('checkout-shopware-onepage')
+                        }, () => {
+                            this.processingRegister = false;
+                        });
+                    } else {
+                        this.$router.push({
+                            path: this.localePath('checkout-payment')
+                        }, () => {
+                            this.processingRegister = false;
+                        });
+                    }
                 }
 
                 if(this.$router.history.current.path.includes('/customer')) {

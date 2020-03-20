@@ -2,109 +2,109 @@
     <div v-if="!loading && !apiError" class="payment-methods-wrp">
         <div class="headline headline-3" v-text="$t('Payment')" />
 
-        <!-- Static payment method Payone CC -->
-        <div v-if="isAllowedMethod('payone_cc')" class="method-wrp cc">
-            <div class="hbl-checkbox">
-                <input id="payment-option-cc" v-model="chosenMethod" type="radio" :value="'payone_cc'">
-                <label for="payment-option-cc" class="method-label">
-                    <span class="name" v-text="$t('Credit Card')" />
-                    <span :class="'method-image-1'" />
-                </label>
-            </div>
-            <div v-show="chosenMethod === 'payone_cc'" class="payone-payment-wrp">
-                <client-only>
-                    <payone-channel-client-hosted-iframe />
-                </client-only>
-            </div>
-        </div>
+<!--        &lt;!&ndash; Static payment method Payone CC &ndash;&gt;-->
+<!--        <div v-if="isAllowedMethod('payone_cc')" class="method-wrp cc">-->
+<!--            <div class="hbl-checkbox">-->
+<!--                <input id="payment-option-cc" v-model="chosenMethod" type="radio" :value="'payone_cc'">-->
+<!--                <label for="payment-option-cc" class="method-label">-->
+<!--                    <span class="name" v-text="$t('Credit Card')" />-->
+<!--                    <span :class="'method-image-1'" />-->
+<!--                </label>-->
+<!--            </div>-->
+<!--            <div v-show="chosenMethod === 'payone_cc'" class="payone-payment-wrp">-->
+<!--                <client-only>-->
+<!--                    <payone-channel-client-hosted-iframe />-->
+<!--                </client-only>-->
+<!--            </div>-->
+<!--        </div>-->
 
-        <!-- Static payment method Payone Online Bank Tranfer -->
-        <div v-if="isAllowedMethod('payone_sb')" class="method-wrp online-bank-transfer">
-            <div class="hbl-checkbox">
-                <input id="payment-option-sb" v-model="chosenMethod" type="radio" :value="'payone_sb'">
-                <label for="payment-option-sb" class="method-label">
-                    <span class="name" v-text="$t('Online Bank Transfer')" />
-                    <span class="description" v-text="$t('After checkout you will be redirected to the selected payment provider.')" />
-                    <span :class="'online-bank-transfer-image'" />
-                </label>
-            </div>
-            <div v-if="chosenMethod === 'payone_sb'" class="payone-payment-wrp">
-                <div class="hbl-checkbox">
-                    <input id="payment-option-sofort" v-model="onlinebanktransfertype" type="radio" :value="'PNT'">
-                    <label for="payment-option-sofort" class="method-label">
-                        <span class="name" v-text="'Sofortüberweisung Klarna'" />
-                    </label>
-                </div>
-                <div class="hbl-checkbox">
-                    <input id="payment-option-giropay" v-model="onlinebanktransfertype" type="radio" :value="'GPY'">
-                    <label for="payment-option-giropay" class="method-label">
-                        <span class="name" v-text="'giropay'" />
-                    </label>
-                </div>
-                <div class="hbl-input-group">
-                    <input id="sbIban" v-model="sbIban" type="text" name="name" placeholder=" " required>
-                    <label for="sbIban">IBAN*</label>
-                    <div v-if="ibanError" class="validation-msg" v-text="$t('Please insert valid IBAN')" />
-                </div>
-                <div class="hbl-input-group">
-                    <input id="sbBic" v-model="sbBic" type="text" name="name" placeholder=" " required>
-                    <label for="sbBic">BIC*</label>
-                    <div v-if="bicError" class="validation-msg" v-text="$t('Please insert valid BIC')" />
-                </div>
-            </div>
-        </div>
+<!--        &lt;!&ndash; Static payment method Payone Online Bank Tranfer &ndash;&gt;-->
+<!--        <div v-if="isAllowedMethod('payone_sb')" class="method-wrp online-bank-transfer">-->
+<!--            <div class="hbl-checkbox">-->
+<!--                <input id="payment-option-sb" v-model="chosenMethod" type="radio" :value="'payone_sb'">-->
+<!--                <label for="payment-option-sb" class="method-label">-->
+<!--                    <span class="name" v-text="$t('Online Bank Transfer')" />-->
+<!--                    <span class="description" v-text="$t('After checkout you will be redirected to the selected payment provider.')" />-->
+<!--                    <span :class="'online-bank-transfer-image'" />-->
+<!--                </label>-->
+<!--            </div>-->
+<!--            <div v-if="chosenMethod === 'payone_sb'" class="payone-payment-wrp">-->
+<!--                <div class="hbl-checkbox">-->
+<!--                    <input id="payment-option-sofort" v-model="onlinebanktransfertype" type="radio" :value="'PNT'">-->
+<!--                    <label for="payment-option-sofort" class="method-label">-->
+<!--                        <span class="name" v-text="'Sofortüberweisung Klarna'" />-->
+<!--                    </label>-->
+<!--                </div>-->
+<!--                <div class="hbl-checkbox">-->
+<!--                    <input id="payment-option-giropay" v-model="onlinebanktransfertype" type="radio" :value="'GPY'">-->
+<!--                    <label for="payment-option-giropay" class="method-label">-->
+<!--                        <span class="name" v-text="'giropay'" />-->
+<!--                    </label>-->
+<!--                </div>-->
+<!--                <div class="hbl-input-group">-->
+<!--                    <input id="sbIban" v-model="sbIban" type="text" name="name" placeholder=" " required>-->
+<!--                    <label for="sbIban">IBAN*</label>-->
+<!--                    <div v-if="ibanError" class="validation-msg" v-text="$t('Please insert valid IBAN')" />-->
+<!--                </div>-->
+<!--                <div class="hbl-input-group">-->
+<!--                    <input id="sbBic" v-model="sbBic" type="text" name="name" placeholder=" " required>-->
+<!--                    <label for="sbBic">BIC*</label>-->
+<!--                    <div v-if="bicError" class="validation-msg" v-text="$t('Please insert valid BIC')" />-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
 
-        <!-- Static payment method Payone Paypal -->
-        <div v-if="isAllowedMethod('payone_wlt')" class="method-wrp paypal">
-            <div class="hbl-checkbox">
-                <input id="payment-option-pp" v-model="chosenMethod" type="radio" :value="'payone_wlt'">
-                <label for="payment-option-pp" class="method-label">
-                    <span class="name" v-text="$t('Paypal')" />
-                    <span class="description" v-text="$t('After checkout you will be redirected to paypal.')" />
-                    <span :class="'method-image-2'" />
-                </label>
-            </div>
-        </div>
+<!--        &lt;!&ndash; Static payment method Payone Paypal &ndash;&gt;-->
+<!--        <div v-if="isAllowedMethod('payone_wlt')" class="method-wrp paypal">-->
+<!--            <div class="hbl-checkbox">-->
+<!--                <input id="payment-option-pp" v-model="chosenMethod" type="radio" :value="'payone_wlt'">-->
+<!--                <label for="payment-option-pp" class="method-label">-->
+<!--                    <span class="name" v-text="$t('Paypal')" />-->
+<!--                    <span class="description" v-text="$t('After checkout you will be redirected to paypal.')" />-->
+<!--                    <span :class="'method-image-2'" />-->
+<!--                </label>-->
+<!--            </div>-->
+<!--        </div>-->
 
-        <!-- Static payment method Payone Invoice -->
-        <div v-if="isAllowedMethod('payone_rec')" class="method-wrp invoice">
-            <div class="hbl-checkbox">
-                <input id="payment-option-rec" v-model="chosenMethod" type="radio" :value="'payone_rec'">
-                <label for="payment-option-rec" class="method-label">
-                    <span class="name" v-text="$t('Invoice')" />
-                </label>
-            </div>
-            <div v-if="chosenMethod === 'payone_rec'" class="payone-payment-wrp">
-                <p class="text">
-                    Bitte beachten Sie, dass wir bei einer Lieferung auf Rechnung Ihre Adressdaten von einem zertifizierten
-                    Zahlungsdienstleister prüfen lassen. In seltenen Fällen kann es vorkommen, dass dort Personen unter der angegebenen
-                    korrekten Adresse nicht bekannt sind. Bitte wählen Sie dann eine andere Zahlart aus, da wir diese Prüfung leider nicht
-                    umgehen können.
-                </p>
-            </div>
-        </div>
+<!--        &lt;!&ndash; Static payment method Payone Invoice &ndash;&gt;-->
+<!--        <div v-if="isAllowedMethod('payone_rec')" class="method-wrp invoice">-->
+<!--            <div class="hbl-checkbox">-->
+<!--                <input id="payment-option-rec" v-model="chosenMethod" type="radio" :value="'payone_rec'">-->
+<!--                <label for="payment-option-rec" class="method-label">-->
+<!--                    <span class="name" v-text="$t('Invoice')" />-->
+<!--                </label>-->
+<!--            </div>-->
+<!--            <div v-if="chosenMethod === 'payone_rec'" class="payone-payment-wrp">-->
+<!--                <p class="text">-->
+<!--                    Bitte beachten Sie, dass wir bei einer Lieferung auf Rechnung Ihre Adressdaten von einem zertifizierten-->
+<!--                    Zahlungsdienstleister prüfen lassen. In seltenen Fällen kann es vorkommen, dass dort Personen unter der angegebenen-->
+<!--                    korrekten Adresse nicht bekannt sind. Bitte wählen Sie dann eine andere Zahlart aus, da wir diese Prüfung leider nicht-->
+<!--                    umgehen können.-->
+<!--                </p>-->
+<!--            </div>-->
+<!--        </div>-->
 
-        <!-- Static payment method Payone Prepayment -->
-        <div v-if="isAllowedMethod('payone_vor')" class="method-wrp prepayment">
-            <div class="hbl-checkbox">
-                <input id="payment-option-vor" v-model="chosenMethod" type="radio" :value="'payone_vor'">
-                <label for="payment-option-vor" class="method-label">
-                    <span class="name" v-text="$t('Prepayment')" />
-                </label>
-            </div>
-            <div v-if="chosenMethod === 'vor'" class="payone-payment-wrp">
-                <div class="text">Bitte überweisen Sie den Betrag <strong>{{ this.getTotal() }}</strong> auf folgendes Konto:</div>
-                <div class="text"><span class="label">Kontoinhaber:</span></div>
-                <div class="text"><span class="label">IBAN:</span></div>
-                <div class="text"><span class="label">BIC:</span></div>
-            </div>
-        </div>
+<!--        &lt;!&ndash; Static payment method Payone Prepayment &ndash;&gt;-->
+<!--        <div v-if="isAllowedMethod('payone_vor')" class="method-wrp prepayment">-->
+<!--            <div class="hbl-checkbox">-->
+<!--                <input id="payment-option-vor" v-model="chosenMethod" type="radio" :value="'payone_vor'">-->
+<!--                <label for="payment-option-vor" class="method-label">-->
+<!--                    <span class="name" v-text="$t('Prepayment')" />-->
+<!--                </label>-->
+<!--            </div>-->
+<!--            <div v-if="chosenMethod === 'vor'" class="payone-payment-wrp">-->
+<!--                <div class="text">Bitte überweisen Sie den Betrag <strong>{{ this.getTotal() }}</strong> auf folgendes Konto:</div>-->
+<!--                <div class="text"><span class="label">Kontoinhaber:</span></div>-->
+<!--                <div class="text"><span class="label">IBAN:</span></div>-->
+<!--                <div class="text"><span class="label">BIC:</span></div>-->
+<!--            </div>-->
+<!--        </div>-->
 
         <!-- Dynamic payment methods from api -->
-        <div v-for="method in paymentMethods" :key="method.id" class="method-wrp hbl-checkbox">
-            <input :id="'payment-option-' + method.id" v-model="chosenMethod" type="radio" :value="method.id">
+        <div v-for="method in paymentMethods" :key="method.id" v-if="method.active" class="method-wrp hbl-checkbox">
+            <input :id="'payment-option-' + method.id" v-model="chosenMethod" type="radio" :value="method.payone_key ? method.payone_key : method.id ">
             <label :for="'payment-option-' + method.id" class="method-label">
-                <span class="name" v-text="'API '+method.label" />
+                <span class="name" v-text="method.name" />
                 <span class="description" v-text="method.description" />
                 <span :class="'method-image-' + method.id" />
             </label>
@@ -239,15 +239,6 @@
 
             sbBic: function() {
                 this.setSbData();
-            },
-
-            customerAddresses: function() {
-                // Check allowed payments if address changed
-                this.getPaymentMethods().then();
-
-                // Reset choosen payment method after address changed
-                this.chosenMethod = 1;
-                this.chosenMethodObj = {};
             }
 
         },
@@ -260,13 +251,15 @@
             this.$store.commit('modApiPayment/setBicError', false);
 
             this.loading = true;
-            this.getPaymentMethods().then(()=>{
-                this.setChosenPaymentMethod();
-                this.loading = false;
-            }).catch(() => {
-                this.apiError = true;
-                this.loading = false;
-            });
+            if(_.isEmpty(this.paymentMethods)) {
+                this.getPaymentMethods().then(()=>{
+                    this.setChosenPaymentMethod();
+                    this.loading = false;
+                }).catch(() => {
+                    this.apiError = true;
+                    this.loading = false;
+                });
+            }
         },
 
         methods: {
@@ -277,7 +270,6 @@
                         resolve();
                     }).catch((error) => {
                         this.loading = false;
-                        console.log(error);
                         reject(error);
                     });
                 })
