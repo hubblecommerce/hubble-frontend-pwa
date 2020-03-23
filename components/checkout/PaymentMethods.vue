@@ -133,7 +133,7 @@
             return {
                 loading: false,
                 apiError: false,
-                chosenMethod: 1,
+                chosenMethod: null,
                 chosenMethodObj: {},
 
                 elvIban: '',
@@ -162,10 +162,13 @@
 
         watch: {
             chosenMethod: function(newValue) {
+                // Set method by payone_key
                 this.setMethodById(newValue);
 
+                // Build object as we need it for payone and api
                 if(newValue === 'payone_cc') {
                     this.chosenMethodObj = {
+                        id: this.chosenMethodObj.id,
                         key: 'payone_cc',
                         label: this.$t('Credit Card'),
                         payload: {}
@@ -174,6 +177,7 @@
 
                 if(newValue === 'payone_wlt') {
                     this.chosenMethodObj = {
+                        id: this.chosenMethodObj.id,
                         key: 'payone_wlt',
                         label: this.$t('Paypal'),
                         payload: {}
@@ -182,6 +186,7 @@
 
                 if(newValue === 'payone_elv') {
                     this.chosenMethodObj = {
+                        id: this.chosenMethodObj.id,
                         key: 'payone_elv',
                         label: this.$t('ELV'),
                         payload: {
@@ -192,6 +197,7 @@
 
                 if(newValue === 'payone_sb') {
                     this.chosenMethodObj = {
+                        id: this.chosenMethodObj.id,
                         key: 'payone_sb',
                         label: this.$t('Online Bank Transfer'),
                         payload: {
@@ -204,6 +210,7 @@
 
                 if(newValue === 'payone_rec') {
                     this.chosenMethodObj = {
+                        id: this.chosenMethodObj.id,
                         key: 'payone_rec',
                         label: this.$t('Invoice'),
                         payload: {}
@@ -212,13 +219,16 @@
 
                 if(newValue === 'payone_vor') {
                     this.chosenMethodObj = {
+                        id: this.chosenMethodObj.id,
                         key: 'payone_vor',
                         label: this.$t('Prepayment'),
                         payload: {}
                     }
                 }
 
-                this.$store.dispatch('modApiPayment/storeChosenPaymentMethod', this.chosenMethodObj);
+                if(!_.isEmpty(this.chosenMethodObj)) {
+                    this.$store.dispatch('modApiPayment/storeChosenPaymentMethod', this.chosenMethodObj);
+                }
             },
 
             elvIban: function() {
@@ -259,6 +269,8 @@
                     this.apiError = true;
                     this.loading = false;
                 });
+            } else {
+                this.loading = false;
             }
         },
 
@@ -285,9 +297,9 @@
                     //this.chosenMethod = this.getChosenPaymentMethod.id;
                 }
             },
-            setMethodById: function(id) {
+            setMethodById: function(key) {
                 _.forEach(this.paymentMethods, (val) => {
-                    if(val.id === id ){
+                    if(val.payone_key === key ){
                         this.chosenMethodObj = val;
                     }
                 });
@@ -326,25 +338,25 @@
 
                 return total;
             },
-            isAllowedMethod: function(key) {
-
-                // Get method by key
-                let method = _.find(this.paymentMethods, function(o) {
-                    return o.key === key;
-                });
-
-                // Check if method is available
-                if( _.isEmpty(method)) {
-                    return true;
-                }
-
-                // Check if payment method is allowed for current address
-                if(method.fraud || method.blacklist) {
-                    return false;
-                }
-
-                return true;
-            }
+            //isAllowedMethod: function(key) {
+            //
+            //    // Get method by key
+            //    let method = _.find(this.paymentMethods, function(o) {
+            //        return o.key === key;
+            //    });
+            //
+            //    // Check if method is available
+            //    if( _.isEmpty(method)) {
+            //        return true;
+            //    }
+            //
+            //    // Check if payment method is allowed for current address
+            //    if(method.fraud || method.blacklist) {
+            //        return false;
+            //    }
+            //
+            //    return true;
+            //}
         }
     }
 </script>

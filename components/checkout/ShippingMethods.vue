@@ -61,13 +61,17 @@
 
         mounted() {
             this.loading = true;
-            this.getShippingMethods().then(()=>{
-                this.setChosenShippingMethod();
+            if(_.isEmpty(this.shippingMethods)) {
+                this.getShippingMethods().then(() => {
+                    this.setChosenShippingMethod();
+                    this.loading = false;
+                }).catch(() => {
+                    this.apiError = true;
+                    this.loading = false;
+                });
+            } else {
                 this.loading = false;
-            }).catch(() => {
-                this.apiError = true;
-                this.loading = false;
-            });
+            }
         },
 
         methods: {
@@ -83,13 +87,13 @@
                 })
             },
             setChosenShippingMethod: function() {
-                if(this.getChosenShippingMethod) {
-                    this.chosenMethod = this.getChosenShippingMethod.key;
+                if(!_.isEmpty(this.getChosenShippingMethod)) {
+                    this.chosenMethod = this.getChosenShippingMethod.id;
                 }
             },
             setMethodById: function(key) {
                 _.forEach(this.shippingMethods, (val) => {
-                    if(val.key === key ){
+                    if(val.id === key ){
                         this.chosenMethodObj = val;
                     }
                 });

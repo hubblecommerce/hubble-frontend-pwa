@@ -179,6 +179,9 @@ export default function (ctx) {
             setShippingMethods: (state, payload) => {
                 state.shippingMethods = payload;
             },
+            setOrderComment: (state, payload) => {
+                state.order.orderComment = payload;
+            },
         },
         getters:  {
             getApiAuthToken: state => {
@@ -949,32 +952,88 @@ export default function (ctx) {
                         });
                 });
             },
-            async storeChosenPaymentMethod({commit, state, getters}, payload) {
+            async swSetPaymentMethod({commit, dispatch, rootState, state}, payload) {
+                return new Promise((resolve, reject)  => {
+                    dispatch('apiCall', {
+                        action: 'patch',
+                        tokenType: 'sw',
+                        apiType: 'data',
+                        swContext: state.customer.customerAuth.token,
+                        endpoint: '/sales-channel-api/v1/context',
+                        data: {
+                            paymentMethodId: payload.id
+                        }
+                    }, { root: true })
+                        .then(response => {
+                            // Save payment methods to store
+                            resolve('OK');
+                        })
+                        .catch(response => {
+                            console.log('swSetPaymentMethod failed: %o', response);
+                            reject('swSetPaymentMethod failed!');
+                        });
+                });
+            },
+            async storeChosenPaymentMethod({commit, state, getters, dispatch}, payload) {
                 return new Promise((resolve) => {
 
-                    commit('setChosenPaymentMethod', payload);
+                    dispatch('swSetPaymentMethod', payload).then(() => {
+                        commit('setChosenPaymentMethod', payload);
 
-                    // Save order from store to cookie
-                    this.$cookies.set(state.cookieNameOrder, state.order, {
-                        path: state.cookiePath,
-                        expires: getters.getCookieExpires
-                    });
+                        // Save order from store to cookie
+                        this.$cookies.set(state.cookieNameOrder, state.order, {
+                            path: state.cookiePath,
+                            expires: getters.getCookieExpires
+                        });
 
-                    resolve();
+                        resolve();
+                    })
+
                 })
             },
-            async storeChosenShippingMethod({commit, state, getters}, payload) {
+            async swSetShippingMethod({commit, dispatch, rootState, state}, payload) {
+                return new Promise((resolve, reject)  => {
+
+                    if(_.isEmpty(payload)) {
+                        console.log(payload);
+                        resolve();
+                    }
+
+                    dispatch('apiCall', {
+                        action: 'patch',
+                        tokenType: 'sw',
+                        apiType: 'data',
+                        swContext: state.customer.customerAuth.token,
+                        endpoint: '/sales-channel-api/v1/context',
+                        data: {
+                            shippingMethodId: payload.id
+                        }
+                    }, { root: true })
+                        .then(response => {
+                            // Save payment methods to store
+                            resolve('OK');
+                        })
+                        .catch(response => {
+                            console.log('swSetShippingMethod failed: %o', response);
+                            reject('swSetShippingMethod failed!');
+                        });
+                });
+            },
+            async storeChosenShippingMethod({commit, state, getters, dispatch}, payload) {
                 return new Promise((resolve) => {
 
-                    commit('setChosenShippingMethod', payload);
+                    dispatch('swSetShippingMethod', payload).then(() => {
+                        commit('setChosenShippingMethod', payload);
 
-                    // Save order from store to cookie
-                    this.$cookies.set(state.cookieNameOrder, state.order, {
-                        path: state.cookiePath,
-                        expires: getters.getCookieExpires
+                        // Save order from store to cookie
+                        this.$cookies.set(state.cookieNameOrder, state.order, {
+                            path: state.cookiePath,
+                            expires: getters.getCookieExpires
+                        });
+
+                        resolve();
                     });
 
-                    resolve();
                 })
             }
         }
