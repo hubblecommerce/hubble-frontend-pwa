@@ -200,15 +200,15 @@ $spacers: map-merge(
 }
 
 .align-self-start {
-    align-self: flex-start;
+    align-self: flex-start !important;
 }
 
 .align-self-center {
-    align-self: center;
+    align-self: center !important;
 }
 
 .align-self-end {
-    align-self: flex-end;
+    align-self: flex-end !important;
 }
 
 .bg-light {

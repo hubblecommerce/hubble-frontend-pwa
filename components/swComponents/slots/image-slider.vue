@@ -1,7 +1,23 @@
 <template>
-    <div :class="elementClass">
+    <div :class="elementClass" class="sw-image-slider">
         <div class="cms-element-alignment" :class="verticalAlign">
 
+            <client-only>
+                <slider
+                    :controls="true"
+                    :gutter="10"
+                    :controls-text="controls"
+                    :edge-padding="10"
+                    :nav="false"
+                    :lazyload="true"
+                    :items="1"
+                >
+                    <template v-for="item in imageItems">
+                        <img-lazy :src="item.media.url" :alt-info="item.media.alt" :title-info="item.media.title" />
+                    </template>
+
+                </slider>
+            </client-only>
         </div>
     </div>
 </template>
@@ -21,8 +37,11 @@
 
         data() {
             return{
-                dataItems: [],
-                loaded: false
+                imageItems: [],
+                controls: [
+                    '<i class="icon icon-chevron-left"></i><span class="hidden-link-name">Navigate left</span>',
+                    '<i class="icon icon-chevron-right"></i><span class="hidden-link-name">Navigate right</span>'
+                ]
             }
         },
 
@@ -40,20 +59,22 @@
                         return 'align-self-start'
                     }
                 }
+                return '';
             }
         },
 
         created() {
-
-            /*this.$store.dispatch('modApiResources/mappingCategoryProducts', {
-                data: this.content.data.products
-            }).then((response) => {
-                this.dataItems = response.items;
-                this.loaded = true;
-            });*/
+            this.imageItems = this.content.data.sliderItems;
         }
     };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+    .sw-image-slider {
+        .img-lazy-wrp {
+            .LazyImage {
+                width: 100% !important;
+            }
+        }
+    }
 </style>

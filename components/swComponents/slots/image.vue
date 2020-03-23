@@ -61,7 +61,7 @@
                         return 'align-self-start'
                     }
                 }
-                return null;
+                return '';
             }
         }
     };

@@ -7,6 +7,7 @@
 </template>
 
 <script>
+    import { mapState } from 'vuex'
     import { slotMixins } from '../helper'
     import ProductListingCard from '../../productlist/ProductListingCard'
     export default {
@@ -39,11 +40,13 @@
                         return 'align-self-start';
                     }
                 }
+                return '';
             }
         },
 
         created() {
             this.$store.dispatch('modApiResources/mappingProduct', this.content.data).then((response) => {
+                // map product id to url from product urls probably already fetched
                 this.itemOrig = response;
                 this.loaded = true;
             });
@@ -52,4 +55,7 @@
 </script>
 
 <style lang="scss" scoped>
+    .actions {
+        display: none;
+    }
 </style>

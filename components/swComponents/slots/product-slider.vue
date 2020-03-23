@@ -41,6 +41,7 @@
                         return 'align-self-start'
                     }
                 }
+                return '';
             }
         },
 
