@@ -28,7 +28,7 @@
                 required: true
             },
             categoryId: {
-                type: Number,
+                type: [String, Number],
                 required: true
             }
         },
