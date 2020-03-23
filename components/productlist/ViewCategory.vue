@@ -14,7 +14,7 @@
             <breadcrumbs :path="breadcrumbs" />
         </div>
 
-        <template v-if="false">
+        <template v-if="isShopware">
             <div class="container">
                  <sw-section v-for="cmsSection in cmsSections"
                             :key="cmsSection.id"
@@ -51,20 +51,17 @@
                     </div>
                 </div>
             </template>
+
+            <template v-else>
+                <div class="error-listing container flex-center flex-column">
+                    <error-no-items :error="error" />
+                    <button class="button-primary" @click="routeHistoryBack()">
+                        Zurück
+                        <material-ripple />
+                    </button>
+                </div>
+            </template>
         </template>
-
-
-
-        <template v-else>
-            <div class="error-listing container flex-center flex-column">
-                <error-no-items :error="error" />
-                <button class="button-primary" @click="routeHistoryBack()">
-                    Zurück
-                    <material-ripple />
-                </button>
-            </div>
-        </template>
-
     </div>
 </template>
 

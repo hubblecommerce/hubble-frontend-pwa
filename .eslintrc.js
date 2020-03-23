@@ -13,9 +13,10 @@ module.exports = {
     'eslint:recommended',
     'plugin:nuxt/recommended',
     'plugin:vue/recommended',
-    //'prettier',
-    //'prettier/vue',
-    //'plugin:prettier/recommended',
+    /*'prettier',
+    'prettier/vue',
+    'plugin:prettier/recommended',
+      'plugin:nuxt/recommended'*/
   ],
   // required to lint *.vue files
   plugins: [
