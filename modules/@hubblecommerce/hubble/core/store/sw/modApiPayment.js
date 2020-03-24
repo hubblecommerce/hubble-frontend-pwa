@@ -455,7 +455,7 @@ export default function (ctx) {
                         });
                 });
             },
-            async logIn({commit, state, dispatch, getters}, payload) {
+            async logIn({commit, state, dispatch, rootState, getters}, payload) {
                 const loginCreds = {
                     username: payload.email,
                     password: payload.password
@@ -492,15 +492,31 @@ export default function (ctx) {
                             // Save response to store
                             commit('setCustomerAuth', authData);
 
-                            dispatch('getCustomerInfo').then(() => {
-                                resolve(response);
+                            // Override / Set Cart Context Token
+                            // because otherwise there would be two different context tokens (one for cart, one for customer) without
+                            // any relation to each other
+                            dispatch('modCart/saveSwtc', response.data['sw-context-token'], {root:true}).then(() => {
 
-                                // Save store to cookie
-                                this.$cookies.set(state.cookieName, state.customer, {
-                                    path: state.cookiePath,
-                                    expires: getters.getCookieExpires
-                                });
+                                // Clear current cart
+                                // Get cart of logged in user
+                                // save cart to forage
+                                // TODO: merge cart items instead of removing them
+                                dispatch('modCart/clearAll', {}, {root:true}).then(() => {
+
+                                    // Get customer info and save to cookie
+                                    dispatch('getCustomerInfo').then(() => {
+                                        resolve(response);
+
+                                        // Save store to cookie
+                                        this.$cookies.set(state.cookieName, state.customer, {
+                                            path: state.cookiePath,
+                                            expires: getters.getCookieExpires
+                                        });
+                                    });
+
+                                })
                             });
+
                         })
                         .catch(response => {
                             //console.log('logIn failed: %o', response);
@@ -995,7 +1011,6 @@ export default function (ctx) {
                 return new Promise((resolve, reject)  => {
 
                     if(_.isEmpty(payload)) {
-                        console.log(payload);
                         resolve();
                     }
 

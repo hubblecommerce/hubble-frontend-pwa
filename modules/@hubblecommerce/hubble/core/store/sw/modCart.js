@@ -198,6 +198,22 @@ export default function (ctx) {
                         });
                 });
             },
+            saveSwtc({commit, state, dispatch, rootState, getters}, payload) {
+                return new Promise((resolve, reject) => {
+
+                    console.log("hello");
+                    // Set swtc to store
+                    commit('setSwtc', payload);
+
+                    // Save swtc to cookie
+                    this.$cookies.set(state.swtcCookieName, payload, {
+                        path: state.cookiePath,
+                        expires: getters.getCookieExpires
+                    });
+
+                    resolve();
+                });
+            },
             saveCartToStorage({commit, state, dispatch, rootState, getters}, payload) {
                 return new Promise((resolve, reject) => {
 
