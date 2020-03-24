@@ -488,7 +488,7 @@
 
                 return new Promise((resolve, reject) => {
                     // always reset to 1st page
-                    getPriceAndCurrencyDecFmt
+                    this.resetPagination();
 
                     // start with well known query params
                     let _selected = this.getSelectedQueryParams();
