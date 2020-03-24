@@ -10,6 +10,8 @@ export default function (ctx) {
             dataProductUpsellings: {},
             optionIsSelected: false,
             optionNotSelectedError: false,
+
+            selectedVariants: [],
         }),
         mutations: {
             setDataProduct: (state, payload) => {

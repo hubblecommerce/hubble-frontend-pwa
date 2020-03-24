@@ -29,7 +29,7 @@ export default function (ctx) {
             // Category
             dataCategory: {},
             dataCategoryProducts: {},
-            selectedVariants: [],
+
 
             // CMS
             dataContent: {},

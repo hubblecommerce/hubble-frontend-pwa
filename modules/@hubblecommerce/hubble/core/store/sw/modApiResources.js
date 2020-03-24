@@ -31,7 +31,6 @@ export default function (ctx) {
             // Category
             dataCategory: {},
             dataCategoryProducts: {},
-            selectedVariants: [],
             apiRequestBody: {
                 limit: process.env.limiter_default,
                 page: 1,
