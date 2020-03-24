@@ -6,7 +6,6 @@
             <payment-methods />
             <shipping-methods />
             <div class="additional-info-wrp">
-                <order-comment />
                 <div class="summary-container">
                     <div class="summary-wrp">
                         <totals />
@@ -35,13 +34,11 @@
     import { mapState } from 'vuex';
     import Totals from "../../components/checkout/Totals";
     import CustomerAddresses from "../../components/customer/CustomerAddresses";
-    import OrderComment from "../../components/checkout/OrderComment";
 
     export default {
         name: "ShopwareOnepage",
 
         components: {
-            OrderComment,
             PaymentMethods: () => import('../../components/checkout/PaymentMethods'),
             ShippingMethods: () => import('../../components/checkout/ShippingMethods'),
             CustomerAddresses,
@@ -64,7 +61,6 @@
                 chosenPaymentMethod: '1',
                 chosenShippingMethod: '1',
                 checkoutError: {},
-                processingCheckout: false,
                 orderObj: {
                     salutationId: "",
                     firstName: "Guest",
@@ -87,7 +83,8 @@
                 order: state => state.modApiPayment.order,
                 hostedIFrame: state => state.modApiPayment.hostedIFrame,
                 customerAddresses: state => state.modApiPayment.customer.customerAddresses,
-                customer: state => state.modApiPayment.customer
+                customer: state => state.modApiPayment.customer,
+                processingCheckout: state => state.modApiPayment.processingCheckout
             })
         },
 
@@ -102,23 +99,34 @@
                 return _.isEmpty(val);
             },
 
-            placeOrder: function() {
+            placeOrder: async function() {
 
-                this.processingCheckout = true;
+                // Start loading animation
+                this.$store.commit('modApiPayment/setProcessingCheckout');
 
-                this.$store.dispatch('modApiPayment/placeOrder', {order: this.orderObj, swtc: this.swtc}).then(() => {
+                try {
+                    await this.$store.dispatch('modApiPayment/validateOrder')
+                } catch(error) {
+                    this.$store.commit('modApiPayment/resetProcessingCheckout');
+                    return false;
+                }
 
-                    // On request success clear data (cart)
-                    // and redirect to success page
-                    this.$store.dispatch('modCart/clearAll').then(() => {
-                        this.$router.push({
-                            path: this.localePath('checkout-shopware-success')
-                        }, () => {
-                            this.processingCheckout = false;
-                        });
+                let order = await this.$store.dispatch('modApiPayment/placeOrder');
+
+                let paymentResponse = await this.$store.dispatch('modApiPayment/swStartPayment', order.data.data.id);
+
+                if(paymentResponse.data.paymentUrl) {
+                    this.$store.commit('modApiPayment/resetProcessingCheckout');
+                    window.open(paymentResponse.data.paymentUrl, "_self");
+                }
+
+                if(_.isEmpty(paymentResponse.data)) {
+                    this.$router.push({
+                        path: this.localePath('checkout-shopware-success')
+                    }, () => {
+                        this.$store.commit('modApiPayment/resetProcessingCheckout');
                     });
-
-                });
+                }
 
             },
 
@@ -149,5 +157,6 @@
 <style>
     .summary-container {
         width: 45%;
+        margin-left: auto;
     }
 </style>

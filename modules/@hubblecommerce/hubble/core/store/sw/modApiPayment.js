@@ -178,10 +178,7 @@ export default function (ctx) {
             },
             setShippingMethods: (state, payload) => {
                 state.shippingMethods = payload;
-            },
-            setOrderComment: (state, payload) => {
-                state.order.orderComment = payload;
-            },
+            }
         },
         getters:  {
             getApiAuthToken: state => {
@@ -204,9 +201,6 @@ export default function (ctx) {
             },
             getCustomerAuth: state => {
                 return state.customer.customerAuth;
-            },
-            getOrderComment: state => {
-                return state.order.orderComment;
             },
             getShippingMethods: state => {
                 return state.shippingMethods;
@@ -278,7 +272,7 @@ export default function (ctx) {
                         });
                 });
             },
-            async placeOrder({dispatch, commit}, payload) {
+            async placeGuestOrder({dispatch, commit}, payload) {
 
                 let order = payload.order;
 
@@ -299,6 +293,83 @@ export default function (ctx) {
                     });
                 });
 
+            },
+            async swPlaceOrder({dispatch, state}, payload) {
+                return new Promise((resolve, reject)  => {
+                    dispatch('apiCall', {
+                        action: 'post',
+                        tokenType: 'sw',
+                        apiType: 'data',
+                        swContext: state.customer.customerAuth.token,
+                        endpoint: '/sales-channel-api/v1/checkout/order',
+                    }, { root: true })
+                        .then((response) => {
+                            resolve(response);
+                        })
+                        .catch(response => {
+                            console.log("API post request failed: %o", response);
+                            reject(response);
+                        });
+                });
+            },
+            async swStartPayment({dispatch, state}, payload) {
+                return new Promise((resolve, reject)  => {
+                    dispatch('apiCall', {
+                        action: 'post',
+                        tokenType: 'sw',
+                        apiType: 'data',
+                        swContext: state.customer.customerAuth.token,
+                        endpoint: `/sales-channel-api/v1/checkout/order/${payload}/pay`,
+                    }, { root: true })
+                        .then((response) => {
+                            resolve(response);
+                        })
+                        .catch(response => {
+                            console.log("API post request failed: %o", response);
+                            reject(response);
+                        });
+                });
+            },
+            async validateOrder({dispatch, commit, state}, payload) {
+                return new Promise((resolve, reject)  => {
+                    // Reset payment error
+                    commit('setPaymentError', null);
+
+                    // Reject with error message if payment method is not set
+                    if(_.isEmpty(state.order.chosenPaymentMethod)) {
+                        commit('setPaymentError', 'Please choose a payment method first');
+                        reject('Please choose a payment method first');
+                    }
+
+                    // Reset shipping error
+                    commit('setShippingError', null);
+
+                    // Reject with error message if payment method is not set
+                    if(_.isEmpty(state.order.chosenShippingMethod)) {
+                        commit('setShippingError', 'Please choose a shipping method first');
+                        reject('Please choose a shipping method first');
+                    }
+
+                    resolve();
+                });
+            },
+            async placeOrder({dispatch, commit, state}, payload) {
+                return new Promise((resolve, reject)  => {
+                    dispatch('swPlaceOrder').then((response) => {
+
+                        dispatch('modCart/clearAll', {}, {root:true}).then(() => {
+
+                            dispatch('clearOrder').then(() => {
+
+                                commit('setCurrentOrder', response.data.data);
+
+                                resolve(response);
+
+                            })
+                        });
+
+                    });
+                });
             },
             async setByCookie({commit, state}) {
                 return new Promise((resolve) => {
@@ -921,19 +992,19 @@ export default function (ctx) {
                             _.forEach(response.data.data, (val) => {
 
                                 if(val.name === 'Payone PayPal') {
-                                    val.payone_key = 'payone_wlt'
+                                    val.key = 'payone_wlt'
                                 }
 
                                 if(val.name === 'Payone Credit Card') {
-                                    val.payone_key = 'payone_cc'
+                                    val.key = 'payone_cc'
                                 }
 
                                 if(val.name === 'Payone Paysafe Pay Later Invoice') {
-                                    val.payone_key = 'payone_rec'
+                                    val.key = 'payone_rec'
                                 }
 
                                 if(val.name === 'Paid in advance') {
-                                    val.payone_key = 'payone_vor'
+                                    val.key = 'payone_vor'
                                 }
 
                                 mappedPayments.push(val);
@@ -1050,7 +1121,18 @@ export default function (ctx) {
                     });
 
                 })
-            }
+            },
+            async clearOrder({commit, state}) {
+                return new Promise((resolve) => {
+                    commit('setChosenPaymentMethod', {});
+                    commit('setChosenShippingMethod', {});
+
+                    // Clear order cookie
+                    this.$cookies.remove(state.cookieNameOrder);
+
+                    resolve();
+                })
+            },
         }
     };
 

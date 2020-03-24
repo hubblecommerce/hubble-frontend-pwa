@@ -101,13 +101,20 @@
 <!--        </div>-->
 
         <!-- Dynamic payment methods from api -->
-        <div v-for="method in paymentMethods" :key="method.id" v-if="method.active" class="method-wrp hbl-checkbox">
-            <input :id="'payment-option-' + method.id" v-model="chosenMethod" type="radio" :value="method.payone_key ? method.payone_key : method.id ">
-            <label :for="'payment-option-' + method.id" class="method-label">
-                <span class="name" v-text="method.name" />
-                <span class="description" v-text="method.description" />
-                <span :class="'method-image-' + method.id" />
-            </label>
+        <div v-for="method in paymentMethods" :key="method.id" v-if="method.active" class="method-wrp">
+            <div class="hbl-checkbox">
+                <input :id="'payment-option-' + method.id" v-model="chosenMethod" type="radio" :value="method.id">
+                <label :for="'payment-option-' + method.id" class="method-label">
+                    <span class="name" v-text="method.name" />
+                    <span class="description" v-text="method.description" />
+                    <span :class="'method-image-' + method.id" />
+                </label>
+            </div>
+            <!-- TODO: Integrate sub contexts for specific payone methods like CC iFrame, Sofortüberweisung etc...
+            <div class="payone-payment-wrp">
+
+            </div>
+            -->
         </div>
 
         <div class="validation-msg" v-text="$t(paymentError)" />
@@ -162,6 +169,10 @@
 
         watch: {
             chosenMethod: function(newValue) {
+
+                // Start Checkout loader
+                this.$store.commit('modApiPayment/setProcessingCheckout');
+
                 // Set method by payone_key
                 this.setMethodById(newValue);
 
@@ -227,7 +238,13 @@
                 }
 
                 if(!_.isEmpty(this.chosenMethodObj)) {
-                    this.$store.dispatch('modApiPayment/storeChosenPaymentMethod', this.chosenMethodObj);
+                    this.$store.dispatch('modApiPayment/storeChosenPaymentMethod', this.chosenMethodObj).then(() => {
+
+                        this.$store.dispatch('modCart/refreshCart').then(() => {
+                            this.$store.commit('modApiPayment/resetProcessingCheckout');
+                        });
+
+                    });
                 }
             },
 
@@ -288,7 +305,7 @@
             },
             setChosenPaymentMethod: function() {
                 if(this.getChosenPaymentMethod) {
-                    this.chosenMethod = this.getChosenPaymentMethod.key;
+                    this.chosenMethod = this.getChosenPaymentMethod.id;
 
                     if(!_.isEmpty(this.getChosenPaymentMethod.payload)) {
                         this.onlinebanktransfertype = this.getChosenPaymentMethod.payload.onlinebanktransfertype
@@ -299,7 +316,7 @@
             },
             setMethodById: function(key) {
                 _.forEach(this.paymentMethods, (val) => {
-                    if(val.payone_key === key ){
+                    if(val.id === key ){
                         this.chosenMethodObj = val;
                     }
                 });

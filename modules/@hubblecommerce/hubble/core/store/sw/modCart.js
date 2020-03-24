@@ -68,7 +68,7 @@ export default function (ctx) {
                 return state.cart.subtotal;
             },
             getShippingCosts: state => {
-                return state.shippingCosts.price;
+                return state.shippingCosts;
             },
             getTotals: state => {
                 if(state.cart.discount > 0) {
@@ -123,8 +123,8 @@ export default function (ctx) {
             setShippingCosts: (state, item) => {
                 state.shippingCosts = item;
             },
-            setTotals: (state) => {
-                state.cart.grand_total = state.cart.subtotal + state.shippingCosts.price;
+            setTotals: (state, item) => {
+                state.cart.grand_total = item;
             },
             setSwtc: (state, item) => {
                 state.swtc = item;
@@ -166,6 +166,15 @@ export default function (ctx) {
                         .catch(error => {
                             reject(error);
                         });
+                });
+            },
+            refreshCart({commit, state, dispatch, rootState, getters}) {
+                return new Promise((resolve, reject) => {
+                    dispatch('swGetCart').then((response) => {
+                        dispatch('saveCartToStorage', {response: response}).then(() => {
+                            resolve();
+                        })
+                    });
                 });
             },
             initCart({commit, state, dispatch, rootState, getters}) {
@@ -324,8 +333,9 @@ export default function (ctx) {
             setTotals({commit, state, dispatch, rootState, getters}, payload) {
                 return new Promise((resolve, reject) => {
 
-                    commit('setSubtotals', payload.data.data.price.totalPrice);
+                    commit('setSubtotals', payload.data.data.price.positionPrice);
                     commit('setTotals', payload.data.data.price.totalPrice);
+                    commit('setShippingCosts', payload.data.data.deliveries[0].shippingCosts.totalPrice);
 
                     resolve();
                 });

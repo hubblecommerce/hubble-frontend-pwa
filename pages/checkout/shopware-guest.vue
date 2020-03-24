@@ -255,7 +255,7 @@
 
                 this.processingCheckout = true;
 
-                this.$store.dispatch('modApiPayment/placeOrder', {order: this.orderObj, swtc: this.swtc}).then(() => {
+                this.$store.dispatch('modApiPayment/placeGuestOrder', {order: this.orderObj, swtc: this.swtc}).then(() => {
 
                     // On request success clear data (cart)
                     // and redirect to success page

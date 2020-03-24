@@ -54,8 +54,16 @@
 
         watch: {
             chosenMethod: function(newValue) {
+                // Start Checkout loader
+                this.$store.commit('modApiPayment/setProcessingCheckout');
+
                 this.setMethodById(newValue);
-                this.$store.dispatch('modApiPayment/storeChosenShippingMethod', this.chosenMethodObj);
+
+                this.$store.dispatch('modApiPayment/storeChosenShippingMethod', this.chosenMethodObj).then(() => {
+                    this.$store.dispatch('modCart/refreshCart').then(() => {
+                        this.$store.commit('modApiPayment/resetProcessingCheckout');
+                    });
+                });
             },
         },
 

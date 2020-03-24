@@ -36,18 +36,18 @@
                 return subtotals;
             },
             getShippingCosts: function() {
-                let subtotals = this.$store.getters['modCart/getShippingCosts'];
+                let shippingCosts = this.$store.getters['modCart/getShippingCosts'];
 
-                // Format subtotals
-                subtotals = this.$store.getters['modPrices/priceDecFmt'](subtotals);
-                subtotals = this.$store.getters['modPrices/priceAddCur'](subtotals);
+                // Format shippingCosts
+                shippingCosts = this.$store.getters['modPrices/priceDecFmt'](shippingCosts);
+                shippingCosts = this.$store.getters['modPrices/priceAddCur'](shippingCosts);
 
-                return subtotals;
+                return shippingCosts;
             },
             getTotal: function() {
                 let total = this.$store.getters['modCart/getTotals'];
 
-                // Format subtotals
+                // Format totals
                 total = this.$store.getters['modPrices/priceDecFmt'](total);
                 total = this.$store.getters['modPrices/priceAddCur'](total);
 
