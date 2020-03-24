@@ -148,10 +148,10 @@ export default {
 
   computed: {
       ...mapState({
-        dataProduct: state => state.modApiResources.dataProduct,
+        dataProduct: state => state.modApiProduct.dataProduct,
       }),
       ...mapGetters({
-          allProductImages: 'modApiResources/getMediaGalleryArray'
+          allProductImages: 'modApiProduct/getMediaGalleryArray'
       }),
       productData() {
         return this.dataProduct.result.item;

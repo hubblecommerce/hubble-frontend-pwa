@@ -7,7 +7,6 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex'
     import { slotMixins } from '../helper'
     import ProductListingCard from '../../productlist/ProductListingCard'
     export default {
@@ -45,7 +44,7 @@
         },
 
         created() {
-            this.$store.dispatch('modApiResources/mappingProduct', this.content.data).then((response) => {
+            this.$store.dispatch('modApiProduct/mappingProduct', this.content.data).then((response) => {
                 // map product id to url from product urls probably already fetched
                 this.itemOrig = response;
                 this.loaded = true;

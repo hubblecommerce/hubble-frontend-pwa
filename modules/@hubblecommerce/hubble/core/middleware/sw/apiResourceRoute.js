@@ -99,7 +99,7 @@ Middleware.apiResourceRoute = function({app, store, route, error}) {
             // dispatch to vuex store by promise
             return new Promise((resolve, reject) => {
                 // Get and store category including products from api
-                store.dispatch('modApiResources/getProductData', {path: _path}).then(() => {
+                store.dispatch('modApiProduct/getProductData', {path: _path}).then(() => {
                     store.commit('modApiResources/setPageType', 'product');
                     resolve();
                 }).catch(() => {

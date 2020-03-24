@@ -46,7 +46,7 @@
 
         computed: {
             ...mapState({
-                dataProduct: state => state.modApiResources.dataProduct
+                dataProduct: state => state.modApiProduct.dataProduct
             }),
             itemFacets() {
                 let _facets = null;
@@ -197,7 +197,7 @@
                     }
 
                     // Update current product data
-                    this.$store.commit('modApiResources/setDataProductItem', {
+                    this.$store.commit('modApiProduct/setDataProductItem', {
                         data: this.itemSelected
                     });
                 }

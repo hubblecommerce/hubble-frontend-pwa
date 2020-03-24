@@ -67,7 +67,6 @@
     import { mapState } from 'vuex'
     import ProductDetailBuyboxPrice from "./ProductDetailBuyboxPrice";
 
-    import AddToWishlist from "../productutils/AddToWishlist";
     import ProductDetailBuyboxColorSelect from "./ProductDetailBuyboxColorSelect";
 
     export default {
@@ -75,7 +74,6 @@
             ProductDetailBuyboxOptions: () => import('./ProductDetailBuyboxOptions'),
             ProductDetailBuyboxOptionsSw: () => import('./ProductDetailBuyboxOptionsSw'),
             ProductDetailBuyboxColorSelect,
-            AddToWishlist,
             ProductDetailBuyboxPrice
         },
 
@@ -99,12 +97,11 @@
         },
 
         computed: {
-            // Vuex
             ...mapState({
-                dataProduct: state => state.modApiResources.dataProduct,
-                optionIsSelected: state => state.modApiResources.optionIsSelected,
-                optionNotSelectedError: state => state.modApiResources.optionNotSelectedError,
-                selectedVariants: state => state.modApiResources.selectedVariants
+                dataProduct: state => state.modApiProduct.dataProduct,
+                optionIsSelected: state => state.modApiProduct.optionIsSelected,
+                optionNotSelectedError: state => state.modApiProduct.optionNotSelectedError,
+                selectedVariants: state => state.modApiProduct.selectedVariants
             }),
             productData() {
                 return this.dataProduct.result.item;
@@ -196,8 +193,8 @@
         },
 
         created() {
-            this.$store.commit('modApiResources/resetSelectedVariants');
-            this.$store.commit('modApiResources/removeOptionNotSelectedError');
+            this.$store.commit('modApiProduct/resetSelectedVariants');
+            this.$store.commit('modApiProduct/removeOptionNotSelectedError');
         },
 
         methods: {
@@ -209,8 +206,8 @@
             },
             selectedOption: function (option) {
                 if(option.stock_qty > 0 ) {
-                    this.$store.commit('modApiResources/setOptionIsSelected', option);
-                    this.$store.commit('modApiResources/removeOptionNotSelectedError');
+                    this.$store.commit('modApiProduct/setOptionIsSelected', option);
+                    this.$store.commit('modApiProduct/removeOptionNotSelectedError');
                     this.selected.origin = option.value_label;
                     this.selected.processed = option.value_label.replace('.0', '');
                 }

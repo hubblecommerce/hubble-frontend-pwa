@@ -29,8 +29,8 @@
 
         computed: {
             ...mapState({
-                dataProduct: state => state.modApiResources.dataProduct,
-                dataProductsCrossBuybox: state => state.modApiResources.dataProductsCrossBuybox
+                dataProduct: state => state.modApiProduct.dataProduct,
+                dataProductsCrossBuybox: state => state.modApiProduct.dataProductsCrossBuybox
             }),
             productData() {
                 return this.dataProduct.result.item;
@@ -48,7 +48,7 @@
             getProductsCrossBuybox: function() {
                 return new Promise((resolve) => {
                     // Get cross-selling products from api
-                    this.$store.dispatch('modApiResources/getProductsCrossBuybox', {
+                    this.$store.dispatch('modApiProduct/getProductsCrossBuybox', {
                         data: this.productId
                     }).then(() => {
                         resolve('ok');

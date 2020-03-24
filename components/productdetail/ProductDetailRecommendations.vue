@@ -40,7 +40,7 @@
 
         computed: {
             ...mapState({
-                dataProductsCrossByOrder: state => state.modApiResources.dataProductsCrossByOrder,
+                dataProductsCrossByOrder: state => state.modApiProduct.dataProductsCrossByOrder,
             })
         },
 
@@ -52,7 +52,7 @@
             getProductsCrossByOrder: function() {
                 return new Promise((resolve) => {
                     // Get cross-selling products from api
-                    this.$store.dispatch('modApiResources/getProductsCrossByOrder', {
+                    this.$store.dispatch('modApiProduct/getProductsCrossByOrder', {
                         data: this.productId
                     }).then((response) => {
                         this.showProducts = !_.isEmpty(response.result.items);

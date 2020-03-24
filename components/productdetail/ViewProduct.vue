@@ -98,7 +98,7 @@
                                     <p v-html="productData.description" />
                                 </div>
                             </client-only>
-                            <div class="description-content" v-if="!productData.description">
+                            <div v-if="!productData.description" class="description-content">
                                 <template v-if="productData.model">
                                     <p v-html="productData.model" />
                                 </template>
@@ -168,13 +168,13 @@
         computed: {
             ...mapState({
                 openDetail: state => state.modApiResources.openDetail,
-                dataProduct: state => state.modApiResources.dataProduct,
+                dataProduct: state => state.modApiProduct.dataProduct,
                 priceCurrency: state => state.modPrices.priceCurrency,
                 priceCurrencySymbol: state => state.modPrices.priceCurrencySymbol,
                 priceSwitcherIncludeVat: state => state.modPrices.priceSwitcherIncludeVat,
                 clickPath: state => state.modClickPath.clickPath,
-                optionIsSelected: state => state.modApiResources.optionIsSelected,
-                selectedVariants: state => state.modApiResources.selectedVariants
+                optionIsSelected: state => state.modApiProduct.optionIsSelected,
+                selectedVariants: state => state.modApiProduct.selectedVariants
             }),
             productData() {
                 if(_.isEmpty(this.dataProduct)) {
@@ -335,7 +335,7 @@
 
         created() {
             if(this.openDetail) {
-                this.$store.dispatch('modApiResources/getProductData', {path: this.$router.history.current.params.dynamicRoute}).then(response => {
+                this.$store.dispatch('modApiProduct/getProductData', {path: this.$router.history.current.params.dynamicRoute}).then(response => {
                     this.loading = false;
                     this.$store.commit('modApiResources/setOpenDetail', false);
                 });
@@ -357,7 +357,7 @@
                 //If item has variants (size, color, ..) and none is selected
                 // show error message and return
                 if(this.itemHasVariants && !this.optionIsSelected) {
-                    this.$store.commit('modApiResources/setOptionNotSelectedError');
+                    this.$store.commit('modApiProduct/setOptionNotSelectedError');
 
                     // Display Error Message
                     this.$store.dispatch('modFlash/flashMessage', {
@@ -377,7 +377,7 @@
                     qty: this.selectedQty
                 }).then(() => {
 
-                    this.$store.commit('modApiResources/resetSelectedVariants');
+                    this.$store.commit('modApiProduct/resetSelectedVariants');
 
                     // Open Minicart Context
                     this.$store.dispatch('modNavigation/toggleOffcanvasAction', {

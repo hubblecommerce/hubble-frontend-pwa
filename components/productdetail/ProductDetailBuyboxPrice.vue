@@ -130,9 +130,9 @@
             // Vuex
             ...mapState({
                 priceSwitcherIncludeVat: state => state.modPrices.priceSwitcherIncludeVat,
-                optionIsSelected: state => state.modApiResources.optionIsSelected,
-                selectedVariants: state => state.modApiResources.selectedVariants,
-                dataProduct: state => state.modApiResources.dataProduct,
+                optionIsSelected: state => state.modApiProduct.optionIsSelected,
+                selectedVariants: state => state.modApiProduct.selectedVariants,
+                dataProduct: state => state.modApiProduct.dataProduct,
                 cart: state => state.modCart.cart,
             }),
             productData() {
@@ -293,7 +293,7 @@
                 //If item has variants (size, color, ..) and none is selected
                 // show error message and return
                 if(this.itemHasVariants && !this.optionIsSelected) {
-                    this.$store.commit('modApiResources/setOptionNotSelectedError');
+                    this.$store.commit('modApiProduct/setOptionNotSelectedError');
 
                     // Display Error Message
                     this.$store.dispatch('modFlash/flashMessage', {
@@ -314,7 +314,7 @@
                 }).then(() => {
 
                     if(process.env.API_TYPE === 'api') {
-                        this.$store.commit('modApiResources/resetSelectedVariants');
+                        this.$store.commit('modApiProduct/resetSelectedVariants');
                     }
 
                     // Open Minicart Context
