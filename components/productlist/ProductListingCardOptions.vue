@@ -23,7 +23,7 @@
 </template>
 
 <script>
-    //
+    import { mapGetters } from 'vuex';
     export default {
         name: "ProductListingCardOptions",
 
@@ -90,6 +90,9 @@
         },
 
         computed: {
+            ...mapGetters({
+                getSwatchesByOptionId: 'modSwatches/getSwatchesByOptionId'
+            }),
             itemIsSimple() {
                 return this.itemLoaded.type === 'simple';
             },
@@ -192,7 +195,7 @@
                 let _facet = _.head(this.itemFacetsSuper.filter(item => item['code'] === facetCode));
 
                 _.forEach(_facet['facet-values'], (facetValue) => {
-                    let _option = this.$store.getters['modSwatches/getSwatchesByOptionId'](facetCode, facetValue.id);
+                    let _option = this.getSwatchesByOptionId(facetCode, facetValue.id);
 
                     if(_.isEmpty(_option)) {
                         facetValue['use_color'] = null;

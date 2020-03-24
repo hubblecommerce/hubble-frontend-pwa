@@ -66,7 +66,7 @@
 </template>
 
 <script>
-    import {mapState} from 'vuex'
+    import { mapState, mapGetters, mapMutations} from 'vuex';
     import AddToWishlist from "../productutils/AddToWishlist";
     import ProductListingCardOptionsNonInteractive from "./ProductListingCardOptionsNonInteractive";
 
@@ -101,6 +101,14 @@
             ...mapState({
                 priceSwitcherIncludeVat: state => state.modPrices.priceSwitcherIncludeVat,
             }),
+            ...mapGetters({
+                getApiLocale: 'modApiResources/getApiLocale',
+                productIsSpecial: 'modPrices/productIsSpecial',
+                productGetTierPricesByGroupId: 'modPrices/productGetTierPricesByGroupId',
+                productHasTierPricesByGroupId: 'modPrices/productHasTierPricesByGroupId',
+                getTaxClassByLabel: 'modPrices/getTaxClassByLabel',
+                getPriceAndCurrencyDecFmt: 'modPrices/getPriceAndCurrencyDecFmt'
+            }),
             classesImg() {
                 return 'img-listing';
             },
@@ -108,7 +116,7 @@
                 return null
             },
             routeUrlPds() {
-                let _locale = this.$store.getters['modApiResources/getApiLocale'];
+                let _locale = this.getApiLocale();
 
                 // direkt url
                 if (this.isSlider) {
@@ -177,7 +185,7 @@
                 return false;
             },
             itemIsSpecial() {
-                return this.$store.getters['modPrices/productIsSpecial'](this.itemData)
+                return this.productIsSpecial(this.itemData)
             },
             itemDiscountPercent() {
                 let oldPrice = this.itemData.final_price_item['display_price_brutto'],
@@ -190,7 +198,7 @@
             itemTierPrices() {
                 let groupID = 0;
 
-                return this.$store.getters['modPrices/productGetTierPricesByGroupId'](
+                return this.productGetTierPricesByGroupId(
                     this.itemData,
                     groupID
                 )
@@ -201,7 +209,7 @@
             itemHasTierPrices() {
                 let groupID = 0;
 
-                return this.$store.getters['modPrices/productHasTierPricesByGroupId'](
+                return this.productHasTierPricesByGroupId(
                     this.itemData,
                     groupID
                 )
@@ -224,9 +232,7 @@
                 )
             },
             itemTaxClass() {
-                return this.$store.getters['modPrices/getTaxClassByLabel'](
-                    this.itemData.final_price_item.tax_class_id
-                )
+                return this.getTaxClassByLabel(this.itemData.final_price_item.tax_class_id)
             }
         },
 
@@ -240,23 +246,26 @@
         },
 
         methods: {
-
+            ...mapMutations({
+                setOpenDetail: 'modApiResources/setOpenDetail',
+                setProductId: 'modApiResources/setProductId'
+            }),
             getPriceAndCurrency(key, addVat) {
-                return this.$store.getters['modPrices/getPriceAndCurrencyDecFmt'](
+                return this.getPriceAndCurrencyDecFmt(
                     this.itemData.final_price_item[key],
                     addVat,
                     this.itemTaxClass
                 )
             },
             getTierPriceMinAndCurrency(addVat) {
-                return this.$store.getters['modPrices/getPriceAndCurrencyDecFmt'](
+                return this.getPriceAndCurrencyDecFmt(
                     this.itemTierPriceMin.price,
                     addVat,
                     this.itemTaxClass
                 )
             },
             getCheapPriceAndCurrency(addVat) {
-                return this.$store.getters['modPrices/getPriceAndCurrencyDecFmt'](
+                return this.getPriceAndCurrencyDecFmt(
                     this.item.final_price_item.min_price,
                     addVat,
                     this.itemTaxClass
@@ -266,8 +275,8 @@
                 this.gtmProductClick();
 
                 // set necessary data for dynamic route middleware
-                this.$store.commit('modApiResources/setOpenDetail', true);
-                this.$store.commit('modApiResources/setProductId', this.itemData.id);
+                this.setOpenDetail(true);
+                this.setProductId(this.itemData.id);
 
                 this.$router.push({path: this.routeUrlPds})
             },

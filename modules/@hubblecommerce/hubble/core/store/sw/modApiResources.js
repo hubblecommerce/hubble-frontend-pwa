@@ -280,7 +280,7 @@ export default function (ctx) {
             },
         },
         getters:  {
-            getApiLocale: state => {
+            getApiLocale: state => () => {
                 return state.apiLocale;
             },
             getDataUri: state => {

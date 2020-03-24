@@ -19,7 +19,7 @@
 </template>
 
 <script>
-    import {mapState} from 'vuex'
+    import {mapState, mapGetters} from 'vuex'
     export default {
         name: 'ProductListingSidebarNav',
         props: {
@@ -42,6 +42,9 @@
             ...mapState({
                 dataMenu: state => state.modApiResources.dataMenu
             }),
+            ...mapGetters({
+                getApiLocale: 'modApiResources/getApiLocale'
+            }),
             parentCategoryId: function() {
                 return this.pathIds[0];
             }
@@ -58,7 +61,7 @@
                 });
             },
             itemUrlPath(item) {
-                let _locale = this.$store.getters['modApiResources/getApiLocale'];
+                let _locale = this.getApiLocale();
 
                 if(_locale !== 'de') {
                     return '/' + _locale + '/' + item.url_path;

@@ -142,11 +142,11 @@
 </template>
 
 <script>
-    import {mapState, mapGetters} from 'vuex'
+    import {mapState, mapGetters, mapMutations, mapActions} from 'vuex';
 
-    import SelectableFacet from './toolbar/SelectableFacet.vue'
-    import SelectableLimit from './toolbar/SelectableLimit.vue'
-    import SelectableOrder from './toolbar/SelectableOrder.vue'
+    import SelectableFacet from './toolbar/SelectableFacet.vue';
+    import SelectableLimit from './toolbar/SelectableLimit.vue';
+    import SelectableOrder from './toolbar/SelectableOrder.vue';
     import Pagination from "./toolbar/Pagination";
     import CollapsibleFilter from "./toolbar/CollapsibleFilter";
     import PriceSlider from "./toolbar/PriceSlider";
@@ -207,7 +207,8 @@
                 requestStringFacets: 'modApiRequests/getRequestStringFacets',
                 requestFacets: 'modApiRequests/getRequestFacets',
                 requestPriceFacets: 'modApiRequests/getRequestPriceFacets',
-                requestCategoryFacets: 'modApiRequests/getRequestCategoryFacets'
+                requestCategoryFacets: 'modApiRequests/getRequestCategoryFacets',
+                getApiLocale: 'modApiResources/getApiLocale'
             }),
             categoryList() {
                 if (_.isEmpty(this.dataMenu)) {
@@ -364,14 +365,14 @@
                 this.hideFilters().then(response => {
                     let _prefix = '/'
 
-                    let _locale = this.$store.getters['modApiResources/getApiLocale']
+                    let _locale = this.getApiLocale()
 
                     if (_locale !== 'de') {
                         _prefix = '/' + _locale + '/'
                     }
 
                     // always reset to 1st page
-                    this.$store.commit('modApiRequests/setPaginationPage', 1)
+                    this.resetPagination();
 
                     // keep possibly selected 'dir', 'order', 'limit'
                     let _selected = this.getSelectedQueryParams()
@@ -389,28 +390,16 @@
         created() {
             this.$bus.$on('price-slider-changed', response => {
                 // save emitted price range to store
-                this.$store.commit(
-                    'modApiRequests/setSelectedPriceMax',
-                    response.payload.price_to
-                )
-                this.$store.commit(
-                    'modApiRequests/setSelectedPriceMin',
-                    response.payload.price_from
-                )
+                this.setSelectedPriceMax(response.payload.price_to)
+                this.setSelectedPriceMin(response.payload.price_from)
 
                 this.routeOnPropertyChange()
             })
 
             this.$bus.$on('price-slider-changed-and-apply', response => {
                 // save emitted price range to store
-                this.$store.commit(
-                    'modApiRequests/setSelectedPriceMax',
-                    response.payload.price_to
-                )
-                this.$store.commit(
-                    'modApiRequests/setSelectedPriceMin',
-                    response.payload.price_from
-                )
+                this.setSelectedPriceMax(response.payload.price_to)
+                this.setSelectedPriceMin(response.payload.price_from)
 
                 this.routeOnPropertyChange().then(() => {
                     this.applyFilter();
@@ -419,20 +408,14 @@
 
             this.$bus.$on('selectable-facet-changed', response => {
                 // save to store
-                this.$store.commit(
-                    'modApiRequests/setSelectedFacetsParam',
-                    response.payload
-                )
+                this.setSelectedFacetsParam(response.payload)
 
                 this.routeOnPropertyChange()
             })
 
             this.$bus.$on('selectable-facet-changed-and-applied', response => {
                 // save to store
-                this.$store.commit(
-                    'modApiRequests/setSelectedFacetsParam',
-                    response.payload
-                )
+                this.setSelectedFacetsParam(response.payload)
 
                 this.routeOnPropertyChange().then(() => {
                     this.applyFilter();
@@ -441,10 +424,7 @@
 
             this.$bus.$on('selectable-limit-changed', response => {
                 // save to store
-                this.$store.commit(
-                    'modApiRequests/setSelectedQueryParam',
-                    response.payload
-                )
+                this.setSelectedQueryParam(response.payload)
 
                 this.routeOnPropertyChange().then(() => {
                     this.applyFilter();
@@ -453,10 +433,7 @@
 
             this.$bus.$on('selectable-order-changed', response => {
                 // save to store
-                this.$store.commit(
-                    'modApiRequests/setSelectedQueryParam',
-                    response.payload
-                )
+                this.setSelectedQueryParam(response.payload)
 
                 this.routeOnPropertyChange().then(() => {
                     this.applyFilter();
@@ -465,6 +442,21 @@
         },
 
         methods: {
+            ...mapMutations({
+                setPaginationPage: 'modApiRequests/setPaginationPage',
+                setSelectedPriceMax: 'modApiRequests/setSelectedPriceMax',
+                setSelectedPriceMin: 'modApiRequests/setSelectedPriceMin',
+                setSelectedFacetsParam: 'modApiRequests/setSelectedFacetsParam',
+                resetSelectedFacetsParam: 'modApiRequests/resetSelectedFacetsParam',
+                setSelectedQueryParam: 'modApiRequests/setSelectedQueryParam'
+            }),
+            ...mapActions({
+                toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction',
+                hideOffcanvasAction: 'modNavigation/hideOffcanvasAction'
+            }),
+            resetPagination() {
+                this.setPaginationPage(1);
+            },
             getSelectedQueryParams() {
                 let _selected = [];
 
@@ -496,7 +488,7 @@
 
                 return new Promise((resolve, reject) => {
                     // always reset to 1st page
-                    this.$store.commit('modApiRequests/setPaginationPage', 1);
+                    getPriceAndCurrencyDecFmt
 
                     // start with well known query params
                     let _selected = this.getSelectedQueryParams();
@@ -541,10 +533,10 @@
             },
             routeOnPropertyRemove(propertyName) {
                 // always reset to 1st page
-                this.$store.commit('modApiRequests/setPaginationPage', 1)
+                this.resetPagination();
 
                 // null property from nested storage object (facet)
-                this.$store.commit('modApiRequests/setSelectedFacetsParam', {
+                this.setSelectedFacetsParam({
                     name: propertyName,
                     data: null
                 });
@@ -569,10 +561,10 @@
             },
             routeOnPropertyRemoveAll() {
                 // always reset to 1st page
-                this.$store.commit('modApiRequests/setPaginationPage', 1);
+                this.resetPagination();;
 
                 // null property from nested storage object (facet)
-                this.$store.commit('modApiRequests/resetSelectedFacetsParam');
+                this.resetSelectedFacetsParam();
 
                 // If current route is a search, keep the search term and remove rest of filter
                 let _route;
@@ -612,13 +604,13 @@
             },
             toggle: function() {
                 this.showFilter = !this.showFilter;
-                this.$store.dispatch('modNavigation/toggleOffcanvasAction', {
+                this.toggleOffcanvasAction({
                     component: this.name,
                     direction: 'rightLeft'
                 });
             },
             hideFilters() {
-                this.$store.dispatch('modNavigation/hideOffcanvasAction');
+                this.hideOffcanvasAction();
 
                 return new Promise((resolve, reject) => {
                     //this.showFilter = false;
