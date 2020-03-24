@@ -97,7 +97,7 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex';
+    import { mapState, mapGetters, mapMutations, mapActions } from 'vuex';
     import AddToWishlist from "../productutils/AddToWishlist";
     import { clearDataLayer } from "@hubblecommerce/hubble/core/utils/gtmHelper";
 
@@ -127,13 +127,19 @@
         },
 
         computed: {
-            // Vuex
             ...mapState({
                 priceSwitcherIncludeVat: state => state.modPrices.priceSwitcherIncludeVat,
                 optionIsSelected: state => state.modApiProduct.optionIsSelected,
                 selectedVariants: state => state.modApiProduct.selectedVariants,
                 dataProduct: state => state.modApiProduct.dataProduct,
                 cart: state => state.modCart.cart,
+            }),
+            ...mapGetters({
+                productIsSpecial: 'modPrices/productIsSpecial',
+                productGetTierPricesByGroupId: 'modPrices/productGetTierPricesByGroupId',
+                productHasTierPricesByGroupId: 'modPrices/productHasTierPricesByGroupId',
+                getTaxClassByLabel: 'modPrices/getTaxClassByLabel',
+                getPriceAndCurrencyDecFmt: 'modPrices/getPriceAndCurrencyDecFmt'
             }),
             productData() {
                 if(_.isEmpty(this.dataProduct)) {
@@ -158,7 +164,7 @@
                 return false;
             },
             itemIsSpecial() {
-                return this.$store.getters['modPrices/productIsSpecial'](this.item);
+                return this.productIsSpecial(this.item);
             },
             itemNameText() {
                 if(this.item.short_name && this.item.short_name.length) {
@@ -170,7 +176,7 @@
             itemTierPrices() {
                 let groupID = 0;
 
-                return this.$store.getters['modPrices/productGetTierPricesByGroupId'](this.item, groupID);
+                return this.productGetTierPricesByGroupId(this.item, groupID);
             },
             itemTierPriceMin() {
                 return _.minBy(this.itemTierPrices, 'display_price_brutto');
@@ -178,7 +184,7 @@
             itemHasTierPrices() {
                 var groupID = 0;
 
-                return this.$store.getters['modPrices/productHasTierPricesByGroupId'](this.item, groupID);
+                return this.productHasTierPricesByGroupId(this.item, groupID);
             },
             itemHasTierPricesMore() {
                 return this.itemTierPrices.length > 1;
@@ -204,7 +210,7 @@
                 return this.item.final_price_item.base_price_amount !== this.item.final_price_item.base_price_base_amount;
             },
             itemTaxClass() {
-                return this.$store.getters['modPrices/getTaxClassByLabel'](this.item.final_price_item.tax_class_id);
+                return this.getTaxClassByLabel(this.item.final_price_item.tax_class_id);
             },
             routeUrlProductImg() {
                 return route('images.catalog.product', ['40x', this.item.image]);
@@ -225,17 +231,26 @@
         },
 
         methods: {
+            ...mapMutations({
+                setOptionNotSelectedError: 'modApiProduct/setOptionNotSelectedError',
+                resetSelectedVariants: 'modApiProduct/resetSelectedVariants'
+            }),
+            ...mapActions({
+                flashMessage: 'modFlash/flashMessage',
+                addItem: 'modCart/addItem',
+                toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction'
+            }),
             getPriceAndCurrency(key, addVat) {
-                return this.$store.getters['modPrices/getPriceAndCurrencyDecFmt'](this.item.final_price_item[key], addVat, this.itemTaxClass);
+                return this.getPriceAndCurrencyDecFmt(this.item.final_price_item[key], addVat, this.itemTaxClass);
             },
             getTierPriceAndCurrency(price, addVat) {
-                return this.$store.getters['modPrices/getPriceAndCurrencyDecFmt'](price, addVat, this.itemTaxClass);
+                return this.getPriceAndCurrencyDecFmt(price, addVat, this.itemTaxClass);
             },
             getTierPriceMinAndCurrency(addVat) {
-                return this.$store.getters['modPrices/getPriceAndCurrencyDecFmt'](this.itemTierPriceMin.price, addVat, this.itemTaxClass);
+                return this.getPriceAndCurrencyDecFmt(this.itemTierPriceMin.price, addVat, this.itemTaxClass);
             },
             getCheapPriceAndCurrency(addVat) {
-                return this.$store.getters['modPrices/getPriceAndCurrencyDecFmt'](this.item.final_price_item.min_price, addVat, this.itemTaxClass);
+                return this.getPriceAndCurrencyDecFmt(this.item.final_price_item.min_price, addVat, this.itemTaxClass);
             },
             getBasePriceAmountText(addVat) {
                 let _html = [
@@ -261,7 +276,7 @@
 
                 let _price = _item.price / _nBPA * _item.base_price_base_amount;
 
-                return this.$store.getters['modPrices/getPriceAndCurrencyDecFmt'](_price, addVat, this.itemTaxClass);
+                return this.getPriceAndCurrencyDecFmt(_price, addVat, this.itemTaxClass);
             },
             normalizeBasePriceAmount(priceItem) {
                 // handle just a few and only parent -> child units
@@ -293,10 +308,10 @@
                 //If item has variants (size, color, ..) and none is selected
                 // show error message and return
                 if(this.itemHasVariants && !this.optionIsSelected) {
-                    this.$store.commit('modApiProduct/setOptionNotSelectedError');
+                    this.setOptionNotSelectedError();
 
                     // Display Error Message
-                    this.$store.dispatch('modFlash/flashMessage', {
+                    this.flashMessage({
                         flashType: 'error',
                         flashMessage: this.$t('Please select {atrName} first', {atrName: this.attributeName})
                     });
@@ -308,22 +323,22 @@
                 this.item.variants = this.selectedVariants;
 
                 // Add item and qty to cart store
-                this.$store.dispatch('modCart/addItem', {
+                this.addItem({
                     item: this.item,
                     qty: this.selectedQty
                 }).then(() => {
 
                     if(process.env.API_TYPE === 'api') {
-                        this.$store.commit('modApiProduct/resetSelectedVariants');
+                        this.resetSelectedVariants();
                     }
 
                     // Open Minicart Context
-                    this.$store.dispatch('modNavigation/toggleOffcanvasAction', {
+                    this.toggleOffcanvasAction({
                         component: 'TheMiniCart',
                         direction: 'rightLeft'
                     }).then(() => {
                         // Display Success Message
-                        this.$store.dispatch('modFlash/flashMessage', {
+                        this.flashMessage({
                             flashType: 'success',
                             flashMessage: this.$t('Successfully added item to cart.')
                         });
@@ -331,7 +346,7 @@
                     this.gtmAddToCart();
                 }).catch((error) => {
                     // Display Error Message (eg. Qty of item is at maxQty)
-                    this.$store.dispatch('modFlash/flashMessage', {
+                    this.flashMessage({
                         flashType: 'error',
                         flashMessage: this.$t(error)
                     });

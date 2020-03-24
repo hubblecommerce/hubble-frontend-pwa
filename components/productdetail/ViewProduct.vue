@@ -130,7 +130,7 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex';
+    import { mapState, mapGetters, mapMutations, mapActions } from 'vuex';
     import ProductDetailBuybox from "./ProductDetailBuybox";
     import ProductDetailGallery from "./ProductDetailGallery";
     import CollapsibleDescription from "./CollapsibleDescription";
@@ -176,6 +176,13 @@
                 optionIsSelected: state => state.modApiProduct.optionIsSelected,
                 selectedVariants: state => state.modApiProduct.selectedVariants
             }),
+            ...mapGetters({
+                productIsSpecial: 'modPrices/productIsSpecial',
+                getTaxClassByLabel: 'modPrices/getTaxClassByLabel',
+                getPriceAndCurrencyDecFmt: 'modPrices/getPriceAndCurrencyDecFmt',
+                priceDecFmt: 'modPrices/priceDecFmt',
+                priceAddCur: 'modPrices/priceAddCur'
+            }),
             productData() {
                 if(_.isEmpty(this.dataProduct)) {
                     return this.dataProduct;
@@ -217,7 +224,7 @@
                     : 'left'
             },
             itemIsSpecial() {
-                return this.$store.getters['modPrices/productIsSpecial'](this.productData);
+                return this.productIsSpecial(this.productData);
             },
             structuredData() {
                 if(_.isEmpty(this.productData)) return {};
@@ -249,7 +256,7 @@
                 };
             },
             itemTaxClass() {
-                return this.$store.getters['modPrices/getTaxClassByLabel'](this.productData.final_price_item.tax_class_id);
+                return this.getTaxClassByLabel(this.productData.final_price_item.tax_class_id);
             },
             breadcrumbPath() {
                 let path = [];
@@ -335,9 +342,9 @@
 
         created() {
             if(this.openDetail) {
-                this.$store.dispatch('modApiProduct/getProductData', {path: this.$router.history.current.params.dynamicRoute}).then(response => {
+                this.getProductData({path: this.$router.history.current.params.dynamicRoute}).then(response => {
                     this.loading = false;
-                    this.$store.commit('modApiResources/setOpenDetail', false);
+                    this.setOpenDetail(false);
                 });
             } else {
                 this.loading = false;
@@ -345,22 +352,33 @@
         },
 
         methods: {
+            ...mapMutations({
+                setOptionNotSelectedError: 'modApiProduct/setOptionNotSelectedError',
+                resetSelectedVariants: 'modApiProduct/resetSelectedVariants',
+                setOpenDetail: 'modApiResources/setOpenDetail'
+            }),
+            ...mapActions({
+                getProductData: 'modApiProduct/getProductData',
+                flashMessage: 'modFlash/flashMessage',
+                toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction',
+                addItem: 'modCart/addItem'
+            }),
             getPriceAndCurrency(key, addVat) {
-                return this.$store.getters['modPrices/getPriceAndCurrencyDecFmt'](this.productData.final_price_item[key], addVat, this.itemTaxClass);
+                return this.getPriceAndCurrencyDecFmt(this.productData.final_price_item[key], addVat, this.itemTaxClass);
             },
             formatPrice(price) {
-                let priceFrmt = this.$store.getters['modPrices/priceDecFmt'](price);
-                let priceCur = this.$store.getters['modPrices/priceAddCur'](priceFrmt);
+                let priceFrmt = this.priceDecFmt(price);
+                let priceCur = this.priceAddCur(priceFrmt);
                 return priceCur;
             },
             addToCart() {
                 //If item has variants (size, color, ..) and none is selected
                 // show error message and return
                 if(this.itemHasVariants && !this.optionIsSelected) {
-                    this.$store.commit('modApiProduct/setOptionNotSelectedError');
+                    this.setOptionNotSelectedError();
 
                     // Display Error Message
-                    this.$store.dispatch('modFlash/flashMessage', {
+                    this.flashMessage({
                         flashType: 'error',
                         flashMessage: this.$t('Please select {atrName} first', {atrName: this.attributeName})
                     });
@@ -372,20 +390,20 @@
                 this.productData.variants = this.selectedVariants;
 
                 // Add item and qty to cart store
-                this.$store.dispatch('modCart/addItem', {
+                this.addItem({
                     item: this.productData,
                     qty: this.selectedQty
                 }).then(() => {
 
-                    this.$store.commit('modApiProduct/resetSelectedVariants');
+                    this.resetSelectedVariants();
 
                     // Open Minicart Context
-                    this.$store.dispatch('modNavigation/toggleOffcanvasAction', {
+                    this.toggleOffcanvasAction({
                         component: 'TheMiniCart',
                         direction: 'rightLeft'
                     }).then(() => {
                         // Display Success Message
-                        this.$store.dispatch('modFlash/flashMessage', {
+                        this.flashMessage({
                             flashType: 'success',
                             flashMessage: this.$t('Successfully added item to cart.')
                         });
@@ -393,7 +411,7 @@
                     this.gtmAddToCart();
                 }).catch((error) => {
                     // Display Error Message (e.g. Qty of item is at maxQty)
-                    this.$store.dispatch('modFlash/flashMessage', {
+                    this.flashMessage({
                         flashType: 'error',
                         flashMessage: this.$t(error)
                     });

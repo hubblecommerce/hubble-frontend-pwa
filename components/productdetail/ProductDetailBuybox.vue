@@ -64,7 +64,7 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex'
+    import { mapState, mapGetters, mapMutations, mapActions} from 'vuex'
     import ProductDetailBuyboxPrice from "./ProductDetailBuyboxPrice";
 
     import ProductDetailBuyboxColorSelect from "./ProductDetailBuyboxColorSelect";
@@ -102,6 +102,9 @@
                 optionIsSelected: state => state.modApiProduct.optionIsSelected,
                 optionNotSelectedError: state => state.modApiProduct.optionNotSelectedError,
                 selectedVariants: state => state.modApiProduct.selectedVariants
+            }),
+            ...mapGetters({
+                productHasTierPricesByGroupId: 'modPrices/productHasTierPricesByGroupId'
             }),
             productData() {
                 return this.dataProduct.result.item;
@@ -193,21 +196,30 @@
         },
 
         created() {
-            this.$store.commit('modApiProduct/resetSelectedVariants');
-            this.$store.commit('modApiProduct/removeOptionNotSelectedError');
+            this.resetSelectedVariants();
+            this.removeOptionNotSelectedError();
         },
 
         methods: {
+            ...mapMutations({
+                resetSelectedVariants: 'modApiProduct/resetSelectedVariants',
+                removeOptionNotSelectedError: 'modApiProduct/removeOptionNotSelectedError',
+                setOptionIsSelected: 'modApiProduct/setOptionIsSelected',
+                setCollapsed: 'modCollapsibleState/setCollapsed'
+            }),
+            ...mapActions({
+                toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction'
+            }),
             openCollapsible: function() {
-                this.$store.commit('modCollapsibleState/setCollapsed');
+                this.setCollapsed();
             },
             formatSize: function (size) {
                 return size.replace('.0', '');
             },
             selectedOption: function (option) {
                 if(option.stock_qty > 0 ) {
-                    this.$store.commit('modApiProduct/setOptionIsSelected', option);
-                    this.$store.commit('modApiProduct/removeOptionNotSelectedError');
+                    this.setOptionIsSelected(option);
+                    this.removeOptionNotSelectedError();
                     this.selected.origin = option.value_label;
                     this.selected.processed = option.value_label.replace('.0', '');
                 }
@@ -222,7 +234,7 @@
                 return option.stock_qty === 0 ? 'unavailable' : '';
             },
             toggle: function() {
-                this.$store.dispatch('modNavigation/toggleOffcanvasAction', {
+                this.toggleOffcanvasAction( {
                     component: this.name,
                     direction: 'rightLeft'
                 });
@@ -235,7 +247,7 @@
                 }
                 // simple product
                 let groupID = 0;
-                return this.$store.getters['modPrices/productHasTierPricesByGroupId'](this.item, groupID);
+                return this.productHasTierPricesByGroupId(this.item, groupID);
             },
             evalItemsTierPriceDiscount: function() {
                 // get all child nodes with tier price items

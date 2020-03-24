@@ -15,7 +15,7 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex';
+    import { mapState, mapActions } from 'vuex';
 
     export default {
         name: "ProductDetailBuyboxColorSelect",
@@ -45,10 +45,13 @@
         },
 
         methods: {
+            ...mapActions({
+                getProductsCrossBuyboxApiCall: 'modApiProduct/getProductsCrossBuybox'
+            }),
             getProductsCrossBuybox: function() {
                 return new Promise((resolve) => {
                     // Get cross-selling products from api
-                    this.$store.dispatch('modApiProduct/getProductsCrossBuybox', {
+                    this.getProductsCrossBuyboxApiCall({
                         data: this.productId
                     }).then(() => {
                         resolve('ok');
@@ -60,15 +63,10 @@
             routeUrlColorThumbnail(image) {
                 // If customer domain isset get live images
                 if(!_.isEmpty(process.env.CUSTOMER_DOMAIN)) {
-                    let _letters = _.split(image, '', 2);
-
                     let _reference = _.join(
                         [
                             process.env.CUSTOMER_DOMAIN,
                             'images/catalog/thumbnails/cache/400',
-                            // 'media/catalog/product',
-                            // _letters[0],
-                            // _letters[1],
                             image
                         ],
                         '/'

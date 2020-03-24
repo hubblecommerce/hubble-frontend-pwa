@@ -15,7 +15,7 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex';
+    import { mapState, mapActions } from 'vuex';
     import ProductListing from "../productlist/ProductListing";
 
     export default {
@@ -49,10 +49,13 @@
         },
 
         methods: {
+            ...mapActions({
+                getProductsCrossByOrderApiCall: 'modApiProduct/getProductsCrossByOrder' // map `this.add()` to `this.$store.dispatch('increment')`
+            }),
             getProductsCrossByOrder: function() {
                 return new Promise((resolve) => {
                     // Get cross-selling products from api
-                    this.$store.dispatch('modApiProduct/getProductsCrossByOrder', {
+                    this.getProductsCrossByOrderApiCall({
                         data: this.productId
                     }).then((response) => {
                         this.showProducts = !_.isEmpty(response.result.items);

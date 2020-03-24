@@ -15,7 +15,7 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex';
+    import { mapState, mapActions } from 'vuex';
     import ProductListing from "../productlist/ProductListing";
 
     export default {
@@ -49,10 +49,13 @@
         },
 
         methods: {
+            ...mapActions({
+                getProductsCrossSimilarApiCall: 'modApiProduct/getProductsCrossSimilar'
+            }),
             getProductsCrossSimilar: function() {
                 return new Promise((resolve) => {
                     // Get cross-selling products from api
-                    this.$store.dispatch('modApiProduct/getProductsCrossSimilar', {
+                    this.getProductsCrossSimilarApiCall({
                         data: this.productId
                     }).then((response) => {
                         this.showProducts = !_.isEmpty(response.result.items);

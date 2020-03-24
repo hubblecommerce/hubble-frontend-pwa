@@ -23,17 +23,12 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex'
+    import { mapState, mapMutations } from 'vuex'
     import TransitionRotateX from "../transitions/TransitionRotateX";
 
     export default {
         name: "Collapsible",
         components: {TransitionRotateX},
-        computed: {
-            ...mapState({
-                collapsedState: state => state.modCollapsibleState.collapsed
-            })
-        },
         props: {
             toggleTag: {
                 type: [String, Array],
@@ -57,7 +52,15 @@
                 default: true
             }
         },
+        computed: {
+            ...mapState({
+                collapsedState: state => state.modCollapsibleState.collapsed
+            })
+        },
         methods: {
+            ...mapMutations({
+                collapseContent: 'modCollapsibleState/collapseContent'
+            }),
             beforeEnter(el) {
                 el.style.maxHeight = 0;
             },
@@ -66,9 +69,6 @@
             },
             beforeLeave(el) {
                 el.style.maxHeight = '0';
-            },
-            collapseContent() {
-                this.$store.commit('modCollapsibleState/collapseContent');
             },
         }
     }

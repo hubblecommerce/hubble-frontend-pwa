@@ -26,7 +26,7 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex';
+    import { mapState, mapGetters, mapMutations } from 'vuex';
 
     export default {
         name: "ProductDetailBuyboxOptions",
@@ -47,6 +47,9 @@
         computed: {
             ...mapState({
                 dataProduct: state => state.modApiProduct.dataProduct
+            }),
+            ...mapGetters({
+                getSwatchesByOptionId: 'modSwatches/getSwatchesByOptionId'
             }),
             itemFacets() {
                 let _facets = null;
@@ -108,11 +111,14 @@
         },
 
         methods: {
+            ...mapMutations({
+                setDataProductItem: 'modApiProduct/setDataProductItem'
+            }),
             assignFacetOptionValues(facetCode) {
                 let _facet = _.head(this.itemFacetsSuper.filter(item => item['code'] === facetCode));
 
                 _.forEach(_facet['facet-values'], (facetValue) => {
-                    let _option = this.$store.getters['modSwatches/getSwatchesByOptionId'](facetCode, facetValue.id);
+                    let _option = this.getSwatchesByOptionId(facetCode, facetValue.id);
 
                     if(_.isEmpty(_option)) {
                         facetValue['use_color'] = null;
@@ -197,7 +203,7 @@
                     }
 
                     // Update current product data
-                    this.$store.commit('modApiProduct/setDataProductItem', {
+                    this.setDataProductItem({
                         data: this.itemSelected
                     });
                 }

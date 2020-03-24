@@ -151,7 +151,8 @@ export default {
         dataProduct: state => state.modApiProduct.dataProduct,
       }),
       ...mapGetters({
-          allProductImages: 'modApiProduct/getMediaGalleryArray'
+          allProductImages: 'modApiProduct/getMediaGalleryArray',
+          productIsSpecial: 'modPrices/productIsSpecial'
       }),
       productData() {
         return this.dataProduct.result.item;
@@ -171,7 +172,7 @@ export default {
           return '-'+_.round(decreasePercentage) + ' %';
       },
       itemIsSpecial() {
-          return this.$store.getters['modPrices/productIsSpecial'](this.productData);
+          return this.productIsSpecial(this.productData);
       },
       itemIsNew() {
           if(this.productData.status) {
