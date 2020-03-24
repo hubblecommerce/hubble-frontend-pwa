@@ -365,7 +365,7 @@
                 this.hideFilters().then(response => {
                     let _prefix = '/'
 
-                    let _locale = this.getApiLocale()
+                    let _locale = this.getApiLocale
 
                     if (_locale !== 'de') {
                         _prefix = '/' + _locale + '/'

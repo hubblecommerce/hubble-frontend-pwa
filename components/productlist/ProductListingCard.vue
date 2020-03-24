@@ -116,7 +116,7 @@
                 return null
             },
             routeUrlPds() {
-                let _locale = this.getApiLocale();
+                let _locale = this.getApiLocale;
 
                 // direkt url
                 if (this.isSlider) {

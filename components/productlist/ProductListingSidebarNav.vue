@@ -61,7 +61,7 @@
                 });
             },
             itemUrlPath(item) {
-                let _locale = this.getApiLocale();
+                let _locale = this.getApiLocale;
 
                 if(_locale !== 'de') {
                     return '/' + _locale + '/' + item.url_path;
