@@ -24,6 +24,7 @@ export default function (ctx) {
             },
 
             countries: null,
+            salutations: null,
 
             // Payment
             paymentMethods: {},
@@ -120,6 +121,9 @@ export default function (ctx) {
                 state.countries = payload.sort((a, b) => {
                     return a.position - b.position;
                 });
+            },
+            setSalutations: (state, payload) => {
+                state.salutations = payload;
             },
             setAvailableCountries: (state, payload) => {
                 state.availableCountries = payload;
@@ -252,16 +256,14 @@ export default function (ctx) {
                         });
                 });
             },
-            swGuestOrder({commit, state, dispatch, rootState, getters}, payload) {
-                const _endpoint = `/sales-channel-api/v1/checkout/guest-order`;
-
+            async swGuestOrder({commit, state, dispatch, rootState, getters}, payload) {
                 return new Promise((resolve, reject) => {
                     dispatch('apiCall', {
                         action: 'post',
                         tokenType: 'sw',
                         apiType: 'data',
                         swContext: payload.swtc,
-                        endpoint: _endpoint,
+                        endpoint: '/sales-channel-api/v1/checkout/guest-order',
                         data: payload.order
                     }, { root: true })
                         .then(response => {
@@ -276,18 +278,23 @@ export default function (ctx) {
 
                 let order = payload.order;
 
-                // Get salutation uuid
-                const salutations = await dispatch('swGetSalutations');
-                const salutation = _.find(salutations.data.data, function(o) { return o.salutationKey === 'not_specified'; });
-
                 // Set salutation uuid
-                order.salutationId = salutation.id;
-                order.billingAddress.salutationId = salutation.id;
+                order.billingAddress.salutationId = order.salutationId;
 
                 return new Promise((resolve, reject)  => {
                     dispatch('swGuestOrder', {order: order, swtc: payload.swtc}).then((res) => {
-                        commit('setCurrentOrder', res.data.data);
-                        resolve();
+                        dispatch('modCart/clearAll', {}, {root:true}).then(() => {
+
+                            dispatch('clearOrder').then(() => {
+
+                                commit('setCurrentOrder', res.data.data);
+
+                                commit('setCustomerAuth', {token: res.data['sw-context-token']});
+
+                                resolve(res);
+
+                            })
+                        });
                     }).catch((error) => {
                         reject(error);
                     });

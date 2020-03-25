@@ -9,12 +9,19 @@
                     <!--
                     ************************
                     Addressdata
-                    TODO: place in subcomponent
                     ************************
                     -->
                     <div class="headline headline-3 mb-3">Customerinformation</div>
                     <validation-observer ref="observer" v-slot="{ passes, invalid, validate }" tag="form" class="form-edit register-form" @submit.prevent="validate().then((e) => {submitForm(e)})">
                         <div class="base-data-wrp">
+                            <validation-provider v-slot="{ errors }" name="salutation" rules="required" mode="passive" tag="div" class="hbl-select">
+                                <select v-model="orderObj.salutationId" class="select-text" :class="{invalid: errors.length > 0}" required>
+                                    <option v-for="salutation in salutations" :key="salutation.id" :value="salutation.id">{{ salutation.displayName }}</option>
+                                </select>
+                                <label class="select-label" v-text="$t('Salutation')+'*'" />
+                                <div class="validation-msg" v-text="$t(errors[0])" />
+                            </validation-provider>
+
                             <validation-provider v-slot="{ errors }" vid="email" name="email" rules="required|email" mode="passive" tag="div" class="hbl-input-group">
                                 <input id="email"
                                        v-model="orderObj.email"
@@ -113,41 +120,16 @@
                         <!--
                         ************************
                         Payment
-                        TODO: place in subcomponent and connect to payment module (payone)
                         ************************
                         -->
-                        <div class="checkout-payment-wrp">
-                            <div class="payment-methods-wrp">
-                                <div class="headline headline-3" v-text="$t('Payment')" />
-                                <div class="method-wrp cc">
-                                    <div class="hbl-checkbox">
-                                        <input id="payment-option-cc" v-model="chosenPaymentMethod" type="radio" :value="'1'">
-                                        <label for="payment-option-cc" class="method-label">
-                                            <span class="name" v-text="'For Free'" />
-                                            <i class="icon icon-payment" />
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <payment-methods />
 
                         <!--
                         ************************
                         Shipping
-                        TODO: place in subcomponent and get shipping methods from SW6 saleschannel api
                         ************************
                         -->
-                        <div class="shipping-methods-wrp">
-                            <div class="headline headline-3" v-text="$t('Shipping methods')" />
-                            <div class="method-wrp hbl-checkbox">
-                                <input :id="'shipping-option-1'" v-model="chosenShippingMethod" type="radio" :value="'1'">
-                                <label :for="'shipping-option-1'" class="method-label">
-                                    <span class="name" v-text="'Pick up'" />
-                                    <span class="description" v-text="'Visit us'" />
-                                    <i class="icon icon-truck" />
-                                </label>
-                            </div>
-                        </div>
+                        <shipping-methods />
 
                         <!--
                         ************************
@@ -196,11 +178,13 @@
 <script>
     import { mapState } from 'vuex';
     import Totals from "../../components/checkout/Totals";
+    import PaymentMethods from "../../components/checkout/PaymentMethods";
+    import ShippingMethods from "../../components/checkout/ShippingMethods";
 
     export default {
         name: "ShopwareGuest",
 
-        components: {Totals},
+        components: {ShippingMethods, PaymentMethods, Totals},
 
         middleware: [
             'cartValidate',
@@ -210,19 +194,9 @@
 
         layout: 'hubble_express',
 
-        fetch ({ store }) {
-            return store.dispatch('modApiPayment/swGetCountries')
-                .then((res) => {
-                    store.commit('modApiPayment/setCountries', res.data.data);
-                });
-        },
-
         data() {
             return {
-                chosenPaymentMethod: '1',
-                chosenShippingMethod: '1',
                 checkoutError: {},
-                processingCheckout: false,
                 orderObj: {
                     salutationId: "",
                     firstName: "",
@@ -243,7 +217,26 @@
             ...mapState({
                 swtc: state => state.modCart.swtc,
                 countries: state => state.modApiPayment.countries,
+                salutations: state => state.modApiPayment.salutations,
+                processingCheckout: state => state.modApiPayment.processingCheckout,
+                cart: state => state.modCart.cart,
             })
+        },
+
+        mounted() {
+            // Set cart context as customer context for further api calls
+            // Do this after swtc isset via cookie (mounted)
+            if(_.isEmpty(this.$store.state.modApiPayment.customer.customerAuth)) {
+                this.$store.commit('modApiPayment/setCustomerAuth', {token: this.$store.state.modCart.swtc});
+            }
+
+            this.$store.dispatch('modApiPayment/swGetSalutations').then((salutationResponse) => {
+                this.$store.commit('modApiPayment/setSalutations', salutationResponse.data.data);
+            });
+
+            this.$store.dispatch('modApiPayment/swGetCountries').then((countryResponse) => {
+                this.$store.commit('modApiPayment/setCountries', countryResponse.data.data);
+            });
         },
 
         methods: {
@@ -253,33 +246,53 @@
 
             placeOrder: function() {
 
-                this.processingCheckout = true;
+                this.$store.commit('modApiPayment/setProcessingCheckout');
 
-                this.$store.dispatch('modApiPayment/placeGuestOrder', {order: this.orderObj, swtc: this.swtc}).then(() => {
+                // Place order
+                // on success: clear cart and order and
+                // set response context token as new customer auth token (needed for payment)
+                this.$store.dispatch('modApiPayment/placeGuestOrder', {order: this.orderObj, swtc: this.swtc}).then((order) => {
 
-                    // On request success clear data (cart)
-                    // and redirect to success page
-                    this.$store.dispatch('modCart/clearAll').then(() => {
-                        this.$router.push({
-                            path: this.localePath('checkout-shopware-success')
-                        }, () => {
-                            this.processingCheckout = false;
-                        });
+                    // Init payment
+                    this.$store.dispatch('modApiPayment/swStartPayment', order.data.data.id).then((paymentResponse) => {
+
+                        // Reset cart context token as new customer auth token
+                        // because order context token is not needed anymore
+                        this.$store.commit('modApiPayment/setCustomerAuth', {token: this.swtc});
+
+                        if(paymentResponse.data.paymentUrl) {
+                            this.$store.commit('modApiPayment/resetProcessingCheckout');
+                            window.open(paymentResponse.data.paymentUrl, "_self");
+                        }
+
+                        if(_.isEmpty(paymentResponse.data)) {
+                            this.$router.push({
+                                path: this.localePath('checkout-shopware-success')
+                            }, () => {
+                                this.$store.commit('modApiPayment/resetProcessingCheckout');
+                            });
+                        }
+
                     });
 
                 });
 
             },
 
-            submitForm: function(isValid) {
+            submitForm: async function(isValid) {
+
+                try {
+                    await this.$store.dispatch('modApiPayment/validateOrder')
+                } catch(error) {
+                    this.$store.commit('modApiPayment/resetProcessingCheckout');
+                    return false;
+                }
 
                 if(isValid && !this.processingCheckout) {
                     this.placeOrder();
                     return;
                 }
 
-                this.processingCheckout = false;
-                return false;
             }
         },
 

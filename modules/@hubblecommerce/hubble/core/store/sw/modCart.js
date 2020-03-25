@@ -145,8 +145,6 @@ export default function (ctx) {
                             resolve('cart saved');
                         });
                     });
-
-                    resolve('cart cleared!');
                 })
             },
             swGetCart({commit, state, dispatch, rootState, getters}) {
@@ -335,7 +333,12 @@ export default function (ctx) {
 
                     commit('setSubtotals', payload.data.data.price.positionPrice);
                     commit('setTotals', payload.data.data.price.totalPrice);
-                    commit('setShippingCosts', payload.data.data.deliveries[0].shippingCosts.totalPrice);
+
+                    if(!_.isEmpty(payload.data.data.deliveries)) {
+                        commit('setShippingCosts', payload.data.data.deliveries[0].shippingCosts.totalPrice);
+                    } else {
+                        commit('setShippingCosts', 0);
+                    }
 
                     resolve();
                 });

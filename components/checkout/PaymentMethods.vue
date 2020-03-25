@@ -245,6 +245,8 @@
                         });
 
                     });
+                } else {
+                    this.$store.commit('modApiPayment/resetProcessingCheckout');
                 }
             },
 

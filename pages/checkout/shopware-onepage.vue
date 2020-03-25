@@ -154,7 +154,7 @@
     }
 </script>
 
-<style>
+<style scoped>
     .summary-container {
         width: 45%;
         margin-left: auto;

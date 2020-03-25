@@ -121,6 +121,12 @@
                 this.showRegisterGuestForm = false;
             },
             toggleRegisterGuestForm: function() {
+                // If shopware mode, redirect to shopware guest checkout
+                if(process.env.API_TYPE === 'sw') {
+                    this.$router.push({path: this.localePath('checkout-shopware-guest')});
+                    return;
+                }
+
                 this.showRegisterGuestForm = !this.showRegisterGuestForm;
                 this.showLoginForm = false;
                 this.showRegisterForm = false;
