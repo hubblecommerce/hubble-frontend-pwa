@@ -7,19 +7,32 @@
                 <div class="t-col">{{ $t('Date') }}</div>
                 <div class="t-col">{{ $t('Total') }}</div>
                 <div class="t-col">{{ $t('Status') }}</div>
-                <div class="t-col">{{ $t('Action') }}</div>
+                <div v-if="orders[0].payload != null" class="t-col">{{ $t('Action') }}</div>
             </div>
             <div v-for="(order, index) in orders" :key="index" v-if="index <= limit && orders.length > 0" class="t-row">
-                <div class="t-col" v-text="'000'+order.id" />
+                <!-- Show shopware order number if isset  -->
+                <div v-if="order.orderNumber != null" class="t-col" v-text="order.orderNumber" />
+                <div v-else class="t-col" v-text="'000'+order.id" />
+
                 <div class="t-col" v-text="formatDate(order.createdAt)" />
                 <div class="t-col">
-                    <span v-if="order.payload" v-text="getTotals(JSON.parse(order.payload))" />
+                    <!-- Show shopware order totals if isset  -->
+                    <span v-if="order.totals != null" v-text="getTotals(order.totals)" />
+                    <span v-if="order.payload != null" v-text="getTotals(JSON.parse(order.payload.cart.grand_total))" />
                 </div>
                 <div class="t-col">{{ $t(order.status_label) }}</div>
-                <div class="t-col">
+
+                <!-- Shopware: do not show link to order detail page, because /customer/order endpoint doesnt provide cart and adress data -->
+                <div v-if="order.payload != null" class="t-col">
                     <nuxt-link :to="'/customer/order/'+order.id">{{ $t('View Order') }}</nuxt-link>
                 </div>
             </div>
+        </div>
+        <div v-else-if="loading" class="loader lds-ellipsis">
+            <div />
+            <div />
+            <div />
+            <div />
         </div>
         <div v-else>{{ $t('No orders yet') }}</div>
     </div>
@@ -46,6 +59,7 @@
 
         data() {
           return {
+              loading: false,
               orders: [],
               data: []
           }
@@ -69,6 +83,7 @@
                 //Get orders from store
                 this.$store.dispatch('modApiPayment/getOrders').then((response) => {
                     this.orders = response;
+                    this.loading = false;
                 }).catch(() => {
                     this.loading = false;
                 });
@@ -82,14 +97,11 @@
 
                 return false;
             },
-            getTotals(orderData) {
-                if(!_.isEmpty(orderData.cart)) {
+            getTotals(value) {
+                let total = this.$store.getters['modPrices/priceDecFmt'](value);
+                total = this.$store.getters['modPrices/priceAddCur'](value);
 
-                    let total = this.$store.getters['modPrices/priceDecFmt'](orderData.cart.grand_total);
-                    total = this.$store.getters['modPrices/priceAddCur'](orderData.cart.grand_total);
-
-                    return total;
-                }
+                return total;
             },
             formatDate(date) {
                 let dateObj = new Date(date);

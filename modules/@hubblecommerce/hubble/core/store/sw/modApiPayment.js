@@ -856,12 +856,12 @@ export default function (ctx) {
                     let mappedOrders= [];
 
                     _.forEach(orders, (order) => {
-                        // TODO: set correct data when place order for logged in user is finished
                         mappedOrders.push({
+                            orderNumber: order.orderNumber,
                             id: order.id,
-                            created_at: order.id,
-                            status_label: order.id,
-                            payload: order.id
+                            createdAt: order.createdAt,
+                            status_label: order.stateMachineState.name,
+                            totals: order.positionPrice
                         })
                     });
 
