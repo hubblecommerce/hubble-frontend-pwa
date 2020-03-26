@@ -543,7 +543,10 @@ export default function (ctx) {
 
                     obj.id = product.id;
                     obj.sku = product.ean;
-                    obj.type = 'sw';
+                    obj.type = 'simple';
+                    if(product.childCount > 0) {
+                        obj.type = 'configurable';
+                    }
                     if(product.cover !== null) {
                         obj.image = product.cover.media.url;
                     }
@@ -621,6 +624,51 @@ export default function (ctx) {
                         string_facets: [],
                         category_facets: []
                     };
+
+                    obj.properties = product.properties;
+                    obj.optionIds = product.optionIds;
+                    obj.options = product.options;
+
+                    // Generate Children
+                    if(product.childCount > 0) {
+                        obj.children = [];
+
+                        let uniqueOptionsOfAllChildren = [];
+
+                        _.forEach(product.children, (child) => {
+                            dispatch('mappingProduct', {product: child, path: ''}).then((res) => {
+                                obj.children.push(res);
+                            });
+
+                            // Generate unique options
+                            // Each option includes it's group
+                            _.forEach(child.options, (option) => {
+                                if(!_.some(uniqueOptionsOfAllChildren, option)) {
+                                    uniqueOptionsOfAllChildren.push(option);
+                                }
+                            });
+                        });
+
+                        // Generate unique groups
+                        let groups = [];
+                        _.forEach(uniqueOptionsOfAllChildren, (option) => {
+                            if(!_.some(groups, option.group)) {
+                                groups.push(option.group);
+                            }
+                        });
+
+                        // Assign each unique group it's unique options
+                        _.forEach(groups, (group) => {
+                            group.options = [];
+                            _.forEach(uniqueOptionsOfAllChildren, (option) => {
+                                if(option.groupId === group.id) {
+                                    group.options.push(option)
+                                }
+                            });
+                        });
+
+                        obj.groups = groups;
+                    }
 
                     resolve(obj);
 
@@ -837,7 +885,8 @@ export default function (ctx) {
                         state.productId,
                         '?associations[manufacturer][associations][media][]',
                         '&associations[seoUrls][]',
-                        '&associations[media][]'
+                        '&associations[media][]',
+                        '&associations[children][associations][options][associations][group][]',
                     ], '');
 
                     dispatch('apiCall', {
@@ -849,6 +898,8 @@ export default function (ctx) {
                         .then(response => {
 
                             dispatch('mappingProduct', {product: response.data.data, path: payload.path}).then((res) => {
+
+                                console.log(res);
 
                                 commit('setDataProduct', {
                                     data: {

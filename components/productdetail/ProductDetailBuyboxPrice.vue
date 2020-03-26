@@ -43,7 +43,8 @@
         </div>
 
         <div>
-            <product-detail-buybox-options v-if="itemIsConfigurable" />
+            <product-detail-buybox-options v-if="itemIsConfigurable && !isApiType('sw')" />
+            <product-detail-buybox-options-sw v-if="itemIsConfigurable && isApiType('sw')" />
         </div>
 
         <!-- Price-Cart-Delivery Order -->
@@ -107,7 +108,11 @@
 
     export default {
 
-        components: {AddToWishlist},
+        components: {
+            ProductDetailBuyboxOptions: () => import('./ProductDetailBuyboxOptions'),
+            ProductDetailBuyboxOptionsSw: () => import('./ProductDetailBuyboxOptionsSw'),
+            AddToWishlist
+        },
 
         props: {
             item: {
@@ -228,7 +233,7 @@
                 return null;
             },
             itemHasVariants() {
-                if(!_.isEmpty(this.item.facets.string_facets)) {
+                if(!_.isEmpty(this.item.facets.string_facets) || !_.isEmpty(this.item.groups)) {
                     return true;
                 }
                 return false;
@@ -381,6 +386,9 @@
                     })
 
                 }
+            },
+            isApiType: function(type) {
+                return process.env.API_TYPE === type;
             }
         }
     }

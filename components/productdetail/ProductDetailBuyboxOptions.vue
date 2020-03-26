@@ -50,15 +50,6 @@
             ...mapState({
                 dataProduct: state => state.modApiResources.dataProduct
             }),
-            itemIsSimple() {
-                return this.itemLoaded.type === 'simple';
-            },
-            itemIsGrouped() {
-                return this.itemLoaded.type === 'grouped';
-            },
-            itemIsConfigurable() {
-                return this.itemLoaded.type === 'configurable';
-            },
             itemFacets() {
                 let _facets = null;
 
@@ -146,7 +137,7 @@
 
                 if(facetOptionImgName !== '') {
                     return _.join([
-                        'https://www.design-bestseller.de/media/designbestseller_swatch',
+                        '',
                         facetCodeAttrId,
                         facetOptionImgSize,
                         facetOptionImgName
