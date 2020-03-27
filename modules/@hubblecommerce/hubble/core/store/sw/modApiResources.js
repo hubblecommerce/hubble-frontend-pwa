@@ -86,10 +86,11 @@ export default function (ctx) {
             setCmsObject: (state, value) => {
                 state.cmsObject = value;
             },
-            setOptionIsSelected: (state, variant) => {
+            setOptionIsSelected: (state) => {
                 state.optionIsSelected = true;
-                state.selectedVariants = [];
-                state.selectedVariants.push(variant);
+            },
+            setSelectedVariants: (state, payload) => {
+                state.selectedVariants = payload;
             },
             resetSelectedVariants: (state) => {
                 state.optionIsSelected = false;
@@ -898,8 +899,6 @@ export default function (ctx) {
                         .then(response => {
 
                             dispatch('mappingProduct', {product: response.data.data, path: payload.path}).then((res) => {
-
-                                console.log(res);
 
                                 commit('setDataProduct', {
                                     data: {

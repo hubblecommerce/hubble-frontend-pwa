@@ -27,21 +27,9 @@
 
             <!-- Variants -->
             <div class="variants-wrp">
-                <div v-if="attributeName" class="variant-label headline-4">
-                    {{ attributeName }} {{ $t('select') }}:
-                    <span class="selected-variant" v-text="showSelectedOption"></span>
-                </div>
+                <product-detail-buybox-options v-if="itemIsConfigurable && !isApiType('sw')" />
 
-                <ul class="variant-list">
-                    <li v-for="(option, id) in productHasSizeVariant ? productSizesSorted : productOptions"
-                        :key="id"
-                        class="option-val headline-4"
-                        :class="[getUnavailableClass(option), getSelectedClass(option)]"
-                        :value="option"
-                        @click="selectedOption(option)"
-                        v-text="productHasSizeVariant ? formatSize(option.value_label) : option.value_label"
-                    />
-                </ul>
+                <product-detail-buybox-options-sw v-if="itemIsConfigurable && isApiType('sw')" />
 
                 <div v-if="optionNotSelectedError" class="error-message">
                     {{ $t('Please select {atrName} first', { atrName: attributeName }) }}
@@ -83,7 +71,13 @@
     import ProductDetailBuyboxColorSelect from "./ProductDetailBuyboxColorSelect";
 
     export default {
-        components: {ProductDetailBuyboxColorSelect, AddToWishlist, ProductDetailBuyboxPrice},
+        components: {
+            ProductDetailBuyboxOptions: () => import('./ProductDetailBuyboxOptions'),
+            ProductDetailBuyboxOptionsSw: () => import('./ProductDetailBuyboxOptionsSw'),
+            ProductDetailBuyboxColorSelect,
+            AddToWishlist,
+            ProductDetailBuyboxPrice
+        },
 
         data() {
             return {
@@ -272,6 +266,9 @@
                 }
 
                 this.logoPath = logoPath;
+            },
+            isApiType: function(type) {
+                return process.env.API_TYPE === type;
             }
         }
     };

@@ -42,11 +42,6 @@
             </div>
         </div>
 
-        <div>
-            <product-detail-buybox-options v-if="itemIsConfigurable && !isApiType('sw')" />
-            <product-detail-buybox-options-sw v-if="itemIsConfigurable && isApiType('sw')" />
-        </div>
-
         <!-- Price-Cart-Delivery Order -->
         <div v-if="$mq === 'sm'" class="price-cart-wrp">
             <div class="price-box price-wrp">
@@ -109,8 +104,6 @@
     export default {
 
         components: {
-            ProductDetailBuyboxOptions: () => import('./ProductDetailBuyboxOptions'),
-            ProductDetailBuyboxOptionsSw: () => import('./ProductDetailBuyboxOptionsSw'),
             AddToWishlist
         },
 
@@ -166,15 +159,6 @@
             },
             itemIsSpecial() {
                 return this.$store.getters['modPrices/productIsSpecial'](this.item);
-            },
-            itemIsSimple() {
-                return this.item.type === 'simple';
-            },
-            itemIsGrouped() {
-                return this.item.type === 'grouped';
-            },
-            itemIsConfigurable() {
-                return this.item.type === 'configurable';
             },
             itemNameText() {
                 if(this.item.short_name && this.item.short_name.length) {
@@ -329,7 +313,9 @@
                     qty: this.selectedQty
                 }).then(() => {
 
-                    this.$store.commit('modApiResources/resetSelectedVariants');
+                    if(process.env.API_TYPE === 'api') {
+                        this.$store.commit('modApiResources/resetSelectedVariants');
+                    }
 
                     // Open Minicart Context
                     this.$store.dispatch('modNavigation/toggleOffcanvasAction', {
@@ -386,9 +372,6 @@
                     })
 
                 }
-            },
-            isApiType: function(type) {
-                return process.env.API_TYPE === type;
             }
         }
     }

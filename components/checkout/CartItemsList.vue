@@ -227,7 +227,7 @@
             getStockQtyOfVariant: function(item) {
 
                 // If product has no variants return 10
-                if(_.isEmpty(item.variants)) {
+                if(_.isEmpty(item.variants) || process.env.API_TYPE === 'sw') {
                     return 10;
                 }
 
