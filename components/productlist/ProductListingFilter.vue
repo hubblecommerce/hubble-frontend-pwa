@@ -193,8 +193,8 @@
         computed: {
             ...mapState({
                 dataMenu: state => state.modApiResources.dataMenu,
-                dataCategory: state => state.modApiResources.dataCategory,
-                dataCategoryProducts: state => state.modApiResources.dataCategoryProducts,
+                dataCategory: state => state.modApiCategory.dataCategory,
+                dataCategoryProducts: state => state.modApiCategory.dataCategoryProducts,
                 optionsLimit: state => state.modApiRequests.optionsLimit,
                 optionsSorter: state => state.modApiRequests.optionsSorter,
                 parsedQuery: state => state.modApiRequests.parsedQuery,
@@ -375,7 +375,7 @@
                     this.resetPagination();
 
                     // keep possibly selected 'dir', 'order', 'limit'
-                    let _selected = this.getSelectedQueryParams()
+                    let _selected = this.getSelectedQueryParams();
 
                     //console.log(_.fromPairs(_selected));
 

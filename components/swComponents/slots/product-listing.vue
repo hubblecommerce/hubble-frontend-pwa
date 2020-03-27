@@ -19,11 +19,11 @@ import ProductListing from '../../productlist/ProductListing'
 
         computed: {
             ...mapState({
-                dataCategory: state => state.modApiResources.dataCategory,
-                dataCategoryProducts: state => state.modApiResources.dataCategoryProducts,
+                dataCategory: state => state.modApiCategory.dataCategory,
+                dataCategoryProducts: state => state.modApiCategory.dataCategoryProducts,
                 dataMenu: state => state.modApiResources.dataMenu,
                 cmsObject: state => state.modApiResources.cmsObject,
-                pathIds: state => state.modApiResources.dataCategory.result.item.path_ids
+                pathIds: state => state.modApiCategory.dataCategory.result.item.path_ids
             }),
             categoryProductItems() {
                 if (_.isEmpty(this.dataCategoryProducts)) {

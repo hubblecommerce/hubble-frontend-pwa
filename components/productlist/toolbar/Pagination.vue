@@ -66,7 +66,7 @@
 
         computed: {
             ...mapState({
-                dataCategoryProducts: state => state.modApiResources.dataCategoryProducts,
+                dataCategoryProducts: state => state.modApiCategory.dataCategoryProducts,
                 paginationPerPage: state => state.modApiRequests.paginationPerPage
             }),
             categoryProductItems() {

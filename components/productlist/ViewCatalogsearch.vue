@@ -54,8 +54,8 @@
 
         computed: {
             ...mapState({
-                dataCategory: state => state.modApiResources.dataCategory,
-                dataCategoryProducts: state => state.modApiResources.dataCategoryProducts
+                dataCategory: state => state.modApiCategory.dataCategory,
+                dataCategoryProducts: state => state.modApiCategory.dataCategoryProducts
             }),
             categoryItem() {
                 if(_.isEmpty(this.dataCategory)) {

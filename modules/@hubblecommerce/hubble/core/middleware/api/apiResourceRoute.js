@@ -22,7 +22,7 @@ Middleware.apiResourceRoute = function({app, store, route, error}) {
 
     _path = _.join(_segments, '/');
 
-    let openDetail = store.getters['modApiResources/getOpenDetail'];
+    let openDetail = store.getters['modApiProduct/getOpenDetail'];
 
     if(openDetail) {
         store.commit('modApiResources/setPageType', 'product');

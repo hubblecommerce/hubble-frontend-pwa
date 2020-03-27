@@ -29,7 +29,7 @@
         },
         computed: {
             ...mapState({
-                dataCategory: state => state.modApiResources.dataCategory,
+                dataCategory: state => state.modApiCategory.dataCategory,
             }),
             pathIds() {
                 if(!_.isEmpty(this.categoryItem)) {

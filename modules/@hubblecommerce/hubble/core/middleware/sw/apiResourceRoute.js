@@ -36,14 +36,14 @@ Middleware.apiResourceRoute = function({app, store, route, error}) {
             });
 
             // Get and store category
-            store.dispatch('modApiResources/swGetCategory', matchingCategory.id).then(() => {
+            store.dispatch('modApiCategory/swGetCategory', matchingCategory.id).then(() => {
 
                 store.commit('modApiResources/setPageType', 'category');
 
                 // Set filters from url query
                 // important to call it first because it resets all filters
                 if(route.query != null) {
-                    store.commit('modApiResources/setFilters', route.query);
+                    store.commit('modApiCategory/setFilters', route.query);
                 }
 
                 // Set limit to request if isset in url
@@ -54,26 +54,26 @@ Middleware.apiResourceRoute = function({app, store, route, error}) {
 
                 // Set page to request if isset in url
                 if(route.query.page != null) {
-                    store.commit('modApiResources/setPage', route.query.page);
+                    store.commit('modApiCategory/setPage', route.query.page);
                 } else {
-                    store.commit('modApiResources/setPage', 1);
+                    store.commit('modApiCategory/setPage', 1);
                 }
 
                 // Set order to request if isset in url
                 if(route.query.sort != null) {
-                    store.commit('modApiResources/setSorting', route.query.sort);
+                    store.commit('modApiCategory/setSorting', route.query.sort);
                 } else {
-                    store.commit('modApiResources/setSorting', 0);
+                    store.commit('modApiCategory/setSorting', 0);
                 }
 
                 // Filter by category id
-                store.dispatch('modApiResources/setApiRequestFilter', {
+                store.dispatch('modApiCategory/setApiRequestFilter', {
                     type: 'contains',
                     field: 'categoryTree',
                     value: matchingCategory.id
                 }).then(() => {
                     // Get products
-                    store.dispatch('modApiResources/swGetProducts', matchingCategory.id).then(() => {
+                    store.dispatch('modApiCategory/swGetProducts', matchingCategory.id).then(() => {
                         resolve();
                     });
                 });
@@ -93,7 +93,7 @@ Middleware.apiResourceRoute = function({app, store, route, error}) {
         store.commit('modApiProduct/setProductId', matchingProduct.foreignKey);
 
         // Load detail page client side if its accessed via anchor
-        if(store.getters['modApiResources/getOpenDetail']) {
+        if(store.getters['modApiProduct/getOpenDetail']) {
             store.commit('modApiResources/setPageType', 'product');
         } else {
             // dispatch to vuex store by promise

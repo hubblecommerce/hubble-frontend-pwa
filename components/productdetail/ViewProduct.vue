@@ -167,7 +167,7 @@
 
         computed: {
             ...mapState({
-                openDetail: state => state.modApiResources.openDetail,
+                openDetail: state => state.modApiProduct.openDetail,
                 dataProduct: state => state.modApiProduct.dataProduct,
                 priceCurrency: state => state.modPrices.priceCurrency,
                 priceCurrencySymbol: state => state.modPrices.priceCurrencySymbol,

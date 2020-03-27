@@ -16,16 +16,16 @@ Middleware.apiResourceSearch = function ({ store, route }) {
 
         // Set page to request if isset in url
         if(route.query.page != null) {
-            store.commit('modApiResources/setPage', route.query.page);
+            store.commit('modApiCategory/setPage', route.query.page);
         } else {
-            store.commit('modApiResources/setPage', 1);
+            store.commit('modApiCategory/setPage', 1);
         }
 
         // Set order to request if isset in url
         if(route.query.sort != null) {
-            store.commit('modApiResources/setSorting', route.query.sort);
+            store.commit('modApiCategory/setSorting', route.query.sort);
         } else {
-            store.commit('modApiResources/setSorting', 0);
+            store.commit('modApiCategory/setSorting', 0);
         }
 
         // Set order to request if isset in url

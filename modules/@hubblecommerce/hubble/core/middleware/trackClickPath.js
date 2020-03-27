@@ -20,7 +20,7 @@ Middleware.trackClickPath = function ({ store, route }) {
     // If current page is type of category, set category path info to clickPath
     if(pageType === 'category') {
         // Get category info => category path
-        let category = store.state.modApiResources.dataCategory;
+        let category = store.state.modApiCategory.dataCategory;
 
         // Extract necessary info for display breadcrumbs
         if( !_.isEmpty(category)) {
