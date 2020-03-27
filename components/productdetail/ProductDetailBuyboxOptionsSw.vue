@@ -1,19 +1,20 @@
 <template>
-    <div>
-        <div class="options-wrp">
-            <div v-for="(group, index) in groups" class="option-wrp" :key="index" :class="group.name">
-                <div class="option-label option-label-top" v-text="group.name" />
-                <div class="option-val-wrp">
-                    <div v-for="(option, optionIndex) in group.options" :key="optionIndex">
-                        <input type="radio"
-                               :name="group.id"
-                               v-model="selectedOptions[index]"
-                               :value="option.id"
-                               :id="option.id"
-                               :checked="optionIndex === 0 ? 'checked' : ''"
-                        />
-                        <label :for="option.id" v-text="option.name" />
-                    </div>
+    <div class="options-wrp">
+        <div v-for="(group, index) in groups" class="option-wrp" :key="index" :class="`group-${group.name}`">
+            <div class="option-label option-label-top" v-text="group.name" />
+            <div class="option-val-wrp">
+                <div v-for="(option, optionIndex) in group.options"
+                     :key="optionIndex"
+                     class="option-val"
+                     :class="selectedOptions.includes(option.id) ? 'active' : ''">
+                    <input type="radio"
+                           :name="group.id"
+                           v-model="selectedOptions[index]"
+                           :value="option.id"
+                           :id="option.id"
+                           :checked="optionIndex === 0 ? 'checked' : ''"
+                    />
+                    <label :for="option.id" v-text="option.name" />
                 </div>
             </div>
         </div>

@@ -1,27 +1,25 @@
 <template>
-    <div>
-        <div class="options-wrp">
-            <div v-for="(facet, index) in facetsAvail" :key="index" class="option-wrp" :class="facet" :updating="isUpdating">
-                <div class="option-label option-label-top" v-text="facet['facet-name']" />
-                <div v-if="!hasALotOfOptions(facet)" class="option-val-wrp">
-                    <div v-for="(facetValue, vIndex) in facet['facet-values']"
-                        :key="vIndex"
-                        class="option-val is-link"
-                        :class="[facetValue.selected ? 'active' : '', 'not-active']" @click="selectFacetOption(facet, facetValue)"
-                        v-text="getFacetOptionLabel(facet, facetValue)"
-                    />
-                </div>
-                <div v-if="hasALotOfOptions(facet)" class="select-wrp">
-                    <select v-model="selectedOption" @change="changeOption(facet)">
-                        <option value="" disabled v-text="$t('Please select')" />
-                        <option v-for="(facetValue, vIndex) in facet['facet-values']"
+    <div class="options-wrp">
+        <div v-for="(facet, index) in facetsAvail" :key="index" class="option-wrp" :class="facet" :updating="isUpdating">
+            <div class="option-label option-label-top" v-text="facet['facet-name']" />
+            <div v-if="!hasALotOfOptions(facet)" class="option-val-wrp">
+                <div v-for="(facetValue, vIndex) in facet['facet-values']"
+                     :key="vIndex"
+                     class="option-val is-link"
+                     :class="[facetValue.selected ? 'active' : '', 'not-active']" @click="selectFacetOption(facet, facetValue)"
+                     v-text="getFacetOptionLabel(facet, facetValue)"
+                />
+            </div>
+            <div v-if="hasALotOfOptions(facet)" class="select-wrp">
+                <select v-model="selectedOption" @change="changeOption(facet)">
+                    <option value="" disabled v-text="$t('Please select')" />
+                    <option v-for="(facetValue, vIndex) in facet['facet-values']"
                             :key="vIndex"
                             class="option-val is-link"
                             :value="facetValue"
                             v-text="getFacetOptionLabel(facet, facetValue)"
-                        />
-                    </select>
-                </div>
+                    />
+                </select>
             </div>
         </div>
     </div>
