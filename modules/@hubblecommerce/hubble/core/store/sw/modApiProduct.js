@@ -12,12 +12,18 @@ export default function (ctx) {
             optionNotSelectedError: false,
 
             selectedVariants: [],
+
+            // Routing Information
+            openDetail: false,
+            productId: null,
         }),
         mutations: {
             setDataProduct: (state, payload) => {
                 state.dataProduct = payload.data;
             },
             setDataProductItem: (state, payload) => {
+                console.log("setDataProductItem");
+                console.log(payload);
                 state.dataProduct.result.item = payload.data;
             },
             setDataProductRelations: (state, payload) => {
@@ -50,7 +56,13 @@ export default function (ctx) {
             },
             removeOptionNotSelectedError: (state) => {
                 state.optionNotSelectedError = false;
-            }
+            },
+            setOpenDetail: (state, payload) => {
+                state.openDetail = payload;
+            },
+            setProductId: (state, payload) => {
+                state.productId = payload;
+            },
         },
         getters:  {
             getMediaGalleryArray: state => {
@@ -65,6 +77,12 @@ export default function (ctx) {
 
                     return allProductImages;
                 }
+            },
+            getOpenDetail: state => {
+                return state.openDetail;
+            },
+            getProductId: state => {
+                return state.productId;
             },
         },
         actions: {

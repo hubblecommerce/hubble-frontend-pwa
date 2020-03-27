@@ -355,7 +355,7 @@
             ...mapMutations({
                 setOptionNotSelectedError: 'modApiProduct/setOptionNotSelectedError',
                 resetSelectedVariants: 'modApiProduct/resetSelectedVariants',
-                setOpenDetail: 'modApiResources/setOpenDetail'
+                setOpenDetail: 'modApiProduct/setOpenDetail'
             }),
             ...mapActions({
                 getProductData: 'modApiProduct/getProductData',

@@ -247,8 +247,8 @@
 
         methods: {
             ...mapMutations({
-                setOpenDetail: 'modApiResources/setOpenDetail',
-                setProductId: 'modApiResources/setProductId'
+                setOpenDetail: 'modApiProduct/setOpenDetail',
+                setProductId: 'modApiProduct/setProductId'
             }),
             getPriceAndCurrency(key, addVat) {
                 return this.getPriceAndCurrencyDecFmt(

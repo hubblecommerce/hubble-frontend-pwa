@@ -90,7 +90,7 @@ Middleware.apiResourceRoute = function({app, store, route, error}) {
     let matchingProduct = findProductByUrl(store.getters['modApiResources/getDataProductUrls'], _path);
     if(matchingProduct) {
 
-        store.commit('modApiResources/setProductId', matchingProduct.foreignKey);
+        store.commit('modApiProduct/setProductId', matchingProduct.foreignKey);
 
         // Load detail page client side if its accessed via anchor
         if(store.getters['modApiResources/getOpenDetail']) {

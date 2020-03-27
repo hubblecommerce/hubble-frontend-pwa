@@ -22,7 +22,7 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex';
+    import { mapState, mapMutations } from 'vuex';
 
     export default {
         name: "ProductDetailBuyboxOptionsSw",
@@ -38,7 +38,7 @@
 
         computed: {
             ...mapState({
-                dataProduct: state => state.modApiResources.dataProduct
+                dataProduct: state => state.modApiProduct.dataProduct
             }),
             groups() {
                 let groups = null;
@@ -55,11 +55,11 @@
             selectedOptions: function(selectedOptions) {
 
                 // Set options is selected flag, used to validate before add to cart action
-                this.$store.commit('modApiResources/setOptionIsSelected');
+                this.setOptionIsSelected();
 
                 // Aggregate variants, used for display variants in cart list items component
                 this.aggregateSelectedVariants(selectedOptions);
-                this.$store.commit('modApiResources/setSelectedVariants', this.variants);
+                this.setSelectedVariants(this.variants);
 
                 // Find matching child by selected options
                 this.setMatchingChildBySelectedOptions(selectedOptions);
@@ -72,7 +72,7 @@
                 selectedChildProduct.id = this.matchingChild.id;
 
                 // Save updated product to store
-                this.$store.commit('modApiResources/setDataProductItem', {
+                this.setDataProductItem({
                     data: selectedChildProduct
                 });
 
@@ -85,6 +85,11 @@
         },
 
         methods: {
+            ...mapMutations({
+                setOptionIsSelected: 'modApiProduct/setOptionIsSelected',
+                setSelectedVariants: 'modApiProduct/setSelectedVariants',
+                setDataProductItem: 'modApiProduct/setDataProductItem'
+            }),
             setInitialOptions: function() {
                 _.forEach(this.groups, (group) => {
                     // Set first option of each group as initial options

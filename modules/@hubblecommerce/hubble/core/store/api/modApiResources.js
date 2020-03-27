@@ -18,10 +18,6 @@ export default function (ctx) {
             // resources
             dataUri: {},
 
-            // Routing Information
-            openDetail: false,
-            productId: null,
-
             // Menu
             dataMenu: {},
             dataMenuCacheable: true,
@@ -133,12 +129,6 @@ export default function (ctx) {
             setDataCustomContent: (state, payload) => {
                 state.dataCustomContent = payload;
             },
-            setOpenDetail: (state, payload) => {
-                state.openDetail = payload;
-            },
-            setProductId: (state, payload) => {
-                state.productId = payload;
-            },
         },
         getters:  {
             getApiLocale: state => {
@@ -170,12 +160,6 @@ export default function (ctx) {
             },
             getDataCustomContent: state => {
                 return state.dataCustomContent;
-            },
-            getOpenDetail: state => {
-                return state.openDetail;
-            },
-            getProductId: state => {
-                return state.productId;
             },
             getPageType: state => {
                 return state.pageType;
