@@ -33,7 +33,7 @@
 
         computed: {
             ...mapState({
-                stateContent: state => state.modApiResources.dataContent.item
+                stateContent: state => state.modApiCms.dataContent.item
             }),
         },
 

@@ -16,10 +16,6 @@ export default function (ctx) {
             // resources
             dataUri: {},
 
-            // CMS
-            dataContent: {},
-            dataCustomContent: {},
-
             // stuff
             pageType: null
 
@@ -34,12 +30,6 @@ export default function (ctx) {
             setPageType: (state, item) => {
                 state.pageType = item;
             },
-            setDataContent: (state, payload) => {
-                state.dataContent = payload.data;
-            },
-            setDataCustomContent: (state, payload) => {
-                state.dataCustomContent = payload;
-            },
         },
         getters:  {
             getApiLocale: state => {
@@ -50,12 +40,6 @@ export default function (ctx) {
             },
             getQueryPaginated: (state, getters, rootState, rootGetters) => (query) => {
                 return rootGetters['modApiRequests/queryPaginate'](query);
-            },
-            getDataContent: state => {
-                return state.dataContent;
-            },
-            getDataCustomContent: state => {
-                return state.dataCustomContent;
             },
             getPageType: state => {
                 return state.pageType;
@@ -213,9 +197,9 @@ export default function (ctx) {
                                 .then(response => {
                                     commit('setPageType', 'content');
 
-                                    commit('setDataContent', {
+                                    commit('modApiCms/setDataContent', {
                                         data: response.data.result
-                                    });
+                                    }, { root: true });
 
                                     _outerResolve();
                                 })
