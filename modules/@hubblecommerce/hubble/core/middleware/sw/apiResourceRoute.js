@@ -48,7 +48,7 @@ Middleware.apiResourceRoute = function({app, store, route, error}) {
 
                 // Set limit to request if isset in url
                 if(route.query.limit != null) {
-                    store.commit('modApiResources/setLimit', route.query.limit);
+                    store.commit('modApiCategory/setLimit', route.query.limit);
                     store.commit('modApiRequests/setPaginationPerPage', route.query.limit);
                 }
 

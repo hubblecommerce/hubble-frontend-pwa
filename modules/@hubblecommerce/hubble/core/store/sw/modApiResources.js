@@ -134,7 +134,7 @@ export default function (ctx) {
                                 resolve('OK');
                             }
                             // map product data
-                            dispatch('mappingCategoryProducts', response.data).then((res) => {
+                            dispatch('modApiCategory/mappingCategoryProducts', response.data, {root:true}).then((res) => {
 
                                     // Get all product urls to find urls of search result products
                                     dispatch('modApiResources/swGetProductUrls',{}, {root:true}).then(() => {
@@ -150,11 +150,11 @@ export default function (ctx) {
 
                                             commit('setPageType', 'category');
 
-                                            commit('setDataCategoryProducts', {
+                                            commit('modApiCategory/setDataCategoryProducts', {
                                                 data: {
                                                     result: res
                                                 }
-                                            });
+                                            }, {root:true});
 
                                             resolve('OK');
 

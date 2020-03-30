@@ -10,7 +10,7 @@ Middleware.apiResourceSearch = function ({ store, route }) {
 
         // Set limit to request if isset in url
         if(route.query.limit != null) {
-            store.commit('modApiResources/setLimit', route.query.limit);
+            store.commit('modApiCategory/setLimit', route.query.limit);
             store.commit('modApiRequests/setPaginationPerPage', route.query.limit);
         }
 
@@ -30,7 +30,7 @@ Middleware.apiResourceSearch = function ({ store, route }) {
 
         // Set order to request if isset in url
         if(route.query.term != null) {
-            store.commit('modApiResources/setTerm', route.query.term);
+            store.commit('modApiCategory/setTerm', route.query.term);
         }
 
         store.dispatch('modApiResources/apiCatalogsearch')

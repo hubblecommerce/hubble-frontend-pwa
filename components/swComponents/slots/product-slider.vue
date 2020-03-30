@@ -46,7 +46,7 @@
         },
 
         created() {
-            this.$store.dispatch('modApiResources/mappingCategoryProducts', {
+            this.$store.dispatch('modApiCategory/mappingCategoryProducts', {
                 data: this.content.data.products
             }).then((response) => {
                 this.dataItems = response.items;

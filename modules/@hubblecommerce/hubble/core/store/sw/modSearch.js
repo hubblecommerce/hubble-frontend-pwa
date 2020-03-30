@@ -93,7 +93,7 @@ export default function (ctx) {
                                 resolve('OK');
                             } else {
                                 // map product data
-                                dispatch('modApiResources/mappingCategoryProducts', response.data, {root:true})
+                                dispatch('modApiCategory/mappingCategoryProducts', response.data, {root:true})
                                     .then((res) => {
 
                                         // Get all product urls to find urls of search result products
