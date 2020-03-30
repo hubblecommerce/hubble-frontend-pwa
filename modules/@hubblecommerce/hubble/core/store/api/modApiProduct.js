@@ -84,11 +84,11 @@ export default function (ctx) {
             },
         },
         actions: {
-            async getProductData({commit, state, dispatch, rootState}) {
+            async getProductData({commit, state, dispatch }) {
                 return new Promise(function(resolve, reject) {
                     let endpoint = _.join([
                         '/api/json/products/',
-                        rootState.modApiResources.productId,
+                        state.productId,
                     ], '');
 
                     dispatch('apiCall', {

@@ -259,7 +259,7 @@ export default function (ctx) {
 
                                     commit('modApiProduct/setDataProduct', {
                                         data: response.data
-                                    });
+                                    }, { root: true });
 
                                     //
                                     // xxx: quiz: how to cleanup store from orphaned objects
