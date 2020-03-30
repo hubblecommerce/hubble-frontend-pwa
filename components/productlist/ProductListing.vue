@@ -122,7 +122,11 @@
                 return false;
             },
             paginationItemsTotal() {
-                return this.categoryProductStats.total || 0;
+                if(this.dataCategoryProducts.result.stats != null) {
+                    return this.dataCategoryProducts.result.stats.total;
+                }
+
+                return 0;
             },
             curPage() {
                 // If page isset to url take it, otherwise set to first page

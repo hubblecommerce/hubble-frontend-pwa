@@ -129,8 +129,8 @@
             <div class="reset-label" @click="routeOnPropertyRemoveAll()" v-text="$t('Reset all')" />
         </div>
 
-        <div class="item-count-wrp text-small">
-            <span v-if="dataCategoryProducts.result.stats.total > 1">
+        <div v-if="this.totalItems > 0" class="item-count-wrp text-small">
+            <span v-if="this.totalItems > 1">
                 {{ dataCategoryProducts.result.stats.total }} {{$t('shopping_cart_label_items')}}
             </span>
             <span v-else>
@@ -192,7 +192,7 @@
 
         computed: {
             ...mapState({
-                dataMenu: state => state.modApiResources.dataMenu,
+                dataMenu: state => state.modApiMenu.dataMenu,
                 dataCategory: state => state.modApiCategory.dataCategory,
                 dataCategoryProducts: state => state.modApiCategory.dataCategoryProducts,
                 optionsLimit: state => state.modApiRequests.optionsLimit,
@@ -357,6 +357,13 @@
                 }
 
                 return false;
+            },
+            totalItems: function() {
+                if(this.dataCategoryProducts.result.stats != null) {
+                    return this.dataCategoryProducts.result.stats.total;
+                }
+
+                return 0;
             }
         },
 

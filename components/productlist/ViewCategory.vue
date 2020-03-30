@@ -111,7 +111,7 @@ export default {
         ...mapState({
             dataCategory: state => state.modApiCategory.dataCategory,
             dataCategoryProducts: state => state.modApiCategory.dataCategoryProducts,
-            dataMenu: state => state.modApiResources.dataMenu,
+            dataMenu: state => state.modApiMenu.dataMenu,
             cmsObject: state => state.modApiResources.cmsObject
         }),
         ...mapGetters({

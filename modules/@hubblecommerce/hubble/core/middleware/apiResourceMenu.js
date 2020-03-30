@@ -12,7 +12,7 @@ Middleware.apiResourceMenu = function ({ isHMR, app, store, error }) {
         return;
     }
 
-    let _dataMenu = store.getters['modApiResources/getDataMenu'];
+    let _dataMenu = store.getters['modApiMenu/getDataMenu'];
 
     // check vuex store object first (not empty and same locale)
     if(! _.isEmpty(_dataMenu) ) {
@@ -26,7 +26,7 @@ Middleware.apiResourceMenu = function ({ isHMR, app, store, error }) {
     // dispatch to vuex store by promise
     return new Promise((resolve, reject) => {
 
-        store.dispatch(`modApiResources/${process.env.API_TYPE}GetMenu`, {})
+        store.dispatch(`modApiMenu/${process.env.API_TYPE}GetMenu`, {})
             .then(response => {
                 resolve('OK');
             })

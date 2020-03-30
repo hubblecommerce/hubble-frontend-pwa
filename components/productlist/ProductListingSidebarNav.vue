@@ -40,7 +40,7 @@
         },
         computed: {
             ...mapState({
-                dataMenu: state => state.modApiResources.dataMenu
+                dataMenu: state => state.modApiMenu.dataMenu
             }),
             ...mapGetters({
                 getApiLocale: 'modApiResources/getApiLocale'

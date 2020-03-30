@@ -104,7 +104,7 @@
         methods: {
             onceHandler: function() {
                 if(process.env.API_TYPE === 'sw') {
-                    this.$store.dispatch('modApiResources/swGetCategoryProductsById', {id: '5140184423574d7aaa408c924369c78d'}).then(response => {
+                    this.$store.dispatch('modApiCategory/swGetCategoryProductsById', {id: '5140184423574d7aaa408c924369c78d'}).then(response => {
                         this.newProducts = response.data.result.items;
                         this.inView = true;
                     });

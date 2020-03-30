@@ -76,7 +76,11 @@
                 return this.dataCategoryProducts.result.stats;
             },
             paginationItemsTotal() {
-                return this.categoryProductStats.total || 0;
+                if(this.dataCategoryProducts.result.stats != null) {
+                    return this.dataCategoryProducts.result.stats.total;
+                }
+
+                return 0;
             },
             paginationNextDisabled() {
                 return this.curPage === this.lastPage;

@@ -129,7 +129,7 @@
         computed: {
             ...mapState({
                 apiAuthResponse: state => state.modApiResources.apiAuthResponse,
-                dataMenu: state => state.modApiResources.dataMenu,
+                dataMenu: state => state.modApiMenu.dataMenu,
                 showCookieNotice: state => state.modCookie.showCookieNotice
             })
         },

@@ -333,10 +333,14 @@ export default function (ctx) {
                         mapped.push(obj);
                     });
 
+                    let totalItems = 0;
+                    if(payload.total > 0) {
+                        totalItems = payload.total
+                    }
                     let obj = {
                         items: mapped,
                         stats: {
-                            total: payload.total
+                            total: totalItems
                         }
                     };
 

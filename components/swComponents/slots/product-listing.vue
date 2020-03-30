@@ -21,7 +21,7 @@ import ProductListing from '../../productlist/ProductListing'
             ...mapState({
                 dataCategory: state => state.modApiCategory.dataCategory,
                 dataCategoryProducts: state => state.modApiCategory.dataCategoryProducts,
-                dataMenu: state => state.modApiResources.dataMenu,
+                dataMenu: state => state.modApiMenu.dataMenu,
                 cmsObject: state => state.modApiResources.cmsObject,
                 pathIds: state => state.modApiCategory.dataCategory.result.item.path_ids
             }),
