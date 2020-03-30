@@ -22,11 +22,6 @@ export default function (ctx) {
             dataMenu: {},
             dataMenuCacheable: true,
 
-            // Category
-            dataCategory: {},
-            dataCategoryProducts: {},
-
-
             // CMS
             dataContent: {},
             dataCustomContent: {},
@@ -114,12 +109,6 @@ export default function (ctx) {
                     // state.dataMenu.expires_at_datetime = moment.unix(state.dataMenu.expires_at_unixtime).format('YYYY-MM-DDTHH:mm:ss');
                 }
             },
-            setDataCategory: (state, payload) => {
-                state.dataCategory = payload.data;
-            },
-            setDataCategoryProducts: (state, payload) => {
-                state.dataCategoryProducts = payload.data;
-            },
             setPageType: (state, item) => {
                 state.pageType = item;
             },
@@ -145,12 +134,6 @@ export default function (ctx) {
             },
             getDataMenuStats: state => {
                 return state.dataMenu.stats ? state.dataMenu.stats : null;
-            },
-            getDataCategory: state => {
-                return state.dataCategory;
-            },
-            getDataCategoryProducts: state => {
-                return state.dataCategoryProducts;
             },
             getQueryPaginated: (state, getters, rootState, rootGetters) => (query) => {
                 return rootGetters['modApiRequests/queryPaginate'](query);
@@ -235,9 +218,9 @@ export default function (ctx) {
                             }, { root: true })
                                 .then(response => {
 
-                                    commit('setDataCategory', {
+                                    commit('modApiCategory/setDataCategory', {
                                         data: response.data
-                                    });
+                                    }, {root: true});
 
                                     // resolve("category OK!");
                                 })
@@ -281,9 +264,9 @@ export default function (ctx) {
                                     //
                                     // xxx: quiz: how to cleanup store from orphaned objects
                                     //
-                                    // commit('setDataCategoryProducts', {
+                                    // commit('modApiCategory/setDataCategoryProducts', {
                                     //     data: {}
-                                    // });
+                                    // }, {root: true});
 
                                     _outerResolve(response);
                                 })
@@ -324,9 +307,9 @@ export default function (ctx) {
 
                                     commit('setPageType', 'category');
 
-                                    commit('setDataCategoryProducts', {
+                                    commit('modApiCategory/setDataCategoryProducts', {
                                         data: response.data
-                                    });
+                                    }, {root: true});
 
                                     _outerResolve(response);
                                 })
@@ -402,9 +385,9 @@ export default function (ctx) {
                             //     data: {}
                             // });
 
-                            commit('setDataCategoryProducts', {
+                            commit('modApiCategory/setDataCategoryProducts', {
                                 data: response.data
-                            });
+                            }, {root: true});
 
                             resolve('OK');
                         })

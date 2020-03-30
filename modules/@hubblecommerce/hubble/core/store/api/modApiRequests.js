@@ -226,7 +226,7 @@ export default function (ctx) {
                     commit('setPaginationPage', 1);
                 }
 
-                let _items = rootGetters['modApiResources/getDataCategoryProducts'];
+                let _items = rootGetters['modApiCategory/getDataCategoryProducts'];
 
                 return new Promise((resolve, reject) => {
 
