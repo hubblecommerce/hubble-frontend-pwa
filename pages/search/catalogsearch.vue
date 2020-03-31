@@ -1,6 +1,6 @@
 <template>
     <div>
-        <component :is="curComponent" v-if="pageType !== null"></component>
+        <view-catalogsearch />
     </div>
 </template>
 
@@ -15,13 +15,6 @@
         },
 
         layout: 'hubble',
-
-        data() {
-            return {
-                pageType: true,
-                curComponent: 'view-catalogsearch'
-            }
-        },
 
         middleware: [
             'apiAuthenticate',

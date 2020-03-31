@@ -98,7 +98,6 @@
 
         data() {
             return {
-                curComponent: 'view-auth',
                 subTotals: {},
                 cartItemsQty: null
             }

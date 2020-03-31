@@ -67,7 +67,6 @@
 
         data() {
             return {
-                curComponent: 'view-auth',
                 orders: []
             }
         },

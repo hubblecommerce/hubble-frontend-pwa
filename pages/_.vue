@@ -1,7 +1,7 @@
 <template>
     <div>
         <transition name="fade" appear>
-            <component :is="curComponent" v-if="pageType !== null" />
+            <component :is="currentComponent" v-if="pageType !== null" />
         </transition>
     </div>
 </template>
@@ -25,7 +25,7 @@
 
         data() {
             return {
-                curComponent:  ''
+                currentComponent:  ''
             }
         },
 
@@ -36,7 +36,7 @@
         },
 
         created() {
-            this.curComponent = 'view-' + this.pageType;
+            this.currentComponent = 'view-' + this.pageType;
         },
 
         middleware: [

@@ -52,12 +52,6 @@
 
         layout: 'hubble',
 
-        data() {
-            return {
-                curComponent: 'view-auth'
-            }
-        },
-
         computed: {
             ...mapState({
                 customer: state => state.modApiPayment.customer,
