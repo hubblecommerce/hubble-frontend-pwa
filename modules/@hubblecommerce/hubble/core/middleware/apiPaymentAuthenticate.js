@@ -1,16 +1,7 @@
-//
-// api route middleware dispatching 'modApiResponse' to vuex store
-//
-// - localization: false
-// - cacheable: true      (if response contains 'expires_in')
-//
 import { datetimeUnixNow } from '@hubblecommerce/hubble/core/utils/datetime'
 import Middleware from './middleware'
-import axios from "axios";
 
-// Register a new middleware with key 'hubbleware' to get used in pages or layouts
 Middleware.apiPaymentAuthenticate = function ({ isHMR, store, error }) {
-
     // ignore if called from hot module replacement
     if (isHMR) {
         return;
@@ -30,7 +21,6 @@ Middleware.apiPaymentAuthenticate = function ({ isHMR, store, error }) {
         }
     }
 
-    // dispatch to vuex store by promise
     return new Promise((resolve, reject) => {
 
         if (process.client && process.env.NO_CORS === 'true') {
@@ -41,25 +31,24 @@ Middleware.apiPaymentAuthenticate = function ({ isHMR, store, error }) {
                 clientSecret: process.env.API_PAYMENT_CLIENT_SECRET
             })
                 .then(response => {
-                    resolve('OK');
+                    resolve(response);
                 })
                 .catch(response => {
                     error({ statusCode: 401, message: 'API authentication failed' });
-                    resolve('Fail');
+                    resolve(response);
                 });
         }
 
         if (process.server || process.env.NO_CORS !== 'true') {
             store.dispatch('modApi/apiPaymentGetAuth', {})
                 .then(response => {
-                    resolve('OK');
+                    resolve(response);
                 })
                 .catch(response => {
                     error({ statusCode: 401, message: 'API authentication failed apiPaymentAuthenticate' });
-                    resolve('Fail');
+                    resolve(response);
                 });
         }
 
     });
-
 };

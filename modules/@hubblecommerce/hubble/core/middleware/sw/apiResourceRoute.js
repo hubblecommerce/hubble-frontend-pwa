@@ -1,33 +1,28 @@
-//
-// api route middleware dispatching 'dataMenu' to vuex store
-//
 import Middleware from './middleware'
 import {findCategoryByUrl, findProductByUrl} from '@hubblecommerce/hubble/core/utils/menuHelper';
 
-// Register a new middleware with key 'hubbleware' to get used in pages or layouts
-Middleware.apiResourceRoute = function({app, store, route, error}) {
-
+Middleware.apiResourceRoute = function({ store, route, error }) {
     // remove leading '/'
-    let _path = route.path.slice(1);
+    let path = route.path.slice(1);
 
-    // split '_path' into segments
-    let _segments = _path.split('/');
+    // split 'path' into segments
+    let segments = path.split('/');
 
     // drop localization prefix
-    if (_segments[0].match(/^(en)$/)) {
-        _segments = _.drop(_segments, 1)
+    if (segments[0].match(/^(en)$/)) {
+        segments = _.drop(segments, 1)
     }
 
-    _path = _.join(_segments, '/');
+    path = _.join(segments, '/');
 
     // Lookup if url matches one of the category urls
-    let matchingCategory = findCategoryByUrl(store.getters['modApiMenu/getDataMenu'].result.items, _path);
+    let matchingCategory = findCategoryByUrl(store.getters['modApiMenu/getDataMenu'].result.items, path);
     if(matchingCategory) {
 
         return new Promise((resolve, reject) => {
 
             // Get page to set available filters
-            store.dispatch('modApiResources/getPage', _path).then((pageResponse) => {
+            store.dispatch('modApiResources/getPage', path).then((pageResponse) => {
 
                 store.dispatch('modApiRequests/mapFilterToFacets', pageResponse.data.listingConfiguration.availableFilters).then((facets) => {
                     store.commit('modApiRequests/setRequestFacets', facets);
@@ -87,7 +82,7 @@ Middleware.apiResourceRoute = function({app, store, route, error}) {
     }
 
     // TODO: Find better solution to check if it's a valid product (path endpoint)
-    let matchingProduct = findProductByUrl(store.getters['modApiResources/getDataProductUrls'], _path);
+    let matchingProduct = findProductByUrl(store.getters['modApiResources/getDataProductUrls'], path);
     if(matchingProduct) {
 
         store.commit('modApiProduct/setProductId', matchingProduct.foreignKey);
@@ -96,10 +91,9 @@ Middleware.apiResourceRoute = function({app, store, route, error}) {
         if(store.getters['modApiProduct/getOpenDetail']) {
             store.commit('modApiResources/setPageType', 'product');
         } else {
-            // dispatch to vuex store by promise
             return new Promise((resolve, reject) => {
                 // Get and store category including products from api
-                store.dispatch('modApiProduct/getProductData', {path: _path}).then(() => {
+                store.dispatch('modApiProduct/getProductData', {path: path}).then(() => {
                     store.commit('modApiResources/setPageType', 'product');
                     resolve();
                 }).catch(() => {

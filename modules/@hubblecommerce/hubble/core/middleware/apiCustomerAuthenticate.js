@@ -1,37 +1,28 @@
-//
-// api route middleware dispatching 'modApiResponse' to vuex store
-//
-// - localization: false
-// - cacheable: true      (if response contains 'expires_in')
-//
 import { datetimeUnixNow } from '@hubblecommerce/hubble/core/utils/datetime'
 import Middleware from './middleware'
 
-// Register a new middleware with key 'hubbleware' to get used in pages or layouts
-Middleware.apiCustomerAuthenticate = function ({ isHMR, store, error, redirect, app, route }) {
-
+Middleware.apiCustomerAuthenticate = function ({ isHMR, store, redirect, app, route }) {
     // ignore if called from hot module replacement
     if (isHMR) {
         return;
     }
 
-    let _customerAuth = null;
+    let customerAuth = null;
 
     // Get cookie serverside/clientside to check if user is logged in
     if(process.server) {
         let cookie = app.$cookies.get(store.state.modApiPayment.cookieName);
 
         if(cookie){
-            _customerAuth = cookie.customerAuth;
+            customerAuth = cookie.customerAuth;
         }
     } else {
-        _customerAuth = store.getters['modApiPayment/getCustomerAuth'];
+        customerAuth = store.getters['modApiPayment/getCustomerAuth'];
     }
 
     // If cookie exists, check expiration date
-    if(! _.isEmpty(_customerAuth)) {
-
-        let expires_at = new Date(_customerAuth.expires_at).getTime() / 1000;
+    if(! _.isEmpty(customerAuth)) {
+        let expires_at = new Date(customerAuth.expires_at).getTime() / 1000;
 
         // check expiry of cachable object
         if(expires_at >= datetimeUnixNow()) {
@@ -44,6 +35,4 @@ Middleware.apiCustomerAuthenticate = function ({ isHMR, store, error, redirect, 
         return redirect('/checkout/login');
     }
     return redirect('/customer/login');
-
-
 };

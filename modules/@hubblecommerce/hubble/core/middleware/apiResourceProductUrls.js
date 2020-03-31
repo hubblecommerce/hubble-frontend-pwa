@@ -1,12 +1,7 @@
-//
-// api route middleware dispatching 'dataMenu' to vuex store
-//
 import { datetimeUnixNow } from '@hubblecommerce/hubble/core/utils/datetime'
 import Middleware from './middleware'
 
-// Register a new middleware with key 'hubbleware' to get used in pages or layouts
-Middleware.apiResourceProductUrls = function ({ isHMR, app, store, error }) {
-
+Middleware.apiResourceProductUrls = function ({ isHMR, store, error }) {
     // ignore if called from hot module replacement
     if (isHMR) {
         return;
@@ -27,18 +22,15 @@ Middleware.apiResourceProductUrls = function ({ isHMR, app, store, error }) {
         }
     }
 
-    // dispatch to vuex store by promise
     return new Promise((resolve, reject) => {
-
         store.dispatch(`modApiResources/${process.env.API_TYPE}GetProductUrls`, {})
             .then(response => {
-                resolve('OK');
+                resolve(response);
             })
             .catch(response => {
                 error({ statusCode: 401, message: 'API authentication failed' });
-                reject('Fail');
+                reject(response);
             });
 
     });
-
 };
