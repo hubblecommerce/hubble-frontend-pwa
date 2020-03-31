@@ -176,7 +176,7 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex';
+    import { mapState, mapMutations, mapActions } from 'vuex';
     import Totals from "../../components/checkout/Totals";
     import PaymentMethods from "../../components/checkout/PaymentMethods";
     import ShippingMethods from "../../components/checkout/ShippingMethods";
@@ -227,41 +227,55 @@
             // Set cart context as customer context for further api calls
             // Do this after swtc isset via cookie (mounted)
             if(_.isEmpty(this.$store.state.modApiPayment.customer.customerAuth)) {
-                this.$store.commit('modApiPayment/setCustomerAuth', {token: this.$store.state.modCart.swtc});
+                this.setCustomerAuth({token: this.$store.state.modCart.swtc});
             }
 
-            this.$store.dispatch('modApiPayment/swGetSalutations').then((salutationResponse) => {
-                this.$store.commit('modApiPayment/setSalutations', salutationResponse.data.data);
+            this.swGetSalutations().then((salutationResponse) => {
+                this.setSalutations(salutationResponse.data.data);
             });
 
-            this.$store.dispatch('modApiPayment/swGetCountries').then((countryResponse) => {
-                this.$store.commit('modApiPayment/setCountries', countryResponse.data.data);
+            this.swGetCountries().then((countryResponse) => {
+                this.setCountries(countryResponse.data.data);
             });
         },
 
         methods: {
+            ...mapMutations({
+                setSalutations: 'modApiPayment/setSalutations',
+                setCountries: 'modApiPayment/setCountries',
+                setProcessingCheckout: 'modApiPayment/setProcessingCheckout',
+                resetProcessingCheckout: 'modApiPayment/resetProcessingCheckout',
+                setCustomerAuth: 'modApiPayment/setCustomerAuth'
+            }),
+            ...mapActions({
+                swGetSalutations: 'modApiPayment/swGetSalutations',
+                swGetCountries: 'modApiPayment/swGetCountries',
+                placeGuestOrder: 'modApiPayment/placeGuestOrder',
+                swStartPayment: 'modApiPayment/swStartPayment',
+                validateOrder: 'modApiPayment/validateOrder'
+            }),
             isEmpty: function(val) {
                 return _.isEmpty(val);
             },
 
             placeOrder: function() {
 
-                this.$store.commit('modApiPayment/setProcessingCheckout');
+                this.setProcessingCheckout();
 
                 // Place order
                 // on success: clear cart and order and
                 // set response context token as new customer auth token (needed for payment)
-                this.$store.dispatch('modApiPayment/placeGuestOrder', {order: this.orderObj, swtc: this.swtc}).then((order) => {
+                this.placeGuestOrder({order: this.orderObj, swtc: this.swtc}).then((order) => {
 
                     // Init payment
-                    this.$store.dispatch('modApiPayment/swStartPayment', order.data.data.id).then((paymentResponse) => {
+                    this.swStartPayment(order.data.data.id).then((paymentResponse) => {
 
                         // Reset cart context token as new customer auth token
                         // because order context token is not needed anymore
-                        this.$store.commit('modApiPayment/setCustomerAuth', {token: this.swtc});
+                        this.setCustomerAuth({token: this.swtc});
 
                         if(paymentResponse.data.paymentUrl) {
-                            this.$store.commit('modApiPayment/resetProcessingCheckout');
+                            this.resetProcessingCheckout();
                             window.open(paymentResponse.data.paymentUrl, "_self");
                         }
 
@@ -269,7 +283,7 @@
                             this.$router.push({
                                 path: this.localePath('checkout-shopware-success')
                             }, () => {
-                                this.$store.commit('modApiPayment/resetProcessingCheckout');
+                                this.resetProcessingCheckout();
                             });
                         }
 
@@ -282,9 +296,9 @@
             submitForm: async function(isValid) {
 
                 try {
-                    await this.$store.dispatch('modApiPayment/validateOrder')
+                    await this.validateOrder();
                 } catch(error) {
-                    this.$store.commit('modApiPayment/resetProcessingCheckout');
+                    this.resetProcessingCheckout();
                     return false;
                 }
 

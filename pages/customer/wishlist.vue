@@ -41,7 +41,7 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex';
+    import { mapState, mapActions } from 'vuex';
     import WishlistItemsList from "../../components/customer/WishlistItemsList";
     import NewsletterForm from "../../components/utils/NewsletterForm";
 
@@ -80,16 +80,20 @@
         ],
 
         methods: {
+            ...mapActions({
+                deleteUserWishlist: 'modApiPayment/deleteWishlist',
+                deleteLocalWishlist: 'modWishlist/deleteWishlist'
+            }),
             resetWishlist: function () {
                 if(this.isLoggedIn()) {
-                    this.$store.dispatch('modApiPayment/deleteWishlist', {
+                    this.deleteUserWishlist({
                         user_id: this.customer.customerData.id,
                         id: this.wishlistId
                     }).then(() => {
-                        this.$store.dispatch('modWishlist/deleteWishlist');
+                        this.deleteLocalWishlist();
                     })
                 } else {
-                    this.$store.dispatch('modWishlist/deleteWishlist');
+                    this.deleteLocalWishlist();
                 }
             },
             isLoggedIn: function() {

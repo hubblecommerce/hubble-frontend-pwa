@@ -17,7 +17,7 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex';
+    import { mapState, mapActions } from 'vuex';
     import OrderDetail from "../../components/customer/OrderDetail";
     export default {
         name: "Success",
@@ -75,12 +75,15 @@
         },
 
         methods: {
+            ...mapActions({
+                getOrders: 'modApiPayment/getOrders'
+            }),
             getLatestOrder: function() {
                 let latestDate = new Date(0);
                 let latestOrder = {};
 
                 // Get orders from customer
-                this.$store.dispatch('modApiPayment/getOrders').then((res) => {
+                this.getOrders().then((res) => {
 
                     if(res !== null) {
                         _.forEach(res, (val) => {

@@ -76,7 +76,7 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex';
+    import { mapState, mapActions } from 'vuex';
     import CartItemsList from "../../components/checkout/CartItemsList";
     import Coupons from "../../components/checkout/Coupons";
     import Totals from "../../components/checkout/Totals";
@@ -120,6 +120,9 @@
         },
 
         methods: {
+            ...mapActions({
+                precalculateShippingCostAction: 'modCart/precalculateShippingCost'
+            }),
             cartItemsLabel(qty) {
                 return this.qty > 1 ? qty +' '+this.$t('shopping_cart_label_items') : qty +' '+this.$t('shopping_cart_label_item');
             },
@@ -131,7 +134,7 @@
                 let order = {
                     order: JSON.stringify(payload)
                 };
-                this.$store.dispatch('modCart/precalculateShippingCost', order);
+                this.precalculateShippingCostAction(order);
             },
             checkoutPath: function() {
                 if(process.env.API_TYPE === 'sw') {

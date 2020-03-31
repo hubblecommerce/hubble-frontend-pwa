@@ -81,7 +81,7 @@
 </template>
 
 <script>
-    import {mapState} from 'vuex';
+    import {mapState, mapGetters, mapMutations, mapActions} from 'vuex';
     import axios from 'axios';
     import CartItemsListNonInteractive from "../../components/checkout/CartItemsListNonInteractive";
     import Totals from "../../components/checkout/Totals";
@@ -131,6 +131,9 @@
                 customerAddresses: state => state.modApiPayment.customer.customerAddresses,
                 countries: state => state.modApiPayment.availableCountries,
                 shippingAddress: state => state.modApiPayment.customer.shippingAddress
+            }),
+            ...mapGetters({
+                productIsSpecial: 'modPrices/productIsSpecial'
             })
         },
 
@@ -139,7 +142,7 @@
                 // If addresses change do check if chosen payment method is available for new address
                 this.getPaymentMethods().then(() => {
                     if(!this.isAllowedMethod(this.chosenPaymentMethod.key)) {
-                        this.$store.commit('modApiPayment/setChosenPaymentMethod', {});
+                        this.setChosenPaymentMethod({});
                     }
                 });
 
@@ -149,7 +152,20 @@
         },
 
         methods: {
-
+            ...mapMutations({
+                setChosenPaymentMethod: 'modApiPayment/setChosenPaymentMethod',
+                setBeforePlaceOrder: 'modApiPayment/setBeforePlaceOrder',
+                setProcessingCheckout: 'modApiPayment/setProcessingCheckout'
+            }),
+            ...mapActions({
+                asyncSetFinalOrder: 'modApiPayment/asyncSetFinalOrder',
+                flashMessage: 'modFlash/flashMessage',
+                placeOrderAction: 'modApiPayment/placeOrder',
+                clearCart: 'modCart/clearAll',
+                clearOrder:'modApiPayment/clearOrder',
+                getPaymentMethodsAction: 'modApiPayment/getPaymentMethods',
+                recalculateShippingCost: 'modCart/recalculateShippingCost'
+            }),
             // Event based place order function
             // validates complete order object
             // emits event setBeforePlaceOrder after validation
@@ -166,11 +182,11 @@
                 let order = this.createOrderObject();
 
                 // Save complete order object in state
-                this.$store.dispatch('modApiPayment/asyncSetFinalOrder', order).then(() => {
+                this.asyncSetFinalOrder(order).then(() => {
                     // Start loading animation
-                    this.$store.commit('modApiPayment/setProcessingCheckout');
+                    this.setProcessingCheckout();
                     // Emit setBeforePlaceOrder event
-                    this.$store.commit('modApiPayment/setBeforePlaceOrder');
+                    this.setBeforePlaceOrder();
                 });
             },
 
@@ -223,14 +239,14 @@
 
                 // Validate addresses
                 if(_.isEmpty(this.customer.billingAddress) || _.isEmpty(this.customer.shippingAddress)) {
-                    this.$store.dispatch('modFlash/flashMessage', {
+                    this.flashMessage({
                         flashType: 'error',
                         flashMessage: 'Addresses empty'
                     });
                     console.log("Addresses empty");
                     return;
                 }
-                
+
                 // Get addresses from store
                 _.assign(order, {addresses: []});
 
@@ -261,7 +277,7 @@
             // Action to place order directly without event based payment provider hook
             dispatchPlaceOrder: function() {
                 // Order object holds every important data and is ready to be sent to api
-                this.$store.dispatch('modApiPayment/placeOrder', {
+                this.placeOrderAction({
                     payload: JSON.stringify(this.finalOrder)
                 }).then((response) => {
                     // On request failure, throw error, log error and keep order data
@@ -281,8 +297,8 @@
 
                     // On request success clear data (order, cart)
                     // and redirect to success page
-                    this.$store.dispatch('modCart/clearAll').then(() => {
-                        this.$store.dispatch('modApiPayment/clearOrder').then(() => {
+                    this.clearCart().then(() => {
+                        this.clearOrder().then(() => {
                             this.$router.push({
                                 path: this.localePath('checkout-success')
                             });
@@ -304,7 +320,7 @@
             getPaymentMethods: function() {
                 return new Promise((resolve, reject) => {
                     // Get payment methods from api
-                    this.$store.dispatch('modApiPayment/getPaymentMethods').then(() => {
+                    this.getPaymentMethodsAction().then(() => {
                         resolve();
                     }).catch((error) => {
                         console.log(error);
@@ -338,7 +354,7 @@
                     order: JSON.stringify(this.createOrderObject())
                 };
 
-                this.$store.dispatch('modCart/recalculateShippingCost', object)
+                this.recalculateShippingCost(object)
                 .then((response) => {
                     // Check if send country code matches received country code, otherwise country is not allowed
                     if(response.data.order.shippingAllowed) {
@@ -348,7 +364,7 @@
                     }
                 })
                 .catch((error) => {
-                    this.$store.dispatch('modFlash/flashMessage', {
+                    this.flashMessage({
                         flashType: 'error',
                         flashMessage: 'Shipping costs could not be calculated.'
                     });
@@ -359,7 +375,7 @@
                 let hasSpecialItem = false;
 
                 _.forEach(this.cart.items, (item) => {
-                    hasSpecialItem = this.$store.getters['modPrices/productIsSpecial'](item);
+                    hasSpecialItem = this.productIsSpecial(item);
                 });
 
                 this.hasSaleItemInCart = hasSpecialItem;

@@ -26,7 +26,7 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex';
+    import { mapState, mapMutations, mapActions } from 'vuex';
     import Coupons from "../../components/checkout/Coupons";
     import OrderComment from "../../components/checkout/OrderComment";
     import CustomerAddresses from "../../components/customer/CustomerAddresses";
@@ -78,6 +78,16 @@
         },
 
         methods: {
+            ...mapMutations({
+                setIbanError: 'modApiPayment/setIbanError',
+                setBicError: 'modApiPayment/setBicError',
+                setOrderId: 'modApiPayment/setOrderId'
+            }),
+            ...mapActions({
+                flashMessage: 'modFlash/flashMessage',
+                getUuid: 'modApiPayment/getUuid',
+                createOrderAction: 'modApiPayment/createOrder'
+            }),
             createOrder: function() {
 
                 if(this.order.chosenPaymentMethod.key === 'payone_cc') {
@@ -85,7 +95,7 @@
                         // Perform "CreditCardCheck" to create and get a PseudoCardPan; then call your function "hostedIFramePayCallback"
                         this.hostedIFrame.creditCardCheck('hostedIFramePayCallback');
                     } else {
-                        this.$store.dispatch('modFlash/flashMessage', {
+                        this.flashMessage({
                             flashType: 'error',
                             flashMessage: this.$t('Please complete your credit card information')
                         });
@@ -99,24 +109,24 @@
 
                     let error = false;
 
-                    this.$store.commit('modApiPayment/setIbanError', false);
-                    this.$store.commit('modApiPayment/setBicError', false);
+                    this.setIbanError(false);
+                    this.setBicError(false);
 
                     if(_.isEmpty(this.order.chosenPaymentMethod.payload.iban)) {
-                        this.$store.commit('modApiPayment/setIbanError', true);
+                        this.setIbanError(true);
                         error = true;
 
-                        this.$store.dispatch('modFlash/flashMessage', {
+                        this.flashMessage({
                             flashType: 'error',
                             flashMessage: this.$t('Please insert valid IBAN')
                         });
                     }
 
                     if(_.isEmpty(this.order.chosenPaymentMethod.payload.bic)) {
-                        this.$store.commit('modApiPayment/setBicError', true);
+                        this.setBicError(true);
                         error = true;
 
-                        this.$store.dispatch('modFlash/flashMessage', {
+                        this.flashMessage({
                             flashType: 'error',
                             flashMessage: this.$t('Please insert valid BIC')
                         });
@@ -128,18 +138,18 @@
                 }
 
                 // Get uuid from api
-                this.$store.dispatch('modApiPayment/getUuid').then((response) => {
+                this.getUuid().then((response) => {
 
                     // Store uuid as orderId to order in store
-                    this.$store.commit('modApiPayment/setOrderId', response.data.substring(0, 20));
+                    this.setOrderId(response.data.substring(0, 20));
 
                     // Validate order and save to cookie then redirect to summary page
-                    this.$store.dispatch('modApiPayment/createOrder').then(() => {
+                    this.createOrderAction().then(() => {
                         this.$router.push({
                             path: this.localePath('checkout-summary')
                         });
                     }).catch((error) => {
-                        this.$store.dispatch('modFlash/flashMessage', {
+                        this.flashMessage({
                             flashType: 'error',
                             flashMessage: this.$t(error)
                         });

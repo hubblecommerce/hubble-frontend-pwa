@@ -31,7 +31,7 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex';
+    import { mapState, mapMutations, mapActions } from 'vuex';
     import Totals from "../../components/checkout/Totals";
     import CustomerAddresses from "../../components/customer/CustomerAddresses";
 
@@ -95,6 +95,15 @@
         },
 
         methods: {
+            ...mapMutations({
+                setProcessingCheckout: 'modApiPayment/setProcessingCheckout',
+                resetProcessingCheckout: 'modApiPayment/resetProcessingCheckout'
+            }),
+            ...mapActions({
+                validateOrder: 'modApiPayment/validateOrder',
+                placeOrderAction: 'modApiPayment/placeOrder',
+                swStartPayment: 'modApiPayment/swStartPayment'
+            }),
             isEmpty: function(val) {
                 return _.isEmpty(val);
             },
@@ -102,21 +111,21 @@
             placeOrder: async function() {
 
                 // Start loading animation
-                this.$store.commit('modApiPayment/setProcessingCheckout');
+                this.setProcessingCheckout();
 
                 try {
-                    await this.$store.dispatch('modApiPayment/validateOrder')
+                    await this.validateOrder()
                 } catch(error) {
-                    this.$store.commit('modApiPayment/resetProcessingCheckout');
+                    this.resetProcessingCheckout();
                     return false;
                 }
 
-                let order = await this.$store.dispatch('modApiPayment/placeOrder');
+                let order = await this.placeOrderAction();
 
-                let paymentResponse = await this.$store.dispatch('modApiPayment/swStartPayment', order.data.data.id);
+                let paymentResponse = await this.swStartPayment(order.data.data.id);
 
                 if(paymentResponse.data.paymentUrl) {
-                    this.$store.commit('modApiPayment/resetProcessingCheckout');
+                    this.resetProcessingCheckout();
                     window.open(paymentResponse.data.paymentUrl, "_self");
                 }
 
@@ -124,7 +133,7 @@
                     this.$router.push({
                         path: this.localePath('checkout-shopware-success')
                     }, () => {
-                        this.$store.commit('modApiPayment/resetProcessingCheckout');
+                        this.resetProcessingCheckout();
                     });
                 }
 

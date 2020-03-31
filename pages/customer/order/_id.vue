@@ -14,6 +14,7 @@
 </template>
 
 <script>
+    import { mapActions } from "vuex";
     import CustomerAccountNavigation from "../../../components/customer/CustomerAccountNavigation";
     import OrderDetail from "../../../components/customer/OrderDetail";
 
@@ -43,9 +44,12 @@
         },
 
         methods: {
+            ...mapActions({
+                getOrderById: 'modApiPayment/getOrderById'
+            }),
             getCurrentOrder() {
                 // Get order from customer by id from url /orders/:id
-                this.$store.dispatch('modApiPayment/getOrderById', {id: this.id}).then((res) => {
+                this.getOrderById({id: this.id}).then((res) => {
                     this.order = res.data.item;
                 });
             }

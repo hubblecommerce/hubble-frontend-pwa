@@ -60,7 +60,7 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex';
+    import { mapState, mapGetters, mapMutations, mapActions } from 'vuex';
     import axios from 'axios';
     import Totals from "../../components/checkout/Totals";
     import { clearDataLayer } from "@hubblecommerce/hubble/core/utils/gtmHelper";
@@ -102,7 +102,9 @@
                 expressOrderReferenceId: state => state.modApiPayment.expressOrderReferenceId,
                 amazonPayError: state => state.modApiPayment.amazonPayError,
             }),
-
+            ...mapGetters({
+                productIsSpecial: 'modPrices/productIsSpecial'
+            }),
             isLoggedIn: function() {
                 if(!_.isEmpty(this.customer.customerAuth) && this.customer.customerAuth.token !== 'guest') {
                     return this.customer.customerAuth.token;
@@ -113,16 +115,30 @@
         },
 
         created() {
-            this.$store.commit('modApiPayment/setProcessingCheckout');
+            this.setProcessingCheckout();
         },
 
         methods: {
+            ...mapMutations({
+                setProcessingCheckout: 'modApiPayment/setProcessingCheckout',
+                resetProcessingCheckout: 'modApiPayment/resetProcessingCheckout',
+                setChosenPaymentMethod: 'modApiPayment/setChosenPaymentMethod',
+                setChosenShippingMethod:'modApiPayment/setChosenShippingMethod',
+                setOrderIdInStore: 'modApiPayment/setOrderId'
+            }),
+            ...mapActions({
+                getUuid: 'modApiPayment/getUuid',
+                registerGuest: 'modApiPayment/registerGuest',
+                placeOrderAction: 'modApiPayment/placeOrder',
+                clearCart: 'modCart/clearAll',
+                clearOrder: 'modApiPayment/clearOrder'
+            }),
             isEmpty: function(val) {
                 return _.isEmpty(val);
             },
             placeOrder: function() {
                 // Start loader
-                this.$store.commit('modApiPayment/setProcessingCheckout');
+                this.setProcessingCheckout();
 
                 // Check if no amazon pay error e.g. shipping country not in tablerates / not allowed
                 if(!this.isEmpty(this.amazonPayError)) {
@@ -132,7 +148,7 @@
                 // Handle error if customer has not accept terms and conditions
                 this.acceptedInfoError = false;
                 if(!this.acceptedInfo && this.hasSaleItemInCart) {
-                    this.$store.commit('modApiPayment/resetProcessingCheckout');
+                    this.resetProcessingCheckout();
                     this.acceptedInfoError = true;
                     return;
                 }
@@ -140,7 +156,7 @@
                 // Validate cart
                 if(this.cart.items_qty < 1) {
                     console.log("Cart is empty");
-                    this.$store.commit('modApiPayment/resetProcessingCheckout');
+                    this.resetProcessingCheckout();
                     return;
                 }
 
@@ -152,7 +168,7 @@
                         paymentResponse: {}
                     }
                 };
-                this.$store.commit('modApiPayment/setChosenPaymentMethod', chosenPaymentMethod);
+                this.setChosenPaymentMethod(chosenPaymentMethod);
 
                 // Set shipping
                 let chosenShippingMethod = {
@@ -161,7 +177,7 @@
                     description: "Shipping by DHL",
                     key: "shipping_by_dhl"
                 };
-                this.$store.commit('modApiPayment/setChosenShippingMethod', chosenShippingMethod);
+                this.setChosenShippingMethod(chosenShippingMethod);
 
                 // Start API Calls to Amazon
                 this.setOrderId().then(() => {
@@ -188,7 +204,7 @@
                         // Check if setOrderReferenceDetails was successful
                         if(_.isEmpty(data.SetOrderReferenceDetailsResponse)) {
                             console.log("setOrderReferenceDetails request failed");
-                            this.$store.commit('modApiPayment/resetProcessingCheckout');
+                            this.resetProcessingCheckout();
                             return;
                         }
 
@@ -197,7 +213,7 @@
 
                             if(_.isEmpty(data.ConfirmOrderReferenceResponse)) {
                                 console.log("confirmOrderReference request failed");
-                                this.$store.commit('modApiPayment/resetProcessingCheckout');
+                                this.resetProcessingCheckout();
                                 return;
                             }
 
@@ -229,7 +245,7 @@
                         resolve(response.data);
                     }).catch((response) => {
                         console.log("API request %o to %o failed: %o", 'GET', '/api/amazon-get-order-reference-details', response);
-                        this.$store.commit('modApiPayment/resetProcessingCheckout');
+                        this.resetProcessingCheckout();
                         reject(response)
                     });
                 });
@@ -244,7 +260,7 @@
                         resolve(response.data);
                     }).catch((response) => {
                         console.log("API request %o to %o failed: %o", 'GET', '/api/amazon-auth-and-capture', response);
-                        this.$store.commit('modApiPayment/resetProcessingCheckout');
+                        this.resetProcessingCheckout();
                         reject(response)
                     });
                 })
@@ -259,7 +275,7 @@
                         resolve(response.data);
                     }).catch((response) => {
                         console.log("API request %o to %o failed: %o", 'GET', '/api/amazon-confirm-order-reference', response);
-                        this.$store.commit('modApiPayment/resetProcessingCheckout');
+                        this.resetProcessingCheckout();
                         reject(response)
                     });
                 })
@@ -274,7 +290,7 @@
                         resolve(response.data);
                     }).catch((response) => {
                         console.log("API request %o to %o failed: %o", 'GET', '/api/amazon-set-order-reference-details', response);
-                        this.$store.commit('modApiPayment/resetProcessingCheckout');
+                        this.resetProcessingCheckout();
                         reject(response)
                     });
                 })
@@ -282,9 +298,9 @@
             setOrderId: function() {
                 return new Promise((resolve, reject) => {
                     // Get uuid from api
-                    this.$store.dispatch('modApiPayment/getUuid').then((response) => {
+                    this.getUuid().then((response) => {
                         // Store uuid as orderId to order in store
-                        this.$store.commit('modApiPayment/setOrderId', response.data.substring(0, 20));
+                        this.setOrderIdInStore(response.data.substring(0, 20));
                         resolve();
                     });
                 });
@@ -355,7 +371,7 @@
                                 addresses: [res]
                             };
 
-                            this.$store.dispatch('modApiPayment/registerGuest', payload).then((response) => {
+                            this.registerGuest(payload).then((response) => {
                                 resolve();
                             });
                         });
@@ -410,7 +426,7 @@
             dispatchPlaceOrder: function() {
 
                 // Order object holds every important data and is ready to be sent to api
-                this.$store.dispatch('modApiPayment/placeOrder', {
+                this.placeOrderAction({
                     order: JSON.stringify(this.orderClone)
                 }).then((response) => {
                     // On request failure, throw error and keep order data
@@ -425,7 +441,7 @@
                             }
                         });
                         console.log(response.data.message);
-                        this.$store.commit('modApiPayment/resetProcessingCheckout');
+                        this.resetProcessingCheckout();
                         return;
                     }
 
@@ -450,7 +466,7 @@
                                 }
 
                                 let price = item.final_price_item.display_price_brutto;
-                                if(this.$store.getters['modPrices/productIsSpecial'](item)) {
+                                if(this.productIsSpecial(item)) {
                                     price = item.final_price_item.display_price_brutto_special
                                 }
 
@@ -489,9 +505,9 @@
 
                     // On request success clear data (order, cart)
                     // and redirect to success page
-                    this.$store.dispatch('modCart/clearAll').then(() => {
-                        this.$store.dispatch('modApiPayment/clearOrder').then(() => {
-                            this.$store.commit('modApiPayment/resetProcessingCheckout');
+                    this.clearCart().then(() => {
+                        this.clearOrder().then(() => {
+                            this.resetProcessingCheckout();
                             this.$router.push({
                                 path: this.localePath('checkout-success')
                             });
@@ -499,7 +515,7 @@
                     });
                 }).catch((error) => {
 
-                    this.$store.commit('modApiPayment/resetProcessingCheckout');
+                    this.resetProcessingCheckout();
 
                     axios({
                         method: 'POST',
@@ -516,7 +532,7 @@
                 let hasSpecialItem = false;
 
                 _.forEach(this.cart.items, (item) => {
-                    hasSpecialItem = this.$store.getters['modPrices/productIsSpecial'](item);
+                    hasSpecialItem = this.productIsSpecial(item);
                 });
 
                 this.hasSaleItemInCart = hasSpecialItem;
