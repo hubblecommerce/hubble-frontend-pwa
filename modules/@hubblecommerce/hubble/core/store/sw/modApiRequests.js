@@ -1,6 +1,4 @@
 export default function (ctx) {
-
-    // Create vuex store module
     const modApiRequests = {
         namespaced: true,
         state: () => ({

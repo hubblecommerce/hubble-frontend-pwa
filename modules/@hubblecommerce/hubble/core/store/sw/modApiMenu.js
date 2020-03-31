@@ -2,11 +2,9 @@ import {sortMenuEntries, unflatten} from "@hubblecommerce/hubble/core/utils/menu
 import {datetimeUnixNow, datetimeUnixNowAddSecs} from "@hubblecommerce/hubble/core/utils/datetime";
 
 export default function (ctx) {
-
     const modApiMenu = {
         namespaced: true,
         state: () => ({
-            // Menu
             dataMenu: {},
             dataMenuCacheable: true,
         }),
@@ -15,7 +13,6 @@ export default function (ctx) {
                 state.dataMenu = {};
             },
             setDataMenu: (state, payload) => {
-
                 // Set menu data from payload
                 state.dataMenu = payload.data;
 
@@ -44,12 +41,13 @@ export default function (ctx) {
 
                         // Build menu from virtual entries without id or real category
                         if(typeof val.id === "undefined") {
-
                             // configure store as source for child elements
                             let childFromConfig = [];
+
                             if(typeof val.childrenStore !== "undefined") {
                                 childFromConfig = state[val.childrenStore];
                             }
+
                             // Set virtual menu items through config
                             state.dataMenu.result.items[key] = {
                                 id: 'virtual'+key,
@@ -78,7 +76,6 @@ export default function (ctx) {
 
                     state.dataMenu.created_at_unixtime = datetimeUnixNow();
                     state.dataMenu.expires_at_unixtime = datetimeUnixNowAddSecs(_ttl);
-
                 }
             },
         },
@@ -95,20 +92,14 @@ export default function (ctx) {
         },
         actions: {
             async swGetMenu({commit, state, dispatch}, payload) {
-                // console.log("store apiGetMenu called! payload: %o", payload);
-
                 return new Promise(function(resolve, reject) {
-
-                    let _endpoint = '/sales-channel-api/v1/category?limit=100&associations[seoUrls][]';
-
                     dispatch('apiCall', {
                         action: 'get',
                         tokenType: 'sw',
                         apiType: 'data',
-                        endpoint: _endpoint
+                        endpoint: '/sales-channel-api/v1/category?limit=100&associations[seoUrls][]'
                     }, { root: true })
                         .then(response => {
-
                             dispatch('mappingMenu', response.data.data).then((res) => {
                                 commit('setDataMenu', {
                                     data: {
@@ -126,16 +117,13 @@ export default function (ctx) {
 
                             reject('API request failed!');
                         });
-
                 });
             },
             async mappingMenu({commit, state, dispatch}, payload) {
-                // console.log("store apiGetMenu called! payload: %o", payload);
-
                 return new Promise(function(resolve, reject) {
-
                     // MAPPING
                     let mapped = [];
+
                     _.forEach(payload, (category) => {
 
                         let obj = {};
@@ -164,7 +152,6 @@ export default function (ctx) {
 
                     // Build required parent child relations from flat array
                     resolve(unflatten(mapped));
-
                 });
             },
         }

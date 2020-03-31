@@ -1,5 +1,4 @@
 export default function (ctx) {
-
     const modSearch = {
         namespaced: true,
         state: () => ({
@@ -74,19 +73,17 @@ export default function (ctx) {
             // Api call to search/autocomplete
             async swSearchProductByTerm({commit, state, rootState, dispatch}, payload) {
                 return new Promise(function(resolve, reject) {
-                    let _endpoint = `/sales-channel-api/v1/product?&associations[manufacturer][]`;
                     dispatch('apiCall', {
                         action: 'get',
                         tokenType: 'sw',
                         apiType: 'data',
-                        endpoint: _endpoint,
+                        endpoint: '/sales-channel-api/v1/product?&associations[manufacturer][]',
                         params: {
                             term: payload.query,
                             limit: 500
                         }
                     }, { root: true })
                         .then(response => {
-
                             if(response.data.total === 0) {
                                 commit('setShowAutoCompleteResults', false);
 
@@ -95,12 +92,9 @@ export default function (ctx) {
                                 // map product data
                                 dispatch('modApiCategory/mappingCategoryProducts', response.data, {root:true})
                                     .then((res) => {
-
                                         // Get all product urls to find urls of search result products
                                         dispatch('modApiResources/swGetProductUrls',{}, {root:true}).then(() => {
-
                                             _.forEach(res.items, (item, key) => {
-
                                                 let matchingProduct = _.find(rootState.modApiResources.dataProductUrls, function(o) {
                                                     return o.foreignKey === item.id;
                                                 });
@@ -117,14 +111,10 @@ export default function (ctx) {
                                                 commit('setShowAutoCompleteResults', true);
 
                                                 resolve('OK');
-
                                             });
-
                                         });
-
                                     });
                             }
-
                         })
                         .catch(response => {
                             console.log("API get request failed: %o", response);
@@ -142,6 +132,7 @@ export default function (ctx) {
                 commit('setAutoCompleteResultsArray', []);
 
                 commit('setSelectedItemPosition', -1);
+
                 commit('setSelectedItemId', null);
 
                 commit('setShowAutoCompleteResults', false);
@@ -165,13 +156,17 @@ export default function (ctx) {
                 }
 
                 commit('setSelectedItemPosition', currentItemPosition);
+
                 commit('setSelectedItemId', state.autoCompleteResultsArray[currentItemPosition].id);
             },
             // Redirect to product or category if an item is selected via keyevent
             redirectToItem({state}) {
-                if(state.selectedItemPosition === -1) return;
+                if(state.selectedItemPosition === -1) {
+                    return;
+                }
 
                 let currentSelectedItem = state.autoCompleteResultsArray[state.selectedItemPosition];
+
                 let url = '';
 
                 if(currentSelectedItem.url_path) {

@@ -1,7 +1,6 @@
 import { datetimeUnixNow, datetimeUnixNowAddSecs } from '@hubblecommerce/hubble/core/utils/datetime'
 
 export default function (ctx) {
-
     const modApiResources = {
         namespaced: true,
         state: () => ({
@@ -53,21 +52,16 @@ export default function (ctx) {
         },
         actions: {
             async swGetProductUrls({commit, state, dispatch}, payload) {
-                // console.log("store apiGetMenu called! payload: %o", payload);
-
                 return new Promise(function(resolve, reject) {
-
                     if(!_.isEmpty(state.dataProductUrls)) {
                         resolve();
                     }
-
-                    let _endpoint = '/sales-channel-api/v1/dmf/seo-url?filter[routeName]=frontend.detail.page&limit=500';
 
                     dispatch('apiCall', {
                         action: 'get',
                         tokenType: 'sw',
                         apiType: 'data',
-                        endpoint: _endpoint
+                        endpoint: '/sales-channel-api/v1/dmf/seo-url?filter[routeName]=frontend.detail.page&limit=500'
                     }, { root: true })
                         .then(response => {
                             commit('setDataProductUrls', response.data.data);
@@ -79,36 +73,27 @@ export default function (ctx) {
 
                             reject('API request failed!');
                         });
-
                 });
             },
             async apiCatalogsearch({commit, state, rootState, dispatch, getters}, payload) {
-                // console.log("store apiCatalogsearch called! payload: %o", payload);
-
                 return new Promise(function(resolve, reject) {
-
-                    let _endpoint = '/sales-channel-api/v1/product';
-
                     dispatch('apiCall', {
                         action: 'post',
                         tokenType: 'sw',
                         apiType: 'data',
-                        endpoint: _endpoint,
+                        endpoint: '/sales-channel-api/v1/product',
                         data: state.apiRequestBody
                     }, { root: true })
                         .then(response => {
-
                             if(response.data.total === 0) {
                                 resolve('OK');
                             }
+
                             // map product data
                             dispatch('modApiCategory/mappingCategoryProducts', response.data, {root:true}).then((res) => {
-
                                     // Get all product urls to find urls of search result products
                                     dispatch('modApiResources/swGetProductUrls',{}, {root:true}).then(() => {
-
                                         _.forEach(res.items, (item, key) => {
-
                                             let matchingProduct = _.find(rootState.modApiResources.dataProductUrls, function(o) {
                                                 return o.foreignKey === item.id;
                                             });
@@ -125,13 +110,9 @@ export default function (ctx) {
                                             }, {root:true});
 
                                             resolve('OK');
-
                                         });
-
                                     });
-
                                 });
-
                         })
                         .catch(response => {
                             console.log("API get request failed: %o", response);
@@ -154,6 +135,7 @@ export default function (ctx) {
                         }
                     }, { root: true }).then(response => {
                         commit('setCmsObject', response.data.cmsPage);
+
                         resolve(response);
                     });
                 });

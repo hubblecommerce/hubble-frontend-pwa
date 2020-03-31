@@ -1,9 +1,5 @@
-//
-// modCart
-//
 import base64 from 'base-64'
 import localStorageHelper from "@hubblecommerce/hubble/core/utils/localStorageHelper";
-import {getShippingCostsByCountry, getShippingCostsByCartVal} from "@hubblecommerce/hubble/core/utils/shippingCostHelper.js"
 
 export default function (ctx) {
 
@@ -590,28 +586,6 @@ export default function (ctx) {
             },
             async calculateShippingCosts({state, commit, dispatch}, payload) {
                 return new Promise((resolve, reject)  => {
-                    //// Get matching rules by country from tablerates
-                    //let matchingCountries = getShippingCostsByCountry(payload);
-                    //if(!matchingCountries) {
-                    //    reject('No matching countries in tablerates found for selected country');
-                    //    return;
-                    //}
-                    //
-                    //// Get shipping costs by subtotal in cart from tablerates
-                    //let matchingRule = getShippingCostsByCartVal(matchingCountries, state.cart.subtotal_with_discount);
-                    //if(!matchingRule) {
-                    //    reject('No matching condition in tablerates found for subtotal value in cart');
-                    //    return;
-                    //}
-                    //
-                    //let shippingCosts = matchingRule['Shipping Price'];
-                    //if(shippingCosts === null) {
-                    //    reject('Error calculating shipping costs');
-                    //    return;
-                    //}
-                    //
-                    //commit('setShippingCosts', shippingCosts);
-                    //commit('setTotals');
                     resolve('Calculated shipping cost and setTotals');
                 });
             },

@@ -1,12 +1,9 @@
 import { slugify } from "@hubblecommerce/hubble/core/utils/menuHelper";
 
 export default function (ctx) {
-
-    // Create vuex store module
     const modApiCategory = {
         namespaced: true,
         state: () => ({
-            // Category
             dataCategory: {},
             dataCategoryProducts: {},
             apiRequestBody: {
@@ -151,10 +148,7 @@ export default function (ctx) {
         },
         actions: {
             async swGetCategory({commit, state, dispatch}, payload) {
-                // console.log("store apiGetMenu called! payload: %o", payload);
-
                 return new Promise(function(resolve, reject) {
-
                     let _endpoint = '/sales-channel-api/v1/category/'+payload+
                         '?associations[media][]';
 
@@ -183,14 +177,10 @@ export default function (ctx) {
 
                             reject('API request failed!');
                         });
-
                 });
             },
-            async swGetProducts({commit, state, dispatch, rootState}, payload) {
-                // console.log("store apiGetMenu called! payload: %o", payload);
-
+            async swGetProducts({commit, state, dispatch, rootState}) {
                 return new Promise(function(resolve, reject) {
-
                     let _endpoint = '/sales-channel-api/v1/product';
 
                     dispatch('apiCall', {
@@ -201,7 +191,6 @@ export default function (ctx) {
                         data: state.apiRequestBody
                     }, { root: true })
                         .then(response => {
-
                             // If no products for this category set empty array as category products
                             if(response.data.total === 0) {
                                 commit('setDataCategoryProducts', {
@@ -214,12 +203,9 @@ export default function (ctx) {
                             }
 
                             dispatch('mappingCategoryProducts', response.data).then((res) => {
-
                                 // Get all product urls to find urls of search result products
                                 dispatch('modApiResources/swGetProductUrls',{}, {root:true}).then(() => {
-
                                     _.forEach(res.items, (item, key) => {
-
                                         let matchingProduct = _.find(rootState.modApiResources.dataProductUrls, function(o) {
                                             return o.foreignKey === item.id;
                                         });
@@ -234,26 +220,19 @@ export default function (ctx) {
                                         });
 
                                         resolve();
-
                                     });
 
                                 });
-
                             });
-
                         })
                         .catch(response => {
                             console.log("API get request failed: %o", response);
                             reject('API request failed!');
                         });
-
                 });
             },
             async mappingCategory({commit, state, dispatch}, payload) {
-                // console.log("store apiGetMenu called! payload: %o", payload);
-
                 return new Promise(function(resolve, reject) {
-
                     // MAPPING
                     let obj = {};
 
@@ -279,14 +258,10 @@ export default function (ctx) {
                     });
 
                     resolve(obj);
-
                 });
             },
             async mappingCategoryProducts({commit, state, dispatch}, payload) {
-                // console.log("store apiGetMenu called! payload: %o", payload);
-
                 return new Promise(function(resolve, reject) {
-
                     // MAPPING
                     let mapped = [];
                     _.forEach(payload.data, (product) => {
@@ -345,14 +320,10 @@ export default function (ctx) {
                     };
 
                     resolve(obj);
-
                 });
             },
             async swGetCategoryProductsById({commit, state, dispatch}, payload) {
-                // console.log("store apiGetMenu called! payload: %o", payload);
-
                 return new Promise(function(resolve, reject) {
-
                     let _endpoint = '/sales-channel-api/v1/category/'+payload.id+
                         '?associations[products][associations][seoUrls][]' +
                         '&associations[products][associations][manufacturer][]' +
@@ -379,7 +350,6 @@ export default function (ctx) {
                             console.log("API get request failed: %o", response);
                             reject('API request failed!');
                         });
-
                 });
             },
             async setApiRequestFilter({commit, state, dispatch}, payload) {

@@ -22,8 +22,6 @@ export default function (ctx) {
                 state.dataProduct = payload.data;
             },
             setDataProductItem: (state, payload) => {
-                console.log("setDataProductItem");
-                console.log(payload);
                 state.dataProduct.result.item = payload.data;
             },
             setDataProductRelations: (state, payload) => {
@@ -67,7 +65,6 @@ export default function (ctx) {
         getters:  {
             getMediaGalleryArray: state => {
                 if(!_.isEmpty(state.dataProduct)) {
-
                     let allProductImages = [],
                         mediaGallery = state.dataProduct.result.item.media_gallery;
 
@@ -104,9 +101,7 @@ export default function (ctx) {
                         endpoint: endpoint
                     }, { root: true })
                         .then(response => {
-
                             dispatch('mappingProduct', {product: response.data.data, path: payload.path}).then((res) => {
-
                                 commit('setDataProduct', {
                                     data: {
                                         result: {
@@ -117,7 +112,6 @@ export default function (ctx) {
 
                                 resolve('ok');
                             });
-
                         })
                         .catch(error => {
                             reject(error);
@@ -125,8 +119,6 @@ export default function (ctx) {
                 });
             },
             async mappingProduct({commit, state, dispatch, router}, payload) {
-                // console.log("store apiGetMenu called! payload: %o", payload);
-
                 return new Promise(function(resolve, reject) {
                     let obj = {};
 
@@ -262,11 +254,8 @@ export default function (ctx) {
                     }
 
                     resolve(obj);
-
                 });
             },
-
-
         }
     };
 
