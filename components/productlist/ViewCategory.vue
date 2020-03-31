@@ -103,7 +103,8 @@ export default {
 
             loaded: false,
 
-            isShopware: process.env.API_TYPE === 'sw'
+            isShopware: process.env.API_TYPE === 'sw',
+            cmsSections: {}
         }
     },
 
@@ -117,12 +118,6 @@ export default {
         ...mapGetters({
             requestCategoryFacets: 'modApiRequests/getRequestCategoryFacets'
         }),
-        cmsSections() {
-            if(this.isShopware && !_.isEmpty(this.cmsObject)) {
-                return this.cmsObject.sections;
-            }
-            return [];
-        },
         categoryProductItems() {
             if (_.isEmpty(this.dataCategoryProducts)) {
                 return this.dataCategoryProducts
@@ -220,6 +215,7 @@ export default {
         this.setCategoryItem();
         this.setCategoryData();
         this.setParentCategory();
+        this.setCmsSections();
     },
 
     mounted() {
@@ -274,6 +270,12 @@ export default {
                     }
                 });
             }
+        },
+        setCmsSections: function() {
+            if(this.isShopware && !_.isEmpty(this.cmsObject)) {
+                this.cmsSections = this.cmsObject.sections;
+            }
+            return [];
         },
         handleScroll: function (event) {
             this.setStickyFlag();

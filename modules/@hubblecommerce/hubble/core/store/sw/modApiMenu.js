@@ -5,6 +5,7 @@ export default function (ctx) {
     const modApiMenu = {
         namespaced: true,
         state: () => ({
+            cacheTTL: 300,
             dataMenu: {},
             dataMenuCacheable: true,
         }),
@@ -72,10 +73,8 @@ export default function (ctx) {
                 state.dataMenu.locale = state.apiLocale;
 
                 if(state.dataMenuCacheable) {
-                    let _ttl = state.dataMenuCacheableTTL || state.cacheTTL;
-
                     state.dataMenu.created_at_unixtime = datetimeUnixNow();
-                    state.dataMenu.expires_at_unixtime = datetimeUnixNowAddSecs(_ttl);
+                    state.dataMenu.expires_at_unixtime = datetimeUnixNowAddSecs(state.cacheTTL);
                 }
             },
         },
