@@ -247,7 +247,8 @@
                 return !_.isEmpty(item.options);
             },
             formatSize: function (size) {
-                return size.replace('.0', '');
+                return size;
+                //return size.replace('.0', '');
             }
         },
 	}
