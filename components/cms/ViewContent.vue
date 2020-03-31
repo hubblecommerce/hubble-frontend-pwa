@@ -7,7 +7,6 @@
         </div>
         <div class="cms-container-main row">
             <div class="col-12 col-lg-3 cms-container-sidebar">
-                <cms-sidebar-navigation v-if="$mq === 'lg'" />
             </div>
             <div class="col-12 col-lg-9 cms-container-content">
                 <div v-html="content.content_rendered" />
