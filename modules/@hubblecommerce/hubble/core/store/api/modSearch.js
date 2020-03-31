@@ -1,5 +1,4 @@
 export default function (ctx) {
-
     const modSearch = {
         namespaced: true,
         state: () => ({
@@ -18,29 +17,11 @@ export default function (ctx) {
             selectedItemId: null
         }),
         getters: {
-            getMaxProductItems: (state) => {
-                return state.maxProductItems;
-            },
-            getMaxCategoryItems: (state) => {
-                return state.maxCategoryItems;
-            },
             getAutoCompleteResults: (state) => {
                 return state.autoCompleteResults;
             },
-            getCategoryItems: (state) => {
-                return state.autoCompleteResults.categoryItems;
-            },
-            getProductItems: (state) => {
-                return state.autoCompleteResults.productItems;
-            },
             getAutoCompleteResultsArray: (state) => {
                 return state.autoCompleteResultsArray;
-            },
-            getSelectedItemPosition: (state) => {
-                return state.selectedItemPosition;
-            },
-            getSelectedItemId: (state) => {
-                return state.selectedItemId;
             },
             getAutoCompleteResultsLength: (state) => {
                 return state.autoCompleteResults.categoryItems.length + state.autoCompleteResults.productItems.length;
@@ -71,8 +52,7 @@ export default function (ctx) {
             },
         },
         actions: {
-            // Api call to search/autocomplete
-            async apiGetAutocompleteResults({state, commit, dispatch}, payload) {
+            async getAutocompleteResults({state, commit, dispatch}, payload) {
                 return new Promise(function(resolve, reject) {
                     dispatch('apiCall', {
                         action: 'get',
@@ -164,10 +144,48 @@ export default function (ctx) {
                 }
 
                 ctx.app.router.push('/' + url);
-            }
+            },
+            async apiCatalogsearch({commit, dispatch, rootGetters}, payload) {
+                return new Promise(function(resolve, reject) {
+                    let query = rootGetters['modApiRequests/queryPaginate'](payload.query);
+
+                    commit('modApiRequests/setPaginationOffset', query._from, {root: true});
+                    commit('modApiRequests/setPaginationPerPage', query._size, {root: true});
+
+                    dispatch('apiCall', {
+                        action: 'get',
+                        tokenType: 'api',
+                        apiType: 'data',
+                        endpoint: '/api/json/search/catalogsearch',
+                        params: _.merge(
+                            {},
+                            query,
+                            {
+                                _withProps: _.join([
+                                    'facets',
+                                    'media_gallery',
+                                    'search_result_data_children',
+                                    'status'
+                                ], ',')
+                            }
+                        )
+                    }, { root: true })
+                    .then(response => {
+
+                        commit('modApiResources/setPageType', 'category' , {root: true});
+
+                        commit('modApiCategory/setDataCategoryProducts', {
+                            data: response.data
+                        }, {root: true});
+
+                        resolve('OK');
+                    })
+                    .catch(response => {
+                        reject('API request failed!');
+                    });
+                })
+            },
         }
     };
-
-    // Register vuex store module
     ctx.store.registerModule('modSearch', modSearch);
 }

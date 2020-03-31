@@ -184,7 +184,7 @@
                     this.loading = true;
 
                     //Get autocomplete data from api
-                    this.$store.dispatch('modSearch/swSearchProductByTerm', {
+                    this.$store.dispatch('modSearch/getAutocompleteResults', {
                         locale: this.locale,
                         query: this.query
                     })

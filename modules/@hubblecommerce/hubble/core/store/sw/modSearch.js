@@ -17,29 +17,11 @@ export default function (ctx) {
             selectedItemId: null
         }),
         getters: {
-            getMaxProductItems: (state) => {
-                return state.maxProductItems;
-            },
-            getMaxCategoryItems: (state) => {
-                return state.maxCategoryItems;
-            },
             getAutoCompleteResults: (state) => {
                 return state.autoCompleteResults;
             },
-            getCategoryItems: (state) => {
-                return state.autoCompleteResults.categoryItems;
-            },
-            getProductItems: (state) => {
-                return state.autoCompleteResults.productItems;
-            },
             getAutoCompleteResultsArray: (state) => {
                 return state.autoCompleteResultsArray;
-            },
-            getSelectedItemPosition: (state) => {
-                return state.selectedItemPosition;
-            },
-            getSelectedItemId: (state) => {
-                return state.selectedItemId;
             },
             getAutoCompleteResultsLength: (state) => {
                 return state.autoCompleteResults.categoryItems.length + state.autoCompleteResults.productItems.length;
@@ -71,7 +53,7 @@ export default function (ctx) {
         },
         actions: {
             // Api call to search/autocomplete
-            async swSearchProductByTerm({commit, state, rootState, dispatch}, payload) {
+            async getAutocompleteResults({commit, state, rootState, dispatch}, payload) {
                 return new Promise(function(resolve, reject) {
                     dispatch('apiCall', {
                         action: 'get',
@@ -117,7 +99,6 @@ export default function (ctx) {
                             }
                         })
                         .catch(response => {
-                            console.log("API get request failed: %o", response);
                             reject('API request failed!');
                         });
                 });
@@ -176,10 +157,53 @@ export default function (ctx) {
                 }
 
                 ctx.app.router.push('/' + url);
-            }
+            },
+            async apiCatalogsearch({commit, rootState, dispatch}) {
+                return new Promise(function(resolve, reject) {
+                    dispatch('apiCall', {
+                        action: 'post',
+                        tokenType: 'sw',
+                        apiType: 'data',
+                        endpoint: '/sales-channel-api/v1/product',
+                        data: rootState.modApiCategory.apiRequestBody
+                    }, { root: true })
+                    .then(response => {
+                        if(response.data.total === 0) {
+                            resolve('OK');
+                        }
+
+                        // map product data
+                        dispatch('modApiCategory/mappingCategoryProducts', response.data, {root:true}).then((res) => {
+                            // Get all product urls to find urls of search result products
+                            dispatch('modApiResources/swGetProductUrls',{}, {root:true}).then(() => {
+                                _.forEach(res.items, (item, key) => {
+                                    let matchingProduct = _.find(rootState.modApiResources.dataProductUrls, function(o) {
+                                        return o.foreignKey === item.id;
+                                    });
+
+                                    // Set urls of matches
+                                    res.items[key].url_pds = matchingProduct.seoPathInfo;
+
+                                    commit('modApiResources/setPageType', 'category' , {root: true});
+
+                                    commit('modApiCategory/setDataCategoryProducts', {
+                                        data: {
+                                            result: res
+                                        }
+                                    }, {root:true});
+
+                                    resolve('OK');
+                                });
+                            });
+                        });
+                    })
+                    .catch(response => {
+                        reject('API request failed!');
+                    });
+                })
+            },
         }
     };
 
-    // Register vuex store module
     ctx.store.registerModule('modSearch', modSearch);
 }

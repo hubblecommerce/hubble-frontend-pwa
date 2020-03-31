@@ -33,7 +33,7 @@ Middleware.apiResourceSearch = function ({ store, route }) {
             store.commit('modApiCategory/setTerm', route.query.term);
         }
 
-        store.dispatch('modApiResources/apiCatalogsearch')
+        store.dispatch('modSearch/apiCatalogsearch')
             .then(response => {
                 // console.log("middleware api-resource-search OK response: %o", response);
                 resolve();

@@ -1,10 +1,4 @@
-//
-// resources module
-//
-
 export default function (ctx) {
-
-    // Create vuex store module
     const modApiResources = {
         namespaced: true,
         state: () => ({
@@ -35,9 +29,6 @@ export default function (ctx) {
             getApiLocale: state => {
                 return state.apiLocale;
             },
-            getDataUri: state => {
-                return state.dataUri;
-            },
             getQueryPaginated: (state, getters, rootState, rootGetters) => (query) => {
                 return rootGetters['modApiRequests/queryPaginate'](query);
             },
@@ -47,8 +38,6 @@ export default function (ctx) {
         },
         actions: {
             async apiResolveUriData({commit, state, dispatch, getters}, payload) {
-                // console.log("store apiResolveUriData called! payload: %o", payload);
-
                 return new Promise((resolve, reject) => {
 
                     let _outerReject = reject;
@@ -96,8 +85,6 @@ export default function (ctx) {
 
                         // fetch product, if known by uri object
                         if(payload.data.result.item.product_id) {
-                            // console.log("store apiResolveUriData - running for product ...");
-
                             let _endpoint = _.join([
                                 '/api/json/products/',
                                 payload.data.result.item.product_id
@@ -125,13 +112,6 @@ export default function (ctx) {
                                     commit('modApiProduct/setDataProduct', {
                                         data: response.data
                                     }, { root: true });
-
-                                    //
-                                    // xxx: quiz: how to cleanup store from orphaned objects
-                                    //
-                                    // commit('modApiCategory/setDataCategoryProducts', {
-                                    //     data: {}
-                                    // }, {root: true});
 
                                     _outerResolve(response);
                                 })
@@ -182,7 +162,6 @@ export default function (ctx) {
 
                         // fetch cms content, if known by uri object
                         if(payload.data.result.item.content_id) {
-
                             let _endpoint = _.join([
                                 '/api/json/cms/blocks/',
                                 payload.data.result.item.request_path
@@ -208,61 +187,7 @@ export default function (ctx) {
 
                     resolve('OK, but should be resolved earlier!');
                 });
-            },
-            async apiCatalogsearch({commit, state, dispatch, getters}, payload) {
-                // console.log("store apiCatalogsearch called! payload: %o", payload);
-
-                return new Promise(function(resolve, reject) {
-
-                    let _endpoint = '/api/json/search/catalogsearch';
-
-                    let _query = getters.getQueryPaginated(payload.query);
-
-                    commit('modApiRequests/setPaginationOffset', _query._from, {root: true});
-                    commit('modApiRequests/setPaginationPerPage', _query._size, {root: true});
-
-                    dispatch('apiCall', {
-                        action: 'get',
-                        tokenType: 'api',
-                        apiType: 'data',
-                        endpoint: _endpoint,
-                        params: _.merge(
-                            {},
-                            _query,
-                            {
-                                _withProps: _.join([
-                                    'facets',
-                                    'media_gallery',
-                                    'search_result_data_children',
-                                    'status'
-                                ], ',')
-                            }
-                        )
-                    }, { root: true })
-                        .then(response => {
-
-                            commit('setPageType', 'category');
-
-                            //
-                            // xxx: quiz: how to cleanup store from orphaned objects
-                            //
-                            // commit('modApiProduct/setDataProduct', {
-                            //     data: {}
-                            // });
-
-                            commit('modApiCategory/setDataCategoryProducts', {
-                                data: response.data
-                            }, {root: true});
-
-                            resolve('OK');
-                        })
-                        .catch(response => {
-                            console.log("API get request failed: %o", response);
-
-                            reject('API request failed!');
-                        });
-                })
-            },
+            }
         }
     };
 

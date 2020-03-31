@@ -11,7 +11,7 @@ Middleware.apiResourceSearch = function ({ store, route }) {
         let _outerReject = reject;
         let _outerResolve = resolve;
 
-        store.dispatch('modApiResources/apiCatalogsearch', {
+        store.dispatch('modSearch/apiCatalogsearch', {
             query: route.query
         })
             .then(response => {
