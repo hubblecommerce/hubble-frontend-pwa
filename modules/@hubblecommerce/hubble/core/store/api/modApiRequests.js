@@ -1,6 +1,4 @@
 export default function (ctx) {
-
-    // Create vuex store module
     const modApiRequests = {
         namespaced: true,
         state: () => ({
@@ -45,7 +43,7 @@ export default function (ctx) {
             setSelectedFacetsParam: (state, payload) => {
                 state.selectedFacets[payload.name] = payload.data;
             },
-            resetSelectedFacetsParam: (state, payload) => {
+            resetSelectedFacetsParam: (state) => {
                 state.selectedFacets = _.pick(state.selectedFacets, state.queryWellKnown);
                 state.selectedFacets.priceMax = null;
                 state.selectedFacets.priceMin = null;
@@ -62,120 +60,102 @@ export default function (ctx) {
             setParsedQuery: (state, items) => {
                 state.parsedQuery = items;
             },
-            setRequestStringFacets: (state, payload) => {
-                state.requestFacets.string_facets = payload;
-            },
-            removeFacets: (state, payload) => {
-                console.log("remove");
-
-                //delete state.requestedFacets.string_facets[payload];
-                //delete state.requestedFacets.all[payload];
-
-                console.log(state.requestedFacets);
-            },
         },
         getters: {
-            isNumeric: state => (value) => {
+            isNumeric: () => (value) => {
                 return ! isNaN(parseFloat(value)) && isFinite(value);
             },
-            areNumeric: state => (values) => {
-
-                let _ok = true;
+            areNumeric: () => (values) => {
+                let ok = true;
 
                 _.forEach(values, (value) => {
 
-                    let _status = ! isNaN(parseFloat(value)) && isFinite(value);
+                    let status = ! isNaN(parseFloat(value)) && isFinite(value);
 
-                    if(! _status) {
-                        _ok = _status;
+                    if(! status) {
+                        ok = status;
                     }
                 });
 
-                return _ok;
+                return ok;
             },
-            isStringAlnum: state => (value) => {
+            isStringAlnum: () => (value) => {
                 return (/[a-z0-9]/.test(value.toLowerCase()));
             },
             querySanitize: (state, getters) => (query) => {
-                let _queryKnown = {
+                let queryKnown = {
                     term: query.term
                 };
 
                 if(_.has(query, 'dir')) {
-                    _queryKnown['dir'] = getters.isStringAlnum(query.dir) ? query.dir.toLowerCase() : 'desc';
+                    queryKnown['dir'] = getters.isStringAlnum(query.dir) ? query.dir.toLowerCase() : 'desc';
                 }
 
                 if(_.has(query, 'order')) {
-                    _queryKnown['order'] = getters.isStringAlnum(query.order) ? query.order.toLowerCase() : 'relevance';
+                    queryKnown['order'] = getters.isStringAlnum(query.order) ? query.order.toLowerCase() : 'relevance';
                 }
 
                 if(_.has(query, 'price_to')) {
-                    _queryKnown['price_to'] = getters.isNumeric(query.price_to) ? parseInt(query.price_to) : 0;
+                    queryKnown['price_to'] = getters.isNumeric(query.price_to) ? parseInt(query.price_to) : 0;
                 }
 
                 if(_.has(query, 'price_from')) {
-                    _queryKnown['price_from'] = getters.isNumeric(query.price_from) ? parseInt(query.price_from) : 0;
+                    queryKnown['price_from'] = getters.isNumeric(query.price_from) ? parseInt(query.price_from) : 0;
                 }
 
 
-                let _queryUnknown = _.omit(query, ['term', 'dir', 'order', 'price_to', 'price_from']);
+                let queryUnknown = _.omit(query, ['term', 'dir', 'order', 'price_to', 'price_from']);
 
-                _.forEach(_.keys(_queryUnknown), (paramName) => {
+                _.forEach(_.keys(queryUnknown), (paramName) => {
 
                     // reset parameter value to '0', if any value is not numeric
-                    if(! getters.areNumeric(_.split(_queryUnknown[paramName], ','))) {
-                        _queryUnknown[paramName] = 0;
+                    if(! getters.areNumeric(_.split(queryUnknown[paramName], ','))) {
+                        queryUnknown[paramName] = 0;
                     }
                 })
 
-                // merge known and sanitized unknown query params
-                let _query = _.merge({}, _queryKnown, _queryUnknown);
-
-                return _query;
+                // return merge known and sanitized unknown query params
+                return _.merge({}, queryKnown, queryUnknown);
             },
             queryPaginate: (state, getters) => (query) => {
-
                 // sanitize query
-                let _queryClean = getters.querySanitize(query);
+                let queryClean = getters.querySanitize(query);
 
-                let _paginationPerPage = getters.getNumericOrDefault(query.limit, state.paginationPerPage);
+                let paginationPerPage = getters.getNumericOrDefault(query.limit, state.paginationPerPage);
 
-                let _paginationOffset = (getters.getNumericOrDefault(query.page, 1) * state.paginationPerPage) - state.paginationPerPage;
+                let paginationOffset = (getters.getNumericOrDefault(query.page, 1) * state.paginationPerPage) - state.paginationPerPage;
 
                 // rebuild query object, kick
                 // some params, that we don't need any
                 // longer and append _from/_size/_term params.
-                let _query = {};
+                let queryObject = {};
 
-                // stack _term 1st
-                if(_.has(_queryClean, 'term')) {
-                    _query = _.merge(_query, { _term: _queryClean.term });
+                // stack term 1st
+                if(_.has(queryClean, 'term')) {
+                    queryObject = _.merge(queryObject, { _term: queryClean.term });
                 }
 
-                if(_.has(_queryClean, 'sort')) {
-                    _query = _.merge(_query, { _sort: _queryClean.sort });
+                if(_.has(queryClean, 'sort')) {
+                    queryObject = _.merge(queryObject, { _sort: queryClean.sort });
                 }
 
-                if(_.has(_queryClean, 'price_to')) {
-                    _query = _.merge(_query, { _price_to: _queryClean.price_to });
+                if(_.has(queryClean, 'price_to')) {
+                    queryObject = _.merge(queryObject, { _price_to: queryClean.price_to });
                 }
 
-                if(_.has(_queryClean, 'price_from')) {
-                    _query = _.merge(_query, { _price_from: _queryClean.price_from });
+                if(_.has(queryClean, 'price_from')) {
+                    queryObject = _.merge(queryObject, { _price_from: queryClean.price_from });
                 }
 
-                _query = _.merge(
-                    _query,
-                    _.omit(_queryClean, ['term', 'page', 'sort', 'limit', 'price_to', 'price_from']),
+                queryObject = _.merge(
+                    queryObject,
+                    _.omit(queryClean, ['term', 'page', 'sort', 'limit', 'price_to', 'price_from']),
                     {
-                        _from: _paginationOffset,
-                        _size: _paginationPerPage
+                        _from: paginationOffset,
+                        _size: paginationPerPage
                     });
 
-                return _query;
-            },
-            getSelectedFacetsParam: (state) => {
-                return state.selectedFacets;
+                return queryObject;
             },
             getNumericOrDefault: (state, getters) => (requestValue, defaultValue) => {
                 return getters.isNumeric(requestValue) ? requestValue : defaultValue;
@@ -191,7 +171,6 @@ export default function (ctx) {
                 return null;
             },
             getRequestStringFacets: (state) => {
-
                 if(_.has(state.requestFacets, 'string_facets')) {
                     return _.map(state.requestFacets.string_facets, (item) => item);
                 }
@@ -214,32 +193,26 @@ export default function (ctx) {
             }
         },
         actions: {
-            parseRequest({ commit, state, dispatch, rootState, rootGetters }, payload) {
-                // console.log("store parseRequest called! payload: %o", payload);
-
-                let _query = payload.query;
+            parseRequest({ commit, dispatch, rootGetters }, payload) {
+                let query = payload.query;
 
                 // If page is set in url set pagination page to query otherwise set to page 1
-                if(_query.page != null) {
-                    commit('setPaginationPage', _query.page);
+                if(query.page != null) {
+                    commit('setPaginationPage', query.page);
                 } else {
                     commit('setPaginationPage', 1);
                 }
 
-                let _items = rootGetters['modApiCategory/getDataCategoryProducts'];
+                let items = rootGetters['modApiCategory/getDataCategoryProducts'];
 
                 return new Promise((resolve, reject) => {
-
-                    let _outerReject = reject;
-                    let _outerResolve = resolve;
-
                     // initialize nested properties of
                     // possibly selected facets and set
                     // to their query param value (or null)
                     dispatch('parseRequestFacets', {
                         propertyName: 'selectedFacets',
-                        propertyFacets: _items.result.facets,
-                        query: _query
+                        propertyFacets: items.result.facets,
+                        query: query
                     })
                         .then(response => {
 
@@ -248,94 +221,77 @@ export default function (ctx) {
                             // query parameters and set them to
                             // their query param value (or null)
                             dispatch('parseRequestQuery', {
-                                query: _query
+                                query: query
                             })
                                 .then(response => {
-                                    _outerResolve(response);
+                                    resolve(response);
                                 })
                                 .catch(response => {
-                                    _outerReject(response);
+                                    reject(response);
                                 })
                         })
                 });
             },
-            parseRequestFacets({ commit, state }, payload) {
-                //console.log("store parseRequestFacets called! payload: %o", payload);
+            parseRequestFacets({ commit }, payload) {
+                let query = payload.query;
+                let propertyFacets = _.cloneDeep(payload.propertyFacets);
 
-                let _query = payload.query;
-
-                let _propertyFacets = _.cloneDeep(payload.propertyFacets);
-
-                return new Promise((resolve, reject) => {
+                return new Promise((resolve) => {
 
                     // start with empty object
-                    let _parsed = {};
+                    let parsed = {};
 
                     // loop for string facets only ...
-                    _.forEach(_propertyFacets.string_facets, (facet) => {
-                        _parsed[facet.key] = _query[facet.key] ? _query[facet.key] : null;
+                    _.forEach(propertyFacets.string_facets, (facet) => {
+                        parsed[facet.key] = query[facet.key] ? query[facet.key] : null;
                     });
 
                     // special case 'price'
-                    if(_.has(_query, 'price_to')) {
-                        _parsed['priceMax'] = parseInt(_query['price_to']);
+                    if(_.has(query, 'price_to')) {
+                        parsed['priceMax'] = parseInt(query['price_to']);
                     }
-                    if(_.has(_query, 'price_from')) {
-                        _parsed['priceMin'] = parseInt(_query['price_from']);
+                    if(_.has(query, 'price_from')) {
+                        parsed['priceMin'] = parseInt(query['price_from']);
                     }
 
                     // loop for string facets only ...
-                    _.forEach(_propertyFacets.category_facets, (facet) => {
-                        _parsed[facet.key] = _query[facet.key] ? _query[facet.key] : null;
+                    _.forEach(propertyFacets.category_facets, (facet) => {
+                        parsed[facet.key] = query[facet.key] ? query[facet.key] : null;
                     });
 
-                    // commit to store
-                    commit('setSelectedFacets', _parsed);
-                    commit('setRequestFacets', _propertyFacets);
+                    commit('setSelectedFacets', parsed);
+                    commit('setRequestFacets', propertyFacets);
 
                     resolve("parseRequestFacets OK!");
                 });
             },
             parseRequestQuery({ commit, state }, payload) {
-                // console.log("store parseRequestQuery called! payload: %o", payload);
+                let query = payload.query;
+                let params = state.queryWellKnown;
 
-                let _query = payload.query;
-                let _params = state.queryWellKnown;
+                return new Promise((resolve) => {
+                    let parsed = {};
 
-                return new Promise((resolve, reject) => {
-
-                    // start with empty object
-                    let _parsed = {};
-
-                    _.forEach(_params, (paramName) => {
-
+                    _.forEach(params, (paramName) => {
                         // set nested property to either query parameter or null
-                        _parsed[paramName] = _query[paramName] ? _query[paramName] : null;
+                        parsed[paramName] = query[paramName] ? query[paramName] : null;
                     })
 
                     // special case 'price'
-                    if(_.has(_query, 'price_to')) {
-                        _parsed['priceMax'] = parseInt(_query['price_to']);
+                    if(_.has(query, 'price_to')) {
+                        parsed['priceMax'] = parseInt(query['price_to']);
                     }
-                    if(_.has(_query, 'price_from')) {
-                        _parsed['priceMin'] = parseInt(_query['price_from']);
+                    if(_.has(query, 'price_from')) {
+                        parsed['priceMin'] = parseInt(query['price_from']);
                     }
 
-                    // commit to store
-                    commit('setParsedQuery', _parsed);
+                    commit('setParsedQuery', parsed);
 
                     resolve("parseRequestQuery OK!");
-                });
-            },
-            actionSetRequestStringFacets({ commit, state }, payload) {
-                return new Promise((resolve, reject) => {
-                    commit('setRequestStringFacets', payload);
-                    resolve();
                 });
             }
         }
     };
 
-    // Register vuex store module
     ctx.store.registerModule('modApiRequests', modApiRequests);
 }
