@@ -1,12 +1,7 @@
-//
-// modWishlist
-//
 import base64 from 'base-64'
 import localStorageHelper from "@hubblecommerce/hubble/core/utils/localStorageHelper";
 
 export default function (ctx) {
-
-    // Create vuex store module
     const modWishlist = {
         namespaced: true,
         state: () => ({
@@ -15,26 +10,9 @@ export default function (ctx) {
             wishlistId: false,
 
             cookieName: 'hubbleWishlist',
-            cookiePath: '/',
-            cookieTTL: 120, // minutes
             localStorageLifetime: 720 // 720 hours = 30 days
         }),
         getters: {
-            getCookieExpires: (state) => {
-                return new Date(new Date().getTime() + state.cookieTTL * 60 * 1000);
-            },
-            getWishlistItemsCount: state => {
-                return state.wishlistItemsCount;
-            },
-            getWishlistItemsObj: state => {
-                return state.wishlistItemsObj;
-            },
-            getWishlistEncoded: () => (objJsonStr) => {
-                return base64.encode(JSON.stringify(objJsonStr));
-            },
-            getWishlistDecoded: () => (objJsonB64) => {
-                return JSON.parse(base64.decode(objJsonB64));
-            }
         },
         mutations: {
             setWishlistItemsCount: (state, qty) => {
@@ -58,10 +36,7 @@ export default function (ctx) {
         },
         actions: {
             clearAll({commit}) {
-                // console.log("clearAll called");
-
                 return new Promise((resolve) => {
-
                     commit('setWishlistItemsObj', {});
                     commit('setWishlistItemsCount', 0);
 
@@ -69,10 +44,7 @@ export default function (ctx) {
                 })
             },
             addItem({commit, state, dispatch}, payload) {
-                // console.log("addItem ... payload: %o", payload);
-
                 return new Promise((resolve, reject) => {
-
                     let item = _.pick(payload.item, ['id', 'sku', 'qty', 'variants', 'name', 'image', 'final_price_item', 'url_pds']);
                     let qty = payload.qty;
 
@@ -99,8 +71,6 @@ export default function (ctx) {
                 });
             },
             updateItem({commit, state, dispatch}, payload) {
-                // console.log("addItem ... payload: %o", payload);
-
                 return new Promise((resolve) => {
                     // Update global wishlist counter
                     commit('setWishlistItemsCount', state.wishlistItemsCount + payload.qty );
@@ -111,8 +81,6 @@ export default function (ctx) {
                 });
             },
             delItem({commit, state, dispatch}, payload) {
-                //console.log("delItem ... payload: %o", payload);
-
                 let item = payload.data;
 
                 return new Promise((resolve) => {
@@ -135,14 +103,13 @@ export default function (ctx) {
             },
             saveToStore({state}) {
                 return new Promise((resolve) => {
-
-                    let _item = {
+                    let item = {
                         count: state.wishlistItemsCount,
                         id: state.wishlistId,
                         items: state.wishlistItemsObj
                     };
 
-                    localStorageHelper.setCreatedAt(_item, state.localStorageLifetime).then(response => {
+                    localStorageHelper.setCreatedAt(item, state.localStorageLifetime).then(response => {
                         // Store wishlist with all info in local storage
                         this.$localForage.setItem(state.cookieName, response);
                         resolve('wishlist stored');
@@ -185,13 +152,6 @@ export default function (ctx) {
                     });
                 })
             },
-            setWishlist({commit, state}, payload) {
-                return new Promise((resolve) => {
-
-                    console.log(payload);
-
-                });
-            },
             deleteWishlist({commit, state}) {
                 return new Promise(() => {
                     commit('setWishlistItemsCount', 0);
@@ -205,6 +165,5 @@ export default function (ctx) {
         }
     };
 
-    // Register vuex store module
     ctx.store.registerModule('modWishlist', modWishlist);
 }

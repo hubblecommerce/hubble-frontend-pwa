@@ -1,6 +1,4 @@
 export default function (ctx) {
-
-    // Create vuex store module
     const modSwatches = {
         namespaced: true,
         state: () => ({
@@ -12,6 +10,7 @@ export default function (ctx) {
                     code: 'color_manufacturer'
                 }
             ],
+
             byAttributeCode: {
                 color_manufacturer: [
                     {
@@ -40,6 +39,5 @@ export default function (ctx) {
         }
     };
 
-    // Register vuex store module
     ctx.store.registerModule('modSwatches', modSwatches);
 }

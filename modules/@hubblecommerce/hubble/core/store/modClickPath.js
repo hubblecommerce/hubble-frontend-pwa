@@ -1,6 +1,4 @@
 export default function (ctx) {
-
-    // Create vuex store module
     const modClickPath = {
         namespaced: true,
         state: () => ({
@@ -8,10 +6,6 @@ export default function (ctx) {
             clickPathHistoryCount: 5
         }),
         getters: {
-            getLastVisited: (state) => {
-                let cutLastElement = state.clickPath.slice(-1);
-                return false;
-            },
         },
         mutations: {
             setClickPath: (state, payload) => {
@@ -27,6 +21,5 @@ export default function (ctx) {
         }
     };
 
-    // Register vuex store module
     ctx.store.registerModule('modClickPath', modClickPath);
 }

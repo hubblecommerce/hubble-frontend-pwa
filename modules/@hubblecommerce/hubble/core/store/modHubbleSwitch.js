@@ -1,6 +1,4 @@
 export default function (ctx) {
-
-    // Create vuex store module
     const modHubbleSwitch = {
         namespaced: true,
         state: () => ({
@@ -15,7 +13,6 @@ export default function (ctx) {
             }
         }
     };
-
-    // Register vuex store module
+    
     ctx.store.registerModule('modHubbleSwitch', modHubbleSwitch);
 }

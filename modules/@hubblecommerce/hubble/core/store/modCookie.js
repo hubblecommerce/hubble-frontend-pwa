@@ -1,12 +1,6 @@
-//
-// cookie module
-//
-
 import base64 from "base-64";
 
 export default function (ctx) {
-
-    // Create vuex store module
     const modCookie = {
         namespaced: true,
         state: () => ({
@@ -20,13 +14,10 @@ export default function (ctx) {
             getCookieExpires: (state) => {
                 return new Date(new Date().getTime() + state.cookieTTL * 24 * 60 * 60 * 1000);
             },
-            getShowCookieNotice: (state) => {
-                return state.showCookieNotice;
-            },
-            getCookieEncoded: (state, getters) => (str) => {
+            getCookieEncoded: () => (str) => {
                 return base64.encode(str);
             },
-            getCookieDecoded: (state, getters) => (str) => {
+            getCookieDecoded: () => (str) => {
                 return base64.decode(str);
             },
 
@@ -38,12 +29,10 @@ export default function (ctx) {
         },
         actions: {
             async acceptCookieNotice({getters, commit, state}) {
-                // console.log("store showCookie called! payload: %o", payload);
-
                 return new Promise((resolve, reject) => {
                     commit('setShowCookieNotice', false);
 
-                    // set/send cookie to enforce lifetime
+                    // set cookie to enforce lifetime
                     this.$cookies.set(state.cookieName, getters.getCookieEncoded('visited'), {
                         path: state.cookiePath,
                         expires: getters.getCookieExpires
@@ -53,29 +42,25 @@ export default function (ctx) {
                 });
 
             },
-            setByCookie({commit, state, getters, dispatch}, payload) {
-                // console.log("setCookieCart payload: %o", payload);
-
+            setByCookie({commit, state, getters}) {
                 return new Promise((resolve) => {
-
                     // try to retrieve auth user by cookie
-                    let _cookie = this.$cookies.get(state.cookieName);
+                    let cookie = this.$cookies.get(state.cookieName);
 
-                    // no cookie? ok!
-                    if(! _cookie) {
+                    if(! cookie) {
                         resolve({
                             success: true,
                             message: 'user has not visited the site'
                         });
                     }
 
-                    let _cookieNotice = getters.getCookieDecoded(_cookie);
+                    let cookieNotice = getters.getCookieDecoded(cookie);
 
-                    if(_cookieNotice === 'visited') {
+                    if(cookieNotice === 'visited') {
                         commit('setShowCookieNotice', false);
                     }
 
-                    // set/send cookie to enforce lifetime
+                    // set cookie to enforce lifetime
                     this.$cookies.set(state.cookieName, getters.getCookieEncoded('visited'), {
                         path: state.cookiePath,
                         expires: getters.getCookieExpires
@@ -91,6 +76,5 @@ export default function (ctx) {
         }
     };
 
-    // Register vuex store module
     ctx.store.registerModule('modCookie', modCookie);
 }

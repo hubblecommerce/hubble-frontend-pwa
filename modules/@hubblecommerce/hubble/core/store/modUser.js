@@ -1,11 +1,6 @@
-//
-// session user module
-//
 import base64 from "base-64";
 
 export default function (ctx) {
-
-    // Create vuex store module
     const modUser = {
         namespaced: true,
         state: () => ({
@@ -55,9 +50,9 @@ export default function (ctx) {
         },
         mutations: {
             setAuthUser: (state, payload) => {
-                let _user = _.omit(payload.data, ['password']);
+                let user = _.omit(payload.data, ['password']);
 
-                state.authUser = _user;
+                state.authUser = user;
             },
             setLoggedIn: (state, payload) => {
                 state.isLoggedIn = payload.data;
@@ -108,9 +103,7 @@ export default function (ctx) {
         },
         actions: {
             attemptLogin({commit, state, getters}, payload) {
-
                 return new Promise((resolve, reject) => {
-
                     if(! payload.username) {
                         reject("username required!");
                     }
@@ -137,10 +130,8 @@ export default function (ctx) {
                     resolve("username & password OK");
                 });
             },
-            attemptLogout({commit, state}, payload) {
-
-                return new Promise((resolve, reject) => {
-
+            attemptLogout({commit, state}) {
+                return new Promise((resolve) => {
                     commit('setAuthUser', { data: state.defaultUser });
                     commit('setLoggedIn', { data: false });
 
@@ -150,16 +141,14 @@ export default function (ctx) {
                 })
             },
             attemptRegistration({commit, state, getters}, payload) {
-
-                return new Promise((resolve, reject) => {
-
+                return new Promise((resolve) => {
                     // merge new user object (registerDummy + authUser)
-                    let _user = _.merge({}, payload, state.authUser);
+                    let user = _.merge({}, payload, state.authUser);
 
-                    commit('setAuthUser', { data: _user });
+                    commit('setAuthUser', { data: user });
                     commit('setLoggedIn', { data: true });
 
-                    this.$cookies.set(state.cookieName, getters.getUserEncoded(_user), {
+                    this.$cookies.set(state.cookieName, getters.getUserEncoded(user), {
                         path: state.cookiePath,
                         expires: getters.getCookieExpires
                     });
@@ -168,12 +157,8 @@ export default function (ctx) {
                 });
             },
             addShippingAddress({commit, state, getters}, payload) {
-
-                return new Promise((resolve, reject) => {
-
-                    let _address = payload;
-
-                    commit('addCustomerShippingAddress', { data: _address });
+                return new Promise((resolve) => {
+                    commit('addCustomerShippingAddress', { data: payload });
 
                     this.$cookies.set(state.cookieName, getters.getUserEncoded(state.authUser), {
                         path: state.cookiePath,
@@ -184,12 +169,8 @@ export default function (ctx) {
                 });
             },
             updateShippingAddress({commit, state, getters}, payload) {
-
-                return new Promise((resolve, reject) => {
-
-                    let _address = payload;
-
-                    commit('updateCustomerShippingAddress', { data: _address });
+                return new Promise((resolve) => {
+                    commit('updateCustomerShippingAddress', { data: payload });
 
                     this.$cookies.set(state.cookieName, getters.getUserEncoded(state.authUser), {
                         path: state.cookiePath,
@@ -200,12 +181,8 @@ export default function (ctx) {
                 });
             },
             removeShippingAddress({commit, state, getters}, payload) {
-
-                return new Promise((resolve, reject) => {
-
-                    let _address = payload;
-
-                    commit('removeCustomerShippingAddress', { data: _address });
+                return new Promise((resolve) => {
+                    commit('removeCustomerShippingAddress', { data: payload });
 
                     this.$cookies.set(state.cookieName, getters.getUserEncoded(state.authUser), {
                         path: state.cookiePath,
@@ -216,12 +193,8 @@ export default function (ctx) {
                 });
             },
             addBillingAddress({commit, state, getters}, payload) {
-
-                return new Promise((resolve, reject) => {
-
-                    let _address = payload;
-
-                    commit('addCustomerBillingAddress', { data: _address });
+                return new Promise((resolve) => {
+                    commit('addCustomerBillingAddress', { data: payload });
 
                     this.$cookies.set(state.cookieName, getters.getUserEncoded(state.authUser), {
                         path: state.cookiePath,
@@ -232,12 +205,8 @@ export default function (ctx) {
                 });
             },
             updateBillingAddress({commit, state, getters}, payload) {
-
-                return new Promise((resolve, reject) => {
-
-                    let _address = payload;
-
-                    commit('updateCustomerBillingAddress', { data: _address });
+                return new Promise((resolve) => {
+                    commit('updateCustomerBillingAddress', { data: payload });
 
                     this.$cookies.set(state.cookieName, getters.getUserEncoded(state.authUser), {
                         path: state.cookiePath,
@@ -248,12 +217,8 @@ export default function (ctx) {
                 });
             },
             removeBillingAddress({commit, state, getters}, payload) {
-
-                return new Promise((resolve, reject) => {
-
-                    let _address = payload;
-
-                    commit('removeCustomerBillingAddress', { data: _address });
+                return new Promise((resolve) => {
+                    commit('removeCustomerBillingAddress', { data: payload });
 
                     this.$cookies.set(state.cookieName, getters.getUserEncoded(state.authUser), {
                         path: state.cookiePath,
@@ -263,29 +228,26 @@ export default function (ctx) {
                     resolve("Billing address updated");
                 });
             },
-            setByCookie({commit, state, getters}, payload) {
-                // console.log("modUser/setByCookie payload: %o", payload);
-
-                return new Promise((resolve, reject) => {
-
+            setByCookie({commit, state, getters}) {
+                return new Promise((resolve) => {
                     // try to retrieve auth user by cookie
-                    let _cookie = this.$cookies.get(state.cookieName);
+                    let cookie = this.$cookies.get(state.cookieName);
 
                     // no cookie? ok!
-                    if(! _cookie) {
+                    if(! cookie) {
                         resolve({
                             success: true,
                             message: 'customer not known by cookie.'
                         });
                     }
 
-                    let _user = getters.getUserDecoded(_cookie);
+                    let user = getters.getUserDecoded(cookie);
 
-                    commit('setAuthUser', { data: _user });
-                    commit('setLoggedIn', { data: _user.isLoggedIn });
+                    commit('setAuthUser', { data: user });
+                    commit('setLoggedIn', { data: user.isLoggedIn });
 
                     // set/send cookie to enforce lifetime
-                    this.$cookies.set(state.cookieName, getters.getUserEncoded(_user), {
+                    this.$cookies.set(state.cookieName, getters.getUserEncoded(user), {
                         path: state.cookiePath,
                         expires: getters.getCookieExpires
                     });
@@ -298,21 +260,19 @@ export default function (ctx) {
                 })
             },
             saveOrder({commit, state, getters}, payload) {
-
-                return new Promise((resolve, reject) => {
-
-                    let _data = payload;
-                    let _today = new Date();
-                    let _total = _data.subTotal.replace('€','');
-                    let _order = {
+                return new Promise((resolve) => {
+                    let data = payload;
+                    let today = new Date();
+                    let total = data.subTotal.replace('€','');
+                    let order = {
                         id: '00000001',
-                        date: _today,
-                        total: _total,
+                        date: today,
+                        total: total,
                         state: 'open',
-                        items: _data.items
+                        items: data.items
                     };
 
-                    commit('addCustomerOrder', { data: _order });
+                    commit('addCustomerOrder', { data: order });
 
                     this.$cookies.set(state.cookieName, getters.getUserEncoded(state.authUser), {
                         path: state.cookiePath,
@@ -325,6 +285,5 @@ export default function (ctx) {
         }
     };
 
-    // Register vuex store module
     ctx.store.registerModule('modUser', modUser);
 }

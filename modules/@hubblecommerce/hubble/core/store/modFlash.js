@@ -1,6 +1,4 @@
 export default function (ctx) {
-
-    // Create vuex store module
     const modFlash = {
         namespaced: true,
         state: () => ({
@@ -27,8 +25,8 @@ export default function (ctx) {
             }
         },
         actions: {
-            flashMessage({commit, state}, payload) {
-                return new Promise((resolve, reject) => {
+            flashMessage({commit}, payload) {
+                return new Promise((resolve) => {
                     commit('showFlash');
                     commit('setFlashMessage', payload.flashMessage);
                     commit('setFlashType', payload.flashType);
@@ -36,8 +34,8 @@ export default function (ctx) {
                     resolve('Message flashed');
                 })
             },
-            resetMessage({commit, state}) {
-                return new Promise((resolve, reject) => {
+            resetMessage({commit}) {
+                return new Promise((resolve) => {
                     commit('hideFlash');
                     commit('setFlashMessage', '');
                     commit('setFlashType', 'info');
@@ -50,6 +48,5 @@ export default function (ctx) {
         }
     };
 
-    // Register vuex store module
     ctx.store.registerModule('modFlash', modFlash);
 }

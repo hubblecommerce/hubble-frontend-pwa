@@ -1,8 +1,6 @@
-import {isBefore, isAfter, isSameOrAfter} from "@hubblecommerce/hubble/core/utils/dateTimeHelper";
+import {isBefore, isAfter} from "@hubblecommerce/hubble/core/utils/dateTimeHelper";
 
 export default function (ctx) {
-
-    // Create vuex store module
     const modPrices = {
         namespaced: true,
         state: () => ({
@@ -12,87 +10,76 @@ export default function (ctx) {
             priceLocale: 'de-DE'
         }),
         getters: {
-            priceAddVat: (state) => (price, vat) => {
+            priceAddVat: () => (price, vat) => {
                 return price * vat;
             },
-            priceDecFmt: (state, getters) => (price) => {
-
-                let _price = _.round(price, 2).toFixed(2);
-
-                return _price;
+            priceDecFmt: () => (price) => {
+                return _.round(price, 2).toFixed(2);
             },
-            priceAddCur: (state, getters) => (price) => {
+            priceAddCur: (state) => (price) => {
                 let localPrice = parseFloat(price);
 
                 localPrice = localPrice.toLocaleString(state.priceLocale, {minimumFractionDigits: 2});
 
                 return localPrice  + ' ' + state.priceCurrencySymbol;
             },
-            getCurrency: (state, getters) => {
-                return state.priceCurrency;
-            },
-            getCurrencySymbol: (state, getters) => {
-                return state.priceCurrencySymbol;
-            },
-            getPriceAndCurrencyDecFmt: (state, getters) => (_price, _addVat, _taxClass) => {
-
-                if(_addVat) {
-                    _price = getters.priceAddVat(_price, _taxClass.value);
+            getPriceAndCurrencyDecFmt: (state, getters) => (price, addVat, taxClass) => {
+                if(addVat) {
+                    price = getters.priceAddVat(price, taxClass.value);
                 }
 
-                _price = getters.priceDecFmt(_price);
-                _price = getters.priceAddCur(_price);
+                price = getters.priceDecFmt(price);
+                price = getters.priceAddCur(price);
 
-                return _price;
+                return price;
             },
-            productIsSpecial: (state) => (item) => {
-
+            productIsSpecial: () => (item) => {
                 if(item.final_price_item.special_price === null) {
                     return false;
                 }
 
-                let _beg = null;
-                let _end = null;
+                let beg = null;
+                let end = null;
 
                 if(item.final_price_item.special_from_date !== null) {
-                    _beg = new Date(item.final_price_item.special_from_date);
+                    beg = new Date(item.final_price_item.special_from_date);
                 }
 
                 if(item.final_price_item.special_to_date !== null) {
-                    _end = new Date(item.final_price_item.special_to_date);
+                    end = new Date(item.final_price_item.special_to_date);
                 }
 
                 // If no date range isset
-                if(_.isNull(_beg) && _.isNull(_end)) {
+                if(_.isNull(beg) && _.isNull(end)) {
                     return false;
                 }
 
                 // If only to date isset and today is before end
-                if(_.isNull(_beg) && ! _.isNull(_end)) {
-                    if(isBefore(_end)) {
+                if(_.isNull(beg) && ! _.isNull(end)) {
+                    if(isBefore(end)) {
                         return true;
                     }
                 }
                 // If only from date isset and today is after begin
-                else if(! _.isNull(_beg) && _.isNull(_end)) {
-                    if(isAfter(_beg)) {
+                else if(! _.isNull(beg) && _.isNull(end)) {
+                    if(isAfter(beg)) {
                         return true;
                     }
                 }
                 // If both isset and today is after begin and before end
                 else {
-                    if(isAfter(_beg) && isBefore(_end)) {
+                    if(isAfter(beg) && isBefore(end)) {
                         return true;
                     }
                 }
 
                 return false;
             },
-            productGetTierPricesByGroupId: (state) => (item, groupID) => {
-                let _items = item.tier_price_items.filter(item => item.customer_group_id === groupID || item.all_groups);
+            productGetTierPricesByGroupId: () => (item, groupID) => {
+                let items = item.tier_price_items.filter(item => item.customer_group_id === groupID || item.all_groups);
 
                 // only return tier price items, where price below item's final price
-                return _items.filter(tierPriceItem => tierPriceItem.price < item.final_price_item.price);
+                return items.filter(tierPriceItem => tierPriceItem.price < item.final_price_item.price);
             },
             productHasTierPricesByGroupId: (state, getters) => (item, groupID) => {
                 if(_.isEmpty(item.tier_price_items)) {
@@ -118,6 +105,5 @@ export default function (ctx) {
         }
     };
 
-    // Register vuex store module
     ctx.store.registerModule('modPrices', modPrices);
 }

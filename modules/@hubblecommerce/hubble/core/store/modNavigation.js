@@ -1,6 +1,4 @@
 export default function (ctx) {
-
-    // Create vuex store module
     const modNavigation = {
         namespaced: true,
         state: () => ({
@@ -25,7 +23,6 @@ export default function (ctx) {
                 state.showMenu = false;
             },
             toggleOffcanvas: (state, payload) => {
-
                 // Set component name to identify current active layer
                 if(state.offcanvas.component === payload.component) {
                     state.offcanvas.component = '';
@@ -100,9 +97,8 @@ export default function (ctx) {
             }
         },
         actions: {
-            async toggleOffcanvasAction({commit, state, dispatch, getters}, payload) {
-                return new Promise((resolve, reject) => {
-
+            async toggleOffcanvasAction({commit, dispatch}, payload) {
+                return new Promise((resolve) => {
                     dispatch('setSameLayerOpenedAction', {
                         component: payload.component,
                         direction: payload.direction
@@ -116,9 +112,8 @@ export default function (ctx) {
                     resolve('resolved');
                 });
             },
-            async showOffcanvasAction({commit, state, dispatch, getters}, payload) {
-                return new Promise((resolve, reject) => {
-
+            async showOffcanvasAction({commit}, payload) {
+                return new Promise((resolve) => {
                     commit('showOffcanvas', {
                         component: payload.component,
                         direction: payload.direction
@@ -127,9 +122,8 @@ export default function (ctx) {
                     resolve('resolved');
                 });
             },
-            async hideOffcanvasAction({commit, state, dispatch, getters}) {
-                return new Promise((resolve, reject) => {
-
+            async hideOffcanvasAction({commit, dispatch}) {
+                return new Promise((resolve) => {
                     dispatch('resetSameLayerOpenedAction').then(() => {
                         commit('hideOffcanvas');
                     });
@@ -137,9 +131,8 @@ export default function (ctx) {
                     resolve('resolved');
                 });
             },
-            async setSameLayerOpenedAction({commit, state, dispatch, getters}, payload) {
-                return new Promise((resolve, reject) => {
-
+            async setSameLayerOpenedAction({commit}, payload) {
+                return new Promise((resolve) => {
                     commit('setSameLayerOpened', {
                         component: payload.component,
                         direction: payload.direction
@@ -148,9 +141,8 @@ export default function (ctx) {
                     resolve('resolved');
                 });
             },
-            async resetSameLayerOpenedAction({commit, state, dispatch, getters}, payload) {
-                return new Promise((resolve, reject) => {
-
+            async resetSameLayerOpenedAction({commit}) {
+                return new Promise((resolve) => {
                     commit('resetSameLayerOpened');
 
                     resolve('resolved');
@@ -159,6 +151,5 @@ export default function (ctx) {
         }
     };
 
-    // Register vuex store module
     ctx.store.registerModule('modNavigation', modNavigation);
 }
