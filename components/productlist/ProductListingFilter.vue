@@ -395,6 +395,9 @@
         },
 
         created() {
+            this.$store.commit('modApiRequests/setOptionsLimit', process.env.limiter);
+            this.$store.commit('modApiRequests/setOptionsSorter', process.env.sorter);
+
             this.$bus.$on('price-slider-changed', response => {
                 // save emitted price range to store
                 this.setSelectedPriceMax(response.payload.price_to)

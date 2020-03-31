@@ -6,7 +6,6 @@ export default function (ctx) {
         state: () => ({
             paginationPage: 1,
             paginationPerPage: process.env.limiter_default,
-            paginationOffset: 0,
 
             optionsLimit: {},
             optionsSorter: {},
@@ -21,9 +20,6 @@ export default function (ctx) {
             queryWellKnown: ['term', 'page', 'sort', 'limit']
         }),
         mutations: {
-            setPaginationOffset: (state, value) => {
-                state.paginationOffset = value;
-            },
             setPaginationPage: (state, value) => {
                 state.paginationPage = value;
             },
@@ -62,28 +58,15 @@ export default function (ctx) {
             setParsedQuery: (state, items) => {
                 state.parsedQuery = items;
             },
-            setRequestStringFacets: (state, payload) => {
-                state.requestFacets.string_facets = payload;
-            },
-            removeFacets: (state, payload) => {
-                console.log("remove");
-
-                //delete state.requestedFacets.string_facets[payload];
-                //delete state.requestedFacets.all[payload];
-
-                console.log(state.requestedFacets);
-            },
         },
         getters: {
             isNumeric: state => (value) => {
                 return ! isNaN(parseFloat(value)) && isFinite(value);
             },
             areNumeric: state => (values) => {
-
                 let _ok = true;
 
                 _.forEach(values, (value) => {
-
                     let _status = ! isNaN(parseFloat(value)) && isFinite(value);
 
                     if(! _status) {
@@ -92,93 +75,6 @@ export default function (ctx) {
                 });
 
                 return _ok;
-            },
-            isStringAlnum: state => (value) => {
-                return (/[a-z0-9]/.test(value.toLowerCase()));
-            },
-            querySanitize: (state, getters) => (query) => {
-                let _queryKnown = {
-                    term: query.term
-                };
-
-                if(_.has(query, 'dir')) {
-                    _queryKnown['dir'] = getters.isStringAlnum(query.dir) ? query.dir.toLowerCase() : 'desc';
-                }
-
-                if(_.has(query, 'order')) {
-                    _queryKnown['order'] = getters.isStringAlnum(query.order) ? query.order.toLowerCase() : 'relevance';
-                }
-
-                if(_.has(query, 'price_to')) {
-                    _queryKnown['price_to'] = getters.isNumeric(query.price_to) ? parseInt(query.price_to) : 0;
-                }
-
-                if(_.has(query, 'price_from')) {
-                    _queryKnown['price_from'] = getters.isNumeric(query.price_from) ? parseInt(query.price_from) : 0;
-                }
-
-
-                let _queryUnknown = _.omit(query, ['term', 'dir', 'order', 'price_to', 'price_from']);
-
-                _.forEach(_.keys(_queryUnknown), (paramName) => {
-
-                    // reset parameter value to '0', if any value is not numeric
-                    if(! getters.areNumeric(_.split(_queryUnknown[paramName], ','))) {
-                        _queryUnknown[paramName] = 0;
-                    }
-                })
-
-                // merge known and sanitized unknown query params
-                let _query = _.merge({}, _queryKnown, _queryUnknown);
-
-                return _query;
-            },
-            queryPaginate: (state, getters) => (query) => {
-
-                // sanitize query
-                let _queryClean = getters.querySanitize(query);
-
-                let _paginationPerPage = getters.getNumericOrDefault(query.limit, state.paginationPerPage);
-
-                let _paginationOffset = (getters.getNumericOrDefault(query.page, 1) * state.paginationPerPage) - state.paginationPerPage;
-
-                // rebuild query object, kick
-                // some params, that we don't need any
-                // longer and append _from/_size/_term params.
-                let _query = {};
-
-                // stack _term 1st
-                if(_.has(_queryClean, 'term')) {
-                    _query = _.merge(_query, { _term: _queryClean.term });
-                }
-
-                if(_.has(_queryClean, 'sort')) {
-                    _query = _.merge(_query, { _sort: _queryClean.sort });
-                }
-
-                if(_.has(_queryClean, 'price_to')) {
-                    _query = _.merge(_query, { _price_to: _queryClean.price_to });
-                }
-
-                if(_.has(_queryClean, 'price_from')) {
-                    _query = _.merge(_query, { _price_from: _queryClean.price_from });
-                }
-
-                _query = _.merge(
-                    _query,
-                    _.omit(_queryClean, ['term', 'page', 'sort', 'limit', 'price_to', 'price_from']),
-                    {
-                        _from: _paginationOffset,
-                        _size: _paginationPerPage
-                    });
-
-                return _query;
-            },
-            getSelectedFacetsParam: (state) => {
-                return state.selectedFacets;
-            },
-            getNumericOrDefault: (state, getters) => (requestValue, defaultValue) => {
-                return getters.isNumeric(requestValue) ? requestValue : defaultValue;
             },
             getRequestFacets: (state) => {
                 return state.requestFacets;
@@ -191,7 +87,6 @@ export default function (ctx) {
                 return null;
             },
             getRequestStringFacets: (state) => {
-
                 if(_.has(state.requestFacets, 'string_facets')) {
                     return _.map(state.requestFacets.string_facets, (item) => item);
                 }
@@ -215,8 +110,6 @@ export default function (ctx) {
         },
         actions: {
             parseRequest({ commit, state, dispatch, rootState, rootGetters }, payload) {
-                // console.log("store parseRequest called! payload: %o", payload);
-
                 let _query = payload.query;
 
                 // If page is set in url set pagination page to query otherwise set to page 1
@@ -226,10 +119,7 @@ export default function (ctx) {
                     commit('setPaginationPage', 1);
                 }
 
-                let _items = rootGetters['modApiCategory/getDataCategoryProducts'];
-
                 return new Promise((resolve, reject) => {
-
                     // initialize nested properties of
                     // well known and possibly selected
                     // query parameters and set them to
@@ -246,14 +136,11 @@ export default function (ctx) {
                 });
             },
             parseRequestFacets({ commit, state }, payload) {
-                //console.log("store parseRequestFacets called! payload: %o", payload);
-
                 let _query = payload.query;
 
                 let _propertyFacets = _.cloneDeep(payload.propertyFacets);
 
                 return new Promise((resolve, reject) => {
-
                     // start with empty object
                     let _parsed = {};
 
@@ -283,8 +170,6 @@ export default function (ctx) {
                 });
             },
             parseRequestQuery({ commit, state }, payload) {
-                // console.log("store parseRequestQuery called! payload: %o", payload);
-
                 let _query = payload.query;
 
                 return new Promise((resolve, reject) => {
@@ -321,10 +206,51 @@ export default function (ctx) {
                     resolve("parseRequestQuery OK!");
                 });
             },
-            actionSetRequestStringFacets({ commit, state }, payload) {
+            async mapFilterToFacets({commit, state, rootState, dispatch, getters}, filters) {
                 return new Promise((resolve, reject) => {
-                    commit('setRequestStringFacets', payload);
-                    resolve();
+                    let facets = {
+                        all: {
+                            storeId: true,
+                            cat: true
+                        },
+                        selected: true,
+                        string_facets: {},
+                        price_facets: {}
+                    };
+
+                    Object.keys(filters).forEach(function (filter) {
+                        // Map string facets
+                        if(filters[filter].type === 'entity') {
+                            facets.string_facets[filter] = {
+                                key: filters[filter].name,
+                                label: filters[filter].name,
+                                selected: false,
+                                options: []
+                            };
+
+                            Object.keys(filters[filter].values).forEach(function (value) {
+                                facets.string_facets[filter].options.push({
+                                    key: value,
+                                    label: filters[filter].values[value].name
+                                })
+                            });
+                        }
+
+                        // Map price facet
+                        if(filter === 'price') {
+                            facets.price_facets[filter] = {
+                                key: filter,
+                                label: filter,
+                                selected: false,
+                                "facet-stats": {
+                                    min: filters[filter].values.min,
+                                    max: filters[filter].values.max
+                                },
+                            };
+                        }
+                    });
+
+                    resolve(facets);
                 });
             }
         }

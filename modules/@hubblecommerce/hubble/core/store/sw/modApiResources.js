@@ -1,12 +1,7 @@
-//
-// resources module
-//
 import { datetimeUnixNow, datetimeUnixNowAddSecs } from '@hubblecommerce/hubble/core/utils/datetime'
-import { unflatten } from "@hubblecommerce/hubble/core/utils/menuHelper";
 
 export default function (ctx) {
 
-    // Create vuex store module
     const modApiResources = {
         namespaced: true,
         state: () => ({
@@ -16,19 +11,13 @@ export default function (ctx) {
             apiLocale: null,
 
             // resources
-            dataUri: {},
             dataProductUrls: {},
-
-            // CMS
-            dataContent: {},
-            dataCustomContent: {},
 
             // stuff
             pageType: null,
 
             // cmsObject
             cmsObject: {}
-
         }),
         mutations: {
             setCmsObject: (state, value) => {
@@ -37,17 +26,8 @@ export default function (ctx) {
             setApiLocale: (state, item) => {
                 state.apiLocale = item;
             },
-            setDataUri: (state, item) => {
-                state.dataUri = item;
-            },
             setPageType: (state, item) => {
                 state.pageType = item;
-            },
-            setDataContent: (state, payload) => {
-                state.dataContent = payload.data;
-            },
-            setDataCustomContent: (state, payload) => {
-                state.dataCustomContent = payload;
             },
             setDataProductUrls: (state, payload) => {
                 state.dataProductUrls = payload;
@@ -63,18 +43,6 @@ export default function (ctx) {
         getters:  {
             getApiLocale: state => {
                 return state.apiLocale;
-            },
-            getDataUri: state => {
-                return state.dataUri;
-            },
-            getQueryPaginated: (state, getters, rootState, rootGetters) => (query) => {
-                return rootGetters['modApiRequests/queryPaginate'](query);
-            },
-            getDataContent: state => {
-                return state.dataContent;
-            },
-            getDataCustomContent: state => {
-                return state.dataCustomContent;
             },
             getPageType: state => {
                 return state.pageType;
@@ -185,61 +153,11 @@ export default function (ctx) {
                             path: payload
                         }
                     }, { root: true }).then(response => {
-                        commit('setCmsObject', response.data.cmsPage)
+                        commit('setCmsObject', response.data.cmsPage);
                         resolve(response);
                     });
                 });
             },
-            async mapFilterToFacets({commit, state, rootState, dispatch, getters}, filters) {
-                return new Promise((resolve, reject) => {
-
-                    let facets = {
-                        all: {
-                            storeId: true,
-                            cat: true
-                        },
-                        selected: true,
-                        string_facets: {},
-                        price_facets: {}
-                    };
-
-                    Object.keys(filters).forEach(function (filter) {
-
-                        // Map string facets
-                        if(filters[filter].type === 'entity') {
-                            facets.string_facets[filter] = {
-                                key: filters[filter].name,
-                                label: filters[filter].name,
-                                selected: false,
-                                options: []
-                            };
-
-                            Object.keys(filters[filter].values).forEach(function (value) {
-                                facets.string_facets[filter].options.push({
-                                    key: value,
-                                    label: filters[filter].values[value].name
-                                })
-                            });
-                        }
-
-                        // Map price facet
-                        if(filter === 'price') {
-                            facets.price_facets[filter] = {
-                                key: filter,
-                                label: filter,
-                                selected: false,
-                                "facet-stats": {
-                                    min: filters[filter].values.min,
-                                    max: filters[filter].values.max
-                                },
-                            };
-                        }
-
-                    });
-
-                    resolve(facets);
-                });
-            }
         }
     };
 

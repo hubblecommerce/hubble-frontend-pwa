@@ -29,7 +29,7 @@ Middleware.apiResourceRoute = function({app, store, route, error}) {
             // Get page to set available filters
             store.dispatch('modApiResources/getPage', _path).then((pageResponse) => {
 
-                store.dispatch('modApiResources/mapFilterToFacets', pageResponse.data.listingConfiguration.availableFilters).then((facets) => {
+                store.dispatch('modApiRequests/mapFilterToFacets', pageResponse.data.listingConfiguration.availableFilters).then((facets) => {
                     store.commit('modApiRequests/setRequestFacets', facets);
                 });
 
