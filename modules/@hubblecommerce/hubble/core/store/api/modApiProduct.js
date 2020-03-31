@@ -118,11 +118,8 @@ export default function (ctx) {
                 });
             },
             async getRelatedProducts({commit, state, dispatch}, payload) {
-                //console.log("store getRelatedProducts called! payload: %o", payload);
-
                 return new Promise(function(resolve, reject) {
-
-                    let _endpoint = _.join([
+                    let endpoint = _.join([
                         '/api/json/products/',
                         payload.data,
                         '/relations'
@@ -132,7 +129,7 @@ export default function (ctx) {
                         action: 'get',
                         tokenType: 'api',
                         apiType: 'data',
-                        endpoint: _endpoint
+                        endpoint: endpoint
                     }, { root: true })
                     .then(response => {
 
@@ -143,17 +140,13 @@ export default function (ctx) {
                         resolve('OK');
                     })
                     .catch(response => {
-                        console.log("API get request failed: %o", response);
-
                         reject('API request failed!');
                     });
                 });
             },
             async getProductsCrossBuybox({commit, state, dispatch}, payload) {
-                //console.log("store getProductsCrossBuybox called! payload: %o", payload);
-
                 return new Promise((resolve, reject) => {
-                    let _endpoint = _.join([
+                    let endpoint = _.join([
                         '/api/json/products/',
                         payload.data,
                         '/buybox'
@@ -163,7 +156,7 @@ export default function (ctx) {
                         action: 'get',
                         tokenType: 'api',
                         apiType: 'data',
-                        endpoint: _endpoint
+                        endpoint: endpoint
                     }, { root: true })
                     .then(response => {
                         //Save Cross-selling data to store
@@ -174,17 +167,13 @@ export default function (ctx) {
                         resolve(response.data);
                     })
                     .catch(response => {
-                        console.log("API get request failed: %o", response);
-
                         reject('API request failed!');
                     });
                 });
             },
             async getProductsCrossByOrder({commit, state, dispatch}, payload) {
-                //console.log("store getProductsCrossByOrder called! payload: %o", payload);
-
                 return new Promise((resolve, reject) => {
-                    let _endpoint = _.join([
+                    let endpoint = _.join([
                         '/api/json/products/',
                         payload.data,
                         '/byorder'
@@ -194,7 +183,7 @@ export default function (ctx) {
                         action: 'get',
                         tokenType: 'api',
                         apiType: 'data',
-                        endpoint: _endpoint
+                        endpoint: endpoint
                     }, { root: true })
                     .then(response => {
                         //Save Cross-selling data to store
@@ -205,17 +194,13 @@ export default function (ctx) {
                         resolve(response.data);
                     })
                     .catch(response => {
-                        console.log("API get request failed: %o", response);
-
                         reject('API request failed!');
                     });
                 });
             },
-            async getProductsCrossSimilar({commit, state, dispatch}, payload) {
-                // console.log("store getDataProductsCrossSimilar called! payload: %o", payload);
-
+            async getProductsCrossSimilar({commit, dispatch}, payload) {
                 return new Promise((resolve, reject) => {
-                    let _endpoint = _.join([
+                    let endpoint = _.join([
                         '/api/json/products/',
                         payload.data,
                         '/similar'
@@ -225,10 +210,9 @@ export default function (ctx) {
                         action: 'get',
                         tokenType: 'api',
                         apiType: 'data',
-                        endpoint: _endpoint
+                        endpoint: endpoint
                     }, { root: true })
                     .then(response => {
-                        //console.log("response: %o", response)
                         //Save Cross-selling data to store
                         commit('setDataProductsCrossSimilar', {
                             data: response.data.result.items
@@ -237,8 +221,6 @@ export default function (ctx) {
                         resolve(response.data);
                     })
                     .catch(response => {
-                        console.log("API get request failed: %o", response);
-
                         reject('API request failed!');
                     });
                 });

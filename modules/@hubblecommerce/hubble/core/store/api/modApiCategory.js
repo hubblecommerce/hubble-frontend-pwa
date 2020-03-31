@@ -1,7 +1,3 @@
-//
-// Category store
-//
-
 export default function (ctx) {
     const modApiCategory = {
         namespaced: true,
@@ -16,7 +12,6 @@ export default function (ctx) {
             setDataCategoryProducts: (state, payload) => {
                 state.dataCategoryProducts = payload.data;
             },
-
         },
         getters:  {
             getDataCategory: state => {
@@ -25,7 +20,6 @@ export default function (ctx) {
             getDataCategoryProducts: state => {
                 return state.dataCategoryProducts;
             },
-
         },
         actions: {
         }

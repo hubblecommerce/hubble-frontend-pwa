@@ -1,7 +1,3 @@
-//
-// CMS store
-//
-
 export default function (ctx) {
     const modApiCms = {
         namespaced: true,

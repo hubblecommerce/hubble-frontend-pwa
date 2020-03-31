@@ -1,13 +1,8 @@
-//
-// modCart
-//
 import base64 from 'base-64'
 import localStorageHelper from "@hubblecommerce/hubble/core/utils/localStorageHelper";
 import {getShippingCostsByCountry, getShippingCostsByCartVal} from "@hubblecommerce/hubble/core/utils/shippingCostHelper.js"
 
 export default function (ctx) {
-
-    // Create vuex store module
     const modCart = {
         namespaced: true,
         state: () => ({
@@ -41,16 +36,10 @@ export default function (ctx) {
             getCookieExpires: (state) => {
                 return new Date(new Date().getTime() + (state.cookieTTL*60*60*1000));
             },
-            getCartItemsCount: state => {
-                return state.cart.items_qty;
-            },
-            getCartItemsObj: state => {
-                return state.cart.items;
-            },
-            getCartEncoded: (state, getters) => (objJsonStr) => {
+            getCartEncoded: () => (objJsonStr) => {
                 return base64.encode(JSON.stringify(objJsonStr));
             },
-            getCartDecoded: (state, getters) => (objJsonB64) => {
+            getCartDecoded: () => (objJsonB64) => {
                 return JSON.parse(base64.decode(objJsonB64));
             },
             getSubtotals: state => {
@@ -114,8 +103,6 @@ export default function (ctx) {
         },
         actions: {
             clearAll({commit, state, dispatch}) {
-                // console.log("clearAll called");
-
                 return new Promise((resolve, reject) => {
                     commit('setCartItemsObj', []);
                     commit('setCartCouponsObj', []);
@@ -125,8 +112,6 @@ export default function (ctx) {
                 })
             },
             addItem({commit, state, dispatch, rootState, getters}, payload) {
-                 //console.log("addItem ... payload: %o", payload);
-
                 return new Promise((resolve, reject) => {
 
                     // Get order object from modApiPayment module
@@ -218,8 +203,6 @@ export default function (ctx) {
                 });
             },
             updateItem({commit, state, dispatch}, payload) {
-                // console.log("addItem ... payload: %o", payload);
-
                 return new Promise((resolve) => {
                     // Update global cart counter
                     commit('setCartItemsCount', state.cart.items_qty + payload.qty );
@@ -272,8 +255,6 @@ export default function (ctx) {
                 });
             },
             delItem({commit, state, getters, dispatch}, payload) {
-                //console.log("delItem ... payload: %o", payload);
-
                 let item = payload.data;
 
                 return new Promise((resolve, reject) => {
@@ -284,16 +265,14 @@ export default function (ctx) {
                     });
                 })
             },
-            setByCookie({commit, state, getters, dispatch}, payload) {
-                // console.log("setCookieCart payload: %o", payload);
-
+            setByCookie({commit, state, getters}) {
                 return new Promise((resolve) => {
 
                     // try to retrieve auth user by cookie
-                    let _cookie = this.$cookies.get(state.cookieName);
+                    let cookie = this.$cookies.get(state.cookieName);
 
                     // no cookie? ok!
-                    if(! _cookie) {
+                    if(! cookie) {
                         resolve({
                             success: true,
                             message: 'cart not known by cookie.'
@@ -301,12 +280,12 @@ export default function (ctx) {
                     }
 
                     //
-                    let _item = getters.getCartDecoded(_cookie);
+                    let item = getters.getCartDecoded(cookie);
 
-                    commit('setCart', _item);
+                    commit('setCart', item);
 
                     // set/send cookie to enforce lifetime
-                    this.$cookies.set(state.cookieName, getters.getCartEncoded(_item), {
+                    this.$cookies.set(state.cookieName, getters.getCartEncoded(item), {
                         path: state.cookiePath,
                         expires: getters.getCookieExpires
                     });
@@ -395,7 +374,6 @@ export default function (ctx) {
                 })
             },
             async recalculateCart({dispatch}, payload) {
-
                 return new Promise((resolve, reject)  => {
                     dispatch('apiCall', {
                         action: 'post',
@@ -417,7 +395,7 @@ export default function (ctx) {
                         });
                 });
             },
-            async calculateShippingCosts({state, commit, dispatch}, payload) {
+            async calculateShippingCosts({state, commit}, payload) {
                 return new Promise((resolve, reject)  => {
                     // Get matching rules by country from tablerates
                     let matchingCountries = getShippingCostsByCountry(payload);
@@ -446,13 +424,11 @@ export default function (ctx) {
             },
             async recalculateShippingCost({commit, dispatch}, payload) {
                 return new Promise(function(resolve, reject) {
-                    let _endpoint = '/api/cart/calculate_shipping';
-
                     dispatch('apiCall', {
                         action: 'post',
                         tokenType: 'api',
                         apiType: 'payment',
-                        endpoint: _endpoint,
+                        endpoint: '/api/cart/calculate_shipping',
                         data: payload
                     }, { root: true })
                         .then(response => {
@@ -472,13 +448,11 @@ export default function (ctx) {
             },
             async precalculateShippingCost({commit, dispatch}, payload) {
                 return new Promise(function(resolve, reject) {
-                    let _endpoint = '/api/cart/precalculate_shipping';
-
                     dispatch('apiCall', {
                         action: 'post',
                         tokenType: 'api',
                         apiType: 'payment',
-                        endpoint: _endpoint,
+                        endpoint: '/api/cart/precalculate_shipping',
                         data: payload
                     }, { root: true })
                         .then(response => {
@@ -501,6 +475,5 @@ export default function (ctx) {
         }
     };
 
-    // Register vuex store module
     ctx.store.registerModule('modCart', modCart);
 }

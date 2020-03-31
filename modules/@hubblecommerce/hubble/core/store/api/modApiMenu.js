@@ -2,7 +2,6 @@ import {sortMenuEntries} from "@hubblecommerce/hubble/core/utils/menuHelper";
 import {datetimeUnixNow, datetimeUnixNowAddSecs} from "@hubblecommerce/hubble/core/utils/datetime";
 
 export default function (ctx) {
-
     const modApiMenu = {
         namespaced: true,
         state: () => ({
@@ -77,9 +76,6 @@ export default function (ctx) {
 
                     state.dataMenu.created_at_unixtime = datetimeUnixNow();
                     state.dataMenu.expires_at_unixtime = datetimeUnixNowAddSecs(_ttl);
-
-                    // state.dataMenu.created_at_datetime = moment.unix(state.dataMenu.created_at_unixtime).format('YYYY-MM-DDTHH:mm:ss');
-                    // state.dataMenu.expires_at_datetime = moment.unix(state.dataMenu.expires_at_unixtime).format('YYYY-MM-DDTHH:mm:ss');
                 }
             },
         },
@@ -93,21 +89,15 @@ export default function (ctx) {
             getDataMenuStats: state => {
                 return state.dataMenu.stats ? state.dataMenu.stats : null;
             },
-
         },
         actions: {
-            async apiGetMenu({commit, state, dispatch}, payload) {
-                // console.log("store apiGetMenu called! payload: %o", payload);
-
+            async apiGetMenu({commit, dispatch}) {
                 return new Promise(function(resolve, reject) {
-
-                    let _endpoint = '/api/json/menu/children';
-
                     dispatch('apiCall', {
                         action: 'get',
                         tokenType: 'api',
                         apiType: 'data',
-                        endpoint: _endpoint,
+                        endpoint: '/api/json/menu/children',
                         params: {
                             _size: 30
                         }
@@ -121,8 +111,6 @@ export default function (ctx) {
                         resolve('OK');
                     })
                     .catch(response => {
-                        console.log("API get request failed: %o", response);
-
                         reject('API request failed!');
                     });
 
