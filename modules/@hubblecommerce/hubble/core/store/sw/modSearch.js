@@ -3,7 +3,6 @@ export default function (ctx) {
         namespaced: true,
         state: () => ({
             maxProductItems: 5,
-            maxCategoryItems: 5,
 
             autoCompleteResultsArray: [],
             autoCompleteResults: {
@@ -56,13 +55,26 @@ export default function (ctx) {
             async getAutocompleteResults({commit, state, rootState, dispatch}, payload) {
                 return new Promise(function(resolve, reject) {
                     dispatch('apiCall', {
-                        action: 'get',
+                        action: 'post',
                         tokenType: 'sw',
                         apiType: 'data',
-                        endpoint: '/sales-channel-api/v1/product?&associations[manufacturer][]',
-                        params: {
+                        endpoint: '/sales-channel-api/v1/product',
+                        data: {
                             term: payload.query,
-                            limit: 500
+                            limit: state.maxProductItems,
+                            associations: {
+                                manufacturer: {}
+                            },
+                            // Get only Products with parent ID null
+                            // because children (generated variants) are delivered from API
+                            // with missing props like name etc. 
+                            filter: [
+                                {
+                                    type: 'equals',
+                                    field: 'parentId',
+                                    value: null
+                                }
+                            ]
                         }
                     }, { root: true })
                         .then(response => {

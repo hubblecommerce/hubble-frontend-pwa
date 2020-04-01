@@ -24,13 +24,13 @@
                         <div v-if="$mq === 'sm'" class="voucher bg-light">
                             <collapsible :toggle-text="$t('I\'ve got a voucher')">
                                 <div class="voucher-content">
-                                    <coupons />
+                                    <coupons v-if="!isApiType('sw')" />
                                 </div>
                             </collapsible>
                         </div>
                         <div v-if="$mq === 'md' || $mq === 'lg'" class="voucher bg-light">
                             <div class="voucher-content">
-                                <coupons />
+                                <coupons v-if="!isApiType('sw')" />
                             </div>
                         </div>
 
@@ -78,14 +78,18 @@
 <script>
     import { mapState, mapActions } from 'vuex';
     import CartItemsList from "../../components/checkout/CartItemsList";
-    import Coupons from "../../components/checkout/Coupons";
     import Totals from "../../components/checkout/Totals";
     import GTMDataLayer from "../../components/utils/GTMDataLayer";
 
     export default {
         name: 'CheckoutCart',
 
-        components: {GTMDataLayer, Totals, Coupons, CartItemsList},
+        components: {
+            GTMDataLayer,
+            Totals,
+            Coupons: () => import('../../components/checkout/Coupons'),
+            CartItemsList
+        },
 
         middleware: [
             'apiAuthenticate',
@@ -136,11 +140,14 @@
                 this.precalculateShippingCostAction(order);
             },
             checkoutPath: function() {
-                if(process.env.API_TYPE === 'sw') {
+                if(this.isApiType('sw')) {
                     return this.localePath('checkout-shopware-onepage');
                 }
 
                 return this.localePath('checkout-payment');
+            },
+            isApiType: function(apiType) {
+                return process.env.API_TYPE === apiType;
             }
         },
 

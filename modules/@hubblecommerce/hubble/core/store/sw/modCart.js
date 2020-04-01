@@ -2,18 +2,10 @@ import base64 from 'base-64'
 import localStorageHelper from "@hubblecommerce/hubble/core/utils/localStorageHelper";
 
 export default function (ctx) {
-
-    // Create vuex store module
     const modCart = {
         namespaced: true,
         state: () => ({
-            shippingCosts: {
-                price: 0
-            },
-            tax: 1.19,
-
-            // Maximum Qty of one item in Cart
-            maxQty: 99,
+            shippingCosts: 0,
 
             cart: {
                 items_qty: 0,
@@ -44,12 +36,6 @@ export default function (ctx) {
             getCookieExpires: (state) => {
                 return new Date(new Date().getTime() + (state.cookieTTL*60*60*1000));
             },
-            getCartItemsCount: state => {
-                return state.cart.items_qty;
-            },
-            getCartItemsObj: state => {
-                return state.cart.items;
-            },
             getCartEncoded: (state, getters) => (objJsonStr) => {
                 return base64.encode(JSON.stringify(objJsonStr));
             },
@@ -57,20 +43,12 @@ export default function (ctx) {
                 return JSON.parse(base64.decode(objJsonB64));
             },
             getSubtotals: state => {
-                if(state.cart.discount > 0) {
-                    return state.cart.subtotal_with_discount;
-                }
-
                 return state.cart.subtotal;
             },
             getShippingCosts: state => {
                 return state.shippingCosts;
             },
             getTotals: state => {
-                if(state.cart.discount > 0) {
-                    return state.cart.grand_total_with_discount;
-                }
-
                 return state.cart.grand_total;
             },
             getSwtc: state => {
@@ -84,22 +62,11 @@ export default function (ctx) {
             delCartItemObj: (state, item) => {
                 _.pull(state.cart.items, item);
             },
-            removeCouponObj: (state, couponCode) => {
-                state.cart.coupons = _.filter(state.cart.coupons, (coupon) => {
-                    return coupon.code !== couponCode;
-                })
-            },
             setCart: (state, item) => {
                 state.cart = item;
             },
-            setCartItemObj: (state, item) => {
-                state.cart.items.push(item);
-            },
             setCartItemsObj: (state, items) => {
                 state.cart.items = items;
-            },
-            setCartCouponsObj: (state, items) => {
-                state.cart.coupons = items;
             },
             setCartItemsObjQty: (state, payload) => {
                 _.forEach(state.cart.items, (cartItem, key) => {
@@ -128,8 +95,6 @@ export default function (ctx) {
         },
         actions: {
             clearAll({commit, dispatch}) {
-                // console.log("clearAll called");
-
                 return new Promise((resolve, reject) => {
                     // Reset cart object in store
                     commit('setCartItemsObj', []);
@@ -144,15 +109,13 @@ export default function (ctx) {
                 })
             },
             swGetCart({commit, state, dispatch, rootState, getters}) {
-                const _endpoint = '/sales-channel-api/v1/checkout/cart';
-
                 return new Promise((resolve, reject) => {
                     dispatch('apiCall', {
                         action: 'get',
                         tokenType: 'sw',
                         apiType: 'data',
                         swContext: state.swtc,
-                        endpoint: _endpoint
+                        endpoint: '/sales-channel-api/v1/checkout/cart'
                     }, { root: true })
                         .then(response => {
                             resolve(response);
@@ -172,17 +135,14 @@ export default function (ctx) {
                 });
             },
             initCart({commit, state, dispatch, rootState, getters}) {
-                const _endpoint = '/sales-channel-api/v1/checkout/cart';
-
                 return new Promise((resolve, reject) => {
                     dispatch('apiCall', {
                         action: 'post',
                         tokenType: 'sw',
                         apiType: 'data',
-                        endpoint: _endpoint
+                        endpoint: '/sales-channel-api/v1/checkout/cart'
                     }, { root: true })
                         .then(response => {
-
                             const token = response.data['sw-context-token'];
 
                             // Set swtc to store
@@ -203,7 +163,6 @@ export default function (ctx) {
             },
             saveSwtc({commit, state, dispatch, rootState, getters}, payload) {
                 return new Promise((resolve, reject) => {
-
                     // Set swtc to store
                     commit('setSwtc', payload);
 
@@ -218,7 +177,6 @@ export default function (ctx) {
             },
             saveCartToStorage({commit, state, dispatch, rootState, getters}, payload) {
                 return new Promise((resolve, reject) => {
-
                     if(!_.isEmpty(payload.cart)) {
                         let cart = payload.cart;
 
@@ -251,7 +209,6 @@ export default function (ctx) {
 
                         resolve();
                     });
-
                 });
             },
             swAddtToCart({commit, state, dispatch, rootState, getters}, payload) {
@@ -306,7 +263,6 @@ export default function (ctx) {
                                 resolve();
                             });
                         });
-
                     } else {
                         // Or just raise the qty of selected item
                         _.forEach(cart.items, (cartItem, key) => {
@@ -314,6 +270,7 @@ export default function (ctx) {
                                 cart.items[key].qty = parseInt(isInCart.qty) + qty;
                             }
                         });
+
                         // Add to cart sw call
                         dispatch('swAddtToCart', {item: item, qty: qty}).then((res) => {
                             dispatch('saveCartToStorage', {cart: cart, qty: qty, response: res}).then(() => {
@@ -325,9 +282,11 @@ export default function (ctx) {
             },
             setTotals({commit, state, dispatch, rootState, getters}, payload) {
                 return new Promise((resolve, reject) => {
-
                     commit('setSubtotals', payload.data.data.price.positionPrice);
+
                     commit('setTotals', payload.data.data.price.totalPrice);
+
+
 
                     if(!_.isEmpty(payload.data.data.deliveries)) {
                         commit('setShippingCosts', payload.data.data.deliveries[0].shippingCosts.totalPrice);
@@ -339,10 +298,7 @@ export default function (ctx) {
                 });
             },
             addItem({commit, state, dispatch, rootState, getters}, payload) {
-                 //console.log("addItem ... payload: %o", payload);
-
                 return new Promise((resolve, reject) => {
-
                     // Check if swtc isset
                     if(state.swtc === '') {
                         // Init cart
@@ -358,7 +314,6 @@ export default function (ctx) {
                             resolve();
                         });
                     }
-
                 });
             },
             swUpdateLineItem({commit, state, dispatch, rootState, getters}, payload) {
@@ -384,8 +339,6 @@ export default function (ctx) {
                 });
             },
             updateItem({commit, state, dispatch}, payload) {
-                // console.log("addItem ... payload: %o", payload);
-
                 return new Promise((resolve) => {
                     // Update global cart counter
                     commit('setCartItemsCount', state.cart.items_qty + payload.qty );
@@ -395,20 +348,7 @@ export default function (ctx) {
                             resolve('item updated');
                         });
                     });
-
                 });
-            },
-            checkCouponInCart({state}, couponCode) {
-                return new Promise((resolve, reject) => {
-
-                    // if coupon exist dont apply another coupon
-                    if(_.isEmpty(state.cart.coupons)) {
-                        resolve('Coupon is not in cart');
-                    } else {
-                        reject('There already exist a coupon.');
-                    }
-
-                })
             },
             swRemoveLineItem({commit, state, dispatch, rootState, getters}, payload) {
                 const _endpoint = `/sales-channel-api/v1/checkout/cart/line-item/${payload.id}`;
@@ -430,8 +370,6 @@ export default function (ctx) {
                 });
             },
             delItem({commit, state, getters, dispatch}, payload) {
-                //console.log("delItem ... payload: %o", payload);
-
                 let item = payload.data;
 
                 return new Promise((resolve, reject) => {
@@ -471,14 +409,10 @@ export default function (ctx) {
                             redirect: true
                         });
                     }
-
                 });
             },
             setByCookie({commit, state, getters, dispatch}, payload) {
-                // console.log("setCookieCart payload: %o", payload);
-
                 return new Promise((resolve) => {
-
                     // try to retrieve auth user by cookie
                     let _cookie = this.$cookies.get(state.cookieName);
 
@@ -490,7 +424,6 @@ export default function (ctx) {
                         });
                     }
 
-                    //
                     let _item = getters.getCartDecoded(_cookie);
 
                     commit('setCart', _item);
@@ -535,13 +468,11 @@ export default function (ctx) {
                             success: true,
                             message: 'cart not known by forage.'
                         });
-
                     });
                 })
             },
             calcTotals({commit, state, getters, dispatch, rootState}) {
                 return new Promise((resolve, reject) => {
-
                     // Get order object from modApiPayment module
                     let order = _.clone(rootState.modApiPayment.order);
 
@@ -552,12 +483,9 @@ export default function (ctx) {
                     dispatch('recalculateCart', {
                         order: JSON.stringify(order)
                     }).then((response) => {
-
                         // Refresh cart item before store to cookie
                         commit('setCart', response.order.cart);
 
-                        // Calculate totals from cart
-                        //let totals = state.cart.subtotal_with_discount + state.shippingCosts;
                         commit('setTotals');
 
                         // Store cart with all info in local storage
@@ -581,12 +509,11 @@ export default function (ctx) {
                     }).catch((error) => {
                         reject(error);
                     });
-
                 })
             },
             async calculateShippingCosts({state, commit, dispatch}, payload) {
                 return new Promise((resolve, reject)  => {
-                    resolve('Calculated shipping cost and setTotals');
+                    resolve();
                 });
             },
             async precalculateShippingCost({commit, dispatch}, payload) {
