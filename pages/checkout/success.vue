@@ -43,9 +43,9 @@
 
         computed: {
             ...mapState({
-                customer: state => state.modApiPayment.customer,
+                customer: state => state.modApiCustomer.customer,
                 offcanvas: state => state.modNavigation.offcanvas,
-                cookieName: state => state.modApiPayment.cookieName,
+                cookieName: state => state.modApiCustomer.cookieName,
                 cookieNameAddress: state => state.modApiPayment.cookieNameAddress,
             }),
             isGuest: function() {
@@ -76,7 +76,7 @@
 
         methods: {
             ...mapActions({
-                getOrders: 'modApiPayment/getOrders'
+                getOrders: 'modApiCustomer/getOrders'
             }),
             getLatestOrder: function() {
                 let latestDate = new Date(0);

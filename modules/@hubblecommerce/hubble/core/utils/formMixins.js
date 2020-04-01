@@ -57,7 +57,7 @@ const salutations = {
 
     created() {
         if(process.env.API_TYPE === 'sw') {
-            this.$store.dispatch('modApiPayment/swGetSalutations').then((response) => {
+            this.$store.dispatch('modApiCustomer/swGetSalutations').then((response) => {
                let mappedSalutations = [];
 
                _.forEach(response.data.data, (salutation) => {

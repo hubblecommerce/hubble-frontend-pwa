@@ -11,13 +11,13 @@ Middleware.apiCustomerAuthenticate = function ({ isHMR, store, redirect, app, ro
 
     // Get cookie serverside/clientside to check if user is logged in
     if(process.server) {
-        let cookie = app.$cookies.get(store.state.modApiPayment.cookieName);
+        let cookie = app.$cookies.get(store.state.modApiCustomer.cookieName);
 
         if(cookie){
             customerAuth = cookie.customerAuth;
         }
     } else {
-        customerAuth = store.getters['modApiPayment/getCustomerAuth'];
+        customerAuth = store.getters['modApiCustomer/getCustomerAuth'];
     }
 
     // If cookie exists, check expiration date

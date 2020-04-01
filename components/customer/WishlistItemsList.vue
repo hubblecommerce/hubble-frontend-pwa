@@ -44,7 +44,7 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex';
+    import { mapState, mapActions } from 'vuex';
 
     export default {
 		name: "WishlistItemsList",
@@ -72,7 +72,7 @@
                 qty: state => state.modWishlist.wishlistItemsCount,
                 priceSwitcherIncludeVat: state => state.modPrices.priceSwitcherIncludeVat,
                 offcanvas: state => state.modNavigation.offcanvas,
-                customer: state => state.modApiPayment.customer,
+                customer: state => state.modApiCustomer.customer,
                 wishlistState: state => state.modWishlist.wishlistItemsObj,
                 wishlistId: state => state.modWishlist.wishlistId,
                 wishlistQty: state => state.modWishlist.wishlistItemsCount,
@@ -118,6 +118,10 @@
         },
 
         methods: {
+            ...mapActions({
+                deleteWishlist: 'modApiCustomer/deleteWishlist',
+                updateWishlist: 'modApiCustomer/updateWishlist',
+            }),
             onChangeQty: function(id, e) {
 
                 let oldQty = this.items[id]['qty'];
@@ -195,7 +199,7 @@
                 // ELSE: Just remove item from wishlist and update wishlist to api if user is logged in
                 if(this.wishlistQty === 1) {
                     if(this.isLoggedIn()) {
-                        this.$store.dispatch('modApiPayment/deleteWishlist', {
+                        this.deleteWishlist({
                             user_id: this.customer.customerData.id,
                             id: this.wishlistId
                         }).then(() => {
@@ -210,7 +214,7 @@
                     }).then(() => {
                         // Update wishlist via api
                         if(this.isLoggedIn()) {
-                            this.$store.dispatch('modApiPayment/updateWishlist', {
+                            this.updateWishlist({
                                 user_id: this.customer.customerData.id,
                                 id: this.wishlistId,
                                 wishlist: {

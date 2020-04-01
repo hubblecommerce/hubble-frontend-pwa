@@ -216,8 +216,8 @@
         computed: {
             ...mapState({
                 swtc: state => state.modCart.swtc,
-                countries: state => state.modApiPayment.countries,
-                salutations: state => state.modApiPayment.salutations,
+                countries: state => state.modApiCustomer.countries,
+                salutations: state => state.modApiCustomer.salutations,
                 processingCheckout: state => state.modApiPayment.processingCheckout,
                 cart: state => state.modCart.cart,
             })
@@ -226,7 +226,8 @@
         mounted() {
             // Set cart context as customer context for further api calls
             // Do this after swtc isset via cookie (mounted)
-            if(_.isEmpty(this.$store.state.modApiPayment.customer.customerAuth)) {
+
+            if(_.isEmpty(this.$store.state.modApiCustomer.customer.customerAuth)) {
                 this.setCustomerAuth({token: this.$store.state.modCart.swtc});
             }
 
@@ -241,18 +242,18 @@
 
         methods: {
             ...mapMutations({
-                setSalutations: 'modApiPayment/setSalutations',
-                setCountries: 'modApiPayment/setCountries',
+                setSalutations: 'modApiCustomer/setSalutations',
+                setCountries: 'modApiCustomer/setCountries',
                 setProcessingCheckout: 'modApiPayment/setProcessingCheckout',
                 resetProcessingCheckout: 'modApiPayment/resetProcessingCheckout',
-                setCustomerAuth: 'modApiPayment/setCustomerAuth'
+                setCustomerAuth: 'modApiCustomer/setCustomerAuth',
             }),
             ...mapActions({
-                swGetSalutations: 'modApiPayment/swGetSalutations',
-                swGetCountries: 'modApiPayment/swGetCountries',
                 placeGuestOrder: 'modApiPayment/placeGuestOrder',
                 swStartPayment: 'modApiPayment/swStartPayment',
-                validateOrder: 'modApiPayment/validateOrder'
+                validateOrder: 'modApiPayment/validateOrder',
+                swGetSalutations: 'modApiCustomer/swGetSalutations',
+                swGetCountries: 'modApiCustomer/swGetCountries'
             }),
             isEmpty: function(val) {
                 return _.isEmpty(val);

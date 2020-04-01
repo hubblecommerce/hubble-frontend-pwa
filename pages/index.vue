@@ -115,7 +115,7 @@
                 if(process.env.API_TYPE === 'sw') {
                     // Get id of first category that can be found
                     const categoryId = this.dataMenu.result.items[0].id;
-                    
+
                     this.swGetCategoryProductsById({id: categoryId}).then(response => {
                         this.newProducts = response.data.result.items;
                         this.inView = true;

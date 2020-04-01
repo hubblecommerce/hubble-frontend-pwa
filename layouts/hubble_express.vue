@@ -90,7 +90,6 @@
         },
         computed: {
             ...mapState({
-                apiAuthResponse: state => state.modApiResources.apiAuthResponse,
                 showCookieNotice: state => state.modCookie.showCookieNotice
             })
         },

@@ -95,7 +95,7 @@
                 chosenShippingMethod: state => state.modApiPayment.order.chosenShippingMethod,
                 cart: state => state.modCart.cart,
                 shippingCosts: state => state.modCart.shippingCosts,
-                customer: state => state.modApiPayment.customer,
+                customer: state => state.modApiCustomer.customer,
                 order: state => state.modApiPayment.order,
                 finalOrder: state => state.modApiPayment.finalOrder,
                 processingCheckout: state => state.modApiPayment.processingCheckout,

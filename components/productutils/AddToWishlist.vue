@@ -18,7 +18,7 @@
 </template>
 
 <script>
-    import {mapState} from 'vuex';
+    import {mapState, mapActions} from 'vuex';
 
     export default {
         name: "AddToWishlist",
@@ -42,7 +42,7 @@
                 wishlistId: state => state.modWishlist.wishlistId,
                 wishlistQty: state => state.modWishlist.wishlistItemsCount,
                 selectedVariants: state => state.modApiResources.selectedVariants,
-                customer: state => state.modApiPayment.customer,
+                customer: state => state.modApiCustomer.customer,
             })
         },
 
@@ -57,6 +57,11 @@
         },
 
         methods: {
+            ...mapActions({
+                postWishlist: 'modApiCustomer/postWishlist',
+                updateWishlist: 'modApiCustomer/updateWishlist',
+                deleteWishlist: 'modApiCustomer/deleteWishlist',
+            }),
             addToWishlist: function() {
 
                 this.$store.dispatch('modWishlist/addItem', {
@@ -71,7 +76,7 @@
                         // in this case do a POST to create a new wishlist
                         // ELSE: there is a existing wishlist, so just update it via PUT and ID
                         if(!this.wishlistId) {
-                            this.$store.dispatch('modApiPayment/postWishlist', {
+                            this.postWishlist({
                                 user_id: this.customer.customerData.id,
                                 wishlist: {
                                     qty: this.wishlistQty,
@@ -85,7 +90,7 @@
                                 }
                             })
                         } else {
-                            this.$store.dispatch('modApiPayment/updateWishlist', {
+                            this.updateWishlist({
                                 user_id: this.customer.customerData.id,
                                 id: this.wishlistId,
                                 wishlist: {
@@ -111,7 +116,7 @@
                 // ELSE: Just remove item from wishlist and update wishlist to api if user is logged in
                 if(this.wishlistQty === 1) {
                     if(this.isLoggedIn()) {
-                        this.$store.dispatch('modApiPayment/deleteWishlist', {
+                        this.deleteWishlist({
                             user_id: this.customer.customerData.id,
                             id: this.wishlistId
                         }).then(() => {
@@ -138,7 +143,7 @@
                     }).then(() => {
                         // Update wishlist via api
                         if(this.isLoggedIn()) {
-                            this.$store.dispatch('modApiPayment/updateWishlist', {
+                            this.updateWishlist({
                                 user_id: this.customer.customerData.id,
                                 id: this.wishlistId,
                                 wishlist: {

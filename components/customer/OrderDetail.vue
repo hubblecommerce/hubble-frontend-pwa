@@ -73,7 +73,7 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex';
+    import { mapState, mapActions } from 'vuex';
     import CartItemsListNonInteractive from "../checkout/CartItemsListNonInteractive";
     import {mapKeyToValue, mapIsoToCountry, salutations} from "@hubblecommerce/hubble/core/utils/formMixins";
 
@@ -99,18 +99,21 @@
 
         computed: {
             ...mapState({
-                countries: state => state.modApiPayment.availableCountries,
+                countries: state => state.modApiCustomer.availableCountries,
             }),
         },
 
         mounted() {
             if(_.isEmpty(this.countries)) {
-                this.$store.dispatch('modApiPayment/getAvailableCountries');
+                this.getAvailableCountries('modApiCustomer/getAvailableCountries');
             }
             this.orderData = JSON.parse(this.order.payload);
         },
 
         methods: {
+            ...mapActions({
+                getAvailableCountries: 'modApiCustomer/getAvailableCountries'
+            }),
             getSubTotal() {
                 let subtotals = this.orderData.cart.subtotal;
 

@@ -73,7 +73,7 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex';
+    import { mapState, mapActions } from 'vuex';
     import Form from "@hubblecommerce/hubble/core/utils/form";
 
     export default {
@@ -107,6 +107,9 @@
 
 
         methods: {
+            ...mapActions({
+                passwordUpdate: 'modApiCustomer/passwordUpdate'
+            }),
             submitUpdatePassword: function () {
                 let payload = {
                     password_old: this.form.passwordOld,
@@ -114,7 +117,7 @@
                     password_confirm: this.form.passwordConfirm
                 };
 
-                this.$store.dispatch('modApiPayment/passwordUpdate', payload).then(response => {
+                this.passwordUpdate(payload).then(response => {
 
                     this.$store.dispatch('modNavigation/toggleOffcanvasAction', {
                         component: this.name,

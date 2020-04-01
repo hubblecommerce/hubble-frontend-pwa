@@ -62,8 +62,8 @@
             ...mapState({
                 order: state => state.modApiPayment.order,
                 hostedIFrame: state => state.modApiPayment.hostedIFrame,
-                customerAddresses: state => state.modApiPayment.customer.customerAddresses,
-                customer: state => state.modApiPayment.customer
+                customerAddresses: state => state.modApiCustomer.customer.customerAddresses,
+                customer: state => state.modApiCustomer.customer
             }),
             addressesLoaded: function () {
                 // Dynamically load payment methods when addresses are set, because getAllowedPayments request requires address information

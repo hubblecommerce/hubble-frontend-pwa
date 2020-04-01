@@ -54,7 +54,7 @@
 
         computed: {
             ...mapState({
-                customer: state => state.modApiPayment.customer,
+                customer: state => state.modApiCustomer.customer,
                 qty: state => state.modWishlist.wishlistItemsCount,
                 wishlistId: state => state.modWishlist.wishlistId
             }),
@@ -76,7 +76,7 @@
         methods: {
             ...mapActions({
                 deleteUserWishlist: 'modApiPayment/deleteWishlist',
-                deleteLocalWishlist: 'modWishlist/deleteWishlist'
+                deleteLocalWishlist: 'modApiCustomer/deleteWishlist'
             }),
             resetWishlist: function () {
                 if(this.isLoggedIn()) {

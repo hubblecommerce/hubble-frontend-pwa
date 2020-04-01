@@ -39,7 +39,7 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex';
+    import { mapState, mapActions } from 'vuex';
 
     export default {
         name: "CustomerOrderList",
@@ -77,11 +77,14 @@
         },
 
         methods: {
+            ...mapActions({
+                getOrdersFromStore: 'modApiCustomer/getOrders'
+            }),
             getOrders: function() {
                 this.loading = true;
 
                 //Get orders from store
-                this.$store.dispatch('modApiPayment/getOrders').then((response) => {
+                this.getOrdersFromStore().then((response) => {
                     this.orders = response;
                     this.loading = false;
                 }).catch(() => {

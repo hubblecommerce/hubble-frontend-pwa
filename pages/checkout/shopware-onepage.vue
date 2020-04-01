@@ -82,8 +82,8 @@
                 swtc: state => state.modCart.swtc,
                 order: state => state.modApiPayment.order,
                 hostedIFrame: state => state.modApiPayment.hostedIFrame,
-                customerAddresses: state => state.modApiPayment.customer.customerAddresses,
-                customer: state => state.modApiPayment.customer,
+                customerAddresses: state => state.modApiCustomer.customer.customerAddresses,
+                customer: state => state.modApiCustomer.customer,
                 processingCheckout: state => state.modApiPayment.processingCheckout
             })
         },

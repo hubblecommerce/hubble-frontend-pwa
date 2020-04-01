@@ -66,7 +66,7 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex';
+    import { mapState, mapActions } from 'vuex';
     import Form from '@hubblecommerce/hubble/core/utils/form';
     import {addBackendErrors} from "@hubblecommerce/hubble/core/utils/formMixins";
 
@@ -92,12 +92,17 @@
 
         computed: {
             ...mapState({
-                customer: state => state.modApiPayment.customer,
+                customer: state => state.modApiCustomer.customer,
                 wishlistState: state => state.modWishlist.wishlistItemsObj
             }),
         },
 
         methods: {
+            ...mapActions({
+                logIn: 'modApiCustomer/logIn',
+                getWishlist: 'modApiCustomer/getWishlist',
+                updateWishlist: 'modApiCustomer/updateWishlist',
+            }),
             submitLoginForm: function() {
                 let validCreds = {
                     email: this.form.email,
@@ -108,10 +113,10 @@
                 this.error = null;
 
                 // Post request with login credentials
-                this.$store.dispatch('modApiPayment/logIn', validCreds).then((response) => {
+                this.logIn(validCreds).then((response) => {
 
                     // Get wishlist of current customer from api and save to store
-                    this.$store.dispatch('modApiPayment/getWishlist').then(response => {
+                    this.getWishlist().then(response => {
 
                         if(!_.isEmpty(response.data.item)) {
                             // Merge Wishlist of store with existing user wishlist from api
@@ -127,7 +132,7 @@
                             this.$store.dispatch('modWishlist/saveToStore');
 
                             // Update wishlist of api
-                            this.$store.dispatch('modApiPayment/updateWishlist', {
+                            this.updateWishlist({
                                 user_id: this.customer.customerData.id,
                                 id: wishlistId,
                                 wishlist: {

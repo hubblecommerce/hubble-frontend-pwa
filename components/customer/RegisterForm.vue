@@ -377,7 +377,7 @@
 </template>
 
 <script>
-    import {mapState} from 'vuex';
+    import {mapState, mapActions} from 'vuex';
     import Form from '@hubblecommerce/hubble/core/utils/form';
     import {addBackendErrors, salutations} from "@hubblecommerce/hubble/core/utils/formMixins";
 
@@ -465,18 +465,24 @@
             ...mapState({
                 wishlistState: state => state.modWishlist.wishlistItemsObj,
                 wishlistQty: state => state.modWishlist.wishlistItemsCount,
-                customer: state => state.modApiPayment.customer,
-                countries: state => state.modApiPayment.availableCountries
+                customer: state => state.modApiCustomer.customer,
+                countries: state => state.modApiCustomer.availableCountries
             })
         },
 
         mounted() {
             if(_.isEmpty(this.countries)) {
-                this.$store.dispatch('modApiPayment/getAvailableCountries');
+                this.getAvailableCountries();
             }
         },
 
         methods: {
+            ...mapActions({
+                getAvailableCountries: 'modApiCustomer/getAvailableCountries',
+                register: 'modApiCustomer/register',
+                postWishlist: 'modApiCustomer/postWishlist',
+                storeCustomerAddress: 'modApiCustomer/storeCustomerAddress',
+            }),
             submitRegisterForm: function() {
                 this.processingRegister = true;
 
@@ -512,7 +518,7 @@
                 };
 
                 // Register new customer
-                this.$store.dispatch('modApiPayment/register', userData).then(() => {
+                this.register(userData).then(() => {
 
                     let creds = {
                         email: userData.email,
@@ -520,7 +526,7 @@
                     };
 
                     // Save wishlist
-                    this.$store.dispatch('modApiPayment/postWishlist', {
+                    this.postWishlist({
                         user_id: this.customer.customerData.id,
                         wishlist: {
                             qty: this.wishlistQty,
@@ -538,11 +544,11 @@
                     // but not for SW API because the billing address is already set in register action
                     if(this.alternativeShippingAddress && !process.env.API_TYPE === 'sw') {
                         // Store Address
-                        this.$store.dispatch('modApiPayment/storeCustomerAddress', this.form.addresses[0]).then(() => {
+                        this.storeCustomerAddress(this.form.addresses[0]).then(() => {
 
                             // Store different shipping address
                             if(this.differentShippingAddress) {
-                                this.$store.dispatch('modApiPayment/storeCustomerAddress', this.form.addresses[1]).then(() => {
+                                this.storeCustomerAddress(this.form.addresses[1]).then(() => {
                                     this.redirectToCheckout();
                                 }).catch((error) => {
                                     // Show api request error

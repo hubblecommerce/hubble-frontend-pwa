@@ -320,7 +320,7 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex';
+    import { mapState, mapActions } from 'vuex';
     import Form from '@hubblecommerce/hubble/core/utils/form';
     import {mapKeyToValue, mapIsoToCountry, addBackendErrors, salutations} from "@hubblecommerce/hubble/core/utils/formMixins";
 
@@ -389,8 +389,8 @@
 
         computed: {
             ...mapState({
-                customer: state => state.modApiPayment.customer,
-                countries: state => state.modApiPayment.availableCountries,
+                customer: state => state.modApiCustomer.customer,
+                countries: state => state.modApiCustomer.availableCountries,
                 offcanvas: state => state.modNavigation.offcanvas,
             }),
             showLayer: function() {
@@ -458,12 +458,19 @@
 
         mounted() {
             if(_.isEmpty(this.countries)) {
-                this.$store.dispatch('modApiPayment/getAvailableCountries');
+                this.getAvailableCountries();
             }
             this.getAddresses();
         },
 
         methods: {
+            ...mapActions({
+                getAvailableCountries: 'modApiCustomer/getAvailableCountries',
+                getCustomerAddresses: 'modApiCustomer/getCustomerAddresses',
+                storeCustomerAddress: 'modApiCustomer/storeCustomerAddress',
+                editAddress: 'modApiCustomer/editAddress',
+                deleteCustomerAddress: 'modApiCustomer/deleteCustomerAddress',
+            }),
             toggle: function() {
                 return new Promise((resolve) => {
                     this.$store.dispatch('modNavigation/toggleOffcanvasAction', {
@@ -499,8 +506,7 @@
                     this.loading = false;
                 } else {
                     // Get addresses from api if logged in user
-                    this.$store.dispatch('modApiPayment/getCustomerAddresses')
-                    .then(() => {
+                    this.getCustomerAddresses().then(() => {
                         this.mapAddresses();
                         this.loading = false;
                     })
@@ -606,7 +612,7 @@
                     address.payload = _.omit(address.payload, 'houseNo');
                 }
 
-                this.$store.dispatch('modApiPayment/storeCustomerAddress', address).then(() => {
+                this.storeCustomerAddress(address).then(() => {
                     // Refresh addresses and close offcanvas
                     this.getAddresses();
                     this.toggle();
@@ -629,7 +635,7 @@
                 // Do API call if is logged in user
                 if(!this.isGuest) {
                     // dispatch data to api ...
-                    this.$store.dispatch('modApiPayment/editAddress', address).then(() => {
+                    this.editAddress(address).then(() => {
                         // Refresh addresses and close offcanvas
                         this.getAddresses();
                         this.toggle();
@@ -666,7 +672,7 @@
                             newDefaultAddress = _.omit(newDefaultAddress, 'houseNo');
                         }
 
-                        this.$store.dispatch('modApiPayment/editAddress', newDefaultAddress).then(() => {
+                        this.editAddress(newDefaultAddress).then(() => {
                             this.getAddresses();
                             this.toggle();
                         }).catch((error) => {
@@ -688,7 +694,7 @@
                             newDefaultAddress = _.omit(newDefaultAddress, 'houseNo');
                         }
 
-                        this.$store.dispatch('modApiPayment/editAddress', newDefaultAddress).then(() => {
+                        this.editAddress(newDefaultAddress).then(() => {
                             this.getAddresses();
                             this.toggle();
                         }).catch((error) => {
@@ -702,7 +708,7 @@
 			submitDeleteAddress: function(){
                 // dispatch delete calls to api..
                 _.forEach(this.selectedDelete, (address) => {
-                    this.$store.dispatch('modApiPayment/deleteCustomerAddress', address).then(() => {
+                    this.deleteCustomerAddress(address).then(() => {
                         this.getAddresses();
                     }).catch(() => {
                         // Show api request error

@@ -42,7 +42,7 @@
         },
         computed: {
             ...mapState({
-                customer: state => state.modApiPayment.customer,
+                customer: state => state.modApiCustomer.customer,
                 order: state => state.modApiPayment.order,
                 hostedIFrame: state => state.modApiPayment.hostedIFrame
             }),

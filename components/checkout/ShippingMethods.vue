@@ -43,9 +43,9 @@
                 shippingMethods: state => state.modApiPayment.shippingMethods,
                 chosenShippingMethod: state => state.modApiPayment.order.chosenShippingMethod,
                 shippingError: state => state.modApiPayment.shippingError,
-                shippingAddress: state => state.modApiPayment.customer.shippingAddress,
-                countries: state => state.modApiPayment.availableCountries,
-                customerAddresses: state => state.modApiPayment.customer.customerAddresses
+                shippingAddress: state => state.modApiCustomer.customer.shippingAddress,
+                countries: state => state.modApiCustomer.availableCountries,
+                customerAddresses: state => state.modApiCustomer.customer.customerAddresses
             }),
             ...mapGetters({
                 getChosenShippingMethod: 'modApiPayment/getChosenShippingMethod'

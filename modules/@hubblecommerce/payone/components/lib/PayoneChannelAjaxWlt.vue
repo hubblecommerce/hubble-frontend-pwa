@@ -37,7 +37,7 @@
             ...mapState({
                 beforePlaceOrder: state => state.modApiPayment.beforePlaceOrder,
                 cart: state => state.modCart.cart,
-                customer: state => state.modApiPayment.customer,
+                customer: state => state.modApiCustomer.customer,
                 finalOrder: state => state.modApiPayment.finalOrder,
             }),
             amount: function() {

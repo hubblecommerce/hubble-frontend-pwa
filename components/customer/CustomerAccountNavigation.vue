@@ -26,13 +26,16 @@
 </template>
 
 <script>
+    import { mapActions} from 'vuex';
     export default {
         name: "CustomerAccountNavigation",
         methods: {
+            ...mapActions({
+                logOut: 'modApiCustomer/logOut'
+            }),
             attemptLogout() {
                 let msg = this.$t('Successfully logged out');
-                this.$store.dispatch('modApiPayment/logOut')
-                    .then(() => {
+                this.logOut().then(() => {
                         // Clear wishlist from store
                         this.$store.dispatch('modWishlist/deleteWishlist');
 

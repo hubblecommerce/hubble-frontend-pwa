@@ -160,7 +160,7 @@
                 paymentError: state => state.modApiPayment.paymentError,
                 ibanError: state => state.modApiPayment.ibanError,
                 bicError: state => state.modApiPayment.bicError,
-                customerAddresses: state => state.modApiPayment.customer.customerAddresses
+                customerAddresses: state => state.modApiCustomer.customer.customerAddresses
             }),
             ...mapGetters({
                 getChosenPaymentMethod: 'modApiPayment/getChosenPaymentMethod'

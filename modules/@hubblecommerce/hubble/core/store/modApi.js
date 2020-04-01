@@ -157,7 +157,7 @@ export default function (ctx) {
                         }
                     }
                     if(payload.tokenType === 'customer') {
-                        authToken = rootState.modApiPayment.customer.customerAuth.token
+                        authToken = rootState.modApiCustomer.customer.customerAuth.token
                     }
                     if(payload.tokenType === 'sw') {
                         authToken = process.env.API_SW_ACCESS_KEY
