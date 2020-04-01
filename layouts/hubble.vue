@@ -1,12 +1,5 @@
 <template>
     <div @mouseenter="startUserInteraction()">
-        <img-lazy v-if="load && $mq === 'sm'" src="//:0" style="background: #fff;
-                         height: 100vh;
-                         position: sticky;
-                         top: 0;
-                         left: 0;
-                         z-index: 100;"
-        />
 
         <noscript>Please enable JavaScript and refresh this page, to use this application.</noscript>
 
@@ -119,7 +112,6 @@
 
         data() {
           return {
-              load: true,
               menu: {},
               userInteraction: false,
               inView: false
@@ -136,10 +128,6 @@
 
         created() {
             this.setMenuItems();
-        },
-
-        mounted() {
-            this.load = false;
         },
 
         methods: {
