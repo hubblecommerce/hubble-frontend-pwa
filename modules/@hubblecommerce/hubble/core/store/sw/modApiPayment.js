@@ -271,7 +271,10 @@ export default function (ctx) {
                         action: 'get',
                         tokenType: 'sw',
                         apiType: 'data',
-                        endpoint: '/sales-channel-api/v1/payment-method'
+                        endpoint: '/sales-channel-api/v1/payment-method',
+                        params: {
+                            limit: 500
+                        }
                     }, { root: true })
                         .then(response => {
                             // Map Payone Keys to Payment Methods od Payone
