@@ -36,7 +36,6 @@
                 <div class="new-products-wrp">
                     <div class="new-products-header">
                         <h2 class="headline headline-3 new-products-headline">New Products</h2>
-                        <nuxt-link :to="'/new'" class="link text-small discover-link" v-text="$t('Discover all')" />
                     </div>
                     <div class="product-carousel">
                         <product-listing v-if="newProducts.length > 0 && inView"
@@ -55,13 +54,13 @@
 <script>
     import { mapActions } from "vuex";
     import GTMDataLayer from "../components/utils/GTMDataLayer";
-    import ProductListing from "../components/productlist/ProductListing";
+    import {mapState} from "vuex";
 
     export default {
         name: "Index",
 
         components: {
-            ProductListing,
+            ProductListing: () => import('../components/productlist/ProductListing'),
             GTMDataLayer
         },
 
@@ -102,13 +101,22 @@
             }
         },
 
+        computed: {
+            ...mapState({
+                dataMenu: state => state.modApiMenu.dataMenu
+            })
+        },
+
         methods: {
             ...mapActions({
                 swGetCategoryProductsById: 'modApiCategory/swGetCategoryProductsById'
             }),
             onceHandler: function() {
                 if(process.env.API_TYPE === 'sw') {
-                    this.swGetCategoryProductsById({id: '5140184423574d7aaa408c924369c78d'}).then(response => {
+                    // Get id of first category that can be found
+                    const categoryId = this.dataMenu.result.items[0].id;
+                    
+                    this.swGetCategoryProductsById({id: categoryId}).then(response => {
                         this.newProducts = response.data.result.items;
                         this.inView = true;
                     });
