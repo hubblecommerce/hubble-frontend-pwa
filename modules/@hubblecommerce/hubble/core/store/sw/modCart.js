@@ -189,6 +189,10 @@ export default function (ctx) {
                         commit('setCart', cart);
                     }
 
+                    console.log(payload.response);
+
+                    // Map response from cart endpoint to hubble cart items
+
                     dispatch('setTotals', payload.response).then(() => {
                         // Store cart with all info in local storage
                         localStorageHelper.setCreatedAt(_.clone(state.cart), state.localStorageLifetime).then(response => {

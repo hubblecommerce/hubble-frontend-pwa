@@ -15,7 +15,18 @@
         <div v-if="$mq === 'md' || $mq === 'lg'">
             <div class="price-box price-wrp">
 
-                <template v-if="itemIsSpecial">
+                <div class="calculated-prices table" v-if="item.calculatedPrices">
+                    <div class="table-head">
+                        <div class="table-data">Quantity</div>
+                        <div class="table-data">Unit price</div>
+                    </div>
+                    <div class="table-row" v-for="(price, key) in item.calculatedPrices">
+                        <div class="table-data" v-text="(key === 0 ? $t('to ') : $t('from ')) + price.quantity" />
+                        <div class="table-data" v-text="getPriceAndCurrencyDecFmt(price.unitPrice, false, itemTaxClass)" />
+                    </div>
+                </div>
+
+                <template v-else-if="itemIsSpecial">
                     <span class="old-price" v-html="getPriceAndCurrency('display_price_brutto', priceSwitcherIncludeVat)" />
                     <span class="sale-price" v-html="getPriceAndCurrency('display_price_brutto_special', priceSwitcherIncludeVat)" />
                 </template>
@@ -44,14 +55,26 @@
 
         <!-- Price-Cart-Delivery Order -->
         <div v-if="$mq === 'sm'" class="price-cart-wrp">
+
+            <div class="calculated-prices table" v-if="item.calculatedPrices">
+                <div class="table-head">
+                    <div class="table-data">Quantity</div>
+                    <div class="table-data">Unit price</div>
+                </div>
+                <div class="table-row" v-for="(price, key) in item.calculatedPrices">
+                    <div class="table-data" v-text="(key === 0 ? $t('to ') : $t('from ')) + price.quantity" />
+                    <div class="table-data" v-text="getPriceAndCurrencyDecFmt(price.unitPrice, false, itemTaxClass)" />
+                </div>
+            </div>
+
             <div class="price-box price-wrp">
 
-                <template v-if="itemIsSpecial">
+                <template v-if="itemIsSpecial && item.calculatedPrices == null">
                     <span class="old-price" v-html="getPriceAndCurrency('display_price_brutto', priceSwitcherIncludeVat)" />
                     <span class="sale-price" v-html="getPriceAndCurrency('display_price_brutto_special', priceSwitcherIncludeVat)" />
                 </template>
 
-                <template v-else>
+                <template v-if="!itemIsSpecial && item.calculatedPrices == null">
                     <span class="sale-price" v-html="getPriceAndCurrency('display_price_brutto', priceSwitcherIncludeVat)" />
                 </template>
 

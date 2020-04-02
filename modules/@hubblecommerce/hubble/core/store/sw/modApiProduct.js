@@ -173,6 +173,10 @@ export default function (ctx) {
                         tax_class_id: 1
                     };
 
+                    if(!_.isEmpty(product.calculatedPrices)) {
+                        obj.calculatedPrices = product.calculatedPrices;
+                    }
+
                     if(product.deliveryTime !== null) {
                         obj.delivery_time = product.deliveryTime;
                     }
