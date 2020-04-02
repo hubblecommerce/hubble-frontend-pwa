@@ -50,6 +50,22 @@ export default function (ctx) {
                 });
                 state.apiRequestBody.filter.push(payload);
             },
+            resetFilter: (state) => {
+                state.apiRequestBody.filter =  [
+                    {
+                        type: 'equals',
+                        field: 'active',
+                        value: true
+                    },
+                    {
+                        type: 'range',
+                        field: 'stock',
+                        parameters: {
+                            gt: 0
+                        }
+                    }
+                ];
+            },
             setLimit: (state, payload) => {
                 state.apiRequestBody.limit = payload;
             },

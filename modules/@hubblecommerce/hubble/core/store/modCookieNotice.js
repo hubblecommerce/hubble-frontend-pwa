@@ -49,7 +49,7 @@ export default function (ctx) {
                         resolve({
                             success: true,
                             message: 'user has not visited the site'
-                        }); 
+                        });
                     }
 
                     let cookieNotice = getters.getCookieDecoded(cookie);

@@ -67,7 +67,7 @@ export default function (ctx) {
                             },
                             // Get only Products with parent ID null
                             // because children (generated variants) are delivered from API
-                            // with missing props like name etc. 
+                            // with missing props like name etc.
                             filter: [
                                 {
                                     type: 'equals',

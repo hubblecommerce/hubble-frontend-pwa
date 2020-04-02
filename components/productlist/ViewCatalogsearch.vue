@@ -12,7 +12,7 @@
         <template v-if="hasCategoryProductItems">
             <div class="container search-content-wrp">
                 <div class="search-products-wrp">
-                    <product-listing-filter />
+                    <product-listing-filter v-if="!isApiType('sw')" />
                     <product-listing :data-items="categoryProductItems" list="Search Result" />
                     <div class="pagination-bottom">
                         <pagination />
@@ -81,6 +81,12 @@
             },
             curSearchResultLabel() {
                 return this.$t('Search for:') + ' ' + this.$route.query.term;
+            }
+        },
+
+        methods: {
+            isApiType: function(apiType) {
+                return process.env.API_TYPE === apiType;
             }
         },
 

@@ -2,6 +2,11 @@ import Middleware from './middleware'
 
 Middleware.apiResourceSearch = function ({ store, route }) {
     return new Promise((resolve, reject) => {
+
+        // Reset filter of api request body,
+        // in case user come from category which uses filter for getting products of category
+        store.commit('modApiCategory/resetFilter');
+
         // Set limit to request if isset in url
         if(route.query.limit != null) {
             store.commit('modApiCategory/setLimit', route.query.limit);
@@ -15,14 +20,14 @@ Middleware.apiResourceSearch = function ({ store, route }) {
             store.commit('modApiCategory/setPage', 1);
         }
 
-        // Set order to request if isset in url
+        // Set sort order to request if isset in url
         if(route.query.sort != null) {
             store.commit('modApiCategory/setSorting', route.query.sort);
         } else {
             store.commit('modApiCategory/setSorting', 0);
         }
 
-        // Set order to request if isset in url
+        // Set search term to request if isset in url
         if(route.query.term != null) {
             store.commit('modApiCategory/setTerm', route.query.term);
         }

@@ -35,6 +35,10 @@ Middleware.apiResourceRoute = function({ store, route, error }) {
 
                 store.commit('modApiResources/setPageType', 'category');
 
+                // Reset term of api request body,
+                // in case user come from search page
+                store.commit('modApiCategory/setTerm', null);
+
                 // Set filters from url query
                 // important to call it first because it resets all filters
                 if(route.query != null) {
