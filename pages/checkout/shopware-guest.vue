@@ -273,7 +273,7 @@
 
                         // Reset cart context token as new customer auth token
                         // because order context token is not needed anymore
-                        this.setCustomerAuth({token: this.swtc});
+                        this.setCustomerAuth({});
 
                         if(paymentResponse.data.paymentUrl) {
                             this.resetProcessingCheckout();

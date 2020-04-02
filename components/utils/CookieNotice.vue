@@ -37,7 +37,7 @@
 
         methods: {
             deactivateCookieNotice: function () {
-                this.$store.dispatch('modCookie/acceptCookieNotice', {});
+                this.$store.dispatch('modCookieNotice/acceptCookieNotice', {});
             }
         }
     }

@@ -90,7 +90,7 @@
         },
         computed: {
             ...mapState({
-                showCookieNotice: state => state.modCookie.showCookieNotice
+                showCookieNotice: state => state.modCookieNotice.showCookieNotice
             })
         },
         methods: {

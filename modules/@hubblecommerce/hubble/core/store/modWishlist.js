@@ -1,4 +1,3 @@
-import base64 from 'base-64'
 import localStorageHelper from "@hubblecommerce/hubble/core/utils/localStorageHelper";
 
 export default function (ctx) {

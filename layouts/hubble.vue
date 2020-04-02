@@ -121,7 +121,7 @@
         computed: {
             ...mapState({
                 dataMenu: state => state.modApiMenu.dataMenu,
-                showCookieNotice: state => state.modCookie.showCookieNotice
+                showCookieNotice: state => state.modCookieNotice.showCookieNotice
             })
         },
 

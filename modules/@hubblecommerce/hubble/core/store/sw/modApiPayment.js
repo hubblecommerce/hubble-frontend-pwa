@@ -13,9 +13,6 @@ export default function (ctx) {
             shippingMethods: {},
             shippingError: null,
 
-            // Shipping Country Error
-            shippingCountryError: null,
-
             // Order
             order: {
                 id: '',
@@ -24,20 +21,47 @@ export default function (ctx) {
                 chosenShippingMethod: {}
             },
             cookieNameOrder: 'hubbleOrder',
-            expressOrderReferenceId: null,
-
-            // Checkout
-            beforePlaceOrder: '',
-            finalOrder: '',
-            processingCheckout: false,
-
-            // Amazon
-            amazonPayError: {},
 
             // SW
             currentOrder: {},
+
+            // Checkout
+            processingCheckout: false
         }),
         mutations: {
+            // Payment
+            setPaymentMethods: (state, payload) => {
+                state.paymentMethods = payload;
+            },
+            setPaymentError: (state, payload) => {
+                state.paymentError = payload;
+            },
+            setHostedIFrame: (state, payload) => {
+                state.hostedIFrame = payload;
+            },
+            setIbanError: (state, payload) => {
+                state.ibanError = payload;
+            },
+            setBicError: (state, payload) => {
+                state.bicError = payload;
+            },
+            // Shipping
+            setShippingMethods: (state, payload) => {
+                state.shippingMethods = payload;
+            },
+            setShippingError: (state, payload) => {
+                state.shippingError = payload;
+            },
+            // Order
+            setOrder: (state, payload) => {
+                state.order = payload;
+            },
+            setChosenPaymentMethod: (state, payload) => {
+                state.order.chosenPaymentMethod = payload;
+            },
+            setChosenShippingMethod: (state, payload) => {
+                state.order.chosenShippingMethod = payload;
+            },
             setPseudoCardPan: (state, payload) => {
                 state.order.chosenPaymentMethod.payload.pseudoCardPan = payload;
             },
@@ -47,67 +71,27 @@ export default function (ctx) {
             setCardExpireDate: (state, payload) => {
                 state.order.chosenPaymentMethod.payload.cardExpireDate = payload;
             },
-            setHostedIFrame: (state, payload) => {
-                state.hostedIFrame = payload;
+            // SW
+            setCurrentOrder: (state, payload) => {
+                state.currentOrder = payload;
             },
+            // Checkout
             setProcessingCheckout: (state) => {
                 state.processingCheckout = true;
             },
             resetProcessingCheckout: (state) => {
                 state.processingCheckout = false;
             },
-            setIbanError: (state, payload) => {
-                state.ibanError = payload;
-            },
-            setBicError: (state, payload) => {
-                state.bicError = payload;
-            },
-            setExpressOrderReferenceId: (state, payload) => {
-                state.expressOrderReferenceId = payload;
-            },
-            setAmazonPayError: (state, payload) => {
-                state.amazonPayError[payload.key] = payload.msg;
-            },
-            resetAmazonPayError: (state, payload) => {
-                delete state.amazonPayError[payload.key];
-            },
-            setCurrentOrder: (state, payload) => {
-                state.currentOrder = payload;
-            },
-            /*
-            * Order mutations
-            * */
-            setChosenPaymentMethod: (state, payload) => {
-                state.order.chosenPaymentMethod = payload;
-            },
-            setChosenShippingMethod: (state, payload) => {
-                state.order.chosenShippingMethod = payload;
-            },
-            setPaymentError: (state, payload) => {
-                state.paymentError = payload;
-            },
-            setShippingError: (state, payload) => {
-                state.shippingError = payload;
-            },
-            setOrder: (state, payload) => {
-                state.order = payload;
-            },
-            setPaymentMethods: (state, payload) => {
-                state.paymentMethods = payload;
-            },
-            setShippingMethods: (state, payload) => {
-                state.shippingMethods = payload;
-            }
         },
         getters:  {
+            getCookieExpires: (state) => {
+                return new Date(new Date().getTime() + state.cookieTTL * 60 * 1000);
+            },
             getChosenPaymentMethod: state => {
                 return state.order.chosenPaymentMethod;
             },
             getChosenShippingMethod: state => {
                 return state.order.chosenShippingMethod;
-            },
-            getCookieExpires: (state) => {
-                return new Date(new Date().getTime() + state.cookieTTL * 60 * 1000);
             }
         },
         actions: {
@@ -130,7 +114,6 @@ export default function (ctx) {
                 });
             },
             async placeGuestOrder({dispatch, commit}, payload) {
-
                 let order = payload.order;
 
                 // Set salutation uuid
@@ -139,24 +122,20 @@ export default function (ctx) {
                 return new Promise((resolve, reject)  => {
                     dispatch('swGuestOrder', {order: order, swtc: payload.swtc}).then((res) => {
                         dispatch('modCart/clearAll', {}, {root:true}).then(() => {
-
                             dispatch('clearOrder').then(() => {
-
                                 commit('setCurrentOrder', res.data.data);
 
                                 commit('modApiCustomer/setCustomerAuth', {token: res.data['sw-context-token']}, { root: true });
 
                                 resolve(res);
-
                             })
                         });
                     }).catch((error) => {
                         reject(error);
                     });
                 });
-
             },
-            async swPlaceOrder({dispatch, rootState}, payload) {
+            async swPlaceOrder({dispatch, rootState}) {
                 return new Promise((resolve, reject)  => {
                     dispatch('apiCall', {
                         action: 'post',
@@ -192,7 +171,7 @@ export default function (ctx) {
                         });
                 });
             },
-            async validateOrder({dispatch, commit, state}, payload) {
+            async validateOrder({dispatch, commit, state}) {
                 return new Promise((resolve, reject)  => {
                     // Reset payment error
                     commit('setPaymentError', null);
@@ -215,27 +194,21 @@ export default function (ctx) {
                     resolve();
                 });
             },
-            async placeOrder({dispatch, commit, state}, payload) {
-                return new Promise((resolve, reject)  => {
+            async placeOrder({dispatch, commit}) {
+                return new Promise((resolve)  => {
                     dispatch('swPlaceOrder').then((response) => {
-
                         dispatch('modCart/clearAll', {}, {root:true}).then(() => {
-
                             dispatch('clearOrder').then(() => {
-
                                 commit('setCurrentOrder', response.data.data);
 
                                 resolve(response);
-
                             })
                         });
-
                     });
                 });
             },
             async setOrderByCookie({commit, state}) {
                 return new Promise((resolve) => {
-
                     // try to retrieve auth user by cookie
                     let _cookie = this.$cookies.get(state.cookieNameOrder);
 
@@ -257,15 +230,12 @@ export default function (ctx) {
                     }
                 })
             },
-            async applyCoupon({commit, dispatch, rootState, state}, payload) {
+            async applyCoupon() {
                 return new Promise((resolve, reject)  => {
                     reject('Sorry, coupons are currently not available.');
                 });
             },
-            /*
-            * Checkout Actions
-            */
-            async getPaymentMethods({commit, dispatch, rootState, state}, payload) {
+            async getPaymentMethods({commit, dispatch}) {
                 return new Promise((resolve, reject)  => {
                     dispatch('apiCall', {
                         action: 'get',
@@ -277,44 +247,19 @@ export default function (ctx) {
                         }
                     }, { root: true })
                         .then(response => {
-                            // Map Payone Keys to Payment Methods od Payone
-                            // No other way to set those keys at the moment
-                            // Need payone keys to call payone api
-                            // TODO: Implement payone key via api
-                            let mappedPayments = [];
-
-                            _.forEach(response.data.data, (val) => {
-
-                                if(val.name === 'Payone PayPal') {
-                                    val.key = 'payone_wlt'
-                                }
-
-                                if(val.name === 'Payone Credit Card') {
-                                    val.key = 'payone_cc'
-                                }
-
-                                if(val.name === 'Payone Paysafe Pay Later Invoice') {
-                                    val.key = 'payone_rec'
-                                }
-
-                                if(val.name === 'Paid in advance') {
-                                    val.key = 'payone_vor'
-                                }
-
-                                mappedPayments.push(val);
-                            });
-
                             // Save payment methods to store
-                            commit('setPaymentMethods', mappedPayments);
+                            commit('setPaymentMethods', response.data.data);
+
                             resolve('OK');
                         })
                         .catch(response => {
                             console.log('getPaymentMethods failed: %o', response);
+
                             reject('getPaymentMethods failed!');
                         });
                 });
             },
-            async getShippingMethods({commit, dispatch, rootState, state}, payload) {
+            async getShippingMethods({commit, dispatch}) {
                 return new Promise((resolve, reject)  => {
                     dispatch('apiCall', {
                         action: 'get',
@@ -325,10 +270,12 @@ export default function (ctx) {
                         .then(response => {
                             // Save payment methods to store
                             commit('setShippingMethods', response.data.data);
+
                             resolve('OK');
                         })
                         .catch(response => {
                             console.log('getShippingMethods failed: %o', response);
+
                             reject('getShippingMethods failed!');
                         });
                 });
@@ -351,13 +298,13 @@ export default function (ctx) {
                         })
                         .catch(response => {
                             console.log('swSetPaymentMethod failed: %o', response);
+
                             reject('swSetPaymentMethod failed!');
                         });
                 });
             },
             async storeChosenPaymentMethod({commit, state, getters, dispatch}, payload) {
                 return new Promise((resolve) => {
-
                     dispatch('swSetPaymentMethod', payload).then(() => {
                         commit('setChosenPaymentMethod', payload);
 
@@ -369,12 +316,10 @@ export default function (ctx) {
 
                         resolve();
                     })
-
                 })
             },
             async swSetShippingMethod({commit, dispatch, rootState, state}, payload) {
                 return new Promise((resolve, reject)  => {
-
                     if(_.isEmpty(payload)) {
                         resolve();
                     }
@@ -395,13 +340,13 @@ export default function (ctx) {
                         })
                         .catch(response => {
                             console.log('swSetShippingMethod failed: %o', response);
+
                             reject('swSetShippingMethod failed!');
                         });
                 });
             },
             async storeChosenShippingMethod({commit, state, getters, dispatch}, payload) {
                 return new Promise((resolve) => {
-
                     dispatch('swSetShippingMethod', payload).then(() => {
                         commit('setChosenShippingMethod', payload);
 
@@ -413,12 +358,12 @@ export default function (ctx) {
 
                         resolve();
                     });
-
                 })
             },
             async clearOrder({commit, state}) {
                 return new Promise((resolve) => {
                     commit('setChosenPaymentMethod', {});
+
                     commit('setChosenShippingMethod', {});
 
                     // Clear order cookie
@@ -426,7 +371,7 @@ export default function (ctx) {
 
                     resolve();
                 })
-            },
+            }
         }
     };
 

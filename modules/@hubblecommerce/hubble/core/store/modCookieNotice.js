@@ -1,7 +1,7 @@
 import base64 from "base-64";
 
 export default function (ctx) {
-    const modCookie = {
+    const modCookieNotice = {
         namespaced: true,
         state: () => ({
             showCookieNotice: true,
@@ -20,7 +20,6 @@ export default function (ctx) {
             getCookieDecoded: () => (str) => {
                 return base64.decode(str);
             },
-
         },
         mutations: {
             setShowCookieNotice: (state, item) => {
@@ -40,7 +39,6 @@ export default function (ctx) {
 
                     resolve();
                 });
-
             },
             setByCookie({commit, state, getters}) {
                 return new Promise((resolve) => {
@@ -51,7 +49,7 @@ export default function (ctx) {
                         resolve({
                             success: true,
                             message: 'user has not visited the site'
-                        });
+                        }); 
                     }
 
                     let cookieNotice = getters.getCookieDecoded(cookie);
@@ -76,5 +74,5 @@ export default function (ctx) {
         }
     };
 
-    ctx.store.registerModule('modCookie', modCookie);
+    ctx.store.registerModule('modCookieNotice', modCookieNotice);
 }
