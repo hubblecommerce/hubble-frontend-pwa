@@ -368,6 +368,8 @@ export default (context) => {
                 "Oops, something went wrong": "Ups, da ist etwas schiefgelaufen.",
                 "Shipping to this country is not allowed": "Der Versand in das gewählte Land ist leider nicht möglich.",
                 "Relevance":"Relevanz",
+                "to ":"bis ",
+                "from ":"ab ",
 
                 // Validation
                 "The password is required.": "Passwort ist ein Pflichtfeld",

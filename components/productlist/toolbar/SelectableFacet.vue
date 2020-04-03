@@ -63,7 +63,7 @@ export default {
             if(this.modelSelected.length > 0) {
                 selectedOptions = ' (' + this.modelSelected.length + ')' ;
             }
-            return this.$t(this.dataFacet.label) + selectedOptions;
+            return this.dataFacet.label + selectedOptions;
         },
         maxHeight: function() {
 

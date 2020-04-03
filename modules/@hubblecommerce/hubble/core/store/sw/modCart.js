@@ -189,9 +189,16 @@ export default function (ctx) {
                         commit('setCart', cart);
                     }
 
-                    console.log(payload.response);
-
-                    // Map response from cart endpoint to hubble cart items
+                    // Refresh data in cart from shop response
+                    let cartClone = _.cloneDeep(state.cart);
+                    _.forEach(payload.response.data.data.lineItems, (lineItem) => {
+                        _.forEach(cartClone.items, (cartItem) => {
+                            if(cartItem.id === lineItem.id) {
+                                cartItem.final_price_item.display_price_brutto = lineItem.price.unitPrice;
+                            }
+                        })
+                    });
+                    commit('setCart', cartClone);
 
                     dispatch('setTotals', payload.response).then(() => {
                         // Store cart with all info in local storage

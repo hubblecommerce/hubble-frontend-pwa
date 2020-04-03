@@ -329,6 +329,8 @@ export default (context) => {
                 "free returns": "free returns",
                 "within Germany": "within Germany",
                 "Relevance":"Relevance",
+                "to ":"to ",
+                "from ":"from ",
 
                 // Validation
                 "The password is required.": "Password is required",
