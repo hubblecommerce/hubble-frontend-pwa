@@ -12,7 +12,7 @@
 </template>
 
 <script>
-    import {mapState} from 'vuex';
+    import {mapState, mapActions} from 'vuex';
 
     export default {
         name: "FlashMessage",
@@ -76,23 +76,23 @@
                     if(object !== false && this.fadeOut) {
                         setTimeout(() => {
                             this.showMessage = false;
-                            this.$store.dispatch('modFlash/resetMessage');
+                            this.resetMessage()
                         }, 5000);
                     }
                 }
             },
             activeOffCanvas: function (object) {
                 if(object === false) {
-                    this.$store.dispatch('modFlash/resetMessage');
+                    this.resetMessage();
                 }
             },
             '$route.path': function() {
                 // Reset flash message if route changes and keepOnRouteChange is not true
                 if(!this.keepOnRouteChange){
                     this.showMessage = false;
-                    this.$store.dispatch('modFlash/resetMessage');
+                    this.resetMessage();
                 } else {
-                    this.$store.dispatch('modFlash/resetKeepOnRouteChange')
+                    this.resetKeepOnRouteChange();
                 }
             }
         },
@@ -100,8 +100,13 @@
         methods: {
             hideMessage: function() {
                 this.showMessage = false;
-                this.$store.dispatch('modFlash/resetMessage');
-            }
+                this.resetMessage();
+            },
+            ...mapActions('modFlash', [
+                'resetMessage',
+                'resetKeepOnRouteChange'
+            ])
+
         }
     }
 </script>
