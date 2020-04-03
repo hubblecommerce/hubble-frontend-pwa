@@ -25,7 +25,7 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex';
+    import { mapState, mapActions } from 'vuex';
     import MobileCategories from "./MobileCategories";
     export default {
         name: "TheMobileMenu",
@@ -64,14 +64,18 @@
         watch: {
             '$route.path': function() {
                 // Close menu layer if route changes
-                this.$store.dispatch('modNavigation/hideOffcanvasAction');
+                this.hideOffcanvasAction();
             }
         },
 
         methods: {
             toggle: function(){
-                this.$store.dispatch('modNavigation/toggleOffcanvasAction', {component: this.name});
-            }
+                this.toggleOffcanvasAction({component: this.name})
+            },
+            ...mapActions({
+                toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction',
+                hideOffcanvasAction: 'modNavigation/hideOffcanvasAction'
+            })
         }
 
     }

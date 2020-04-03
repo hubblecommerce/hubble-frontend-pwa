@@ -38,15 +38,6 @@
             }
         },
 
-        created() {
-            // Set data from store to component data if message is shown
-            if(this.flashVisible) {
-                this.showMessage = true;
-                this.message = this.flashMessage;
-                this.type = this.flashType;
-            }
-        },
-
         computed: {
             ...mapState({
                 flashVisible: state => state.modFlash.flashVisible,
@@ -97,15 +88,24 @@
             }
         },
 
+        created() {
+            // Set data from store to component data if message is shown
+            if(this.flashVisible) {
+                this.showMessage = true;
+                this.message = this.flashMessage;
+                this.type = this.flashType;
+            }
+        },
+
         methods: {
             hideMessage: function() {
                 this.showMessage = false;
                 this.resetMessage();
             },
-            ...mapActions('modFlash', [
-                'resetMessage',
-                'resetKeepOnRouteChange'
-            ])
+            ...mapActions({
+                resetMessage: 'modFlash/resetMessage',
+                resetKeepOnRouteChange: 'modFlash/resetKeepOnRouteChange'
+            })
 
         }
     }

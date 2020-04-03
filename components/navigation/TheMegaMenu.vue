@@ -36,7 +36,7 @@
 </template>
 
 <script>
-    import { mapGetters, mapActions } from 'vuex';
+    import {mapActions, mapGetters} from 'vuex';
 
     export default {
         name: "TheMegaMenu",
@@ -78,12 +78,18 @@
         },
 
         methods: {
+            ...mapActions({
+                hideOffcanvasAction: 'modNavigation/hideOffcanvasAction',
+                showOffcanvasAction: 'modNavigation/showOffcanvasAction',
+                toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction',
+                resetAutoCompleteResults: 'modSearch/resetAutoCompleteResults'
+            }),
             toggle: function(){
                 this.showMenu = !this.showMenu;
                 this.toggleOffcanvasAction({component: this.name})
             },
             itemUrlPath(item) {
-                let _locale =  this.getApiLocale
+                let _locale =  this.getApiLocale;
 
                 if(_locale !== 'de') {
                     return '/' + _locale + '/' + item.url_path;
@@ -123,26 +129,18 @@
                 if(!_.isEmpty(process.env.CUSTOMER_DOMAIN)) {
                     let image = item.image;
 
-                    let _reference = _.join(
+                    return _.join(
                         [
                             process.env.CUSTOMER_DOMAIN,
                             image
                         ],
                         '/'
                     );
-
-                    return _reference;
                 }
 
                 let _path = _.trim(process.env.config.IMG_BASE_URL, '/');
                 return _path + '/images/catalog/product/' + this.imgFilter + '/' + item.image;
-            },
-            ...mapActions([
-                'modNavigation/hideOffcanvasAction',
-                'modNavigation/showOffcanvasAction',
-                'modNavigation/toggleOffcanvasAction',
-                'modSearch/resetAutoCompleteResults'
-            ])
+            }
         }
     }
 </script>
