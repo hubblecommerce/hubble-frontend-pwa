@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import CustomerAccountNavigation from "../customer/CustomerAccountNavigation";
 import LoginForm from "../customer/LoginForm";
 
@@ -90,13 +90,13 @@ export default {
 
     methods: {
         toggle() {
-            this.$store.dispatch('modNavigation/toggleOffcanvasAction', {
+            this.toggleOffcanvasAction({
                 component: this.name,
                 direction: 'rightLeft'
             });
         },
         hideMenu: function() {
-            this.$store.dispatch('modNavigation/hideOffcanvasAction');
+            this.hideOffcanvasAction();
         },
         showFormRegister: function() {
             this.hideMenu();
@@ -104,7 +104,11 @@ export default {
             this.$router.push({
                 path: this.localePath('customer-login')
             });
-        }
+        },
+        ...mapActions('modNavigation', [
+            'toggleOffcanvasAction',
+            'hideOffcanvasAction'
+        ])
     }
 }
 </script>
