@@ -36,6 +36,8 @@
 </template>
 
 <script>
+    import { mapGetters, mapActions } from 'vuex';
+
     export default {
         name: "TheMegaMenu",
 
@@ -62,7 +64,10 @@
                     name: 'root',
                     children: this.dataItems
                 }
-            }
+            },
+            ...mapGetters([
+                'modApiResources/getApiLocale'
+            ])
         },
 
         watch: {
@@ -75,10 +80,10 @@
         methods: {
             toggle: function(){
                 this.showMenu = !this.showMenu;
-                this.$store.dispatch('modNavigation/toggleOffcanvasAction', {component: this.name});
+                this.toggleOffcanvasAction({component: this.name})
             },
             itemUrlPath(item) {
-                let _locale = this.$store.getters['modApiResources/getApiLocale'];
+                let _locale =  this.getApiLocale
 
                 if(_locale !== 'de') {
                     return '/' + _locale + '/' + item.url_path;
@@ -93,10 +98,10 @@
                     this.isActive = item.id;
                     this.activeCategory = item;
 
-                    this.$store.dispatch('modNavigation/showOffcanvasAction', {component: this.name});
-                    this.$store.dispatch('modSearch/resetAutoCompleteResults');
+                    this.showOffcanvasAction({component: this.name});
+                    this.resetAutoCompleteResults();
                 } else {
-                    this.$store.dispatch('modNavigation/hideOffcanvasAction');
+                    this.hideOffcanvasAction();
                 }
             },
             // Check if child should be displayed
@@ -109,7 +114,7 @@
                 return child.is_active;
             },
             hideChildren: function() {
-                this.$store.dispatch('modNavigation/hideOffcanvasAction');
+                this.hideOffcanvasAction();
                 this.showMenu = false;
                 this.isActive = null;
             },
@@ -132,6 +137,12 @@
                 let _path = _.trim(process.env.config.IMG_BASE_URL, '/');
                 return _path + '/images/catalog/product/' + this.imgFilter + '/' + item.image;
             },
+            ...mapActions([
+                'modNavigation/hideOffcanvasAction',
+                'modNavigation/showOffcanvasAction',
+                'modNavigation/toggleOffcanvasAction',
+                'modSearch/resetAutoCompleteResults'
+            ])
         }
     }
 </script>
