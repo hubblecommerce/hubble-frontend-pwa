@@ -1,5 +1,6 @@
 import {sortMenuEntries, unflatten} from "@hubblecommerce/hubble/core/utils/menuHelper";
 import {datetimeUnixNow, datetimeUnixNowAddSecs} from "@hubblecommerce/hubble/core/utils/datetime";
+import {swMapApiError} from "@hubblecommerce/hubble/core/utils/swHelper";
 
 export default function (ctx) {
     const modApiMenu = {
@@ -20,7 +21,7 @@ export default function (ctx) {
                 // local copy of menu items before resetting object for mapping
                 state.menuItems = payload.data.result.items;
 
-                // Override menu with menu structure from config
+                // Set Navigation structure from .env if isset
                 if(process.env.menu) {
                     let map = process.env.menu;
 
@@ -90,41 +91,29 @@ export default function (ctx) {
             },
         },
         actions: {
-            async swGetMenu({commit, state, dispatch}, payload) {
+            async getMenu({commit, state, dispatch}, payload) {
                 return new Promise(function(resolve, reject) {
                     dispatch('apiCall', {
                         action: 'get',
                         tokenType: 'sw',
                         apiType: 'data',
-                        endpoint: '/sales-channel-api/v1/category?limit=100&associations[seoUrls][]'
+                        endpoint: '/sales-channel-api/v1/category?limit=500&associations[seoUrls][]'
                     }, { root: true })
                         .then(response => {
                             dispatch('mappingMenu', response.data.data).then((res) => {
-                                commit('setDataMenu', {
-                                    data: {
-                                        result: {
-                                            items: res
-                                        }
-                                    }
-                                });
+                                commit('setDataMenu', res);
                             });
 
-                            resolve('OK');
+                            resolve(response);
                         })
-                        .catch(response => {
-                            console.log("API get request failed: %o", response);
-
-                            reject('API request failed!');
+                        .catch(error => {
+                            swMapApiError(error, reject);
                         });
                 });
             },
             async mappingMenu({commit, state, dispatch}, payload) {
                 return new Promise(function(resolve, reject) {
-                    // MAPPING
-                    let mapped = [];
-
-                    _.forEach(payload, (category) => {
-
+                    let mapped = payload.map((category) => {
                         let obj = {};
 
                         // Add 0 as value for parentId to root categories to make unflatten function work
@@ -146,11 +135,17 @@ export default function (ctx) {
                         obj.active = category.is_active;
                         obj.id = category._uniqueIdentifier;
 
-                        mapped.push(obj);
+                        return obj;
                     });
 
                     // Build required parent child relations from flat array
-                    resolve(unflatten(mapped));
+                    resolve( {
+                        data: {
+                            result: {
+                                items: unflatten(mapped)
+                            }
+                        }
+                    });
                 });
             },
         }

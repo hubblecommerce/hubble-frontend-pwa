@@ -243,6 +243,10 @@ $spacers: map-merge(
     justify-content: space-between;
 }
 
+.justify-content-center {
+    justify-content: center;
+}
+
 .ml-auto {
     margin-left: auto;
 }

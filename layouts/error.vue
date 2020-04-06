@@ -1,22 +1,15 @@
 <template>
-    <div class="container flex-center flex-column">
+    <div class="container d-flex flex-column align-self-center justify-content-center">
         <component :is="errorPage" :error="error" />
     </div>
 </template>
-
-<style>
-    .flex-center {
-        align-items: center;
-        display: flex;
-        justify-content: center;
-    }
-</style>
 
 <script>
     import error400 from '~/components/error/400.vue';
     import error401 from '~/components/error/401.vue';
     import error404 from '~/components/error/404.vue';
     import error500 from '~/components/error/500.vue';
+    import error503 from '~/components/error/503.vue';
     import errorDefault from '~/components/error/default.vue';
 
     export default {
@@ -31,17 +24,8 @@
             }
         },
 
-        data() {
-            return {
-                useDefaultError: process.env.DEFAULT_ERROR_PAGE === 'true'
-            }
-        },
-
         computed: {
             errorPage() {
-                if(this.useDefaultError) {
-                    return errorDefault;
-                }
                 if(this.error.statusCode === 400) {
                     return error400;
                 }
@@ -52,6 +36,14 @@
 
                 if(this.error.statusCode === 404) {
                     return error404;
+                }
+
+                if(this.error.statusCode === 503) {
+                    return error503;
+                }
+
+                if(process.env.DEFAULT_ERROR_PAGE === 'true') {
+                    return errorDefault;
                 }
 
                 return error500;

@@ -1,7 +1,9 @@
 <template>
-    <div class="error-wrp flex-center flex-column">
+    <div class="container error-wrp">
+        <i class="icon icon-frown" />
         <h1>Bad Request</h1>
-        <p>No Items for this Category or Filters found. Please check your applied Filters.</p>
+        <div v-if="error.message != null" class="error-text" v-text="error.message" />
+        <div v-else class="error-text" v-text="'The server was unable to process the request due to invalid syntax.'" />
     </div>
 </template>
 

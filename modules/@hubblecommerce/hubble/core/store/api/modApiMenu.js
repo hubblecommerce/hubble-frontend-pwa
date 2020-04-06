@@ -91,7 +91,7 @@ export default function (ctx) {
             },
         },
         actions: {
-            async apiGetMenu({commit, dispatch}) {
+            async getMenu({commit, dispatch}) {
                 return new Promise(function(resolve, reject) {
                     dispatch('apiCall', {
                         action: 'get',

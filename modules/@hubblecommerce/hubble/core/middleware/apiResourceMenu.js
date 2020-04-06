@@ -18,13 +18,17 @@ Middleware.apiResourceMenu = function ({ isHMR, store, error }) {
     }
 
     return new Promise((resolve, reject) => {
-        store.dispatch(`modApiMenu/${process.env.API_TYPE}GetMenu`, {})
+        store.dispatch('modApiMenu/getMenu', {})
             .then(response => {
                 resolve(response);
             })
             .catch(response => {
-                error({ statusCode: 401, message: 'API authentication failed' });
-                reject(response);
+                if(response.statusCode != null) {
+                    error(response);
+                } else {
+                    error({ statusCode: 400, message: 'API call modApiMenu/getMenu failed' });
+                }
+                resolve(response);
             });
     });
 };
