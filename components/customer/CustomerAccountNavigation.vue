@@ -31,13 +31,16 @@
         name: "CustomerAccountNavigation",
         methods: {
             ...mapActions({
-                logOut: 'modApiCustomer/logOut'
+                logOut: 'modApiCustomer/logOut',
+                deleteWishlist: 'modWishlist/deleteWishlist',
+                flashMessage: 'modFlash/flashMessage',
+                hideOffcanvasAction: 'modNavigation/hideOffcanvasAction'
             }),
             attemptLogout() {
                 let msg = this.$t('Successfully logged out');
                 this.logOut().then(() => {
                         // Clear wishlist from store
-                        this.$store.dispatch('modWishlist/deleteWishlist');
+                        this.deleteWishlist();
 
                         // Close offcanvas
                         this.hideMenu();
@@ -47,19 +50,19 @@
                             this.$router.push({
                                 path: '/customer/login'
                             }, () => {
-                                this.$store.dispatch('modFlash/flashMessage', {
+                                this.flashMessage({
                                     flashType: 'success',
                                     flashMessage: msg,
                                     keepOnRouteChange: true
                                 })
                             }, () => {
-                                this.$store.dispatch('modFlash/flashMessage', {
+                                this.flashMessage({
                                     flashType: 'success',
                                     flashMessage: msg
-                                })
+                                });
                             });
                         } else {
-                            this.$store.dispatch('modFlash/flashMessage', {
+                            this.flashMessage({
                                 flashType: 'success',
                                 flashMessage: msg
                             })
@@ -67,14 +70,14 @@
                     })
                     .catch(() => {
                         msg = this.$t('Logout failed');
-                        this.$store.dispatch('modFlash/flashMessage', {
+                        this.flashMessage({
                             flashType: 'error',
                             flashMessage: msg
                         })
                     })
             },
             hideMenu: function() {
-                this.$store.dispatch('modNavigation/hideOffcanvasAction');
+                this.hideOffcanvasAction();
             }
         }
     }
