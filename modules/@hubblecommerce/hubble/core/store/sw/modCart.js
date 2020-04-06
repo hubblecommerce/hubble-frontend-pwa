@@ -125,7 +125,7 @@ export default function (ctx) {
                         });
                 });
             },
-            refreshCart({commit, state, dispatch, rootState, getters}) {
+            recalculateCart({dispatch}) {
                 return new Promise((resolve, reject) => {
                     dispatch('swGetCart').then((response) => {
                         dispatch('saveCartToStorage', {response: response}).then(() => {
@@ -479,46 +479,6 @@ export default function (ctx) {
                             success: true,
                             message: 'cart not known by forage.'
                         });
-                    });
-                })
-            },
-            calcTotals({commit, state, getters, dispatch, rootState}) {
-                return new Promise((resolve, reject) => {
-                    // Get order object from modApiPayment module
-                    let order = _.clone(rootState.modApiPayment.order);
-
-                    // Add current cart to order object temporarily
-                    order.cart = state.cart;
-
-                    // Call Api to recalculate cart by shop system
-                    dispatch('recalculateCart', {
-                        order: JSON.stringify(order)
-                    }).then((response) => {
-                        // Refresh cart item before store to cookie
-                        commit('setCart', response.order.cart);
-
-                        commit('setTotals');
-
-                        // Store cart with all info in local storage
-                        localStorageHelper.setCreatedAt(_.clone(state.cart), state.localStorageLifetime).then(response => {
-                            this.$localForage.setItem(state.cookieName, response);
-                        });
-
-                        // Store just important info in cookie
-                        // We need cookie to verify on serverside middleware if items are in cart if user want to checkout
-                        let smallCart = _.pick(state.cart, ['items_qty']);
-
-                        // Encode Info
-                        let _cart = getters.getCartEncoded(smallCart);
-
-                        this.$cookies.set(state.cookieName, _cart, {
-                            path: state.cookiePath,
-                            expires: getters.getCookieExpires
-                        });
-
-                        resolve('totals calculated and committed');
-                    }).catch((error) => {
-                        reject(error);
                     });
                 })
             },

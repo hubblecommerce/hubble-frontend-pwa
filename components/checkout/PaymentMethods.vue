@@ -240,7 +240,7 @@
                 if(!_.isEmpty(this.chosenMethodObj)) {
                     this.$store.dispatch('modApiPayment/storeChosenPaymentMethod', this.chosenMethodObj).then(() => {
 
-                        this.$store.dispatch('modCart/refreshCart').then(() => {
+                        this.$store.dispatch('modCart/recalculateCart').then(() => {
                             this.$store.commit('modApiPayment/resetProcessingCheckout');
                         });
 
