@@ -98,15 +98,14 @@
         },
 
         methods: {
-            hideMessage: function() {
-                this.showMessage = false;
-                this.resetMessage();
-            },
             ...mapActions({
                 resetMessage: 'modFlash/resetMessage',
                 resetKeepOnRouteChange: 'modFlash/resetKeepOnRouteChange'
-            })
-
+            }),
+            hideMessage: function() {
+                this.showMessage = false;
+                this.resetMessage();
+            }
         }
     }
 </script>

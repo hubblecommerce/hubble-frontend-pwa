@@ -69,13 +69,13 @@
         },
 
         methods: {
-            toggle: function(){
-                this.toggleOffcanvasAction({component: this.name})
-            },
             ...mapActions({
                 toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction',
                 hideOffcanvasAction: 'modNavigation/hideOffcanvasAction'
-            })
+            }),
+            toggle: function(){
+                this.toggleOffcanvasAction({component: this.name})
+            }
         }
 
     }
