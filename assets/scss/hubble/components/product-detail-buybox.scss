@@ -149,20 +149,6 @@
   color: $error-accent;
 }
 
-.price-cart-wrp {
-    display: flex;
-    flex-wrap: wrap;
-    width: 100%;
-
-    .price-wrp {
-        width: 32%;
-    }
-
-    .cart-button-wrp {
-        width: 68%;
-    }
-}
-
 @media(min-width: 768px) {
 
     .buybox-wrp {

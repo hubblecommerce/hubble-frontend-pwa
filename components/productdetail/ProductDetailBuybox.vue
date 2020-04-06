@@ -6,24 +6,21 @@
                 <div class="product-headline-info">
                     <h1>
                         <div v-if="productManufacturer" class="manufacturer-name headline-4" v-html="productManufacturer.name" />
-                        <div class="product-name text-small" v-html="productData.name" />
+                        <div class="product-name text-small" v-html="dataProduct.name" />
                     </h1>
 
                     <!-- SKU -->
-                    <div v-if="productData.sku" class="sku">
-                        {{ $t('sku_label') }}: {{ productData.sku }}
+                    <div v-if="dataProduct.sku" class="sku">
+                        {{ $t('sku_label') }}: {{ dataProduct.sku }}
                     </div>
                 </div>
                 <div v-if="logoPath !== null" class="brand-logo-wrp">
                     <img :src="logoPath"
-                         :alt="productData.manufacturer_item.name"
-                         :title="productData.manufacturer_item.name"
+                         :alt="dataProduct.manufacturer_item.name"
+                         :title="dataProduct.manufacturer_item.name"
                     >
                 </div>
             </div>
-
-            <!-- Colors -->
-            <product-detail-buybox-color-select v-if="productHasSizeVariant" :product-id="productData.id" />
 
             <!-- Variants -->
             <div class="variants-wrp">
@@ -46,18 +43,8 @@
 
             <div class="price-cart-delivery-wrp mb-2">
                 <div class="price-box">
-                    <product-detail-buybox-price :item="productData" />
+                    <product-detail-buybox-price :item="dataProduct" />
                 </div>
-            </div>
-
-            <!-- Links to filtered products -->
-            <div v-if="productHasSizeVariant" class="filtered-products-link-wrp">
-                <nuxt-link :to="manufacturerLink()" class="filtered-products-link link-primary">
-                    {{ $t('All') }} {{ productManufacturer.name }} {{ productCategory }}
-                </nuxt-link>
-                <nuxt-link :to="filterLink()" class="filtered-products-link link-primary">
-                    {{ $t('More') }} {{ productCategory }} {{ $t('in') }} {{ productColor }}
-                </nuxt-link>
             </div>
         </div>
     </div>
@@ -67,21 +54,16 @@
     import { mapState, mapGetters, mapMutations, mapActions} from 'vuex'
     import ProductDetailBuyboxPrice from "./ProductDetailBuyboxPrice";
 
-    import ProductDetailBuyboxColorSelect from "./ProductDetailBuyboxColorSelect";
-
     export default {
         components: {
             ProductDetailBuyboxOptions: () => import('./ProductDetailBuyboxOptions'),
             ProductDetailBuyboxOptionsSw: () => import('./ProductDetailBuyboxOptionsSw'),
-            ProductDetailBuyboxColorSelect,
             ProductDetailBuyboxPrice
         },
 
         data() {
             return {
                 name: 'ProductDetailBuybox',
-                itemHasTierPrices: false,
-                itemTierPriceDiscount: null,
                 selected: {
                     origin: null,
                     processed: null
@@ -98,7 +80,8 @@
 
         computed: {
             ...mapState({
-                dataProduct: state => state.modApiProduct.dataProduct,
+                dataProduct: state => state.modApiProduct.dataProduct.result.item,
+                productManufacturer: state => state.modApiProduct.dataProduct.result.item.manufacturer_item,
                 optionIsSelected: state => state.modApiProduct.optionIsSelected,
                 optionNotSelectedError: state => state.modApiProduct.optionNotSelectedError,
                 selectedVariants: state => state.modApiProduct.selectedVariants
@@ -106,77 +89,21 @@
             ...mapGetters({
                 productHasTierPricesByGroupId: 'modPrices/productHasTierPricesByGroupId'
             }),
-            productData() {
-                return this.dataProduct.result.item;
-            },
-            productManufacturer() {
-                if(_.isEmpty(this.productData.manufacturer_item)) {
-                    return false;
-                }
-                return this.productData.manufacturer_item;
-            },
-            productCategory() {
-                return this.nearestCategory.value_label;
-            },
-            productColor() {
-                return this.productData.statistic_item.color_label
-            },
-            productSizes() {
-                return _.filter(this.productData.facets.string_facets, (facet) => {
-                    return facet.code === this.attributeCodeSize;
-                });
-            },
-            productOptions() {
-                return _.filter(this.productData.facets.string_facets, (facet) => {
-                    return facet.code !== this.attributeCodeManufacturer;
-                });
-            },
-            productHasSizeVariant() {
-                if (this.productData.facets.string_facets[0]) {
-                    if(this.productData.facets.string_facets[0]['label'] === "Größe") {
-                        return true
-                    }
-                    return false;
-                }
-                return false;
-            },
-            productSizesSorted() {
-                if(! _.isEmpty(this.productSizes)) {
-
-                    // Add half sizes ".5" only if is in stock
-                    let filterdProductSizes = this.productSizes.filter( size => size.value_label.includes('.0') || (size.value_label.includes('.5') && size.stock_qty > 0));
-
-                    // dereference computed array
-                    let _sizes = [].slice.call(filterdProductSizes);
-
-                    // simple asc sort by property (label)
-                    _sizes = _.sortBy(_sizes, function(o) {
-                        return parseFloat(o.value_label);
-                    });
-
-                    return _sizes;
-                }
-
-                return null;
-            },
             attributeName() {
-                if (this.productData.facets.string_facets[0]) {
-                    return this.productData.facets.string_facets[0]['label'];
+                if (this.dataProduct.facets.string_facets[0]) {
+                    return this.dataProduct.facets.string_facets[0]['label'];
                 }
 
                 return null;
             },
             itemIsSimple() {
-                return this.productData.type === 'simple';
+                return this.dataProduct.type === 'simple';
             },
             itemIsGrouped() {
-                return this.productData.type === 'grouped';
+                return this.dataProduct.type === 'grouped';
             },
             itemIsConfigurable() {
-                return this.productData.type === 'configurable';
-            },
-            nearestCategory: function() {
-                return this.productData.facets.category_facets.slice(-1)[0]
+                return this.dataProduct.type === 'configurable';
             },
             showSelectedOption: function () {
                 // Store issert
@@ -188,10 +115,6 @@
         },
 
         mounted() {
-            // evaluate tier price information
-            //this.itemHasTierPrices = this.evalItemHasTierPrices();
-            //this.itemTierPriceDiscount = this.evalItemsTierPriceDiscount();
-
             this.getLogoPath();
         },
 
@@ -239,39 +162,11 @@
                     direction: 'rightLeft'
                 });
             },
-            evalItemHasTierPrices: function() {
-                // grouped products
-                if(this.itemIsGrouped) {
-                    let _items = this.$children.filter(child => child.itemHasTierPrices);
-                    return ! _.isEmpty(_items);
-                }
-                // simple product
-                let groupID = 0;
-                return this.productHasTierPricesByGroupId(this.item, groupID);
-            },
-            evalItemsTierPriceDiscount: function() {
-                // get all child nodes with tier price items
-                let _items = this.$children.filter(child => child.itemHasTierPrices);
-                if(! _.isEmpty(_items)) {
-                    let _max = _.maxBy(_items, 'itemTierPriceDiscount');
-                    return _max.itemTierPriceDiscount;
-                }
-                return null;
-            },
-            manufacturerLink: function() {
-                return _.join([
-                    this.productManufacturer.url,
-                    this.nearestCategory.value_path
-                ], '/');
-            },
-            filterLink: function() {
-                return this.nearestCategory.value_path + '?color=' + this.productData.statistic_item.color_id;
-            },
             getLogoPath: function() {
                 let logoPath = null;
 
-                if(this.productData.manufacturer_item.logo) {
-                    logoPath = this.productData.manufacturer_item.logo;
+                if(this.dataProduct.manufacturer_item.logo) {
+                    logoPath = this.dataProduct.manufacturer_item.logo;
                 }
 
                 this.logoPath = logoPath;

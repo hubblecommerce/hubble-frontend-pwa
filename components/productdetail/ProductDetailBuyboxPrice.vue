@@ -13,36 +13,9 @@
         </div>
 
         <div v-if="$mq === 'md' || $mq === 'lg'">
-            <div class="price-box price-wrp">
 
-                <div class="calculated-prices table" v-if="item.calculatedPrices">
-                    <div class="table-head">
-                        <div class="table-data">Quantity</div>
-                        <div class="table-data">Unit price</div>
-                    </div>
-                    <div class="table-row" v-for="(price, key) in item.calculatedPrices">
-                        <div class="table-data" v-text="(key === 0 ? $t('to ') : $t('from ')) + price.quantity" />
-                        <div class="table-data" v-text="getPriceAndCurrencyDecFmt(price.unitPrice, false, itemTaxClass)" />
-                    </div>
-                </div>
+            <product-detail-price :item="item" />
 
-                <template v-else-if="itemIsSpecial">
-                    <span class="old-price" v-html="getPriceAndCurrency('display_price_brutto', priceSwitcherIncludeVat)" />
-                    <span class="sale-price" v-html="getPriceAndCurrency('display_price_brutto_special', priceSwitcherIncludeVat)" />
-                </template>
-
-                <template v-else>
-                    <span class="sale-price" v-html="getPriceAndCurrency('display_price_brutto', priceSwitcherIncludeVat)" />
-                </template>
-
-                <div v-if="item.final_price_item.priceinfo !== null" class="unit-price-wrp">
-                    <span class="price" v-text="getPriceAndCurrency('priceinfo', false)" />
-                    <span class="label" v-text="'/l'" />
-                </div>
-
-                <div class="info"><span>{{ $t('incl_tax') }}</span> </div>
-
-            </div>
             <div class="delivery-info">
                 <p v-if="item.delivery_time" class="availability bottom in-stock">
                     <span>{{ $t('delivery_time') }}</span> <span v-text="item.delivery_time.name"></span>
@@ -56,36 +29,8 @@
         <!-- Price-Cart-Delivery Order -->
         <div v-if="$mq === 'sm'" class="price-cart-wrp">
 
-            <div class="calculated-prices table" v-if="item.calculatedPrices">
-                <div class="table-head">
-                    <div class="table-data">Quantity</div>
-                    <div class="table-data">Unit price</div>
-                </div>
-                <div class="table-row" v-for="(price, key) in item.calculatedPrices">
-                    <div class="table-data" v-text="(key === 0 ? $t('to ') : $t('from ')) + price.quantity" />
-                    <div class="table-data" v-text="getPriceAndCurrencyDecFmt(price.unitPrice, false, itemTaxClass)" />
-                </div>
-            </div>
+            <product-detail-price :item="item" />
 
-            <div class="price-box price-wrp">
-
-                <template v-if="itemIsSpecial && item.calculatedPrices == null">
-                    <span class="old-price" v-html="getPriceAndCurrency('display_price_brutto', priceSwitcherIncludeVat)" />
-                    <span class="sale-price" v-html="getPriceAndCurrency('display_price_brutto_special', priceSwitcherIncludeVat)" />
-                </template>
-
-                <template v-if="!itemIsSpecial && item.calculatedPrices == null">
-                    <span class="sale-price" v-html="getPriceAndCurrency('display_price_brutto', priceSwitcherIncludeVat)" />
-                </template>
-
-                <div class="info"><span>{{ $t('incl_tax') }}</span> </div>
-
-                <div v-if="item.final_price_item.priceinfo !== null" class="unit-price-wrp">
-                    <span class="price" v-text="getPriceAndCurrency('priceinfo', false)" />
-                    <span class="label" v-text="'/l'" />
-                </div>
-
-            </div>
             <div class="d-flex cart-button-wrp">
                 <button :disabled="loaderState" type="button" :title="$t('add_to_cart')" class="add-to-cart m-0 w-100" @click.prevent="addToCart">
                     <i class="icon icon-cart" aria-hidden="true" />
@@ -123,10 +68,12 @@
     import { mapState, mapGetters, mapMutations, mapActions } from 'vuex';
     import AddToWishlist from "../productutils/AddToWishlist";
     import { clearDataLayer } from "@hubblecommerce/hubble/core/utils/gtmHelper";
+    import ProductDetailPrice from "./ProductDetailPrice";
 
     export default {
 
         components: {
+            ProductDetailPrice,
             AddToWishlist
         },
 
@@ -152,7 +99,6 @@
         computed: {
             ...mapState({
                 priceSwitcherIncludeVat: state => state.modPrices.priceSwitcherIncludeVat,
-                optionIsSelected: state => state.modApiProduct.optionIsSelected,
                 selectedVariants: state => state.modApiProduct.selectedVariants,
                 dataProduct: state => state.modApiProduct.dataProduct,
                 cart: state => state.modCart.cart,
@@ -244,18 +190,11 @@
                 }
 
                 return null;
-            },
-            itemHasVariants() {
-                if(!_.isEmpty(this.item.facets.string_facets) || !_.isEmpty(this.item.groups)) {
-                    return true;
-                }
-                return false;
             }
         },
 
         methods: {
             ...mapMutations({
-                setOptionNotSelectedError: 'modApiProduct/setOptionNotSelectedError',
                 resetSelectedVariants: 'modApiProduct/resetSelectedVariants'
             }),
             ...mapActions({
@@ -328,20 +267,6 @@
                 return index === 0 || this.showTierPrices;
             },
             addToCart() {
-                //If item has variants (size, color, ..) and none is selected
-                // show error message and return
-                if(this.itemHasVariants && !this.optionIsSelected) {
-                    this.setOptionNotSelectedError();
-
-                    // Display Error Message
-                    this.flashMessage({
-                        flashType: 'error',
-                        flashMessage: this.$t('Please select {atrName} first', {atrName: this.attributeName})
-                    });
-
-                    return;
-                }
-
                 // Add selected variant to item
                 this.item.variants = this.selectedVariants;
 
