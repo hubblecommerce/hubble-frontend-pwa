@@ -44,7 +44,7 @@
 </template>
 
 <script>
-    import { mapState, mapActions } from 'vuex';
+    import {mapActions, mapMutations, mapState, mapGetters} from 'vuex';
 
     export default {
 		name: "WishlistItemsList",
@@ -76,6 +76,13 @@
                 wishlistState: state => state.modWishlist.wishlistItemsObj,
                 wishlistId: state => state.modWishlist.wishlistId,
                 wishlistQty: state => state.modWishlist.wishlistItemsCount,
+            }),
+            ...mapGetters({
+                productIsSpecial: 'modPrices/productIsSpecial',
+                getPriceAndCurrencyDecFmt: 'modPrices/getPriceAndCurrencyDecFmt',
+                getTaxClassByLabel: 'modPrices/getTaxClassByLabel',
+                priceDecFmt: 'modPrices/priceDecFmt',
+                priceAddCur: 'modPrices/priceAddCur'
             }),
             hasItemsInWishlist: function() {
                 return {
@@ -119,8 +126,14 @@
 
         methods: {
             ...mapActions({
-                deleteWishlist: 'modApiCustomer/deleteWishlist',
+                deleteWishlistSW: 'modApiCustomer/deleteWishlist',
                 updateWishlist: 'modApiCustomer/updateWishlist',
+                updateItem: 'modWishlist/updateItem',
+                delItem: 'modWishlist/delItem',
+                deleteWishlist: 'modWishlist/deleteWishlist'
+            }),
+            ...mapMutations({
+                setWishlistItemsObjQty: 'modWishlist/setWishlistItemsObjQty'
             }),
             onChangeQty: function(id, e) {
 
@@ -128,17 +141,16 @@
                 let newQty = e.target.value;
                 let delta = newQty - oldQty;
 
-                this.$store.commit('modWishlist/setWishlistItemsObjQty', {
+
+                this.setWishlistItemsObjQty({
                     itemId: id,
                     itemQty: newQty
                 });
 
-                this.$store.dispatch('modWishlist/updateItem', {
-                    qty: delta
-                });
+                this.updateItem({ qty: delta });
             },
             itemIsSpecial: function(item) {
-                return this.$store.getters['modPrices/productIsSpecial'](item);
+                return this.productIsSpecial(item);
             },
             getPriceAndCurrency: function(item, key, addVat) {
                 // Get price incl. tax but unformatted to calc and save subtotals
@@ -151,10 +163,10 @@
                 this.subTotals[item.id] = _.round(_price, 2).toFixed(2) * item.qty;
 
                 // Return formatted price incl. tax
-                return this.$store.getters['modPrices/getPriceAndCurrencyDecFmt'](_price, addVat, this.itemTaxClass(item));
+                return this.getPriceAndCurrencyDecFmt(_price, addVat, this.itemTaxClass(item));
             },
             itemTaxClass: function(item) {
-                return this.$store.getters['modPrices/getTaxClassByLabel'](item.final_price_item.tax_class_id);
+                return this.getTaxClassByLabel(item.final_price_item.tax_class_id);
             },
             getSubTotal: function() {
                 // Sum up all subtotals
@@ -163,8 +175,8 @@
                     subTotal += this.subTotals[key];
                 }
                 // Format subtotals
-                subTotal = this.$store.getters['modPrices/priceDecFmt'](subTotal);
-                subTotal = this.$store.getters['modPrices/priceAddCur'](subTotal);
+                subTotal = this.priceDecFmt(subTotal);
+                subTotal = this.priceAddCur(subTotal);
                 return subTotal;
             },
             itemImgPath: function(item) {
@@ -177,7 +189,7 @@
                 if(!_.isEmpty(process.env.CUSTOMER_DOMAIN)) {
                     let image = item.image;
 
-                    let _reference = _.join(
+                    return _.join(
                         [
                             process.env.CUSTOMER_DOMAIN,
                             'images/catalog/thumbnails/cache/400',
@@ -185,8 +197,6 @@
                         ],
                         '/'
                     );
-
-                    return _reference;
                 }
 
                 let _path = _.trim(process.env.config.IMG_BASE_URL, '/');
@@ -199,17 +209,17 @@
                 // ELSE: Just remove item from wishlist and update wishlist to api if user is logged in
                 if(this.wishlistQty === 1) {
                     if(this.isLoggedIn()) {
-                        this.deleteWishlist({
+                        this.deleteWishlistSW({
                             user_id: this.customer.customerData.id,
                             id: this.wishlistId
                         }).then(() => {
-                            this.$store.dispatch('modWishlist/deleteWishlist');
+                            this.deleteWishlist();
                         })
                     } else {
-                        this.$store.dispatch('modWishlist/deleteWishlist');
+                        this.deleteWishlist();
                     }
                 } else {
-                    this.$store.dispatch('modWishlist/delItem', {
+                    this.delItem({
                         data: item
                     }).then(() => {
                         // Update wishlist via api
