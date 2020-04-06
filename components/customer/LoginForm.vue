@@ -66,7 +66,7 @@
 </template>
 
 <script>
-    import { mapState, mapActions } from 'vuex';
+    import { mapState, mapActions, mapMutations } from 'vuex';
     import Form from '@hubblecommerce/hubble/core/utils/form';
     import {addBackendErrors} from "@hubblecommerce/hubble/core/utils/formMixins";
 
@@ -102,8 +102,15 @@
                 logIn: 'modApiCustomer/logIn',
                 getWishlist: 'modApiCustomer/getWishlist',
                 updateWishlist: 'modApiCustomer/updateWishlist',
+                saveToStore: 'modWishlist/saveToStore'
+            }),
+            ...mapMutations({
+                setWishlistId: 'modWishlist/setWishlistId',
+                setWishlistItemsCount: 'modWishlist/setWishlistItemsCount',
+                setWishlistItemsObj: 'modWishlist/setWishlistItemsObj'
             }),
             submitLoginForm: function() {
+                console.log('Inside submitLoginForm function');
                 let validCreds = {
                     email: this.form.email,
                     password: this.form.password
@@ -113,11 +120,11 @@
                 this.error = null;
 
                 // Post request with login credentials
-                this.logIn(validCreds).then((response) => {
-
+                this.logIn(validCreds).then(() => {
+                    console.log("Inside logIn section");
                     // Get wishlist of current customer from api and save to store
                     this.getWishlist().then(response => {
-
+                        console.log("Inside getWishlist section");
                         if(!_.isEmpty(response.data.item)) {
                             // Merge Wishlist of store with existing user wishlist from api
                             let state = _.clone(this.wishlistState);
@@ -126,10 +133,10 @@
                             let wishlistQty = Object.keys(mergedWishlists).length;
 
                             // Save to store
-                            this.$store.commit('modWishlist/setWishlistId', wishlistId);
-                            this.$store.commit('modWishlist/setWishlistItemsCount', wishlistQty);
-                            this.$store.commit('modWishlist/setWishlistItemsObj', mergedWishlists);
-                            this.$store.dispatch('modWishlist/saveToStore');
+                            this.setWishlistId(wishlistId);
+                            this.setWishlistItemsCount(wishlistQty);
+                            this.setWishlistItemsObj(mergedWishlists);
+                            this.saveToStore();
 
                             // Update wishlist of api
                             this.updateWishlist({
@@ -170,6 +177,7 @@
                     this.error = this.$t('Login failed');
                 });
             },
+            // TODO: only show pw reset if not sw
             submitForgotPassword: function () {
                 let payload = {
                     email: this.form.email
@@ -199,7 +207,7 @@
             toggleLoginForm: function () {
                 this.showLoginForm = !this.showLoginForm;
             }
-        },
+        }
 
     }
 </script>
