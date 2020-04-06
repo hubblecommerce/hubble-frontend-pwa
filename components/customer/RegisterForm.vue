@@ -377,7 +377,7 @@
 </template>
 
 <script>
-    import {mapState, mapActions} from 'vuex';
+    import {mapState, mapActions, mapMutations} from 'vuex';
     import Form from '@hubblecommerce/hubble/core/utils/form';
     import {addBackendErrors, salutations} from "@hubblecommerce/hubble/core/utils/formMixins";
 
@@ -482,6 +482,11 @@
                 register: 'modApiCustomer/register',
                 postWishlist: 'modApiCustomer/postWishlist',
                 storeCustomerAddress: 'modApiCustomer/storeCustomerAddress',
+                saveToStore: 'modWishlist/saveToStore',
+                registerGuest: 'modApiPayment/registerGuest'
+            }),
+            ...mapMutations({
+                setWishlistId: 'modWishlist/setWishlistId'
             }),
             submitRegisterForm: function() {
                 this.processingRegister = true;
@@ -534,10 +539,12 @@
                         }
                     }).then(response => {
                         // Get newly created wishlist id and save to store
-                        this.$store.commit('modWishlist/setWishlistId', response.data.item.id);
-                        this.$store.dispatch('modWishlist/saveToStore');
+                        this.$store.commit('modWishlist/setWishlistId', response.data.item.id); // added to mapMutations
+                        //this.setWishlistId(response.data.item.id);
+                        this.$store.dispatch('modWishlist/saveToStore'); // added to mapActions
+                        //this.saveToStore();
                     }).catch(response => {
-
+                        // TODO: add catch clause implementation
                     });
 
                     // if double addressbook mode is true store address separately

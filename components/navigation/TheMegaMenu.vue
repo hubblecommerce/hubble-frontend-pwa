@@ -65,9 +65,9 @@
                     children: this.dataItems
                 }
             },
-            ...mapGetters([
-                'modApiResources/getApiLocale'
-            ])
+            ...mapGetters({
+                getApiLocale: 'modApiResources/getApiLocale'
+            })
         },
 
         watch: {
