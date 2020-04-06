@@ -596,7 +596,7 @@
                 this.form.baseData.lastname = this.form.addresses[0].payload.lastName;
 
                 // Post request with login credentials
-                this.$store.dispatch('modApiPayment/registerGuest', this.form).then(() => {
+                this.$store.dispatch('modApiCustomer/registerGuest', this.form).then(() => {
                     // If current route is checkout, then do redirect to checkout
                     if(this.$router.history.current.path.includes('/checkout')) {
                         this.$router.push({

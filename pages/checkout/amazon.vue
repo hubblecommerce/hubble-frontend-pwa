@@ -128,7 +128,7 @@
             }),
             ...mapActions({
                 getUuid: 'modApiPayment/getUuid',
-                registerGuest: 'modApiPayment/registerGuest',
+                registerGuest: 'modApiCustomer/registerGuest',
                 placeOrderAction: 'modApiPayment/placeOrder',
                 clearCart: 'modCart/clearAll',
                 clearOrder: 'modApiPayment/clearOrder'

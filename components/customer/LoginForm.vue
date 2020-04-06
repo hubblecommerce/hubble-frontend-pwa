@@ -175,7 +175,7 @@
                     email: this.form.email
                 };
 
-                this.$store.dispatch('modApiPayment/passwordForgot', payload).then(response => {
+                this.$store.dispatch('modApiCustomer/passwordForgot', payload).then(response => {
                     // close off canvas if in offcanvas and show success message
                     this.$store.dispatch('modNavigation/hideOffcanvasAction').then(()=> {
                         this.$store.dispatch('modFlash/flashMessage', {

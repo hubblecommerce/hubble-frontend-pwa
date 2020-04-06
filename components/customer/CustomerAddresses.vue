@@ -649,7 +649,7 @@
                 } else {
                     // Edit cookie if is guest
                     // dispatch data to api ...
-                    this.$store.dispatch('modApiPayment/editGuestAddress', address).then(() => {
+                    this.$store.dispatch('modApiCustomer/editGuestAddress', address).then(() => {
                         this.getAddresses();
                         this.toggle();
                     })
