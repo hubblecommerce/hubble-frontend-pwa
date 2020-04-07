@@ -25,7 +25,7 @@
 </template>
 
 <script>
-    import {mapState, mapGetters} from 'vuex';
+    import {mapState, mapGetters, mapActions, mapMutations} from 'vuex';
     export default {
         name: "ShippingMethods",
 
@@ -55,13 +55,13 @@
         watch: {
             chosenMethod: function(newValue) {
                 // Start Checkout loader
-                this.$store.commit('modApiPayment/setProcessingCheckout');
+                this.setProcessingCheckout();
 
                 this.setMethodById(newValue);
 
-                this.$store.dispatch('modApiPayment/storeChosenShippingMethod', this.chosenMethodObj).then(() => {
-                    this.$store.dispatch('modCart/recalculateCart').then(() => {
-                        this.$store.commit('modApiPayment/resetProcessingCheckout');
+                this.storeChosenShippingMethod(this.chosenMethodObj).then(() => {
+                    this.refreshCart().then(() => {
+                        this.resetProcessingCheckout();
                     });
                 });
             },
@@ -72,9 +72,11 @@
             if(_.isEmpty(this.shippingMethods)) {
                 this.getShippingMethods().then(() => {
                     this.setChosenShippingMethod();
+
                     this.loading = false;
                 }).catch(() => {
                     this.apiError = true;
+
                     this.loading = false;
                 });
             } else {
@@ -83,13 +85,23 @@
         },
 
         methods: {
+            ...mapActions({
+                storeChosenShippingMethod: 'modApiPayment/storeChosenShippingMethod',
+                refreshCart: 'modCart/refreshCart',
+                getShippingMethodsFromAPI: 'modApiPayment/getShippingMethods'
+            }),
+            ...mapMutations({
+                setProcessingCheckout: 'modApiPayment/setProcessingCheckout',
+                resetProcessingCheckout: 'modApiPayment/resetProcessingCheckout'
+            }),
             getShippingMethods: function() {
                 // Fetch methods from api, to make them accessible in vuex store
                 return new Promise((resolve, reject) => {
-                    this.$store.dispatch('modApiPayment/getShippingMethods').then(() => {
+                    this.getShippingMethodsFromAPI().then(() => {
                         resolve();
                     }).catch((error) => {
                         this.loading = false;
+
                         reject(error);
                     });
                 })
