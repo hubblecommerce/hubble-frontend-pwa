@@ -60,9 +60,9 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex';
+    import {mapState} from 'vuex';
     import QtySelector from "../utils/QtySelector";
-    import { clearDataLayer } from "@hubblecommerce/hubble/core/utils/gtmHelper";
+    import {clearDataLayer} from "@hubblecommerce/hubble/core/utils/gtmHelper";
 
     export default {
         name: "CartItemsList",
@@ -106,7 +106,7 @@
                 if(!_.isEmpty(process.env.CUSTOMER_DOMAIN)) {
                     let image = item.image;
 
-                    let _reference = _.join(
+                    return _.join(
                         [
                             process.env.CUSTOMER_DOMAIN,
                             'images/catalog/thumbnails/cache/400',
@@ -114,8 +114,6 @@
                         ],
                         '/'
                     );
-
-                    return _reference;
                 }
 
                 let _path = _.trim(process.env.config.IMG_BASE_URL, '/');
