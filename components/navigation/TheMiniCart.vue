@@ -1,6 +1,9 @@
 <template>
     <div :class="hasItemsInCart" class="minicart-cpt-wrp">
-        <button class="button-icon cart-icon" :class="setButtonStates" @click="toggle()">
+        <button class="button-icon cart-icon"
+                :class="setButtonStates"
+                @click="toggle()"
+        >
             <i class="icon icon-cart" aria-hidden="true" />
             <span class="hidden-link-name">Toggle Cart</span>
             <material-ripple />
@@ -13,7 +16,9 @@
                 <div class="container expand-content">
 
                     <div class="row overlay-header">
-                        <button class="button-icon button-close-menu" @click="toggle()">
+                        <button class="button-icon button-close-menu"
+                                @click="toggle()"
+                        >
                             <i class="icon icon-close" aria-hidden="true" />
                             <material-ripple />
                         </button>
@@ -36,7 +41,10 @@
                                 <i class="icon icon-cart" />
                                 <div class="headline-1" v-text="$t('Your shopping cart is empty')" />
                                 <nuxt-link :to="localePath('index')">
-                                    <button class="button-primary" @click="closeOffcanvas()" v-text="$t('Discover our products')" />
+                                    <button class="button-primary"
+                                            @click="closeOffcanvas()"
+                                            v-text="$t('Discover our products')"
+                                    />
                                 </nuxt-link>
                             </div>
                         </transition>
@@ -53,11 +61,16 @@
                         </div>
                     </div>
 
-                    <button v-if="cartItemsQty > 0" class="checkout-btn button-primary" @click.prevent="checkoutCart">
+                    <button v-if="cartItemsQty > 0"
+                            class="checkout-btn button-primary"
+                            @click.prevent="checkoutCart">
                         {{ $t('shopping_cart') }}
                         <material-ripple />
                     </button>
-                    <button v-if="cartItemsQty > 0" class="shopping-button button-secondary" @click.prevent="hideMenu">
+                    <button v-if="cartItemsQty > 0"
+                            class="shopping-button button-secondary"
+                            @click.prevent="hideMenu"
+                    >
                         {{ $t('Keep shopping') }}
                         <material-ripple />
                     </button>
@@ -69,7 +82,7 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex';
+    import { mapState, mapGetters, mapActions } from 'vuex';
     import CartItemsList from "../checkout/CartItemsList";
 
     export default {
@@ -92,6 +105,11 @@
                 qty: state => state.modCart.cart.items_qty,
                 offcanvas: state => state.modNavigation.offcanvas,
             }),
+            ...mapGetters({
+                getSubtotals: 'modCart/getSubtotals',
+                priceDecFmt: 'modPrices/priceDecFmt',
+                priceAddCur: 'modPrices/priceAddCur'
+            }),
             hasItemsInCart: function() {
                 return {
                     inCart: this.cartItemsQty > 0
@@ -110,13 +128,11 @@
             },
             cartItemsQtyAndLabel() {
                 if(this.cartItemsQty > 99) return '99+';
+
                 return this.cartItemsQty;
             },
             showMenu: function() {
-                if(this.offcanvas.component === this.name) {
-                    return true;
-                }
-                return false;
+                return this.offcanvas.component === this.name;
             }
         },
 
@@ -135,21 +151,25 @@
         },
 
         methods: {
+            ...mapActions({
+                toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction',
+                hideOffcanvasAction: 'modNavigation/hideOffcanvasAction'
+            }),
             toggle: function() {
-                this.$store.dispatch('modNavigation/toggleOffcanvasAction', {
+                this.toggleOffcanvasAction({
                     component: this.name,
                     direction: 'rightLeft'
                 });
             },
             hideMenu() {
-                this.$store.dispatch('modNavigation/hideOffcanvasAction');
+                this.hideOffcanvasAction();
             },
             getSubTotal: function() {
-                let subtotals = this.$store.getters['modCart/getSubtotals'];
+                let subtotals = this.getSubtotals;
 
                 // Format subtotals
-                subtotals = this.$store.getters['modPrices/priceDecFmt'](subtotals);
-                subtotals = this.$store.getters['modPrices/priceAddCur'](subtotals);
+                subtotals = this.priceDecFmt(subtotals);
+                subtotals = this.priceAddCur(subtotals);
 
                 return subtotals;
             },
@@ -160,7 +180,7 @@
                 });
             },
             closeOffcanvas: function() {
-                this.$store.dispatch('modNavigation/hideOffcanvasAction');
+                this.hideOffcanvasAction();
             }
         }
     }
