@@ -39,7 +39,11 @@
                         @click="selectDefaultAddress('billing')"
                         v-text="$t('Select new default address')"
                 />
-                <button v-if="!isGuest" class="button-secondary w-100" @click="createAddress('billing')" v-text="$t('Create new address')" />
+                <button v-if="!isGuest"
+                        class="button-secondary w-100"
+                        @click="createAddress('billing')"
+                        v-text="$t('Create new address')"
+                />
             </div>
         </div>
 
@@ -72,7 +76,11 @@
                     @click="selectDefaultAddress('shipping')"
                     v-text="$t('Select new default address')"
                 />
-                <button v-if="!isGuest" class="button-secondary w-100" @click="createAddress('shipping')" v-text="$t('Create new address')" />
+                <button v-if="!isGuest"
+                        class="button-secondary w-100"
+                        @click="createAddress('shipping')"
+                        v-text="$t('Create new address')"
+                />
             </div>
         </div>
 
@@ -80,7 +88,9 @@
             <div v-if="showLayer" class="transition-expand-wrp">
                 <div class="container expand-content">
                     <div class="row overlay-header">
-                        <button class="button-icon button-close-menu" @click="toggle()">
+                        <button class="button-icon button-close-menu"
+                                @click="toggle()"
+                        >
                             <i class="icon icon-close" aria-hidden="true" />
                             <material-ripple />
                         </button>
@@ -228,11 +238,17 @@
 
                                     <div class="error-message" v-text="error" />
 
-                                    <button v-if="formIsActiveAddressUpdate && !saveAsNewAddress" class="button-primary" @click.prevent="passes(submitUpdateForm)">
+                                    <button v-if="formIsActiveAddressUpdate && !saveAsNewAddress"
+                                            class="button-primary"
+                                            @click.prevent="passes(submitUpdateForm)"
+                                    >
                                         {{ $t('Edit') }}
                                         <material-ripple />
                                     </button>
-                                    <button v-if="formIsActiveAddressCreate || saveAsNewAddress" class="button-primary" @click.prevent="passes(submitCreateForm)">
+                                    <button v-if="formIsActiveAddressCreate || saveAsNewAddress"
+                                            class="button-primary"
+                                            @click.prevent="passes(submitCreateForm)"
+                                    >
                                         {{ $t('Add') }}
                                         <material-ripple />
                                     </button>
@@ -305,7 +321,10 @@
                                         {{ $t('Select as default address') }}
                                         <material-ripple />
                                     </button>
-                                    <button v-else class="button-primary delete-address-button" @click.prevent="submitDeleteAddress()">
+                                    <button v-else
+                                            class="button-primary delete-address-button"
+                                            @click.prevent="submitDeleteAddress()"
+                                    >
                                         {{ $t('Delete selected addresses') }}
                                         <material-ripple />
                                     </button>
@@ -447,7 +466,7 @@
             },
             defaultShippingAddress: function () {
                 // recalculate shipping cost when shipping address changes
-                this.$store.dispatch('modCart/calculateShippingCosts', this.defaultShippingAddress.country).then((response) => {
+                this.calculateShippingCosts(this.defaultShippingAddress.country).then((response) => {
                     //console.log(response);
                 })
                 .catch((error) => {
@@ -470,10 +489,14 @@
                 storeCustomerAddress: 'modApiCustomer/storeCustomerAddress',
                 editAddress: 'modApiCustomer/editAddress',
                 deleteCustomerAddress: 'modApiCustomer/deleteCustomerAddress',
+                toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction',
+                hideOffcanvasAction: 'modNavigation/hideOffcanvasAction',
+                editGuestAddress: 'modApiPayment/editGuestAddress',
+                calculateShippingCosts: 'modCart/calculateShippingCosts'
             }),
             toggle: function() {
                 return new Promise((resolve) => {
-                    this.$store.dispatch('modNavigation/toggleOffcanvasAction', {
+                    this.toggleOffcanvasAction({
                         component: this.name,
                         direction: 'rightLeft'
                     })
@@ -496,18 +519,20 @@
                 });
             },
             hide() {
-                this.$store.dispatch('modNavigation/hideOffcanvasAction');
+                this.hideOffcanvasAction();
             },
             getAddresses: function() {
                 this.loading = true;
                 // Get addresses from store if guest
                 if(this.isGuest) {
                     this.mapAddresses();
+
                     this.loading = false;
                 } else {
                     // Get addresses from api if logged in user
                     this.getCustomerAddresses().then(() => {
                         this.mapAddresses();
+
                         this.loading = false;
                     })
                     .catch(() => {
@@ -592,12 +617,14 @@
                 // Set type of address
                 if(addressType === 'billing') {
                     this.address.is_billing = true;
+
                     // Set SelectedDefault
                     this.selectedDefault = this.defaultBillingAddress;
                 }
 
                 if(addressType === 'shipping') {
                     this.address.is_shipping = true;
+
                     // Set SelectedDefault
                     this.selectedDefault = this.defaultShippingAddress;
                 }
@@ -615,11 +642,13 @@
                 this.storeCustomerAddress(address).then(() => {
                     // Refresh addresses and close offcanvas
                     this.getAddresses();
+
                     this.toggle();
                 })
                 .catch((error) => {
                     // Show api request error
                     this.addBackendErrors(error.errors);
+
                     this.error = error.message;
                     //this.error = this.$t('Store new address failed');
                 });
@@ -638,19 +667,22 @@
                     this.editAddress(address).then(() => {
                         // Refresh addresses and close offcanvas
                         this.getAddresses();
+
                         this.toggle();
                     })
                     .catch((error) => {
                         // Show api request error
                         this.addBackendErrors(error.errors);
+
                         this.error = error.message;
                         //this.error = this.$t('Editing address failed');
                     });
                 } else {
                     // Edit cookie if is guest
                     // dispatch data to api ...
-                    this.$store.dispatch('modApiCustomer/editGuestAddress', address).then(() => {
+                    this.editGuestAddress(address).then(() => {
                         this.getAddresses();
+
                         this.toggle();
                     })
                     .catch(() => {
@@ -674,6 +706,7 @@
 
                         this.editAddress(newDefaultAddress).then(() => {
                             this.getAddresses();
+
                             this.toggle();
                         }).catch((error) => {
                             console.log(error);
