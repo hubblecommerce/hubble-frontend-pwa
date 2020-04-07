@@ -110,7 +110,6 @@
                 setWishlistItemsObj: 'modWishlist/setWishlistItemsObj'
             }),
             submitLoginForm: function() {
-                console.log('Inside submitLoginForm function');
                 let validCreds = {
                     email: this.form.email,
                     password: this.form.password
@@ -121,10 +120,8 @@
 
                 // Post request with login credentials
                 this.logIn(validCreds).then(() => {
-                    console.log("Inside logIn section");
                     // Get wishlist of current customer from api and save to store
                     this.getWishlist().then(response => {
-                        console.log("Inside getWishlist section");
                         if(!_.isEmpty(response.data.item)) {
                             // Merge Wishlist of store with existing user wishlist from api
                             let state = _.clone(this.wishlistState);
@@ -155,6 +152,7 @@
                                 this.$router.push({
                                     path: this.localePath('checkout-shopware-onepage')
                                 });
+
                                 return;
                             }
 
@@ -197,17 +195,16 @@
                             email: '',
                             password: ''
                         });
+
                         this.error = '';
                     });
                 }).catch(error => {
                     this.error = 'Neues Password anfordern fehlgeschlagen';
-                    //console.log(error);
                 });
             },
             toggleLoginForm: function () {
                 this.showLoginForm = !this.showLoginForm;
             }
         }
-
     }
 </script>
