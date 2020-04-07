@@ -39,7 +39,7 @@
 </template>
 
 <script>
-    import { mapState, mapActions } from 'vuex';
+    import { mapState, mapActions, mapGetters } from 'vuex';
 
     export default {
         name: "CustomerOrderList",
@@ -69,6 +69,10 @@
             ...mapState({
                 priceCurrency: state => state.modPrices.priceCurrency,
                 priceCurrencySymbol: state => state.modPrices.priceCurrencySymbol
+            }),
+            ...mapGetters({
+                priceDecFmt: 'modPrices/priceDecFmt',
+                priceAddCur: 'modPrices/priceAddCur'
             })
         },
 
@@ -86,6 +90,7 @@
                 //Get orders from store
                 this.getOrdersFromStore().then((response) => {
                     this.orders = response;
+
                     this.loading = false;
                 }).catch(() => {
                     this.loading = false;
@@ -101,8 +106,8 @@
                 return false;
             },
             getTotals(value) {
-                let total = this.$store.getters['modPrices/priceDecFmt'](value);
-                total = this.$store.getters['modPrices/priceAddCur'](value);
+                let total = this.priceDecFmt(value);
+                total = this.priceAddCur(value);
 
                 return total;
             },
