@@ -64,7 +64,9 @@
                     </div>
                 </div>
                 <nuxt-link :to="localePath('index')">
-                    <button class="button-secondary" v-text="$t('Back to shop')" />
+                    <button class="button-secondary"
+                            v-text="$t('Back to shop')"
+                    />
                 </nuxt-link>
             </div>
         </div>
@@ -73,7 +75,7 @@
 </template>
 
 <script>
-    import { mapState, mapActions } from 'vuex';
+    import { mapState, mapActions, mapGetters } from 'vuex';
     import CartItemsListNonInteractive from "../checkout/CartItemsListNonInteractive";
     import {mapKeyToValue, mapIsoToCountry, salutations} from "@hubblecommerce/hubble/core/utils/formMixins";
 
@@ -101,6 +103,10 @@
             ...mapState({
                 countries: state => state.modApiCustomer.availableCountries,
             }),
+            ...mapGetters({
+                priceDecFmt: 'modPrices/priceDecFmt',
+                priceAddCur: 'modPrices/priceAddCur'
+            })
         },
 
         mounted() {
