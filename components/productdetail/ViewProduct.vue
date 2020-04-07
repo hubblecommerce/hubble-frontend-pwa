@@ -27,7 +27,7 @@
 
                     <div v-if="$mq === 'sm'" class="product-description-container">
                         <div class="product-tabs md-elevation-2">
-                            <collapsible-description id="description-tab" :is-collapsed="false" :toggle-text="$t('Description')">
+                            <collapsible-description id="description" :is-collapsed="false" :toggle-text="$t('Description')">
                                 <div v-if="productData.description" class="tab-content">
                                     <p v-html="productData.description" />
                                 </div>

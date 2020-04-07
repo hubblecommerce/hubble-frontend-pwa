@@ -22,11 +22,6 @@
         padding: 10px 10px 20px;
         width: 100%;
 
-
-        .manufacturer-name {
-            margin-bottom: 8px;
-        }
-
         .add-to-wishlist-wrp {
             position: absolute;
             right: 5px;
@@ -116,7 +111,9 @@
         border-color: $accent;
     }
 
-    .description-link-wrp {
+    .description-link {
+        display: block;
+        width: 100%;
         border-bottom: 1px solid $border-color;
         padding: 0 10px 20px;
         margin-bottom: 20px;
@@ -165,10 +162,6 @@
             padding-right: 0;
             align-items: flex-start;
 
-            .manufacturer-name {
-                font-size: 18px;
-            }
-
             .add-to-wishlist-wrp {
                 right: 35px;
                 top: 20px;
@@ -187,7 +180,7 @@
             padding: 0;
         }
 
-        .description-link-wrp {
+        .description-link {
             padding: 10px 0 20px;
         }
 
