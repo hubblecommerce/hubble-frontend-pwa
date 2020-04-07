@@ -5,7 +5,7 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex';
+    import { mapState, mapActions } from 'vuex';
     export default {
         name: "BackgroundBlur",
         computed: {
@@ -13,16 +13,15 @@
                 offcanvas: state => state.modNavigation.offcanvas
             }),
             layerIsExpanded: function() {
-                if(this.offcanvas.component !== '') {
-                    return true;
-                }
-
-                return false;
+                return this.offcanvas.component !== '';
             }
         },
         methods: {
+            ...mapActions({
+                hideOffcanvasAction: 'modNavigation/hideOffcanvasAction'
+            }),
             hideMenu: function() {
-                this.$store.dispatch('modNavigation/hideOffcanvasAction');
+                this.hideOffcanvasAction();
             }
         }
     }
