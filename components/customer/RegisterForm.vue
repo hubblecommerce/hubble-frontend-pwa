@@ -539,10 +539,8 @@
                         }
                     }).then(response => {
                         // Get newly created wishlist id and save to store
-                        this.$store.commit('modWishlist/setWishlistId', response.data.item.id); // added to mapMutations
-                        //this.setWishlistId(response.data.item.id);
-                        this.$store.dispatch('modWishlist/saveToStore'); // added to mapActions
-                        //this.saveToStore();
+                        this.setWishlistId(response.data.item.id);
+                        this.saveToStore();
                     }).catch(response => {
                         // TODO: add catch clause implementation
                     });
@@ -561,6 +559,7 @@
                                     // Show api request error
                                     this.addBackendErrors(error.errors);
                                     this.error = error.message;
+
                                     this.processingRegister = false;
                                 });
                             } else {
@@ -571,6 +570,7 @@
                             // Show api request error
                             this.addBackendErrors(error.errors);
                             this.error = error.message;
+
                             this.processingRegister = false;
                         });
                     } else {
@@ -580,6 +580,7 @@
                     // Show api request error
                     this.addBackendErrors(error.errors);
                     this.error = error.message;
+
                     this.processingRegister = false;
                 });
             },
@@ -603,7 +604,7 @@
                 this.form.baseData.lastname = this.form.addresses[0].payload.lastName;
 
                 // Post request with login credentials
-                this.$store.dispatch('modApiCustomer/registerGuest', this.form).then(() => {
+                this.registerGuest(this.form).then(() => {
                     // If current route is checkout, then do redirect to checkout
                     if(this.$router.history.current.path.includes('/checkout')) {
                         this.$router.push({
@@ -615,12 +616,12 @@
                 }).catch((error) => {
                     // Show api request error
                     this.error = this.$t('Register failed');
+
                     this.processingRegister = false;
                 });
             },
             setShippingAsBilling: function() {
                 this.form.addresses[1] = _.cloneDeep(this.form.addresses[0]);
-
                 //this.form.addresses[1].id = 2;
                 this.form.addresses[1].is_billing = false;
                 this.form.addresses[1].is_billing_default = false;
@@ -658,6 +659,5 @@
                 e.preventDefault();
             }
         }
-
     }
 </script>

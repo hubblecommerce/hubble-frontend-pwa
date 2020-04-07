@@ -137,7 +137,9 @@
                         '/'
                     );
                 }
+
                 let _path = _.trim(process.env.config.IMG_BASE_URL, '/');
+
                 return _path + '/images/catalog/product/' + this.imgFilter + '/' + item.image;
             }
         }
