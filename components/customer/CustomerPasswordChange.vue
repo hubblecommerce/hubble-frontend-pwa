@@ -86,7 +86,6 @@
                     password: '',
                     passwordConfirm: '',
                 }),
-
                 error: ''
             }
         },
@@ -96,19 +95,15 @@
                 offcanvas: state => state.modNavigation.offcanvas,
             }),
             showMenu: function() {
-                if(this.offcanvas.component === this.name) {
-                    return true;
-                }
-
-                return false;
+                return this.offcanvas.component === this.name;
             }
         },
 
-
-
         methods: {
             ...mapActions({
-                passwordUpdate: 'modApiCustomer/passwordUpdate'
+                passwordUpdate: 'modApiCustomer/passwordUpdate',
+                toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction',
+                flashMessage: 'modFlash/flashMessage'
             }),
             submitUpdatePassword: function () {
                 let payload = {
@@ -117,14 +112,13 @@
                     password_confirm: this.form.passwordConfirm
                 };
 
-                this.passwordUpdate(payload).then(response => {
-
-                    this.$store.dispatch('modNavigation/toggleOffcanvasAction', {
+                this.passwordUpdate(payload).then(() => {
+                    this.toggleOffcanvasAction({
                         component: this.name,
                         direction: 'rightLeft'
                     }).then(() => {
                         // Success Flash Message
-                        this.$store.dispatch('modFlash/flashMessage', {
+                        this.flashMessage({
                             flashType: 'success',
                             flashMessage: this.$t('You successfully changed your password.'),
                             keepOnRouteChange: true
@@ -135,12 +129,13 @@
                 });
             },
             toggle: function() {
-                this.$store.dispatch('modNavigation/toggleOffcanvasAction', {
+                this.toggleOffcanvasAction({
                     component: this.name,
                     direction: 'rightLeft'
                 }).then(() => {
                     // Reset data
                     this.error = '';
+
                     this.form = new Form({
                         passwordOld: '',
                         password: '',
