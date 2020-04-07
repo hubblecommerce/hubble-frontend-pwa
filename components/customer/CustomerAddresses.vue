@@ -763,10 +763,7 @@
                 }
             },
             showDeleteIcon: function(address){
-                if(address.is_billing_default || address.is_shipping_default){
-                    return false;
-                }
-                return true;
+                return !(address.is_billing_default || address.is_shipping_default);
             },
             // Methods for selecting classes
             isSelectedForDeletion: function(address){
