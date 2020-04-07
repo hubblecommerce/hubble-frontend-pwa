@@ -11,7 +11,11 @@
                 </div>
             </div>
             <div class="col-3 cookie-notice-button-wrp">
-                <button class="float-right button button-primary" @click="deactivateCookieNotice">Verstanden</button>
+                <button class="float-right button button-primary"
+                        @click="deactivateCookieNotice"
+                >
+                    Verstanden
+                </button>
             </div>
         </template>
         <template v-if="$mq === 'sm'">
@@ -23,7 +27,11 @@
                     </div>
                 </div>
                 <div class="row col-12 cookie-notice-button-wrp">
-                    <button class="button button-primary cookie-notice-button" @click="deactivateCookieNotice">Verstanden</button>
+                    <button class="button button-primary cookie-notice-button"
+                            @click="deactivateCookieNotice"
+                    >
+                        Verstanden
+                    </button>
                 </div>
             </div>
         </template>
@@ -31,13 +39,17 @@
 </template>
 
 <script>
+    import { mapActions } from 'vuex';
 
     export default {
         name: "CookieNotice",
 
         methods: {
+            ...mapActions({
+                acceptCookieNotice: 'modCookieNotice/acceptCookieNotice'
+            }),
             deactivateCookieNotice: function () {
-                this.$store.dispatch('modCookieNotice/acceptCookieNotice', {});
+                this.acceptCookieNotice({});
             }
         }
     }
