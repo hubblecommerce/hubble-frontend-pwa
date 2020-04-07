@@ -1,6 +1,9 @@
 <template>
     <div class="customer-account-cpt-wrp">
-        <button class="button-icon" :class="setButtonStates" @click="toggle()">
+        <button class="button-icon"
+                :class="setButtonStates"
+                @click="toggle()"
+        >
             <i class="icon icon-account" /><span class="hidden-link-name">Account</span>
             <material-ripple />
         </button>
@@ -8,7 +11,9 @@
             <div v-if="showMenu" class="transition-expand-wrp">
                 <div class="container expand-content">
                     <div class="row overlay-header">
-                        <button class="button-icon button-close-menu" @click="toggle()">
+                        <button class="button-icon button-close-menu"
+                                @click="toggle()"
+                        >
                             <i class="icon icon-close" aria-hidden="true" />
                             <material-ripple />
                         </button>
@@ -23,7 +28,9 @@
                                 <login-form />
                                 <div class="headline" v-text="$t('I am not having an account yet')" />
                                 <div class="subline">{{ $t('Simply create a customer account with us.') }}</div>
-                                <button class="button-primary" @click.prevent="showFormRegister">
+                                <button class="button-primary"
+                                        @click.prevent="showFormRegister"
+                                >
                                     {{ $t('Register') }}
                                     <material-ripple />
                                 </button>
@@ -66,11 +73,7 @@ export default {
             }
         },
         showMenu: function() {
-            if(this.offcanvas.component === this.name) {
-                return true;
-            }
-
-            return false;
+            return this.offcanvas.component === this.name;
         },
         isLoggedIn: function() {
             if(!_.isEmpty(this.customer.customerAuth) && this.customer.customerAuth.token !== 'guest') {
@@ -89,6 +92,10 @@ export default {
     },
 
     methods: {
+        ...mapActions({
+            toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction',
+            hideOffcanvasAction: 'modNavigation/hideOffcanvasAction'
+        }),
         toggle() {
             this.toggleOffcanvasAction({
                 component: this.name,
@@ -104,11 +111,7 @@ export default {
             this.$router.push({
                 path: this.localePath('customer-login')
             });
-        },
-        ...mapActions('modNavigation', [
-            'toggleOffcanvasAction',
-            'hideOffcanvasAction'
-        ])
+        }
     }
 }
 </script>
