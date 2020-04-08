@@ -87,6 +87,7 @@
 
 <script>
 
+    import { mapGetters, mapMutations } from'vuex';
     export default {
   name: 'TheSearch',
 
@@ -109,8 +110,11 @@
   },
 
   computed: {
+      ...mapGetters({
+          getApiLocale: 'modApiResources/getApiLocale'
+      }),
     locale() {
-      return this.$store.getters['modApiResources/getApiLocale']
+      return this.getApiLocale;
     },
     imgFilter() {
       return this.dataImageFilter ? this.dataImageFilter : this.origImageFilter
@@ -150,6 +154,9 @@
   },
 
   methods: {
+      ...mapMutations({
+          hideOffcanvas: 'modNavigation/hideOffcanvas'
+      }),
     bye() {
       this.showSearch = false;
 
@@ -166,7 +173,7 @@
       }
     },
     onFocus() {
-      this.$store.commit('modNavigation/hideOffcanvas');
+      this.hideOffcanvas();
       if (this.queryIsDisabled) {
         return
       }
@@ -397,7 +404,7 @@
       this.groups = _my_groups;
     },
     sendStats(data) {
-      let _vue = this
+      let _vue = this;
 
       let _route = route('utilities.stats');
 
