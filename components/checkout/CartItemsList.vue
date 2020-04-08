@@ -115,7 +115,7 @@
         methods: {
             ...mapActions({
                 updateItem: 'modCart/updateItem',
-                precalculateShippingCost: 'modCart/precalculateShippingCost',
+                precalculateShippingCostAction: 'modCart/precalculateShippingCost',
                 resetMessage: 'modFlash/resetMessage',
                 delItem: 'modCart/delItem',
                 removeCouponAction: 'modCart/removeCoupon',
@@ -172,7 +172,7 @@
                     itemQty: newQty
                 });
 
-                this.$store.dispatch('modCart/updateItem', {
+                this.updateItem({
                     qty: delta
                 }).then(() => {
                     this.precalculateShippingCost({
@@ -185,11 +185,11 @@
                 let order = {
                     order: JSON.stringify(payload)
                 };
-                this.$store.dispatch('modCart/precalculateShippingCost', order);
+                this.precalculateShippingCostAction(order);
             },
             confirmRemoveItem: function(item) {
-                this.$store.dispatch('modFlash/resetMessage');
-                this.$store.dispatch('modCart/delItem', {
+                this.resetMessage();
+                this.delItem({
                     data: item
                 }).then(() => {
                     this.precalculateShippingCost({
