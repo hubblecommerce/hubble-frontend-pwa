@@ -4,12 +4,17 @@
             <transition name="fade">
                 <button v-if="!isOnWishlist" class="button-icon add-to-wishlist" @click="addToWishlist()">
                     <span class="hidden-link-name" v-text="$t('Add to wishlist')" />
+
                     <i class="icon icon-heart" />
+
                     <material-ripple />
                 </button>
+
                 <button v-if="isOnWishlist" class="button-icon remove-from-wishlist" @click="removeFromWishlist()">
                     <span class="hidden-link-name" v-text="$t('Remove from wishlist')" />
+
                     <i class="icon icon-heart-full" />
+                    
                     <material-ripple />
                 </button>
             </transition>
