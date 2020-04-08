@@ -14,7 +14,7 @@
                     <span class="hidden-link-name" v-text="$t('Remove from wishlist')" />
 
                     <i class="icon icon-heart-full" />
-                    
+
                     <material-ripple />
                 </button>
             </transition>
@@ -63,9 +63,13 @@
 
         methods: {
             ...mapActions({
-                postWishlist: 'modApiCustomer/postWishlist',
+                postWishlistSW: 'modApiCustomer/postWishlist',
                 updateWishlist: 'modApiCustomer/updateWishlist',
-                deleteWishlist: 'modApiCustomer/deleteWishlist',
+                deleteWishlistSW: 'modApiCustomer/deleteWishlist',
+                deleteWishlist: 'modWishlist/deleteWishlist',
+                addItem: 'modWishlist/addItem',
+                saveToStore: 'modWishlist/saveToStore',
+                flashMessage: 'modFlash/flashMessage'
             }),
             addToWishlist: function() {
 
@@ -81,7 +85,7 @@
                         // in this case do a POST to create a new wishlist
                         // ELSE: there is a existing wishlist, so just update it via PUT and ID
                         if(!this.wishlistId) {
-                            this.postWishlist({
+                            this.postWishlistSW({
                                 user_id: this.customer.customerData.id,
                                 wishlist: {
                                     qty: this.wishlistQty,
@@ -121,11 +125,11 @@
                 // ELSE: Just remove item from wishlist and update wishlist to api if user is logged in
                 if(this.wishlistQty === 1) {
                     if(this.isLoggedIn()) {
-                        this.deleteWishlist({
+                        this.deleteWishlistSW({
                             user_id: this.customer.customerData.id,
                             id: this.wishlistId
                         }).then(() => {
-                            this.$store.dispatch('modWishlist/deleteWishlist');
+                            this.deleteWishlist();
 
                             // Display Success Message
                             this.$store.dispatch('modFlash/flashMessage', {
@@ -134,7 +138,7 @@
                             });
                         })
                     } else {
-                        this.$store.dispatch('modWishlist/deleteWishlist');
+                        this.deleteWishlist();
 
                         // Display Success Message
                         this.$store.dispatch('modFlash/flashMessage', {
