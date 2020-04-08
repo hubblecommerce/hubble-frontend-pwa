@@ -483,7 +483,7 @@
                 postWishlist: 'modApiCustomer/postWishlist',
                 storeCustomerAddress: 'modApiCustomer/storeCustomerAddress',
                 saveToStore: 'modWishlist/saveToStore',
-                registerGuest: 'modApiPayment/registerGuest'
+                registerGuest: 'modApiCustomer/registerGuest'
             }),
             ...mapMutations({
                 setWishlistId: 'modWishlist/setWishlistId'
