@@ -37,6 +37,7 @@
                         </div>
                     </div>
                 </nuxt-link>
+
                 <div class="col-3 actions-wrp text-right">
                     <qty-selector :qty="item.qty" :max-qty="getStockQtyOfVariant(item)" @changeQty="onChangeQty(item.id, $event)" />
 
@@ -51,11 +52,13 @@
                 </div>
             </div>
         </transition-group>
+
         <div v-if="!isEmpty(cart.coupons)">
             <template v-for="(coupon, key) in cart.coupons">
                 <div :key="key" class="cart-items-list row item coupon align-items-center">
                     <div>
                         <span class="coupon text-small" v-text="$t('Voucher / Coupon')+':'" />
+                        
                         <span class="coupon-name text-small" v-text="coupon.code" />
                     </div>
 
