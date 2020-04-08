@@ -400,8 +400,8 @@
         },
 
         created() {
-            this.$store.commit('modApiRequests/setOptionsLimit', process.env.limiter);
-            this.$store.commit('modApiRequests/setOptionsSorter', process.env.sorter);
+            this.setOptionsLimit(process.env.limiter);
+            this.setOptionsSorter(process.env.sorter);
 
             this.$bus.$on('price-slider-changed', response => {
                 // save emitted price range to store
@@ -419,7 +419,7 @@
                 this.routeOnPropertyChange().then(() => {
                     this.applyFilter();
                 });
-            })
+            });
 
             this.$bus.$on('selectable-facet-changed', response => {
                 // save to store
@@ -463,7 +463,9 @@
                 setSelectedPriceMin: 'modApiRequests/setSelectedPriceMin',
                 setSelectedFacetsParam: 'modApiRequests/setSelectedFacetsParam',
                 resetSelectedFacetsParam: 'modApiRequests/resetSelectedFacetsParam',
-                setSelectedQueryParam: 'modApiRequests/setSelectedQueryParam'
+                setSelectedQueryParam: 'modApiRequests/setSelectedQueryParam',
+                setOptionsLimit: 'modApiRequests/setOptionsLimit',
+                setOptionsSorter: 'modApiRequests/setOptionsSorter'
             }),
             ...mapActions({
                 toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction',
