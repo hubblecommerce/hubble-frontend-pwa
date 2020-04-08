@@ -95,7 +95,7 @@
                                 // If no wishlist exists get newly created wishlist id and save to store
                                 if(!this.wishlistId) {
                                     this.$store.commit('modWishlist/setWishlistId', response.data.item.id);
-                                    this.$store.dispatch('modWishlist/saveToStore');
+                                    this.saveToStore();
                                 }
                             })
                         } else {
