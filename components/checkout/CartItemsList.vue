@@ -58,7 +58,7 @@
                 <div :key="key" class="cart-items-list row item coupon align-items-center">
                     <div>
                         <span class="coupon text-small" v-text="$t('Voucher / Coupon')+':'" />
-                        
+
                         <span class="coupon-name text-small" v-text="coupon.code" />
                     </div>
 
@@ -70,7 +70,7 @@
 </template>
 
 <script>
-    import {mapState} from 'vuex';
+    import {mapState, mapGetters, mapActions, mapMutations} from 'vuex';
     import QtySelector from "../utils/QtySelector";
     import {clearDataLayer} from "@hubblecommerce/hubble/core/utils/gtmHelper";
 
@@ -97,6 +97,13 @@
                 qty: state => state.modCart.cart.items_qty,
                 priceSwitcherIncludeVat: state => state.modPrices.priceSwitcherIncludeVat
             }),
+            ...mapGetters({
+                productIsSpecial: 'modPrices/productIsSpecial',
+                getPriceAndCurrencyDecFmt: 'modPrices/getPriceAndCurrencyDecFmt',
+                getTaxClassByLabel: 'modPrices/getTaxClassByLabel',
+                priceDecFmt: 'modPrices/priceDecFmt',
+                priceAddCur: 'modPrices/priceAddCur'
+            }),
             classesImg() {
                 return 'img-minicart';
             },
@@ -106,6 +113,17 @@
         },
 
         methods: {
+            ...mapActions({
+                updateItem: 'modCart/updateItem',
+                precalculateShippingCost: 'modCart/precalculateShippingCost',
+                resetMessage: 'modFlash/resetMessage',
+                delItem: 'modCart/delItem',
+                removeCouponAction: 'modCart/removeCoupon',
+                flashMessage: 'modFlash/flashMessage'
+            }),
+            ...mapMutations({
+                setCartItemsObjQty: 'modCart/setCartItemsObjQty'
+            }),
             itemImgPath: function(item) {
 
                 if(process.env.API_TYPE === 'sw') {
