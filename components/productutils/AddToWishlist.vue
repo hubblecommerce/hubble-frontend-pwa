@@ -74,7 +74,7 @@
             }),
             addToWishlist: function() {
 
-                this.$store.dispatch('modWishlist/addItem', {
+                this.addItem({
                     item: this.item,
                     qty: 1
                 }).then(() => {
