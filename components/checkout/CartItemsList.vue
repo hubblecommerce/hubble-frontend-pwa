@@ -167,7 +167,7 @@
                 let newQty = e;
                 let delta = newQty - oldQty;
 
-                this.$store.commit('modCart/setCartItemsObjQty', {
+                this.setCartItemsObjQty({
                     itemId: id,
                     itemQty: newQty
                 });
