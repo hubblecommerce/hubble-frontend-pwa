@@ -2,18 +2,23 @@
     <div>
         <div class="summary-row sub-totals bg-light">
             <div>{{ $t('Subtotal') }}</div>
+
             <div>
                 <span class="float-right" v-html="getSubTotal()"></span>
             </div>
         </div>
+
         <div class="summary-row shipping-costs bg-light">
             <div>{{ $t('Shipping Costs') }}</div>
+
             <div>
                 <span class="float-right" v-html="getShippingCosts()"></span>
             </div>
         </div>
+
         <div class="summary-row totals bg-light">
             <div>{{ $t('Totals') }}</div>
+            
             <div>
                 <span class="float-right" v-html="getTotal()"></span>
             </div>
@@ -64,11 +69,7 @@
                 total = this.priceAddCur(total);
 
                 return total;
-            },
+            }
         }
     }
 </script>
-
-<style scoped>
-
-</style>
