@@ -5,32 +5,36 @@
                 @click="toggle()"
         >
             <i class="icon icon-account" /><span class="hidden-link-name">Account</span>
+
             <material-ripple />
         </button>
         <transition-expand-layer :right-left="true">
             <div v-if="showMenu" class="transition-expand-wrp">
                 <div class="container expand-content">
                     <div class="row overlay-header">
-                        <button class="button-icon button-close-menu"
-                                @click="toggle()"
-                        >
+                        <button class="button-icon button-close-menu" @click="toggle()">
                             <i class="icon icon-close" aria-hidden="true" />
+
                             <material-ripple />
                         </button>
+
                         <div class="overlay-headline" v-text="$t('Customer Account')" />
                     </div>
+
                     <div class="row content-wrp">
                         <transition name="fade" mode="out-in">
                             <div v-if="isLoggedIn" :key="'loggedIn'">
                                 <customer-account-navigation />
                             </div>
+
                             <div v-if="!isLoggedIn" :key="'loggedOut'">
                                 <login-form />
+
                                 <div class="headline" v-text="$t('I am not having an account yet')" />
+
                                 <div class="subline">{{ $t('Simply create a customer account with us.') }}</div>
-                                <button class="button-primary"
-                                        @click.prevent="showFormRegister"
-                                >
+
+                                <button class="button-primary" @click.prevent="showFormRegister">
                                     {{ $t('Register') }}
                                     <material-ripple />
                                 </button>
