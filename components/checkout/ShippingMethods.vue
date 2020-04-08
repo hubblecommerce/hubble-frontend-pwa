@@ -60,7 +60,7 @@
                 this.setMethodById(newValue);
 
                 this.storeChosenShippingMethod(this.chosenMethodObj).then(() => {
-                    this.refreshCart().then(() => {
+                    this.recalculateCart().then(() => {
                         this.resetProcessingCheckout();
                     });
                 });
@@ -87,7 +87,7 @@
         methods: {
             ...mapActions({
                 storeChosenShippingMethod: 'modApiPayment/storeChosenShippingMethod',
-                refreshCart: 'modCart/refreshCart',
+                recalculateCart: 'modCart/recalculateCart',
                 getShippingMethodsFromAPI: 'modApiPayment/getShippingMethods'
             }),
             ...mapMutations({
