@@ -67,6 +67,7 @@
                 updateWishlist: 'modApiCustomer/updateWishlist',
                 deleteWishlistSW: 'modApiCustomer/deleteWishlist',
                 deleteWishlist: 'modWishlist/deleteWishlist',
+                delItem: 'modWishlist/delItem',
                 addItem: 'modWishlist/addItem',
                 saveToStore: 'modWishlist/saveToStore',
                 flashMessage: 'modFlash/flashMessage'
@@ -147,7 +148,7 @@
                         });
                     }
                 } else {
-                    this.$store.dispatch('modWishlist/delItem', {
+                    this.delItem({
                         data: this.item
                     }).then(() => {
                         // Update wishlist via api
