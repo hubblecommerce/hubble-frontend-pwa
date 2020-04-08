@@ -3,7 +3,9 @@
 
         <button v-if="$mq === 'sm' || $mq === 'md'" class="button button-primary open-filter" @click="toggle()">
             <i class="icon icon-sliders left" />
+
             <span v-text="$t('Filter')" />
+
             <material-ripple />
         </button>
 
@@ -16,6 +18,7 @@
                             <i class="icon icon-close" aria-hidden="true" />
                             <material-ripple />
                         </button>
+
                         <div class="overlay-headline" v-text="$t('Filter')" />
                     </div>
 
@@ -25,9 +28,11 @@
                                 <selectable-facet :data-facet="facet" :type-checkbox="true" />
                             </div>
                         </template>
+
                         <div v-for="(facet, facetIndex) in requestStringFacets" :key="facetIndex" class="facet-wrp">
                             <selectable-facet :data-facet="facet" :type-checkbox="true" />
                         </div>
+
                         <div class="facet-wrp">
                             <collapsible :display-via-if="true" :toggle-text="$t('Price')" :max-height="100" open-icon-class="icon-chevron-down" close-icon-class="icon-chevron-up">
                                 <price-slider
@@ -45,6 +50,7 @@
                             <span v-text="$t('Reset all')" />
                             <material-ripple />
                         </button>
+
                         <button class="button button-primary apply-filter" @click="applyFilter()">
                             <span v-text="$t('Apply & Close')" />
                             <material-ripple />
@@ -103,6 +109,7 @@
                 >
                     <button class="button button-secondary" @click="routeOnPropertyRemove(facet.key)">
                         {{ getSelectedFacetOptionsLabel(facet) }} <i class="icon icon-close" />
+
                         <material-ripple />
                     </button>
                 </div>
@@ -115,6 +122,7 @@
             >
                 <button class="button button-secondary" @click="routeOnPropertyRemove(facet.key)">
                     {{ getSelectedFacetOptionsLabel(facet) }} <i class="icon icon-close" />
+
                     <material-ripple />
                 </button>
             </div>
@@ -122,7 +130,9 @@
             <div v-if="hasPriceFacetsSelected" class="filter">
                 <button class="button button-secondary" @click="routeOnPropertyRemove('price')">
                     {{ $t('price') }}: {{ formatPrice(requestPriceFacets[0].filtered.from) }} - {{ formatPrice(requestPriceFacets[0].filtered.to) }}
+
                     <i class="icon icon-close" />
+
                     <material-ripple />
                 </button>
             </div>
@@ -133,6 +143,7 @@
             <span v-if="this.totalItems > 1">
                 {{ dataCategoryProducts.result.stats.total }} {{$t('shopping_cart_label_items')}}
             </span>
+
             <span v-else>
                 {{ dataCategoryProducts.result.stats.total }} {{$t('shopping_cart_label_item')}}
             </span>
@@ -142,7 +153,7 @@
 </template>
 
 <script>
-    import {mapState, mapGetters, mapMutations, mapActions} from 'vuex';
+    import {mapActions, mapGetters, mapMutations, mapState} from 'vuex';
 
     import SelectableFacet from './toolbar/SelectableFacet.vue';
     import SelectableLimit from './toolbar/SelectableLimit.vue';
@@ -215,42 +226,40 @@
                     return []
                 }
 
-                let _items = this.dataMenu.result.items
+                let _items = this.dataMenu.result.items;
 
-                let _combined = []
+                let _combined = [];
 
                 _.forEach(_items, item => {
                     // go for next level items (children)
                     _.forEach(item.children, childItem => {
                         _combined.push(_.omit(childItem, ['children']))
-                    })
+                    });
 
                     // at least push the item itself
                     _combined.push(_.omit(item, ['children']))
-                })
+                });
 
                 return _combined
             },
             categoryListChildren() {
-                let _children = this.categoryList.filter(
+                return this.categoryList.filter(
                     item => item.parent_id === this.categoryItem.id
                 )
-
-                return _children
             },
             categoryItem() {
                 if (_.isEmpty(this.dataCategory)) {
-                    return this.dataCategory
+                    return this.dataCategory;
                 }
 
-                return this.dataCategory.result.item
+                return this.dataCategory.result.item;
             },
             categoryProductItems() {
                 if (_.isEmpty(this.dataCategoryProducts)) {
-                    return this.dataCategoryProducts
+                    return this.dataCategoryProducts;
                 }
 
-                return this.dataCategoryProducts.result.items
+                return this.dataCategoryProducts.result.items;
             },
             changePosition() {
                 return this.$mq === 'sm' ? 'fixed' : 'left'
@@ -259,46 +268,46 @@
                 return this.hasNumberFacetsSelected || this.hasStringFacetsSelected || this.hasPriceFacetsSelected || (this.hasCategoryFacetsSelected && this.isSearchPage());
             },
             hasNumberFacetsSelected() {
-                let _selected = false
+                let _selected = false;
 
                 _.forEach(this.requestNumberFacets, facet => {
                     if (facet.selected) {
                         _selected = true
                     }
-                })
+                });
 
                 return _selected
             },
             hasStringFacetsSelected() {
-                let _selected = false
+                let _selected = false;
 
                 _.forEach(this.requestStringFacets, facet => {
                     if (facet.selected) {
                         _selected = true
                     }
-                })
+                });
 
                 return _selected
             },
             hasPriceFacetsSelected() {
-                let _selected = false
+                let _selected = false;
 
                 _.forEach(this.requestPriceFacets, facet => {
                     if (facet.selected) {
                         _selected = true
                     }
-                })
+                });
 
                 return _selected
             },
             hasCategoryFacetsSelected() {
-                let _selected = false
+                let _selected = false;
 
                 _.forEach(this.requestCategoryFacets, facet => {
                     if (facet.selected) {
                         _selected = true
                     }
-                })
+                });
 
                 return _selected
             },
@@ -352,11 +361,7 @@
                 }
             },
             showFilters: function() {
-                if (this.offcanvas.component === this.name) {
-                    return true;
-                }
-
-                return false;
+                return this.offcanvas.component === this.name;
             },
             totalItems: function() {
                 if(this.dataCategoryProducts.result.stats != null) {
@@ -370,9 +375,9 @@
         watch: {
             modelSelectedCategory() {
                 this.hideFilters().then(response => {
-                    let _prefix = '/'
+                    let _prefix = '/';
 
-                    let _locale = this.getApiLocale
+                    let _locale = this.getApiLocale;
 
                     if (_locale !== 'de') {
                         _prefix = '/' + _locale + '/'
@@ -400,16 +405,16 @@
 
             this.$bus.$on('price-slider-changed', response => {
                 // save emitted price range to store
-                this.setSelectedPriceMax(response.payload.price_to)
-                this.setSelectedPriceMin(response.payload.price_from)
+                this.setSelectedPriceMax(response.payload.price_to);
+                this.setSelectedPriceMin(response.payload.price_from);
 
-                this.routeOnPropertyChange()
-            })
+                this.routeOnPropertyChange();
+            });
 
             this.$bus.$on('price-slider-changed-and-apply', response => {
                 // save emitted price range to store
-                this.setSelectedPriceMax(response.payload.price_to)
-                this.setSelectedPriceMin(response.payload.price_from)
+                this.setSelectedPriceMax(response.payload.price_to);
+                this.setSelectedPriceMin(response.payload.price_from);
 
                 this.routeOnPropertyChange().then(() => {
                     this.applyFilter();
@@ -418,32 +423,32 @@
 
             this.$bus.$on('selectable-facet-changed', response => {
                 // save to store
-                this.setSelectedFacetsParam(response.payload)
+                this.setSelectedFacetsParam(response.payload);
 
-                this.routeOnPropertyChange()
-            })
+                this.routeOnPropertyChange();
+            });
 
             this.$bus.$on('selectable-facet-changed-and-applied', response => {
                 // save to store
-                this.setSelectedFacetsParam(response.payload)
+                this.setSelectedFacetsParam(response.payload);
 
                 this.routeOnPropertyChange().then(() => {
                     this.applyFilter();
                 });
-            })
+            });
 
             this.$bus.$on('selectable-limit-changed', response => {
                 // save to store
-                this.setSelectedQueryParam(response.payload)
+                this.setSelectedQueryParam(response.payload);
 
                 this.routeOnPropertyChange().then(() => {
                     this.applyFilter();
                 });
-            })
+            });
 
             this.$bus.$on('selectable-order-changed', response => {
                 // save to store
-                this.setSelectedQueryParam(response.payload)
+                this.setSelectedQueryParam(response.payload);
 
                 this.routeOnPropertyChange().then(() => {
                     this.applyFilter();
@@ -552,7 +557,7 @@
                 });
 
                 // omit removed property and 'page' parameter
-                let _query = _.omit(this.$route.query, [propertyName, 'page'])
+                let _query = _.omit(this.$route.query, [propertyName, 'page']);
 
                 if (propertyName === 'price') {
                     _query = _.omit(_query, ['price_to', 'price_from'])
@@ -571,7 +576,7 @@
             },
             routeOnPropertyRemoveAll() {
                 // always reset to 1st page
-                this.resetPagination();;
+                this.resetPagination();
 
                 // null property from nested storage object (facet)
                 this.resetSelectedFacetsParam();
