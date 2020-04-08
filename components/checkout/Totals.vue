@@ -18,7 +18,7 @@
 
         <div class="summary-row totals bg-light">
             <div>{{ $t('Totals') }}</div>
-            
+
             <div>
                 <span class="float-right" v-html="getTotal()"></span>
             </div>

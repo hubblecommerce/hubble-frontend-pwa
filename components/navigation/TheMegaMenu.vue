@@ -10,6 +10,7 @@
                 v-text="item.name"
             />
         </div>
+
         <transition name="slide-top-bottom">
             <div v-if="showMenu && activeCategory.children" :class="'fixed-container ' + activeCategory.url_path" @mouseleave="hideChildren">
                 <div class="max-width-container">
@@ -18,6 +19,7 @@
                         <div class="children-wrp">
                             <div v-for="child in activeCategory.children" v-if="showChild(child)" :key="child.id" class="child-wrp">
                                 <nuxt-link v-if="child.name" :to="itemUrlPath(child)" class="child-item" v-text="child.name" />
+
                                 <nuxt-link v-for="subchild in child.children" v-if="showChild(subchild)" :key="subchild.id" class="subchild-item" :to="itemUrlPath(subchild)" v-text="subchild.name" />
 
                                 <div v-for="item in child.menu_items" :key="item.id">
@@ -117,11 +119,14 @@
                 if(!('is_active' in child)) {
                     return true;
                 }
+
                 return child.is_active;
             },
             hideChildren: function() {
                 this.hideOffcanvasAction();
+
                 this.showMenu = false;
+
                 this.isActive = null;
             },
             itemImgPath: function(item) {
