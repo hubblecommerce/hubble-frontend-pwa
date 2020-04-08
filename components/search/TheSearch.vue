@@ -16,13 +16,19 @@
             @keyup.esc="clearQuery"
             @focus="onFocus"
           >
+
           <span class="highlight"/>
+
           <label class="hidden-link-name" for="autocomplete-search">{{ $t('Search') }}</label>
         </div>
+
         <button class="button-icon" type="submit" title="Search" @click.prevent="clearQuery">
           <div class="hidden-link-name">Search</div>
+
           <i v-if="!focus" class="icon icon-search"/>
+
           <i v-if="focus" class="icon icon-close"/>
+
           <material-ripple/>
         </button>
       </div>
@@ -35,11 +41,14 @@
                   <div class="col-6 text-left">
                     <div class="group-headline" v-html="$t(group.meta.label)+' (' + group.stats.total + ')'"/>
                   </div>
+
                   <div class="col-6 text-right">
                     <div v-if="group.meta.name === 'catalog_product'" class="show-result-link" @mousedown="doCatalogSearchGrouped(group)" v-text="$t('Show all results')"></div>
                   </div>
                 </div>
+
                 <product-listing v-if="group.meta.name === 'catalog_product'" :data-items="group.items"/>
+
                 <div v-else v-for="(item, itemIndex) in group.items"
                   :key="itemIndex"
                   class="result-item border-bottom d-flex align-items-center pt-3 pb-3 row"
@@ -49,6 +58,7 @@
                       <img :src="itemImgPath(group, item)" class="img-minicart" >
                     </div>
                   </div>
+
                   <div class="col-8">
                     <div v-html="highlight(item, 'name')"/>
                   </div>
@@ -76,9 +86,8 @@
 </template>
 
 <script>
-import axios from 'axios'
 
-export default {
+    export default {
   name: 'TheSearch',
 
   data() {
@@ -134,23 +143,26 @@ export default {
 
   watch: {
     query: function() {
-      this.queryIsTyping = true
-      this.doSearch()
+      this.queryIsTyping = true;
+
+      this.doSearch();
     }
   },
 
   methods: {
     bye() {
-      this.showSearch = false
-      this.queryShowResults = false
-      this.query = ''
+      this.showSearch = false;
+
+      this.queryShowResults = false;
+
+      this.query = '';
     },
     toggle() {
-      this.showSearch = !this.showSearch
+      this.showSearch = !this.showSearch;
 
       // Set focus on search input after component is opened
       if (this.showSearch) {
-        this.$nextTick(() => this.$refs.search.focus())
+        this.$nextTick(() => this.$refs.search.focus());
       }
     },
     onFocus() {
@@ -162,68 +174,64 @@ export default {
       this.focus = true;
 
       if (this.query.length) {
-        this.queryShowResults = true
+        this.queryShowResults = true;
       }
     },
     clearQuery() {
       this.focus = false;
-      this.query = ''
-      this.queryShowResults = false
+      this.query = '';
+      this.queryShowResults = false;
     },
     itemUrl(item) {
-      let _url = ''
+      let _url = '';
 
       // cms_pages (simplified)
       if (item.identifier) {
-        _url = item.identifier
+        _url = item.identifier;
       }
       // product or category items url
       else {
-        _url = item.url_pds ? item.url_pds : item.url_path
+        _url = item.url_pds ? item.url_pds : item.url_path;
       }
 
       if (this.locale !== 'de') {
-        return '/' + this.locale + '/' + _url
+        return '/' + this.locale + '/' + _url;
       }
 
-      return '/' + _url
+      return '/' + _url;
     },
     itemImgPath(group, item) {
       // If customer domain isset get live images
       if(!_.isEmpty(process.env.CUSTOMER_DOMAIN)) {
-        let _path = _.trim(process.env.config.IMG_BASE_URL, '/')
+        let _path = _.trim(process.env.config.IMG_BASE_URL, '/');
 
         if (group.meta.name === 'catalog_product') {
-          let image = item.image
+          let image = item.image;
 
-          let _reference = _.join(
+          return _.join(
               [
-                process.env.CUSTOMER_DOMAIN,
-                'images/catalog/thumbnails/cache/400',
-                image
+                  process.env.CUSTOMER_DOMAIN,
+                  'images/catalog/thumbnails/cache/400',
+                  image
               ],
               '/'
           )
-
-          return _reference
         }
 
         if (group.meta.name === 'catalog_category') {
-          let image = item.image
+          let image = item.image;
 
-          let _reference = _.join(
+          return _.join(
               [
-                process.env.CUSTOMER_DOMAIN,
-                'images/catalog/thumbnails/cache/400',
-                image
+                  process.env.CUSTOMER_DOMAIN,
+                  'images/catalog/thumbnails/cache/400',
+                  image
               ],
               '/'
-          )
-
-          return _reference
+          );
         }
 
-        return _path
+        return _path;
       }
 
       // If no customer domain isset get images from api
@@ -240,25 +248,25 @@ export default {
     selectItem(item, group) {
       let _route = {
         path: this.itemUrl(item)
-      }
+      };
 
       // bye search
-      this.bye()
+      this.bye();
 
       // push target to vuex router
-      this.$router.push(_route)
+      this.$router.push(_route);
     },
     doSearch: _.debounce(function() {
-      let _vue = this
+      let _vue = this;
 
-      let _endpoint = '/api/json/search/autocomplete'
+      let _endpoint = '/api/json/search/autocomplete';
 
       // stop typing ...
-      _vue.queryIsTyping = false
+      _vue.queryIsTyping = false;
 
       // return in case of too short
       if (_vue.query.length < _vue.queryMinLength) {
-        return
+        return;
       }
 
       // stop searching ...
@@ -275,13 +283,13 @@ export default {
           }
       }, { root: true })
         .then(response => {
-          _vue.queryIsSearching = false
+          _vue.queryIsSearching = false;
 
           //let data = {}
 
-          _vue.items = response.data.result.groups
-          _vue.stats = response.data.result.stats
-          _vue.queryShowResults = true
+          _vue.items = response.data.result.groups;
+          _vue.stats = response.data.result.stats;
+          _vue.queryShowResults = true;
 
           _vue.groupResults()
         })
@@ -291,20 +299,20 @@ export default {
     }, 350), // END doSearch
     doCatalogSearch() {
       if (_.isEmpty(this.query)) {
-        return false
+        return false;
       }
 
-      let _url = this.localePath('search-catalogsearch')
+      let _url = this.localePath('search-catalogsearch');
 
       let _route = {
         path: _url,
         query: {
           term: this.query
         }
-      }
+      };
 
       // bye search
-      this.bye()
+      this.bye();
 
       this.$router.push(_route)
     },
@@ -312,7 +320,7 @@ export default {
       // only if
       if (group.meta.name == 'catalog_product') {
         // do catalog search
-        this.doCatalogSearch()
+        this.doCatalogSearch();
       }
     },
     highlight(item, field) {
@@ -322,18 +330,18 @@ export default {
 
       // elasticsearch highlight (1st field only)
       if (!_.isEmpty(item.highlighted)) {
-        return _.values(item.highlighted)[0][0]
+        return _.values(item.highlighted)[0][0];
       }
 
       // try javascript highlighning on query string
       return item[field].replace(new RegExp(this.query, 'gi'), match => {
-        return '<span class="highlight">' + match + '</span>'
+        return '<span class="highlight">' + match + '</span>';
       })
     },
     getGroupHeadline(item) {
       // assemble headline content
       let _headline =
-        '<h3>' + this.$t(item.meta.label) + ' (' + item.stats.total + ')</h3>'
+        '<h3>' + this.$t(item.meta.label) + ' (' + item.stats.total + ')</h3>';
 
       // in case of group products, link to catalog search with term
       if (item.meta.name == 'catalog_product') {
@@ -343,69 +351,69 @@ export default {
       return _headline
     },
     groupResults() {
-      let _group_l = { name: 'left', items: [], count: 0 }
-      let _group_r = { name: 'right', items: [], count: 0 }
+      let _group_l = { name: 'left', items: [], count: 0 };
+      let _group_r = { name: 'right', items: [], count: 0 };
 
       // group categories
       let _group_categories = this.items.filter(
         item => item.meta.name === 'catalog_category'
-      )
+      );
 
       if (!_.isEmpty(_group_categories)) {
-        let _cnt_items_group = _.size(_group_categories[0].items)
-        _group_l.count += _cnt_items_group
+        let _cnt_items_group = _.size(_group_categories[0].items);
+        _group_l.count += _cnt_items_group;
 
-        _group_l.items.push(_group_categories[0])
+        _group_l.items.push(_group_categories[0]);
       }
 
       // group pages
       let _group_pages = this.items.filter(
         item => item.meta.name === 'cms_page'
-      )
+      );
 
       if (!_.isEmpty(_group_pages)) {
-        let _cnt_items_group = _.size(_group_pages[0].items)
-        _group_l.count += _cnt_items_group
+        let _cnt_items_group = _.size(_group_pages[0].items);
+        _group_l.count += _cnt_items_group;
 
-        _group_l.items.push(_group_pages[0])
+        _group_l.items.push(_group_pages[0]);
       }
 
       // group products
       let _group_products = this.items.filter(
         item => item.meta.name === 'catalog_product'
-      )
+      );
 
       if (!_.isEmpty(_group_products)) {
-        let _cnt_items_group = _.size(_group_products[0].items)
-        _group_r.count += _cnt_items_group
+        let _cnt_items_group = _.size(_group_products[0].items);
+        _group_r.count += _cnt_items_group;
 
-        _group_r.items.push(_group_products[0])
+        _group_r.items.push(_group_products[0]);
       }
 
-      let _my_groups = []
-      _my_groups.push(_group_l)
-      _my_groups.push(_group_r)
+      let _my_groups = [];
+      _my_groups.push(_group_l);
+      _my_groups.push(_group_r);
 
-      this.groups = _my_groups
+      this.groups = _my_groups;
     },
     sendStats(data) {
       let _vue = this
 
-      let _route = route('utilities.stats')
+      let _route = route('utilities.stats');
 
       return new Promise(function(resolve, reject) {
         _vue.$http
           .post(_route, data)
           .then(response => {
-            resolve('stats OK')
+            resolve('stats OK');
           })
           .catch(error => {
-            reject('stats not OK')
+            reject('stats not OK');
           })
       })
     },
     blurInput() {
-      document.getElementById('autocomplete-search').blur()
+      document.getElementById('autocomplete-search').blur();
     }
   }
 };
