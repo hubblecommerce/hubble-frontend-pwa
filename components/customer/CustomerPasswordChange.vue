@@ -12,6 +12,7 @@
                             <i class="icon icon-close" aria-hidden="true" />
                             <material-ripple />
                         </button>
+
                         <div class="overlay-headline" v-text="$t('Change your Password')" />
                     </div>
 
@@ -27,7 +28,9 @@
                                    placeholder=" "
                                    required
                             >
+
                             <label for="passwordOld" v-text="$t('Current Password')" />
+
                             <div class="validation-msg" v-text="$t(errors[0])" />
                         </validation-provider>
 
@@ -41,7 +44,9 @@
                                    placeholder=" "
                                    required
                             >
+
                             <label for="password" v-text="$t('New Password')" />
+
                             <div class="validation-msg" v-text="$t(errors[0])" />
                         </validation-provider>
 
@@ -55,7 +60,9 @@
                                    placeholder=" "
                                    required
                             >
+
                             <label for="passwordConfirm" v-text="$t('Confirm new Password')" />
+
                             <div class="validation-msg" v-text="$t(errors[0])" />
                         </validation-provider>
 
