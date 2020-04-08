@@ -23,7 +23,7 @@
 </template>
 
 <script>
-    import {mapState, mapActions} from 'vuex';
+    import {mapState, mapActions, mapMutations} from 'vuex';
 
     export default {
         name: "AddToWishlist",
@@ -72,13 +72,15 @@
                 saveToStore: 'modWishlist/saveToStore',
                 flashMessage: 'modFlash/flashMessage'
             }),
+            ...mapMutations({
+                setWishlistId: 'modWishlist/setWishlistId'
+            }),
             addToWishlist: function() {
 
                 this.addItem({
                     item: this.item,
                     qty: 1
                 }).then(() => {
-
                     // Save wishlist to api
                     if(this.isLoggedIn()) {
                         // Get wishlist of customer on every login and save to store
@@ -95,7 +97,7 @@
                             }).then(response => {
                                 // If no wishlist exists get newly created wishlist id and save to store
                                 if(!this.wishlistId) {
-                                    this.$store.commit('modWishlist/setWishlistId', response.data.item.id);
+                                    this.setWishlistId(response.data.item.id);
                                     this.saveToStore();
                                 }
                             })
@@ -120,7 +122,6 @@
 
             },
             removeFromWishlist: function() {
-
                 // Remove wishlist completely from store
                 // Delete wishlist as well from api if customer is logged in
                 // ELSE: Just remove item from wishlist and update wishlist to api if user is logged in
