@@ -7,11 +7,13 @@
                         <div class="col-4">
                             <img :src="itemImgPath(item)" class="product-img" alt="Product Image" :title="item.name_orig" :class="classesImg" />
                         </div>
+
                         <div class="col-8">
                             <div class="container">
                                 <div class="row">
                                     <span class="product-name">{{ item.name_orig }}</span>
                                 </div>
+
                                 <div class="row">
                                     <ul class="selected-variants-wrp">
                                         <li v-for="(variant, key) in item.variants" :key="key" class="selected-variants">
@@ -19,11 +21,14 @@
                                         </li>
                                     </ul>
                                 </div>
+
                                 <div class="row">
                                     <template v-if="itemIsSpecial(item)">
                                         <span class="product-price old-price" v-html="getPriceAndCurrency(item, 'display_price_brutto', priceSwitcherIncludeVat)" />
+
                                         <span class="product-price sale-price" v-html="getPriceAndCurrency(item, 'display_price_brutto_special', priceSwitcherIncludeVat)" />
                                     </template>
+
                                     <template v-else>
                                         <span class="product-price sale-price" v-html="getPriceAndCurrency(item, 'display_price_brutto', priceSwitcherIncludeVat)"></span>
                                     </template>
@@ -36,6 +41,7 @@
                     <qty-selector :qty="item.qty" :max-qty="getStockQtyOfVariant(item)" @changeQty="onChangeQty(item.id, $event)" />
 
                     <div v-if="!showLoader" aria-hidden="true" class="remove-item" @click="confirmRemoveItem(item)" v-text="$t('Remove')" />
+
                     <div v-if="showLoader" class="lds-ring">
                         <div />
                         <div />
@@ -52,6 +58,7 @@
                         <span class="coupon text-small" v-text="$t('Voucher / Coupon')+':'" />
                         <span class="coupon-name text-small" v-text="coupon.code" />
                     </div>
+
                     <div class="coupon-val" v-text="getCouponVal(coupon.payload.value)" />
                 </div>
             </template>
