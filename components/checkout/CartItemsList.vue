@@ -148,16 +148,16 @@
                 return _path + '/images/catalog/product/' + this.imgFilter + '/' + item.image;
             },
             itemIsSpecial: function(item) {
-                return this.$store.getters['modPrices/productIsSpecial'](item);
+                return this.productIsSpecial(item);
             },
             getPriceAndCurrency: function(item, key, addVat) {
                 let _price = item.final_price_item[key];
 
                 // Return formatted price incl. tax
-                return this.$store.getters['modPrices/getPriceAndCurrencyDecFmt'](_price, addVat, this.itemTaxClass(item));
+                return this.getPriceAndCurrencyDecFmt(_price, addVat, this.itemTaxClass(item));
             },
             itemTaxClass: function(item) {
-                return this.$store.getters['modPrices/getTaxClassByLabel'](item.final_price_item.tax_class_id);
+                return this.getTaxClassByLabel(item.final_price_item.tax_class_id);
             },
             onChangeQty: function(id, e) {
 
@@ -234,8 +234,8 @@
             },
             getCouponVal: function(value) {
                 let val;
-                val = this.$store.getters['modPrices/priceDecFmt'](value);
-                val = this.$store.getters['modPrices/priceAddCur'](value);
+                val = this.priceDecFmt(value);
+                val = this.priceAddCur(value);
                 return val;
             },
             formatSize: function (size) {
