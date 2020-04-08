@@ -111,7 +111,7 @@
                     }
 
                     // Display Success Message
-                    this.$store.dispatch('modFlash/flashMessage', {
+                    this.flashMessage({
                         flashType: 'info',
                         flashMessage: this.$t('Successfully added item to wishlist.')
                     });
@@ -132,7 +132,7 @@
                             this.deleteWishlist();
 
                             // Display Success Message
-                            this.$store.dispatch('modFlash/flashMessage', {
+                            this.flashMessage({
                                 flashType: 'info',
                                 flashMessage: this.$t('Removed item from wishlist.')
                             });
@@ -141,7 +141,7 @@
                         this.deleteWishlist();
 
                         // Display Success Message
-                        this.$store.dispatch('modFlash/flashMessage', {
+                        this.flashMessage({
                             flashType: 'info',
                             flashMessage: this.$t('Removed item from wishlist.')
                         });
@@ -163,7 +163,7 @@
                         }
 
                         // Display Success Message
-                        this.$store.dispatch('modFlash/flashMessage', {
+                        this.flashMessage({
                             flashType: 'info',
                             flashMessage: this.$t('Removed item from wishlist.')
                         });
