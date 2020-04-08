@@ -1,6 +1,7 @@
 <template>
     <validation-observer v-if="showLoginForm" ref="observer" v-slot="{ passes }" tag="form" @submit.prevent="passes(submitLoginForm)">
         <div class="headline headline-3" v-text="$t('I already have an account')" />
+
         <validation-provider v-slot="{ errors }" name="email" rules="required" mode="passive" tag="div" class="hbl-input-group input-icon">
                 <input id="email"
                        v-model="form.email"
@@ -10,10 +11,14 @@
                        placeholder=" "
                        required
                 >
+
                 <label for="email" v-text="$t('Email Address')" />
+
                 <i class="icon icon-mail" />
+
                 <div class="validation-msg" v-text="$t(errors[0])" />
         </validation-provider>
+
         <validation-provider v-slot="{ errors }" name="password" rules="required" mode="passive" tag="div" class="hbl-input-group input-icon">
             <input id="password"
                    v-model="form.password"
@@ -23,8 +28,11 @@
                    placeholder=" "
                    required
             >
+
             <label for="password" v-text="$t('Password')" />
+
             <i class="icon icon-lock" />
+
             <div class="validation-msg" v-text="$t(errors[0])" />
         </validation-provider>
 
@@ -40,6 +48,7 @@
 
     <validation-observer v-else-if="!showLoginForm" ref="observer" v-slot="{ passes }" class="password-forgot-form" tag="form" @submit.prevent="passes(submitForgotPassword)">
         <div class="headline headline-3" v-text="$t('Reset your Password')" />
+
         <validation-provider v-slot="{ errors }" name="email" rules="required|email" mode="passive" tag="div" class="hbl-input-group input-icon">
             <input id="email"
                    v-model="form.email"
@@ -49,8 +58,11 @@
                    placeholder=" "
                    required
             >
+
             <label for="email" v-text="$t('Email Address')" />
+
             <i class="icon icon-mail" />
+
             <div class="validation-msg" v-text="$t(errors[0])" />
         </validation-provider>
 
@@ -78,14 +90,11 @@
         data() {
             return {
                 curComponent: 'view-auth',
-
                 form: new Form({
                     email: '',
                     password: ''
                 }),
-
                 error: null,
-
                 showLoginForm: true,
             }
         },
@@ -94,7 +103,7 @@
             ...mapState({
                 customer: state => state.modApiCustomer.customer,
                 wishlistState: state => state.modWishlist.wishlistItemsObj
-            }),
+            })
         },
 
         methods: {
