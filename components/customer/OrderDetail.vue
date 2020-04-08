@@ -8,34 +8,48 @@
         <div class="order-row">
             <div v-for="(address, key) in orderData.addresses" :key="key" class="order-col billing-addresses-wrp">
                 <div v-if="address.is_billing" class="headline headline-3" v-text="$t('Billing Address')" />
+
                 <div v-if="address.is_shipping" class="headline headline-3" v-text="$t('Shipping Address')" />
+
                 <div class="billing-address-wrp">
                     <div>
                         <span v-text="mapKeyToValue(address.payload.gender, salutations)" />
+
                         <span v-text="address.payload.firstName" />
+
                         <span v-text="address.payload.lastName" />
                     </div>
+
                     <div>
                         <span v-text="address.payload.street" />
+
                         <span v-text="address.payload.houseNo" />
                     </div>
+
                     <div>
                         <span v-text="address.payload.postal" />
+
                         <span v-text="address.payload.city" />
                     </div>
+
                     <div>
                         <span v-text="mapIsoToCountry(address.payload.country, countries)" />
                     </div>
                 </div>
             </div>
+
             <div class="order-col order-info-wrp">
                 <div class="headline headline-3" v-text="$t('Information')" />
+
                 <div v-if="orderData.chosenShippingMethod" class="shippping-method">
                     <span class="label" v-text="$t('Shipping')+': '" />
+
                     <span class="value" v-text="orderData.chosenShippingMethod.label" />
                 </div>
+
                 <div v-if="orderData.chosenPaymentMethod" class="payment-method">
                     <span class="label" v-text="$t('Payment')+': '" />
+
                     <span class="value" v-text="$t(orderData.chosenPaymentMethod.label)" />
                 </div>
             </div>
@@ -47,18 +61,22 @@
             <div class="summary-wrp">
                 <div class="summary-row sub-totals bg-light">
                     <div>{{ $t('Subtotal') }}</div>
+
                     <div>
                         <span v-if="orderData.cart" class="float-right" v-html="getSubTotal()" />
                     </div>
                 </div>
+
                 <div class="summary-row shipping-costs bg-light">
                     <div>{{ $t('Shipping Costs') }}</div>
+
                     <div>
                         <span v-if="orderData.cart" class="float-right" v-html="getShippingCost()" />
                     </div>
                 </div>
                 <div class="summary-row totals bg-light">
                     <div>{{ $t('Totals') }}</div>
+
                     <div>
                         <span v-if="orderData.cart" class="float-right" v-html="getTotal()" />
                     </div>
