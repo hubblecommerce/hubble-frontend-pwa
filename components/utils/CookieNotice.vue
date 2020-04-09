@@ -5,6 +5,7 @@
                 <div class="cookie-icon">
                     <i class="icon icon-cookie" />
                 </div>
+                
                 <div class="text">
                     Diese Website verwendet Cookies, um die Interaktion mit anderen Websites und sozialen Netzwerken zu ermöglichen sowie den Komfort bei der Benutzung dieser Website zu erhöhen.
                     Details entnehmt Ihr bitte unseren Hinweisen zum <nuxt-link class="link-primary" :to="'/Datenschutz'">Datenschutz.</nuxt-link>
@@ -48,7 +49,7 @@
             ...mapActions({
                 acceptCookieNotice: 'modCookieNotice/acceptCookieNotice'
             }),
-            deactivateCookieNotice: function () {
+            deactivateCookieNotice() {
                 this.acceptCookieNotice({});
             }
         }
