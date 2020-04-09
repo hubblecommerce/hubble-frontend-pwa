@@ -6,19 +6,23 @@
                     <div class="col-4">
                         <img :src="itemImgPath(item)" alt="Product Image" :title="item.name" :class="classesImg" >
                     </div>
+
                     <div class="col-8">
                         <div class="container">
                             <div class="row">
                                 <span class="product-name">{{ item.name }}</span>
                             </div>
+
                             <div v-for="variant in item.variants" :key="variant.id" class="row selected-variants">
                                 <span>{{ variant.label + ": " + formatSize(variant.value_label) }}</span>
                             </div>
+
                             <div class="row">
                                 <template v-if="itemIsSpecial(item)">
                                     <span class="product-price old-price" v-html="getPriceAndCurrency(item, 'display_price_brutto', priceSwitcherIncludeVat)" />
                                     <span class="product-price sale-price" v-html="getPriceAndCurrency(item, 'display_price_brutto_special', priceSwitcherIncludeVat)" />
                                 </template>
+
                                 <template v-else>
                                     <span class="product-price sale-price" v-html="getPriceAndCurrency(item, 'display_price_brutto', priceSwitcherIncludeVat)" />
                                 </template>
@@ -31,12 +35,15 @@
                 <div class="action-top">
                     <div v-if="itemHasOptions(item)">
                         <div v-if="itemIsAvailable(item)" class="remove-item" v-text="$t('Add to Cart')" />
+
                         <div v-else v-text="$t('Sold Out')"></div>
                     </div>
+
                     <nuxt-link v-else :to="'/'+item.url_pds">
                         <div class="details-item" v-text="$t('details')"></div>
                     </nuxt-link>
                 </div>
+                
                 <div class="remove-item" aria-hidden="true" @click="confirmRemoveItem(item)" v-text="$t('Remove')" />
             </div>
         </div>
@@ -84,12 +91,12 @@
                 priceDecFmt: 'modPrices/priceDecFmt',
                 priceAddCur: 'modPrices/priceAddCur'
             }),
-            hasItemsInWishlist: function() {
+            hasItemsInWishlist() {
                 return {
                     inWishlist: this.wishlistItemsQty > 0
                 }
             },
-            setButtonStates: function() {
+            setButtonStates() {
                 return {
                     active: this.showMenu
                 }
