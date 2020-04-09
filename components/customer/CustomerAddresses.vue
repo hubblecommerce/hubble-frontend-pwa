@@ -12,19 +12,25 @@
 
         <div v-if="!loading && billingAddresses.length > 0" class="billing-addresses-wrp">
             <div v-if="alternativeShippingAddress" class="headline headline-3" v-text="$t('Billing Address')" />
+
             <div v-else class="headline headline-3" v-text="$t('Address')" />
+
             <div v-for="address in billingAddresses" :key="address.id" class="billing-address-wrp">
                 <div>
                     <span v-text="mapKeyToValue(address.payload.gender, salutations)" />
+
                     <span v-text="address.payload.firstName" />
+
                     <span v-text="address.payload.lastName" />
                 </div>
                 <div>
                     <span v-text="address.payload.street" />
+
                     <span v-text="address.payload.houseNo" />
                 </div>
                 <div>
                     <span v-text="address.payload.postal" />
+
                     <span v-text="address.payload.city" />
                 </div>
                 <div>
@@ -49,18 +55,23 @@
 
         <div v-if="alternativeShippingAddress && !loading && shippingAddresses.length > 0" class="shipping-addresses-wrp">
             <div class="headline headline-3" v-text="$t('Shipping Address')" />
+
             <div v-for="address in shippingAddresses" :key="address.id" class="shipping-address-wrp">
                 <div>
                     <span v-text="mapKeyToValue(address.payload.gender, salutations)" />
+
                     <span v-text="address.payload.firstName" />
+
                     <span v-text="address.payload.lastName" />
                 </div>
                 <div>
                     <span v-text="address.payload.street" />
+
                     <span v-text="address.payload.houseNo" />
                 </div>
                 <div>
                     <span v-text="address.payload.postal" />
+
                     <span v-text="address.payload.city" />
                 </div>
                 <div>
@@ -76,6 +87,7 @@
                     @click="selectDefaultAddress('shipping')"
                     v-text="$t('Select new default address')"
                 />
+
                 <button v-if="!isGuest"
                         class="button-secondary w-100"
                         @click="createAddress('shipping')"
@@ -94,8 +106,11 @@
                             <i class="icon icon-close" aria-hidden="true" />
                             <material-ripple />
                         </button>
+
                         <div v-if="formIsActiveAddressUpdate" class="overlay-headline" v-text="$t('Edit address')" />
+
                         <div v-if="formIsActiveAddressCreate" class="overlay-headline" v-text="$t('Create new address')" />
+
                         <div v-if="formIsActiveAddressSelectDefault" class="overlay-headline" v-text="$t('Select new default address')" />
                     </div>
                     <div v-if="!formIsActiveAddressSelectDefault">
@@ -104,6 +119,7 @@
 
                                 <div v-if="formIsActiveAddressUpdate" class="hbl-checkbox save-address-checkbox">
                                     <input id="save-address" v-model="saveAsNewAddress" type="checkbox">
+
                                     <label for="save-address">
                                         <span class="name" v-text="$t('Store as new address')" />
                                     </label>
@@ -120,7 +136,9 @@
                                                 {{ salutation.value }}
                                             </option>
                                         </select>
+
                                         <label class="select-label" v-text="$t('Salutation')+'*'" />
+
                                         <div class="validation-msg" v-text="$t(errors[0])" />
                                     </validation-provider>
 
@@ -134,7 +152,9 @@
                                                placeholder=" "
                                                required
                                         >
+
                                         <label for="firstName" v-text="$t('First Name')+'*'" />
+
                                         <div class="validation-msg" v-text="$t(errors[0])" />
                                     </validation-provider>
 
@@ -148,7 +168,9 @@
                                                placeholder=" "
                                                required
                                         >
+
                                         <label for="lastName" v-text="$t('Last Name')+'*'" />
+
                                         <div class="validation-msg" v-text="$t(errors[0])" />
                                     </validation-provider>
 
@@ -163,7 +185,9 @@
                                                    placeholder=" "
                                                    required
                                             >
+
                                             <label for="street" v-text="$t('Street') + '/' + $t('Houseno.') + '*'" />
+
                                             <div class="validation-msg" v-text="$t(errors[0])" />
                                         </validation-provider>
                                     </template>
@@ -179,7 +203,9 @@
                                                    placeholder=" "
                                                    required
                                             >
+
                                             <label for="street" v-text="$t('Street')+'*'" />
+
                                             <div class="validation-msg" v-text="$t(errors[0])" />
                                         </validation-provider>
 
@@ -193,7 +219,9 @@
                                                    placeholder=" "
                                                    required
                                             >
+
                                             <label for="houseNr" v-text="$t('Houseno.')+'*'" />
+
                                             <div class="validation-msg" v-text="$t(errors[0])" />
                                         </validation-provider>
                                     </div>
@@ -209,7 +237,9 @@
                                                    placeholder=" "
                                                    required
                                             >
+
                                             <label for="zipCode" v-text="$t('Zipcode')+'*'" />
+
                                             <div class="validation-msg" v-text="$t(errors[0])" />
                                         </validation-provider>
 
@@ -223,7 +253,9 @@
                                                    placeholder=" "
                                                    required
                                             >
+
                                             <label for="city" v-text="$t('City')+'*'" />
+
                                             <div class="validation-msg" v-text="$t(errors[0])" />
                                         </validation-provider>
                                     </div>
@@ -232,7 +264,9 @@
                                         <select v-model="address.payload.country" class="select-text" :class="{invalid: errors.length > 0}" required>
                                             <option v-for="country in countries" :key="country.iso_code_2" :value="country.iso_code_2">{{ country.name }}</option>
                                         </select>
+
                                         <label class="select-label" v-text="$t('Country')+'*'" />
+
                                         <div class="validation-msg" v-text="$t(errors[0])" />
                                     </validation-provider>
 
@@ -245,6 +279,7 @@
                                         {{ $t('Edit') }}
                                         <material-ripple />
                                     </button>
+
                                     <button v-if="formIsActiveAddressCreate || saveAsNewAddress"
                                             class="button-primary"
                                             @click.prevent="passes(submitCreateForm)"
@@ -266,17 +301,24 @@
                                     >
                                         <div>
                                             <span v-text="mapKeyToValue(currentDefaultAddress.payload.gender, salutations)" />
+
                                             <span v-text="currentDefaultAddress.payload.firstName" />
+
                                             <span v-text="currentDefaultAddress.payload.lastName" />
                                         </div>
+
                                         <div>
                                             <span v-text="currentDefaultAddress.payload.street" />
+
                                             <span v-text="currentDefaultAddress.payload.houseNo" />
                                         </div>
+
                                         <div>
                                             <span v-text="currentDefaultAddress.payload.postal" />
+
                                             <span v-text="currentDefaultAddress.payload.city" />
                                         </div>
+
                                         <div>
                                             <span v-text="mapIsoToCountry(currentDefaultAddress.payload.country, countries)" />
                                         </div>
@@ -288,17 +330,24 @@
                                         <div class="selectable-default-address" @click.prevent="selectDefault(address)">
                                             <div>
                                                 <span v-text="mapKeyToValue(address.payload.gender, salutations)" />
+
                                                 <span v-text="address.payload.firstName" />
+
                                                 <span v-text="address.payload.lastName" />
                                             </div>
+
                                             <div>
                                                 <span v-text="address.payload.street" />
+
                                                 <span v-text="address.payload.houseNo" />
                                             </div>
+
                                             <div>
                                                 <span v-text="address.payload.postal" />
+
                                                 <span v-text="address.payload.city" />
                                             </div>
+                                            
                                             <div>
                                                 <span v-text="mapIsoToCountry(address.payload.country, countries)" />
                                             </div>
@@ -306,6 +355,7 @@
                                         <div v-if="showDeleteIcon(address)" class="delete-icon-wrp" @click.prevent="selectDelete(address)">
                                             <button class="button-icon">
                                                 <i class="icon" :class="isSelectedForDeletion(address)" aria-hidden="true" />
+
                                                 <span class="hidden-link-name">Delete</span>
                                             </button>
                                         </div>
@@ -313,6 +363,7 @@
                                 </div>
                                 <div class="actions">
                                     <div class="error-message" v-text="error" />
+
                                     <button v-if="!selectedDelete.length > 0"
                                             class="button-primary"
                                             :class="isNewDefaultAddress()"
@@ -321,6 +372,7 @@
                                         {{ $t('Select as default address') }}
                                         <material-ripple />
                                     </button>
+
                                     <button v-else
                                             class="button-primary delete-address-button"
                                             @click.prevent="submitDeleteAddress()"
@@ -491,7 +543,7 @@
                 deleteCustomerAddress: 'modApiCustomer/deleteCustomerAddress',
                 toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction',
                 hideOffcanvasAction: 'modNavigation/hideOffcanvasAction',
-                editGuestAddress: 'modApiPayment/editGuestAddress',
+                editGuestAddress: 'modApiCustomer/editGuestAddress',
                 calculateShippingCosts: 'modCart/calculateShippingCosts'
             }),
             toggle: function() {
@@ -758,7 +810,7 @@
             selectDelete(address){
                 if(!_.includes(this.selectedDelete, address)){
                     this.selectedDelete.push(address);
-                }else {
+                } else {
                     this.selectedDelete = _.without(this.selectedDelete,address);
                 }
             },
