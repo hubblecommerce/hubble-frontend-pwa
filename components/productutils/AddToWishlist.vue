@@ -63,9 +63,9 @@
 
         methods: {
             ...mapActions({
-                postWishlistSW: 'modApiCustomer/postWishlist',
+                postWishlist: 'modApiCustomer/postWishlist',
                 updateWishlist: 'modApiCustomer/updateWishlist',
-                deleteWishlistSW: 'modApiCustomer/deleteWishlist',
+                deleteCustomerWishlist: 'modApiCustomer/deleteWishlist',
                 deleteWishlist: 'modWishlist/deleteWishlist',
                 delItem: 'modWishlist/delItem',
                 addItem: 'modWishlist/addItem',
@@ -88,7 +88,7 @@
                         // in this case do a POST to create a new wishlist
                         // ELSE: there is a existing wishlist, so just update it via PUT and ID
                         if(!this.wishlistId) {
-                            this.postWishlistSW({
+                            this.postWishlist({
                                 user_id: this.customer.customerData.id,
                                 wishlist: {
                                     qty: this.wishlistQty,
@@ -127,7 +127,7 @@
                 // ELSE: Just remove item from wishlist and update wishlist to api if user is logged in
                 if(this.wishlistQty === 1) {
                     if(this.isLoggedIn()) {
-                        this.deleteWishlistSW({
+                        this.deleteCustomerWishlist({
                             user_id: this.customer.customerData.id,
                             id: this.wishlistId
                         }).then(() => {
