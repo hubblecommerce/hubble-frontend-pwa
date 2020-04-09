@@ -26,8 +26,10 @@
 
 <script>
     import { mapGetters } from 'vuex';
+    
     export default {
         name: "DesktopCategories",
+
         props: {
             dataItem: {
                 type: Object,
@@ -58,7 +60,7 @@
                 return ! _.isEmpty(this.dataItem.children);
             },
             itemUrlPath() {
-                let _locale = this.$store.getters['modApiResources/getApiLocale'];
+                let _locale = this.getApiLocale;
 
                 if(_locale !== 'de') {
                     return '/' + _locale + '/' + this.dataItem.url_path;
@@ -66,12 +68,11 @@
 
                 return '/' + this.dataItem.url_path;
             },
-            parentName()
-            {
+            parentName() {
                 return this.$parent.dataItem.name;
             },
             parentUrlPath() {
-                let _locale = this.$store.getters['modApiResources/getApiLocale'];
+                let _locale = this.getApiLocale;
 
                 if(_locale !== 'de') {
                     return '/' + _locale + '/' + this.$parent.dataItem.url_path;
