@@ -20,13 +20,18 @@
                             @focus="onFocus"
                             @blur="onBlur"
                     >
+
                     <label class="hidden-link-name" for="autocomplete-search">{{ $t('Search') }}</label>
                 </div>
+
                 <button class="button-icon" type="submit" title="Search" @click.prevent="clearQuery">
                     <span class="hidden-link-name">Search</span>
+
                     <transition name="fade">
                         <i v-if="!focus && !loading" class="icon icon-search" />
+
                         <i v-if="focus && !loading" class="icon icon-close" />
+
                         <div v-if="loading" class="loader lds-ring">
                             <div />
                             <div />
@@ -34,6 +39,7 @@
                             <div />
                         </div>
                     </transition>
+
                     <material-ripple />
                 </button>
             </div>
@@ -49,7 +55,7 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex';
+    import { mapState, mapActions, mapMutations } from 'vuex';
     import AutocompleteList from "./AutocompleteList";
 
     export default {
@@ -114,8 +120,18 @@
         },
 
         methods: {
+            ...mapActions({
+                redirectToItem: 'modSearch/redirectToItem',
+                changeSelectedItem: 'modSearch/changeSelectedItem',
+                getAutocompleteResultsAction: 'modSearch/getAutocompleteResults',
+                resetAutoCompleteResults: 'modSearch/resetAutoCompleteResults'
+            }),
+            ...mapMutations({
+                hideOffcanvas: 'modNavigation/hideOffcanvas'
+            }),
             onFocus() {
-                this.$store.commit('modNavigation/hideOffcanvas');
+                this.hideOffcanvas();
+
                 if (this.queryIsDisabled) {
                     return;
                 }
@@ -125,10 +141,12 @@
             onEnter(event) {
                 if(this.inputIsSelected) {
                     this.doCatalogSearch();
+
                     this.resetAutoComplete();
                 } else {
                     this.loading = true;
-                    this.$store.dispatch('modSearch/redirectToItem');
+
+                    this.redirectToItem();
                 }
                 event.target.blur();
             },
@@ -137,10 +155,10 @@
                     return;
                 }
                 if(event.key === 'ArrowDown') {
-                    this.$store.dispatch('modSearch/changeSelectedItem', 1);
+                    this.changeSelectedItem(1);
                 }
                 if(event.key === 'ArrowUp') {
-                    this.$store.dispatch('modSearch/changeSelectedItem', -1);
+                    this.changeSelectedItem(-1);
                 }
             },
             onBlur: function() {
@@ -157,7 +175,9 @@
                 this.resetAutoComplete();
 
                 this.focus = false;
+
                 this.query = '';
+
                 //this.$router.go(-1);
                 this.loading = false;
             },
@@ -184,7 +204,7 @@
                     this.loading = true;
 
                     //Get autocomplete data from api
-                    this.$store.dispatch('modSearch/getAutocompleteResults', {
+                    this.getAutocompleteResultsAction({
                         locale: this.locale,
                         query: this.query
                     })
@@ -198,7 +218,7 @@
                 }
             },
             resetAutoComplete: function() {
-                this.$store.dispatch('modSearch/resetAutoCompleteResults');
+                this.resetAutoCompleteResults();
             },
             doSearch: function() {
                 clearTimeout(this.timeout);
