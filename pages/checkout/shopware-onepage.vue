@@ -2,25 +2,34 @@
     <div class="container checkout-payment">
         <div class="checkout-payment-wrp checkout-summary-wrp">
             <div class="headline headline-1" v-text="'Checkout'" />
+
             <customer-addresses />
+
             <payment-methods />
+
             <shipping-methods />
+
             <div class="additional-info-wrp">
                 <div class="summary-container">
                     <div class="summary-wrp">
                         <totals />
+
                         <div v-for="(msg, key) in checkoutError" :key="key" class="errors">
                             {{ msg }}
                         </div>
+
                         <payone-channel />
+
                         <button class="button-primary checkout-btn" :disabled="processingCheckout || !isEmpty(checkoutError)" @click="placeOrder()">
                             <span v-if="!processingCheckout">{{ $t('Place Order') }}</span>
+
                             <div v-if="processingCheckout" class="loader lds-ellipsis">
                                 <div />
                                 <div />
                                 <div />
                                 <div />
                             </div>
+
                             <material-ripple />
                         </button>
                     </div>
@@ -57,7 +66,6 @@
         data() {
             return {
                 isGuest: false,
-
                 chosenPaymentMethod: '1',
                 chosenShippingMethod: '1',
                 checkoutError: {},
@@ -107,9 +115,7 @@
             isEmpty: function(val) {
                 return _.isEmpty(val);
             },
-
             placeOrder: async function() {
-
                 // Start loading animation
                 this.setProcessingCheckout();
 
@@ -147,6 +153,7 @@
                 }
 
                 this.processingCheckout = false;
+
                 return false;
             }
         },
