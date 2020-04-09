@@ -71,15 +71,15 @@ export default {
             customer: state => state.modApiCustomer.customer,
             offcanvas: state => state.modNavigation.offcanvas
         }),
-        setButtonStates: function() {
+        setButtonStates() {
             return {
                 active: this.showMenu
             }
         },
-        showMenu: function() {
+        showMenu() {
             return this.offcanvas.component === this.name;
         },
-        isLoggedIn: function() {
+        isLoggedIn() {
             if(!_.isEmpty(this.customer.customerAuth) && this.customer.customerAuth.token !== 'guest') {
                 return this.customer.customerAuth.token;
             }
@@ -106,10 +106,10 @@ export default {
                 direction: 'rightLeft'
             });
         },
-        hideMenu: function() {
+        hideMenu() {
             this.hideOffcanvasAction();
         },
-        showFormRegister: function() {
+        showFormRegister() {
             this.hideMenu();
 
             this.$router.push({
