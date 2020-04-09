@@ -133,7 +133,7 @@
 </template>
 
 <script>
-    import {mapState, mapGetters} from 'vuex';
+    import {mapState, mapGetters, mapMutations, mapActions} from 'vuex';
     export default {
         name: "PaymentMethods",
         data() {
@@ -163,7 +163,10 @@
                 customerAddresses: state => state.modApiCustomer.customer.customerAddresses
             }),
             ...mapGetters({
-                getChosenPaymentMethod: 'modApiPayment/getChosenPaymentMethod'
+                getChosenPaymentMethod: 'modApiPayment/getChosenPaymentMethod',
+                getTotals: 'modCart/getTotals',
+                priceDecFmt: 'modPrices/priceDecFmt',
+                priceAddCur: 'modPrices/priceAddCur'
             })
         },
 
@@ -171,7 +174,7 @@
             chosenMethod: function(newValue) {
 
                 // Start Checkout loader
-                this.$store.commit('modApiPayment/setProcessingCheckout');
+                this.setProcessingCheckout();
 
                 // Set method by payone_key
                 this.setMethodById(newValue);
@@ -238,15 +241,15 @@
                 }
 
                 if(!_.isEmpty(this.chosenMethodObj)) {
-                    this.$store.dispatch('modApiPayment/storeChosenPaymentMethod', this.chosenMethodObj).then(() => {
+                    this.storeChosenPaymentMethod(this.chosenMethodObj).then(() => {
 
-                        this.$store.dispatch('modCart/recalculateCart').then(() => {
-                            this.$store.commit('modApiPayment/resetProcessingCheckout');
+                        this.recalculateCart().then(() => {
+                            this.resetProcessingCheckout();
                         });
 
                     });
                 } else {
-                    this.$store.commit('modApiPayment/resetProcessingCheckout');
+                    this.resetProcessingCheckout();
                 }
             },
 
@@ -274,10 +277,10 @@
 
         mounted() {
             // Reset errors from previous page
-            this.$store.commit('modApiPayment/setPaymentError', null);
-            this.$store.commit('modApiPayment/setShippingError', null);
-            this.$store.commit('modApiPayment/setIbanError', false);
-            this.$store.commit('modApiPayment/setBicError', false);
+            this.setPaymentError(null);
+            this.setShippingError(null);
+            this.setIbanError(false);
+            this.setBicError(false);
 
             this.loading = true;
             if(_.isEmpty(this.paymentMethods)) {
@@ -294,10 +297,23 @@
         },
 
         methods: {
+            ...mapActions({
+                storeChosenPaymentMethod: 'modApiPayment/storeChosenPaymentMethod',
+                getPaymentMethodsAction: 'modApiPayment/getPaymentMethods',
+                recalculateCart: 'modCart/recalculateCart'
+            }),
+            ...mapMutations({
+                setProcessingCheckout: 'modApiPayment/setProcessingCheckout',
+                setPaymentError: 'modApiPayment/setPaymentError',
+                setShippingError: 'modApiPayment/setShippingError',
+                setIbanError: 'modApiPayment/setIbanError',
+                setBicError: 'modApiPayment/setBicError',
+                resetProcessingCheckout: 'modApiPayment/resetProcessingCheckout'
+            }),
             getPaymentMethods: function(order, coupon) {
                 return new Promise((resolve, reject) => {
                     // Get payment methods from api
-                    this.$store.dispatch('modApiPayment/getPaymentMethods').then(() => {
+                    this.getPaymentMethodsAction().then(() => {
                         resolve();
                     }).catch((error) => {
                         this.loading = false;
@@ -333,7 +349,7 @@
                     }
                 };
 
-                this.$store.dispatch('modApiPayment/storeChosenPaymentMethod', this.chosenMethodObj);
+                this.storeChosenPaymentMethod(this.chosenMethodObj);
             },
             setSbData: function() {
                 this.chosenMethodObj = {
@@ -346,14 +362,14 @@
                     }
                 };
 
-                this.$store.dispatch('modApiPayment/storeChosenPaymentMethod', this.chosenMethodObj);
+                this.storeChosenPaymentMethod(this.chosenMethodObj);
             },
             getTotal: function() {
-                let total = this.$store.getters['modCart/getTotals'];
+                let total = this.getTotals;
 
                 // Format subtotals
-                total = this.$store.getters['modPrices/priceDecFmt'](total);
-                total = this.$store.getters['modPrices/priceAddCur'](total);
+                total = this.priceDecFmt(total);
+                total = this.priceAddCur(total);
 
                 return total;
             },
