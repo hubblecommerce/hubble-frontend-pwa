@@ -4,6 +4,7 @@
             <div v-if="!isLoggedIn" class="no">
                 1
             </div>
+
             <div v-if="isLoggedIn" class="icon icon-check" />
             {{ $t('Login') }}
         </nuxt-link>
@@ -11,6 +12,7 @@
             <div v-if="!paymentSelected && !isOrderSuccess" class="no">
                 2
             </div>
+
             <div v-if="paymentSelected || isOrderSuccess" class="icon icon-check" />
             {{ $t('Payment') }}
         </nuxt-link>
@@ -18,6 +20,7 @@
             <div v-if="!isOrderSuccess" class="no">
                 3
             </div>
+
             <div v-if="isOrderSuccess" class="icon icon-check" />
             {{ $t('Confirm') }}
         </div>
@@ -31,15 +34,17 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex';
+    import { mapState, mapActions, mapMutations } from 'vuex';
 
     export default {
         name: "CheckoutProgressBar",
+
         data() {
             return {
                 isOrderSuccess: false
             }
         },
+
         computed: {
             ...mapState({
                 customer: state => state.modApiCustomer.customer,
@@ -61,27 +66,37 @@
                 return false;
             }
         },
+
         watch: {
             '$route.path': function() {
-                this.isOrderSuccess = false;
-                if(this.$router.history.current.fullPath === '/checkout/success') {
-                    this.isOrderSuccess = true;
-                }
+                this.isOrderSuccess = this.$router.history.current.fullPath === '/checkout/success';
             }
         },
+
         created() {
             if(this.$router.history.current.fullPath === '/checkout/success') {
                 this.isOrderSuccess = true;
             }
         },
+
         methods: {
+            ...mapActions({
+                flashMessage: 'modFlash/flashMessage',
+                createOrderPaymentAction: 'modApiPayment/createOrder',
+                getUuid: 'modApiPayment/getUuid'
+            }),
+            ...mapMutations({
+                setIbanError: 'modApiPayment/setIbanError',
+                setBicError: 'modApiPayment/setBicError',
+                setOrderId: 'modApiPayment/setOrderId'
+            }),
             createOrder: function() {
                 if(this.order.chosenPaymentMethod.key === 'payone_cc') {
                     if (this.hostedIFrame.isComplete()) {
                         // Perform "CreditCardCheck" to create and get a PseudoCardPan; then call your function "hostedIFramePayCallback"
                         this.hostedIFrame.creditCardCheck('hostedIFramePayCallback');
                     } else {
-                        this.$store.dispatch('modFlash/flashMessage', {
+                        this.flashMessage({
                             flashType: 'error',
                             flashMessage: this.$t('Please complete your credit card information')
                         });
@@ -94,22 +109,22 @@
 
                     let error = false;
 
-                    this.$store.commit('modApiPayment/setIbanError', false);
-                    this.$store.commit('modApiPayment/setBicError', false);
+                    this.setIbanError(false);
+                    this.setBicError(false);
 
                     if(_.isEmpty(this.order.chosenPaymentMethod.payload.iban)) {
-                        this.$store.commit('modApiPayment/setIbanError', true);
+                        this.setIbanError(true);
                         error = true;
-                        this.$store.dispatch('modFlash/flashMessage', {
+                        this.flashMessage({
                             flashType: 'error',
                             flashMessage: this.$t('Please insert valid IBAN')
                         });
                     }
 
                     if(_.isEmpty(this.order.chosenPaymentMethod.payload.bic)) {
-                        this.$store.commit('modApiPayment/setBicError', true);
+                        this.setBicError(true);
                         error = true;
-                        this.$store.dispatch('modFlash/flashMessage', {
+                        this.flashMessage({
                             flashType: 'error',
                             flashMessage: this.$t('Please insert valid BIC')
                         });
@@ -120,18 +135,18 @@
                     }
                 }
                 // Get uuid from api
-                this.$store.dispatch('modApiPayment/getUuid').then((uuid) => {
+                this.getUuid().then((uuid) => {
 
                     // Store uuid as orderId to order in store
-                    this.$store.commit('modApiPayment/setOrderId', uuid);
+                    this.setOrderId(uuid);
 
                     // Validate order and save to cookie then redirect to summary page
-                    this.$store.dispatch('modApiPayment/createOrder').then(() => {
+                    this.createOrderPaymentAction().then(() => {
                         this.$router.push({
                             path: this.localePath('checkout-summary')
                         });
                     }).catch((error) => {
-                        this.$store.dispatch('modFlash/flashMessage', {
+                        this.flashMessage({
                             flashType: 'error',
                             flashMessage: this.$t(error)
                         });
