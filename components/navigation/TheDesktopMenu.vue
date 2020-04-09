@@ -18,16 +18,16 @@
             DesktopCategories
         },
 
-        data() {
-            return {
-                showMenu: false,
-            }
-        },
-
         props: {
             dataItems: {
                 type: Array,
                 required: true
+            }
+        },
+
+        data() {
+            return {
+                showMenu: false,
             }
         },
 
@@ -41,7 +41,7 @@
         },
 
         methods: {
-            toggle: function(){
+            toggle() {
                 this.showMenu = !this.showMenu
             }
         }
