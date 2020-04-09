@@ -61,15 +61,15 @@
         },
 
         computed: {
+            ...mapGetters({
+                getApiLocale: 'modApiResources/getApiLocale'
+            }),
             rootItem() {
                 return {
                     name: 'root',
                     children: this.dataItems
                 }
-            },
-            ...mapGetters({
-                getApiLocale: 'modApiResources/getApiLocale'
-            })
+            }
         },
 
         watch: {
@@ -86,7 +86,7 @@
                 toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction',
                 resetAutoCompleteResults: 'modSearch/resetAutoCompleteResults'
             }),
-            toggle: function(){
+            toggle() {
                 this.showMenu = !this.showMenu;
                 this.toggleOffcanvasAction({component: this.name})
             },
@@ -122,7 +122,7 @@
 
                 return child.is_active;
             },
-            hideChildren: function() {
+            hideChildren() {
                 this.hideOffcanvasAction();
 
                 this.showMenu = false;
