@@ -5,8 +5,11 @@
                 @click="toggle()"
         >
             <i class="icon icon-cart" aria-hidden="true" />
+
             <span class="hidden-link-name">Toggle Cart</span>
+
             <material-ripple />
+
             <client-only>
                 <div v-if="cartItemsQtyAndLabel" class="item-count" v-text="cartItemsQtyAndLabel" />
             </client-only>
@@ -22,6 +25,7 @@
                             <i class="icon icon-close" aria-hidden="true" />
                             <material-ripple />
                         </button>
+
                         <div class="overlay-headline" v-text="$t('Cart')" />
                     </div>
 
@@ -33,13 +37,16 @@
                         <div v-if="qty === 1" class="col-12 qty-summary">
                             {{ qty }} {{ $t('shopping_cart_label_item') }}
                         </div>
+
                         <div v-if="qty > 1" class="col-12 qty-summary">
                             {{ qty }} {{ $t('shopping_cart_label_items') }}
                         </div>
                         <transition name="fade">
                             <div v-if="qty <= 0" class="empty-cart">
                                 <i class="icon icon-cart" />
+
                                 <div class="headline-1" v-text="$t('Your shopping cart is empty')" />
+
                                 <nuxt-link :to="localePath('index')">
                                     <button class="button-primary"
                                             @click="closeOffcanvas()"
@@ -110,12 +117,12 @@
                 priceDecFmt: 'modPrices/priceDecFmt',
                 priceAddCur: 'modPrices/priceAddCur'
             }),
-            hasItemsInCart: function() {
+            hasItemsInCart() {
                 return {
                     inCart: this.cartItemsQty > 0
                 }
             },
-            setButtonStates: function() {
+            setButtonStates() {
                 return {
                     active: this.showMenu
                 }
@@ -131,7 +138,7 @@
 
                 return this.cartItemsQty;
             },
-            showMenu: function() {
+            showMenu() {
                 return this.offcanvas.component === this.name;
             }
         },
@@ -155,7 +162,7 @@
                 toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction',
                 hideOffcanvasAction: 'modNavigation/hideOffcanvasAction'
             }),
-            toggle: function() {
+            toggle() {
                 this.toggleOffcanvasAction({
                     component: this.name,
                     direction: 'rightLeft'
@@ -164,7 +171,7 @@
             hideMenu() {
                 this.hideOffcanvasAction();
             },
-            getSubTotal: function() {
+            getSubTotal() {
                 let subtotals = this.getSubtotals;
 
                 // Format subtotals
@@ -179,7 +186,7 @@
                     path: this.localePath('checkout-cart')
                 });
             },
-            closeOffcanvas: function() {
+            closeOffcanvas() {
                 this.hideOffcanvasAction();
             }
         }
