@@ -20,7 +20,7 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex';
+    import { mapState, mapActions } from 'vuex';
     export default {
         name: "Coupons",
 
@@ -39,14 +39,20 @@
         },
 
         methods: {
+            ...mapActions({
+                checkCouponInCart: 'modCart/checkCouponInCart',
+                applyCouponAction: 'modApiPayment/applyCoupon',
+                storeCouponToCart: 'modCart/storeCouponToCart',
+                flashMessage: 'modFlash/flashMessage'
+            }),
             applyCoupon: function() {
 
-                this.$store.dispatch('modCart/checkCouponInCart', this.couponCode).then(() => {
+                this.checkCouponInCart(this.couponCode).then(() => {
 
                     // Start loading
                     this.loading = true;
 
-                    this.$store.dispatch('modApiPayment/applyCoupon', {
+                    this.applyCouponAction({
                         cart: JSON.stringify(this.cart),
                         coupon: this.couponCode
                     }).then((response) => {
@@ -54,8 +60,8 @@
                         // End loading
                         this.loading = false;
 
-                        this.$store.dispatch('modCart/storeCouponToCart', response).then(() => {
-                            this.$store.dispatch('modFlash/flashMessage', {
+                        this.storeCouponToCart(response).then(() => {
+                            this.flashMessage({
                                 flashType: 'success',
                                 flashMessage: this.$t('Coupon applied successfully: ') + this.couponCode
                             });
@@ -66,14 +72,14 @@
                         // End loading
                         this.loading = false;
 
-                        this.$store.dispatch('modFlash/flashMessage', {
+                        this.flashMessage({
                             flashType: 'error',
                             flashMessage: this.$t(errorMessage)
                         });
                     });
 
                 }).catch((error) => {
-                    this.$store.dispatch('modFlash/flashMessage', {
+                    this.flashMessage({
                         flashType: 'error',
                         flashMessage: this.$t(error)
                     });
