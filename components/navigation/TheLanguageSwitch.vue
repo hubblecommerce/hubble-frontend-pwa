@@ -30,7 +30,6 @@
                 <nuxt-link :to="localePath('index', 'de')">
                     <button :class="{'button-primary': isLocale('de'), 'button-secondary': !isLocale('de')}" >
                         Deutsch
-
                         <material-ripple></material-ripple>
                     </button>
                 </nuxt-link>
@@ -38,7 +37,6 @@
                 <nuxt-link :to="localePath('index', 'en')">
                     <button :class="{'button-primary': isLocale('en'), 'button-secondary': !isLocale('en')}" >
                         English
-
                         <material-ripple></material-ripple>
                     </button>
                 </nuxt-link>
