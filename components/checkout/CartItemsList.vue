@@ -145,6 +145,7 @@
                 }
 
                 let _path = _.trim(process.env.config.IMG_BASE_URL, '/');
+
                 return _path + '/images/catalog/product/' + this.imgFilter + '/' + item.image;
             },
             itemIsSpecial: function(item) {
@@ -185,6 +186,7 @@
                 let order = {
                     order: JSON.stringify(payload)
                 };
+
                 this.precalculateShippingCostAction(order);
             },
             confirmRemoveItem: function(item) {
@@ -234,16 +236,19 @@
             },
             getCouponVal: function(value) {
                 let val;
+
                 val = this.priceDecFmt(value);
+
                 val = this.priceAddCur(value);
+                
                 return val;
             },
             formatSize: function (size) {
                 return size.replace('.0', '');
             },
             removeCoupon: function(couponCode) {
-                this.$store.dispatch('modCart/removeCoupon', couponCode).then(() => {
-                    this.$store.dispatch('modFlash/flashMessage', {
+                this.removeCouponAction(couponCode).then(() => {
+                    this.flashMessage({
                         flashType: 'success',
                         flashMessage: 'Removed coupon from cart.'
                     });
