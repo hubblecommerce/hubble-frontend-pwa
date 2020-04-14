@@ -32,7 +32,7 @@
         },
 
         computed: {
-            rootItem() {
+            rootItem: function() {
                 return {
                     name: 'root',
                     children: this.dataItems
@@ -41,7 +41,7 @@
         },
 
         methods: {
-            toggle() {
+            toggle: function() {
                 this.showMenu = !this.showMenu
             }
         }
