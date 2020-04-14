@@ -13,12 +13,15 @@
 
             <material-ripple />
         </button>
+
         <transition name="collapse-filter">
             <div v-if="!collapse" ref="collapseContent" class="collapse show collapse-item">
                 <slot />
+
                 <div v-if="applyButton" class="apply-filter-wrp">
                     <button class="button button-primary apply-filter" @click="hideContent">
                         <span v-text="$t('Apply')" />
+
                         <material-ripple />
                     </button>
                 </div>
@@ -33,7 +36,9 @@
     export default {
         name: "CollapsibleFilter",
 
-        components: {TransitionRotateX},
+        components: {
+            TransitionRotateX
+        },
 
         props: {
             toggleTag: {
@@ -73,10 +78,10 @@
         },
 
         methods: {
-            collapseContent() {
+            collapseContent: function() {
                 this.collapse = !this.collapse;
             },
-            hideContent() {
+            hideContent: function() {
                 this.collapse = true;
             }
         },
