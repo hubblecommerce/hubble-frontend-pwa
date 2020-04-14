@@ -4,10 +4,12 @@
             <div class="headline-1 pt-4">
                 {{ $t('Hi,') }} {{ customerData.name }}
             </div>
+
             <div class="row">
                 <div v-if="$mq === 'md' || $mq === 'lg'" class="col-sm-12 col-md-3 sidebar-wrp">
                     <customer-account-navigation />
                 </div>
+
                 <div class="col-sm-12 col-md-9 content-wrp">
                     <div class="row">
                         <div class="col-md-12 headline-wrp">
@@ -16,21 +18,26 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="row">
                         <div class="col-md-12">
                             <div class="box account-info-wrp">
                                 <div class="box-title">
                                     {{ $t('Account Information') }}
                                 </div>
+
                                 <div class="box-content">
                                     <p>{{ customerData.name }}</p>
                                     <p>{{ customerData.email }}</p>
                                 </div>
+
                                 <customer-password-change class="password-change-button" />
                             </div>
                         </div>
                     </div>
+
                     <customer-addresses />
+                    
                     <div class="row">
                         <div class="col-md-12">
                             <customer-order-list :title="$t('Recent Orders')" :limit="4" />
@@ -52,7 +59,12 @@
     export default {
         name: 'CustomerDashboard',
 
-        components: {CustomerAddresses, CustomerOrderList, CustomerAccountNavigation, CustomerPasswordChange},
+        components: {
+            CustomerAddresses,
+            CustomerOrderList,
+            CustomerAccountNavigation,
+            CustomerPasswordChange
+        },
 
         layout: 'hubble',
 
@@ -75,10 +87,10 @@
             ...mapState({
                 customer: state => state.modApiCustomer.customer
             }),
-            customerData() {
+            customerData: function() {
                 return this.customer.customerData;
             },
-            customerAddresses() {
+            customerAddresses: function() {
                 return this.customer.customerAddresses;
             }
         },
