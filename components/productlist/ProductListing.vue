@@ -1,6 +1,5 @@
 <template>
     <div class="listing-wrp row" :class="extraClass">
-
         <template v-if="isSlider">
             <client-only>
                 <slider
@@ -21,24 +20,29 @@
             </client-only>
         </template>
 
-        <div v-for="(item, index) in dataItems" v-if="!isSlider" :key="index" class="listing-item col-6 col-sm-6 col-md-4 col-lg-3">
+        <div v-for="(item, index) in dataItems" v-if="!isSlider"
+             :key="index"
+             class="listing-item col-6 col-sm-6 col-md-4 col-lg-3"
+        >
             <product-listing-card :key="item.id" :item-orig="item" />
         </div>
 
         <g-t-m-product-impressions :products="dataItems" :list="list" :category="category" />
-
     </div>
 </template>
 
 <script>
-    import { mapState } from 'vuex';
+    import {mapState} from 'vuex';
     import GTMProductImpressions from "../utils/GTMProductImpressions";
     import ProductListingCard from "./ProductListingCard";
 
     export default {
         name: 'ProductListing',
 
-        components: {ProductListingCard, GTMProductImpressions},
+        components: {
+            ProductListingCard,
+            GTMProductImpressions
+        },
 
         props: {
             dataItems: {
@@ -114,34 +118,23 @@
                     ! this.isSlider ? 'columns is-flex is-multiline' : ''
                 ];
             },
-            categoryProductStats() {
-                if(!_.isEmpty(this.dataCategoryProducts)) {
-                    return this.dataCategoryProducts.result.stats;
-                }
-
-                return false;
+            categoryProductStats: function() {
+                return !_.isEmpty(this.dataCategoryProducts) ? this.dataCategoryProducts.result.stats
+                                                             : false;
             },
-            paginationItemsTotal() {
-                if(this.dataCategoryProducts.result.stats != null) {
-                    return this.dataCategoryProducts.result.stats.total;
-                }
-
-                return 0;
+            paginationItemsTotal: function() {
+                return this.dataCategoryProducts.result.stats != null ? this.dataCategoryProducts.result.stats.total
+                                                                      : 0;
             },
-            curPage() {
+            curPage: function() {
                 // If page isset to url take it, otherwise set to first page
-                let currentPage = 1;
-
-                if(this.$route.query.page) {
-                    currentPage = parseInt(this.$route.query.page);
-                }
-
-                return currentPage;
+                return this.$route.query.page ? parseInt(this.$route.query.page)
+                                              : 1;
             },
-            curPerPage() {
+            curPerPage: function() {
                 return parseInt(this.paginationPerPage);
             },
-            lastPage() {
+            lastPage: function() {
                 let _last = _.round(this.paginationItemsTotal / this.curPerPage, 4);
 
                 if(_last > _.round(_last)) {
@@ -150,10 +143,10 @@
 
                 return _.round(_last);
             },
-            prevPage() {
+            prevPage: function() {
                 return this.curPage - 1;
             },
-            nextPage() {
+            nextPage: function() {
                 return this.curPage + 1;
             },
         },
