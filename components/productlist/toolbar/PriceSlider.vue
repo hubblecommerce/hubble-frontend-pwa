@@ -4,10 +4,12 @@
             <span v-text="curMinLabel" />
             <span v-html="curCurrencySign" />
         </div>
+
         <div class="price text-right">
             <span v-text="curMaxLabel" />
             <span v-html="curCurrencySign" />
         </div>
+
         <vue-slider
             v-if="loaded" ref="slider1"
             v-model="sliderValues" :min="initialMin" :max="initialMax"
@@ -69,13 +71,13 @@
                 priceCurrency: state => state.modPrices.priceCurrency,
                 priceCurrencySymbol: state => state.modPrices.priceCurrencySymbol
             }),
-            curMinLabel() {
+            curMinLabel: function() {
                 return this.sliderValues[0];
             },
-            curMaxLabel() {
+            curMaxLabel: function() {
                 return this.sliderValues[1];
             },
-            curCurrencySign() {
+            curCurrencySign: function() {
                 return this.priceCurrencySymbol;
             }
         },
@@ -102,7 +104,7 @@
         },
 
         methods: {
-            onDragEnd() {
+            onDragEnd: function() {
                 if(this.filterOnChange) {
                     this.$bus.$emit('price-slider-changed-and-apply', {
                         payload: {
@@ -118,7 +120,6 @@
                         }
                     });
                 }
-
             }
         }
     }
