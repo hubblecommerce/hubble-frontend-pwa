@@ -1,7 +1,8 @@
 <template>
     <div class="collapse-wrp">
-        <button @click.prevent="collapseContent()" v-bind:class="toggleClass" class="toggle m-0 align-left headline-4">
-            <i v-if="toggleIconClass" v-bind:class="toggleIconClass"></i>
+        <button :class="toggleClass" class="toggle m-0 align-left headline-4" @click.prevent="collapseContent()">
+            <i v-if="toggleIconClass" :class="toggleIconClass"></i>
+
             {{ toggleText }}
 
             <transition-rotate-x>
@@ -14,8 +15,9 @@
 
             <material-ripple></material-ripple>
         </button>
+
         <transition @before-enter="beforeEnter" @after-enter="afterEnter" @before-leave="beforeLeave">
-            <div ref="collapseContent" v-if="!collapsedState" class="collapse show collapse-item">
+            <div v-if="!collapsedState" ref="collapseContent" class="collapse show collapse-item">
                 <slot></slot>
             </div>
         </transition>
@@ -28,7 +30,9 @@
 
     export default {
         name: "Collapsible",
+
         components: {TransitionRotateX},
+
         props: {
             toggleTag: {
                 type: [String, Array],
@@ -52,22 +56,24 @@
                 default: true
             }
         },
+
         computed: {
             ...mapState({
                 collapsedState: state => state.modCollapsibleState.collapsed
             })
         },
+        
         methods: {
             ...mapMutations({
                 collapseContent: 'modCollapsibleState/collapseContent'
             }),
-            beforeEnter(el) {
+            beforeEnter: function(el) {
                 el.style.maxHeight = 0;
             },
-            afterEnter(el) {
+            afterEnter: function(el) {
                 el.style.maxHeight = '700px';
             },
-            beforeLeave(el) {
+            beforeLeave: function(el) {
                 el.style.maxHeight = '0';
             },
         }
