@@ -1,6 +1,8 @@
 <template>
     <div :class="hasItemsInWishlist" class="wishlist-cpt-wrp">
-        <button class="button-icon wishlist-icon" :class="setButtonStates" @click="toggle()">
+        <button class="button-icon wishlist-icon"
+                :class="setButtonStates"
+                @click="toggle()">
             <i class="icon icon-heart" aria-hidden="true" />
 
             <span class="hidden-link-name">Toggle Wishlist</span>
@@ -13,11 +15,14 @@
         </button>
 
         <transition-expand-layer :right-left="true">
-            <div v-if="showMenu" class="transition-expand-wrp wishlist-wrapper">
+            <div v-if="showMenu"
+                 class="transition-expand-wrp wishlist-wrapper"
+            >
                 <div class="container expand-content">
                     <div class="row overlay-header">
                         <button class="button-icon button-close-menu" @click="toggle()">
                             <i class="icon icon-close" aria-hidden="true" />
+
                             <material-ripple />
                         </button>
 
@@ -50,13 +55,21 @@
                     <wishlist-items-list />
 
                     <div class="actions">
-                        <button v-if="wishlistItemsQty > 0" class="wishlist-button button-primary" @click.prevent="checkoutWishlist()">
+                        <button v-if="wishlistItemsQty > 0"
+                                class="wishlist-button button-primary"
+                                @click.prevent="checkoutWishlist()"
+                        >
                             {{ $t('Go to wishlist') }}
+
                             <material-ripple />
                         </button>
 
-                        <button v-if="wishlistItemsQty > 0" class="shopping-button button-secondary" @click.prevent="hideMenu()">
+                        <button v-if="wishlistItemsQty > 0"
+                                class="shopping-button button-secondary"
+                                @click.prevent="hideMenu()"
+                        >
                             {{ $t('Keep shopping') }}
+                            
                             <material-ripple />
                         </button>
                     </div>
@@ -105,23 +118,23 @@
                     active: this.showMenu
                 }
             },
-            classesExcl() {
+            classesExcl: function() {
                 return this.priceSwitcherIncludeVat ? 'decorated-thin' : 'decorated-bold';
             },
-            classesIncl() {
+            classesIncl: function() {
                 return this.priceSwitcherIncludeVat ? 'decorated-bold' : 'decorated-thin';
             },
-            wishlistItemsQty() {
+            wishlistItemsQty: function() {
                 return this.qty;
             },
-            wishlistItemsLabel() {
+            wishlistItemsLabel: function() {
                 return this.item.items_qty > 0 ? this.$t('wishlist_label_items') : this.$t('wishlist_label_item');
             },
-            wishlistItemsQtyAndLabel() {
+            wishlistItemsQtyAndLabel: function() {
                 if(this.wishlistItemsQty > 99) return '99+';
                 return this.wishlistItemsQty;
             },
-            classesImg() {
+            classesImg: function() {
                 return 'img-wishlist';
             },
             showMenu: function() {
@@ -154,10 +167,10 @@
                     direction: 'rightLeft'
                 });
             },
-            hideMenu() {
+            hideMenu: function() {
                 this.hideOffcanvasAction();
             },
-            checkoutWishlist() {
+            checkoutWishlist: function() {
                 this.hideMenu();
 
                 this.$router.push({
