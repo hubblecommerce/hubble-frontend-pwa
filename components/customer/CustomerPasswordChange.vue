@@ -17,7 +17,6 @@
                     </div>
 
                     <validation-observer ref="observer" v-slot="{ passes }" class="password-change-form-wrp" tag="form" @submit.prevent="passes(submitUpdatePassword)">
-
                         <validation-provider v-slot="{ errors }" name="email" rules="required|password" mode="passive" tag="div" class="hbl-input-group input-icon">
                             <input id="passwordOld"
                                    v-model="form.passwordOld"
