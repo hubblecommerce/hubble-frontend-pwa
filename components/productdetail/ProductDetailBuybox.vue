@@ -81,20 +81,20 @@
             ...mapGetters({
                 productHasTierPricesByGroupId: 'modPrices/productHasTierPricesByGroupId'
             }),
-            attributeName() {
+            attributeName: function() {
                 if (this.dataProduct.facets.string_facets[0]) {
                     return this.dataProduct.facets.string_facets[0]['label'];
                 }
 
                 return null;
             },
-            itemIsSimple() {
+            itemIsSimple: function() {
                 return this.dataProduct.type === 'simple';
             },
-            itemIsGrouped() {
+            itemIsGrouped: function() {
                 return this.dataProduct.type === 'grouped';
             },
-            itemIsConfigurable() {
+            itemIsConfigurable: function() {
                 return this.dataProduct.type === 'configurable';
             },
             showSelectedOption: function () {
