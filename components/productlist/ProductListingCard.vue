@@ -1,24 +1,36 @@
 <template>
     <div class="product-card">
-
         <a :href="routeUrlPds" @click.ctrl.exact="gtmProductClick()" @click.exact.prevent="openDetailPage()">
-
             <div class="card-media">
-                <img-lazy v-if="!isSlider" :src="routeUrlProductImg" :alt-info="itemData.name" :title-info="itemData.name" :classes="classesImg" />
-                <img v-if="isSlider" :src="routeUrlProductImg" :alt="itemData.name" :title="itemData.name" />
+                <img-lazy v-if="!isSlider"
+                          :src="routeUrlProductImg"
+                          :alt-info="itemData.name"
+                          :title-info="itemData.name"
+                          :classes="classesImg"
+                />
+                <img v-if="isSlider"
+                     :src="routeUrlProductImg"
+                     :alt="itemData.name"
+                     :title="itemData.name"
+                />
             </div>
 
             <div class="product-card-info-wrp-link">
                 <div class="product-card-info-wrp">
-                    <div v-if="itemData.manufacturer_name !== null" class="manufacturer"
-                         v-text="itemData.manufacturer_name"/>
-                    <div v-if="itemData.name !== null" class="product-name text-small" v-text="itemData.name"/>
+                    <div v-if="itemData.manufacturer_name !== null"
+                         class="manufacturer"
+                         v-text="itemData.manufacturer_name"
+                    />
+                    <div v-if="itemData.name !== null"
+                         class="product-name text-small"
+                         v-text="itemData.name"
+                    />
                     <div :class="classesExcl" class="price-box price-excluding-tax product-price">
-
                         <template v-if="itemIsSpecial">
                             <span class="old-price price">
                                 <span v-html="getPriceAndCurrency('display_price_brutto', priceSwitcherIncludeVat)"/>
                             </span>
+
                             <span class="sale-price grey-label bodytext2">
                                 <span v-html="getPriceAndCurrency('display_price_brutto_special', priceSwitcherIncludeVat)"/>
                             </span>
@@ -26,6 +38,7 @@
 
                         <template v-else-if="itemHasCheapPrice">
                             <span class="minimal cheapest-label">{{ $t('cheap_price_label') }}</span>
+
                             <span class="grey-label bodytext2">
                                 <span v-html="getCheapPriceAndCurrency(priceSwitcherIncludeVat)"/>
                             </span>
@@ -39,9 +52,9 @@
 
                         <div v-if="itemOrig.final_price_item.priceinfo !== null" class="unit-price-wrp">
                             <span class="price" v-text="getPriceAndCurrency('priceinfo', false)"/>
+
                             <span class="label" v-text="'/l'"/>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -55,10 +68,12 @@
         <div class="actions">
             <div class="badge-wrp">
                 <div v-if="itemIsSpecial" class="badge sale" v-text="itemDiscountPercent"/>
+
                 <div v-if="itemIsNew" class="badge new">
                     {{ $t('New') }}
                 </div>
             </div>
+
             <add-to-wishlist :item="itemData"/>
         </div>
 
@@ -72,7 +87,12 @@
 
     export default {
         name: 'ProductListingCard',
-        components: {AddToWishlist, ProductListingCardOptionsNonInteractive},
+
+        components: {
+            AddToWishlist,
+            ProductListingCardOptionsNonInteractive
+        },
+
         props: {
             itemOrig: {
                 type: Object,
@@ -109,13 +129,13 @@
                 getTaxClassByLabel: 'modPrices/getTaxClassByLabel',
                 getPriceAndCurrencyDecFmt: 'modPrices/getPriceAndCurrencyDecFmt'
             }),
-            classesImg() {
+            classesImg: function() {
                 return 'img-listing';
             },
-            classesExcl() {
+            classesExcl: function() {
                 return null
             },
-            routeUrlPds() {
+            routeUrlPds: function() {
                 let _locale = this.getApiLocale;
 
                 // direkt url
@@ -138,7 +158,7 @@
 
                 return '/' + this.itemOrig.url_pds
             },
-            routeUrlProductImg() {
+            routeUrlProductImg: function() {
 
                 if(process.env.API_TYPE === 'sw') {
                     return this.itemData.image;
@@ -158,22 +178,22 @@
                 let _path = _.trim(process.env.config.IMG_BASE_URL, '/');
                 return _path + '/images/catalog/product/180x/' + this.itemData.image;
             },
-            item() {
+            item: function() {
                 return this.itemOrig
             },
-            itemIsSimple() {
+            itemIsSimple: function() {
                 return this.item.type === 'simple';
             },
-            itemIsGrouped() {
+            itemIsGrouped: function() {
                 return this.item.type === 'grouped';
             },
-            itemIsConfigurable() {
+            itemIsConfigurable: function() {
                 return this.item.type === 'configurable';
             },
-            itemIsMinimal() {
+            itemIsMinimal: function() {
                 return false
             },
-            itemIsNew() {
+            itemIsNew: function() {
                 if (this.itemData.status) {
                     let td = Date.parse(Date()),
                         startDate = Date.parse(this.itemData.status.is_new_from_date),
@@ -184,10 +204,10 @@
 
                 return false;
             },
-            itemIsSpecial() {
+            itemIsSpecial: function() {
                 return this.productIsSpecial(this.itemData)
             },
-            itemDiscountPercent() {
+            itemDiscountPercent: function() {
                 let oldPrice = this.itemData.final_price_item['display_price_brutto'],
                     specialPrice = this.itemData.final_price_item['display_price_brutto_special'],
                     decrease = oldPrice - specialPrice,
@@ -195,7 +215,7 @@
 
                 return '-' + _.round(decreasePercentage) + ' %';
             },
-            itemTierPrices() {
+            itemTierPrices: function() {
                 let groupID = 0;
 
                 return this.productGetTierPricesByGroupId(
@@ -203,10 +223,10 @@
                     groupID
                 )
             },
-            itemTierPriceMin() {
+            itemTierPriceMin: function() {
                 return _.minBy(this.itemTierPrices, 'display_price_brutto')
             },
-            itemHasTierPrices() {
+            itemHasTierPrices: function() {
                 let groupID = 0;
 
                 return this.productHasTierPricesByGroupId(
@@ -214,7 +234,7 @@
                     groupID
                 )
             },
-            itemTierPriceDiscount() {
+            itemTierPriceDiscount: function() {
                 if (!this.itemHasTierPrices) {
                     return null
                 }
@@ -226,12 +246,12 @@
 
                 return _.round(_diff) + '%'
             },
-            itemHasCheapPrice() {
+            itemHasCheapPrice: function() {
                 return (
                     this.itemData.cheap_price_item && this.itemData.cheap_price_item.status === 'OK'
                 )
             },
-            itemTaxClass() {
+            itemTaxClass: function() {
                 return this.getTaxClassByLabel(this.itemData.final_price_item.tax_class_id)
             }
         },
@@ -250,21 +270,21 @@
                 setOpenDetail: 'modApiProduct/setOpenDetail',
                 setProductId: 'modApiProduct/setProductId'
             }),
-            getPriceAndCurrency(key, addVat) {
+            getPriceAndCurrency: function(key, addVat) {
                 return this.getPriceAndCurrencyDecFmt(
                     this.itemData.final_price_item[key],
                     addVat,
                     this.itemTaxClass
                 )
             },
-            getTierPriceMinAndCurrency(addVat) {
+            getTierPriceMinAndCurrency: function(addVat) {
                 return this.getPriceAndCurrencyDecFmt(
                     this.itemTierPriceMin.price,
                     addVat,
                     this.itemTaxClass
                 )
             },
-            getCheapPriceAndCurrency(addVat) {
+            getCheapPriceAndCurrency: function(addVat) {
                 return this.getPriceAndCurrencyDecFmt(
                     this.item.final_price_item.min_price,
                     addVat,
@@ -283,8 +303,9 @@
             gtmProductClick: function () {
                 if (this.$gtm) {
                     let price = this.getPriceAndCurrency('display_price_brutto', this.priceSwitcherIncludeVat);
+
                     if (this.itemIsSpecial) {
-                        price = this.getPriceAndCurrency('display_price_brutto_special', this.priceSwitcherIncludeVat)
+                        price = this.getPriceAndCurrency('display_price_brutto_special', this.priceSwitcherIncludeVat);
                     }
 
                     this.$gtm.pushEvent({
