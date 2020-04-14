@@ -1,6 +1,7 @@
 <template>
     <div class="box order-list">
         <div class="box-title">{{ title }}</div>
+
         <div v-if="ordersExists()" class="t-wrapper">
             <div class="t-row t-head">
                 <div class="t-col">{{ $t('Order') }} #</div>
@@ -9,17 +10,21 @@
                 <div class="t-col">{{ $t('Status') }}</div>
                 <div v-if="orders[0].payload != null" class="t-col">{{ $t('Action') }}</div>
             </div>
+
             <div v-for="(order, index) in orders" :key="index" v-if="index <= limit && orders.length > 0" class="t-row">
                 <!-- Show shopware order number if isset  -->
                 <div v-if="order.orderNumber != null" class="t-col" v-text="order.orderNumber" />
+
                 <div v-else class="t-col" v-text="'000'+order.id" />
 
                 <div class="t-col" v-text="formatDate(order.createdAt)" />
+
                 <div class="t-col">
                     <!-- Show shopware order totals if isset  -->
                     <span v-if="order.totals != null" v-text="getTotals(order.totals)" />
                     <span v-if="order.payload != null" v-text="getTotals(JSON.parse(order.payload.cart.grand_total))" />
                 </div>
+
                 <div class="t-col">{{ $t(order.status_label) }}</div>
 
                 <!-- Shopware: do not show link to order detail page, because /customer/order endpoint doesnt provide cart and adress data -->
@@ -28,12 +33,14 @@
                 </div>
             </div>
         </div>
+
         <div v-else-if="loading" class="loader lds-ellipsis">
             <div />
             <div />
             <div />
             <div />
         </div>
+
         <div v-else>{{ $t('No orders yet') }}</div>
     </div>
 </template>
@@ -96,7 +103,7 @@
                     this.loading = false;
                 });
             },
-            ordersExists() {
+            ordersExists: function() {
                 if(this.orders != null) {
                     if(this.orders.length > 0) {
                         return true;
@@ -105,13 +112,13 @@
 
                 return false;
             },
-            getTotals(value) {
+            getTotals: function(value) {
                 let total = this.priceDecFmt(value);
                 total = this.priceAddCur(value);
 
                 return total;
             },
-            formatDate(date) {
+            formatDate: function(date) {
                 let dateObj = new Date(date);
                 let dd = dateObj.getDate();
                 let mm = dateObj.getMonth() + 1;
