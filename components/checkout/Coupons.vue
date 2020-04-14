@@ -1,11 +1,14 @@
 <template>
     <div class="coupons-wrp">
         <div class="coupon-title headline-3" v-text="$t('Voucher / Coupon')" />
+
         <div class="text-small subline" v-text="$t('Did you receive a discount coupon or coupon?')" />
+
         <div class="hbl-input-group">
             <input id="coupon-code" v-model="couponCode" type="text" placeholder=" " required>
             <label for="coupon-code" v-text="$t('Code')" />
         </div>
+
         <button class="button-secondary shopping-button" :disabled="loading" @click="applyCoupon()">
             <span v-if="!loading">{{ $t('Apply voucher') }}</span>
             <div v-if="loading" class="loader lds-ellipsis">
@@ -46,9 +49,7 @@
                 flashMessage: 'modFlash/flashMessage'
             }),
             applyCoupon: function() {
-
                 this.checkCouponInCart(this.couponCode).then(() => {
-
                     // Start loading
                     this.loading = true;
 
@@ -56,7 +57,6 @@
                         cart: JSON.stringify(this.cart),
                         coupon: this.couponCode
                     }).then((response) => {
-
                         // End loading
                         this.loading = false;
 
@@ -66,9 +66,7 @@
                                 flashMessage: this.$t('Coupon applied successfully: ') + this.couponCode
                             });
                         });
-
                     }).catch((errorMessage) => {
-
                         // End loading
                         this.loading = false;
 
@@ -77,7 +75,6 @@
                             flashMessage: this.$t(errorMessage)
                         });
                     });
-
                 }).catch((error) => {
                     this.flashMessage({
                         flashType: 'error',
