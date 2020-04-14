@@ -1,12 +1,12 @@
 <template>
     <div class="price-box price-wrp">
-
-        <div class="calculated-prices table" v-if="item.calculatedPrices">
+        <div v-if="item.calculatedPrices" class="calculated-prices table">
             <div class="table-head">
                 <div class="table-data">Quantity</div>
                 <div class="table-data">Unit price</div>
             </div>
-            <div class="table-row" v-for="(price, key) in item.calculatedPrices">
+
+            <div v-for="(price, key) in item.calculatedPrices" class="table-row">
                 <div class="table-data" v-text="(key === 0 ? $t('to ') : $t('from ')) + price.quantity" />
                 <div class="table-data" v-text="getPriceAndCurrencyDecFmt(price.unitPrice, false, itemTaxClass)" />
             </div>
@@ -33,6 +33,7 @@
 
 <script>
     import { mapState, mapGetters } from 'vuex';
+
     export default {
         name: "ProductDetailPrice",
 
@@ -52,16 +53,16 @@
                 getTaxClassByLabel: 'modPrices/getTaxClassByLabel',
                 getPriceAndCurrencyDecFmt: 'modPrices/getPriceAndCurrencyDecFmt'
             }),
-            itemTaxClass() {
+            itemTaxClass: function() {
                 return this.getTaxClassByLabel(this.item.final_price_item.tax_class_id);
             },
-            itemIsSpecial() {
+            itemIsSpecial: function() {
                 return this.productIsSpecial(this.item);
             },
         },
 
         methods: {
-            getPriceAndCurrency(key, addVat) {
+            getPriceAndCurrency: function(key, addVat) {
                 return this.getPriceAndCurrencyDecFmt(this.item.final_price_item[key], addVat, this.itemTaxClass);
             },
         }
