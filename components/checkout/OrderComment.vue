@@ -6,7 +6,6 @@
 
         <div class="hbl-input-group">
             <textarea id="comment" v-model="orderComment" :placeholder="$t('Your comment')" />
-
             <label for="comment" v-text="$t('Comment')" />
         </div>
     </div>
@@ -14,6 +13,7 @@
 
 <script>
     import {mapGetters, mapMutations} from 'vuex';
+
     export default {
         name: "OrderComment",
 
