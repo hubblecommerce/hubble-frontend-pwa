@@ -9,7 +9,9 @@
                 <div v-if="$mq === 'sm'" class="back-btn-wrp">
                     <button class="detail-back-btn" @click="historyBack()">
                         <i class="icon icon-chevron-left" />
+                        
                         <span class="hidden-link-name">{{ $t('Back') }}</span>
+
                         <material-ripple />
                     </button>
                 </div>
@@ -36,6 +38,7 @@
                                     <template v-if="productData.model">
                                         <p v-html="productData.model" />
                                     </template>
+
                                     <template v-else>
                                         <p>{{ $t('There is no data assigned to attribute \'model\'.') }}</p>
                                     </template>
@@ -47,18 +50,22 @@
                     <div v-if="$mq === 'md' || $mq === 'lg'" class="product-description-container md-elevation-2">
                         <div class="product-description-wrp">
                             <div id="description" />
+
                             <div class="description-title headline-4 pt-4">
                                 {{ $t('Description') }}
                             </div>
+
                             <client-only>
                                 <div v-if="productData.description" class="description-content">
                                     <p v-html="productData.description" />
                                 </div>
                             </client-only>
+
                             <div v-if="!productData.description" class="description-content">
                                 <template v-if="productData.model">
                                     <p v-html="productData.model" />
                                 </template>
+
                                 <template v-else>
                                     <p>{{ $t('There is no data assigned to attribute \'model\'.') }}</p>
                                 </template>
@@ -88,7 +95,7 @@
 </template>
 
 <script>
-    import { mapState, mapMutations, mapActions } from 'vuex';
+    import {mapActions, mapMutations, mapState} from 'vuex';
     import ProductDetailBuybox from "./ProductDetailBuybox";
     import ProductDetailGallery from "./ProductDetailGallery";
     import CollapsibleDescription from "./CollapsibleDescription";
@@ -125,42 +132,41 @@
                 priceCurrencySymbol: state => state.modPrices.priceCurrencySymbol,
                 clickPath: state => state.modClickPath.clickPath
             }),
-            productData() {
+            productData: function() {
                 if(_.isEmpty(this.dataProduct)) {
                     return this.dataProduct;
                 }
 
                 return this.dataProduct.result.item;
             },
-            routeUrlPds() {
+            routeUrlPds: function() {
                 let _path = _.trim(process.env.config.APP_BASE_URL, '/');
 
                 return _path + '/' + this.productData.url_pds;
             },
-            routeUrlProductImg() {
+            routeUrlProductImg: function() {
                 // If customer domain isset get live images
                 if(!_.isEmpty(process.env.CUSTOMER_DOMAIN)) {
                     let image = this.productData.image;
-                    let _reference = _.join([
+                    return _.join([
                         process.env.CUSTOMER_DOMAIN,
                         'images/catalog/thumbnails/cache/400',
                         image
                     ], '/');
-                    return _reference;
                 }
 
                 // If no customer domain isset get images from api
                 let _path = _.trim(process.env.config.IMG_BASE_URL, '/');
                 return _path + '/images/catalog/product/pds/' + this.productData.image;
             },
-            itemMinPriceBrutto() {
+            itemMinPriceBrutto: function() {
                 if(!_.isEmpty(this.productData)) {
                     let _price = this.productData.final_price_item.min_price * 1.19;
                     return _.round(_price, 2);
                 }
                 return null;
             },
-            structuredData() {
+            structuredData: function() {
                 if(_.isEmpty(this.productData)) return {};
 
                 return  {
@@ -189,7 +195,7 @@
                     // More structured data...
                 };
             },
-            breadcrumbPath() {
+            breadcrumbPath: function() {
                 let path = [];
                 let lastPathElement = this.clickPath.slice(-2)[0];
 
@@ -219,7 +225,7 @@
 
                 return path;
             },
-            attributeName() {
+            attributeName: function() {
                 if (this.productData.facets.string_facets[0]) {
                     return this.productData.facets.string_facets[0]['label'];
                 }
@@ -240,19 +246,19 @@
                  //    'brand': this.productData.manufacturer_name
                  //}
             },
-            hasProductsCrossBuybox() {
+            hasProductsCrossBuybox: function() {
                 if(!_.isEmpty(this.productData)) {
                     return ! _.isEmpty(this.productData.related_product_ids.buybox);
                 }
                 return false;
             },
-            hasProductsCrossByOrder() {
+            hasProductsCrossByOrder: function() {
                 if(!_.isEmpty(this.productData)) {
                     return ! _.isEmpty(this.productData.related_product_ids.byorder);
                 }
                 return false;
             },
-            hasProductsCrossSimilar() {
+            hasProductsCrossSimilar: function() {
                 if(_.has(this.productData, 'statistic_item')) {
                     if(_.has(this.productData.statistic_item, 'art_category')) {
                         return /^(D|H|K)$/.test(this.productData.statistic_item.art_category);
@@ -287,12 +293,13 @@
             historyBack: function() {
                 this.$router.go(-1);
             },
-            getPriceValidUntilDate() {
+            getPriceValidUntilDate: function() {
                 // check if a special Price is active and has a valid Date
                 if(this.productData.final_price_item.special_to_date != null) {
                     let td = Date.parse(Date()),
                         startDate = Date.parse(this.productData.final_price_item.special_from_date),
                         endDate = Date.parse(this.productData.final_price_item.special_to_date);
+
                     if(startDate <= td && td <= endDate) {
                         return this.productData.final_price_item.special_to_date;
                     }
@@ -301,6 +308,7 @@
                 let priceValidUntil = new Date();
                 priceValidUntil.getDate();
                 priceValidUntil.setMonth(priceValidUntil.getMonth()+1);
+
                 return priceValidUntil.toISOString();
             },
             empty: function(p) {
