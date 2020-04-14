@@ -4,7 +4,12 @@ Component usage:
 -->
 
 <template>
-    <collapsible-filter :class="activeClass" :toggle-text="facetTitle" :max-height="maxHeight" open-icon-class="icon-chevron-down" close-icon-class="icon-chevron-up">
+    <collapsible-filter :class="activeClass"
+                        :toggle-text="facetTitle"
+                        :max-height="maxHeight"
+                        open-icon-class="icon-chevron-down"
+                        close-icon-class="icon-chevron-up"
+    >
         <div class="action-bar">
             <div class="selected-facets" v-text="modelSelected.length+$t(' selected')" />
             <div class="reset-facet" @click="resetAll()" v-text="$t('Reset Filter')">Zurücksetzen</div>
@@ -12,7 +17,12 @@ Component usage:
 
         <div class="input-wrp">
             <div v-for="(option, optionIndex) in dataFacet.options" v-if="typeCheckbox" :key="optionIndex" class="hbl-checkbox">
-                <input :id="dataFacet.key+option['key']" v-model="modelSelected" type="checkbox" :value="option['key']" @change="changeFilter()">
+                <input :id="dataFacet.key+option['key']"
+                       v-model="modelSelected"
+                       type="checkbox"
+                       :value="option['key']"
+                       @change="changeFilter()"
+                >
                 <label :for="dataFacet.key+option['key']">{{ option.label }}</label>
             </div>
         </div>
@@ -27,6 +37,7 @@ Component usage:
                     {{ option.label }} <span class="count">({{ option.doc_count }})</span>
                 </option>
             </select>
+
             <span class="select-highlight" />
             <span class="select-bar" />
             <label :for="dataFacet.key" class="select-label" v-text="dataFacet.label" />
@@ -37,9 +48,34 @@ Component usage:
 <script>
 import { mapState } from 'vuex'
 import CollapsibleFilter from "./CollapsibleFilter";
+
 export default {
     name: 'SelectableFacet',
-    components: {CollapsibleFilter},
+
+    components: {
+        CollapsibleFilter
+    },
+
+    props: {
+        dataFacet: {
+            type: Object,
+            required: true
+        },
+        typeCheckbox: {
+            type: Boolean,
+            required: false
+        },
+        typeSelect: {
+            type: Boolean,
+            required: false
+        },
+        filterOnChange: {
+            type: Boolean,
+            required: false,
+            default: false
+        }
+    },
+
     data() {
         return {
             name: 'SelectableFacet',
@@ -66,32 +102,11 @@ export default {
             return this.dataFacet.label + selectedOptions;
         },
         maxHeight: function() {
-
             if(this.$mq === 'lg') {
                 return 500;
             }
 
             return (this.dataFacet.options.length*50)+45;
-        }
-    },
-
-    props: {
-        dataFacet: {
-            type: Object,
-            required: true
-        },
-        typeCheckbox: {
-            type: Boolean,
-            required: false
-        },
-        typeSelect: {
-            type: Boolean,
-            required: false
-        },
-        filterOnChange: {
-            type: Boolean,
-            required: false,
-            default: false
         }
     },
 
