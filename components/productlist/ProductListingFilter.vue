@@ -468,10 +468,10 @@
                 toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction',
                 hideOffcanvasAction: 'modNavigation/hideOffcanvasAction'
             }),
-            resetPagination() {
+            resetPagination: function() {
                 this.setPaginationPage(1);
             },
-            getSelectedQueryParams() {
+            getSelectedQueryParams: function() {
                 let _selected = [];
 
                 _.forEach(this.queryWellKnown, property => {
@@ -491,15 +491,12 @@
 
                 return _selected
             },
-            getSelectedFacetOptionsLabel(facet) {
+            getSelectedFacetOptionsLabel: function(facet) {
                 let _selectedIds = facet.options.filter(item => item.selected);
 
-                let _selectedLabels = _.join(_selectedIds.map(item => item.label), ', ');
-
-                return _selectedLabels
+                return _.join(_selectedIds.map(item => item.label), ', ');
             },
-            routeOnPropertyChange() {
-
+            routeOnPropertyChange: function() {
                 return new Promise((resolve, reject) => {
                     // always reset to 1st page
                     this.resetPagination();
@@ -543,7 +540,7 @@
                     resolve('New filter route is set');
                 });
             },
-            routeOnPropertyRemove(propertyName) {
+            routeOnPropertyRemove: function(propertyName) {
                 // always reset to 1st page
                 this.resetPagination();
 
@@ -569,7 +566,7 @@
                     this.$router.push(_route)
                 })
             },
-            routeOnPropertyRemoveAll() {
+            routeOnPropertyRemoveAll: function() {
                 // always reset to 1st page
                 this.resetPagination();
 
@@ -601,7 +598,7 @@
                     this.$router.push(this.filterRoute);
                 })
             },
-            getSortingDirection(order) {
+            getSortingDirection: function(order) {
                 let _sorting = _.head(
                     this.optionsSorter.filter(
                         item => item.order === this.parsedQuery['order']
@@ -617,7 +614,7 @@
                     direction: 'rightLeft'
                 });
             },
-            hideFilters() {
+            hideFilters: function() {
                 this.hideOffcanvasAction();
 
                 return new Promise((resolve, reject) => {
@@ -625,7 +622,7 @@
                     resolve()
                 })
             },
-            formatPrice(price) {
+            formatPrice: function(price) {
                 return price + '' + this.priceCurrencySymbol
             },
             isSearchPage: function() {
