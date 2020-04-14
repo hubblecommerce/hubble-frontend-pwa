@@ -118,28 +118,28 @@
             ...mapGetters({
                 getApiLocale: 'modApiResources/getApiLocale'
             }),
-            locale() {
+            locale: function() {
                 return this.getApiLocale;
             },
-            imgFilter() {
+            imgFilter: function() {
                 return this.dataImageFilter ? this.dataImageFilter : this.origImageFilter
             },
-            showResults() {
+            showResults: function() {
                 // should also count items!
                 return (
                     this.queryShowResults && (this.stats && this.stats.total ? true : false)
                 )
             },
-            showNoResults() {
+            showNoResults: function() {
                 // should also count items!
                 return (
                     this.queryShowResults && (this.stats && this.stats.total ? false : true)
                 )
             },
-            queryShowReset() {
+            queryShowReset: function() {
                 return this.query.length >= this.queryMinLength || this.queryShowResults
             },
-            searchIndicator: function () {
+            searchIndicator: function() {
                 if (this.queryIsSearching) {
                     return '⟳ Fetching new results'
                 } else if (this.queryIsTyping) {
@@ -153,7 +153,6 @@
         watch: {
             query: function () {
                 this.queryIsTyping = true;
-
                 this.doSearch();
             }
         },
@@ -162,14 +161,12 @@
             ...mapMutations({
                 hideOffcanvas: 'modNavigation/hideOffcanvas'
             }),
-            bye() {
+            bye: function() {
                 this.showSearch = false;
-
                 this.queryShowResults = false;
-
                 this.query = '';
             },
-            toggle() {
+            toggle: function() {
                 this.showSearch = !this.showSearch;
 
                 // Set focus on search input after component is opened
@@ -177,7 +174,7 @@
                     this.$nextTick(() => this.$refs.search.focus());
                 }
             },
-            onFocus() {
+            onFocus: function() {
                 this.hideOffcanvas();
                 if (this.queryIsDisabled) {
                     return
@@ -189,12 +186,12 @@
                     this.queryShowResults = true;
                 }
             },
-            clearQuery() {
+            clearQuery: function() {
                 this.focus = false;
                 this.query = '';
                 this.queryShowResults = false;
             },
-            itemUrl(item) {
+            itemUrl: function(item) {
                 let _url = '';
 
                 // cms_pages (simplified)
@@ -212,7 +209,7 @@
 
                 return '/' + _url;
             },
-            itemImgPath(group, item) {
+            itemImgPath: function(group, item) {
                 // If customer domain isset get live images
                 if (!_.isEmpty(process.env.CUSTOMER_DOMAIN)) {
                     let _path = _.trim(process.env.config.IMG_BASE_URL, '/');
@@ -257,7 +254,7 @@
 
                 return _path;
             },
-            selectItem(item, group) {
+            selectItem: function(item, group) {
                 let _route = {
                     path: this.itemUrl(item)
                 };
@@ -309,7 +306,7 @@
                         console.log('error retrieving data!')
                     })
             }, 350), // END doSearch
-            doCatalogSearch() {
+            doCatalogSearch: function() {
                 if (_.isEmpty(this.query)) {
                     return false;
                 }
@@ -328,14 +325,14 @@
 
                 this.$router.push(_route)
             },
-            doCatalogSearchGrouped(group) {
+            doCatalogSearchGrouped: function(group) {
                 // only if
                 if (group.meta.name == 'catalog_product') {
                     // do catalog search
                     this.doCatalogSearch();
                 }
             },
-            highlight(item, field) {
+            highlight: function(item, field) {
                 if (!this.query) {
                     return item[field]
                 }
@@ -350,7 +347,7 @@
                     return '<span class="highlight">' + match + '</span>';
                 })
             },
-            getGroupHeadline(item) {
+            getGroupHeadline: function(item) {
                 // assemble headline content
                 let _headline =
                     '<h3>' + this.$t(item.meta.label) + ' (' + item.stats.total + ')</h3>';
@@ -360,9 +357,9 @@
                     _headline = "<span class='livesearch-link'>" + _headline + '</span>'
                 }
 
-                return _headline
+                return _headline;
             },
-            groupResults() {
+            groupResults: function() {
                 let _group_l = {name: 'left', items: [], count: 0};
                 let _group_r = {name: 'right', items: [], count: 0};
 
@@ -408,7 +405,7 @@
 
                 this.groups = _my_groups;
             },
-            sendStats(data) {
+            sendStats: function(data) {
                 let _vue = this;
 
                 let _route = route('utilities.stats');
@@ -424,7 +421,7 @@
                         })
                 })
             },
-            blurInput() {
+            blurInput: function() {
                 document.getElementById('autocomplete-search').blur();
             }
         }
