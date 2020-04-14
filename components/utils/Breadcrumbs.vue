@@ -4,6 +4,7 @@
             <li class="breadcrumb-item">
                 <nuxt-link to="/" title="Back to Home">Home</nuxt-link>
             </li>
+
             <li class="breadcrumb-item" v-for="(element, index) in path" :key="index">
                 <nuxt-link :to="'/'+element.url">
                     <span itemprop="title">{{ element.name }}</span>
@@ -26,6 +27,7 @@
         head () {
             if(!_.isEmpty(this.path)){
                 let currentPath = [];
+
                 _.forEach(this.path, (pathItem, key) => {
                     currentPath.push({
                         "@type": "ListItem",
@@ -34,11 +36,13 @@
                         "item": process.env.APP_BASE_URL + pathItem.url
                     })
                 });
+
                 let structuredDataBreadcrumbs = {
                     "@context": "https://schema.org",
                     "@type": "BreadcrumbList",
                     "itemListElement": currentPath
                 };
+                
                 return{
                     script: [
                         { json: structuredDataBreadcrumbs, type: 'application/ld+json' }
