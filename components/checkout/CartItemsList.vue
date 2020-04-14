@@ -25,7 +25,6 @@
                                 <div class="row">
                                     <template v-if="itemIsSpecial(item)">
                                         <span class="product-price old-price" v-html="getPriceAndCurrency(item, 'display_price_brutto', priceSwitcherIncludeVat)" />
-
                                         <span class="product-price sale-price" v-html="getPriceAndCurrency(item, 'display_price_brutto_special', priceSwitcherIncludeVat)" />
                                     </template>
 
@@ -58,7 +57,6 @@
                 <div :key="key" class="cart-items-list row item coupon align-items-center">
                     <div>
                         <span class="coupon text-small" v-text="$t('Voucher / Coupon')+':'" />
-
                         <span class="coupon-name text-small" v-text="coupon.code" />
                     </div>
 
@@ -104,10 +102,10 @@
                 priceDecFmt: 'modPrices/priceDecFmt',
                 priceAddCur: 'modPrices/priceAddCur'
             }),
-            classesImg() {
+            classesImg: function() {
                 return 'img-minicart';
             },
-            imgFilter() {
+            imgFilter: function() {
                 return this.dataImageFilter ? this.dataImageFilter : this.origImageFilter;
             }
         },
@@ -125,7 +123,6 @@
                 setCartItemsObjQty: 'modCart/setCartItemsObjQty'
             }),
             itemImgPath: function(item) {
-
                 if(process.env.API_TYPE === 'sw') {
                     return item.image;
                 }
@@ -161,7 +158,6 @@
                 return this.getTaxClassByLabel(item.final_price_item.tax_class_id);
             },
             onChangeQty: function(id, e) {
-
                 let storeItem = _.find(this.items, (o) => { return o.id === id; });
 
                 let oldQty = storeItem.qty;
@@ -236,11 +232,9 @@
             },
             getCouponVal: function(value) {
                 let val;
-
                 val = this.priceDecFmt(value);
-
                 val = this.priceAddCur(value);
-                
+
                 return val;
             },
             formatSize: function (size) {
@@ -256,7 +250,6 @@
             },
             // Return highest stock qty of all variants of given item
             getStockQtyOfVariant: function(item) {
-
                 // If product has no variants return 10
                 if(_.isEmpty(item.variants) || process.env.API_TYPE === 'sw') {
                     return 10;
