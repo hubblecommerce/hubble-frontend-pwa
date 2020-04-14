@@ -2,14 +2,19 @@
     <transition name="slide-in">
         <div class="tree-menu w-100 bg-white">
             <div class="back-tigger">
-                <button class="button-icon" v-if="depth > 1" @click="closeSubcategory">
+                <button v-if="depth > 1"
+                        class="button-icon"
+                        @click="closeSubcategory"
+                >
                     <i class="icon icon-chevron-left"></i>
                     <span class="hidden-link-name">{{ $t('Back') }}</span>
                     <material-ripple></material-ripple>
                 </button>
             </div>
 
-            <nuxt-link :to="parentUrlPath" v-if="firstItem && $parent.dataItem.url_path">
+            <nuxt-link v-if="firstItem && $parent.dataItem.url_path"
+                       :to="parentUrlPath"
+            >
                 <button class="button-primary parent-link m-0 w-100">
                     <span v-if="$mq === 'sm'">{{ $t('Show parent', {parent: parentName}) }} </span>
                     <span v-if="$mq === 'md'">{{ $t('Show all parent', {parent: parentName}) }}</span>
@@ -17,38 +22,48 @@
                 </button>
             </nuxt-link>
 
-            <nuxt-link :to="itemUrlPath" v-if="!hasChildren && dataItem.name">
+            <nuxt-link v-if="!hasChildren && dataItem.name"
+                       :to="itemUrlPath"
+            >
                 <div v-if="depth !== 0" class="trigger bg-white m-0 w-100 d-flex justify-content-between align-items-center border-bottom">
                     {{ dataItem.name }}
                 </div>
             </nuxt-link>
 
-            <nuxt-link :to="manufacturerUrlPath" v-if="!hasChildren && dataItem.manufacturer_name">
-                <div v-if="depth !== 0" class="trigger bg-white m-0 w-100 d-flex justify-content-between align-items-center border-bottom">
+            <nuxt-link v-if="!hasChildren && dataItem.manufacturer_name"
+                       :to="manufacturerUrlPath"
+            >
+                <div v-if="depth !== 0"
+                     class="trigger bg-white m-0 w-100 d-flex justify-content-between align-items-center border-bottom"
+                >
                     {{ dataItem.manufacturer_name }}
                 </div>
             </nuxt-link>
 
-            <div v-if="depth !== 0 && hasChildren" @click="toggleChildren(dataItem)" class="trigger bg-white p-3 m-0 w-100 d-flex justify-content-between align-items-center border-bottom">
+            <div v-if="depth !== 0 && hasChildren"
+                 class="trigger bg-white p-3 m-0 w-100 d-flex justify-content-between align-items-center border-bottom"
+                 @click="toggleChildren(dataItem)"
+            >
                 {{ dataItem.name }} <i class="icon icon-chevron-right"></i>
             </div>
             <transition name="slide-in">
-                <div class="sub-categories" v-if="showChildren || depth === 0 || isInCurrentCategoryPath">
-
+                <div v-if="showChildren || depth === 0 || isInCurrentCategoryPath"
+                     class="sub-categories"
+                >
                     <mobile-categories
                         v-for="(node,index) of dataItem.children"
+                        :key="node.id"
                         :data-item="node"
                         :depth="depth + 1"
-                        :key="node.id"
                         :firstItem="index === 0"
                     >
                     </mobile-categories>
 
                     <mobile-categories
                         v-for="(node,index) of dataItem.menu_items"
+                        :key="node.id"
                         :data-item="node"
                         :depth="depth + 1"
-                        :key="node.id"
                         :firstItem="index === 0"
                     >
                     </mobile-categories>
@@ -86,15 +101,35 @@
             }
         },
 
-        created() {
+        computed: {
+            ...mapState({
+                clickPath: state => state.modClickPath.clickPath
+            }),
+            hasChildren: function() {
+                return ! _.isEmpty(this.dataItem.children) || ! _.isEmpty(this.dataItem.menu_items);
+            },
+            itemUrlPath: function() {
+                return '/' + this.dataItem.url_path;
+            },
+            manufacturerUrlPath: function() {
+                return '/' + this.dataItem.manufacturer_info_url;
+            },
+            parentName: function() {
+                if(this.$parent.dataItem.heading_title) return this.$parent.dataItem.heading_title;
+                return this.$parent.dataItem.name;
+            },
+            parentUrlPath: function() {
+                return '/' + this.$parent.dataItem.url_path;
+            }
+        },
 
+        created() {
             // Get current category path
             let currentPathElement = this.clickPath.slice(-1)[0];
             let currentCategoryPath = currentPathElement.categoryPath;
 
             // If current category path is set
             if(!_.isEmpty(currentCategoryPath)) {
-
                 // If current data item is set
                 // and current data item id is included in category path
                 // and current category has children
@@ -109,43 +144,21 @@
         },
 
         methods: {
-            toggleChildren(nodes) {
+            toggleChildren: function(nodes) {
                 if(nodes.children || nodes.menu_items) {
                     this.showChildren = !this.showChildren;
                 }
             },
-            closeSubcategory() {
+            closeSubcategory: function() {
                 this.$parent.showChildren = false;
                 this.showChildren = false;
 
                 this.isInCurrentCategoryPath = false;
                 this.$parent.isInCurrentCategoryPath = false;
             },
-            showChildrenOnHover() {
+            showChildrenOnHover: function() {
                 this.showChildren = true;
                 this.$children.showChildren = true;
-            }
-        },
-
-        computed: {
-            ...mapState({
-                clickPath: state => state.modClickPath.clickPath
-            }),
-            hasChildren() {
-                return ! _.isEmpty(this.dataItem.children) || ! _.isEmpty(this.dataItem.menu_items);
-            },
-            itemUrlPath() {
-                return '/' + this.dataItem.url_path;
-            },
-            manufacturerUrlPath() {
-                return '/' + this.dataItem.manufacturer_info_url;
-            },
-            parentName() {
-                if(this.$parent.dataItem.heading_title) return this.$parent.dataItem.heading_title;
-                return this.$parent.dataItem.name;
-            },
-            parentUrlPath() {
-                return '/' + this.$parent.dataItem.url_path;
             }
         }
     }
