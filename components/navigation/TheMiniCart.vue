@@ -17,7 +17,6 @@
         <transition-expand-layer :right-left="true">
             <div v-if="showMenu" class="transition-expand-wrp minicart-wrapper">
                 <div class="container expand-content">
-
                     <div class="row overlay-header">
                         <button class="button-icon button-close-menu"
                                 @click="toggle()"
@@ -41,6 +40,7 @@
                         <div v-if="qty > 1" class="col-12 qty-summary">
                             {{ qty }} {{ $t('shopping_cart_label_items') }}
                         </div>
+
                         <transition name="fade">
                             <div v-if="qty <= 0" class="empty-cart">
                                 <i class="icon icon-cart" />
@@ -63,6 +63,7 @@
                         <div class="col-6">
                             {{ $t('Subtotal') }}
                         </div>
+
                         <div class="col-6">
                             <span class="float-right font-weight-bold" v-html="getSubTotal()" />
                         </div>
@@ -74,6 +75,7 @@
                         {{ $t('shopping_cart') }}
                         <material-ripple />
                     </button>
+
                     <button v-if="cartItemsQty > 0"
                             class="shopping-button button-secondary"
                             @click.prevent="hideMenu"
@@ -117,28 +119,28 @@
                 priceDecFmt: 'modPrices/priceDecFmt',
                 priceAddCur: 'modPrices/priceAddCur'
             }),
-            hasItemsInCart() {
+            hasItemsInCart: function() {
                 return {
                     inCart: this.cartItemsQty > 0
                 }
             },
-            setButtonStates() {
+            setButtonStates: function() {
                 return {
                     active: this.showMenu
                 }
             },
-            cartItemsQty() {
+            cartItemsQty: function() {
                 return this.qty;
             },
-            cartItemsLabel() {
+            cartItemsLabel: function() {
                 return this.item.items_qty > 0 ? this.$t('shopping_cart_label_items') : this.$t('shopping_cart_label_item');
             },
-            cartItemsQtyAndLabel() {
+            cartItemsQtyAndLabel: function() {
                 if(this.cartItemsQty > 99) return '99+';
 
                 return this.cartItemsQty;
             },
-            showMenu() {
+            showMenu: function() {
                 return this.offcanvas.component === this.name;
             }
         },
@@ -162,16 +164,16 @@
                 toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction',
                 hideOffcanvasAction: 'modNavigation/hideOffcanvasAction'
             }),
-            toggle() {
+            toggle: function() {
                 this.toggleOffcanvasAction({
                     component: this.name,
                     direction: 'rightLeft'
                 });
             },
-            hideMenu() {
+            hideMenu: function() {
                 this.hideOffcanvasAction();
             },
-            getSubTotal() {
+            getSubTotal: function() {
                 let subtotals = this.getSubtotals;
 
                 // Format subtotals
@@ -180,13 +182,13 @@
 
                 return subtotals;
             },
-            checkoutCart() {
+            checkoutCart: function() {
                 this.hideMenu();
                 this.$router.push({
                     path: this.localePath('checkout-cart')
                 });
             },
-            closeOffcanvas() {
+            closeOffcanvas: function() {
                 this.hideOffcanvasAction();
             }
         }
