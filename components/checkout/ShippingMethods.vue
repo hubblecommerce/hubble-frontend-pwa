@@ -1,8 +1,10 @@
 <template>
     <div v-if="!loading && !apiError" class="shipping-methods-wrp">
         <div class="headline headline-3" v-text="$t('Shipping methods')" />
+
         <div v-for="method in shippingMethods" :key="method.key" v-if="method.active" class="method-wrp hbl-checkbox">
             <input :id="'shipping-option-' + method.id" v-model="chosenMethod" type="radio" :value="method.id">
+
             <label :for="'shipping-option-' + method.id" class="method-label">
                 <span class="name" v-text="method.name" />
                 <span class="description" v-text="method.description" />
@@ -11,9 +13,11 @@
         </div>
         <div class="validation-msg" v-text="$t(shippingError)" />
     </div>
+
     <div v-else-if="apiError" class="shipping-methods-api-error-wrp">
         No shipping methods found
     </div>
+
     <div v-else class="shipping-methods-placeholder">
         <div class="loader lds-ellipsis">
             <div />
