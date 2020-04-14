@@ -1,14 +1,20 @@
 <template>
     <ul class="pagination">
         <li class="page-item">
-            <button :class="{ disabled: paginationPrevDisabled }" :disabled="paginationPrevDisabled" @click="loadFirstPage">
+            <button :class="{ disabled: paginationPrevDisabled }"
+                    :disabled="paginationPrevDisabled"
+                    @click="loadFirstPage"
+            >
                 <i class="icon icon-chevrons-left" />
                 <span class="hidden-link-name">First Page</span>
                 <material-ripple />
             </button>
         </li>
         <li class="page-item">
-            <button :class="{ disabled: paginationPrevDisabled }" :disabled="paginationPrevDisabled" @click="loadPrevPage">
+            <button :class="{ disabled: paginationPrevDisabled }"
+                    :disabled="paginationPrevDisabled"
+                    @click="loadPrevPage"
+            >
                 <i class="icon icon-chevron-left" />
                 <span class="hidden-link-name">Previous</span>
                 <material-ripple />
@@ -19,11 +25,13 @@
                 <template v-if="link.dotted">
                     <span class="dots disabled hidden-xs"><i class="icon" /></span>
                 </template>
+
                 <template v-else>
                     <button v-if="link.page === curPage" class="current" disabled="disabled">
                         {{ link.page }}
                         <material-ripple />
                     </button>
+
                     <button v-else @click="loadNumberedPage(link.page)">
                         <span>{{ link.page }}</span>
                         <material-ripple />
@@ -32,14 +40,20 @@
             </li>
         </template>
         <li class="page-item">
-            <button :class="{ disabled: paginationNextDisabled }" :disabled="paginationNextDisabled" @click="loadNextPage">
+            <button :class="{ disabled: paginationNextDisabled }"
+                    :disabled="paginationNextDisabled"
+                    @click="loadNextPage"
+            >
                 <i class="icon icon-chevron-right" />
                 <span class="hidden-link-name">Next Page</span>
                 <material-ripple />
             </button>
         </li>
         <li class="page-item">
-            <button :class="{ disabled: paginationNextDisabled }" :disabled="paginationNextDisabled" @click="loadLastPage">
+            <button :class="{ disabled: paginationNextDisabled }"
+                    :disabled="paginationNextDisabled"
+                    @click="loadLastPage"
+            >
                 <i class="icon icon-chevrons-right" />
                 <span class="hidden-link-name">Last Page</span>
                 <material-ripple />
@@ -69,26 +83,26 @@
                 dataCategoryProducts: state => state.modApiCategory.dataCategoryProducts,
                 paginationPerPage: state => state.modApiRequests.paginationPerPage
             }),
-            categoryProductItems() {
+            categoryProductItems: function() {
                 return this.dataCategoryProducts.result.items;
             },
-            categoryProductStats() {
+            categoryProductStats: function() {
                 return this.dataCategoryProducts.result.stats;
             },
-            paginationItemsTotal() {
+            paginationItemsTotal: function() {
                 if(this.dataCategoryProducts.result.stats != null) {
                     return this.dataCategoryProducts.result.stats.total;
                 }
 
                 return 0;
             },
-            paginationNextDisabled() {
+            paginationNextDisabled: function() {
                 return this.curPage === this.lastPage;
             },
-            paginationPrevDisabled() {
+            paginationPrevDisabled: function() {
                 return this.curPage === 1;
             },
-            curPage() {
+            curPage: function() {
                 // If page isset to url take it, otherwise set to first page
                 let currentPage = 1;
 
@@ -98,13 +112,13 @@
 
                 return currentPage;
             },
-            curPerPage() {
+            curPerPage: function() {
                 return parseInt(this.paginationPerPage);
             },
-            firstPage() {
+            firstPage: function() {
                 return 1;
             },
-            lastPage() {
+            lastPage: function() {
                 let _last = _.round(this.paginationItemsTotal / this.curPerPage, 4);
 
                 if(_last > _.round(_last)) {
@@ -113,14 +127,13 @@
 
                 return _.round(_last);
             },
-            prevPage() {
+            prevPage: function() {
                 return this.curPage - 1;
             },
-            nextPage() {
+            nextPage: function() {
                 return this.curPage + 1;
             },
             linksPages: function() {
-
                 let links = [];
 
                 let _beg = 1;
@@ -197,42 +210,42 @@
         },
 
         methods: {
-            loadPrevPage() {
+            loadPrevPage: function() {
                 if(this.paginationPrevDisabled) {
                     return;
                 }
 
                 this.routePagination(this.prevPage);
             },
-            loadNextPage() {
+            loadNextPage: function() {
                 if(this.paginationNextDisabled) {
                     return;
                 }
 
                 this.routePagination(this.nextPage);
             },
-            loadLastPage() {
+            loadLastPage: function() {
                 if(this.paginationNextDisabled) {
                     return;
                 }
 
                 this.routePagination(this.lastPage);
             },
-            loadFirstPage() {
+            loadFirstPage: function() {
                 if(this.paginationPrevDisabled) {
                     return;
                 }
 
                 this.routePagination(this.firstPage);
             },
-            loadNumberedPage(pageNumber) {
+            loadNumberedPage: function(pageNumber) {
                 if(this.curPage === pageNumber) {
                     return;
                 }
 
                 this.routePagination(pageNumber);
             },
-            routePagination(pageNumber) {
+            routePagination: function(pageNumber) {
                 return new Promise((resolve, reject) => {
 
                     this.$nuxt.$loading.start();
