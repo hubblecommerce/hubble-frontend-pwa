@@ -18,19 +18,15 @@
             <div v-for="address in billingAddresses" :key="address.id" class="billing-address-wrp">
                 <div>
                     <span v-text="mapKeyToValue(address.payload.gender, salutations)" />
-
                     <span v-text="address.payload.firstName" />
-
                     <span v-text="address.payload.lastName" />
                 </div>
                 <div>
                     <span v-text="address.payload.street" />
-
                     <span v-text="address.payload.houseNo" />
                 </div>
                 <div>
                     <span v-text="address.payload.postal" />
-
                     <span v-text="address.payload.city" />
                 </div>
                 <div>
@@ -59,19 +55,15 @@
             <div v-for="address in shippingAddresses" :key="address.id" class="shipping-address-wrp">
                 <div>
                     <span v-text="mapKeyToValue(address.payload.gender, salutations)" />
-
                     <span v-text="address.payload.firstName" />
-
                     <span v-text="address.payload.lastName" />
                 </div>
                 <div>
                     <span v-text="address.payload.street" />
-
                     <span v-text="address.payload.houseNo" />
                 </div>
                 <div>
                     <span v-text="address.payload.postal" />
-
                     <span v-text="address.payload.city" />
                 </div>
                 <div>
@@ -87,7 +79,6 @@
                     @click="selectDefaultAddress('shipping')"
                     v-text="$t('Select new default address')"
                 />
-
                 <button v-if="!isGuest"
                         class="button-secondary w-100"
                         @click="createAddress('shipping')"
@@ -106,17 +97,13 @@
                             <i class="icon icon-close" aria-hidden="true" />
                             <material-ripple />
                         </button>
-
                         <div v-if="formIsActiveAddressUpdate" class="overlay-headline" v-text="$t('Edit address')" />
-
                         <div v-if="formIsActiveAddressCreate" class="overlay-headline" v-text="$t('Create new address')" />
-
                         <div v-if="formIsActiveAddressSelectDefault" class="overlay-headline" v-text="$t('Select new default address')" />
                     </div>
                     <div v-if="!formIsActiveAddressSelectDefault">
                         <div class="row content-wrp">
                             <div class="col-12">
-
                                 <div v-if="formIsActiveAddressUpdate" class="hbl-checkbox save-address-checkbox">
                                     <input id="save-address" v-model="saveAsNewAddress" type="checkbox">
 
@@ -301,21 +288,17 @@
                                     >
                                         <div>
                                             <span v-text="mapKeyToValue(currentDefaultAddress.payload.gender, salutations)" />
-
                                             <span v-text="currentDefaultAddress.payload.firstName" />
-
                                             <span v-text="currentDefaultAddress.payload.lastName" />
                                         </div>
 
                                         <div>
                                             <span v-text="currentDefaultAddress.payload.street" />
-
                                             <span v-text="currentDefaultAddress.payload.houseNo" />
                                         </div>
 
                                         <div>
                                             <span v-text="currentDefaultAddress.payload.postal" />
-
                                             <span v-text="currentDefaultAddress.payload.city" />
                                         </div>
 
@@ -330,24 +313,20 @@
                                         <div class="selectable-default-address" @click.prevent="selectDefault(address)">
                                             <div>
                                                 <span v-text="mapKeyToValue(address.payload.gender, salutations)" />
-
                                                 <span v-text="address.payload.firstName" />
-
                                                 <span v-text="address.payload.lastName" />
                                             </div>
 
                                             <div>
                                                 <span v-text="address.payload.street" />
-
                                                 <span v-text="address.payload.houseNo" />
                                             </div>
 
                                             <div>
                                                 <span v-text="address.payload.postal" />
-
                                                 <span v-text="address.payload.city" />
                                             </div>
-                                            
+
                                             <div>
                                                 <span v-text="mapIsoToCountry(address.payload.country, countries)" />
                                             </div>
@@ -570,7 +549,7 @@
                     })
                 });
             },
-            hide() {
+            hide: function() {
                 this.hideOffcanvasAction();
             },
             getAddresses: function() {
