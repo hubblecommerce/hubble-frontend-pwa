@@ -4,23 +4,23 @@
         <form id="search_mini_form" action="#">
             <div class="input-wrp">
                 <div class="hbl-input-group">
-                    <input
-                            id="autocomplete-search"
-                            ref="search"
-                            v-model="query"
-                            :placeholder="$t('Search')"
-                            :disabled="queryIsDisabled"
-                            autocomplete="off"
-                            type="text"
-                            name="term"
-                            value=""
-                            @keyup.esc="clearQuery"
-                            @keydown.enter.prevent="onEnter($event)"
-                            @keydown.down.prevent="changeSelected($event)" @keydown.up.prevent="changeSelected($event)"
-                            @focus="onFocus"
-                            @blur="onBlur"
+                    <input id="autocomplete-search"
+                           ref="search"
+                           v-model="query"
+                           :placeholder="$t('Search')"
+                           :disabled="queryIsDisabled"
+                           autocomplete="off"
+                           type="text"
+                           name="term"
+                           value=""
+                           @keyup.esc="clearQuery"
+                           @keydown.enter.prevent="onEnter($event)"
+                           @keydown.down.prevent="changeSelected($event)"
+                           @keydown.up.prevent="changeSelected($event)"
+                           @focus="onFocus"
+                           @blur="onBlur"
                     >
-
+                    
                     <label class="hidden-link-name" for="autocomplete-search">{{ $t('Search') }}</label>
                 </div>
 
@@ -129,7 +129,7 @@
             ...mapMutations({
                 hideOffcanvas: 'modNavigation/hideOffcanvas'
             }),
-            onFocus() {
+            onFocus: function() {
                 this.hideOffcanvas();
 
                 if (this.queryIsDisabled) {
@@ -138,19 +138,17 @@
 
                 this.focus = true;
             },
-            onEnter(event) {
+            onEnter: function(event) {
                 if(this.inputIsSelected) {
                     this.doCatalogSearch();
-
                     this.resetAutoComplete();
                 } else {
                     this.loading = true;
-
                     this.redirectToItem();
                 }
                 event.target.blur();
             },
-            changeSelected(event){
+            changeSelected: function(event){
                 if(!this.showAutoCompleteResults) {
                     return;
                 }
@@ -166,7 +164,7 @@
                     this.focus = false;
                 }
             },
-            clearQuery() {
+            clearQuery: function() {
                 if(_.isEmpty(this.query) ){
                     this.query = '';
                     return;
@@ -271,7 +269,7 @@
                 }
 
             },
-            sendStats(data) {
+            sendStats: function(data) {
                 let _vue = this;
 
                 let _route = route('utilities.stats');
