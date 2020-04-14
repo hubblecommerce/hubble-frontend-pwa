@@ -2,7 +2,7 @@
     <div class="menu-cpt-wrapper">
         <button class="button-icon navbar-toggler nav-icon" @click="toggle()">
             <i class="icon icon-menu" aria-hidden="true" />
-
+            
             <span class="hidden-link-name">Toggle Navbar</span>
 
             <material-ripple />
@@ -12,12 +12,11 @@
                 <div class="container">
                     <div class="row overlay-header">
                         <button class="button-icon button-close-menu" @click="toggle()">
-
                             <i class="icon icon-close" aria-hidden="true" />
 
                             <material-ripple />
                         </button>
-                        
+
                         <div class="overlay-headline" v-text="menuTitle" />
                     </div>
                     <div class="row tree-wrp">
@@ -55,13 +54,13 @@
             ...mapState({
                 offcanvas: state => state.modNavigation.offcanvas,
             }),
-            rootItem() {
+            rootItem: function() {
                 return {
                     name: 'root',
                     children: this.dataItems
                 }
             },
-            showMenu() {
+            showMenu: function() {
                 return this.offcanvas.component === this.name;
             }
         },
@@ -78,7 +77,7 @@
                 toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction',
                 hideOffcanvasAction: 'modNavigation/hideOffcanvasAction'
             }),
-            toggle() {
+            toggle: function() {
                 this.toggleOffcanvasAction({component: this.name})
             }
         }
