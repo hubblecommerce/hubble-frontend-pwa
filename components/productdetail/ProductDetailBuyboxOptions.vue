@@ -1,7 +1,12 @@
 <template>
     <div class="options-wrp">
-        <div v-for="(facet, index) in facetsAvail" :key="index" class="option-wrp" :class="facet" :updating="isUpdating">
+        <div v-for="(facet, index) in facetsAvail"
+             :key="index" class="option-wrp"
+             :class="facet"
+             :updating="isUpdating"
+        >
             <div class="option-label option-label-top" v-text="facet['facet-name']" />
+
             <div v-if="!hasALotOfOptions(facet)" class="option-val-wrp">
                 <div v-for="(facetValue, vIndex) in facet['facet-values']"
                      :key="vIndex"
@@ -10,9 +15,11 @@
                      v-text="getFacetOptionLabel(facet, facetValue)"
                 />
             </div>
+
             <div v-if="hasALotOfOptions(facet)" class="select-wrp">
                 <select v-model="selectedOption" @change="changeOption(facet)">
                     <option value="" disabled v-text="$t('Please select')" />
+
                     <option v-for="(facetValue, vIndex) in facet['facet-values']"
                             :key="vIndex"
                             class="option-val is-link"
@@ -51,7 +58,7 @@
             ...mapGetters({
                 getSwatchesByOptionId: 'modSwatches/getSwatchesByOptionId'
             }),
-            itemFacets() {
+            itemFacets: function() {
                 let _facets = null;
 
                 if(_.has(this.itemLoaded.facets, 'string_facets')) {
@@ -60,14 +67,14 @@
 
                 return _facets;
             },
-            itemFacetsSuper() {
+            itemFacetsSuper: function() {
                 if(_.isEmpty(this.itemFacets)) {
                     return null;
                 }
 
                 return this.itemFacets.filter(item => item['type'] === 'super_attribute');
             },
-            itemFacetsSuperAllSelected() {
+            itemFacetsSuperAllSelected: function() {
                 let _allSelected = true;
 
                 // loop through available facets
@@ -114,7 +121,7 @@
             ...mapMutations({
                 setDataProductItem: 'modApiProduct/setDataProductItem'
             }),
-            assignFacetOptionValues(facetCode) {
+            assignFacetOptionValues: function(facetCode) {
                 let _facet = _.head(this.itemFacetsSuper.filter(item => item['code'] === facetCode));
 
                 _.forEach(_facet['facet-values'], (facetValue) => {
@@ -130,14 +137,14 @@
                 }
             })
             },
-            getFacetOptionColor(facetOptionColor) {
+            getFacetOptionColor: function(facetOptionColor) {
                 if(facetOptionColor !== '') {
                     return facetOptionColor;
                 }
 
                 return null;
             },
-            getFacetOptionImage(facetOptionImgName, facetOptionImgSize, facetCodeAttrId) {
+            getFacetOptionImage: function(facetOptionImgName, facetOptionImgSize, facetCodeAttrId) {
 
                 if(facetOptionImgName !== '') {
                     return _.join([
@@ -150,7 +157,7 @@
 
                 return facetOptionImgName;
             },
-            selectFacetOption(facet, value) {
+            selectFacetOption: function(facet, value) {
 
                 // reset 'selected' of given facet values
                 _.forEach(facet['facet-values'], (facetValue) => {
@@ -168,7 +175,6 @@
                 this.facetsAvail.pop();
 
                 if(this.itemFacetsSuperAllSelected) {
-
                     let _item = _.head(
                         this.itemLoaded.search_result_data_children.filter(
                             child => child.id === value.product_id
@@ -212,14 +218,12 @@
                 let value = this.selectedOption;
                 this.selectFacetOption(facet, value);
             },
-            getFacetOptionLabel(facet, value) {
+            getFacetOptionLabel: function(facet, value) {
                 return value.label;
             },
             hasALotOfOptions: function(facet) {
-                if(facet['facet-values'].length > 5) {
-                    return true;
-                }
-                return false;
+                return facet['facet-values'].length > 5;
+
             }
         }
     };
