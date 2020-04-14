@@ -21,6 +21,7 @@
                 </div>
             </transition>
         </template>
+
         <template v-else>
             <transition @before-enter="beforeEnter" @after-enter="afterEnter" @before-leave="beforeLeave">
                 <div ref="collapseContent" v-show="collapse" class="collapse show collapse-item">
@@ -37,7 +38,11 @@
 
     export default {
         name: "Collapsible",
-        components: {TransitionRotateX},
+
+        components: {
+            TransitionRotateX
+        },
+
         props: {
             toggleTag: {
                 type: [String, Array],
@@ -68,25 +73,27 @@
                 required: false
             }
         },
+
         data() {
             return {
                 collapse: false
             };
         },
+
         methods: {
-            beforeEnter(el) {
+            beforeEnter: function(el) {
                 el.style.maxHeight = 0;
             },
-            afterEnter(el) {
+            afterEnter: function(el) {
                 el.style.maxHeight = this.maxHeight.toString()+'px';
             },
-            beforeLeave(el) {
+            beforeLeave: function(el) {
                 el.style.maxHeight = '0';
             },
-            collapseContent() {
+            collapseContent: function() {
                 this.collapse = !this.collapse;
             },
-            hideContent() {
+            hideContent: function() {
                 this.collapse = false;
             }
         },
