@@ -1,6 +1,5 @@
 <template>
     <div class="filter-wrp" :class="extraClass">
-
         <button v-if="$mq === 'sm' || $mq === 'md'" class="button button-primary open-filter" @click="toggle()">
             <i class="icon icon-sliders left" />
 
@@ -12,10 +11,10 @@
         <transition-expand-layer v-if="$mq === 'sm' || $mq === 'md'" :right-left="true">
             <div v-if="showFilters" class="transition-expand-wrp">
                 <div class="container position-static">
-
                     <div class="row overlay-header">
                         <button class="button-icon button-close-menu" @click="toggle()">
                             <i class="icon icon-close" aria-hidden="true" />
+
                             <material-ripple />
                         </button>
 
@@ -48,21 +47,21 @@
                     <div class="apply-filter-wrp">
                         <button v-if="hasFacetsSelected" class="button-secondary reset-filter" @click="routeOnPropertyRemoveAll()">
                             <span v-text="$t('Reset all')" />
+
                             <material-ripple />
                         </button>
 
                         <button class="button button-primary apply-filter" @click="applyFilter()">
                             <span v-text="$t('Apply & Close')" />
+
                             <material-ripple />
                         </button>
                     </div>
-
                 </div>
             </div>
         </transition-expand-layer>
 
         <div v-if="$mq === 'lg'" class="facets-wrp desktop">
-
             <template v-if="isSearchPage()">
                 <div v-for="facet in requestCategoryFacets" :key="facet.key" class="facet-wrp">
                     <selectable-facet :data-facet="facet" :type-checkbox="true" :filter-on-change="true" />
@@ -101,6 +100,7 @@
 
         <div v-if="hasFacetsSelected && $mq === 'lg'" class="selected-filters">
             <div class="selected-label" v-text="$t('Your choice:')" />
+
             <div v-if="hasCategoryFacetsSelected && isSearchPage()" class="filter">
                 <div v-for="(facet, facetIndex) in requestCategoryFacets"
                      v-if="facet.selected"
@@ -148,7 +148,6 @@
                 {{ dataCategoryProducts.result.stats.total }} {{$t('shopping_cart_label_item')}}
             </span>
         </div>
-
     </div>
 </template>
 
@@ -389,8 +388,6 @@
                     // keep possibly selected 'dir', 'order', 'limit'
                     let _selected = this.getSelectedQueryParams();
 
-                    //console.log(_.fromPairs(_selected));
-
                     this.$router.push({
                         path: _prefix + this.modelSelectedCategory,
                         query: _.fromPairs(_selected)
@@ -541,8 +538,6 @@
                         query: _.fromPairs(_selected)
                     };
 
-                    //console.log("resulting _route: %o", _route);
-
                     this.filterRoute = _route;
 
                     resolve('New filter route is set');
@@ -570,8 +565,6 @@
                     query: _query
                 };
 
-                // console.log("resulting _route: %o", _route);
-
                 this.hideFilters().then(response => {
                     this.$router.push(_route)
                 })
@@ -598,8 +591,6 @@
                         query: _.pick(this.$route.query, this.queryWellKnown)
                     };
                 }
-
-                // console.log("resulting _route: %o", _route);
 
                 this.hideFilters().then(response => {
                     this.$router.push(_route)
@@ -641,8 +632,6 @@
                 if(this.$router.history.current.path.includes('search')) {
                     return true;
                 }
-
-                return false;
             }
         }
     }
