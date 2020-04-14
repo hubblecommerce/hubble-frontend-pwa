@@ -12,25 +12,42 @@
         </div>
 
         <transition name="slide-top-bottom">
-            <div v-if="showMenu && activeCategory.children" :class="'fixed-container ' + activeCategory.url_path" @mouseleave="hideChildren">
+            <div v-if="showMenu && activeCategory.children"
+                 :class="'fixed-container ' + activeCategory.url_path"
+                 @mouseleave="hideChildren"
+            >
                 <div class="max-width-container">
-
                     <template>
                         <div class="children-wrp">
                             <div v-for="child in activeCategory.children" v-if="showChild(child)" :key="child.id" class="child-wrp">
-                                <nuxt-link v-if="child.name" :to="itemUrlPath(child)" class="child-item" v-text="child.name" />
+                                <nuxt-link v-if="child.name"
+                                           :to="itemUrlPath(child)"
+                                           class="child-item" v-text="child.name"
+                                />
 
-                                <nuxt-link v-for="subchild in child.children" v-if="showChild(subchild)" :key="subchild.id" class="subchild-item" :to="itemUrlPath(subchild)" v-text="subchild.name" />
+                                <nuxt-link v-for="subchild in child.children"
+                                           v-if="showChild(subchild)"
+                                           :key="subchild.id"
+                                           class="subchild-item"
+                                           :to="itemUrlPath(subchild)"
+                                           v-text="subchild.name"
+                                />
 
                                 <div v-for="item in child.menu_items" :key="item.id">
-                                    <nuxt-link v-if="item.manufacturer_info_url" :to="'/'+item.manufacturer_info_url" class="subchild-item" v-text="item.manufacturer_name" />
+                                    <nuxt-link v-if="item.manufacturer_info_url"
+                                               :to="'/'+item.manufacturer_info_url"
+                                               class="subchild-item"
+                                               v-text="item.manufacturer_name"
+                                    />
                                 </div>
                             </div>
                         </div>
                     </template>
 
-                    <div v-if="activeCategory.image != null" class="category-teaser" :style="'background-image: url('+itemImgPath(activeCategory)+')'" />
-
+                    <div v-if="activeCategory.image != null"
+                         class="category-teaser"
+                         :style="'background-image: url('+itemImgPath(activeCategory)+')'"
+                    />
                 </div>
             </div>
         </transition>
@@ -64,7 +81,7 @@
             ...mapGetters({
                 getApiLocale: 'modApiResources/getApiLocale'
             }),
-            rootItem() {
+            rootItem: function() {
                 return {
                     name: 'root',
                     children: this.dataItems
@@ -86,11 +103,11 @@
                 toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction',
                 resetAutoCompleteResults: 'modSearch/resetAutoCompleteResults'
             }),
-            toggle() {
+            toggle: function() {
                 this.showMenu = !this.showMenu;
                 this.toggleOffcanvasAction({component: this.name})
             },
-            itemUrlPath(item) {
+            itemUrlPath: function(item) {
                 let _locale =  this.getApiLocale;
 
                 if(_locale !== 'de') {
@@ -122,7 +139,7 @@
 
                 return child.is_active;
             },
-            hideChildren() {
+            hideChildren: function() {
                 this.hideOffcanvasAction();
 
                 this.showMenu = false;
