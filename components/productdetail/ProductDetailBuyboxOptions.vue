@@ -223,7 +223,6 @@
             },
             hasALotOfOptions: function(facet) {
                 return facet['facet-values'].length > 5;
-
             }
         }
     };
