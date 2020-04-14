@@ -14,7 +14,7 @@
                     <div class="row overlay-header">
                         <button class="button-icon button-close-menu" @click="toggle()">
                             <i class="icon icon-close" aria-hidden="true" />
-
+                            
                             <material-ripple />
                         </button>
 
@@ -71,15 +71,15 @@ export default {
             customer: state => state.modApiCustomer.customer,
             offcanvas: state => state.modNavigation.offcanvas
         }),
-        setButtonStates() {
+        setButtonStates: function() {
             return {
                 active: this.showMenu
             }
         },
-        showMenu() {
+        showMenu: function() {
             return this.offcanvas.component === this.name;
         },
-        isLoggedIn() {
+        isLoggedIn: function() {
             if(!_.isEmpty(this.customer.customerAuth) && this.customer.customerAuth.token !== 'guest') {
                 return this.customer.customerAuth.token;
             }
@@ -100,16 +100,16 @@ export default {
             toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction',
             hideOffcanvasAction: 'modNavigation/hideOffcanvasAction'
         }),
-        toggle() {
+        toggle: function() {
             this.toggleOffcanvasAction({
                 component: this.name,
                 direction: 'rightLeft'
             });
         },
-        hideMenu() {
+        hideMenu: function() {
             this.hideOffcanvasAction();
         },
-        showFormRegister() {
+        showFormRegister: function() {
             this.hideMenu();
 
             this.$router.push({
