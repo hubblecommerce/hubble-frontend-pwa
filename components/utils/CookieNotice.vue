@@ -49,7 +49,7 @@
             ...mapActions({
                 acceptCookieNotice: 'modCookieNotice/acceptCookieNotice'
             }),
-            deactivateCookieNotice() {
+            deactivateCookieNotice: function() {
                 this.acceptCookieNotice({});
             }
         }
