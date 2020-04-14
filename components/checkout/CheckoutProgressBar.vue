@@ -6,28 +6,35 @@
             </div>
 
             <div v-if="isLoggedIn" class="icon icon-check" />
+
             {{ $t('Login') }}
         </nuxt-link>
+
         <nuxt-link class="step" :to="localePath('checkout-payment')">
             <div v-if="!paymentSelected && !isOrderSuccess" class="no">
                 2
             </div>
 
             <div v-if="paymentSelected || isOrderSuccess" class="icon icon-check" />
+
             {{ $t('Payment') }}
         </nuxt-link>
+
         <div class="step" :class="{'nuxt-link-exact-active': isCurrentPath('checkout-summary')}" @click="createOrder()">
             <div v-if="!isOrderSuccess" class="no">
                 3
             </div>
 
             <div v-if="isOrderSuccess" class="icon icon-check" />
+
             {{ $t('Confirm') }}
         </div>
+
         <div class="step" :class="{'nuxt-link-exact-active': isCurrentPath('checkout-success')}">
             <div class="no">
                 4
             </div>
+
             {{ $t('Complete') }}
         </div>
     </div>
@@ -102,6 +109,7 @@
                         });
                         console.log("Not complete. Nothing done.");
                     }
+
                     return;
                 }
                 // Errorhandling for iban and bic inputs for payments like sb or elv
@@ -136,7 +144,6 @@
                 }
                 // Get uuid from api
                 this.getUuid().then((uuid) => {
-
                     // Store uuid as orderId to order in store
                     this.setOrderId(uuid);
 
@@ -150,6 +157,7 @@
                             flashType: 'error',
                             flashMessage: this.$t(error)
                         });
+                        
                         console.log(error);
                     });
                 });
