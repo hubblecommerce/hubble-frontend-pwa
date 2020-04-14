@@ -35,7 +35,6 @@
                 <div class="action-top">
                     <div v-if="itemHasOptions(item)">
                         <div v-if="itemIsAvailable(item)" class="remove-item" v-text="$t('Add to Cart')" />
-
                         <div v-else v-text="$t('Sold Out')"></div>
                     </div>
 
@@ -43,7 +42,7 @@
                         <div class="details-item" v-text="$t('details')"></div>
                     </nuxt-link>
                 </div>
-                
+
                 <div class="remove-item" aria-hidden="true" @click="confirmRemoveItem(item)" v-text="$t('Remove')" />
             </div>
         </div>
@@ -91,35 +90,35 @@
                 priceDecFmt: 'modPrices/priceDecFmt',
                 priceAddCur: 'modPrices/priceAddCur'
             }),
-            hasItemsInWishlist() {
+            hasItemsInWishlist: function() {
                 return {
                     inWishlist: this.wishlistItemsQty > 0
                 }
             },
-            setButtonStates() {
+            setButtonStates: function() {
                 return {
                     active: this.showMenu
                 }
             },
-            imgFilter() {
+            imgFilter: function() {
                 return this.dataImageFilter ? this.dataImageFilter : this.origImageFilter;
             },
-            classesExcl() {
+            classesExcl: function() {
                 return this.priceSwitcherIncludeVat ? 'decorated-thin' : 'decorated-bold';
             },
-            classesIncl() {
+            classesIncl: function() {
                 return this.priceSwitcherIncludeVat ? 'decorated-bold' : 'decorated-thin';
             },
-            wishlistItemsQty() {
+            wishlistItemsQty: function() {
                 return this.qty;
             },
-            wishlistItemsLabel() {
+            wishlistItemsLabel: function() {
                 return this.item.items_qty > 0 ? this.$t('wishlist_label_items') : this.$t('wishlist_label_item');
             },
-            wishlistItemsQtyAndLabel() {
+            wishlistItemsQtyAndLabel: function() {
                 return this.wishlistItemsQty;
             },
-            classesImg() {
+            classesImg: function() {
                 return 'img-wishlist';
             }
         },
@@ -250,7 +249,7 @@
 
                 return false;
             },
-            checkoutWishlist() {
+            checkoutWishlist: function() {
 
                 this.hideMenu();
 
