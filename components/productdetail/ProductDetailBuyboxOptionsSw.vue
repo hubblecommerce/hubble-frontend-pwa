@@ -1,17 +1,23 @@
 <template>
     <div class="options-wrp">
-        <div v-for="(group, index) in groups" class="option-wrp" :key="index" :class="`group-${group.name}`">
+        <div v-for="(group, index) in groups"
+             :key="index"
+             :class="`group-${group.name}`"
+             class="option-wrp"
+        >
             <div class="option-label option-label-top" v-text="group.name" />
+
             <div class="option-val-wrp">
                 <div v-for="(option, optionIndex) in group.options"
                      :key="optionIndex"
                      class="option-val"
-                     :class="selectedOptions.includes(option.id) ? 'active' : ''">
-                    <input type="radio"
-                           :name="group.id"
+                     :class="selectedOptions.includes(option.id) ? 'active' : ''"
+                >
+                    <input :id="option.id"
                            v-model="selectedOptions[index]"
+                           type="radio"
+                           :name="group.id"
                            :value="option.id"
-                           :id="option.id"
                            :checked="optionIndex === 0 ? 'checked' : ''"
                     />
                     <label :for="option.id" v-text="option.name" />
@@ -22,7 +28,7 @@
 </template>
 
 <script>
-    import { mapState, mapMutations } from 'vuex';
+    import { mapMutations, mapState } from 'vuex';
 
     export default {
         name: "ProductDetailBuyboxOptionsSw",
@@ -40,20 +46,13 @@
             ...mapState({
                 dataProduct: state => state.modApiProduct.dataProduct
             }),
-            groups() {
-                let groups = null;
-
-                if(!_.isEmpty(this.itemLoaded.groups)) {
-                    groups = this.itemLoaded.groups;
-                }
-
-                return groups;
+            groups: function() {
+                return !_.isEmpty(this.itemLoaded.groups) ? this.itemLoaded.groups : null;
             },
         },
 
         watch: {
             selectedOptions: function(selectedOptions) {
-
                 // Set options is selected flag, used to validate before add to cart action
                 this.setOptionIsSelected();
 
@@ -128,7 +127,6 @@
                 });
             },
             arraysMatch: function (arr1, arr2) {
-
                 let arr1Clone = _.clone(arr1);
                 let arr2Clone = _.clone(arr2);
 
@@ -148,7 +146,6 @@
 
                 // Otherwise, return true
                 return true;
-
             }
         }
     };
