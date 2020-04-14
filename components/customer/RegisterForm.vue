@@ -11,7 +11,9 @@
                        placeholder=" "
                        required
                 >
+
                 <label for="email" v-text="$t('Email Address')+'*'" />
+
                 <div class="validation-msg" v-text="$t(errors[0])" />
             </validation-provider>
 
@@ -26,7 +28,9 @@
                        required
                        @paste="onPaste($event)"
                 >
+
                 <label for="email-repeat" v-text="$t('Repeat Email Address')+'*'" />
+
                 <div class="validation-msg" v-text="$t(errors[0])" />
             </validation-provider>
 
@@ -38,6 +42,7 @@
                        value=""
                        placeholder=" "
                 >
+
                 <label for="phone" v-text="$t('Phone')" />
             </div>
 
@@ -50,7 +55,9 @@
                        :class="{invalid: errors.length > 0}"
                        placeholder=" "
                 >
+
                 <label for="birthday" v-text="$t('Birthday')" />
+
                 <div class="validation-msg" v-text="$t(errors[0])" />
             </validation-provider>
 
@@ -66,7 +73,9 @@
                            placeholder=" "
                            required
                     >
+
                     <label for="password" v-text="$t('Password')+'*'" />
+
                     <div class="validation-msg" v-text="$t(errors[0])" />
                 </validation-provider>
 
@@ -81,7 +90,9 @@
                            placeholder=" "
                            required
                     >
+
                     <label for="passwordRepeat" v-text="$t('Password repeat')+'*'" />
+
                     <div class="validation-msg" v-text="$t(errors[0])" />
                 </validation-provider>
             </template>
@@ -102,7 +113,9 @@
                 <select v-model="form.addresses[0].payload.gender" class="select-text" :class="{invalid: errors.length > 0}" required>
                     <option v-for="salutation in salutations" :key="salutation.key" :value="salutation.key">{{ salutation.value }}</option>
                 </select>
+
                 <label class="select-label" v-text="$t('Salutation')+'*'" />
+
                 <div class="validation-msg" v-text="$t(errors[0])" />
             </validation-provider>
 
@@ -114,7 +127,9 @@
                        placeholder=" "
                        required
                 >
+
                 <label for="billingFirstName" v-text="$t('First Name')+'*'" />
+
                 <div class="validation-msg" v-text="$t(errors[0])" />
             </validation-provider>
 
@@ -128,7 +143,9 @@
                        placeholder=" "
                        required
                 >
+
                 <label for="billingLastName" v-text="$t('Last Name')+'*'" />
+
                 <div class="validation-msg" v-text="$t(errors[0])" />
             </validation-provider>
 
@@ -143,7 +160,9 @@
                            placeholder=" "
                            required
                     >
+
                     <label for="billingStreet" v-text="$t('Street') + '/' + $t('Houseno.') + '*'" />
+
                     <div class="validation-msg" v-text="$t(errors[0])" />
                 </validation-provider>
             </template>
@@ -159,7 +178,9 @@
                            placeholder=" "
                            required
                     >
+
                     <label for="billingStreet" v-text="$t('Street')+'*'" />
+
                     <div class="validation-msg" v-text="$t(errors[0])" />
                 </validation-provider>
 
@@ -173,7 +194,9 @@
                            placeholder=" "
                            required
                     >
+
                     <label for="billingHouseNr" v-text="$t('Houseno.')+'*'" />
+
                     <div class="validation-msg" v-text="$t(errors[0])" />
                 </validation-provider>
             </div>
@@ -189,7 +212,9 @@
                            placeholder=" "
                            required
                     >
+
                     <label for="billingZipCode" v-text="$t('Zipcode')+'*'" />
+
                     <div class="validation-msg" v-text="$t(errors[0])" />
                 </validation-provider>
 
@@ -201,7 +226,9 @@
                            placeholder=" "
                            required
                     >
+
                     <label for="billingCity" v-text="$t('City')+'*'" />
+
                     <div class="validation-msg" v-text="$t(errors[0])" />
                 </validation-provider>
             </div>
@@ -210,7 +237,9 @@
                 <select v-model="form.addresses[0].payload.country" class="select-text" :class="{invalid: errors.length > 0}" required>
                     <option v-for="country in countries" :key="country.iso_code_2" :value="country.iso_code_2">{{ country.name }}</option>
                 </select>
+
                 <label class="select-label" v-text="$t('Country')+'*'" />
+
                 <div class="validation-msg" v-text="$t(errors[0])" />
             </validation-provider>
         </div>
@@ -222,7 +251,9 @@
                 <select v-model="form.addresses[1].payload.gender" class="select-text" :class="{invalid: errors.length > 0}" required>
                     <option v-for="salutation in salutations" :key="salutation.key" :value="salutation.key">{{ salutation.value }}</option>
                 </select>
+
                 <label class="select-label" v-text="$t('Salutation')+'*'" />
+
                 <div class="validation-msg" v-text="$t(errors[0])" />
             </validation-provider>
 
@@ -235,7 +266,9 @@
                        placeholder=" "
                        required
                 >
+
                 <label for="shippingFirstName" v-text="$t('First Name')+'*'" />
+
                 <div class="validation-msg" v-text="$t(errors[0])" />
             </validation-provider>
 
@@ -249,7 +282,9 @@
                        placeholder=" "
                        required
                 >
+
                 <label for="shippingLastName" v-text="$t('Last Name')+'*'" />
+
                 <div class="validation-msg" v-text="$t(errors[0])" />
             </validation-provider>
 
@@ -264,7 +299,9 @@
                            placeholder=" "
                            required
                     >
+
                     <label for="shippingStreet" v-text="$t('Street') + '/' + $t('Houseno.') + '*'" />
+
                     <div class="validation-msg" v-text="$t(errors[0])" />
                 </validation-provider>
             </template>
@@ -280,7 +317,9 @@
                            placeholder=" "
                            required
                     >
+
                     <label for="shippingStreet" v-text="$t('Street')+'*'" />
+
                     <div class="validation-msg" v-text="$t(errors[0])" />
                 </validation-provider>
 
@@ -294,7 +333,9 @@
                            placeholder=" "
                            required
                     >
+
                     <label for="shippingHouseNr" v-text="$t('Houseno.')+'*'" />
+
                     <div class="validation-msg" v-text="$t(errors[0])" />
                 </validation-provider>
             </div>
@@ -310,7 +351,9 @@
                            placeholder=" "
                            required
                     >
+
                     <label for="shippingZipCode" v-text="$t('Zipcode')+'*'" />
+
                     <div class="validation-msg" v-text="$t(errors[0])" />
                 </validation-provider>
 
@@ -324,7 +367,9 @@
                            placeholder=" "
                            required
                     >
+
                     <label for="shippingCity" v-text="$t('City')+'*'" />
+
                     <div class="validation-msg" v-text="$t(errors[0])" />
                 </validation-provider>
             </div>
@@ -333,16 +378,20 @@
                 <select v-model="form.addresses[1].payload.country" class="select-text" :class="{invalid: errors.length > 0}" required>
                     <option v-for="country in countries" :key="country.iso_code_2" :value="country.iso_code_2">{{ country.name }}</option>
                 </select>
+
                 <label class="select-label" v-text="$t('Country')+'*'" />
+
                 <div class="validation-msg" v-text="$t(errors[0])" />
             </validation-provider>
         </validation-observer>
 
         <validation-provider v-slot="{ errors }" name="privacyPolicy" :rules="{ required: { allowFalse: false } }" mode="passive" tag="div" class="hbl-checkbox">
             <input id="privacyPolicy" v-model="privacyPolicy" type="checkbox" :class="{invalid: errors.length > 0}">
+
             <label for="privacyPolicy">
                 {{ $t('I have read the ') }}<nuxt-link :to="$t('link-privacy-policy')">{{ $t('privacy policy.') }}*</nuxt-link>
             </label>
+
             <div class="validation-msg" v-text="$t(errors[0])" />
         </validation-provider>
 
@@ -350,22 +399,26 @@
 
         <button v-if="guest" class="button-primary" :disabled="processingRegister" @click.prevent="passes(submitRegisterGuestForm)">
             <span v-if="!processingRegister">{{ $t('Guest order') }}</span>
+
             <div v-if="processingRegister" class="loader register-loader lds-ellipsis">
                 <div />
                 <div />
                 <div />
                 <div />
             </div>
+
             <material-ripple />
         </button>
         <button v-else class="button-primary" :disabled="processingRegister" @click.prevent="passes(submitRegisterForm)">
             <span v-if="!processingRegister">{{ $t('Register') }}</span>
+
             <div v-if="processingRegister" class="loader register-loader lds-ellipsis">
                 <div />
                 <div />
                 <div />
                 <div />
             </div>
+
             <material-ripple />
         </button>
 
@@ -524,7 +577,6 @@
 
                 // Register new customer
                 this.register(userData).then(() => {
-
                     let creds = {
                         email: userData.email,
                         password: userData.password
@@ -540,6 +592,7 @@
                     }).then(response => {
                         // Get newly created wishlist id and save to store
                         this.setWishlistId(response.data.item.id);
+                        
                         this.saveToStore();
                     }).catch(response => {
                         // TODO: add catch clause implementation
@@ -550,7 +603,6 @@
                     if(this.alternativeShippingAddress && !process.env.API_TYPE === 'sw') {
                         // Store Address
                         this.storeCustomerAddress(this.form.addresses[0]).then(() => {
-
                             // Store different shipping address
                             if(this.differentShippingAddress) {
                                 this.storeCustomerAddress(this.form.addresses[1]).then(() => {
@@ -565,7 +617,6 @@
                             } else {
                                 this.redirectToCheckout();
                             }
-
                         }).catch((error) => {
                             // Show api request error
                             this.addBackendErrors(error.errors);
