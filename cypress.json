@@ -1,3 +1,9 @@
 {
-    "baseUrl": "http://localhost:3333"
+    "baseUrl": "http://localhost:<ENTER-YOUR-PORT-NUMBER-HERE>",
+    "viewportWidth": 1300,
+    "viewportHeight": 660,
+    "env": {
+        "login-email": "<ENTER-LOGIN-EMAIL-HERE>",
+        "login-pw": "<ENTER-LOGIN-PW-HERE>"
+    }
 }
