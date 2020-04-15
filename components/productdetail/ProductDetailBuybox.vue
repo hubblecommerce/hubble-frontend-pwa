@@ -44,8 +44,7 @@
 </template>
 
 <script>
-    import { mapState, mapGetters, mapMutations } from 'vuex'
-    import ProductDetailBuyboxPrice from "./ProductDetailBuyboxPrice";
+    import { mapState, mapMutations } from 'vuex'
     import ProductDetailManufacturer from "./ProductDetailManufacturer";
     import ProductDetailDelivery from "./ProductDetailDelivery";
     import ProductDetailPrice from "./ProductDetailPrice";
@@ -60,30 +59,19 @@
             ProductDetailDelivery,
             ProductDetailManufacturer,
             ProductDetailBuyboxOptions: () => import('./ProductDetailBuyboxOptions'),
-            ProductDetailBuyboxOptionsSw: () => import('./ProductDetailBuyboxOptionsSw'),
-            ProductDetailBuyboxPrice
+            ProductDetailBuyboxOptionsSw: () => import('./ProductDetailBuyboxOptionsSw')
         },
 
         data() {
             return {
-                name: 'ProductDetailBuybox',
-                isActive: false,
-                attributeCodeSize: 'groesse',
-                attributeCodeManufacturer: 'manufacturer',
-                itemData: {},
-                showTierPrices: false,
+                name: 'ProductDetailBuybox'
             }
         },
 
         computed: {
             ...mapState({
                 dataProduct: state => state.modApiProduct.dataProduct.result.item,
-                optionIsSelected: state => state.modApiProduct.optionIsSelected,
-                optionNotSelectedError: state => state.modApiProduct.optionNotSelectedError,
-                selectedVariants: state => state.modApiProduct.selectedVariants
-            }),
-            ...mapGetters({
-                productHasTierPricesByGroupId: 'modPrices/productHasTierPricesByGroupId'
+                optionNotSelectedError: state => state.modApiProduct.optionNotSelectedError
             }),
             attributeName: function() {
                 if (this.dataProduct.facets.string_facets[0]) {
