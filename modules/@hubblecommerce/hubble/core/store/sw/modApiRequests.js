@@ -11,11 +11,11 @@ export default function (ctx) {
             parsedQuery: {},
             selectedFacets: {
                 priceMin: null,
-                priceMax: null
+                priceMax: null,
             },
             requestFacets: null,
 
-            queryWellKnown: ['term', 'page', 'sort', 'limit']
+            queryWellKnown: ['term', 'page', 'sort', 'limit'],
         }),
         mutations: {
             setPaginationPage: (state, value) => {
@@ -58,60 +58,60 @@ export default function (ctx) {
             },
         },
         getters: {
-            isNumeric: state => (value) => {
-                return ! isNaN(parseFloat(value)) && isFinite(value);
+            isNumeric: state => value => {
+                return !isNaN(parseFloat(value)) && isFinite(value);
             },
-            areNumeric: state => (values) => {
+            areNumeric: state => values => {
                 let _ok = true;
 
-                _.forEach(values, (value) => {
-                    let _status = ! isNaN(parseFloat(value)) && isFinite(value);
+                _.forEach(values, value => {
+                    let _status = !isNaN(parseFloat(value)) && isFinite(value);
 
-                    if(! _status) {
+                    if (!_status) {
                         _ok = _status;
                     }
                 });
 
                 return _ok;
             },
-            getRequestFacets: (state) => {
+            getRequestFacets: state => {
                 return state.requestFacets;
             },
-            getRequestNumberFacets: (state) => {
-                if(_.has(state.requestFacets, 'number_facets')) {
-                    return _.map(state.requestFacets.number_facets, (item) => item);
+            getRequestNumberFacets: state => {
+                if (_.has(state.requestFacets, 'number_facets')) {
+                    return _.map(state.requestFacets.number_facets, item => item);
                 }
 
                 return null;
             },
-            getRequestStringFacets: (state) => {
-                if(_.has(state.requestFacets, 'string_facets')) {
-                    return _.map(state.requestFacets.string_facets, (item) => item);
+            getRequestStringFacets: state => {
+                if (_.has(state.requestFacets, 'string_facets')) {
+                    return _.map(state.requestFacets.string_facets, item => item);
                 }
 
                 return null;
             },
-            getRequestPriceFacets: (state) => {
-                if(_.has(state.requestFacets, 'price_facets')) {
-                    return _.map(state.requestFacets.price_facets, (item) => item);
+            getRequestPriceFacets: state => {
+                if (_.has(state.requestFacets, 'price_facets')) {
+                    return _.map(state.requestFacets.price_facets, item => item);
                 }
 
                 return null;
             },
-            getRequestCategoryFacets: (state) => {
-                if(_.has(state.requestFacets, 'category_facets')) {
-                    return _.map(state.requestFacets.category_facets, (item) => item);
+            getRequestCategoryFacets: state => {
+                if (_.has(state.requestFacets, 'category_facets')) {
+                    return _.map(state.requestFacets.category_facets, item => item);
                 }
 
                 return null;
-            }
+            },
         },
         actions: {
             parseRequest({ commit, state, dispatch, rootState, rootGetters }, payload) {
                 let _query = payload.query;
 
                 // If page is set in url set pagination page to query otherwise set to page 1
-                if(_query.page != null) {
+                if (_query.page != null) {
                     commit('setPaginationPage', _query.page);
                 } else {
                     commit('setPaginationPage', 1);
@@ -123,14 +123,14 @@ export default function (ctx) {
                     // query parameters and set them to
                     // their query param value (or null)
                     dispatch('parseRequestQuery', {
-                        query: _query
+                        query: _query,
                     })
-                    .then(response => {
-                        resolve(response);
-                    })
-                    .catch(response => {
-                        reject(response);
-                    })
+                        .then(response => {
+                            resolve(response);
+                        })
+                        .catch(response => {
+                            reject(response);
+                        });
                 });
             },
             parseRequestFacets({ commit, state }, payload) {
@@ -143,20 +143,20 @@ export default function (ctx) {
                     let _parsed = {};
 
                     // loop for string facets only ...
-                    _.forEach(_propertyFacets.string_facets, (facet) => {
+                    _.forEach(_propertyFacets.string_facets, facet => {
                         _parsed[facet.key] = _query[facet.key] ? _query[facet.key] : null;
                     });
 
                     // special case 'price'
-                    if(_.has(_query, 'price_to')) {
+                    if (_.has(_query, 'price_to')) {
                         _parsed['priceMax'] = parseInt(_query['price_to']);
                     }
-                    if(_.has(_query, 'price_from')) {
+                    if (_.has(_query, 'price_from')) {
                         _parsed['priceMin'] = parseInt(_query['price_from']);
                     }
 
                     // loop for string facets only ...
-                    _.forEach(_propertyFacets.category_facets, (facet) => {
+                    _.forEach(_propertyFacets.category_facets, facet => {
                         _parsed[facet.key] = _query[facet.key] ? _query[facet.key] : null;
                     });
 
@@ -164,7 +164,7 @@ export default function (ctx) {
                     commit('setSelectedFacets', _parsed);
                     commit('setRequestFacets', _propertyFacets);
 
-                    resolve("parseRequestFacets OK!");
+                    resolve('parseRequestFacets OK!');
                 });
             },
             parseRequestQuery({ commit, state }, payload) {
@@ -174,17 +174,17 @@ export default function (ctx) {
                     // start with empty object
                     let _parsed = {};
 
-                    _.forEach(state.queryWellKnown, (paramName) => {
+                    _.forEach(state.queryWellKnown, paramName => {
                         // set nested property to either query parameter or null
                         _parsed[paramName] = _query[paramName] ? _query[paramName] : null;
                     });
 
                     // special case 'price'
-                    if(_.has(_query, 'price_to')) {
+                    if (_.has(_query, 'price_to')) {
                         _parsed['priceMax'] = parseInt(_query['price_to']);
                     }
 
-                    if(_.has(_query, 'price_from')) {
+                    if (_.has(_query, 'price_from')) {
                         _parsed['priceMin'] = parseInt(_query['price_from']);
                     }
 
@@ -192,57 +192,56 @@ export default function (ctx) {
 
                     // Set selected filter from query
                     let selectedFilters = {};
-                    Object.keys(_query).forEach((param) => {
-
-                        if(!state.queryWellKnown.includes(param)) {
+                    Object.keys(_query).forEach(param => {
+                        if (!state.queryWellKnown.includes(param)) {
                             selectedFilters[param] = _query[param];
                         }
                     });
 
                     commit('setSelectedFacets', selectedFilters);
 
-                    resolve("parseRequestQuery OK!");
+                    resolve('parseRequestQuery OK!');
                 });
             },
-            async mapFilterToFacets({commit, state, rootState, dispatch, getters}, filters) {
+            async mapFilterToFacets({ commit, state, rootState, dispatch, getters }, filters) {
                 return new Promise((resolve, reject) => {
                     let facets = {
                         all: {
                             storeId: true,
-                            cat: true
+                            cat: true,
                         },
                         selected: true,
                         string_facets: {},
-                        price_facets: {}
+                        price_facets: {},
                     };
 
                     Object.keys(filters).forEach(function (filter) {
                         // Map string facets
-                        if(filters[filter].type === 'entity') {
+                        if (filters[filter].type === 'entity') {
                             facets.string_facets[filter] = {
                                 key: filters[filter].name,
                                 label: filters[filter].name,
                                 selected: false,
-                                options: []
+                                options: [],
                             };
 
                             Object.keys(filters[filter].values).forEach(function (value) {
                                 facets.string_facets[filter].options.push({
                                     key: value,
-                                    label: filters[filter].values[value].name
-                                })
+                                    label: filters[filter].values[value].name,
+                                });
                             });
                         }
 
                         // Map price facet
-                        if(filter === 'price') {
+                        if (filter === 'price') {
                             facets.price_facets[filter] = {
                                 key: filter,
                                 label: filter,
                                 selected: false,
-                                "facet-stats": {
+                                'facet-stats': {
                                     min: filters[filter].values.min,
-                                    max: filters[filter].values.max
+                                    max: filters[filter].values.max,
                                 },
                             };
                         }
@@ -252,7 +251,7 @@ export default function (ctx) {
                 });
             },
             // applys set filters and set new url
-            applyFilter({commit, state, dispatch, getters}, payload) {
+            applyFilter({ commit, state, dispatch, getters }, payload) {
                 //reset pagination
                 commit('setPaginationPage', 1);
                 //take all filters and change path to new path with new filters
@@ -267,32 +266,27 @@ export default function (ctx) {
                     let val = parseInt(state.parsedQuery[property], 10);
 
                     // except of the term filter which is string
-                    if(property === 'term') {
-                        selected.push([property, state.parsedQuery[property]])
+                    if (property === 'term') {
+                        selected.push([property, state.parsedQuery[property]]);
                     }
 
                     // stack property, if not null
-                    if(val !== null && Number.isInteger(val) && property !== 'term') {
-                        selected.push([property, state.parsedQuery[property]])
+                    if (val !== null && Number.isInteger(val) && property !== 'term') {
+                        selected.push([property, state.parsedQuery[property]]);
                     }
                 });
 
-
                 // attach price (from, to), if selected
-                if (
-                    _.isNumber(state.selectedFacets['priceMin']) &&
-                    _.isNumber(state.selectedFacets['priceMax'])
-                ) {
+                if (_.isNumber(state.selectedFacets['priceMin']) && _.isNumber(state.selectedFacets['priceMax'])) {
                     selected.push(['price_from', state.selectedFacets['priceMin']]);
                     selected.push(['price_to', state.selectedFacets['priceMax']]);
                 }
-
 
                 // Put selected string facets to array
                 let facets = getters.getRequestStringFacets;
                 _.forEach(facets, facet => {
                     if (state.selectedFacets[facet.key]) {
-                        selected.push([facet.key, state.selectedFacets[facet.key]])
+                        selected.push([facet.key, state.selectedFacets[facet.key]]);
                     }
                 });
 
@@ -300,20 +294,20 @@ export default function (ctx) {
                 facets = getters.getRequestCategoryFacets;
                 _.forEach(facets, facet => {
                     if (state.selectedFacets[facet.key]) {
-                        selected.push([facet.key, state.selectedFacets[facet.key]])
+                        selected.push([facet.key, state.selectedFacets[facet.key]]);
                     }
                 });
 
                 let filterRoute = {
                     path: ctx.app.router.currentRoute.path,
-                    query: _.fromPairs(selected)
+                    query: _.fromPairs(selected),
                 };
 
-                dispatch('modNavigation/hideOffcanvasAction',{},{ root: true }).then(()=> {
+                dispatch('modNavigation/hideOffcanvasAction', {}, { root: true }).then(() => {
                     ctx.app.router.push(filterRoute);
                 });
             },
-        }
+        },
     };
 
     ctx.store.registerModule('modApiRequests', modApiRequests);

@@ -7,8 +7,8 @@
 function sortMenuEntries(children) {
     let currentEntries = children;
     currentEntries = _.sortBy(currentEntries, [item => item.name.toLowerCase()]);
-    _.forEach(currentEntries, (category) => {
-        if(!_.isEmpty(category.children)) {
+    _.forEach(currentEntries, category => {
+        if (!_.isEmpty(category.children)) {
             category.children = sortMenuEntries(category.children);
         }
     });
@@ -26,14 +26,16 @@ function slugify(string) {
     const b = 'aaaaaaaaaacccddeeeeeeeegghiiiiiilmnnnnoooooooooprrsssssttuuuuuuuuuwxyyzzz------';
     const p = new RegExp(a.split('').join('|'), 'g');
 
-    return string.toString().toLowerCase()
+    return string
+        .toString()
+        .toLowerCase()
         .replace(/\s+/g, '-') // Replace spaces with -
         .replace(p, c => b.charAt(a.indexOf(c))) // Replace special characters
         .replace(/&/g, '-and-') // Replace & with 'and'
         .replace(/[^\w\-]+/g, '') // Remove all non-word characters
         .replace(/\-\-+/g, '-') // Replace multiple - with single -
         .replace(/^-+/, '') // Trim - from start of text
-        .replace(/-+$/, '') // Trim - from end of text
+        .replace(/-+$/, ''); // Trim - from end of text
 }
 
 /**
@@ -43,19 +45,23 @@ function slugify(string) {
  * @param array
  * @returns Array
  */
-function unflatten( array, parent, tree ) {
+function unflatten(array, parent, tree) {
     tree = typeof tree !== 'undefined' ? tree : [];
     parent = typeof parent !== 'undefined' ? parent : { id: 0 };
 
-    let children = _.filter( array, function(child){ return child.parentId == parent.id; });
+    let children = _.filter(array, function (child) {
+        return child.parentId == parent.id;
+    });
 
-    if( !_.isEmpty( children )  ){
-        if( parent.id == 0 ){
+    if (!_.isEmpty(children)) {
+        if (parent.id == 0) {
             tree = children;
-        }else{
-            parent['children'] = children
+        } else {
+            parent['children'] = children;
         }
-        _.each( children, function( child ){ unflatten( array, child ) } );
+        _.each(children, function (child) {
+            unflatten(array, child);
+        });
     }
 
     return tree;
@@ -64,13 +70,13 @@ function unflatten( array, parent, tree ) {
 function findCategoryByUrl(tree, path) {
     let matchingCategory = false;
 
-    _.each(tree, (category) => {
-        if(category.url_path === path) {
+    _.each(tree, category => {
+        if (category.url_path === path) {
             matchingCategory = category;
         }
-        if(!_.isEmpty( category.children )) {
+        if (!_.isEmpty(category.children)) {
             let temp = findCategoryByUrl(category.children, path);
-            if(!_.isEmpty(temp)) {
+            if (!_.isEmpty(temp)) {
                 matchingCategory = temp;
             }
         }
@@ -82,14 +88,13 @@ function findCategoryByUrl(tree, path) {
 function findProductByUrl(tree, path) {
     let matchingUrl = false;
 
-    _.each(tree, (url) => {
-        if(url.seoPathInfo === path) {
+    _.each(tree, url => {
+        if (url.seoPathInfo === path) {
             matchingUrl = url;
         }
     });
 
     return matchingUrl;
 }
-
 
 export { sortMenuEntries, slugify, unflatten, findCategoryByUrl, findProductByUrl };

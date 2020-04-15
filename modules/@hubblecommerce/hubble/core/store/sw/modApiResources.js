@@ -1,4 +1,4 @@
-import { datetimeUnixNow, datetimeUnixNowAddSecs } from '@hubblecommerce/hubble/core/utils/datetime'
+import { datetimeUnixNow, datetimeUnixNowAddSecs } from '@hubblecommerce/hubble/core/utils/datetime';
 
 export default function (ctx) {
     const modApiResources = {
@@ -16,7 +16,7 @@ export default function (ctx) {
             pageType: null,
 
             // cmsObject
-            cmsObject: {}
+            cmsObject: {},
         }),
         mutations: {
             setCmsObject: (state, value) => {
@@ -31,7 +31,7 @@ export default function (ctx) {
             setDataProductUrls: (state, payload) => {
                 state.dataProductUrls = payload;
 
-                if(state.dataMenuCacheable) {
+                if (state.dataMenuCacheable) {
                     let _ttl = state.dataMenuCacheableTTL || state.cacheTTL;
 
                     state.dataProductUrls.created_at_unixtime = datetimeUnixNow();
@@ -39,7 +39,7 @@ export default function (ctx) {
                 }
             },
         },
-        getters:  {
+        getters: {
             getApiLocale: state => {
                 return state.apiLocale;
             },
@@ -48,21 +48,25 @@ export default function (ctx) {
             },
             getDataProductUrls: state => {
                 return state.dataProductUrls;
-            }
+            },
         },
         actions: {
-            async swGetProductUrls({commit, state, dispatch}) {
-                return new Promise(function(resolve, reject) {
-                    if(!_.isEmpty(state.dataProductUrls)) {
+            async swGetProductUrls({ commit, state, dispatch }) {
+                return new Promise(function (resolve, reject) {
+                    if (!_.isEmpty(state.dataProductUrls)) {
                         resolve();
                     }
 
-                    dispatch('apiCall', {
-                        action: 'get',
-                        tokenType: 'sw',
-                        apiType: 'data',
-                        endpoint: '/sales-channel-api/v1/dmf/seo-url?filter[routeName]=frontend.detail.page&limit=500'
-                    }, { root: true })
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'get',
+                            tokenType: 'sw',
+                            apiType: 'data',
+                            endpoint: '/sales-channel-api/v1/dmf/seo-url?filter[routeName]=frontend.detail.page&limit=500',
+                        },
+                        { root: true }
+                    )
                         .then(response => {
                             commit('setDataProductUrls', response.data.data);
 
@@ -73,24 +77,28 @@ export default function (ctx) {
                         });
                 });
             },
-            async getPage({commit, dispatch}, payload) {
+            async getPage({ commit, dispatch }, payload) {
                 return new Promise((resolve, reject) => {
-                    dispatch('apiCall', {
-                        action: 'post',
-                        tokenType: 'sw',
-                        apiType: 'data',
-                        endpoint: '/sales-channel-api/v1/dmf/page',
-                        data: {
-                            path: payload
-                        }
-                    }, { root: true }).then(response => {
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'post',
+                            tokenType: 'sw',
+                            apiType: 'data',
+                            endpoint: '/sales-channel-api/v1/dmf/page',
+                            data: {
+                                path: payload,
+                            },
+                        },
+                        { root: true }
+                    ).then(response => {
                         commit('setCmsObject', response.data.cmsPage);
 
                         resolve(response);
                     });
                 });
             },
-        }
+        },
     };
 
     ctx.store.registerModule('modApiResources', modApiResources);

@@ -1,5 +1,5 @@
-import { datetimeUnixNow } from '@hubblecommerce/hubble/core/utils/datetime'
-import Middleware from './middleware'
+import { datetimeUnixNow } from '@hubblecommerce/hubble/core/utils/datetime';
+import Middleware from './middleware';
 
 Middleware.apiResourceProductUrls = function ({ isHMR, store, error }) {
     // ignore if called from hot module replacement
@@ -7,23 +7,23 @@ Middleware.apiResourceProductUrls = function ({ isHMR, store, error }) {
         return;
     }
 
-    if(process.env.API_TYPE !== 'sw') {
+    if (process.env.API_TYPE !== 'sw') {
         return;
     }
 
     let _dataProductUrls = store.getters['modApiResources/getDataProductUrls'];
 
     // check vuex store object first (not empty and same locale)
-    if(! _.isEmpty(_dataProductUrls)) {
-
+    if (!_.isEmpty(_dataProductUrls)) {
         // check expiry of cachable object
-        if(_dataProductUrls.expires_at_unixtime >= datetimeUnixNow()) {
+        if (_dataProductUrls.expires_at_unixtime >= datetimeUnixNow()) {
             return;
         }
     }
 
     return new Promise((resolve, reject) => {
-        store.dispatch(`modApiResources/${process.env.API_TYPE}GetProductUrls`, {})
+        store
+            .dispatch(`modApiResources/${process.env.API_TYPE}GetProductUrls`, {})
             .then(response => {
                 resolve(response);
             })
@@ -31,6 +31,5 @@ Middleware.apiResourceProductUrls = function ({ isHMR, store, error }) {
                 error({ statusCode: 401, message: 'API authentication failed' });
                 reject(response);
             });
-
     });
 };

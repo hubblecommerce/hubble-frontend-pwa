@@ -13,7 +13,7 @@ export default function (ctx) {
                 state.dataCustomContent = payload;
             },
         },
-        getters:  {
+        getters: {
             getDataContent: state => {
                 return state.dataContent;
             },
@@ -21,8 +21,7 @@ export default function (ctx) {
                 return state.dataCustomContent;
             },
         },
-        actions: {
-        }
+        actions: {},
     };
 
     ctx.store.registerModule('modApiCms', modApiCms);

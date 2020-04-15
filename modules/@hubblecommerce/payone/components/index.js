@@ -12,10 +12,10 @@ for (const name in components) {
         extends: components[name],
         // add a _hubblePayoneOptions prop to gain access to the options in the component
         props: {
-            _hubblePayoneOptions: {
+            hubblePayoneOptions: {
                 type: Object,
-                default: () => ({ ...options })
-            }
-        }
-    })
+                default: () => ({ ...options }),
+            },
+        },
+    });
 }

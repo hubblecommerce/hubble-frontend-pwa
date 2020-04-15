@@ -1,7 +1,7 @@
 require('dotenv').config();
-const CryptoJS = require("crypto-js");
+const CryptoJS = require('crypto-js');
 
-const response = function(req, res, next) {
+const response = function (req, res, next) {
     // Only accept GET requests
     if (req.method !== 'GET') {
         res.end();
@@ -19,41 +19,41 @@ const response = function(req, res, next) {
     let currencyCode = query.currencyCode;
     let sellerNote = query.sellerNote;
     let sellerOrderId = query.sellerOrderId;
-    let shippingAddressRequired = "true";
-    let paymentAction = "AuthorizeAndCapture";
+    let shippingAddressRequired = 'true';
+    let paymentAction = 'AuthorizeAndCapture';
 
     // Getting the MerchantID/sellerID, MWS secret Key, MWS Access Key from the configuration file
-    if(typeof process.env.AMAZON_PAY_MERCHANT_ID == "undefined" || process.env.AMAZON_PAY_MERCHANT_ID === "") {
+    if (typeof process.env.AMAZON_PAY_MERCHANT_ID == 'undefined' || process.env.AMAZON_PAY_MERCHANT_ID === '') {
         res.writeHead(401);
         res.end('merchantId not set in the configuration file');
         return;
     }
 
-    if(typeof process.env.AMAZON_PAY_ACCESS_KEY == "undefined" || process.env.AMAZON_PAY_ACCESS_KEY === "") {
+    if (typeof process.env.AMAZON_PAY_ACCESS_KEY == 'undefined' || process.env.AMAZON_PAY_ACCESS_KEY === '') {
         res.writeHead(401);
         res.end('accessKey not set in the configuration file');
         return;
     }
 
-    if(typeof process.env.AMAZON_PAY_SECRET_KEY == "undefined" || process.env.AMAZON_PAY_SECRET_KEY === "") {
+    if (typeof process.env.AMAZON_PAY_SECRET_KEY == 'undefined' || process.env.AMAZON_PAY_SECRET_KEY === '') {
         res.writeHead(401);
         res.end('secretKey not set in the configuration file');
         return;
     }
 
-    if(typeof process.env.LOGIN_WITH_AMAZON_CLIENT_ID == "undefined" || process.env.LOGIN_WITH_AMAZON_CLIENT_ID === "") {
+    if (typeof process.env.LOGIN_WITH_AMAZON_CLIENT_ID == 'undefined' || process.env.LOGIN_WITH_AMAZON_CLIENT_ID === '') {
         res.writeHead(401);
         res.end('Login With Amazon ClientID is not set in the configuration file');
         return;
     }
 
-    if(typeof process.env.AMAZON_PAY_RETURN_URL == "undefined" || process.env.AMAZON_PAY_RETURN_URL === "") {
+    if (typeof process.env.AMAZON_PAY_RETURN_URL == 'undefined' || process.env.AMAZON_PAY_RETURN_URL === '') {
         res.writeHead(401);
         res.end('Return URL is not set in the configuration file');
         return;
     }
 
-    if(typeof process.env.AMAZON_PAY_CANCEL_RETURN_URL == "undefined" || process.env.AMAZON_PAY_CANCEL_RETURN_URL === "") {
+    if (typeof process.env.AMAZON_PAY_CANCEL_RETURN_URL == 'undefined' || process.env.AMAZON_PAY_CANCEL_RETURN_URL === '') {
         res.writeHead(401);
         res.end('Cancel Return URL is not set in the configuration file');
         return;
@@ -81,41 +81,41 @@ const response = function(req, res, next) {
     res.end(JSON.stringify(parameters));
 };
 
-const signParameters = function(parameters, key) {
+const signParameters = function (parameters, key) {
     let stringToSign = calculateStringToSignV2(parameters);
     return sign(stringToSign, key);
 };
 
-const calculateStringToSignV2 = function(parameters) {
+const calculateStringToSignV2 = function (parameters) {
     let data = 'POST';
-    data += "\n";
-    data += "payments.amazon.com";
-    data += "\n";
-    data += "/";
-    data += "\n";
+    data += '\n';
+    data += 'payments.amazon.com';
+    data += '\n';
+    data += '/';
+    data += '\n';
     data += getParametersAsString(parameters);
     return data;
 };
 
-const getParametersAsString = function(parameters) {
+const getParametersAsString = function (parameters) {
     let queryParameters = [];
-    for(const [key, value] of Object.entries(parameters)) {
-        queryParameters.push(key + '=' + urlEncode(value))
+    for (const [key, value] of Object.entries(parameters)) {
+        queryParameters.push(key + '=' + urlEncode(value));
     }
     return queryParameters.join('&');
 };
 
-const urlEncode = function(val) {
+const urlEncode = function (val) {
     let encoded = encodeURIComponent(val);
     return encoded.replace(new RegExp('%7E', 'g'), '~');
 };
 
-const sign = function(data, key) {
+const sign = function (data, key) {
     let hash = CryptoJS.HmacSHA256(data, key);
     return hash.toString(CryptoJS.enc.Base64);
 };
 
 export default {
     path: '/api/amazon-calc-signature-auth-and-capture',
-    handler: response
-}
+    handler: response,
+};

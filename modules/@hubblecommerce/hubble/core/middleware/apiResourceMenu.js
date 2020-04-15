@@ -1,5 +1,5 @@
-import { datetimeUnixNow } from '@hubblecommerce/hubble/core/utils/datetime'
-import Middleware from './middleware'
+import { datetimeUnixNow } from '@hubblecommerce/hubble/core/utils/datetime';
+import Middleware from './middleware';
 
 Middleware.apiResourceMenu = function ({ isHMR, store, error }) {
     // ignore if called from hot module replacement
@@ -10,20 +10,21 @@ Middleware.apiResourceMenu = function ({ isHMR, store, error }) {
     let _dataMenu = store.getters['modApiMenu/getDataMenu'];
 
     // check vuex store object first (not empty and same locale)
-    if(! _.isEmpty(_dataMenu) ) {
+    if (!_.isEmpty(_dataMenu)) {
         // check expiry of cachable object
-        if(_dataMenu.expires_at_unixtime >= datetimeUnixNow()) {
+        if (_dataMenu.expires_at_unixtime >= datetimeUnixNow()) {
             return;
         }
     }
 
     return new Promise((resolve, reject) => {
-        store.dispatch('modApiMenu/getMenu', {})
+        store
+            .dispatch('modApiMenu/getMenu', {})
             .then(response => {
                 resolve(response);
             })
             .catch(response => {
-                if(response.statusCode != null) {
+                if (response.statusCode != null) {
                     error(response);
                 } else {
                     error({ statusCode: 400, message: 'API call modApiMenu/getMenu failed' });

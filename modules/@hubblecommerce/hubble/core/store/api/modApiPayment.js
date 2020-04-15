@@ -1,11 +1,10 @@
 //
 // resources module
 //
-import { datetimeUnixNow, datetimeUnixNowAddSecs } from '@hubblecommerce/hubble/core/utils/datetime'
-import base64 from "base-64";
+import { datetimeUnixNow, datetimeUnixNowAddSecs } from '@hubblecommerce/hubble/core/utils/datetime';
+import base64 from 'base-64';
 
 export default function (ctx) {
-
     // Create vuex store module
     const modApiPayment = {
         namespaced: true,
@@ -33,7 +32,7 @@ export default function (ctx) {
                 id: '',
                 orderComment: '',
                 chosenPaymentMethod: {},
-                chosenShippingMethod: {}
+                chosenShippingMethod: {},
             },
             cookieNameOrder: 'hubbleOrder',
             expressOrderReferenceId: null,
@@ -43,19 +42,18 @@ export default function (ctx) {
             finalOrder: '',
             processingCheckout: false,
 
-
             cookiePath: '/',
             cookieTTL: 360, // minutes
 
             // Amazon
-            amazonPayError: {}
+            amazonPayError: {},
         }),
         mutations: {
             setApiAuthResponse: (state, payload) => {
                 state.apiAuthResponse = payload.data;
                 state.apiAuthToken = payload.data.access_token;
 
-                if(payload.cacheable) {
+                if (payload.cacheable) {
                     let _ttl = payload.cacheTTL || state.cacheTTL;
 
                     state.apiAuthResponse.created_at_unixtime = datetimeUnixNow();
@@ -101,16 +99,16 @@ export default function (ctx) {
             setHostedIFrame: (state, payload) => {
                 state.hostedIFrame = payload;
             },
-            setBeforePlaceOrder: (state) => {
+            setBeforePlaceOrder: state => {
                 state.beforePlaceOrder = Date.now();
             },
             setFinalOrder: (state, payload) => {
                 state.finalOrder = payload;
             },
-            setProcessingCheckout: (state) => {
+            setProcessingCheckout: state => {
                 state.processingCheckout = true;
             },
-            resetProcessingCheckout: (state) => {
+            resetProcessingCheckout: state => {
                 state.processingCheckout = false;
             },
             setIbanError: (state, payload) => {
@@ -132,7 +130,7 @@ export default function (ctx) {
                 state.shippingCountryError = payload;
             },
         },
-        getters:  {
+        getters: {
             getApiAuthToken: state => {
                 return state.apiAuthToken;
             },
@@ -142,13 +140,13 @@ export default function (ctx) {
             getCurrentDate: () => {
                 return new Date();
             },
-            getCookieExpires: (state) => {
+            getCookieExpires: state => {
                 return new Date(new Date().getTime() + state.cookieTTL * 60 * 1000);
             },
-            getJsonEncoded: () => (objJsonStr) => {
+            getJsonEncoded: () => objJsonStr => {
                 return base64.encode(JSON.stringify(objJsonStr));
             },
-            getJsonDecoded: () => (objJsonB64) => {
+            getJsonDecoded: () => objJsonB64 => {
                 return JSON.parse(base64.decode(objJsonB64));
             },
             getPaymentMethods: state => {
@@ -171,18 +169,22 @@ export default function (ctx) {
             },
             getFinalOrder: state => {
                 return state.finalOrder;
-            }
+            },
         },
         actions: {
-            async getUuid({dispatch}, payload) {
-                return new Promise((resolve, reject)  => {
-                    dispatch('apiCall', {
-                        action: 'get',
-                        tokenType: 'api',
-                        apiType: 'payment',
-                        endpoint: '/api/uuid',
-                        data: payload
-                    }, { root: true })
+            async getUuid({ dispatch }, payload) {
+                return new Promise((resolve, reject) => {
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'get',
+                            tokenType: 'api',
+                            apiType: 'payment',
+                            endpoint: '/api/uuid',
+                            data: payload,
+                        },
+                        { root: true }
+                    )
                         .then(response => {
                             resolve(response);
                         })
@@ -191,8 +193,7 @@ export default function (ctx) {
                         });
                 });
             },
-            async getPaymentMethods({commit, dispatch, rootState, state}, payload) {
-
+            async getPaymentMethods({ commit, dispatch, rootState, state }, payload) {
                 let order = _.clone(rootState.modApiPayment.order);
 
                 order.cart = rootState.modCart.cart;
@@ -207,22 +208,26 @@ export default function (ctx) {
                     lastName: rootState.modApiCustomer.customer.customerData.lastname,
                 };
 
-                _.assign(order, {addresses: []});
+                _.assign(order, { addresses: [] });
                 order.addresses = rootState.modApiCustomer.customer.customerAddresses;
 
                 let object = {
                     order: JSON.stringify(order),
-                    coupon: ""
+                    coupon: '',
                 };
 
-                return new Promise((resolve, reject)  => {
-                    dispatch('apiCall', {
-                        action: 'post',
-                        tokenType: 'api',
-                        apiType: 'payment',
-                        endpoint: '/api/cart/allowed_payments',
-                        data: object
-                    }, { root: true })
+                return new Promise((resolve, reject) => {
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'post',
+                            tokenType: 'api',
+                            apiType: 'payment',
+                            endpoint: '/api/cart/allowed_payments',
+                            data: object,
+                        },
+                        { root: true }
+                    )
                         .then(response => {
                             // Save payment methods to store
                             commit('setPaymentMethods', response.data.allowed_payments);
@@ -234,22 +239,20 @@ export default function (ctx) {
                         });
                 });
             },
-            async storeChosenPaymentMethod({commit, state, getters}, payload) {
-                return new Promise((resolve) => {
-
+            async storeChosenPaymentMethod({ commit, state, getters }, payload) {
+                return new Promise(resolve => {
                     commit('setChosenPaymentMethod', payload);
 
                     // Save order from store to cookie
                     this.$cookies.set(state.cookieNameOrder, state.order, {
                         path: state.cookiePath,
-                        expires: getters.getCookieExpires
+                        expires: getters.getCookieExpires,
                     });
 
                     resolve();
-                })
+                });
             },
-            async getShippingMethods({commit, dispatch, rootState, state}, payload) {
-
+            async getShippingMethods({ commit, dispatch, rootState, state }, payload) {
                 let order = _.clone(rootState.modApiPayment.order);
 
                 order.cart = rootState.modCart.cart;
@@ -264,22 +267,26 @@ export default function (ctx) {
                     lastName: rootState.modApiCustomer.customer.customerData.lastname,
                 };
 
-                _.assign(order, {addresses: []});
+                _.assign(order, { addresses: [] });
                 order.addresses = rootState.modApiCustomer.customer.customerAddresses;
 
                 let object = {
                     order: JSON.stringify(order),
-                    coupon: ""
+                    coupon: '',
                 };
 
-                return new Promise((resolve, reject)  => {
-                    dispatch('apiCall', {
-                        action: 'post',
-                        tokenType: 'api',
-                        apiType: 'payment',
-                        endpoint: '/api/cart/allowed_shippings',
-                        data: object
-                    }, { root: true })
+                return new Promise((resolve, reject) => {
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'post',
+                            tokenType: 'api',
+                            apiType: 'payment',
+                            endpoint: '/api/cart/allowed_shippings',
+                            data: object,
+                        },
+                        { root: true }
+                    )
                         .then(response => {
                             // Save payment methods to store
                             commit('setShippingMethods', response.data.allowed_shippings);
@@ -291,22 +298,20 @@ export default function (ctx) {
                         });
                 });
             },
-            async storeChosenShippingMethod({commit, state, getters}, payload) {
-                return new Promise((resolve) => {
-
+            async storeChosenShippingMethod({ commit, state, getters }, payload) {
+                return new Promise(resolve => {
                     commit('setChosenShippingMethod', payload);
 
                     // Save order from store to cookie
                     this.$cookies.set(state.cookieNameOrder, state.order, {
                         path: state.cookiePath,
-                        expires: getters.getCookieExpires
+                        expires: getters.getCookieExpires,
                     });
 
                     resolve();
-                })
+                });
             },
-            async applyCoupon({commit, dispatch, rootState, state}, payload) {
-
+            async applyCoupon({ commit, dispatch, rootState, state }, payload) {
                 let order = _.clone(rootState.modApiPayment.order);
 
                 order.cart = rootState.modCart.cart;
@@ -326,18 +331,22 @@ export default function (ctx) {
                 order.coupon_to_apply = payload.coupon;
 
                 let object = {
-                    order: JSON.stringify(order)
+                    order: JSON.stringify(order),
                 };
 
-                return new Promise((resolve, reject)  => {
-                    dispatch('apiCall', {
-                        action: 'post',
-                        tokenType: 'api',
-                        apiType: 'payment',
-                        endpoint: '/api/cart/apply_coupon',
-                        data: object
-                    }, { root: true })
-                        .then((response) => {
+                return new Promise((resolve, reject) => {
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'post',
+                            tokenType: 'api',
+                            apiType: 'payment',
+                            endpoint: '/api/cart/apply_coupon',
+                            data: object,
+                        },
+                        { root: true }
+                    )
+                        .then(response => {
                             resolve(response.data);
                         })
                         .catch(response => {
@@ -347,17 +356,16 @@ export default function (ctx) {
                 });
             },
             // Order Actions
-            async setOrderByCookie({commit, state}) {
-                return new Promise((resolve) => {
-
+            async setOrderByCookie({ commit, state }) {
+                return new Promise(resolve => {
                     // try to retrieve auth user by cookie
                     let _cookie = this.$cookies.get(state.cookieNameOrder);
 
                     // no cookie? ok!
-                    if(! _cookie) {
+                    if (!_cookie) {
                         resolve({
                             success: true,
-                            message: 'order not known by cookie.'
+                            message: 'order not known by cookie.',
                         });
                     } else {
                         // Save cookie to store
@@ -366,30 +374,31 @@ export default function (ctx) {
                         resolve({
                             success: true,
                             message: 'order taken from cookie.',
-                            redirect: true
+                            redirect: true,
                         });
                     }
-                })
+                });
             },
-            async createOrder({commit, state, rootState, getters}) {
+            async createOrder({ commit, state, rootState, getters }) {
                 return new Promise((resolve, reject) => {
-
                     // Reset payment error
                     commit('setPaymentError', null);
 
                     // Reject with error message if payment method is not set
-                    if(_.isEmpty(state.order.chosenPaymentMethod)) {
+                    if (_.isEmpty(state.order.chosenPaymentMethod)) {
                         commit('setPaymentError', 'Please choose a payment method first');
                         reject('Please choose a payment method first');
                     }
 
-
                     // set address error
                     commit('setShippingCountryError', null);
 
-                    if(!_.isEmpty(rootState.modApiCustomer.customer.shippingAddress)) {
+                    if (!_.isEmpty(rootState.modApiCustomer.customer.shippingAddress)) {
                         _.forEach(rootState.modApiCustomer.availableCountries, country => {
-                            if(rootState.modApiCustomer.customer.shippingAddress.payload.country === country.iso_code_2 && ! country.shipping_status) {
+                            if (
+                                rootState.modApiCustomer.customer.shippingAddress.payload.country === country.iso_code_2 &&
+                                !country.shipping_status
+                            ) {
                                 commit('setShippingCountryError', 'delivery_notice');
                                 reject('delivery_notice');
                             }
@@ -400,7 +409,7 @@ export default function (ctx) {
                     commit('setShippingError', null);
 
                     // Reject with error message if payment method is not set
-                    if(_.isEmpty(state.order.chosenShippingMethod)) {
+                    if (_.isEmpty(state.order.chosenShippingMethod)) {
                         commit('setShippingError', 'Please choose a shipping method first');
                         reject('Please choose a shipping method first');
                     }
@@ -408,21 +417,25 @@ export default function (ctx) {
                     // Save order from store to cookie
                     this.$cookies.set(state.cookieNameOrder, state.order, {
                         path: state.cookiePath,
-                        expires: getters.getCookieExpires
+                        expires: getters.getCookieExpires,
                     });
 
                     resolve();
-                })
+                });
             },
-            async placeOrder({dispatch}, payload) {
+            async placeOrder({ dispatch }, payload) {
                 return new Promise((resolve, reject) => {
-                    dispatch('apiCall', {
-                        action: 'post',
-                        tokenType: 'api',
-                        apiType: 'payment',
-                        endpoint: '/api/orders',
-                        data: payload
-                    }, { root: true })
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'post',
+                            tokenType: 'api',
+                            apiType: 'payment',
+                            endpoint: '/api/orders',
+                            data: payload,
+                        },
+                        { root: true }
+                    )
                         .then(response => {
                             resolve(response);
                         })
@@ -430,25 +443,29 @@ export default function (ctx) {
                             console.log('placeOrder failed: %o', response);
                             reject(response);
                         });
-                })
+                });
             },
-            async asyncSetFinalOrder({commit}, payload) {
-                return new Promise(function(resolve, reject) {
+            async asyncSetFinalOrder({ commit }, payload) {
+                return new Promise(function (resolve, reject) {
                     commit('setFinalOrder', payload);
                     resolve();
                 });
             },
-            async getOrders({dispatch, getters}, payload) {
+            async getOrders({ dispatch, getters }, payload) {
                 return new Promise((resolve, reject) => {
                     let _endpoint = '/api/customer/orders';
 
-                    dispatch('apiCall', {
-                        action: 'get',
-                        tokenType: 'customer',
-                        apiType: 'payment',
-                        endpoint: _endpoint,
-                        data: payload
-                    }, { root: true })
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'get',
+                            tokenType: 'customer',
+                            apiType: 'payment',
+                            endpoint: _endpoint,
+                            data: payload,
+                        },
+                        { root: true }
+                    )
                         .then(response => {
                             resolve(response.data.items);
                         })
@@ -456,23 +473,23 @@ export default function (ctx) {
                             console.log('getOrders failed: %o', response);
                             reject('getOrders failed!');
                         });
-                })
+                });
             },
-            async getOrderById({dispatch, getters}, payload) {
-
+            async getOrderById({ dispatch, getters }, payload) {
                 return new Promise((resolve, reject) => {
-                    let _endpoint = _.join([
-                        '/api/customer/orders',
-                        payload.id
-                    ], '/');
+                    let _endpoint = _.join(['/api/customer/orders', payload.id], '/');
 
-                    dispatch('apiCall', {
-                        action: 'get',
-                        tokenType: 'customer',
-                        apiType: 'payment',
-                        endpoint: _endpoint,
-                        data: payload
-                    }, { root: true })
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'get',
+                            tokenType: 'customer',
+                            apiType: 'payment',
+                            endpoint: _endpoint,
+                            data: payload,
+                        },
+                        { root: true }
+                    )
                         .then(response => {
                             resolve(response);
                         })
@@ -480,10 +497,10 @@ export default function (ctx) {
                             console.log('getOrderById failed: %o', response);
                             reject('getOrderById failed!');
                         });
-                })
+                });
             },
-            async clearOrder({commit, state}) {
-                return new Promise((resolve) => {
+            async clearOrder({ commit, state }) {
+                return new Promise(resolve => {
                     commit('setOrderComment', '');
                     commit('setChosenPaymentMethod', {});
                     commit('setChosenShippingMethod', {});
@@ -492,17 +509,21 @@ export default function (ctx) {
                     this.$cookies.remove(state.cookieNameOrder);
 
                     resolve();
-                })
+                });
             },
-            async postForm({dispatch}, payload) {
-                return new Promise((resolve, reject)  => {
-                    dispatch('apiCall', {
-                        action: 'post',
-                        tokenType: 'api',
-                        apiType: 'payment',
-                        endpoint: '/api/form',
-                        data: payload
-                    }, { root: true })
+            async postForm({ dispatch }, payload) {
+                return new Promise((resolve, reject) => {
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'post',
+                            tokenType: 'api',
+                            apiType: 'payment',
+                            endpoint: '/api/form',
+                            data: payload,
+                        },
+                        { root: true }
+                    )
                         .then(() => {
                             resolve('OK');
                         })
@@ -512,15 +533,19 @@ export default function (ctx) {
                         });
                 });
             },
-            async postFormRecaptcha({dispatch}, payload) {
-                return new Promise((resolve, reject)  => {
-                    dispatch('apiCall', {
-                        action: 'post',
-                        tokenType: 'api',
-                        apiType: 'payment',
-                        endpoint: '/api/form_recaptcha',
-                        data: payload
-                    }, { root: true })
+            async postFormRecaptcha({ dispatch }, payload) {
+                return new Promise((resolve, reject) => {
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'post',
+                            tokenType: 'api',
+                            apiType: 'payment',
+                            endpoint: '/api/form_recaptcha',
+                            data: payload,
+                        },
+                        { root: true }
+                    )
                         .then(() => {
                             resolve('OK');
                         })
@@ -530,19 +555,23 @@ export default function (ctx) {
                         });
                 });
             },
-            async postWishlist({dispatch}, payload) {
-                return new Promise((resolve, reject)  => {
-                    dispatch('apiCall', {
-                        action: 'post',
-                        tokenType: 'customer',
-                        apiType: 'payment',
-                        endpoint: '/api/customer/wishlists',
-                        data: payload
-                    }, { root: true })
+            async postWishlist({ dispatch }, payload) {
+                return new Promise((resolve, reject) => {
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'post',
+                            tokenType: 'customer',
+                            apiType: 'payment',
+                            endpoint: '/api/customer/wishlists',
+                            data: payload,
+                        },
+                        { root: true }
+                    )
                         .then(() => {
                             dispatch('getWishlist').then(response => {
                                 resolve(response);
-                            })
+                            });
                         })
                         .catch(response => {
                             console.log('postWishlist failed: %o', response);
@@ -550,15 +579,19 @@ export default function (ctx) {
                         });
                 });
             },
-            async updateWishlist({dispatch}, payload) {
-                return new Promise((resolve, reject)  => {
-                    dispatch('apiCall', {
-                        action: 'put',
-                        tokenType: 'customer',
-                        apiType: 'payment',
-                        endpoint: '/api/customer/wishlists/' + payload.id,
-                        data: payload
-                    }, { root: true })
+            async updateWishlist({ dispatch }, payload) {
+                return new Promise((resolve, reject) => {
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'put',
+                            tokenType: 'customer',
+                            apiType: 'payment',
+                            endpoint: '/api/customer/wishlists/' + payload.id,
+                            data: payload,
+                        },
+                        { root: true }
+                    )
                         .then(() => {
                             resolve('OK');
                         })
@@ -568,15 +601,19 @@ export default function (ctx) {
                         });
                 });
             },
-            async getWishlist({dispatch}, payload) {
-                return new Promise((resolve, reject)  => {
-                    dispatch('apiCall', {
-                        action: 'get',
-                        tokenType: 'customer',
-                        apiType: 'payment',
-                        endpoint: '/api/customer/wishlists',
-                        params: payload
-                    }, { root: true })
+            async getWishlist({ dispatch }, payload) {
+                return new Promise((resolve, reject) => {
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'get',
+                            tokenType: 'customer',
+                            apiType: 'payment',
+                            endpoint: '/api/customer/wishlists',
+                            params: payload,
+                        },
+                        { root: true }
+                    )
                         .then(response => {
                             resolve(response);
                         })
@@ -586,15 +623,19 @@ export default function (ctx) {
                         });
                 });
             },
-            async deleteWishlist({dispatch}, payload) {
-                return new Promise((resolve, reject)  => {
-                    dispatch('apiCall', {
-                        action: 'delete',
-                        tokenType: 'customer',
-                        apiType: 'payment',
-                        endpoint: '/api/customer/wishlists/' + payload.id,
-                        params: payload
-                    }, { root: true })
+            async deleteWishlist({ dispatch }, payload) {
+                return new Promise((resolve, reject) => {
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'delete',
+                            tokenType: 'customer',
+                            apiType: 'payment',
+                            endpoint: '/api/customer/wishlists/' + payload.id,
+                            params: payload,
+                        },
+                        { root: true }
+                    )
                         .then(response => {
                             resolve(response);
                         })
@@ -604,8 +645,7 @@ export default function (ctx) {
                         });
                 });
             },
-
-        }
+        },
     };
 
     // Register vuex store module

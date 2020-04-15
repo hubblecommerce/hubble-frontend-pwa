@@ -8,35 +8,33 @@ function getShippingCostsByCartVal(rules, subtotals) {
 
     let sorted = _.sortBy(rules, ['Condition']);
 
-    _.forEach(sorted, (rule) => {
-        if(subtotals >= rule['Condition']) {
+    _.forEach(sorted, rule => {
+        if (subtotals >= rule['Condition']) {
             matchingRule = rule;
         }
     });
 
-    if(!_.isEmpty(matchingRule)) {
+    if (!_.isEmpty(matchingRule)) {
         return matchingRule;
     }
 
     return false;
 }
 
-
 function getShippingCostsByCountry(countryCode) {
     let matchingCountries = [];
 
-    _.forEach(data.default, (val) => {
-        if(val['Country'] === countryCode) {
+    _.forEach(data.default, val => {
+        if (val['Country'] === countryCode) {
             matchingCountries.push(val);
         }
     });
 
-    if(matchingCountries.length > 0) {
+    if (matchingCountries.length > 0) {
         return matchingCountries;
     }
 
     return false;
 }
 
-
-export {getShippingCostsByCartVal, getShippingCostsByCountry};
+export { getShippingCostsByCartVal, getShippingCostsByCountry };

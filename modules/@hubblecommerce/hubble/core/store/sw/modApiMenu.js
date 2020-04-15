@@ -1,6 +1,6 @@
-import {sortMenuEntries, unflatten} from "@hubblecommerce/hubble/core/utils/menuHelper";
-import {datetimeUnixNow, datetimeUnixNowAddSecs} from "@hubblecommerce/hubble/core/utils/datetime";
-import {swMapApiError} from "@hubblecommerce/hubble/core/utils/swHelper";
+import { sortMenuEntries, unflatten } from '@hubblecommerce/hubble/core/utils/menuHelper';
+import { datetimeUnixNow, datetimeUnixNowAddSecs } from '@hubblecommerce/hubble/core/utils/datetime';
+import { swMapApiError } from '@hubblecommerce/hubble/core/utils/swHelper';
 
 export default function (ctx) {
     const modApiMenu = {
@@ -11,7 +11,7 @@ export default function (ctx) {
             dataMenuCacheable: true,
         }),
         mutations: {
-            clearDataMenu: (state) => {
+            clearDataMenu: state => {
                 state.dataMenu = {};
             },
             setDataMenu: (state, payload) => {
@@ -22,19 +22,18 @@ export default function (ctx) {
                 state.menuItems = payload.data.result.items;
 
                 // Set Navigation structure from .env if isset
-                if(process.env.menu) {
+                if (process.env.menu) {
                     let map = process.env.menu;
 
                     // Clear menu structure of api get to set structure of mapping
                     state.dataMenu.result.items = [];
 
                     _.forEach(map, (val, key) => {
-
                         // Use menu item from api result by category id when it is set in config
-                        if(val.id !== null) {
+                        if (val.id !== null) {
                             // Get menu item from payload by id
-                            _.forEach(state.menuItems, (v, k) =>  {
-                                if(v.id === val.id) {
+                            _.forEach(state.menuItems, (v, k) => {
+                                if (v.id === val.id) {
                                     state.dataMenu.result.items[key] = v;
                                     state.dataMenu.result.items[key].name = val.name;
                                 }
@@ -42,30 +41,30 @@ export default function (ctx) {
                         }
 
                         // Build menu from virtual entries without id or real category
-                        if(typeof val.id === "undefined") {
+                        if (typeof val.id === 'undefined') {
                             // configure store as source for child elements
                             let childFromConfig = [];
 
-                            if(typeof val.childrenStore !== "undefined") {
+                            if (typeof val.childrenStore !== 'undefined') {
                                 childFromConfig = state[val.childrenStore];
                             }
 
                             // Set virtual menu items through config
                             state.dataMenu.result.items[key] = {
-                                id: 'virtual'+key,
+                                id: 'virtual' + key,
                                 name: val.name,
                                 url_path: val.url_path,
-                                children: childFromConfig
-                            }
+                                children: childFromConfig,
+                            };
                         }
 
                         // Add custom children to category if set
-                        _.forEach(val.children, (child) => {
+                        _.forEach(val.children, child => {
                             state.dataMenu.result.items[key].children.push(child);
                         });
 
                         // Sort menu entry and children of entry alphabetically if flag is set
-                        if(val.sortAlphabetically && !_.isEmpty(state.dataMenu.result.items[key].children)) {
+                        if (val.sortAlphabetically && !_.isEmpty(state.dataMenu.result.items[key].children)) {
                             state.dataMenu.result.items[key].children = sortMenuEntries(state.dataMenu.result.items[key].children);
                         }
                     });
@@ -73,13 +72,13 @@ export default function (ctx) {
 
                 state.dataMenu.locale = state.apiLocale;
 
-                if(state.dataMenuCacheable) {
+                if (state.dataMenuCacheable) {
                     state.dataMenu.created_at_unixtime = datetimeUnixNow();
                     state.dataMenu.expires_at_unixtime = datetimeUnixNowAddSecs(state.cacheTTL);
                 }
             },
         },
-        getters:  {
+        getters: {
             getDataMenu: state => {
                 return state.dataMenu;
             },
@@ -91,16 +90,20 @@ export default function (ctx) {
             },
         },
         actions: {
-            async getMenu({commit, state, dispatch}, payload) {
-                return new Promise(function(resolve, reject) {
-                    dispatch('apiCall', {
-                        action: 'get',
-                        tokenType: 'sw',
-                        apiType: 'data',
-                        endpoint: '/sales-channel-api/v1/category?limit=500&associations[seoUrls][]'
-                    }, { root: true })
+            async getMenu({ commit, state, dispatch }, payload) {
+                return new Promise(function (resolve, reject) {
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'get',
+                            tokenType: 'sw',
+                            apiType: 'data',
+                            endpoint: '/sales-channel-api/v1/category?limit=500&associations[seoUrls][]',
+                        },
+                        { root: true }
+                    )
                         .then(response => {
-                            dispatch('mappingMenu', response.data.data).then((res) => {
+                            dispatch('mappingMenu', response.data.data).then(res => {
                                 commit('setDataMenu', res);
                             });
 
@@ -111,13 +114,13 @@ export default function (ctx) {
                         });
                 });
             },
-            async mappingMenu({commit, state, dispatch}, payload) {
-                return new Promise(function(resolve, reject) {
-                    let mapped = payload.map((category) => {
+            async mappingMenu({ commit, state, dispatch }, payload) {
+                return new Promise(function (resolve, reject) {
+                    let mapped = payload.map(category => {
                         let obj = {};
 
                         // Add 0 as value for parentId to root categories to make unflatten function work
-                        if(category.parentId === null) {
+                        if (category.parentId === null) {
                             category.parentId = 0;
                         }
 
@@ -125,7 +128,7 @@ export default function (ctx) {
                         obj.parentId = category.parentId;
                         obj.name = category.name;
 
-                        if(!_.isEmpty(category.seoUrls)) {
+                        if (!_.isEmpty(category.seoUrls)) {
                             obj.url_path = category.seoUrls[0].seoPathInfo;
                         } else {
                             obj.url_path = '/';
@@ -139,16 +142,16 @@ export default function (ctx) {
                     });
 
                     // Build required parent child relations from flat array
-                    resolve( {
+                    resolve({
                         data: {
                             result: {
-                                items: unflatten(mapped)
-                            }
-                        }
+                                items: unflatten(mapped),
+                            },
+                        },
                     });
                 });
             },
-        }
+        },
     };
 
     ctx.store.registerModule('modApiMenu', modApiMenu);

@@ -5,15 +5,15 @@ Shopware CMS Helper Functions
 function returnSlotByType(type) {
     return () =>
         import('./slots/' + type).catch(() => {
-            return import('./NoComponent')
+            return import('./NoComponent');
         });
 }
 
 function returnBlockByType(type) {
     return () =>
         import('./blocks/' + type).catch(() => {
-            return import('./NoComponent')
-        })
+            return import('./NoComponent');
+        });
 }
 
 export const slotMixins = {
@@ -21,31 +21,31 @@ export const slotMixins = {
         elementClass() {
             return 'cms-element-' + this.content.type;
         },
-  }
+    },
 };
 
 export const blockMixins = {
     methods: {
         getSlotByPosition(slots, position) {
-            let typeName = ''
+            let typeName = '';
             _.forEach(slots, slot => {
                 if (slot.slot === position) {
-                    typeName = slot.type
+                    typeName = slot.type;
                 }
-            })
-            return returnSlotByType(typeName)
+            });
+            return returnSlotByType(typeName);
         },
         getContentByPosition(slots, position) {
-            let slotContent = {}
+            let slotContent = {};
             _.forEach(slots, slot => {
                 if (slot.slot === position) {
-                    slotContent = slot
+                    slotContent = slot;
                 }
-            })
-            return slotContent
-        }
-    }
-}
+            });
+            return slotContent;
+        },
+    },
+};
 
 export const sectionMixins = {
     computed: {
@@ -56,6 +56,6 @@ export const sectionMixins = {
     methods: {
         getBlockByType(type) {
             return returnBlockByType(type);
-        }
-    }
-}
+        },
+    },
+};

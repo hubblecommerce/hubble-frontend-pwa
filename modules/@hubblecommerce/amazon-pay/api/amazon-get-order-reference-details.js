@@ -1,17 +1,16 @@
 require('dotenv').config();
 const convert = require('xml-js');
 const axios = require('axios');
-const CryptoJS = require("crypto-js");
-import { logger }  from '@hubblecommerce/hubble/core/utils/logger';
+const CryptoJS = require('crypto-js');
+import { logger } from '@hubblecommerce/hubble/core/utils/logger';
 
 // Set sandboxmode to url
 let sandboxMode = '';
-if(process.env.AMAZON_PAY_SANDBOX === 'true') {
-    sandboxMode = '_Sandbox'
+if (process.env.AMAZON_PAY_SANDBOX === 'true') {
+    sandboxMode = '_Sandbox';
 }
 
-const response = function(req, res, next) {
-
+const response = function (req, res, next) {
     // Only accept GET requests
     if (req.method !== 'GET') {
         res.end();
@@ -29,25 +28,25 @@ const response = function(req, res, next) {
     let orderReferenceId = query.orderReferenceId;
 
     // Optional fields
-    let paymentAction = "GetOrderReferenceDetails";
+    let paymentAction = 'GetOrderReferenceDetails';
 
     // Getting the MerchantID/sellerID, MWS secret Key, MWS Access Key from the configuration file
-    if(typeof process.env.AMAZON_PAY_MERCHANT_ID == "undefined" || process.env.AMAZON_PAY_MERCHANT_ID === "") {
-        logger.error("merchantId not set in the configuration file");
+    if (typeof process.env.AMAZON_PAY_MERCHANT_ID == 'undefined' || process.env.AMAZON_PAY_MERCHANT_ID === '') {
+        logger.error('merchantId not set in the configuration file');
         res.writeHead(401);
         res.end('merchantId not set in the configuration file');
         return;
     }
 
-    if(typeof process.env.AMAZON_PAY_ACCESS_KEY == "undefined" || process.env.AMAZON_PAY_ACCESS_KEY === "") {
-        logger.error("accessKey not set in the configuration file");
+    if (typeof process.env.AMAZON_PAY_ACCESS_KEY == 'undefined' || process.env.AMAZON_PAY_ACCESS_KEY === '') {
+        logger.error('accessKey not set in the configuration file');
         res.writeHead(401);
         res.end('accessKey not set in the configuration file');
         return;
     }
 
-    if(typeof process.env.AMAZON_PAY_SECRET_KEY == "undefined" || process.env.AMAZON_PAY_SECRET_KEY === "") {
-        logger.error("secretKey not set in the configuration file");
+    if (typeof process.env.AMAZON_PAY_SECRET_KEY == 'undefined' || process.env.AMAZON_PAY_SECRET_KEY === '') {
+        logger.error('secretKey not set in the configuration file');
         res.writeHead(401);
         res.end('secretKey not set in the configuration file');
         return;
@@ -71,68 +70,81 @@ const response = function(req, res, next) {
     // Call Amazon API
     axios({
         method: 'GET',
-        url: 'https://mws-eu.amazonservices.com/OffAmazonPayments'+sandboxMode+'/2013-01-01?' +
-            'AWSAccessKeyId='+ parameters.AWSAccessKeyId +
-            '&Action='+ parameters.Action +
-            '&AmazonOrderReferenceId='+ parameters.AmazonOrderReferenceId +
-            '&SellerId='+ parameters.SellerId +
-            '&SignatureMethod='+ parameters.SignatureMethod +
-            '&SignatureVersion='+ parameters.SignatureVersion +
-            '&Timestamp='+ parameters.Timestamp +
-            '&Version='+ parameters.Version +
-            '&Signature='+ parameters.Signature
-    }).then((response) => {
-        // Convert XML Response to JSON
-        let result = convert.xml2json(response.data, {compact: true, spaces: 4});
-        res.end(result);
-    }).catch((error) => {
-        // Write error response to log file
-        logger.error("Amazon API Call Error: %s", error.response );
+        url:
+            'https://mws-eu.amazonservices.com/OffAmazonPayments' +
+            sandboxMode +
+            '/2013-01-01?' +
+            'AWSAccessKeyId=' +
+            parameters.AWSAccessKeyId +
+            '&Action=' +
+            parameters.Action +
+            '&AmazonOrderReferenceId=' +
+            parameters.AmazonOrderReferenceId +
+            '&SellerId=' +
+            parameters.SellerId +
+            '&SignatureMethod=' +
+            parameters.SignatureMethod +
+            '&SignatureVersion=' +
+            parameters.SignatureVersion +
+            '&Timestamp=' +
+            parameters.Timestamp +
+            '&Version=' +
+            parameters.Version +
+            '&Signature=' +
+            parameters.Signature,
+    })
+        .then(response => {
+            // Convert XML Response to JSON
+            let result = convert.xml2json(response.data, { compact: true, spaces: 4 });
+            res.end(result);
+        })
+        .catch(error => {
+            // Write error response to log file
+            logger.error('Amazon API Call Error: %s', error.response);
 
-        // Write status from api to response trigger catch of axios call
-        res.writeHead(error.response.status);
+            // Write status from api to response trigger catch of axios call
+            res.writeHead(error.response.status);
 
-        // Cast response data to string to prevent nodejs error
-        res.end(error.response.data.toString());
-    });
-
+            // Cast response data to string to prevent nodejs error
+            res.end(error.response.data.toString());
+        });
 };
 
-const signParameters = function(parameters, key) {
+const signParameters = function (parameters, key) {
     let stringToSign = calculateStringToSignV2(parameters);
     return sign(stringToSign, key);
 };
 
-const calculateStringToSignV2 = function(parameters) {
+const calculateStringToSignV2 = function (parameters) {
     let data = 'GET';
-    data += "\n";
-    data += "mws-eu.amazonservices.com";
-    data += "\n";
-    data += "/OffAmazonPayments"+sandboxMode+"/2013-01-01";
-    data += "\n";
+    data += '\n';
+    data += 'mws-eu.amazonservices.com';
+    data += '\n';
+    data += '/OffAmazonPayments' + sandboxMode + '/2013-01-01';
+    data += '\n';
     data += getParametersAsString(parameters);
     return data;
 };
 
-const getParametersAsString = function(parameters) {
+const getParametersAsString = function (parameters) {
     let queryParameters = [];
-    for(const [key, value] of Object.entries(parameters)) {
-        queryParameters.push(key + '=' + urlEncode(value))
+    for (const [key, value] of Object.entries(parameters)) {
+        queryParameters.push(key + '=' + urlEncode(value));
     }
     return queryParameters.join('&');
 };
 
-const urlEncode = function(val) {
+const urlEncode = function (val) {
     let encoded = encodeURIComponent(val);
     return encoded.replace(new RegExp('%7E', 'g'), '~');
 };
 
-const sign = function(data, key) {
+const sign = function (data, key) {
     let hash = CryptoJS.HmacSHA256(data, key);
     return hash.toString(CryptoJS.enc.Base64);
 };
 
 export default {
     path: '/api/amazon-get-order-reference-details',
-    handler: response
-}
+    handler: response,
+};

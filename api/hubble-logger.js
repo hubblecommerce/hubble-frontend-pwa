@@ -1,7 +1,6 @@
-import { logger }  from '@hubblecommerce/hubble/core/utils/logger';
+import { logger } from '@hubblecommerce/hubble/core/utils/logger';
 
-const response = function(req, res, next) {
-
+const response = function (req, res, next) {
     if (req.method === 'POST') {
         let body = '';
 
@@ -22,15 +21,15 @@ const response = function(req, res, next) {
             let message = 'Missing log error message: %s';
             let meta = 'No meta info provided for log entry';
 
-            if(json.level !== null) {
+            if (json.level !== null) {
                 level = json.level;
             }
 
-            if(json.message !== null) {
+            if (json.message !== null) {
                 message = json.msg;
             }
 
-            if(json.meta !== null) {
+            if (json.meta !== null) {
                 meta = json.payload;
             }
 
@@ -39,10 +38,9 @@ const response = function(req, res, next) {
             res.end();
         });
     }
-
 };
 
 export default {
     path: '/api/hubble-logger',
-    handler: response
-}
+    handler: response,
+};

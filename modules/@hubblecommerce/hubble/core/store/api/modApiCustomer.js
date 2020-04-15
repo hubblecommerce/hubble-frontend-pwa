@@ -1,4 +1,4 @@
-import base64 from 'base-64'
+import base64 from 'base-64';
 
 export default function (ctx) {
     const modApiCustomer = {
@@ -9,7 +9,7 @@ export default function (ctx) {
                 customerData: {},
                 customerAddresses: [],
                 billingAddress: {},
-                shippingAddress: {}
+                shippingAddress: {},
             },
 
             availableCountries: [],
@@ -22,13 +22,13 @@ export default function (ctx) {
             getCustomerAuth: state => {
                 return state.customer.customerAuth;
             },
-            getCookieExpires: (state) => {
+            getCookieExpires: state => {
                 return new Date(new Date().getTime() + state.cookieTTL * 60 * 1000);
             },
-            getJsonEncoded: () => (objJsonStr) => {
+            getJsonEncoded: () => objJsonStr => {
                 return base64.encode(JSON.stringify(objJsonStr));
             },
-            getJsonDecoded: () => (objJsonB64) => {
+            getJsonDecoded: () => objJsonB64 => {
                 return JSON.parse(base64.decode(objJsonB64));
             },
         },
@@ -49,7 +49,7 @@ export default function (ctx) {
                 state.customer.customerAddresses.push(payload);
             },
             removeCustomerAddress: (state, payload) => {
-                if(payload !== null) {
+                if (payload !== null) {
                     state.customer.customerAddresses.splice(payload, 1);
                 }
             },
@@ -62,135 +62,146 @@ export default function (ctx) {
             setShippingAddress: (state, payload) => {
                 state.customer.shippingAddress = payload;
             },
-            clearCustomerData: (state) => {
+            clearCustomerData: state => {
                 state.customer = {
                     customerAuth: {},
                     customerData: {},
                     customerAddresses: [],
                     billingAddress: {},
-                    shippingAddress: {}
-                }
-            }
+                    shippingAddress: {},
+                };
+            },
         },
         actions: {
-            async logIn({commit, state, dispatch, getters}, payload) {
-                return new Promise((resolve, reject)  => {
-                    dispatch('apiCall', {
-                        action: 'post',
-                        tokenType: 'api',
-                        apiType: 'payment',
-                        endpoint: '/api/login',
-                        data: payload
-                    }, { root: true })
-                    .then(response => {
-                        // Clear customer data
-                        commit('clearCustomerData');
+            async logIn({ commit, state, dispatch, getters }, payload) {
+                return new Promise((resolve, reject) => {
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'post',
+                            tokenType: 'api',
+                            apiType: 'payment',
+                            endpoint: '/api/login',
+                            data: payload,
+                        },
+                        { root: true }
+                    )
+                        .then(response => {
+                            // Clear customer data
+                            commit('clearCustomerData');
 
-                        // Clear order Data
-                        commit('modApiPayment/setChosenPaymentMethod', {}, {root: true});
-                        commit('modApiPayment/setChosenShippingMethod', {}, {root: true});
+                            // Clear order Data
+                            commit('modApiPayment/setChosenPaymentMethod', {}, { root: true });
+                            commit('modApiPayment/setChosenShippingMethod', {}, { root: true });
 
-                        // Remove cookies
-                        this.$cookies.remove(state.cookieName);
-                        this.$cookies.remove(state.cookieNameOrder);
-                        this.$cookies.remove(state.cookieNameAddress);
+                            // Remove cookies
+                            this.$cookies.remove(state.cookieName);
+                            this.$cookies.remove(state.cookieNameOrder);
+                            this.$cookies.remove(state.cookieNameAddress);
 
-                        // Save response to store
-                        commit('setCustomerAuth', response.data.auth);
-                        commit('setCustomerData', response.data.user);
+                            // Save response to store
+                            commit('setCustomerAuth', response.data.auth);
+                            commit('setCustomerData', response.data.user);
 
-                        // Save store to cookie
-                        this.$cookies.set(state.cookieName, state.customer, {
-                            path: state.cookiePath,
-                            expires: getters.getCookieExpires
+                            // Save store to cookie
+                            this.$cookies.set(state.cookieName, state.customer, {
+                                path: state.cookiePath,
+                                expires: getters.getCookieExpires,
+                            });
+
+                            resolve(response);
+                        })
+                        .catch(response => {
+                            //console.log('logIn failed: %o', response);
+                            reject(response);
                         });
-
-                        resolve(response);
-                    })
-                    .catch(response => {
-                        //console.log('logIn failed: %o', response);
-                        reject(response);
-                    });
                 });
             },
-            async logOut({commit, state, dispatch}, payload) {
-                return new Promise((resolve, reject)  => {
-                    dispatch('apiCall', {
-                        action: 'post',
-                        tokenType: 'customer',
-                        apiType: 'payment',
-                        endpoint: '/api/logout',
-                    }, { root: true })
-                    .then(() => {
-                        // Clear customer data
-                        commit('clearCustomerData');
+            async logOut({ commit, state, dispatch }, payload) {
+                return new Promise((resolve, reject) => {
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'post',
+                            tokenType: 'customer',
+                            apiType: 'payment',
+                            endpoint: '/api/logout',
+                        },
+                        { root: true }
+                    )
+                        .then(() => {
+                            // Clear customer data
+                            commit('clearCustomerData');
 
-                        // Clear order data
-                        commit('modApiPayment/setChosenPaymentMethod', {}, {root: true});
-                        commit('modApiPayment/setChosenShippingMethod', {}, {root: true});
+                            // Clear order data
+                            commit('modApiPayment/setChosenPaymentMethod', {}, { root: true });
+                            commit('modApiPayment/setChosenShippingMethod', {}, { root: true });
 
-                        // Remove cookies
-                        this.$cookies.remove(state.cookieName);
-                        this.$cookies.remove(state.cookieNameOrder);
-                        this.$cookies.remove(state.cookieNameAddress);
+                            // Remove cookies
+                            this.$cookies.remove(state.cookieName);
+                            this.$cookies.remove(state.cookieNameOrder);
+                            this.$cookies.remove(state.cookieNameAddress);
 
-                        resolve('OK');
-                    })
-                    .catch(response => {
-                        console.log('logOut failed: %o', response);
-                        reject('logOut failed');
-                    });
-                });
-            },
-            async register({dispatch, commit, state, getters}, payload) {
-                return new Promise((resolve, reject)  => {
-                    dispatch('apiCall', {
-                        action: 'post',
-                        tokenType: 'api',
-                        apiType: 'payment',
-                        endpoint: '/api/register',
-                        data: payload
-                    }, { root: true })
-                    .then((response) => {
-                        // Clear customer data
-                        commit('clearCustomerData');
-
-                        // Clear order Data
-                        commit('modApiPayment/setChosenPaymentMethod', {}, {root: true});
-                        commit('modApiPayment/setChosenShippingMethod', {}, {root: true});
-
-                        // Remove cookies
-                        this.$cookies.remove(state.cookieName);
-                        this.$cookies.remove(state.cookieNameOrder);
-                        this.$cookies.remove(state.cookieNameAddress);
-
-                        // Save response to store
-                        commit('setCustomerAuth', response.data.auth);
-                        commit('setCustomerData', response.data.user);
-
-                        // Save store to cookie
-                        this.$cookies.set(state.cookieName, state.customer, {
-                            path: state.cookiePath,
-                            expires: getters.getCookieExpires
+                            resolve('OK');
+                        })
+                        .catch(response => {
+                            console.log('logOut failed: %o', response);
+                            reject('logOut failed');
                         });
-
-                        resolve(response);
-                    })
-                    .catch(response => {
-                        console.log("API post request failed: %o", response);
-                        reject(response);
-                    });
                 });
             },
-            async registerGuest({commit, state, dispatch, getters}, payload) {
-                return new Promise((resolve)  => {
+            async register({ dispatch, commit, state, getters }, payload) {
+                return new Promise((resolve, reject) => {
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'post',
+                            tokenType: 'api',
+                            apiType: 'payment',
+                            endpoint: '/api/register',
+                            data: payload,
+                        },
+                        { root: true }
+                    )
+                        .then(response => {
+                            // Clear customer data
+                            commit('clearCustomerData');
 
+                            // Clear order Data
+                            commit('modApiPayment/setChosenPaymentMethod', {}, { root: true });
+                            commit('modApiPayment/setChosenShippingMethod', {}, { root: true });
+
+                            // Remove cookies
+                            this.$cookies.remove(state.cookieName);
+                            this.$cookies.remove(state.cookieNameOrder);
+                            this.$cookies.remove(state.cookieNameAddress);
+
+                            // Save response to store
+                            commit('setCustomerAuth', response.data.auth);
+                            commit('setCustomerData', response.data.user);
+
+                            // Save store to cookie
+                            this.$cookies.set(state.cookieName, state.customer, {
+                                path: state.cookiePath,
+                                expires: getters.getCookieExpires,
+                            });
+
+                            resolve(response);
+                        })
+                        .catch(response => {
+                            console.log('API post request failed: %o', response);
+                            reject(response);
+                        });
+                });
+            },
+            async registerGuest({ commit, state, dispatch, getters }, payload) {
+                return new Promise(resolve => {
                     // Clear customer data
                     commit('clearCustomerData');
 
                     // Clear order Data
-                    commit('modApiPayment/setChosenPaymentMethod', {}, {root: true});
-                    commit('modApiPayment/setChosenShippingMethod', {}, {root: true});
+                    commit('modApiPayment/setChosenPaymentMethod', {}, { root: true });
+                    commit('modApiPayment/setChosenShippingMethod', {}, { root: true });
 
                     // Remove cookies
                     this.$cookies.remove(state.cookieName);
@@ -201,10 +212,10 @@ export default function (ctx) {
                         created_at: getters.getCurrentDate,
                         expires_at: getters.getCookieExpires,
                         expires_in: 86400,
-                        token: "guest",
-                        token_name: "",
-                        token_type: "",
-                        updated_at: ""
+                        token: 'guest',
+                        token_name: '',
+                        token_type: '',
+                        updated_at: '',
                     };
 
                     commit('setCustomerAuth', guestAuthData);
@@ -214,42 +225,41 @@ export default function (ctx) {
                     // Save store to cookie
                     this.$cookies.set(state.cookieName, state.customer, {
                         path: state.cookiePath,
-                        expires: getters.getCookieExpires
+                        expires: getters.getCookieExpires,
                     });
 
                     resolve('OK');
                 });
             },
-            async editAddress({dispatch, state, getters}, payload) {
+            async editAddress({ dispatch, state, getters }, payload) {
+                let _endpoint = _.join(['/api/customer/addresses', payload.id], '/');
 
-                let _endpoint = _.join([
-                    '/api/customer/addresses',
-                    payload.id
-                ], '/');
-
-                return new Promise((resolve, reject)  => {
-                    dispatch('apiCall', {
-                        action: 'patch',
-                        tokenType: 'customer',
-                        apiType: 'payment',
-                        endpoint: _endpoint,
-                        data: payload
-                    }, { root: true })
-                    .then(() => {
-                        resolve('OK');
-                    })
-                    .catch(response => {
-                        console.log('editAddress failed: %o', response);
-                        reject(response);
-                    });
+                return new Promise((resolve, reject) => {
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'patch',
+                            tokenType: 'customer',
+                            apiType: 'payment',
+                            endpoint: _endpoint,
+                            data: payload,
+                        },
+                        { root: true }
+                    )
+                        .then(() => {
+                            resolve('OK');
+                        })
+                        .catch(response => {
+                            console.log('editAddress failed: %o', response);
+                            reject(response);
+                        });
                 });
             },
-            async editGuestAddress({commit, state, getters}, payload) {
-                return new Promise((resolve)  => {
-
+            async editGuestAddress({ commit, state, getters }, payload) {
+                return new Promise(resolve => {
                     let keyToRemove = null;
                     _.forEach(state.customer.customerAddresses, (val, key) => {
-                        if(val.id === payload.id) {
+                        if (val.id === payload.id) {
                             keyToRemove = key;
                         }
                     });
@@ -263,94 +273,99 @@ export default function (ctx) {
                     // Save store to cookie
                     this.$cookies.set(state.cookieName, state.customer, {
                         path: state.cookiePath,
-                        expires: getters.getCookieExpires
+                        expires: getters.getCookieExpires,
                     });
 
                     resolve('OK');
                 });
             },
-            async getCustomerAddresses({commit, state, getters, dispatch}, payload) {
-
+            async getCustomerAddresses({ commit, state, getters, dispatch }, payload) {
                 let _endpoint = '/api/customer/addresses';
 
-                return new Promise((resolve, reject)  => {
-                    dispatch('apiCall', {
-                        action: 'get',
-                        tokenType: 'customer',
-                        apiType: 'payment',
-                        endpoint: _endpoint,
-                        data: payload
-                    }, { root: true })
-                    .then(response => {
-                        commit('setCustomerAddresses', response.data.items);
-                        resolve('OK');
-                    })
-                    .catch(response => {
-                        console.log('getCustomerAddresses failed: %o', response);
-                        reject('getCustomerAddresses failed!');
-                    });
-                });
-            },
-            async storeCustomerAddress({state, getters, dispatch}, payload) {
-
-                let _endpoint = '/api/customer/addresses';
-
-                return new Promise((resolve, reject)  => {
-                    dispatch('apiCall', {
-                        action: 'post',
-                        tokenType: 'customer',
-                        apiType: 'payment',
-                        endpoint: _endpoint,
-                        data: payload
-                    }, { root: true })
-                    .then((response) => {
-                        resolve(response.data.item);
-                    })
-                    .catch(response => {
-                        console.log('storeCustomerAddress failed: %o', response);
-                        reject(response);
-                    });
-                });
-            },
-            async deleteCustomerAddress({state, getters, dispatch}, payload) {
-
-                let _endpoint = _.join([
-                    '/api/customer/addresses',
-                    payload.id
-                ], '/');
-
-                return new Promise((resolve, reject)  => {
-                    if(payload.is_billing_default || payload.is_shipping_default) {
-                        reject('You cant delete any default address');
-                    } else {
-                        dispatch('apiCall', {
-                            action: 'delete',
+                return new Promise((resolve, reject) => {
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'get',
                             tokenType: 'customer',
                             apiType: 'payment',
                             endpoint: _endpoint,
-                            data: payload
-                        }, { root: true })
-                        .then(() => {
+                            data: payload,
+                        },
+                        { root: true }
+                    )
+                        .then(response => {
+                            commit('setCustomerAddresses', response.data.items);
                             resolve('OK');
                         })
                         .catch(response => {
-                            console.log('deleteCustomerAddress failed: %o', response);
-                            reject('API request failed!');
+                            console.log('getCustomerAddresses failed: %o', response);
+                            reject('getCustomerAddresses failed!');
                         });
+                });
+            },
+            async storeCustomerAddress({ state, getters, dispatch }, payload) {
+                let _endpoint = '/api/customer/addresses';
+
+                return new Promise((resolve, reject) => {
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'post',
+                            tokenType: 'customer',
+                            apiType: 'payment',
+                            endpoint: _endpoint,
+                            data: payload,
+                        },
+                        { root: true }
+                    )
+                        .then(response => {
+                            resolve(response.data.item);
+                        })
+                        .catch(response => {
+                            console.log('storeCustomerAddress failed: %o', response);
+                            reject(response);
+                        });
+                });
+            },
+            async deleteCustomerAddress({ state, getters, dispatch }, payload) {
+                let _endpoint = _.join(['/api/customer/addresses', payload.id], '/');
+
+                return new Promise((resolve, reject) => {
+                    if (payload.is_billing_default || payload.is_shipping_default) {
+                        reject('You cant delete any default address');
+                    } else {
+                        dispatch(
+                            'apiCall',
+                            {
+                                action: 'delete',
+                                tokenType: 'customer',
+                                apiType: 'payment',
+                                endpoint: _endpoint,
+                                data: payload,
+                            },
+                            { root: true }
+                        )
+                            .then(() => {
+                                resolve('OK');
+                            })
+                            .catch(response => {
+                                console.log('deleteCustomerAddress failed: %o', response);
+                                reject('API request failed!');
+                            });
                     }
                 });
             },
-            async setByCookie({commit, state}) {
-                return new Promise((resolve) => {
-
+            async setByCookie({ commit, state }) {
+                return new Promise(resolve => {
                     // try to retrieve auth user by cookie
                     let _cookie = this.$cookies.get(state.cookieName);
 
                     // no cookie? ok!
-                    if(! _cookie) {
+                    if (!_cookie) {
                         resolve({
                             success: true,
-                            message: 'customer not known by cookie.'
+                            message: 'customer not known by cookie.',
                         });
                     } else {
                         // Save cookie to store
@@ -359,77 +374,87 @@ export default function (ctx) {
                         resolve({
                             success: true,
                             message: 'customer taken from cookie.',
-                            redirect: true
+                            redirect: true,
                         });
                     }
-                })
-            },
-            async passwordForgot({dispatch}, payload) {
-                return new Promise((resolve, reject)  => {
-                    dispatch('apiCall', {
-                        action: 'post',
-                        tokenType: 'api',
-                        apiType: 'payment',
-                        endpoint: '/api/password/forgot',
-                        data: payload
-                    }, { root: true })
-                    .then(response => {
-                        resolve(response);
-                    })
-                    .catch(error => {
-                        console.log('passwordForgot failed: %o', error);
-                        reject(error);
-                    });
                 });
             },
-            async passwordUpdate({dispatch, getters}, payload) {
-                return new Promise((resolve, reject)  => {
-                    dispatch('apiCall', {
-                        action: 'post',
-                        tokenType: 'customer',
-                        apiType: 'payment',
-                        endpoint: '/api/password/reset',
-                        data: payload
-                    }, { root: true })
-                    .then(response => {
-                        resolve(response);
-                    })
-                    .catch(error => {
-                        reject(error);
-                    });
+            async passwordForgot({ dispatch }, payload) {
+                return new Promise((resolve, reject) => {
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'post',
+                            tokenType: 'api',
+                            apiType: 'payment',
+                            endpoint: '/api/password/forgot',
+                            data: payload,
+                        },
+                        { root: true }
+                    )
+                        .then(response => {
+                            resolve(response);
+                        })
+                        .catch(error => {
+                            console.log('passwordForgot failed: %o', error);
+                            reject(error);
+                        });
                 });
             },
-            async getAvailableCountries({commit, dispatch}) {
-                return new Promise(function(resolve, reject) {
-                    let _endpoint = _.join([
-                        '/api/countries'
-                    ], '');
+            async passwordUpdate({ dispatch, getters }, payload) {
+                return new Promise((resolve, reject) => {
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'post',
+                            tokenType: 'customer',
+                            apiType: 'payment',
+                            endpoint: '/api/password/reset',
+                            data: payload,
+                        },
+                        { root: true }
+                    )
+                        .then(response => {
+                            resolve(response);
+                        })
+                        .catch(error => {
+                            reject(error);
+                        });
+                });
+            },
+            async getAvailableCountries({ commit, dispatch }) {
+                return new Promise(function (resolve, reject) {
+                    let _endpoint = _.join(['/api/countries'], '');
 
-                    dispatch('apiCall', {
-                        action: 'get',
-                        tokenType: 'api',
-                        apiType: 'payment',
-                        endpoint: _endpoint
-                    }, { root: true })
-                    .then(response => {
-                        commit('setAvailableCountries', response.data.items);
-                        resolve('OK');
-                    })
-                    .catch(error => {
-                        reject(error);
-                    });
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'get',
+                            tokenType: 'api',
+                            apiType: 'payment',
+                            endpoint: _endpoint,
+                        },
+                        { root: true }
+                    )
+                        .then(response => {
+                            commit('setAvailableCountries', response.data.items);
+                            resolve('OK');
+                        })
+                        .catch(error => {
+                            reject(error);
+                        });
                 });
             },
-            async setAddressByCookie({commit, state, getters}) {
+            async setAddressByCookie({ commit, state, getters }) {
                 return new Promise((resolve, reject) => {
                     // try to retrieve address data by cookie
                     let cookie = this.$cookies.get(state.cookieNameAddress);
 
                     // no cookie? ok!
-                    if(! cookie) {
+                    if (!cookie) {
                         resolve({
                             success: false,
-                            message: 'adress not known by cookie.'
+                            message: 'adress not known by cookie.',
                         });
                     } else {
                         let cookieAddresses = getters.getJsonDecoded(cookie);
@@ -441,28 +466,31 @@ export default function (ctx) {
                         commit('setShippingAddress', shippingAddress);
 
                         // reset address cookie lifetime
-                        this.$cookies.set(state.cookieNameAddress, getters.getJsonEncoded({
-                            billingAddress: billingAddress,
-                            shippingAddress: shippingAddress
-                        }) , {
-                            path: state.addressCookiePath,
-                            expires: new Date(new Date().getTime() + state.addressCookieTTL * 60 * 1000)
-                        });
+                        this.$cookies.set(
+                            state.cookieNameAddress,
+                            getters.getJsonEncoded({
+                                billingAddress: billingAddress,
+                                shippingAddress: shippingAddress,
+                            }),
+                            {
+                                path: state.addressCookiePath,
+                                expires: new Date(new Date().getTime() + state.addressCookieTTL * 60 * 1000),
+                            }
+                        );
 
                         resolve({
                             success: true,
                             message: 'order taken from cookie.',
                         });
                     }
-                })
+                });
             },
-            async setAddressCookie({commit, state, getters}, payload) {
+            async setAddressCookie({ commit, state, getters }, payload) {
                 return new Promise((resolve, reject) => {
-
                     // set address cookie
-                    this.$cookies.set(state.cookieNameAddress, getters.getJsonEncoded(payload) , {
+                    this.$cookies.set(state.cookieNameAddress, getters.getJsonEncoded(payload), {
                         path: state.addressCookiePath,
-                        expires: new Date(new Date().getTime() + state.addressCookieTTL * 60 * 1000)
+                        expires: new Date(new Date().getTime() + state.addressCookieTTL * 60 * 1000),
                     });
 
                     // Save addresses from cookie to store
@@ -470,10 +498,9 @@ export default function (ctx) {
                     commit('setShippingAddress', payload.shippingAddress);
 
                     resolve();
-                })
+                });
             },
-
-        }
+        },
     };
 
     ctx.store.registerModule('modApiCustomer', modApiCustomer);

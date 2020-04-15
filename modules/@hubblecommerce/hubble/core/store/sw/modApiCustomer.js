@@ -7,7 +7,7 @@ export default function (ctx) {
                 customerData: {},
                 customerAddresses: [],
                 billingAddress: {},
-                shippingAddress: {}
+                shippingAddress: {},
             },
 
             // Customer related entities
@@ -22,8 +22,8 @@ export default function (ctx) {
         }),
         mutations: {
             /*
-            * Customer mutations
-            * */
+             * Customer mutations
+             * */
             setCustomer: (state, payload) => {
                 state.customer = payload;
             },
@@ -33,14 +33,14 @@ export default function (ctx) {
             setCustomerData: (state, payload) => {
                 state.customer.customerData = payload;
             },
-            clearCustomerData: (state) => {
+            clearCustomerData: state => {
                 state.customer = {
                     customerAuth: {},
                     customerData: {},
                     customerAddresses: [],
                     billingAddress: {},
-                    shippingAddress: {}
-                }
+                    shippingAddress: {},
+                };
             },
             setCustomerAddresses: (state, payload) => {
                 state.customer.customerAddresses = payload;
@@ -58,8 +58,8 @@ export default function (ctx) {
                 state.salutations = payload;
             },
         },
-        getters:  {
-            getCookieExpires: (state) => {
+        getters: {
+            getCookieExpires: state => {
                 return new Date(new Date().getTime() + state.cookieTTL * 60 * 1000);
             },
             getCustomerAuth: state => {
@@ -67,8 +67,8 @@ export default function (ctx) {
             },
         },
         actions: {
-            async register({dispatch, commit, state, getters}, payload) {
-                return new Promise((resolve, reject)  => {
+            async register({ dispatch, commit, state, getters }, payload) {
+                return new Promise((resolve, reject) => {
                     // Map customer data to fit SW6 headless API
                     const customer = {
                         salutationId: payload.address.gender,
@@ -79,50 +79,58 @@ export default function (ctx) {
                             street: payload.address.street,
                             zipcode: payload.address.postal,
                             city: payload.address.city,
-                            countryId: payload.address.country
+                            countryId: payload.address.country,
                         },
-                        password: payload.password
+                        password: payload.password,
                     };
 
-                    dispatch('apiCall', {
-                        action: 'post',
-                        tokenType: 'sw',
-                        apiType: 'data',
-                        endpoint: '/sales-channel-api/v1/customer',
-                        data: customer
-                    }, { root: true })
-                        .then((response) => {
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'post',
+                            tokenType: 'sw',
+                            apiType: 'data',
+                            endpoint: '/sales-channel-api/v1/customer',
+                            data: customer,
+                        },
+                        { root: true }
+                    )
+                        .then(response => {
                             // Clear customer data
                             commit('clearCustomerData');
 
                             commit('setCustomerData', {
-                                id: response.data.data
+                                id: response.data.data,
                             });
 
                             dispatch('logIn', payload).then(() => {
                                 resolve(response);
-                            })
+                            });
                         })
                         .catch(response => {
-                            console.log("API post request failed: %o", response);
+                            console.log('API post request failed: %o', response);
                             reject(response);
                         });
                 });
             },
-            async logIn({commit, state, dispatch, rootState, getters}, payload) {
+            async logIn({ commit, state, dispatch, rootState, getters }, payload) {
                 const loginCreds = {
                     username: payload.email,
-                    password: payload.password
+                    password: payload.password,
                 };
 
-                return new Promise((resolve, reject)  => {
-                    dispatch('apiCall', {
-                        action: 'post',
-                        tokenType: 'sw',
-                        apiType: 'data',
-                        endpoint: '/sales-channel-api/v1/customer/login',
-                        data: loginCreds
-                    }, { root: true })
+                return new Promise((resolve, reject) => {
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'post',
+                            tokenType: 'sw',
+                            apiType: 'data',
+                            endpoint: '/sales-channel-api/v1/customer/login',
+                            data: loginCreds,
+                        },
+                        { root: true }
+                    )
                         .then(response => {
                             // Clear order Data
                             commit('modApiPayment/setChosenPaymentMethod', {}, { root: true });
@@ -138,9 +146,9 @@ export default function (ctx) {
                                 expires_at: getters.getCookieExpires,
                                 expires_in: 86400,
                                 token: response.data['sw-context-token'],
-                                token_name: "swtc",
-                                token_type: "context",
-                                updated_at: ""
+                                token_name: 'swtc',
+                                token_type: 'context',
+                                updated_at: '',
                             };
                             // Save response to store
                             commit('setCustomerAuth', authData);
@@ -148,12 +156,12 @@ export default function (ctx) {
                             // Override / Set Cart Context Token
                             // because otherwise there would be two different context tokens (one for cart, one for customer) without
                             // any relation to each other
-                            dispatch('modCart/saveSwtc', response.data['sw-context-token'], {root:true}).then(() => {
+                            dispatch('modCart/saveSwtc', response.data['sw-context-token'], { root: true }).then(() => {
                                 // Clear current cart
                                 // Get cart of logged in user
                                 // save cart to forage
                                 // TODO: merge cart items instead of removing them
-                                dispatch('modCart/clearAll', {}, {root:true}).then(() => {
+                                dispatch('modCart/clearAll', {}, { root: true }).then(() => {
                                     // Get customer info and save to cookie
                                     dispatch('getCustomerInfo').then(() => {
                                         resolve(response);
@@ -161,10 +169,10 @@ export default function (ctx) {
                                         // Save store to cookie
                                         this.$cookies.set(state.cookieName, state.customer, {
                                             path: state.cookiePath,
-                                            expires: getters.getCookieExpires
+                                            expires: getters.getCookieExpires,
                                         });
                                     });
-                                })
+                                });
                             });
                         })
                         .catch(response => {
@@ -172,15 +180,19 @@ export default function (ctx) {
                         });
                 });
             },
-            async logOut({commit, state, dispatch}, payload) {
-                return new Promise((resolve, reject)  => {
-                    dispatch('apiCall', {
-                        action: 'post',
-                        tokenType: 'sw',
-                        apiType: 'data',
-                        swContext: state.customer.customerAuth.token,
-                        endpoint: '/sales-channel-api/v1/customer/logout',
-                    }, { root: true })
+            async logOut({ commit, state, dispatch }, payload) {
+                return new Promise((resolve, reject) => {
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'post',
+                            tokenType: 'sw',
+                            apiType: 'data',
+                            swContext: state.customer.customerAuth.token,
+                            endpoint: '/sales-channel-api/v1/customer/logout',
+                        },
+                        { root: true }
+                    )
                         .then(() => {
                             // Clear customer data
                             commit('clearCustomerData');
@@ -202,16 +214,16 @@ export default function (ctx) {
                         });
                 });
             },
-            async setByCookie({commit, state}) {
-                return new Promise((resolve) => {
+            async setByCookie({ commit, state }) {
+                return new Promise(resolve => {
                     // try to retrieve auth user by cookie
                     let _cookie = this.$cookies.get(state.cookieName);
 
                     // no cookie? ok!
-                    if(! _cookie) {
+                    if (!_cookie) {
                         resolve({
                             success: true,
-                            message: 'customer not known by cookie.'
+                            message: 'customer not known by cookie.',
                         });
                     } else {
                         // Save cookie to store
@@ -220,16 +232,16 @@ export default function (ctx) {
                         resolve({
                             success: true,
                             message: 'customer taken from cookie.',
-                            redirect: true
+                            redirect: true,
                         });
                     }
-                })
+                });
             },
-            async mapAddresses({commit, state, getters, dispatch}, addresses) {
-                return new Promise((resolve, reject)  => {
+            async mapAddresses({ commit, state, getters, dispatch }, addresses) {
+                return new Promise((resolve, reject) => {
                     let mappedAddresses = [];
 
-                    _.forEach(addresses, (address) => {
+                    _.forEach(addresses, address => {
                         let addressMap = {
                             id: address.id,
                             is_billing: true,
@@ -245,26 +257,26 @@ export default function (ctx) {
                                 postal: address.zipcode,
                                 city: address.city,
                                 country: address.countryId,
-                                company: address.company
-                            }
+                                company: address.company,
+                            },
                         };
 
-                        if(address.id === state.customer.customerData.defaultBillingAddressId) {
+                        if (address.id === state.customer.customerData.defaultBillingAddressId) {
                             addressMap.is_billing_default = true;
                         }
 
-                        if(address.id === state.customer.customerData.defaultShippingAddressId) {
+                        if (address.id === state.customer.customerData.defaultShippingAddressId) {
                             addressMap.is_shipping_default = true;
                         }
 
-                        mappedAddresses.push(addressMap)
+                        mappedAddresses.push(addressMap);
                     });
 
                     resolve(mappedAddresses);
                 });
             },
-            async mapDefaultAddresses({commit, state, getters, dispatch}, addresses) {
-                return new Promise((resolve, reject)  => {
+            async mapDefaultAddresses({ commit, state, getters, dispatch }, addresses) {
+                return new Promise((resolve, reject) => {
                     let mappedAddresses = [],
                         billingDefault = addresses.billingDefault,
                         shippingDefault = addresses.shippingDefault;
@@ -284,8 +296,8 @@ export default function (ctx) {
                             postal: billingDefault.zipcode,
                             city: billingDefault.city,
                             country: billingDefault.countryId,
-                            company: billingDefault.company
-                        }
+                            company: billingDefault.company,
+                        },
                     });
 
                     mappedAddresses.push({
@@ -303,38 +315,42 @@ export default function (ctx) {
                             postal: shippingDefault.zipcode,
                             city: shippingDefault.city,
                             country: shippingDefault.countryId,
-                            company: shippingDefault.company
-                        }
+                            company: shippingDefault.company,
+                        },
                     });
 
                     resolve(mappedAddresses);
                 });
             },
-            async getCustomerInfo({commit, state, getters, dispatch}, payload) {
-                return new Promise((resolve, reject)  => {
-                    dispatch('apiCall', {
-                        action: 'get',
-                        tokenType: 'sw',
-                        apiType: 'data',
-                        swContext: state.customer.customerAuth.token,
-                        endpoint: '/sales-channel-api/v1/customer'
-                    }, { root: true })
+            async getCustomerInfo({ commit, state, getters, dispatch }, payload) {
+                return new Promise((resolve, reject) => {
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'get',
+                            tokenType: 'sw',
+                            apiType: 'data',
+                            swContext: state.customer.customerAuth.token,
+                            endpoint: '/sales-channel-api/v1/customer',
+                        },
+                        { root: true }
+                    )
                         .then(response => {
                             const baseData = {
                                 name: `${response.data.data.firstName} ${response.data.data.lastName}`,
                                 email: response.data.data.email,
                                 defaultBillingAddressId: response.data.data.defaultBillingAddressId,
-                                defaultShippingAddressId: response.data.data.defaultShippingAddressId
+                                defaultShippingAddressId: response.data.data.defaultShippingAddressId,
                             };
 
                             commit('setCustomerData', baseData);
 
                             const addresses = {
                                 billingDefault: response.data.data.defaultBillingAddress,
-                                shippingDefault: response.data.data.defaultShippingAddress
+                                shippingDefault: response.data.data.defaultShippingAddress,
                             };
 
-                            dispatch('mapDefaultAddresses', addresses).then((mappedAddresses) => {
+                            dispatch('mapDefaultAddresses', addresses).then(mappedAddresses => {
                                 commit('setCustomerAddresses', mappedAddresses);
                                 resolve('OK');
                             });
@@ -345,19 +361,23 @@ export default function (ctx) {
                         });
                 });
             },
-            async getCustomerAddresses({commit, state, getters, dispatch}, payload) {
-                return new Promise((resolve, reject)  => {
-                    dispatch('apiCall', {
-                        action: 'get',
-                        tokenType: 'sw',
-                        apiType: 'data',
-                        swContext: state.customer.customerAuth.token,
-                        endpoint: '/sales-channel-api/v1/customer/address'
-                    }, { root: true })
+            async getCustomerAddresses({ commit, state, getters, dispatch }, payload) {
+                return new Promise((resolve, reject) => {
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'get',
+                            tokenType: 'sw',
+                            apiType: 'data',
+                            swContext: state.customer.customerAuth.token,
+                            endpoint: '/sales-channel-api/v1/customer/address',
+                        },
+                        { root: true }
+                    )
                         .then(response => {
                             // Get customerinfo to know which addresses are set as default
                             dispatch('getCustomerInfo').then(() => {
-                                dispatch('mapAddresses', response.data.data).then((mappedAddresses) => {
+                                dispatch('mapAddresses', response.data.data).then(mappedAddresses => {
                                     commit('setCustomerAddresses', mappedAddresses);
                                     resolve('OK');
                                 });
@@ -369,8 +389,8 @@ export default function (ctx) {
                         });
                 });
             },
-            async storeCustomerAddress({state, getters, dispatch}, address) {
-                return new Promise((resolve, reject)  => {
+            async storeCustomerAddress({ state, getters, dispatch }, address) {
+                return new Promise((resolve, reject) => {
                     let requestBody = {
                         salutationId: address.payload.gender,
                         firstName: address.payload.firstName,
@@ -378,24 +398,28 @@ export default function (ctx) {
                         street: address.payload.street,
                         zipcode: address.payload.postal,
                         city: address.payload.city,
-                        countryId: address.payload.country
+                        countryId: address.payload.country,
                     };
 
-                    dispatch('apiCall', {
-                        action: 'post',
-                        tokenType: 'sw',
-                        apiType: 'data',
-                        swContext: state.customer.customerAuth.token,
-                        endpoint: '/sales-channel-api/v1/customer/address',
-                        data: requestBody
-                    }, { root: true })
-                        .then((response) => {
-                            if(address.is_billing_default) {
-                                dispatch('setDefaultBillingAddress', response.data.data)
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'post',
+                            tokenType: 'sw',
+                            apiType: 'data',
+                            swContext: state.customer.customerAuth.token,
+                            endpoint: '/sales-channel-api/v1/customer/address',
+                            data: requestBody,
+                        },
+                        { root: true }
+                    )
+                        .then(response => {
+                            if (address.is_billing_default) {
+                                dispatch('setDefaultBillingAddress', response.data.data);
                             }
 
-                            if(address.is_shipping_default) {
-                                dispatch('setDefaultShippingAddress', response.data.data)
+                            if (address.is_shipping_default) {
+                                dispatch('setDefaultShippingAddress', response.data.data);
                             }
 
                             resolve(response);
@@ -406,35 +430,39 @@ export default function (ctx) {
                         });
                 });
             },
-            async editAddress({dispatch, state, getters}, payload) {
-                return new Promise((resolve, reject)  => {
+            async editAddress({ dispatch, state, getters }, payload) {
+                return new Promise((resolve, reject) => {
                     // TODO: Edit Address not implemented in SW6 headless API yet
 
-                    if(payload.is_billing_default) {
+                    if (payload.is_billing_default) {
                         dispatch('setDefaultBillingAddress', payload.id).then(() => {
                             resolve();
-                        })
+                        });
                     }
 
-                    if(payload.is_shipping_default) {
+                    if (payload.is_shipping_default) {
                         dispatch('setDefaultShippingAddress', payload.id).then(() => {
                             resolve();
-                        })
+                        });
                     }
                 });
             },
-            async deleteCustomerAddress({state, getters, dispatch}, payload) {
-                return new Promise((resolve, reject)  => {
-                    if(payload.is_billing_default || payload.is_shipping_default) {
+            async deleteCustomerAddress({ state, getters, dispatch }, payload) {
+                return new Promise((resolve, reject) => {
+                    if (payload.is_billing_default || payload.is_shipping_default) {
                         reject('You cant delete any default address');
                     } else {
-                        dispatch('apiCall', {
-                            action: 'delete',
-                            tokenType: 'sw',
-                            apiType: 'data',
-                            swContext: state.customer.customerAuth.token,
-                            endpoint: `/sales-channel-api/v1/customer/address/${payload.id}`
-                        }, { root: true })
+                        dispatch(
+                            'apiCall',
+                            {
+                                action: 'delete',
+                                tokenType: 'sw',
+                                apiType: 'data',
+                                swContext: state.customer.customerAuth.token,
+                                endpoint: `/sales-channel-api/v1/customer/address/${payload.id}`,
+                            },
+                            { root: true }
+                        )
                             .then(() => {
                                 resolve('OK');
                             })
@@ -445,32 +473,36 @@ export default function (ctx) {
                     }
                 });
             },
-            async mapOrders({commit, state, getters, dispatch}, orders) {
-                return new Promise((resolve, reject)  => {
-                    let mappedOrders= [];
+            async mapOrders({ commit, state, getters, dispatch }, orders) {
+                return new Promise((resolve, reject) => {
+                    let mappedOrders = [];
 
-                    _.forEach(orders, (order) => {
+                    _.forEach(orders, order => {
                         mappedOrders.push({
                             orderNumber: order.orderNumber,
                             id: order.id,
                             createdAt: order.createdAt,
                             status_label: order.stateMachineState.name,
-                            totals: order.positionPrice
-                        })
+                            totals: order.positionPrice,
+                        });
                     });
 
                     resolve(mappedOrders);
                 });
             },
-            async setDefaultBillingAddress({dispatch, getters, state}, payload) {
+            async setDefaultBillingAddress({ dispatch, getters, state }, payload) {
                 return new Promise((resolve, reject) => {
-                    dispatch('apiCall', {
-                        action: 'patch',
-                        tokenType: 'sw',
-                        apiType: 'data',
-                        swContext: state.customer.customerAuth.token,
-                        endpoint: `/sales-channel-api/v1/customer/address/${payload}/default-billing`
-                    }, { root: true })
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'patch',
+                            tokenType: 'sw',
+                            apiType: 'data',
+                            swContext: state.customer.customerAuth.token,
+                            endpoint: `/sales-channel-api/v1/customer/address/${payload}/default-billing`,
+                        },
+                        { root: true }
+                    )
                         .then(response => {
                             resolve(response);
                         })
@@ -478,17 +510,21 @@ export default function (ctx) {
                             console.log('setDefaultBillingAddress failed: %o', response);
                             reject('setDefaultBillingAddress failed!');
                         });
-                })
+                });
             },
-            async setDefaultShippingAddress({dispatch, getters, state}, payload) {
+            async setDefaultShippingAddress({ dispatch, getters, state }, payload) {
                 return new Promise((resolve, reject) => {
-                    dispatch('apiCall', {
-                        action: 'patch',
-                        tokenType: 'sw',
-                        apiType: 'data',
-                        swContext: state.customer.customerAuth.token,
-                        endpoint: `/sales-channel-api/v1/customer/address/${payload}/default-shipping`
-                    }, { root: true })
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'patch',
+                            tokenType: 'sw',
+                            apiType: 'data',
+                            swContext: state.customer.customerAuth.token,
+                            endpoint: `/sales-channel-api/v1/customer/address/${payload}/default-shipping`,
+                        },
+                        { root: true }
+                    )
                         .then(response => {
                             resolve(response);
                         })
@@ -496,22 +532,26 @@ export default function (ctx) {
                             console.log('setDefaultBillingAddress failed: %o', response);
                             reject('setDefaultBillingAddress failed!');
                         });
-                })
+                });
             },
-            async getOrders({dispatch, getters, state}, payload) {
+            async getOrders({ dispatch, getters, state }, payload) {
                 return new Promise((resolve, reject) => {
-                    dispatch('apiCall', {
-                        action: 'get',
-                        tokenType: 'sw',
-                        apiType: 'data',
-                        swContext: state.customer.customerAuth.token,
-                        endpoint: '/sales-channel-api/v1/customer/order',
-                        params: {
-                            limit: 500
-                        }
-                    }, { root: true })
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'get',
+                            tokenType: 'sw',
+                            apiType: 'data',
+                            swContext: state.customer.customerAuth.token,
+                            endpoint: '/sales-channel-api/v1/customer/order',
+                            params: {
+                                limit: 500,
+                            },
+                        },
+                        { root: true }
+                    )
                         .then(response => {
-                            dispatch('mapOrders', response.data.data).then((mappedOrders) => {
+                            dispatch('mapOrders', response.data.data).then(mappedOrders => {
                                 resolve(mappedOrders);
                             });
                         })
@@ -519,38 +559,26 @@ export default function (ctx) {
                             console.log('getOrders failed: %o', response);
                             reject('getOrders failed!');
                         });
-                })
-            },
-            async passwordUpdate({dispatch, getters, state}, payload) {
-                return new Promise((resolve, reject)  => {
-                    dispatch('apiCall', {
-                        action: 'patch',
-                        tokenType: 'sw',
-                        apiType: 'data',
-                        swContext: state.customer.customerAuth.token,
-                        endpoint: '/sales-channel-api/v1/customer/password',
-                        data: {
-                            password: payload.password_old,
-                            newPassword: payload.password,
-                            newPasswordConfirm: payload.password_confirm
-                        }
-                    }, { root: true })
-                        .then(response => {
-                            resolve(response);
-                        })
-                        .catch(error => {
-                            reject(error);
-                        });
                 });
             },
-            async swGetSalutations({commit, state, dispatch, rootState, getters}, payload) {
+            async passwordUpdate({ dispatch, getters, state }, payload) {
                 return new Promise((resolve, reject) => {
-                    dispatch('apiCall', {
-                        action: 'get',
-                        tokenType: 'sw',
-                        apiType: 'data',
-                        endpoint: '/sales-channel-api/v1/salutation'
-                    }, { root: true })
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'patch',
+                            tokenType: 'sw',
+                            apiType: 'data',
+                            swContext: state.customer.customerAuth.token,
+                            endpoint: '/sales-channel-api/v1/customer/password',
+                            data: {
+                                password: payload.password_old,
+                                newPassword: payload.password,
+                                newPasswordConfirm: payload.password_confirm,
+                            },
+                        },
+                        { root: true }
+                    )
                         .then(response => {
                             resolve(response);
                         })
@@ -559,17 +587,18 @@ export default function (ctx) {
                         });
                 });
             },
-            async swGetCountries({commit, state, dispatch, rootState, getters}, payload) {
+            async swGetSalutations({ commit, state, dispatch, rootState, getters }, payload) {
                 return new Promise((resolve, reject) => {
-                    dispatch('apiCall', {
-                        action: 'get',
-                        tokenType: 'sw',
-                        apiType: 'data',
-                        endpoint: '/sales-channel-api/v1/country',
-                        params: {
-                            limit: 500
-                        }
-                    }, { root: true })
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'get',
+                            tokenType: 'sw',
+                            apiType: 'data',
+                            endpoint: '/sales-channel-api/v1/salutation',
+                        },
+                        { root: true }
+                    )
                         .then(response => {
                             resolve(response);
                         })
@@ -578,16 +607,39 @@ export default function (ctx) {
                         });
                 });
             },
-            async getAvailableCountries({commit, dispatch}) {
-                return new Promise(function(resolve, reject) {
-                    dispatch('swGetCountries').then((response) => {
+            async swGetCountries({ commit, state, dispatch, rootState, getters }, payload) {
+                return new Promise((resolve, reject) => {
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'get',
+                            tokenType: 'sw',
+                            apiType: 'data',
+                            endpoint: '/sales-channel-api/v1/country',
+                            params: {
+                                limit: 500,
+                            },
+                        },
+                        { root: true }
+                    )
+                        .then(response => {
+                            resolve(response);
+                        })
+                        .catch(error => {
+                            reject(error);
+                        });
+                });
+            },
+            async getAvailableCountries({ commit, dispatch }) {
+                return new Promise(function (resolve, reject) {
+                    dispatch('swGetCountries').then(response => {
                         let mappedCountries = [];
 
-                        _.forEach(response.data.data, (country) => {
+                        _.forEach(response.data.data, country => {
                             mappedCountries.push({
                                 name: country.name,
-                                iso_code_2: country.id
-                            })
+                                iso_code_2: country.id,
+                            });
                         });
 
                         commit('setAvailableCountries', mappedCountries);
@@ -596,36 +648,36 @@ export default function (ctx) {
                     });
                 });
             },
-            async postWishlist({dispatch}, payload) {
-                return new Promise((resolve, reject)  => {
+            async postWishlist({ dispatch }, payload) {
+                return new Promise((resolve, reject) => {
                     // Saving wishlist to customeraccount is currently not implemented in SW6 headless API
                     reject();
                     resolve();
                 });
             },
-            async getWishlist({dispatch}, payload) {
-                return new Promise((resolve, reject)  => {
+            async getWishlist({ dispatch }, payload) {
+                return new Promise((resolve, reject) => {
                     // Getting wishlist from customer is currently not implemented in SW6 headless API
                     resolve({
                         data: {
-                            item: {}
-                        }
+                            item: {},
+                        },
                     });
                 });
             },
-            async updateWishlist({dispatch}, payload) {
-                return new Promise((resolve, reject)  => {
+            async updateWishlist({ dispatch }, payload) {
+                return new Promise((resolve, reject) => {
                     // Updating wishlist from customer is currently not implemented in SW6 headless API
                     resolve();
                 });
             },
-            async deleteWishlist({dispatch}, payload) {
-                return new Promise((resolve, reject)  => {
+            async deleteWishlist({ dispatch }, payload) {
+                return new Promise((resolve, reject) => {
                     // Removing wishlist from customer is currently not implemented in SW6 headless API
                     resolve();
                 });
             },
-        }
+        },
     };
 
     // Register vuex store module

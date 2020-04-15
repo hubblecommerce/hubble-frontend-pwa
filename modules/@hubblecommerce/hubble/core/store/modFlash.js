@@ -5,13 +5,13 @@ export default function (ctx) {
             flashVisible: false,
             flashMessage: '',
             flashType: 'info',
-            keepOnRouteChange: false
+            keepOnRouteChange: false,
         }),
         mutations: {
-            showFlash: (state) => {
+            showFlash: state => {
                 state.flashVisible = true;
             },
-            hideFlash: (state) => {
+            hideFlash: state => {
                 state.flashVisible = false;
             },
             setKeepOnRouteChange: (state, val) => {
@@ -22,30 +22,30 @@ export default function (ctx) {
             },
             setFlashType: (state, type) => {
                 state.flashType = type;
-            }
+            },
         },
         actions: {
-            flashMessage({commit}, payload) {
-                return new Promise((resolve) => {
+            flashMessage({ commit }, payload) {
+                return new Promise(resolve => {
                     commit('showFlash');
                     commit('setFlashMessage', payload.flashMessage);
                     commit('setFlashType', payload.flashType);
                     commit('setKeepOnRouteChange', payload.keepOnRouteChange);
                     resolve('Message flashed');
-                })
+                });
             },
-            resetMessage({commit}) {
-                return new Promise((resolve) => {
+            resetMessage({ commit }) {
+                return new Promise(resolve => {
                     commit('hideFlash');
                     commit('setFlashMessage', '');
                     commit('setFlashType', 'info');
                     resolve('Message resetted');
-                })
+                });
             },
-            resetKeepOnRouteChange({commit}) {
+            resetKeepOnRouteChange({ commit }) {
                 commit('setKeepOnRouteChange', false);
-            }
-        }
+            },
+        },
     };
 
     ctx.store.registerModule('modFlash', modFlash);

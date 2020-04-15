@@ -44,14 +44,14 @@ export default function (ctx) {
                 state.selectedVariants = [];
                 state.selectedVariants.push(variant);
             },
-            resetSelectedVariants: (state) => {
+            resetSelectedVariants: state => {
                 state.optionIsSelected = false;
                 state.selectedVariants = [];
             },
-            setOptionNotSelectedError: (state) => {
+            setOptionNotSelectedError: state => {
                 state.optionNotSelectedError = true;
             },
-            removeOptionNotSelectedError: (state) => {
+            removeOptionNotSelectedError: state => {
                 state.optionNotSelectedError = false;
             },
             setOpenDetail: (state, payload) => {
@@ -61,15 +61,15 @@ export default function (ctx) {
                 state.productId = payload;
             },
         },
-        getters:  {
+        getters: {
             getMediaGalleryArray: state => {
-                if(!_.isEmpty(state.dataProduct)) {
+                if (!_.isEmpty(state.dataProduct)) {
                     let image = state.dataProduct.result.item.image,
                         mediaGallery = state.dataProduct.result.item.media_gallery;
                     let allProductImages = [];
 
                     allProductImages.push(image);
-                    mediaGallery.forEach( item => {
+                    mediaGallery.forEach(item => {
                         allProductImages.push(item.value);
                     });
 
@@ -84,149 +84,142 @@ export default function (ctx) {
             },
         },
         actions: {
-            async getProductData({commit, state, dispatch }) {
-                return new Promise(function(resolve, reject) {
-                    let endpoint = _.join([
-                        '/api/json/products/',
-                        state.productId,
-                    ], '');
+            async getProductData({ commit, state, dispatch }) {
+                return new Promise(function (resolve, reject) {
+                    let endpoint = _.join(['/api/json/products/', state.productId], '');
 
-                    dispatch('apiCall', {
-                        action: 'get',
-                        tokenType: 'api',
-                        apiType: 'data',
-                        endpoint: endpoint,
-                        params: {
-                            _withProps: _.join([
-                                'facets',
-                                'media_gallery',
-                                'related_product_ids',
-                                'search_result_data_children',
-                                'status'
-                            ], ',')
-                        }
-                    }, { root: true })
-                    .then(response => {
-                        commit('setDataProduct', {
-                            data: response.data
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'get',
+                            tokenType: 'api',
+                            apiType: 'data',
+                            endpoint: endpoint,
+                            params: {
+                                _withProps: _.join(['facets', 'media_gallery', 'related_product_ids', 'search_result_data_children', 'status'], ','),
+                            },
+                        },
+                        { root: true }
+                    )
+                        .then(response => {
+                            commit('setDataProduct', {
+                                data: response.data,
+                            });
+                            resolve('ok');
+                        })
+                        .catch(error => {
+                            reject(error);
                         });
-                        resolve('ok');
-                    })
-                    .catch(error => {
-                        reject(error);
-                    })
                 });
             },
-            async getRelatedProducts({commit, state, dispatch}, payload) {
-                return new Promise(function(resolve, reject) {
-                    let endpoint = _.join([
-                        '/api/json/products/',
-                        payload.data,
-                        '/relations'
-                    ], '');
+            async getRelatedProducts({ commit, state, dispatch }, payload) {
+                return new Promise(function (resolve, reject) {
+                    let endpoint = _.join(['/api/json/products/', payload.data, '/relations'], '');
 
-                    dispatch('apiCall', {
-                        action: 'get',
-                        tokenType: 'api',
-                        apiType: 'data',
-                        endpoint: endpoint
-                    }, { root: true })
-                    .then(response => {
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'get',
+                            tokenType: 'api',
+                            apiType: 'data',
+                            endpoint: endpoint,
+                        },
+                        { root: true }
+                    )
+                        .then(response => {
+                            commit('setDataProductRelations', {
+                                data: response.data,
+                            });
 
-                        commit('setDataProductRelations', {
-                            data: response.data
+                            resolve('OK');
+                        })
+                        .catch(response => {
+                            reject('API request failed!');
                         });
-
-                        resolve('OK');
-                    })
-                    .catch(response => {
-                        reject('API request failed!');
-                    });
                 });
             },
-            async getProductsCrossBuybox({commit, state, dispatch}, payload) {
+            async getProductsCrossBuybox({ commit, state, dispatch }, payload) {
                 return new Promise((resolve, reject) => {
-                    let endpoint = _.join([
-                        '/api/json/products/',
-                        payload.data,
-                        '/buybox'
-                    ], '');
+                    let endpoint = _.join(['/api/json/products/', payload.data, '/buybox'], '');
 
-                    dispatch('apiCall', {
-                        action: 'get',
-                        tokenType: 'api',
-                        apiType: 'data',
-                        endpoint: endpoint
-                    }, { root: true })
-                    .then(response => {
-                        //Save Cross-selling data to store
-                        commit('setDataProductsCrossBuybox', {
-                            data: response.data.result.items
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'get',
+                            tokenType: 'api',
+                            apiType: 'data',
+                            endpoint: endpoint,
+                        },
+                        { root: true }
+                    )
+                        .then(response => {
+                            //Save Cross-selling data to store
+                            commit('setDataProductsCrossBuybox', {
+                                data: response.data.result.items,
+                            });
+
+                            resolve(response.data);
+                        })
+                        .catch(response => {
+                            reject('API request failed!');
                         });
-
-                        resolve(response.data);
-                    })
-                    .catch(response => {
-                        reject('API request failed!');
-                    });
                 });
             },
-            async getProductsCrossByOrder({commit, state, dispatch}, payload) {
+            async getProductsCrossByOrder({ commit, state, dispatch }, payload) {
                 return new Promise((resolve, reject) => {
-                    let endpoint = _.join([
-                        '/api/json/products/',
-                        payload.data,
-                        '/byorder'
-                    ], '');
+                    let endpoint = _.join(['/api/json/products/', payload.data, '/byorder'], '');
 
-                    dispatch('apiCall', {
-                        action: 'get',
-                        tokenType: 'api',
-                        apiType: 'data',
-                        endpoint: endpoint
-                    }, { root: true })
-                    .then(response => {
-                        //Save Cross-selling data to store
-                        commit('setDataProductsCrossByOrder', {
-                            data: response.data.result.items
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'get',
+                            tokenType: 'api',
+                            apiType: 'data',
+                            endpoint: endpoint,
+                        },
+                        { root: true }
+                    )
+                        .then(response => {
+                            //Save Cross-selling data to store
+                            commit('setDataProductsCrossByOrder', {
+                                data: response.data.result.items,
+                            });
+
+                            resolve(response.data);
+                        })
+                        .catch(response => {
+                            reject('API request failed!');
                         });
-
-                        resolve(response.data);
-                    })
-                    .catch(response => {
-                        reject('API request failed!');
-                    });
                 });
             },
-            async getProductsCrossSimilar({commit, dispatch}, payload) {
+            async getProductsCrossSimilar({ commit, dispatch }, payload) {
                 return new Promise((resolve, reject) => {
-                    let endpoint = _.join([
-                        '/api/json/products/',
-                        payload.data,
-                        '/similar'
-                    ], '');
+                    let endpoint = _.join(['/api/json/products/', payload.data, '/similar'], '');
 
-                    dispatch('apiCall', {
-                        action: 'get',
-                        tokenType: 'api',
-                        apiType: 'data',
-                        endpoint: endpoint
-                    }, { root: true })
-                    .then(response => {
-                        //Save Cross-selling data to store
-                        commit('setDataProductsCrossSimilar', {
-                            data: response.data.result.items
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'get',
+                            tokenType: 'api',
+                            apiType: 'data',
+                            endpoint: endpoint,
+                        },
+                        { root: true }
+                    )
+                        .then(response => {
+                            //Save Cross-selling data to store
+                            commit('setDataProductsCrossSimilar', {
+                                data: response.data.result.items,
+                            });
+
+                            resolve(response.data);
+                        })
+                        .catch(response => {
+                            reject('API request failed!');
                         });
-
-                        resolve(response.data);
-                    })
-                    .catch(response => {
-                        reject('API request failed!');
-                    });
                 });
             },
-
-        }
+        },
     };
 
     ctx.store.registerModule('modApiProduct', modApiProduct);

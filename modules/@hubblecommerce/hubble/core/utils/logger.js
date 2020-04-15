@@ -18,12 +18,7 @@ const myFormat = printf(({ level, message, label, timestamp }) => {
 
 export const logger = createLogger({
     level: 'info',
-    format: format.combine(
-        label({ label: 'hubble' }),
-        timestamp(),
-        format.splat(),
-        myFormat
-    ),
+    format: format.combine(label({ label: 'hubble' }), timestamp(), format.splat(), myFormat),
     defaultMeta: { service: 'hubble' },
     transports: [
         //
@@ -31,6 +26,6 @@ export const logger = createLogger({
         // - Write all logs error (and below) to `error.log`.
         //
         new transports.File({ filename: 'logs/error.log', level: 'error' }),
-        new transports.File({ filename: 'logs/system.log' })
-    ]
+        new transports.File({ filename: 'logs/system.log' }),
+    ],
 });

@@ -1,8 +1,8 @@
 require('dotenv').config();
-import { logger }  from '@hubblecommerce/hubble/core/utils/logger';
-import md5 from 'js-md5'
+import { logger } from '@hubblecommerce/hubble/core/utils/logger';
+import md5 from 'js-md5';
 
-const response = function(req, res, next) {
+const response = function (req, res, next) {
     // Only accept GET requests
     if (req.method !== 'GET') {
         res.end();
@@ -14,64 +14,62 @@ const response = function(req, res, next) {
     let requestData = url_parts.query;
     let key = process.env.PAYONE_KEY;
 
-    buildSortedRequestString(requestData, key).then((sortedRequestString) => {
+    buildSortedRequestString(requestData, key)
+        .then(sortedRequestString => {
+            // Hash the sorted string
+            hashString(sortedRequestString).then(response => {
+                // Set hash to request data
+                requestData.hash = response;
 
-        // Hash the sorted string
-        hashString(sortedRequestString).then((response) => {
-            // Set hash to request data
-            requestData.hash = response;
+                // IMPORTANT Remove secret key from request data because its only needed to calculate hash and not needed in request to payone
+                delete requestData.key;
 
-            // IMPORTANT Remove secret key from request data because its only needed to calculate hash and not needed in request to payone
-            delete requestData.key;
-
-            res.end(JSON.stringify(requestData));
+                res.end(JSON.stringify(requestData));
+            });
         })
-
-    }).catch((response) => {
-        logger.error('Could not build sorted request string, check your parameters ' + response);
-        res.writeHead(400);
-        res.end('Could not build sorted request string, check your parameters ' + response);
-        return;
-    })
-
+        .catch(response => {
+            logger.error('Could not build sorted request string, check your parameters ' + response);
+            res.writeHead(400);
+            res.end('Could not build sorted request string, check your parameters ' + response);
+            return;
+        });
 };
 
-const buildSortedRequestString = function(requestData, key) {
+const buildSortedRequestString = function (requestData, key) {
     return new Promise((resolve, reject) => {
-
-        if(!('aid' in requestData)) {
+        if (!('aid' in requestData)) {
             reject('aid is not set');
         }
 
-        if(!('encoding' in requestData)) {
+        if (!('encoding' in requestData)) {
             reject('encoding is not set');
         }
 
-        if(!('mid' in requestData)) {
+        if (!('mid' in requestData)) {
             reject('mid is not set');
         }
 
-        if(!('mode' in requestData)) {
+        if (!('mode' in requestData)) {
             reject('mode is not set');
         }
 
-        if(!('portalid' in requestData)) {
+        if (!('portalid' in requestData)) {
             reject('portalid is not set');
         }
 
-        if(!('request' in requestData)) {
+        if (!('request' in requestData)) {
             reject('request is not set');
         }
 
-        if(!('responsetype' in requestData)) {
+        if (!('responsetype' in requestData)) {
             reject('responsetype is not set');
         }
 
-        if(!('storecarddata' in requestData)) {
+        if (!('storecarddata' in requestData)) {
             reject('storecarddata is not set');
         }
 
-        if(key === null) {
+        if (key === null) {
             reject('key is not set');
         }
 
@@ -89,17 +87,16 @@ const buildSortedRequestString = function(requestData, key) {
             key;
 
         resolve(sortedRequestString);
-
-    })
+    });
 };
 
-const hashString = function(string) {
-    return new Promise((resolve) => {
+const hashString = function (string) {
+    return new Promise(resolve => {
         resolve(md5(string));
-    })
+    });
 };
 
 export default {
     path: '/api/calc-hash-hosted-iframe',
-    handler: response
-}
+    handler: response,
+};
