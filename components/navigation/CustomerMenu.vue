@@ -1,9 +1,6 @@
 <template>
     <div class="customer-account-cpt-wrp">
-        <button class="button-icon"
-                :class="setButtonStates"
-                @click="toggle()"
-        >
+        <button class="button-icon" :class="setButtonStates" @click="toggle()">
             <i class="icon icon-account" /><span class="hidden-link-name">Account</span>
 
             <material-ripple />
@@ -14,7 +11,7 @@
                     <div class="row overlay-header">
                         <button class="button-icon button-close-menu" @click="toggle()">
                             <i class="icon icon-close" aria-hidden="true" />
-                            
+
                             <material-ripple />
                         </button>
 
@@ -49,73 +46,73 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import CustomerAccountNavigation from "../customer/CustomerAccountNavigation";
-import LoginForm from "../customer/LoginForm";
+import CustomerAccountNavigation from '../customer/CustomerAccountNavigation';
+import LoginForm from '../customer/LoginForm';
 
 export default {
     name: 'CustomerMenu',
 
-    components: {LoginForm, CustomerAccountNavigation},
+    components: { LoginForm, CustomerAccountNavigation },
 
     data() {
         return {
             name: 'CustomerMenu',
             displayMenu: false,
             loginUsername: '',
-            loginPassword: ''
-        }
+            loginPassword: '',
+        };
     },
 
     computed: {
         ...mapState({
             customer: state => state.modApiCustomer.customer,
-            offcanvas: state => state.modNavigation.offcanvas
+            offcanvas: state => state.modNavigation.offcanvas,
         }),
-        setButtonStates: function() {
+        setButtonStates: function () {
             return {
-                active: this.showMenu
-            }
+                active: this.showMenu,
+            };
         },
-        showMenu: function() {
+        showMenu: function () {
             return this.offcanvas.component === this.name;
         },
-        isLoggedIn: function() {
-            if(!_.isEmpty(this.customer.customerAuth) && this.customer.customerAuth.token !== 'guest') {
+        isLoggedIn: function () {
+            if (!_.isEmpty(this.customer.customerAuth) && this.customer.customerAuth.token !== 'guest') {
                 return this.customer.customerAuth.token;
             }
 
             return false;
-        }
+        },
     },
 
     watch: {
-        '$route.path': function() {
+        '$route.path': function () {
             // Close menu layer if route changes
             this.hideMenu();
-        }
+        },
     },
 
     methods: {
         ...mapActions({
             toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction',
-            hideOffcanvasAction: 'modNavigation/hideOffcanvasAction'
+            hideOffcanvasAction: 'modNavigation/hideOffcanvasAction',
         }),
-        toggle: function() {
+        toggle: function () {
             this.toggleOffcanvasAction({
                 component: this.name,
-                direction: 'rightLeft'
+                direction: 'rightLeft',
             });
         },
-        hideMenu: function() {
+        hideMenu: function () {
             this.hideOffcanvasAction();
         },
-        showFormRegister: function() {
+        showFormRegister: function () {
             this.hideMenu();
 
             this.$router.push({
-                path: this.localePath('customer-login')
+                path: this.localePath('customer-login'),
             });
-        }
-    }
-}
+        },
+    },
+};
 </script>

@@ -34,7 +34,7 @@
                             </div>
                         </div>
 
-<!--                        <amazon-pay-button />-->
+                        <!--                        <amazon-pay-button />-->
 
                         <nuxt-link :to="checkoutPath()">
                             <button class="button-primary checkout-btn">
@@ -67,96 +67,86 @@
             event="cartPageLoaded"
             page-type="cart"
             page-title="Warenkorb | Hubble demo"
-            :breadcrumbs="[
-                {'0': 'home'},
-                {'1': 'cart'},
-            ]"
+            :breadcrumbs="[{ '0': 'home' }, { '1': 'cart' }]"
         />
     </div>
 </template>
 
 <script>
-    import { mapState, mapActions } from 'vuex';
-    import CartItemsList from "../../components/checkout/CartItemsList";
-    import Totals from "../../components/checkout/Totals";
-    import GTMDataLayer from "../../components/utils/GTMDataLayer";
+import { mapState, mapActions } from 'vuex';
+import CartItemsList from '../../components/checkout/CartItemsList';
+import Totals from '../../components/checkout/Totals';
+import GTMDataLayer from '../../components/utils/GTMDataLayer';
 
-    export default {
-        name: 'CheckoutCart',
+export default {
+    name: 'CheckoutCart',
 
-        components: {
-            GTMDataLayer,
-            Totals,
-            Coupons: () => import('../../components/checkout/Coupons'),
-            CartItemsList
+    components: {
+        GTMDataLayer,
+        Totals,
+        Coupons: () => import('../../components/checkout/Coupons'),
+        CartItemsList,
+    },
+
+    middleware: ['apiAuthenticate', 'apiLocalization', 'apiResourceMenu', 'trackClickPath'],
+
+    layout: 'hubble',
+
+    data() {
+        return {
+            subTotals: {},
+            cartItemsQty: null,
+        };
+    },
+
+    computed: {
+        ...mapState({
+            cart: state => state.modCart.cart,
+            items: state => state.modCart.cart.items,
+            qty: state => state.modCart.cart.items_qty,
+        }),
+    },
+
+    mounted() {
+        this.precalculateShippingCost({
+            cart: this.cart,
+            country: 'DE',
+        });
+    },
+
+    methods: {
+        ...mapActions({
+            precalculateShippingCostAction: 'modCart/precalculateShippingCost',
+        }),
+        cartItemsLabel(qty) {
+            return this.qty > 1 ? qty + ' ' + this.$t('shopping_cart_label_items') : qty + ' ' + this.$t('shopping_cart_label_item');
         },
-
-        middleware: [
-            'apiAuthenticate',
-            'apiLocalization',
-            'apiResourceMenu',
-            'trackClickPath'
-        ],
-
-        layout: 'hubble',
-
-        data() {
-            return {
-                subTotals: {},
-                cartItemsQty: null
+        getItemsInCart() {
+            this.cartItemsQty = this.qty;
+            return this.cartItemsQty;
+        },
+        precalculateShippingCost: function (payload) {
+            let order = {
+                order: JSON.stringify(payload),
+            };
+            this.precalculateShippingCostAction(order);
+        },
+        checkoutPath: function () {
+            if (this.isApiType('sw')) {
+                return this.localePath('checkout-shopware-onepage');
             }
+
+            return this.localePath('checkout-payment');
         },
-
-        computed: {
-            ...mapState({
-                cart: state => state.modCart.cart,
-                items: state => state.modCart.cart.items,
-                qty: state => state.modCart.cart.items_qty
-            })
+        isApiType: function (apiType) {
+            return process.env.API_TYPE === apiType;
         },
+    },
 
-        mounted() {
-            this.precalculateShippingCost({
-                cart: this.cart,
-                country: 'DE'
-            });
-        },
-
-        methods: {
-            ...mapActions({
-                precalculateShippingCostAction: 'modCart/precalculateShippingCost'
-            }),
-            cartItemsLabel(qty) {
-                return this.qty > 1 ? qty +' '+this.$t('shopping_cart_label_items') : qty +' '+this.$t('shopping_cart_label_item');
-            },
-            getItemsInCart() {
-                this.cartItemsQty = this.qty;
-                return this.cartItemsQty;
-            },
-            precalculateShippingCost: function(payload) {
-                let order = {
-                    order: JSON.stringify(payload)
-                };
-                this.precalculateShippingCostAction(order);
-            },
-            checkoutPath: function() {
-                if(this.isApiType('sw')) {
-                    return this.localePath('checkout-shopware-onepage');
-                }
-
-                return this.localePath('checkout-payment');
-            },
-            isApiType: function(apiType) {
-                return process.env.API_TYPE === apiType;
-            }
-        },
-
-        head() {
-            return {
-                meta: [
-                    { hid: 'robots', name: 'robots', content: 'NOINDEX, FOLLOW' }
-                ]
-            }
-        }
-    }
+    head() {
+        return {
+            meta: [{ hid: 'robots', name: 'robots', content: 'NOINDEX, FOLLOW' }],
+        };
+    },
+};
 </script>

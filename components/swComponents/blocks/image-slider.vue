@@ -7,26 +7,24 @@
 </template>
 
 <script>
-  import { blockMixins } from '../helper'
+import { blockMixins } from '../helper';
 
-  export default {
+export default {
     name: 'ImageSliderBlock',
-      mixins: [blockMixins],
+    mixins: [blockMixins],
 
-      props: {
-          content: {
-              type: Object,
-              default: () => ({})
-          }
-      },
-      computed: {
-          getSlot() {
-              return this.getSlotByPosition(this.content.slots, 'imageSlider');
-          }
-      }
-  }
+    props: {
+        content: {
+            type: Object,
+            default: () => ({}),
+        },
+    },
+    computed: {
+        getSlot() {
+            return this.getSlotByPosition(this.content.slots, 'imageSlider');
+        },
+    },
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

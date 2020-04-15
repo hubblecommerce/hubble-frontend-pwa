@@ -8,13 +8,13 @@
 </template>
 
 <script>
-    export default {
-        name: 'Error503',
-        props: {
-            error: {
-                type: Object,
-                default: () => {}
-            }
-        }
-    };
+export default {
+    name: 'Error503',
+    props: {
+        error: {
+            type: Object,
+            default: () => {},
+        },
+    },
+};
 </script>

@@ -12,42 +12,42 @@
 </template>
 
 <script>
-    import {mapGetters, mapMutations} from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 
-    export default {
-        name: "OrderComment",
+export default {
+    name: 'OrderComment',
 
-        data() {
-            return {
-                orderComment: ''
+    data() {
+        return {
+            orderComment: '',
+        };
+    },
+
+    computed: {
+        ...mapGetters({
+            getOrderComment: 'modApiPayment/getOrderComment',
+        }),
+    },
+
+    watch: {
+        orderComment: function (newValue) {
+            this.setOrderCommentMutation(newValue);
+        },
+    },
+
+    mounted() {
+        this.setOrderComment();
+    },
+
+    methods: {
+        ...mapMutations({
+            setOrderCommentMutation: 'modApiPayment/setOrderComment',
+        }),
+        setOrderComment: function () {
+            if (this.getOrderComment) {
+                this.orderComment = this.getOrderComment;
             }
         },
-
-        computed: {
-            ...mapGetters({
-                getOrderComment: 'modApiPayment/getOrderComment'
-            })
-        },
-
-        watch: {
-            orderComment: function(newValue) {
-                this.setOrderCommentMutation(newValue);
-            }
-        },
-
-        mounted() {
-            this.setOrderComment();
-        },
-
-        methods: {
-            ...mapMutations({
-                setOrderCommentMutation: 'modApiPayment/setOrderComment'
-            }),
-            setOrderComment: function() {
-                if(this.getOrderComment) {
-                    this.orderComment = this.getOrderComment;
-                }
-            }
-        }
-    }
+    },
+};
 </script>

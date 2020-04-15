@@ -2,7 +2,7 @@
     <div class="menu-cpt-wrapper">
         <button class="button-icon navbar-toggler nav-icon" @click="toggle()">
             <i class="icon icon-menu" aria-hidden="true" />
-            
+
             <span class="hidden-link-name">Toggle Navbar</span>
 
             <material-ripple />
@@ -29,58 +29,57 @@
 </template>
 
 <script>
-    import { mapState, mapActions } from 'vuex';
-    import MobileCategories from "./MobileCategories";
-    export default {
-        name: "TheMobileMenu",
+import { mapState, mapActions } from 'vuex';
+import MobileCategories from './MobileCategories';
+export default {
+    name: 'TheMobileMenu',
 
-        components: { MobileCategories},
+    components: { MobileCategories },
 
-        props: {
-            dataItems: {
-                type: Array,
-                required: true
-            }
+    props: {
+        dataItems: {
+            type: Array,
+            required: true,
         },
+    },
 
-        data() {
+    data() {
+        return {
+            name: 'TheMobileMenu',
+            menuTitle: 'Navigation',
+        };
+    },
+
+    computed: {
+        ...mapState({
+            offcanvas: state => state.modNavigation.offcanvas,
+        }),
+        rootItem: function () {
             return {
-                name: "TheMobileMenu",
-                menuTitle: 'Navigation'
-            }
+                name: 'root',
+                children: this.dataItems,
+            };
         },
-
-        computed: {
-            ...mapState({
-                offcanvas: state => state.modNavigation.offcanvas,
-            }),
-            rootItem: function() {
-                return {
-                    name: 'root',
-                    children: this.dataItems
-                }
-            },
-            showMenu: function() {
-                return this.offcanvas.component === this.name;
-            }
+        showMenu: function () {
+            return this.offcanvas.component === this.name;
         },
+    },
 
-        watch: {
-            '$route.path': function() {
-                // Close menu layer if route changes
-                this.hideOffcanvasAction();
-            }
+    watch: {
+        '$route.path': function () {
+            // Close menu layer if route changes
+            this.hideOffcanvasAction();
         },
+    },
 
-        methods: {
-            ...mapActions({
-                toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction',
-                hideOffcanvasAction: 'modNavigation/hideOffcanvasAction'
-            }),
-            toggle: function() {
-                this.toggleOffcanvasAction({component: this.name})
-            }
-        }
-
-    }
+    methods: {
+        ...mapActions({
+            toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction',
+            hideOffcanvasAction: 'modNavigation/hideOffcanvasAction',
+        }),
+        toggle: function () {
+            this.toggleOffcanvasAction({ component: this.name });
+        },
+    },
+};
 </script>

@@ -19,17 +19,17 @@
             </div>
             <nuxt-link :to="redirectLink">
                 <picture>
-                    <source :srcset="picturePathWebp" type="image/webp">
-                    <img class="teaser-picture teaser-picture-top" :src="picturePath" alt="'Teaser Image'" :title="descriptionHeadline">
+                    <source :srcset="picturePathWebp" type="image/webp" />
+                    <img class="teaser-picture teaser-picture-top" :src="picturePath" alt="'Teaser Image'" :title="descriptionHeadline" />
                 </picture>
-               <!-- <img-lazy :src="picturePath" :class="'teaser-picture teaser-picture-bottom'" :alt-info="'Teaser Image'" :title-info="descriptionHeadline" />-->
+                <!-- <img-lazy :src="picturePath" :class="'teaser-picture teaser-picture-bottom'" :alt-info="'Teaser Image'" :title-info="descriptionHeadline" />-->
             </nuxt-link>
         </template>
         <template v-else>
             <nuxt-link :to="redirectLink">
                 <picture>
-                    <source :srcset="picturePathWebp" type="image/webp">
-                    <img class="teaser-picture teaser-picture-top" :src="picturePath" alt="'Teaser Image'" :title="descriptionHeadline">
+                    <source :srcset="picturePathWebp" type="image/webp" />
+                    <img class="teaser-picture teaser-picture-top" :src="picturePath" alt="'Teaser Image'" :title="descriptionHeadline" />
                 </picture>
                 <!--<img-lazy :src="picturePath" :class="'teaser-picture teaser-picture-top'" :alt-info="'Teaser Image'" :title-info="descriptionHeadline" />-->
             </nuxt-link>
@@ -54,55 +54,54 @@
 </template>
 
 <script>
-    export default {
-        name: "Teaser",
+export default {
+    name: 'Teaser',
 
-        props: {
-            type: {
-                type: String,
-                default: 'category'
-            },
-            picturePathWebp: {
-                type: String,
-                default: ''
-            },
-            picturePath: {
-                type: String,
-                required: true
-            },
-            descriptionPosition: {
-                type: String,
-                default: 'top'
-            },
-            descriptionHeadline: {
-                type: String,
-                default: 'Teaser Headline'
-            },
-            description: {
-                type: String,
-                default: 'Teaser Description'
-            },
-            redirectLink: {
-                type: String,
-                default: '#'
-            },
-            showArrows: {
-                type: Boolean,
-                default: true
-            }
+    props: {
+        type: {
+            type: String,
+            default: 'category',
         },
+        picturePathWebp: {
+            type: String,
+            default: '',
+        },
+        picturePath: {
+            type: String,
+            required: true,
+        },
+        descriptionPosition: {
+            type: String,
+            default: 'top',
+        },
+        descriptionHeadline: {
+            type: String,
+            default: 'Teaser Headline',
+        },
+        description: {
+            type: String,
+            default: 'Teaser Description',
+        },
+        redirectLink: {
+            type: String,
+            default: '#',
+        },
+        showArrows: {
+            type: Boolean,
+            default: true,
+        },
+    },
 
-        computed: {
-            descriptionLinkText: function () {
-                if(this.type === 'product') {
-                    return 'Buy now';
-                }
-                if(this.type === 'category') {
-                    return 'Discover now';
-                }
+    computed: {
+        descriptionLinkText: function () {
+            if (this.type === 'product') {
                 return 'Buy now';
             }
+            if (this.type === 'category') {
+                return 'Discover now';
+            }
+            return 'Buy now';
         },
-
-    }
+    },
+};
 </script>

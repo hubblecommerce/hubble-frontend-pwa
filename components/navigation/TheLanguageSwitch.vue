@@ -1,43 +1,43 @@
 <template>
     <div class="language-wrp customer-account-cpt-wrp account-wrp">
-        <button class="button-icon" @click='toggle()' v-if="vp === 'md' || vp === 'lg'">
-            <i class="icon icon-globe text-white"></i><span class="hidden-link-name">Language</span>
-            <material-ripple></material-ripple>
+        <button v-if="vp === 'md' || vp === 'lg'" class="button-icon" @click="toggle()">
+            <i class="icon icon-globe text-white" /><span class="hidden-link-name">Language</span>
+            <material-ripple />
         </button>
 
         <transition-pop-up>
-            <div v-if="displaySwitch && (vp === 'md' || vp === 'lg')" class="customer-account-wrp" v-click-outside="hideSwitch">
+            <div v-if="displaySwitch && (vp === 'md' || vp === 'lg')" v-click-outside="hideSwitch" class="customer-account-wrp">
                 <div class="link-wrp">
                     <nuxt-link :to="localePath('index', 'de')">
-                        <button :class="{'button-primary': isLocale('de'), 'button-secondary': !isLocale('de')}" >
+                        <button :class="{ 'button-primary': isLocale('de'), 'button-secondary': !isLocale('de') }">
                             Deutsch
-                            <material-ripple></material-ripple>
+                            <material-ripple />
                         </button>
                     </nuxt-link>
 
                     <nuxt-link :to="localePath('index', 'en')">
-                        <button :class="{'button-primary': isLocale('en'), 'button-secondary': !isLocale('en')}" >
+                        <button :class="{ 'button-primary': isLocale('en'), 'button-secondary': !isLocale('en') }">
                             English
-                            <material-ripple></material-ripple>
+                            <material-ripple />
                         </button>
                     </nuxt-link>
                 </div>
             </div>
         </transition-pop-up>
 
-        <collapsible toggle-text="Change Language" toggle-icon-class="icon-globe mr-3" v-if="vp === 'sm'">
+        <collapsible v-if="vp === 'sm'" toggle-text="Change Language" toggle-icon-class="icon-globe mr-3">
             <div class="content-wrp">
                 <nuxt-link :to="localePath('index', 'de')">
-                    <button :class="{'button-primary': isLocale('de'), 'button-secondary': !isLocale('de')}" >
+                    <button :class="{ 'button-primary': isLocale('de'), 'button-secondary': !isLocale('de') }">
                         Deutsch
-                        <material-ripple></material-ripple>
+                        <material-ripple />
                     </button>
                 </nuxt-link>
 
                 <nuxt-link :to="localePath('index', 'en')">
-                    <button :class="{'button-primary': isLocale('en'), 'button-secondary': !isLocale('en')}" >
+                    <button :class="{ 'button-primary': isLocale('en'), 'button-secondary': !isLocale('en') }">
                         English
-                        <material-ripple></material-ripple>
+                        <material-ripple />
                     </button>
                 </nuxt-link>
             </div>
@@ -46,38 +46,38 @@
 </template>
 
 <script>
-    export default {
-        name: "TheLanguageSwitch",
+export default {
+    name: 'TheLanguageSwitch',
 
-        data() {
-            return {
-                displaySwitch: false,
-                vp: ''
-            }
+    data() {
+        return {
+            displaySwitch: false,
+            vp: '',
+        };
+    },
+
+    watch: {
+        '$route.path': function () {
+            // Close menu layer if route changes
+            this.displaySwitch = false;
         },
+    },
 
-        watch: {
-            '$route.path': function() {
-                // Close menu layer if route changes
-                this.displaySwitch = false;
-            }
+    mounted: function () {
+        // make Media Query variable reactive in this component
+        this.vp = this.$mq;
+    },
+
+    methods: {
+        hideSwitch: function () {
+            this.displaySwitch = false;
         },
-
-        mounted: function() {
-            // make Media Query variable reactive in this component
-            this.vp = this.$mq;
+        toggle: function () {
+            this.displaySwitch = !this.displaySwitch;
         },
-
-        methods: {
-            hideSwitch: function() {
-                this.displaySwitch = false;
-            },
-            toggle: function() {
-                this.displaySwitch = !this.displaySwitch;
-            },
-            isLocale: function(code) {
-                return code === this.$i18n.locale;
-            }
-        }
-    }
+        isLocale: function (code) {
+            return code === this.$i18n.locale;
+        },
+    },
+};
 </script>

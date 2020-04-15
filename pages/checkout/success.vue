@@ -2,7 +2,7 @@
     <div class="container checkout-success">
         <div class="checkout-success-wrp">
             <div class="success-msg-wrp">
-                <div class="circle-loader" :class="{'load-complete': !loading}">
+                <div class="circle-loader" :class="{ 'load-complete': !loading }">
                     <div v-show="!loading" class="checkmark draw" />
                 </div>
                 <div class="message headline-3" v-text="$t('Thank you for your order at hubble!')" />
@@ -17,94 +17,85 @@
 </template>
 
 <script>
-    import { mapState, mapActions } from 'vuex';
-    import OrderDetail from "../../components/customer/OrderDetail";
-    export default {
-        name: "Success",
+import { mapState, mapActions } from 'vuex';
+import OrderDetail from '../../components/customer/OrderDetail';
+export default {
+    name: 'Success',
 
-        components: {OrderDetail},
+    components: { OrderDetail },
 
-        middleware: [
-            'apiPaymentAuthenticate',
-            'apiCustomerAuthenticate',
-            'successValidate',
-            'apiLocalization',
-            'trackClickPath'
-        ],
+    middleware: ['apiPaymentAuthenticate', 'apiCustomerAuthenticate', 'successValidate', 'apiLocalization', 'trackClickPath'],
 
-        layout: 'hubble_light',
+    layout: 'hubble_light',
 
-        data() {
-            return {
-                loading: true,
-                order: null
-            }
+    data() {
+        return {
+            loading: true,
+            order: null,
+        };
+    },
+
+    computed: {
+        ...mapState({
+            customer: state => state.modApiCustomer.customer,
+            offcanvas: state => state.modNavigation.offcanvas,
+            cookieName: state => state.modApiCustomer.cookieName,
+            cookieNameAddress: state => state.modApiPayment.cookieNameAddress,
+        }),
+        isGuest: function () {
+            return this.customer.customerAuth.token === 'guest';
         },
+    },
 
-        computed: {
-            ...mapState({
-                customer: state => state.modApiCustomer.customer,
-                offcanvas: state => state.modNavigation.offcanvas,
-                cookieName: state => state.modApiCustomer.cookieName,
-                cookieNameAddress: state => state.modApiPayment.cookieNameAddress,
-            }),
-            isGuest: function() {
-                return this.customer.customerAuth.token === 'guest';
-            },
-        },
+    created() {
+        setTimeout(() => {
+            this.loading = false;
+        }, 500);
+    },
 
-        created() {
-            setTimeout(() => {
-                this.loading = false;
-            }, 500);
-        },
+    mounted() {
+        if (!this.isGuest) {
+            this.getLatestOrder();
+        }
 
-        mounted() {
-            if(!this.isGuest) {
-                this.getLatestOrder();
-            }
-
-            if(this.isGuest) {
-                // Guest only: Delete customer auth cookie
-                if(this.customer.customerAuth.token === 'guest') {
-                    // Remove cookies
-                    this.$cookies.remove(this.cookieName);
-                    this.$cookies.remove(this.cookieNameAddress);
-                }
-            }
-        },
-
-        methods: {
-            ...mapActions({
-                getOrders: 'modApiCustomer/getOrders'
-            }),
-            getLatestOrder: function() {
-                let latestDate = new Date(0);
-                let latestOrder = {};
-
-                // Get orders from customer
-                this.getOrders().then((res) => {
-
-                    if(res !== null) {
-                        _.forEach(res, (val) => {
-                            let date = new Date(val.createdAt);
-                            if(date.getTime() > latestDate.getTime()) {
-                                latestDate = date;
-                                latestOrder = val;
-                            }
-                        });
-                    }
-                    this.order = latestOrder;
-                });
-            }
-        },
-
-        head() {
-            return {
-                meta: [
-                    { hid: 'robots', name: 'robots', content: 'NOINDEX, FOLLOW' }
-                ]
+        if (this.isGuest) {
+            // Guest only: Delete customer auth cookie
+            if (this.customer.customerAuth.token === 'guest') {
+                // Remove cookies
+                this.$cookies.remove(this.cookieName);
+                this.$cookies.remove(this.cookieNameAddress);
             }
         }
-    }
+    },
+
+    methods: {
+        ...mapActions({
+            getOrders: 'modApiCustomer/getOrders',
+        }),
+        getLatestOrder: function () {
+            let latestDate = new Date(0);
+            let latestOrder = {};
+
+            // Get orders from customer
+            this.getOrders().then(res => {
+                if (res !== null) {
+                    _.forEach(res, val => {
+                        let date = new Date(val.createdAt);
+                        if (date.getTime() > latestDate.getTime()) {
+                            latestDate = date;
+                            latestOrder = val;
+                        }
+                    });
+                }
+                this.order = latestOrder;
+            });
+        },
+    },
+
+    head() {
+        return {
+            meta: [{ hid: 'robots', name: 'robots', content: 'NOINDEX, FOLLOW' }],
+        };
+    },
+};
 </script>

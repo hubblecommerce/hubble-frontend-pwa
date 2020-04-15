@@ -1,6 +1,5 @@
 <template>
     <div>
-
         <noscript>Please enable JavaScript and refresh this page, to use this application.</noscript>
 
         <div v-if="$mq === 'sm' || $mq === 'md'" class="mobile-layout hubble-light">
@@ -67,40 +66,39 @@
                 <cookie-notice />
             </div>
         </client-only>
-
     </div>
 </template>
 
 <script>
-    import { mapState } from 'vuex';
-    import ScrollToTop from "../components/utils/ScrollToTop";
-    import TheLogo from "../components/navigation/TheLogo";
+import { mapState } from 'vuex';
+import ScrollToTop from '../components/utils/ScrollToTop';
+import TheLogo from '../components/navigation/TheLogo';
 
-    import BackgroundBlur from "../components/utils/BackgroundBlur";
-    import TheFooterCopyrightLight from "../components/footer/TheFooterCopyrightLight";
-    import CookieNotice from "../components/utils/CookieNotice";
+import BackgroundBlur from '../components/utils/BackgroundBlur';
+import TheFooterCopyrightLight from '../components/footer/TheFooterCopyrightLight';
+import CookieNotice from '../components/utils/CookieNotice';
 
-    export default {
-        components: {
-            TheFooterCopyrightLight,
-            BackgroundBlur,
-            ScrollToTop,
-            TheLogo,
-            CookieNotice
+export default {
+    components: {
+        TheFooterCopyrightLight,
+        BackgroundBlur,
+        ScrollToTop,
+        TheLogo,
+        CookieNotice,
+    },
+    computed: {
+        ...mapState({
+            showCookieNotice: state => state.modCookieNotice.showCookieNotice,
+        }),
+    },
+    methods: {
+        historyBack: function () {
+            this.$router.go(-1);
         },
-        computed: {
-            ...mapState({
-                showCookieNotice: state => state.modCookieNotice.showCookieNotice
-            })
-        },
-        methods: {
-            historyBack: function() {
-                this.$router.go(-1);
-            }
-        },
+    },
 
-        head () {
-            return this.$nuxtI18nSeo()
-        }
-    }
+    head() {
+        return this.$nuxtI18nSeo();
+    },
+};
 </script>

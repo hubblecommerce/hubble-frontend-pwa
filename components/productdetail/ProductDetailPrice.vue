@@ -26,45 +26,45 @@
             <span class="label" v-text="'/l'" />
         </div>
 
-        <div class="info"><span>{{ $t('incl_tax') }}</span> </div>
-
+        <div class="info"><span>{{ $t('incl_tax') }}</span>
+        </div>
     </div>
 </template>
 
 <script>
-    import { mapState, mapGetters } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 
-    export default {
-        name: "ProductDetailPrice",
+export default {
+    name: 'ProductDetailPrice',
 
-        props: {
-            item: {
-                type: Object,
-                required: true
-            }
+    props: {
+        item: {
+            type: Object,
+            required: true,
         },
+    },
 
-        computed: {
-            ...mapState({
-                priceSwitcherIncludeVat: state => state.modPrices.priceSwitcherIncludeVat,
-            }),
-            ...mapGetters({
-                productIsSpecial: 'modPrices/productIsSpecial',
-                getTaxClassByLabel: 'modPrices/getTaxClassByLabel',
-                getPriceAndCurrencyDecFmt: 'modPrices/getPriceAndCurrencyDecFmt'
-            }),
-            itemTaxClass: function() {
-                return this.getTaxClassByLabel(this.item.final_price_item.tax_class_id);
-            },
-            itemIsSpecial: function() {
-                return this.productIsSpecial(this.item);
-            },
+    computed: {
+        ...mapState({
+            priceSwitcherIncludeVat: state => state.modPrices.priceSwitcherIncludeVat,
+        }),
+        ...mapGetters({
+            productIsSpecial: 'modPrices/productIsSpecial',
+            getTaxClassByLabel: 'modPrices/getTaxClassByLabel',
+            getPriceAndCurrencyDecFmt: 'modPrices/getPriceAndCurrencyDecFmt',
+        }),
+        itemTaxClass: function () {
+            return this.getTaxClassByLabel(this.item.final_price_item.tax_class_id);
         },
+        itemIsSpecial: function () {
+            return this.productIsSpecial(this.item);
+        },
+    },
 
-        methods: {
-            getPriceAndCurrency: function(key, addVat) {
-                return this.getPriceAndCurrencyDecFmt(this.item.final_price_item[key], addVat, this.itemTaxClass);
-            },
-        }
-    }
+    methods: {
+        getPriceAndCurrency: function (key, addVat) {
+            return this.getPriceAndCurrencyDecFmt(this.item.final_price_item[key], addVat, this.itemTaxClass);
+        },
+    },
+};
 </script>

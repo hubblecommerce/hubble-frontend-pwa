@@ -15,42 +15,40 @@
     </div>
 </template>
 <script>
-    import { blockMixins } from '../helper'
+import { blockMixins } from '../helper';
 
-    export default {
-        name: 'ImageTextRowBlock',
+export default {
+    name: 'ImageTextRowBlock',
 
-        mixins: [blockMixins],
+    mixins: [blockMixins],
 
-        props: {
-            content: {
-                type: Object,
-                default: () => ({})
-            }
+    props: {
+        content: {
+            type: Object,
+            default: () => ({}),
         },
-        computed: {
-            leftImageSlot() {
-                return this.getSlotByPosition(this.content.slots, 'left-image');
-            },
-            leftTextSlot() {
-                return this.getSlotByPosition(this.content.slots, 'left-text');
-            },
-            centerImageSlot() {
-                return this.getSlotByPosition(this.content.slots, 'center-image');
-            },
-            centerTextSlot() {
-                return this.getSlotByPosition(this.content.slots, 'center-text');
-            },
-            rightImageSlot() {
-                return this.getSlotByPosition(this.content.slots, 'right-image');
-            },
-            rightTextSlot() {
-                return this.getSlotByPosition(this.content.slots, 'right-text');
-            },
-        }
-    }
+    },
+    computed: {
+        leftImageSlot() {
+            return this.getSlotByPosition(this.content.slots, 'left-image');
+        },
+        leftTextSlot() {
+            return this.getSlotByPosition(this.content.slots, 'left-text');
+        },
+        centerImageSlot() {
+            return this.getSlotByPosition(this.content.slots, 'center-image');
+        },
+        centerTextSlot() {
+            return this.getSlotByPosition(this.content.slots, 'center-text');
+        },
+        rightImageSlot() {
+            return this.getSlotByPosition(this.content.slots, 'right-image');
+        },
+        rightTextSlot() {
+            return this.getSlotByPosition(this.content.slots, 'right-text');
+        },
+    },
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

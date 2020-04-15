@@ -8,32 +8,26 @@
 </template>
 
 <script>
-    import Breadcrumbs from "../components/utils/Breadcrumbs";
+import Breadcrumbs from '../components/utils/Breadcrumbs';
 
-    export default {
-        name: "Newsletter",
+export default {
+    name: 'Newsletter',
 
-        components: {Breadcrumbs},
+    components: { Breadcrumbs },
 
-        layout: 'hubble',
+    layout: 'hubble',
 
-        middleware: [
-            'apiAuthenticate',
-            'apiLocalization',
-            'apiResourceMenu',
-            'trackClickPath'
-        ],
+    middleware: ['apiAuthenticate', 'apiLocalization', 'apiResourceMenu', 'trackClickPath'],
 
-        data() {
-            return {
-                breadcrumbPath: [
-                    {
-                        'url': 'Newsletter',
-                        'name': 'Newsletter'
-                    }
-                ]
-            }
-        }
-    }
+    data() {
+        return {
+            breadcrumbPath: [
+                {
+                    url: 'Newsletter',
+                    name: 'Newsletter',
+                },
+            ],
+        };
+    },
+};
 </script>
-

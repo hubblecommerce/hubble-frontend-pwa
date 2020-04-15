@@ -7,26 +7,24 @@
 </template>
 
 <script>
-    import { blockMixins } from '../helper'
+import { blockMixins } from '../helper';
 
-    export default {
-        name: 'CategoryNavigationBlock',
-        mixins: [blockMixins],
+export default {
+    name: 'CategoryNavigationBlock',
+    mixins: [blockMixins],
 
-        props: {
-            content: {
-                type: Object,
-                default: () => ({})
-            }
+    props: {
+        content: {
+            type: Object,
+            default: () => ({}),
         },
-        computed: {
-            getSlot() {
-                return this.getSlotByPosition(this.content.slots, 'content');
-            }
-        }
-    }
+    },
+    computed: {
+        getSlot() {
+            return this.getSlotByPosition(this.content.slots, 'content');
+        },
+    },
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

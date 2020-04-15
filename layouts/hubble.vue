@@ -1,6 +1,5 @@
 <template>
     <div @mouseenter="startUserInteraction()">
-
         <noscript>Please enable JavaScript and refresh this page, to use this application.</noscript>
 
         <client-only>
@@ -32,7 +31,7 @@
                 <nuxt />
             </main>
 
-            <div class="footer" v-view.once="onceHandler">
+            <div v-view.once="onceHandler" class="footer">
                 <div class="white-border" />
                 <the-footer-social v-if="inView" />
                 <the-footer-mobile v-if="inView" />
@@ -61,7 +60,7 @@
                 <nuxt />
             </main>
 
-            <div class="footer" v-view.once="onceHandler">
+            <div v-view.once="onceHandler" class="footer">
                 <the-footer-social v-if="inView" />
                 <div class="white-border" />
                 <the-footer-desktop v-if="inView" />
@@ -77,78 +76,78 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex';
-    import ScrollToTop from "../components/utils/ScrollToTop";
-    import TheLogo from "../components/navigation/TheLogo";
-    import TheSearchDirect from "../components/search/TheSearchDirect";
-    import TheMiniCart from "../components/navigation/TheMiniCart";
-    import CustomerMenu from '../components/navigation/CustomerMenu';
+import { mapState } from 'vuex';
+import ScrollToTop from '../components/utils/ScrollToTop';
+import TheLogo from '../components/navigation/TheLogo';
+import TheSearchDirect from '../components/search/TheSearchDirect';
+import TheMiniCart from '../components/navigation/TheMiniCart';
+import CustomerMenu from '../components/navigation/CustomerMenu';
 
-    import TheMobileMenu from "../components/navigation/TheMobileMenu";
+import TheMobileMenu from '../components/navigation/TheMobileMenu';
 
-    import TheMegaMenu from "../components/navigation/TheMegaMenu";
-    import BackgroundBlur from "../components/utils/BackgroundBlur";
-    import TheWishlist from "../components/navigation/TheWishlist";
-    import CookieNotice from "../components/utils/CookieNotice";
+import TheMegaMenu from '../components/navigation/TheMegaMenu';
+import BackgroundBlur from '../components/utils/BackgroundBlur';
+import TheWishlist from '../components/navigation/TheWishlist';
+import CookieNotice from '../components/utils/CookieNotice';
 
-    export default {
-        components: {
-            TrustedShopsBadge: () => import('../components/utils/TrustedShopsBadge'),
-            TheFooterSocial: () => import('../components/footer/TheFooterSocial'),
-            TheFooterMobile: () => import('../components/footer/TheFooterMobile'),
-            TheFooterCopyright: () => import('../components/footer/TheFooterCopyright'),
-            TheFooterDesktop: () => import('../components/footer/TheFooterDesktop'),
-            TheWishlist,
-            BackgroundBlur,
-            TheMegaMenu,
-            ScrollToTop,
-            TheMiniCart,
-            TheSearchDirect,
-            TheMobileMenu,
-            TheLogo,
-            CustomerMenu,
-            CookieNotice
-        },
+export default {
+    components: {
+        TrustedShopsBadge: () => import('../components/utils/TrustedShopsBadge'),
+        TheFooterSocial: () => import('../components/footer/TheFooterSocial'),
+        TheFooterMobile: () => import('../components/footer/TheFooterMobile'),
+        TheFooterCopyright: () => import('../components/footer/TheFooterCopyright'),
+        TheFooterDesktop: () => import('../components/footer/TheFooterDesktop'),
+        TheWishlist,
+        BackgroundBlur,
+        TheMegaMenu,
+        ScrollToTop,
+        TheMiniCart,
+        TheSearchDirect,
+        TheMobileMenu,
+        TheLogo,
+        CustomerMenu,
+        CookieNotice,
+    },
 
-        data() {
-          return {
-              menu: {},
-              userInteraction: false,
-              inView: false
-          }
-        },
+    data() {
+        return {
+            menu: {},
+            userInteraction: false,
+            inView: false,
+        };
+    },
 
-        computed: {
-            ...mapState({
-                dataMenu: state => state.modApiMenu.dataMenu,
-                showCookieNotice: state => state.modCookieNotice.showCookieNotice
-            })
-        },
+    computed: {
+        ...mapState({
+            dataMenu: state => state.modApiMenu.dataMenu,
+            showCookieNotice: state => state.modCookieNotice.showCookieNotice,
+        }),
+    },
 
-        created() {
-            this.setMenuItems();
-        },
+    created() {
+        this.setMenuItems();
+    },
 
-        methods: {
-            setMenuItems: function() {
-                if(! _.isEmpty(this.dataMenu.result)) {
-                    this.menu = this.dataMenu.result.items;
-                }
-            },
-            startUserInteraction: function() {
-                // Track userinteraction to lazy load some components like trusted shops
-                this.userInteraction = true;
-            },
-            onceHandler: function() {
-                this.inView = true;
-            },
-            isEmpty: function(obj) {
-                return _.isEmpty(obj);
+    methods: {
+        setMenuItems: function () {
+            if (!_.isEmpty(this.dataMenu.result)) {
+                this.menu = this.dataMenu.result.items;
             }
         },
+        startUserInteraction: function () {
+            // Track userinteraction to lazy load some components like trusted shops
+            this.userInteraction = true;
+        },
+        onceHandler: function () {
+            this.inView = true;
+        },
+        isEmpty: function (obj) {
+            return _.isEmpty(obj);
+        },
+    },
 
-        head () {
-            return this.$nuxtI18nSeo()
-        }
-    }
+    head() {
+        return this.$nuxtI18nSeo();
+    },
+};
 </script>

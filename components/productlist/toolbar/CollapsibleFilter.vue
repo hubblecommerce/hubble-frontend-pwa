@@ -31,59 +31,59 @@
 </template>
 
 <script>
-    import TransitionRotateX from "../../transitions/TransitionRotateX";
+import TransitionRotateX from '../../transitions/TransitionRotateX';
 
-    export default {
-        name: "CollapsibleFilter",
+export default {
+    name: 'CollapsibleFilter',
 
-        components: {
-            TransitionRotateX
+    components: {
+        TransitionRotateX,
+    },
+
+    props: {
+        toggleTag: {
+            type: [String, Array],
+            default: () => ['button'],
         },
-
-        props: {
-            toggleTag: {
-                type: [String, Array],
-                default: () => ['button']
-            },
-            toggleText: {
-                type: String,
-                default: ''
-            },
-            toggleClass: {
-                type: String,
-                default: ''
-            },
-            closeIconClass: {
-                type: String,
-                default: 'icon-minus'
-            },
-            openIconClass: {
-                type: String,
-                default: 'icon-plus'
-            },
-            applyButton: {
-                type: Boolean,
-                default: true
-            },
-            maxHeight: {
-                type: Number,
-                default: 700
-            }
+        toggleText: {
+            type: String,
+            default: '',
         },
-
-        data() {
-            return {
-                collapse: true
-            };
+        toggleClass: {
+            type: String,
+            default: '',
         },
-
-        methods: {
-            collapseContent: function() {
-                this.collapse = !this.collapse;
-            },
-            hideContent: function() {
-                this.collapse = true;
-            }
+        closeIconClass: {
+            type: String,
+            default: 'icon-minus',
         },
-    }
+        openIconClass: {
+            type: String,
+            default: 'icon-plus',
+        },
+        applyButton: {
+            type: Boolean,
+            default: true,
+        },
+        maxHeight: {
+            type: Number,
+            default: 700,
+        },
+    },
+
+    data() {
+        return {
+            collapse: true,
+        };
+    },
+
+    methods: {
+        collapseContent: function () {
+            this.collapse = !this.collapse;
+        },
+        hideContent: function () {
+            this.collapse = true;
+        },
+    },
+};
 </script>

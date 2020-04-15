@@ -47,61 +47,51 @@
                 </div>
             </div>
         </div>
-
     </div>
 </template>
 
 <script>
 import LoginForm from '../../components/customer/LoginForm';
-import Tabs from "../../components/utils/Tabs";
-import Tab from "../../components/utils/Tab";
-import RegisterForm from "../../components/customer/RegisterForm";
+import Tabs from '../../components/utils/Tabs';
+import Tab from '../../components/utils/Tab';
+import RegisterForm from '../../components/customer/RegisterForm';
 
 export default {
-
     name: 'CustomerLogin',
 
     components: {
         RegisterForm,
         LoginForm,
         Tabs,
-        Tab
+        Tab,
     },
 
     layout: 'hubble',
 
-    middleware: [
-        'apiAuthenticate',
-        'apiLocalization',
-        'apiResourceMenu',
-        'trackClickPath'
-    ],
+    middleware: ['apiAuthenticate', 'apiLocalization', 'apiResourceMenu', 'trackClickPath'],
 
     data() {
         return {
             showLoginForm: true,
-            showRegisterForm: false
-        }
+            showRegisterForm: false,
+        };
     },
 
     methods: {
-        toggleLoginForm: function() {
+        toggleLoginForm: function () {
             this.showLoginForm = !this.showLoginForm;
             this.showRegisterForm = false;
         },
-        toggleRegisterForm: function() {
+        toggleRegisterForm: function () {
             this.showRegisterForm = !this.showRegisterForm;
             this.showLoginForm = false;
-        }
+        },
     },
 
     head() {
         return {
-            meta: [
-                { hid: 'robots', name: 'robots', content: 'NOINDEX, FOLLOW' }
-            ]
-        }
-    }
-
-}
+            meta: [{ hid: 'robots', name: 'robots', content: 'NOINDEX, FOLLOW' }],
+        };
+    },
+};
 </script>

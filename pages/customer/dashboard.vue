@@ -1,9 +1,7 @@
 <template>
     <div class="main-container">
         <div class="container customer-dashboard">
-            <div class="headline-1 pt-4">
-                {{ $t('Hi,') }} {{ customerData.name }}
-            </div>
+            <div class="headline-1 pt-4"> {{ $t('Hi,') }} {{ customerData.name }} </div>
 
             <div class="row">
                 <div v-if="$mq === 'md' || $mq === 'lg'" class="col-sm-12 col-md-3 sidebar-wrp">
@@ -37,7 +35,7 @@
                     </div>
 
                     <customer-addresses />
-                    
+
                     <div class="row">
                         <div class="col-md-12">
                             <customer-order-list :title="$t('Recent Orders')" :limit="4" />
@@ -50,58 +48,49 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex';
-    import CustomerAccountNavigation from "../../components/customer/CustomerAccountNavigation";
-    import CustomerOrderList from "../../components/customer/CustomerOrderList";
-    import CustomerAddresses from "../../components/customer/CustomerAddresses";
-    import CustomerPasswordChange from "../../components/customer/CustomerPasswordChange";
+import { mapState } from 'vuex';
+import CustomerAccountNavigation from '../../components/customer/CustomerAccountNavigation';
+import CustomerOrderList from '../../components/customer/CustomerOrderList';
+import CustomerAddresses from '../../components/customer/CustomerAddresses';
+import CustomerPasswordChange from '../../components/customer/CustomerPasswordChange';
 
-    export default {
-        name: 'CustomerDashboard',
+export default {
+    name: 'CustomerDashboard',
 
-        components: {
-            CustomerAddresses,
-            CustomerOrderList,
-            CustomerAccountNavigation,
-            CustomerPasswordChange
+    components: {
+        CustomerAddresses,
+        CustomerOrderList,
+        CustomerAccountNavigation,
+        CustomerPasswordChange,
+    },
+
+    layout: 'hubble',
+
+    middleware: ['apiAuthenticate', 'apiLocalization', 'apiPaymentAuthenticate', 'apiCustomerAuthenticate', 'apiResourceMenu', 'trackClickPath'],
+
+    data() {
+        return {
+            orders: [],
+        };
+    },
+
+    computed: {
+        ...mapState({
+            customer: state => state.modApiCustomer.customer,
+        }),
+        customerData: function () {
+            return this.customer.customerData;
         },
-
-        layout: 'hubble',
-
-        middleware: [
-            'apiAuthenticate',
-            'apiLocalization',
-            'apiPaymentAuthenticate',
-            'apiCustomerAuthenticate',
-            'apiResourceMenu',
-            'trackClickPath'
-        ],
-
-        data() {
-            return {
-                orders: []
-            }
+        customerAddresses: function () {
+            return this.customer.customerAddresses;
         },
+    },
 
-        computed: {
-            ...mapState({
-                customer: state => state.modApiCustomer.customer
-            }),
-            customerData: function() {
-                return this.customer.customerData;
-            },
-            customerAddresses: function() {
-                return this.customer.customerAddresses;
-            }
-        },
-
-        head() {
-            return {
-                title: this.$t('Customer Account Dashboard'),
-                meta: [
-                    { hid: 'robots', name: 'robots', content: 'NOINDEX, FOLLOW' }
-                ]
-            }
-        }
-    }
+    head() {
+        return {
+            title: this.$t('Customer Account Dashboard'),
+            meta: [{ hid: 'robots', name: 'robots', content: 'NOINDEX, FOLLOW' }],
+        };
+    },
+};
 </script>

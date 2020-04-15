@@ -1,18 +1,10 @@
 <template>
     <div :class="sectionClasses" class="container">
         <div v-if="hasSidebar" class="sidebar-class col-lg-4 col-xl-3">
-            <Block
-                v-for="sidebarSlot in sidebarSlots"
-                :key="sidebarSlot.id"
-                :content="sidebarSlot"
-            />
+            <Block v-for="sidebarSlot in sidebarSlots" :key="sidebarSlot.id" :content="sidebarSlot" />
         </div>
         <div class="" :class="elementClasses">
-            <Block
-                v-for="cmsSlot in elementsSlots"
-                :key="cmsSlot.id"
-                :content="cmsSlot"
-            />
+            <Block v-for="cmsSlot in elementsSlots" :key="cmsSlot.id" :content="cmsSlot" />
         </div>
     </div>
 </template>
@@ -24,14 +16,14 @@ export default {
     name: 'Section',
 
     components: {
-        Block
+        Block,
     },
 
     props: {
         content: {
             type: Object,
-            default: () => ({})
-        }
+            default: () => ({}),
+        },
     },
 
     computed: {
@@ -56,10 +48,7 @@ export default {
         sidebarSlots() {
             let sidebarSlots = [];
             _.forEach(this.cmsSlots, slot => {
-                if (
-                    slot.sectionPosition &&
-                    slot.sectionPosition === 'sidebar'
-                ) {
+                if (slot.sectionPosition && slot.sectionPosition === 'sidebar') {
                     sidebarSlots.push(slot);
                 }
             });
@@ -74,7 +63,7 @@ export default {
                 'sw-slots': !this.isBlock,
                 'has-sidebar': this.hasSidebar,
                 'cms-section-sidebar': this.hasSidebar,
-                'row': this.hasSidebar
+                row: this.hasSidebar,
             };
         },
         // elementClasses if element has sidebar, same bootstrap col as shopware
@@ -83,10 +72,10 @@ export default {
                 'col-lg-8': this.hasSidebar,
                 'col-xl-9': this.hasSidebar,
                 'cms-section-sidebar-main-content': this.hasSidebar,
-                'cms-section-default': !this.hasSidebar
+                'cms-section-default': !this.hasSidebar,
             };
-        }
-    }
+        },
+    },
 };
 </script>
 

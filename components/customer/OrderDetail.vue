@@ -1,9 +1,6 @@
- <template>
+<template>
     <div class="order-detail-wrp">
-
-        <div class="order-id">
-            <span class="label" v-text="$t('Your Order Id: ')" /><span v-if="order" v-text="order.id" />
-        </div>
+        <div class="order-id"> <span class="label" v-text="$t('Your Order Id: ')" /><span v-if="order" v-text="order.id" /> </div>
 
         <div class="order-row">
             <div v-for="(address, key) in orderData.addresses" :key="key" class="order-col billing-addresses-wrp">
@@ -38,12 +35,12 @@
                 <div class="headline headline-3" v-text="$t('Information')" />
 
                 <div v-if="orderData.chosenShippingMethod" class="shippping-method">
-                    <span class="label" v-text="$t('Shipping')+': '" />
+                    <span class="label" v-text="$t('Shipping') + ': '" />
                     <span class="value" v-text="orderData.chosenShippingMethod.label" />
                 </div>
 
                 <div v-if="orderData.chosenPaymentMethod" class="payment-method">
-                    <span class="label" v-text="$t('Payment')+': '" />
+                    <span class="label" v-text="$t('Payment') + ': '" />
                     <span class="value" v-text="$t(orderData.chosenPaymentMethod.label)" />
                 </div>
             </div>
@@ -78,90 +75,86 @@
                 </div>
 
                 <nuxt-link :to="localePath('index')">
-                    <button class="button-secondary"
-                            v-text="$t('Back to shop')"
-                    />
+                    <button class="button-secondary" v-text="$t('Back to shop')" />
                 </nuxt-link>
             </div>
         </div>
-
     </div>
 </template>
 
 <script>
-    import { mapState, mapActions, mapGetters } from 'vuex';
-    import CartItemsListNonInteractive from "../checkout/CartItemsListNonInteractive";
-    import {mapKeyToValue, mapIsoToCountry, salutations} from "@hubblecommerce/hubble/core/utils/formMixins";
+import { mapState, mapActions, mapGetters } from 'vuex';
+import CartItemsListNonInteractive from '../checkout/CartItemsListNonInteractive';
+import { mapKeyToValue, mapIsoToCountry, salutations } from '@hubblecommerce/hubble/core/utils/formMixins';
 
-    export default {
-        name: "OrderDetail",
+export default {
+    name: 'OrderDetail',
 
-        components: {CartItemsListNonInteractive},
+    components: { CartItemsListNonInteractive },
 
-        mixins: [mapKeyToValue, mapIsoToCountry, salutations],
+    mixins: [mapKeyToValue, mapIsoToCountry, salutations],
 
-        props: {
-            order: {
-                type: Object,
-                required: true
-            }
+    props: {
+        order: {
+            type: Object,
+            required: true,
         },
+    },
 
-        data() {
-            return {
-                orderData: {},
-            }
-        },
+    data() {
+        return {
+            orderData: {},
+        };
+    },
 
-        computed: {
-            ...mapState({
-                countries: state => state.modApiCustomer.availableCountries,
-            }),
-            ...mapGetters({
-                priceDecFmt: 'modPrices/priceDecFmt',
-                priceAddCur: 'modPrices/priceAddCur'
-            })
-        },
+    computed: {
+        ...mapState({
+            countries: state => state.modApiCustomer.availableCountries,
+        }),
+        ...mapGetters({
+            priceDecFmt: 'modPrices/priceDecFmt',
+            priceAddCur: 'modPrices/priceAddCur',
+        }),
+    },
 
-        mounted() {
-            if(_.isEmpty(this.countries)) {
-                this.getAvailableCountries('modApiCustomer/getAvailableCountries');
-            }
-            this.orderData = JSON.parse(this.order.payload);
-        },
-
-        methods: {
-            ...mapActions({
-                getAvailableCountries: 'modApiCustomer/getAvailableCountries'
-            }),
-            getSubTotal: function() {
-                let subtotals = this.orderData.cart.subtotal;
-
-                // Format subtotals
-                subtotals = this.priceDecFmt(subtotals);
-                subtotals = this.priceAddCur(subtotals);
-
-                return subtotals;
-            },
-            getShippingCost: function() {
-                let shippingCost = this.orderData.shippingCost.price;
-
-                // Format subtotals
-                shippingCost = this.priceDecFmt(shippingCost);
-                shippingCost = this.priceAddCur(shippingCost);
-
-                return shippingCost;
-            },
-            getTotal: function() {
-                let total = this.orderData.cart.grand_total;
-
-                // Format subtotals
-                total = this.priceDecFmt(total);
-                total = this.priceAddCur(total);
-
-                return total;
-            }
+    mounted() {
+        if (_.isEmpty(this.countries)) {
+            this.getAvailableCountries('modApiCustomer/getAvailableCountries');
         }
-    }
-</script>
+        this.orderData = JSON.parse(this.order.payload);
+    },
 
+    methods: {
+        ...mapActions({
+            getAvailableCountries: 'modApiCustomer/getAvailableCountries',
+        }),
+        getSubTotal: function () {
+            let subtotals = this.orderData.cart.subtotal;
+
+            // Format subtotals
+            subtotals = this.priceDecFmt(subtotals);
+            subtotals = this.priceAddCur(subtotals);
+
+            return subtotals;
+        },
+        getShippingCost: function () {
+            let shippingCost = this.orderData.shippingCost.price;
+
+            // Format subtotals
+            shippingCost = this.priceDecFmt(shippingCost);
+            shippingCost = this.priceAddCur(shippingCost);
+
+            return shippingCost;
+        },
+        getTotal: function () {
+            let total = this.orderData.cart.grand_total;
+
+            // Format subtotals
+            total = this.priceDecFmt(total);
+            total = this.priceAddCur(total);
+
+            return total;
+        },
+    },
+};
+</script>

@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import {blockMixins} from '../helper'
+import { blockMixins } from '../helper';
 
 export default {
     name: 'ImageTextBlock',
@@ -20,8 +20,8 @@ export default {
     props: {
         content: {
             type: Object,
-            default: () => ({})
-        }
+            default: () => ({}),
+        },
     },
     computed: {
         leftSlot() {
@@ -29,11 +29,9 @@ export default {
         },
         rightSlot() {
             return this.getSlotByPosition(this.content.slots, 'right');
-        }
-    }
-}
+        },
+    },
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

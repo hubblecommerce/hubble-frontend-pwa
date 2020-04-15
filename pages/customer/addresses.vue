@@ -21,32 +21,23 @@
 </template>
 
 <script>
-    import CustomerAccountNavigation from "../../components/customer/CustomerAccountNavigation";
-    import CustomerAddresses from "../../components/customer/CustomerAddresses";
+import CustomerAccountNavigation from '../../components/customer/CustomerAccountNavigation';
+import CustomerAddresses from '../../components/customer/CustomerAddresses';
 
-    export default {
-        name: 'CustomerDashboard',
+export default {
+    name: 'CustomerDashboard',
 
-        components: {CustomerAddresses, CustomerAccountNavigation},
+    components: { CustomerAddresses, CustomerAccountNavigation },
 
-        layout: 'hubble',
+    layout: 'hubble',
 
-        middleware: [
-            'apiAuthenticate',
-            'apiCustomerAuthenticate',
-            'apiLocalization',
-            'apiResourceMenu',
-            'trackClickPath'
-        ],
+    middleware: ['apiAuthenticate', 'apiCustomerAuthenticate', 'apiLocalization', 'apiResourceMenu', 'trackClickPath'],
 
-        head() {
-            return {
-                title: this.$t('Customer Addresses'),
-                meta: [
-                    { hid: 'robots', name: 'robots', content: 'NOINDEX, FOLLOW' }
-                ]
-            }
-        }
-
-    }
+    head() {
+        return {
+            title: this.$t('Customer Addresses'),
+            meta: [{ hid: 'robots', name: 'robots', content: 'NOINDEX, FOLLOW' }],
+        };
+    },
+};
 </script>

@@ -31,9 +31,7 @@
                     </div>
                 </div>
                 <div v-if="$mq === 'lg'" class="newsletter-container">
-                    <newsletter-form :title="$t('Newsletter registration')"
-                                     form-title="Newaletter Abonnieren"
-                    />
+                    <newsletter-form :title="$t('Newsletter registration')" form-title="Newaletter Abonnieren" />
                 </div>
             </div>
         </client-only>
@@ -41,79 +39,72 @@
 </template>
 
 <script>
-    import { mapState, mapActions } from 'vuex';
-    import WishlistItemsList from "../../components/customer/WishlistItemsList";
-    import NewsletterForm from "../../components/utils/NewsletterForm";
+import { mapState, mapActions } from 'vuex';
+import WishlistItemsList from '../../components/customer/WishlistItemsList';
+import NewsletterForm from '../../components/utils/NewsletterForm';
 
-    export default {
-        name: "Wishlist",
+export default {
+    name: 'Wishlist',
 
-        components: {WishlistItemsList, NewsletterForm},
+    components: { WishlistItemsList, NewsletterForm },
 
-        layout: 'hubble',
+    layout: 'hubble',
 
-        computed: {
-            ...mapState({
-                customer: state => state.modApiCustomer.customer,
-                qty: state => state.modWishlist.wishlistItemsCount,
-                wishlistId: state => state.modWishlist.wishlistId
-            }),
-            customerData() {
-                return this.customer.customerData;
-            },
-            customerAddresses() {
-                return this.customer.customerAddresses;
-            }
+    computed: {
+        ...mapState({
+            customer: state => state.modApiCustomer.customer,
+            qty: state => state.modWishlist.wishlistItemsCount,
+            wishlistId: state => state.modWishlist.wishlistId,
+        }),
+        customerData() {
+            return this.customer.customerData;
         },
+        customerAddresses() {
+            return this.customer.customerAddresses;
+        },
+    },
 
-        middleware: [
-            'apiAuthenticate',
-            'apiLocalization',
-            'apiResourceMenu',
-            'trackClickPath'
-        ],
+    middleware: ['apiAuthenticate', 'apiLocalization', 'apiResourceMenu', 'trackClickPath'],
 
-        methods: {
-            ...mapActions({
-                deleteUserWishlist: 'modApiPayment/deleteWishlist',
-                deleteLocalWishlist: 'modApiCustomer/deleteWishlist'
-            }),
-            resetWishlist: function () {
-                if(this.isLoggedIn()) {
-                    this.deleteUserWishlist({
-                        user_id: this.customer.customerData.id,
-                        id: this.wishlistId
-                    }).then(() => {
-                        this.deleteLocalWishlist();
-                    })
-                } else {
+    methods: {
+        ...mapActions({
+            deleteUserWishlist: 'modApiPayment/deleteWishlist',
+            deleteLocalWishlist: 'modApiCustomer/deleteWishlist',
+        }),
+        resetWishlist: function () {
+            if (this.isLoggedIn()) {
+                this.deleteUserWishlist({
+                    user_id: this.customer.customerData.id,
+                    id: this.wishlistId,
+                }).then(() => {
                     this.deleteLocalWishlist();
-                }
-            },
-            isLoggedIn: function() {
-                if(!_.isEmpty(this.customer.customerAuth) && this.customer.customerAuth.token !== 'guest') {
-                    return this.customer.customerAuth.token;
-                }
-
-                return false;
-            },
-            wishlistItemsLabel: function() {
-                return this.qty > 1 ? this.qty + ' ' + this.$t('wishlist_label_items') : this.qty + ' ' + this.$t('wishlist_label_items');
-            },
-            goToIndex: function () {
-                this.$router.push({
-                    path: this.localePath('index')
-                })
+                });
+            } else {
+                this.deleteLocalWishlist();
             }
         },
-
-        head() {
-            return {
-                title: this.$t('Your wishlist'),
-                meta: [
-                    { hid: 'robots', name: 'robots', content: 'NOINDEX, FOLLOW' }
-                ]
+        isLoggedIn: function () {
+            if (!_.isEmpty(this.customer.customerAuth) && this.customer.customerAuth.token !== 'guest') {
+                return this.customer.customerAuth.token;
             }
-        }
-    }
+
+            return false;
+        },
+        wishlistItemsLabel: function () {
+            return this.qty > 1 ? this.qty + ' ' + this.$t('wishlist_label_items') : this.qty + ' ' + this.$t('wishlist_label_items');
+        },
+        goToIndex: function () {
+            this.$router.push({
+                path: this.localePath('index'),
+            });
+        },
+    },
+
+    head() {
+        return {
+            title: this.$t('Your wishlist'),
+            meta: [{ hid: 'robots', name: 'robots', content: 'NOINDEX, FOLLOW' }],
+        };
+    },
+};
 </script>

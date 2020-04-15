@@ -14,7 +14,7 @@
 </template>
 
 <script>
-    export default {
-        name: 'ErrorDefault',
-    };
+export default {
+    name: 'ErrorDefault',
+};
 </script>

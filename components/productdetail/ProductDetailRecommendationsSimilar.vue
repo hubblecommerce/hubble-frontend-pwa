@@ -15,56 +15,58 @@
 </template>
 
 <script>
-    import { mapState, mapActions } from 'vuex';
-    import ProductListing from "../productlist/ProductListing";
+import { mapState, mapActions } from 'vuex';
+import ProductListing from '../productlist/ProductListing';
 
-    export default {
-        name: "ProductDetailRecommandationsSimilar",
+export default {
+    name: 'ProductDetailRecommandationsSimilar',
 
-        components: {
-            ProductListing
+    components: {
+        ProductListing,
+    },
+
+    props: {
+        productId: {
+            type: Number,
+            required: true,
         },
+    },
 
-        props: {
-            productId: {
-                type: Number,
-                required: true
-            }
-        },
+    data() {
+        return {
+            showProducts: false,
+        };
+    },
 
-        data() {
-            return {
-                showProducts: false
-            }
-        },
+    computed: {
+        ...mapState({
+            dataProductsCrossSimilar: state => state.modApiProduct.dataProductsCrossSimilar,
+        }),
+    },
 
-        computed: {
-            ...mapState({
-                dataProductsCrossSimilar: state => state.modApiProduct.dataProductsCrossSimilar
-            })
-        },
+    mounted() {
+        this.getProductsCrossSimilar();
+    },
 
-        mounted() {
-            this.getProductsCrossSimilar();
-        },
-
-        methods: {
-            ...mapActions({
-                getProductsCrossSimilarApiCall: 'modApiProduct/getProductsCrossSimilar'
-            }),
-            getProductsCrossSimilar: function() {
-                return new Promise((resolve) => {
-                    // Get cross-selling products from api
-                    this.getProductsCrossSimilarApiCall({
-                        data: this.productId
-                    }).then((response) => {
+    methods: {
+        ...mapActions({
+            getProductsCrossSimilarApiCall: 'modApiProduct/getProductsCrossSimilar',
+        }),
+        getProductsCrossSimilar: function () {
+            return new Promise(resolve => {
+                // Get cross-selling products from api
+                this.getProductsCrossSimilarApiCall({
+                    data: this.productId,
+                })
+                    .then(response => {
                         this.showProducts = !_.isEmpty(response.result.items);
                         resolve('ok');
-                    }).catch((error) => {
+                    })
+                    .catch(error => {
                         console.log('Failed to fetch: ', error);
                     });
-                })
-            }
-        }
-    }
+            });
+        },
+    },
+};
 </script>

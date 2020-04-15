@@ -11,11 +11,11 @@
                 <div v-if="orders[0].payload != null" class="t-col">{{ $t('Action') }}</div>
             </div>
 
-            <div v-for="(order, index) in orders" :key="index" v-if="index <= limit && orders.length > 0" class="t-row">
+            <div v-for="(order, index) in orders" v-if="index <= limit && orders.length > 0" :key="index" class="t-row">
                 <!-- Show shopware order number if isset  -->
                 <div v-if="order.orderNumber != null" class="t-col" v-text="order.orderNumber" />
 
-                <div v-else class="t-col" v-text="'000'+order.id" />
+                <div v-else class="t-col" v-text="'000' + order.id" />
 
                 <div class="t-col" v-text="formatDate(order.createdAt)" />
 
@@ -29,7 +29,7 @@
 
                 <!-- Shopware: do not show link to order detail page, because /customer/order endpoint doesnt provide cart and adress data -->
                 <div v-if="order.payload != null" class="t-col">
-                    <nuxt-link :to="'/customer/order/'+order.id">{{ $t('View Order') }}</nuxt-link>
+                    <nuxt-link :to="'/customer/order/' + order.id">{{ $t('View Order') }}</nuxt-link>
                 </div>
             </div>
         </div>
@@ -46,94 +46,96 @@
 </template>
 
 <script>
-    import { mapState, mapActions, mapGetters } from 'vuex';
+import { mapState, mapActions, mapGetters } from 'vuex';
 
-    export default {
-        name: "CustomerOrderList",
+export default {
+    name: 'CustomerOrderList',
 
-        props: {
-            limit: {
-                type: Number,
-                required: false,
-                default: 100
-            },
-            title: {
-                type: String,
-                required: false,
-                default: ''
-            }
+    props: {
+        limit: {
+            type: Number,
+            required: false,
+            default: 100,
         },
-
-        data() {
-          return {
-              loading: false,
-              orders: [],
-              data: []
-          }
+        title: {
+            type: String,
+            required: false,
+            default: '',
         },
+    },
 
-        computed: {
-            ...mapState({
-                priceCurrency: state => state.modPrices.priceCurrency,
-                priceCurrencySymbol: state => state.modPrices.priceCurrencySymbol
-            }),
-            ...mapGetters({
-                priceDecFmt: 'modPrices/priceDecFmt',
-                priceAddCur: 'modPrices/priceAddCur'
-            })
-        },
+    data() {
+        return {
+            loading: false,
+            orders: [],
+            data: [],
+        };
+    },
 
-        mounted() {
-            this.getOrders();
-        },
+    computed: {
+        ...mapState({
+            priceCurrency: state => state.modPrices.priceCurrency,
+            priceCurrencySymbol: state => state.modPrices.priceCurrencySymbol,
+        }),
+        ...mapGetters({
+            priceDecFmt: 'modPrices/priceDecFmt',
+            priceAddCur: 'modPrices/priceAddCur',
+        }),
+    },
 
-        methods: {
-            ...mapActions({
-                getOrdersFromStore: 'modApiCustomer/getOrders'
-            }),
-            getOrders: function() {
-                this.loading = true;
+    mounted() {
+        this.getOrders();
+    },
 
-                //Get orders from store
-                this.getOrdersFromStore().then((response) => {
+    methods: {
+        ...mapActions({
+            getOrdersFromStore: 'modApiCustomer/getOrders',
+        }),
+        getOrders: function () {
+            this.loading = true;
+
+            //Get orders from store
+            this.getOrdersFromStore()
+                .then(response => {
                     this.orders = response;
 
                     this.loading = false;
-                }).catch(() => {
+                })
+                .catch(() => {
                     this.loading = false;
                 });
-            },
-            ordersExists: function() {
-                if(this.orders != null) {
-                    if(this.orders.length > 0) {
-                        return true;
-                    }
+        },
+        ordersExists: function () {
+            if (this.orders != null) {
+                if (this.orders.length > 0) {
+                    return true;
                 }
-
-                return false;
-            },
-            getTotals: function(value) {
-                let total = this.priceDecFmt(value);
-                total = this.priceAddCur(value);
-
-                return total;
-            },
-            formatDate: function(date) {
-                let dateObj = new Date(date);
-                let dd = dateObj.getDate();
-                let mm = dateObj.getMonth() + 1;
-                let yyyy = dateObj.getFullYear();
-
-                if (dd < 10) {
-                    dd = '0' + dd;
-                }
-
-                if (mm < 10) {
-                    mm = '0' + mm;
-                }
-
-                return dd + '.' + mm + '.' + yyyy;
             }
-        }
-    }
+
+            return false;
+        },
+        getTotals: function (value) {
+            let total = this.priceDecFmt(value);
+            total = this.priceAddCur(value);
+
+            return total;
+        },
+        formatDate: function (date) {
+            let dateObj = new Date(date);
+            let dd = dateObj.getDate();
+            let mm = dateObj.getMonth() + 1;
+            let yyyy = dateObj.getFullYear();
+
+            if (dd < 10) {
+                dd = '0' + dd;
+            }
+
+            if (mm < 10) {
+                mm = '0' + mm;
+            }
+
+            return dd + '.' + mm + '.' + yyyy;
+        },
+    },
+};
 </script>

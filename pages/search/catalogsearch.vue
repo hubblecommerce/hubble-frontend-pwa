@@ -5,24 +5,17 @@
 </template>
 
 <script>
-    import ViewCatalogsearch from "../../components/productlist/ViewCatalogsearch";
+import ViewCatalogsearch from '../../components/productlist/ViewCatalogsearch';
 
-    export default {
-        name: "Catalogsearch",
+export default {
+    name: 'Catalogsearch',
 
-        components: {
-            ViewCatalogsearch
-        },
+    components: {
+        ViewCatalogsearch,
+    },
 
-        layout: 'hubble',
+    layout: 'hubble',
 
-        middleware: [
-            'apiAuthenticate',
-            'apiLocalization',
-            'apiResourceMenu',
-            'apiResourceSearch',
-            'apiResourceRequest',
-            'trackClickPath'
-        ]
-    }
+    middleware: ['apiAuthenticate', 'apiLocalization', 'apiResourceMenu', 'apiResourceSearch', 'apiResourceRequest', 'trackClickPath'],
+};
 </script>
