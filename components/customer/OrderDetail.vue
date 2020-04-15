@@ -138,8 +138,8 @@
                 let subtotals = this.orderData.cart.subtotal;
 
                 // Format subtotals
-                subtotals = this.$store.getters['modPrices/priceDecFmt'](subtotals);
-                subtotals = this.$store.getters['modPrices/priceAddCur'](subtotals);
+                subtotals = this.priceDecFmt(subtotals);
+                subtotals = this.priceAddCur(subtotals);
 
                 return subtotals;
             },
@@ -147,8 +147,8 @@
                 let shippingCost = this.orderData.shippingCost.price;
 
                 // Format subtotals
-                shippingCost = this.$store.getters['modPrices/priceDecFmt'](shippingCost);
-                shippingCost = this.$store.getters['modPrices/priceAddCur'](shippingCost);
+                shippingCost = this.priceDecFmt(shippingCost);
+                shippingCost = this.priceAddCur(shippingCost);
 
                 return shippingCost;
             },
@@ -156,8 +156,8 @@
                 let total = this.orderData.cart.grand_total;
 
                 // Format subtotals
-                total = this.$store.getters['modPrices/priceDecFmt'](total);
-                total = this.$store.getters['modPrices/priceAddCur'](total);
+                total = this.priceDecFmt(total);
+                total = this.priceAddCur(total);
 
                 return total;
             }
