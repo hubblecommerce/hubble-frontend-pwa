@@ -1,10 +1,6 @@
 <template>
     <div class="hbl-select limit">
-        <select id="show"
-                v-model="modelSelected"
-                class="select-text"
-                required
-        >
+        <select id="show" v-model="modelSelected" class="select-text" required>
             <option v-for="(option, index) in dataOptions" :key="index" :value="option.limit">
                 {{ $t(option.label) }}
             </option>
@@ -15,39 +11,48 @@
 </template>
 
 <script>
+import { mapMutations, mapActions } from 'vuex';
 export default {
     name: 'SelectableLimit',
 
     props: {
         dataOptions: {
             type: Array,
-            required: true
-        }
+            required: true,
+        },
     },
 
     data() {
         return {
             name: 'SelectableLimit',
-            modelSelected: null
-        }
+            modelSelected: null,
+        };
     },
 
     watch: {
         modelSelected(newValue) {
-            // send payload on to the bus ...
-            this.$bus.$emit('selectable-limit-changed', {
-                payload: {
-                    name: 'limit',
-                    data: newValue
-                }
-            })
-        }
+            this.setSelectedQueryParam({
+                name: 'limit',
+                data: newValue,
+            });
+
+            this.applyFilter();
+        },
     },
 
     created() {
-        if(this.$route.query.limit) {
+        if (this.$route.query.limit) {
             this.modelSelected = this.$route.query.limit;
         }
-    }
-}
+    },
+
+    methods: {
+        ...mapMutations({
+            setSelectedQueryParam: 'modApiRequests/setSelectedQueryParam',
+        }),
+        ...mapActions({
+            applyFilter: 'modApiRequests/applyFilter',
+        }),
+    },
+};
 </script>

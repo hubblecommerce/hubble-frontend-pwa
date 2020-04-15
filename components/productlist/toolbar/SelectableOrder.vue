@@ -15,7 +15,7 @@
 </template>
 
 <script>
-
+import {mapMutations, mapActions} from 'vuex';
 export default {
     name: 'SelectableOrder',
 
@@ -33,16 +33,14 @@ export default {
         }
     },
 
-    watch: {
-        modelSelected: function(newValue, oldValue) {
 
-            // send payload on to the bus ...
-            this.$bus.$emit('selectable-order-changed', {
-                payload: {
-                    name: 'sort',
-                    data: newValue
-                }
-            })
+    watch: {
+        modelSelected: function(newValue) {
+            this.setSelectedQueryParam({
+                name: 'sort',
+                data: newValue
+            });
+            this.applyFilter();
         }
     },
 
@@ -50,6 +48,15 @@ export default {
         if(this.$route.query.sort) {
             this.modelSelected = this.$route.query.sort;
         }
+    },
+
+    methods: {
+        ...mapMutations({
+            setSelectedQueryParam: 'modApiRequests/setSelectedQueryParam',
+        }),
+        ...mapActions({
+            applyFilter: 'modApiRequests/applyFilter',
+        }),
     }
 }
 </script>

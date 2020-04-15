@@ -94,7 +94,6 @@
 
         <div v-if="hasFacetsSelected && $mq === 'lg'" class="selected-filters">
             <div class="selected-label" v-text="$t('Your choice:')" />
-
             <div v-if="hasCategoryFacetsSelected && isSearchPage()" class="filter">
                 <div v-for="(facet, facetIndex) in requestCategoryFacets"
                      v-if="facet.selected"
@@ -102,8 +101,8 @@
                      class="filter"
                 >
                     <button class="button button-secondary" @click="routeOnPropertyRemove(facet.key)">
-                        {{ getSelectedFacetOptionsLabel(facet) }} <i class="icon icon-close" />
-
+                        {{ getSelectedFacetOptionsLabel(facet) }}
+                        <i class="icon icon-close" />
                         <material-ripple />
                     </button>
                 </div>
@@ -115,8 +114,8 @@
                  class="filter"
             >
                 <button class="button button-secondary" @click="routeOnPropertyRemove(facet.key)">
-                    {{ getSelectedFacetOptionsLabel(facet) }} <i class="icon icon-close" />
-
+                    {{ getSelectedFacetOptionsLabel(facet) }}
+                    <i class="icon icon-close" />
                     <material-ripple />
                 </button>
             </div>
@@ -124,12 +123,11 @@
             <div v-if="hasPriceFacetsSelected" class="filter">
                 <button class="button button-secondary" @click="routeOnPropertyRemove('price')">
                     {{ $t('price') }}: {{ formatPrice(requestPriceFacets[0].filtered.from) }} - {{ formatPrice(requestPriceFacets[0].filtered.to) }}
-
                     <i class="icon icon-close" />
-
                     <material-ripple />
                 </button>
             </div>
+
             <div class="reset-label" @click="routeOnPropertyRemoveAll()" v-text="$t('Reset all')" />
         </div>
     </div>
@@ -155,18 +153,9 @@
             return {
                 name: 'ProductListingFilter',
                 showFilter: false,
-                elevation: '',
                 filterRoute: {},
 
-                modelSelectedCategory: null,
-
                 queryWellKnown: ['term', 'sort', 'limit'],
-
-                listItems: [
-                    {text: 'First item', icon: 'fa fa-user'},
-                    {text: 'Second item', icon: 'fa fa-copy'},
-                    {text: 'Third item', icon: 'fa fa-cut'}
-                ]
             }
         },
 
@@ -175,8 +164,6 @@
                 dataMenu: state => state.modApiMenu.dataMenu,
                 dataCategory: state => state.modApiCategory.dataCategory,
                 dataCategoryProducts: state => state.modApiCategory.dataCategoryProducts,
-                optionsLimit: state => state.modApiRequests.optionsLimit,
-                optionsSorter: state => state.modApiRequests.optionsSorter,
                 parsedQuery: state => state.modApiRequests.parsedQuery,
                 selectedFacets: state => state.modApiRequests.selectedFacets,
                 offcanvas: state => state.modNavigation.offcanvas,
@@ -212,7 +199,6 @@
                 return selected
             },
             hasStringFacetsSelected() {
-
                 let selected = false
 
                 _.forEach(this.requestStringFacets, facet => {
@@ -298,126 +284,19 @@
             }
         },
 
-        watch: {
-            modelSelectedCategory() {
-                this.hideFilters().then(response => {
-                    let prefix = '/'
-
-                    let locale = this.getApiLocale
-
-                    if (locale !== 'de') {
-                        prefix = '/' + locale + '/'
-                    }
-
-                    // always reset to 1st page
-                    this.resetPagination();
-
-                    // keep possibly selected 'dir', 'order', 'limit'
-                    let selected = this.getSelectedQueryParams();
-
-
-                    this.$router.push({
-                        path: prefix + this.modelSelectedCategory,
-                        query: _.fromPairs(selected)
-                    })
-                })
-            },
-        },
-
-        created() {
-            this.setOptionsLimit(process.env.limiter);
-            this.setOptionsSorter(process.env.sorter);
-
-            this.$bus.$on('price-slider-changed', response => {
-                // save emitted price range to store
-                this.setSelectedPriceMax(response.payload.price_to);
-                this.setSelectedPriceMin(response.payload.price_from);
-
-                this.routeOnPropertyChange();
-            });
-
-            this.$bus.$on('price-slider-changed-and-apply', response => {
-                // save emitted price range to store
-                this.setSelectedPriceMax(response.payload.price_to);
-                this.setSelectedPriceMin(response.payload.price_from);
-
-                this.routeOnPropertyChange().then(() => {
-                    this.applyFilter();
-                });
-            });
-
-            this.$bus.$on('selectable-facet-changed', response => {
-                // save to store
-                this.setSelectedFacetsParam(response.payload);
-
-                this.routeOnPropertyChange();
-            });
-
-            this.$bus.$on('selectable-facet-changed-and-applied', response => {
-                // save to store
-                this.setSelectedFacetsParam(response.payload);
-
-                this.routeOnPropertyChange().then(() => {
-                    this.applyFilter();
-                });
-            });
-
-            this.$bus.$on('selectable-limit-changed', response => {
-                // save to store
-                this.setSelectedQueryParam(response.payload);
-
-                this.routeOnPropertyChange().then(() => {
-                    this.applyFilter();
-                });
-            });
-
-            this.$bus.$on('selectable-order-changed', response => {
-                // save to store
-                this.setSelectedQueryParam(response.payload);
-
-                this.routeOnPropertyChange().then(() => {
-                    this.applyFilter();
-                });
-            })
-        },
-
         methods: {
             ...mapMutations({
                 setPaginationPage: 'modApiRequests/setPaginationPage',
-                setSelectedPriceMax: 'modApiRequests/setSelectedPriceMax',
-                setSelectedPriceMin: 'modApiRequests/setSelectedPriceMin',
                 setSelectedFacetsParam: 'modApiRequests/setSelectedFacetsParam',
                 resetSelectedFacetsParam: 'modApiRequests/resetSelectedFacetsParam',
-                setSelectedQueryParam: 'modApiRequests/setSelectedQueryParam',
-                setOptionsLimit: 'modApiRequests/setOptionsLimit',
-                setOptionsSorter: 'modApiRequests/setOptionsSorter'
             }),
             ...mapActions({
                 toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction',
-                hideOffcanvasAction: 'modNavigation/hideOffcanvasAction'
+                hideOffcanvasAction: 'modNavigation/hideOffcanvasAction',
+                applyFilter: 'modApiRequests/applyFilter',
             }),
             resetPagination: function() {
                 this.setPaginationPage(1);
-            },
-            getSelectedQueryParams() {
-                let selected = [];
-
-                _.forEach(this.queryWellKnown, property => {
-                    // Parse query option value to int because only int are allowed as param filter values
-                    let val = parseInt(this.parsedQuery[property], 10);
-
-                    // except of the term filter which is string
-                    if(property === 'term') {
-                        selected.push([property, this.parsedQuery[property]])
-                    }
-
-                    // stack property, if not null
-                    if(val !== null && Number.isInteger(val) && property !== 'term') {
-                        selected.push([property, this.parsedQuery[property]])
-                    }
-                });
-
-                return selected
             },
             getSelectedFacetOptionsLabel(facet) {
                 let selectedIds = facet.options.filter(item => item.selected);
@@ -425,47 +304,6 @@
                 let selectedLabels = _.join(selectedIds.map(item => item.label), ', ');
 
                 return selectedLabels;
-            },
-            routeOnPropertyChange: function() {
-                return new Promise((resolve, reject) => {
-                    // always reset to 1st page
-                    this.resetPagination();
-
-                    // start with well known query params
-                    let selected = this.getSelectedQueryParams();
-
-                    // attach price (from, to), if selected
-                    if (
-                        _.isNumber(this.selectedFacets['priceMin']) &&
-                        _.isNumber(this.selectedFacets['priceMax'])
-                    ) {
-                        selected.push(['price_from', this.selectedFacets['priceMin']]);
-                        selected.push(['price_to', this.selectedFacets['priceMax']]);
-                    }
-
-                    // Put selected string facets to array
-                    let facets = this.requestStringFacets;
-                    _.forEach(facets, facet => {
-                        if (this.selectedFacets[facet.key]) {
-                            selected.push([facet.key, this.selectedFacets[facet.key]])
-                        }
-                    });
-
-                    // Put selected category facets to array
-                    facets = this.requestCategoryFacets;
-                    _.forEach(facets, facet => {
-                        if (this.selectedFacets[facet.key]) {
-                            selected.push([facet.key, this.selectedFacets[facet.key]])
-                        }
-                    });
-
-                    this.filterRoute = {
-                        path: this.$route.path,
-                        query: _.fromPairs(selected)
-                    };
-
-                    resolve('New filter route is set');
-                });
             },
             routeOnPropertyRemove: function(propertyName) {
                 // always reset to 1st page
@@ -518,11 +356,6 @@
 
                 this.hideFilters().then(response => {
                     this.$router.push(route)
-                })
-            },
-            applyFilter: function() {
-                this.hideFilters().then(response => {
-                    this.$router.push(this.filterRoute);
                 })
             },
             toggle: function() {

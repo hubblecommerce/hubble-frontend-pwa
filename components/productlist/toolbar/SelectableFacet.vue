@@ -46,7 +46,7 @@ Component usage:
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 import CollapsibleFilter from "./CollapsibleFilter";
 
 export default {
@@ -122,6 +122,12 @@ export default {
     },
 
     methods: {
+        ...mapMutations({
+            setSelectedFacetsParam: 'modApiRequests/setSelectedFacetsParam',
+        }),
+        ...mapActions({
+            applyFilter: 'modApiRequests/applyFilter',
+        }),
         clearSelection: function() {
             this.modelSelected = [];
         },
@@ -142,21 +148,16 @@ export default {
             let selectedToString = this.modelSelected.toString();
 
             if(this.filterOnChange) {
-                // Trigger Event to set facet and apply filter for filterOnChange
-                this.$bus.$emit('selectable-facet-changed-and-applied', {
-                    payload: {
-                        name: this.dataFacet.key,
-                        data: selectedToString
-                    }
-                })
+                this.setSelectedFacetsParam({
+                    name: this.dataFacet.key,
+                    data: selectedToString
+                });
+                this.applyFilter();
             } else {
-                // Trigger Event to only set facet and do not apply filter
-                this.$bus.$emit('selectable-facet-changed', {
-                    payload: {
-                        name: this.dataFacet.key,
-                        data: selectedToString
-                    }
-                })
+                this.setSelectedFacetsParam({
+                    name: this.dataFacet.key,
+                    data: selectedToString
+                });
             }
         },
         resetAll: function() {

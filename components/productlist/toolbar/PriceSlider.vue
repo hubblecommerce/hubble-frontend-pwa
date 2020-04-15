@@ -20,7 +20,7 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex'
+    import { mapState, mapMutations, mapActions } from 'vuex'
 
     export default {
         name: 'PriceSlider',
@@ -83,7 +83,6 @@
         },
 
         created() {
-            // set current slider values
             this.sliderValues = [ this.dataMinSelected, this.dataMaxSelected ];
 
             // as the slider is only 'created' once, when
@@ -104,21 +103,21 @@
         },
 
         methods: {
+            ...mapMutations({
+                setSelectedPriceMin: 'modApiRequests/setSelectedPriceMin',
+                setSelectedPriceMax: 'modApiRequests/setSelectedPriceMax',
+            }),
+            ...mapActions({
+                applyFilter: 'modApiRequests/applyFilter',
+            }),
             onDragEnd: function() {
                 if(this.filterOnChange) {
-                    this.$bus.$emit('price-slider-changed-and-apply', {
-                        payload: {
-                            price_from: this.sliderValues[0],
-                            price_to: this.sliderValues[1]
-                        }
-                    });
+                    this.setSelectedPriceMin(this.sliderValues[0]);
+                    this.setSelectedPriceMax(this.sliderValues[1]);
+                    this.applyFilter();
                 } else {
-                    this.$bus.$emit('price-slider-changed', {
-                        payload: {
-                            price_from: this.sliderValues[0],
-                            price_to: this.sliderValues[1]
-                        }
-                    });
+                    this.setSelectedPriceMin(this.sliderValues[0]);
+                    this.setSelectedPriceMax(this.sliderValues[1]);
                 }
             }
         }

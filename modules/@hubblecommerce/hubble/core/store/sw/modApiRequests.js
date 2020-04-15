@@ -5,8 +5,8 @@ export default function (ctx) {
             paginationPage: 1,
             paginationPerPage: process.env.limiter_default,
 
-            optionsLimit: {},
-            optionsSorter: {},
+            optionsLimit: process.env.limiter,
+            optionsSorter: process.env.sorter,
 
             parsedQuery: {},
             selectedFacets: {
