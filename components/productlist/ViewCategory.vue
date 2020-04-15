@@ -39,7 +39,7 @@
             <template v-if="!errorNoProducts">
                 <div class="container category-content-wrp">
                     <div class="category-products-wrp">
-                        <product-listing-filter :extra-class="{'fixed container': isSticky}" />
+                        <product-listing-toolbar :extra-class="{'fixed container': isSticky}" />
                         <product-listing :data-items="categoryProductItems" list="Category" :extra-class="{'offset-top': isSticky}" :category="categoryItem.name" />
                         <div class="pagination-bottom">
                             <pagination />
@@ -69,14 +69,14 @@
 import {mapState, mapGetters} from 'vuex';
 import Breadcrumbs from "../utils/Breadcrumbs";
 import TextExcerpt from "../utils/TextExcerpt";
-import ProductListingFilter from "./ProductListingFilter";
+import ProductListingToolbar from "./ProductListingToolbar";
 
 export default {
     name: 'CategoryListing',
 
     components: {
         Breadcrumbs,
-        ProductListingFilter,
+        ProductListingToolbar,
         TextExcerpt,
         ProductListing: () => import('./ProductListing'),
         Pagination: () => import('./toolbar/Pagination'),
@@ -280,7 +280,7 @@ export default {
             this.setStickyFlag();
         },
         setStickyFlag() {
-            if(window.pageYOffset > this.position) {
+            if(this.$mq === 'lg' && window.pageYOffset > this.position) {
                 this.isSticky = true;
             } else {
                 this.isSticky = false;

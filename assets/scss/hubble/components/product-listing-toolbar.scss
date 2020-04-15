@@ -1,0 +1,89 @@
+.toolbar-wrp{
+    margin-bottom: 10px;
+    position: relative;
+
+
+
+
+    .item-count-wrp {
+        position: relative;
+        margin: 10px;
+    }
+}
+
+/* Desktop */
+@media(min-width: 768px) {
+    .toolbar-wrp {
+        display: flex;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+
+        .filter-wrp {
+            flex: 2;
+        }
+        .limit {
+            width: 100px !important;
+        }
+
+        .hbl-select {
+            width: 180px;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        .item-count-wrp {
+            position: absolute;
+            margin: 0;
+            left: 0;
+            top: 60px;
+        }
+    }
+}
+
+@media(min-width: 1024px) {
+    .toolbar-wrp{
+        &.fixed {
+            position: fixed;
+            width: 100%;
+            left: 0;
+            right: 0;
+            top: 81px;
+            z-index: 10;
+            background: $background;
+            padding: 15px;
+            margin-bottom: 0;
+
+            &:before {
+                content: '';
+                width: 100vw;
+                height: 100%;
+                position: absolute;
+                top: 0;
+                left: 0;
+                margin-left: calc(-50vw + 50%);
+                background-color: $background;
+                border-bottom: 1px solid $border-color;
+            }
+
+            .facets-wrp .facet-wrp .toggle .icon {
+                z-index: 0;
+            }
+
+            .selected-filters .selected-label {
+                z-index: 1;
+            }
+
+            .item-count-wrp {
+                top: 50px;
+                right: 15px;
+            }
+        }
+
+        .item-count-wrp {
+            position: absolute;
+            top: 45px;
+            right: 8px;
+            left: initial;
+        }
+    }
+}

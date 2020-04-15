@@ -1,5 +1,5 @@
 <template>
-    <div class="filter-wrp" :class="extraClass">
+    <div class="filter-wrp">
         <button v-if="$mq === 'sm' || $mq === 'md'" class="button button-primary open-filter" @click="toggle()">
             <i class="icon icon-sliders left" />
 
@@ -92,12 +92,6 @@
 
         </div>
 
-        <selectable-limit :data-options="optionsLimit" />
-
-        <selectable-order :data-options="optionsSorter" />
-
-        <pagination />
-
         <div v-if="hasFacetsSelected && $mq === 'lg'" class="selected-filters">
             <div class="selected-label" v-text="$t('Your choice:')" />
 
@@ -138,16 +132,6 @@
             </div>
             <div class="reset-label" @click="routeOnPropertyRemoveAll()" v-text="$t('Reset all')" />
         </div>
-
-        <div v-if="this.totalItems > 0" class="item-count-wrp text-small">
-            <span v-if="this.totalItems > 1">
-                {{ dataCategoryProducts.result.stats.total }} {{$t('shopping_cart_label_items')}}
-            </span>
-
-            <span v-else>
-                {{ dataCategoryProducts.result.stats.total }} {{$t('shopping_cart_label_item')}}
-            </span>
-        </div>
     </div>
 </template>
 
@@ -155,9 +139,6 @@
     import {mapActions, mapGetters, mapMutations, mapState} from 'vuex';
 
     import SelectableFacet from './toolbar/SelectableFacet.vue';
-    import SelectableLimit from './toolbar/SelectableLimit.vue';
-    import SelectableOrder from './toolbar/SelectableOrder.vue';
-    import Pagination from "./toolbar/Pagination";
     import CollapsibleFilter from "./toolbar/CollapsibleFilter";
     import PriceSlider from "./toolbar/PriceSlider";
 
@@ -167,18 +148,7 @@
         components: {
             PriceSlider,
             CollapsibleFilter,
-            Pagination,
             SelectableFacet,
-            SelectableLimit,
-            SelectableOrder
-        },
-
-        props: {
-            extraClass: {
-                type: Object,
-                required: false,
-                default: () => {}
-            },
         },
 
         data() {
@@ -220,32 +190,6 @@
                 requestCategoryFacets: 'modApiRequests/getRequestCategoryFacets',
                 getApiLocale: 'modApiResources/getApiLocale'
             }),
-            categoryList() {
-                if (_.isEmpty(this.dataMenu)) {
-                    return []
-                }
-
-                let _items = this.dataMenu.result.items;
-
-                let _combined = [];
-
-                _.forEach(_items, item => {
-                    // go for next level items (children)
-                    _.forEach(item.children, childItem => {
-                        _combined.push(_.omit(childItem, ['children']))
-                    });
-
-                    // at least push the item itself
-                    _combined.push(_.omit(item, ['children']))
-                });
-
-                return _combined
-            },
-            categoryListChildren() {
-                return this.categoryList.filter(
-                    item => item.parent_id === this.categoryItem.id
-                )
-            },
             categoryItem() {
                 if (_.isEmpty(this.dataCategory)) {
                     return this.dataCategory;

@@ -12,7 +12,7 @@
         <template v-if="hasCategoryProductItems">
             <div class="container search-content-wrp">
                 <div class="search-products-wrp">
-                    <product-listing-filter v-if="!isApiType('sw')" />
+                    <product-listing-toolbar v-if="!isApiType('sw')" />
                     <product-listing :data-items="categoryProductItems" list="Search Result" />
                     <div class="pagination-bottom">
                         <pagination />
@@ -40,7 +40,7 @@
     import Pagination from './toolbar/Pagination.vue';
     import GTMDataLayer from "../utils/GTMDataLayer";
     import ProductListing from "./ProductListing";
-    import ProductListingFilter from "./ProductListingFilter";
+    import ProductListingToolbar from "./ProductListingToolbar";
 
     export default {
         name: 'ViewCatalogsearch',
@@ -49,7 +49,7 @@
             GTMDataLayer,
             Pagination,
             ProductListing,
-            ProductListingFilter
+            ProductListingToolbar
         },
 
         computed: {
