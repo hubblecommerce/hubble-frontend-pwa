@@ -19,7 +19,7 @@
         margin-left: 0 !important;
         margin-right: 0 !important;
         border-bottom: 1px solid $border-color;
-        padding: 10px 10px 20px;
+        padding: 10px 0 20px;
         width: 100%;
 
         .add-to-wishlist-wrp {
@@ -64,11 +64,10 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        margin: 0 -3px 10px;
     }
 
     .variants-wrp {
-        padding: 0 10px;
+        margin-bottom: 20px;
     }
 
     .selected-variant {
@@ -115,7 +114,7 @@
         display: block;
         width: 100%;
         border-bottom: 1px solid $border-color;
-        padding: 0 10px 20px;
+        padding: 0 0 20px;
         margin-bottom: 20px;
     }
 
@@ -176,12 +175,8 @@
             }
         }
 
-        .variants-wrp {
-            padding: 0;
-        }
-
         .description-link {
-            padding: 10px 0 20px;
+            padding: 0 0 20px;
         }
 
         .price-cart-delivery-wrp {
@@ -189,9 +184,6 @@
         }
 
         .options-wrp {
-            display: block;
-            margin: 20px 0 0;
-
             .option-wrp {
                 justify-content: flex-start;
             }

@@ -2,7 +2,7 @@
     <div class="breadcrumbs">
         <ul class="row">
             <li class="breadcrumb-item">
-                <nuxt-link to="/" title="Back to Home">Home</nuxt-link>
+                <nuxt-link to="/" title="Back to Home" v-text="'Home'" />
             </li>
 
             <li class="breadcrumb-item" v-for="(element, index) in path" :key="index">
@@ -42,7 +42,7 @@
                     "@type": "BreadcrumbList",
                     "itemListElement": currentPath
                 };
-                
+
                 return{
                     script: [
                         { json: structuredDataBreadcrumbs, type: 'application/ld+json' }

@@ -4,82 +4,52 @@
             <loader />
         </div>
 
-        <div v-if="!loading" class="main-container">
-            <div class="container detail-container">
-                <div v-if="$mq === 'sm'" class="back-btn-wrp">
-                    <button class="detail-back-btn" @click="historyBack()">
-                        <i class="icon icon-chevron-left" />
-                        
-                        <span class="hidden-link-name">{{ $t('Back') }}</span>
+        <div v-if="!loading" class="container main-container">
+            <div v-if="$mq === 'sm'" class="back-btn-wrp">
+                <button class="detail-back-btn" @click="historyBack()">
+                    <i class="icon icon-chevron-left" />
+                    <span class="hidden-link-name">{{ $t('Back') }}</span>
+                    <material-ripple />
+                </button>
+            </div>
 
-                        <material-ripple />
-                    </button>
+            <div class="detail-wrp">
+                <breadcrumbs :path="breadcrumbPath" />
+
+                <div class="gallery bg-white">
+                    <product-detail-gallery />
                 </div>
 
-                <div class="detail-wrp">
-                    <breadcrumbs :path="breadcrumbPath" />
+                <div class="buybox-wrp container border-top border-bottom">
+                    <product-detail-buybox />
+                </div>
 
-                    <div class="gallery bg-white">
-                        <product-detail-gallery />
+                <div v-if="$mq === 'sm'" class="product-description-container">
+                    <div class="product-tabs md-elevation-2">
+                        <collapsible-description id="description" :is-collapsed="false" :toggle-text="$t('Description')">
+                            <div v-if="productData.description" class="tab-content">
+                                <p v-html="productData.description" />
+                            </div>
+                        </collapsible-description>
                     </div>
+                </div>
 
-                    <div class="buybox-wrp container border-top border-bottom">
-                        <product-detail-buybox />
-                    </div>
+                <div v-if="$mq === 'md' || $mq === 'lg'" class="product-description-container md-elevation-2">
+                    <div class="product-description-wrp">
+                        <div id="description" />
 
-                    <div v-if="$mq === 'sm'" class="product-description-container">
-                        <div class="product-tabs md-elevation-2">
-                            <collapsible-description id="description" :is-collapsed="false" :toggle-text="$t('Description')">
-                                <div v-if="productData.description" class="tab-content">
-                                    <p v-html="productData.description" />
-                                </div>
+                        <div class="description-title headline-4 pt-4">
+                            {{ $t('Description') }}
+                        </div>
 
-                                <div v-if="!productData.description" class="description-text tab-content">
-                                    <template v-if="productData.model">
-                                        <p v-html="productData.model" />
-                                    </template>
-
-                                    <template v-else>
-                                        <p>{{ $t('There is no data assigned to attribute \'model\'.') }}</p>
-                                    </template>
-                                </div>
-                            </collapsible-description>
+                        <div v-if="productData.description" class="description-content">
+                            <p v-html="productData.description" />
                         </div>
                     </div>
+                </div>
 
-                    <div v-if="$mq === 'md' || $mq === 'lg'" class="product-description-container md-elevation-2">
-                        <div class="product-description-wrp">
-                            <div id="description" />
-
-                            <div class="description-title headline-4 pt-4">
-                                {{ $t('Description') }}
-                            </div>
-
-                            <client-only>
-                                <div v-if="productData.description" class="description-content">
-                                    <p v-html="productData.description" />
-                                </div>
-                            </client-only>
-
-                            <div v-if="!productData.description" class="description-content">
-                                <template v-if="productData.model">
-                                    <p v-html="productData.model" />
-                                </template>
-
-                                <template v-else>
-                                    <p>{{ $t('There is no data assigned to attribute \'model\'.') }}</p>
-                                </template>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="product-recommendation-wrp">
-                        <product-detail-recommendations-similar v-if="hasProductsCrossSimilar" :product-id="productData.id" />
-                    </div>
-
-                    <div class="product-recommendation-wrp">
-                        <product-detail-recommendations v-if="hasProductsCrossByOrder" :product-id="productData.id" />
-                    </div>
+                <div class="product-recommendation-wrp">
+                    <product-detail-recommendations v-if="hasProductsCrossByOrder" :product-id="productData.id" />
                 </div>
             </div>
 
@@ -129,7 +99,6 @@
                 openDetail: state => state.modApiProduct.openDetail,
                 dataProduct: state => state.modApiProduct.dataProduct,
                 priceCurrency: state => state.modPrices.priceCurrency,
-                priceCurrencySymbol: state => state.modPrices.priceCurrencySymbol,
                 clickPath: state => state.modClickPath.clickPath
             }),
             productData: function() {
@@ -225,13 +194,6 @@
 
                 return path;
             },
-            attributeName: function() {
-                if (this.productData.facets.string_facets[0]) {
-                    return this.productData.facets.string_facets[0]['label'];
-                }
-
-                return null;
-            },
             gtmECommerceData: function() {
                  //let price = this.getPriceAndCurrency('display_price_brutto');
                  //
@@ -246,25 +208,10 @@
                  //    'brand': this.productData.manufacturer_name
                  //}
             },
-            hasProductsCrossBuybox: function() {
-                if(!_.isEmpty(this.productData)) {
-                    return ! _.isEmpty(this.productData.related_product_ids.buybox);
-                }
-                return false;
-            },
             hasProductsCrossByOrder: function() {
                 if(!_.isEmpty(this.productData)) {
                     return ! _.isEmpty(this.productData.related_product_ids.byorder);
                 }
-                return false;
-            },
-            hasProductsCrossSimilar: function() {
-                if(_.has(this.productData, 'statistic_item')) {
-                    if(_.has(this.productData.statistic_item, 'art_category')) {
-                        return /^(D|H|K)$/.test(this.productData.statistic_item.art_category);
-                    }
-                }
-
                 return false;
             }
         },
@@ -285,10 +232,7 @@
                 setOpenDetail: 'modApiProduct/setOpenDetail'
             }),
             ...mapActions({
-                getProductData: 'modApiProduct/getProductData',
-                flashMessage: 'modFlash/flashMessage',
-                toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction',
-                addItem: 'modCart/addItem'
+                getProductData: 'modApiProduct/getProductData'
             }),
             historyBack: function() {
                 this.$router.go(-1);

@@ -1,5 +1,5 @@
 <template>
-    <div class="loader lds-ring">
+    <div class="loader" :class="`lds-${appearance}`">
         <div />
         <div />
         <div />
@@ -10,5 +10,13 @@
 <script>
     export default {
         name: "Loader",
+
+        props: {
+            appearance: {
+                type: String,
+                required: false,
+                default: 'ring'
+            }
+        }
     }
 </script>

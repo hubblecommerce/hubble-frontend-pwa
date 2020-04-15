@@ -27,7 +27,6 @@
         </div>
 
         <div class="info"><span>{{ $t('incl_tax') }}</span> </div>
-
     </div>
 </template>
 
@@ -58,13 +57,13 @@
             },
             itemIsSpecial: function() {
                 return this.productIsSpecial(this.item);
-            },
+            }
         },
 
         methods: {
             getPriceAndCurrency: function(key, addVat) {
                 return this.getPriceAndCurrencyDecFmt(this.item.final_price_item[key], addVat, this.itemTaxClass);
-            },
+            }
         }
     }
 </script>

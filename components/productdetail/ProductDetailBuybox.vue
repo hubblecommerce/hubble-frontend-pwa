@@ -1,44 +1,44 @@
 <template>
-    <div class="product-shop">
-        <div class="product-info-wrp">
-            <!-- Header -->
-            <div class="row mb-3 product-headline d-flex">
-                <div class="product-headline-info">
-                    <h1 class="product-name headline-4" v-html="dataProduct.name" />
-
-                    <div v-if="dataProduct.sku" class="sku">
-                        {{ $t('sku_label') }}: {{ dataProduct.sku }}
-                    </div>
-                </div>
-
-                <product-detail-manufacturer :data-product="dataProduct" />
-            </div>
-
-            <!-- Variants -->
-            <div class="variants-wrp">
-                <product-detail-buybox-options v-if="itemIsConfigurable && !isApiType('sw')" />
-
-                <product-detail-buybox-options-sw v-if="itemIsConfigurable && isApiType('sw')" />
-
-                <div v-if="optionNotSelectedError" class="error-message">
-                    {{ $t('Please select {atrName} first', { atrName: attributeName }) }}
+    <div class="container product-info-wrp">
+        <!-- Header -->
+        <div class="row mb-3 product-headline d-flex">
+            <div class="product-headline-info">
+                <h1 class="product-name headline-4" v-html="dataProduct.name" />
+                <div v-if="dataProduct.sku" class="sku">
+                    {{ $t('sku_label') }}: {{ dataProduct.sku }}
                 </div>
             </div>
+            <product-detail-manufacturer :data-product="dataProduct" />
+        </div>
 
-            <!-- Link to description -->
-            <a href="#description" class="description-link-wrp description-link link-primary" @click="openCollapsible()">{{ $t('See description') }}</a>
-
-            <!-- Price -->
-            <div class="price-cart-delivery-wrp mb-2">
-                <div class="price-box">
-                    <product-detail-buybox-price :item="dataProduct" />
-                </div>
+        <!-- Variants -->
+        <div class="variants-wrp">
+            <product-detail-buybox-options v-if="itemIsConfigurable && !isApiType('sw')" />
+            <product-detail-buybox-options-sw v-if="itemIsConfigurable && isApiType('sw')" />
+            <div v-if="optionNotSelectedError" class="error-message">
+                {{ $t('Please select {atrName} first', { atrName: attributeName }) }}
             </div>
+        </div>
 
-            <!-- Delivery -->
+        <!-- Link to description -->
+        <a href="#description" class="description-link-wrp description-link link-primary" @click="openCollapsible()">{{ $t('See description') }}</a>
 
-            <!-- Add to ca -->
+        <!-- Delivery info -->
+        <product-detail-delivery :item="dataProduct" />
 
+        <!-- Price info -->
+        <product-detail-price :item="dataProduct" />
+
+        <!-- Add to cart -->
+        <div v-if="$mq === 'sm'" class="row">
+            <div class="col-12">
+                <product-detail-add-to-cart :item="dataProduct" />
+            </div>
+        </div>
+
+        <div v-if="$mq === 'md' || $mq === 'lg'" class="d-flex cart-button-wrp">
+            <product-detail-add-to-cart :item="dataProduct" />
+            <add-to-wishlist v-if="$mq === 'lg'" class="add-to-wishlist-button" :item="dataProduct" />
         </div>
     </div>
 </template>
@@ -47,9 +47,17 @@
     import { mapState, mapGetters, mapMutations } from 'vuex'
     import ProductDetailBuyboxPrice from "./ProductDetailBuyboxPrice";
     import ProductDetailManufacturer from "./ProductDetailManufacturer";
+    import ProductDetailDelivery from "./ProductDetailDelivery";
+    import ProductDetailPrice from "./ProductDetailPrice";
+    import ProductDetailAddToCart from "./ProductDetailAddToCart";
+    import AddToWishlist from "../productutils/AddToWishlist";
 
     export default {
         components: {
+            AddToWishlist,
+            ProductDetailAddToCart,
+            ProductDetailPrice,
+            ProductDetailDelivery,
             ProductDetailManufacturer,
             ProductDetailBuyboxOptions: () => import('./ProductDetailBuyboxOptions'),
             ProductDetailBuyboxOptionsSw: () => import('./ProductDetailBuyboxOptionsSw'),
@@ -59,10 +67,6 @@
         data() {
             return {
                 name: 'ProductDetailBuybox',
-                selected: {
-                    origin: null,
-                    processed: null
-                },
                 isActive: false,
                 attributeCodeSize: 'groesse',
                 attributeCodeManufacturer: 'manufacturer',
@@ -88,21 +92,8 @@
 
                 return null;
             },
-            itemIsSimple: function() {
-                return this.dataProduct.type === 'simple';
-            },
-            itemIsGrouped: function() {
-                return this.dataProduct.type === 'grouped';
-            },
             itemIsConfigurable: function() {
                 return this.dataProduct.type === 'configurable';
-            },
-            showSelectedOption: function () {
-                // Store issert
-                if(!_.isEmpty(this.selectedVariants[0])) {
-                    return this.selectedVariants[0].value_label.replace('.0', '');
-                }
-                return null;
             }
         },
 
@@ -115,7 +106,6 @@
             ...mapMutations({
                 resetSelectedVariants: 'modApiProduct/resetSelectedVariants',
                 removeOptionNotSelectedError: 'modApiProduct/removeOptionNotSelectedError',
-                setOptionIsSelected: 'modApiProduct/setOptionIsSelected',
                 setCollapsed: 'modCollapsibleState/setCollapsed'
             }),
             openCollapsible: function() {
@@ -123,22 +113,6 @@
                     this.setCollapsed();
                 }
             },
-            formatSize: function (size) {
-                return size.replace('.0', '');
-            },
-            selectedOption: function (option) {
-                if(option.stock_qty > 0 ) {
-                    this.setOptionIsSelected(option);
-                    this.removeOptionNotSelectedError();
-                    this.selected.origin = option.value_label;
-                    this.selected.processed = option.value_label.replace('.0', '');
-                }
-                return null;
-            },
-            getUnavailableClass: function(option) {
-                return option.stock_qty === 0 ? 'unavailable' : '';
-            },
-
             isApiType: function(type) {
                 return process.env.API_TYPE === type;
             }

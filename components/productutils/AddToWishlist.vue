@@ -76,7 +76,6 @@
                 setWishlistId: 'modWishlist/setWishlistId'
             }),
             addToWishlist: function() {
-
                 this.addItem({
                     item: this.item,
                     qty: 1
@@ -119,7 +118,6 @@
                         flashMessage: this.$t('Successfully added item to wishlist.')
                     });
                 });
-
             },
             removeFromWishlist: function() {
                 // Remove wishlist completely from store

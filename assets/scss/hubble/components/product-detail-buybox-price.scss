@@ -22,22 +22,29 @@
 /* Add to Cart button */
 .add-to-cart {
   height: 50px;
-  padding: 0 5px;
-  color: white;
+  padding: 0 30px;
+  color: #fff;
   background: $accent;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
 
   i {
-    padding-right: 10px;
-    font-size: 22px;
+      position: absolute;
+      left: 10px;
+      top: 0;
+      bottom: 0;
+      margin: auto;
   }
-}
 
-.cart-button-label {
-  min-width: 82%;
-  padding-right: 9%;
+    .loader {
+        height: 50px;
+
+        div {
+            background-color: #fff;
+            top: 20px;
+        }
+    }
 }
 
 .sku {

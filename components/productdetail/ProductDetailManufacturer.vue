@@ -38,7 +38,7 @@
                 }
 
                 this.logoPath = logoPath;
-            },
+            }
         }
     }
 </script>

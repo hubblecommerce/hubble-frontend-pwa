@@ -99,31 +99,23 @@
                 this.variants = [];
 
                 _.forEach(selectedOptions, (optionId) => {
-
                     _.forEach(this.groups, (group) => {
-
                         _.find(group.options, (o) => {
-
                             if(o.id === optionId) {
                                 this.variants.push({
                                     label: group.name,
                                     value_label: o.name
                                 });
                             }
-
                         })
-
                     });
-
                 });
             },
             setMatchingChildBySelectedOptions: function(selectedOptions) {
                 _.forEach(this.itemLoaded.children, (child) => {
-
                     if(this.arraysMatch(child.optionIds, selectedOptions)) {
                         this.matchingChild = child;
                     }
-
                 });
             },
             arraysMatch: function (arr1, arr2) {

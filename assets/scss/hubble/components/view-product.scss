@@ -1,17 +1,4 @@
-.catalog-product-view {
-    .main-container {
-        > .container {
-            padding: 0;
-        }
-    }
-
-    .product-carousel {
-        padding: 0 10px;
-        margin-bottom: 40px;
-    }
-}
-
-.detail-container {
+.main-container {
     padding: 0;
 }
 
@@ -41,6 +28,7 @@
     .price-box {
         display: flex;
         flex-direction: column;
+        margin-bottom: 20px;
     }
 
     .tns-horizontal.tns-subpixel > .tns-item {
