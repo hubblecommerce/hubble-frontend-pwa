@@ -2,9 +2,7 @@
     <div class="filter-wrp">
         <button v-if="$mq === 'sm' || $mq === 'md'" class="button button-primary open-filter" @click="toggle()">
             <i class="icon icon-sliders left" />
-
             <span v-text="$t('Filter')" />
-
             <material-ripple />
         </button>
 
@@ -89,46 +87,6 @@
                     />
                 </collapsible-filter>
             </div>
-
-        </div>
-
-        <div v-if="hasFacetsSelected && $mq === 'lg'" class="selected-filters">
-            <div class="selected-label" v-text="$t('Your choice:')" />
-            <div v-if="hasCategoryFacetsSelected && isSearchPage()" class="filter">
-                <div v-for="(facet, facetIndex) in requestCategoryFacets"
-                     v-if="facet.selected"
-                     :key="facetIndex"
-                     class="filter"
-                >
-                    <button class="button button-secondary" @click="routeOnPropertyRemove(facet.key)">
-                        {{ getSelectedFacetOptionsLabel(facet) }}
-                        <i class="icon icon-close" />
-                        <material-ripple />
-                    </button>
-                </div>
-            </div>
-
-            <div v-for="(facet, facetIndex) in requestStringFacets"
-                 v-if="facet.selected"
-                 :key="facetIndex"
-                 class="filter"
-            >
-                <button class="button button-secondary" @click="routeOnPropertyRemove(facet.key)">
-                    {{ getSelectedFacetOptionsLabel(facet) }}
-                    <i class="icon icon-close" />
-                    <material-ripple />
-                </button>
-            </div>
-
-            <div v-if="hasPriceFacetsSelected" class="filter">
-                <button class="button button-secondary" @click="routeOnPropertyRemove('price')">
-                    {{ $t('price') }}: {{ formatPrice(requestPriceFacets[0].filtered.from) }} - {{ formatPrice(requestPriceFacets[0].filtered.to) }}
-                    <i class="icon icon-close" />
-                    <material-ripple />
-                </button>
-            </div>
-
-            <div class="reset-label" @click="routeOnPropertyRemoveAll()" v-text="$t('Reset all')" />
         </div>
     </div>
 </template>
@@ -305,32 +263,6 @@
 
                 return selectedLabels;
             },
-            routeOnPropertyRemove: function(propertyName) {
-                // always reset to 1st page
-                this.resetPagination();
-
-                // null property from nested storage object (facet)
-                this.setSelectedFacetsParam({
-                    name: propertyName,
-                    data: null
-                });
-
-                // omit removed property and 'page' parameter
-                let query = _.omit(this.$route.query, [propertyName, 'page'])
-
-                if (propertyName === 'price') {
-                    query = _.omit(query, ['price_to', 'price_from'])
-                }
-
-                let route = {
-                    path: this.$route.path,
-                    query: query
-                };
-
-                this.hideFilters().then(response => {
-                    this.$router.push(route)
-                })
-            },
             routeOnPropertyRemoveAll: function() {
                 // always reset to 1st page
                 this.resetPagination();
@@ -372,9 +304,6 @@
                     //this.showFilter = false;
                     resolve()
                 })
-            },
-            formatPrice: function(price) {
-                return price + '' + this.priceCurrencySymbol
             },
             isSearchPage: function() {
                 if(this.$router.history.current.path.includes('search')) {

@@ -8,6 +8,8 @@
 
         <pagination />
 
+        <selected-facets />
+
         <ItemCount />
     </div>
 </template>
@@ -19,11 +21,13 @@
     import SelectableOrder from './toolbar/SelectableOrder.vue';
     import Pagination from "./toolbar/Pagination";
     import ItemCount from './toolbar/ItemCount'
+    import SelectedFacets from './toolbar/SelectedFacets'
 
     export default {
         name: 'ProductListingToolbar',
 
         components: {
+            SelectedFacets,
             ItemCount,
             ProductListingFilter,
             Pagination,
