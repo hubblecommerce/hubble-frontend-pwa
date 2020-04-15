@@ -250,10 +250,71 @@ export default function (ctx) {
 
                     resolve(facets);
                 });
-            }
+            },
+            // applys set filters and set new url
+            applyFilter({commit, state, dispatch, getters}, payload) {
+                //reset pagination
+                commit('setPaginationPage', 1);
+                //take all filters and change path to new path with new filters
+
+                // query well known without page
+                let queryWellKnown = ['term', 'sort', 'limit'];
+
+                let selected = [];
+
+                _.forEach(queryWellKnown, property => {
+                    // Parse query option value to int because only int are allowed as param filter values
+                    let val = parseInt(state.parsedQuery[property], 10);
+
+                    // except of the term filter which is string
+                    if(property === 'term') {
+                        selected.push([property, state.parsedQuery[property]])
+                    }
+
+                    // stack property, if not null
+                    if(val !== null && Number.isInteger(val) && property !== 'term') {
+                        selected.push([property, state.parsedQuery[property]])
+                    }
+                });
+
+
+                // attach price (from, to), if selected
+                if (
+                    _.isNumber(state.selectedFacets['priceMin']) &&
+                    _.isNumber(state.selectedFacets['priceMax'])
+                ) {
+                    selected.push(['price_from', state.selectedFacets['priceMin']]);
+                    selected.push(['price_to', state.selectedFacets['priceMax']]);
+                }
+
+
+                // Put selected string facets to array
+                let facets = getters.getRequestStringFacets;
+                _.forEach(facets, facet => {
+                    if (state.selectedFacets[facet.key]) {
+                        selected.push([facet.key, state.selectedFacets[facet.key]])
+                    }
+                });
+
+                // Put selected category facets to array
+                facets = getters.getRequestCategoryFacets;
+                _.forEach(facets, facet => {
+                    if (state.selectedFacets[facet.key]) {
+                        selected.push([facet.key, state.selectedFacets[facet.key]])
+                    }
+                });
+
+                let filterRoute = {
+                    path: ctx.app.router.currentRoute.path,
+                    query: _.fromPairs(selected)
+                };
+
+                dispatch('modNavigation/hideOffcanvasAction',{},{ root: true }).then(()=> {
+                    ctx.app.router.push(filterRoute);
+                });
+            },
         }
     };
 
-    // Register vuex store module
     ctx.store.registerModule('modApiRequests', modApiRequests);
 }
