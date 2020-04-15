@@ -190,13 +190,6 @@
                 requestCategoryFacets: 'modApiRequests/getRequestCategoryFacets',
                 getApiLocale: 'modApiResources/getApiLocale'
             }),
-            categoryItem() {
-                if (_.isEmpty(this.dataCategory)) {
-                    return this.dataCategory;
-                }
-
-                return this.dataCategory.result.item;
-            },
             categoryProductItems() {
                 if (_.isEmpty(this.dataCategoryProducts)) {
                     return this.dataCategoryProducts;
@@ -204,73 +197,74 @@
 
                 return this.dataCategoryProducts.result.items;
             },
-            changePosition() {
-                return this.$mq === 'sm' ? 'fixed' : 'left'
-            },
             hasFacetsSelected() {
                 return this.hasNumberFacetsSelected || this.hasStringFacetsSelected || this.hasPriceFacetsSelected || (this.hasCategoryFacetsSelected && this.isSearchPage());
             },
             hasNumberFacetsSelected() {
-                let _selected = false;
+                let selected = false
 
                 _.forEach(this.requestNumberFacets, facet => {
                     if (facet.selected) {
-                        _selected = true
+                        selected = true
                     }
                 });
 
-                return _selected
+                return selected
             },
             hasStringFacetsSelected() {
-                let _selected = false;
+
+                let selected = false
 
                 _.forEach(this.requestStringFacets, facet => {
                     if (facet.selected) {
-                        _selected = true
+                        selected = true
                     }
                 });
 
-                return _selected
+                return selected
             },
             hasPriceFacetsSelected() {
-                let _selected = false;
+
+                let selected = false
+
 
                 _.forEach(this.requestPriceFacets, facet => {
                     if (facet.selected) {
-                        _selected = true
+                        selected = true
                     }
                 });
 
-                return _selected
+                return selected
             },
             hasCategoryFacetsSelected() {
-                let _selected = false;
+                let selected = false
+
 
                 _.forEach(this.requestCategoryFacets, facet => {
                     if (facet.selected) {
-                        _selected = true
+                        selected = true
                     }
                 });
 
-                return _selected
+                return selected
             },
             maxPriceFacets() {
                 if (_.isEmpty(this.requestPriceFacets)) {
                     return 1
                 }
 
-                let _facet = _.head(_.filter(this.requestPriceFacets, (item) => item.key === 'price'));
+                let facet = _.head(_.filter(this.requestPriceFacets, (item) => item.key === 'price'));
 
-                return !_.isEmpty(_facet) ? parseInt(_facet['facet-stats'].max) + 1 : 0
+                return !_.isEmpty(facet) ? parseInt(facet['facet-stats'].max) + 1 : 0
             },
             minPriceFacets() {
                 if (_.isEmpty(this.requestPriceFacets)) {
                     return 0
                 }
 
-                let _facet = _.head(_.filter(this.requestPriceFacets, (item) => item.key === 'price'));
+                let facet = _.head(_.filter(this.requestPriceFacets, (item) => item.key === 'price'));
 
-                return !_.isEmpty(_facet) ? parseInt(_facet['facet-stats'].min) : 0
+                return !_.isEmpty(facet) ? parseInt(facet['facet-stats'].min) : 0
             },
             maxPriceSelected() {
                 return _.isNumber(this.parsedQuery['priceMax'])
@@ -292,17 +286,6 @@
                     ? this.minPriceFacets
                     : this.minPriceSelected
             },
-            validOptions() {
-                return {
-                    dir: ['asc', 'desc'],
-                    order: _.mapValues(this.optionsSorter, function(value, key) {
-                        return value.order
-                    }),
-                    limit: _.mapValues(this.optionsLimit, function(value, key) {
-                        return value.limit
-                    })
-                }
-            },
             showFilters: function() {
                 return this.offcanvas.component === this.name;
             },
@@ -318,23 +301,24 @@
         watch: {
             modelSelectedCategory() {
                 this.hideFilters().then(response => {
-                    let _prefix = '/';
+                    let prefix = '/'
 
-                    let _locale = this.getApiLocale;
+                    let locale = this.getApiLocale
 
-                    if (_locale !== 'de') {
-                        _prefix = '/' + _locale + '/'
+                    if (locale !== 'de') {
+                        prefix = '/' + locale + '/'
                     }
 
                     // always reset to 1st page
                     this.resetPagination();
 
                     // keep possibly selected 'dir', 'order', 'limit'
-                    let _selected = this.getSelectedQueryParams();
+                    let selected = this.getSelectedQueryParams();
+
 
                     this.$router.push({
-                        path: _prefix + this.modelSelectedCategory,
-                        query: _.fromPairs(_selected)
+                        path: prefix + this.modelSelectedCategory,
+                        query: _.fromPairs(selected)
                     })
                 })
             },
@@ -415,8 +399,8 @@
             resetPagination: function() {
                 this.setPaginationPage(1);
             },
-            getSelectedQueryParams: function() {
-                let _selected = [];
+            getSelectedQueryParams() {
+                let selected = [];
 
                 _.forEach(this.queryWellKnown, property => {
                     // Parse query option value to int because only int are allowed as param filter values
@@ -424,21 +408,23 @@
 
                     // except of the term filter which is string
                     if(property === 'term') {
-                        _selected.push([property, this.parsedQuery[property]])
+                        selected.push([property, this.parsedQuery[property]])
                     }
 
                     // stack property, if not null
                     if(val !== null && Number.isInteger(val) && property !== 'term') {
-                        _selected.push([property, this.parsedQuery[property]])
+                        selected.push([property, this.parsedQuery[property]])
                     }
                 });
 
-                return _selected
+                return selected
             },
-            getSelectedFacetOptionsLabel: function(facet) {
-                let _selectedIds = facet.options.filter(item => item.selected);
+            getSelectedFacetOptionsLabel(facet) {
+                let selectedIds = facet.options.filter(item => item.selected);
 
-                return _.join(_selectedIds.map(item => item.label), ', ');
+                let selectedLabels = _.join(selectedIds.map(item => item.label), ', ');
+
+                return selectedLabels;
             },
             routeOnPropertyChange: function() {
                 return new Promise((resolve, reject) => {
@@ -446,40 +432,37 @@
                     this.resetPagination();
 
                     // start with well known query params
-                    let _selected = this.getSelectedQueryParams();
+                    let selected = this.getSelectedQueryParams();
 
                     // attach price (from, to), if selected
                     if (
                         _.isNumber(this.selectedFacets['priceMin']) &&
                         _.isNumber(this.selectedFacets['priceMax'])
                     ) {
-                        _selected.push(['price_from', this.selectedFacets['priceMin']]);
-                        _selected.push(['price_to', this.selectedFacets['priceMax']]);
+                        selected.push(['price_from', this.selectedFacets['priceMin']]);
+                        selected.push(['price_to', this.selectedFacets['priceMax']]);
                     }
 
                     // Put selected string facets to array
-                    let _facets = this.requestStringFacets;
-                    _.forEach(_facets, facet => {
+                    let facets = this.requestStringFacets;
+                    _.forEach(facets, facet => {
                         if (this.selectedFacets[facet.key]) {
-                            _selected.push([facet.key, this.selectedFacets[facet.key]])
+                            selected.push([facet.key, this.selectedFacets[facet.key]])
                         }
                     });
 
                     // Put selected category facets to array
-                    _facets = this.requestCategoryFacets;
-                    _.forEach(_facets, facet => {
+                    facets = this.requestCategoryFacets;
+                    _.forEach(facets, facet => {
                         if (this.selectedFacets[facet.key]) {
-                            _selected.push([facet.key, this.selectedFacets[facet.key]])
+                            selected.push([facet.key, this.selectedFacets[facet.key]])
                         }
                     });
 
-                    // Prepare route path including filter
-                    let _route = {
+                    this.filterRoute = {
                         path: this.$route.path,
-                        query: _.fromPairs(_selected)
+                        query: _.fromPairs(selected)
                     };
-
-                    this.filterRoute = _route;
 
                     resolve('New filter route is set');
                 });
@@ -495,19 +478,19 @@
                 });
 
                 // omit removed property and 'page' parameter
-                let _query = _.omit(this.$route.query, [propertyName, 'page']);
+                let query = _.omit(this.$route.query, [propertyName, 'page'])
 
                 if (propertyName === 'price') {
-                    _query = _.omit(_query, ['price_to', 'price_from'])
+                    query = _.omit(query, ['price_to', 'price_from'])
                 }
 
-                let _route = {
+                let route = {
                     path: this.$route.path,
-                    query: _query
+                    query: query
                 };
 
                 this.hideFilters().then(response => {
-                    this.$router.push(_route)
+                    this.$router.push(route)
                 })
             },
             routeOnPropertyRemoveAll: function() {
@@ -518,38 +501,29 @@
                 this.resetSelectedFacetsParam();
 
                 // If current route is a search, keep the search term and remove rest of filter
-                let _route;
+                let route;
                 if (this.$route.query.term) {
-                    _route = {
+                    route = {
                         path: this.$route.path,
                         query: {
                             term: this.$route.query.term
                         }
                     };
                 } else {
-                    _route = {
+                    route = {
                         path: this.$route.path,
                         query: _.pick(this.$route.query, this.queryWellKnown)
                     };
                 }
 
                 this.hideFilters().then(response => {
-                    this.$router.push(_route)
+                    this.$router.push(route)
                 })
             },
             applyFilter: function() {
                 this.hideFilters().then(response => {
                     this.$router.push(this.filterRoute);
                 })
-            },
-            getSortingDirection: function(order) {
-                let _sorting = _.head(
-                    this.optionsSorter.filter(
-                        item => item.order === this.parsedQuery['order']
-                    )
-                );
-
-                return _.isObject(_sorting) ? _sorting.dir : 'asc'
             },
             toggle: function() {
                 this.showFilter = !this.showFilter;
