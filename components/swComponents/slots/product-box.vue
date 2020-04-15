@@ -45,7 +45,6 @@
 
         created() {
             this.$store.dispatch('modApiProduct/mappingProduct', this.content.data).then((response) => {
-                // map product id to url from product urls probably already fetched
                 this.itemOrig = response;
                 this.loaded = true;
             });

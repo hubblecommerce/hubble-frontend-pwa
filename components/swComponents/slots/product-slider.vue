@@ -7,6 +7,7 @@
 </template>
 
 <script>
+    import {mapState} from 'vuex';
     import { slotMixins } from '../helper'
     import ProductListing from '../../productlist/ProductListing'
     export default {
@@ -28,8 +29,11 @@
         },
 
         computed: {
+            ...mapState({
+                dataProductUrls: state => state.modApiResources.dataProductUrls,
+
+            }),
             verticalAlign() {
-                // to-do: add bootstrap classes align-self to essentials
                 if(this.content.config && this.content.config.verticalAlign) {
                     if(this.content.config.verticalAlign.value == "center") {
                         return 'align-self-center'
@@ -48,8 +52,8 @@
         created() {
             this.$store.dispatch('modApiCategory/mappingCategoryProducts', {
                 data: this.content.data.products
-            }).then((response) => {
-                this.dataItems = response.items;
+            }).then((res) => {
+                this.dataItems = res.items;
                 this.loaded = true;
             });
         }
