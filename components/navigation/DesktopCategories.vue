@@ -1,10 +1,13 @@
 <template>
-    <div class="tree-menu bg-white" :class="{ 'tree-menu-sub': depth > 1 }">
+    <div
+        class="tree-menu bg-white"
+        :class="{ 'tree-menu-sub': depth > 1 }"
+        @mouseleave="showChildren = false"
+    >
         <nuxt-link v-if="depth !== 0"
                    :to="itemUrlPath"
                    class="trigger bg-white m-0 w-100 d-flex align-items-center"
                    @mouseover.native="showChildren = true"
-                   @mouseleave="showChildren = false"
         >
             {{ dataItem.name }}
         </nuxt-link>
@@ -92,7 +95,7 @@
         },
 
         methods: {
-            toggleChildren(nodes, target) {
+            toggleChildren: function(nodes, target) {
                 if(nodes) {
                     this.showChildren = !this.showChildren;
                 }
