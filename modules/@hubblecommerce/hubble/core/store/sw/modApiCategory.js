@@ -266,7 +266,7 @@ export default function (ctx) {
                     obj.meta_keywords = payload.keywords;
                     obj.meta_description = payload.metaDescription;
                     obj.level = payload.level;
-                    obj.path_ids = payload.path.split('|').filter(s => s);;
+                    obj.path_ids = payload.path.split('|').filter(s => s);
                     obj.path_names = payload.breadcrumb;
                     obj.path_urls = [];
                     _.each(payload.breadcrumb, (crumb) => {
