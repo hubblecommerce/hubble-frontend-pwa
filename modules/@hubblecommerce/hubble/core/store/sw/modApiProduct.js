@@ -92,6 +92,7 @@ export default function (ctx) {
                         '&associations[seoUrls][]',
                         '&associations[media][]',
                         '&associations[children][associations][options][associations][group][]',
+                        '&associations[crossSellings][]',
                     ], '');
 
                     dispatch('apiCall', {
@@ -200,6 +201,8 @@ export default function (ctx) {
                         buybox: [],
                         byorder: []
                     };
+
+                    obj.crossSellings = product.crossSellings;
 
                     obj.status = {
                         is_new_from_date: '',

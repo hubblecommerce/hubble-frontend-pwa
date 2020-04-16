@@ -374,6 +374,35 @@ export default function (ctx) {
                     resolve();
                 });
             },
+            async swGetCrossSellingsByProductId({commit, state, dispatch}, id) {
+                return new Promise(function(resolve, reject) {
+                    let _endpoint = `/sales-channel-api/v1/product/${id}/cross-selling`+
+                        '?associations[products][associations][seoUrls][]';
+
+                    dispatch('apiCall', {
+                        action: 'get',
+                        tokenType: 'sw',
+                        apiType: 'data',
+                        endpoint: _endpoint
+                    }, { root: true })
+                        .then(response => {
+                            let mappedEntities = [];
+
+                            _.forEach(response.data.data, (crossSelling) => {
+                                dispatch('mappingCategoryProducts', {data: crossSelling.products}).then((res) => {
+                                    crossSelling.products = res;
+                                    mappedEntities.push(crossSelling);
+                                });
+                            });
+
+                            resolve(mappedEntities);
+                        })
+                        .catch(response => {
+                            console.log("API get request failed: %o", response);
+                            reject('API request failed!');
+                        });
+                });
+            },
         }
     };
 

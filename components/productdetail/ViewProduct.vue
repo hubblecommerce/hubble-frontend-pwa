@@ -49,6 +49,11 @@
                 </div>
 
                 <div class="product-recommendation-wrp">
+                    <product-detail-cross-selling-sw
+                        v-if="productData.crossSellings !== null"
+                        :product-id="productData.id"
+                        :cross-sellings="productData.crossSellings"
+                    />
                     <product-detail-recommendations v-if="hasProductsCrossByOrder" :product-id="productData.id" />
                 </div>
             </div>
@@ -71,21 +76,20 @@
     import CollapsibleDescription from "./CollapsibleDescription";
     import Breadcrumbs from "../utils/Breadcrumbs";
     import ProductDetailRecommendations from "./ProductDetailRecommendations";
-    import ProductDetailRecommendationsSimilar from "./ProductDetailRecommendationsSimilar";
     import GTMDataLayer from "../utils/GTMDataLayer";
 
     export default {
         name: "ViewProduct",
 
         components: {
+            ProductDetailCrossSellingSw: () => import('./ProductDetailCrossSellingSw'),
             Loader: () => import('../utils/Loader'),
             GTMDataLayer,
             Breadcrumbs,
             ProductDetailBuybox,
             ProductDetailGallery,
             CollapsibleDescription,
-            ProductDetailRecommendations,
-            ProductDetailRecommendationsSimilar
+            ProductDetailRecommendations
         },
 
         data() {
