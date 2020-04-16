@@ -1,9 +1,27 @@
 {
-    "baseUrl": "http://localhost:<ENTER-YOUR-PORT-NUMBER-HERE>",
-    "viewportWidth": 1300,
-    "viewportHeight": 660,
+    "baseUrl": "<ENTER-YOUR-PORT-NUMBER-HERE>",
+    "viewportWidth": 560,
+    "viewportHeight": 812,
     "env": {
         "login-email": "<ENTER-LOGIN-EMAIL-HERE>",
-        "login-pw": "<ENTER-LOGIN-PW-HERE>"
+        "login-pw": "<ENTER-LOGIN-PW-HERE>",
+        "login-wrong-pw": "<ENTER-LOGIN-WRONG-PW-HERE>",
+        "register-email-one": "<ENTER-REGISTER-EMAIL-ONE-HERE>",
+        "register-pw-one": "<ENTER-REGISTER-PW-ONE-HERE>",
+        "register-billing-first-name": "<ENTER-REGISTER-BILLING-FIRST-NAME-HERE>",
+        "register-billing-last-name": "<ENTER-REGISTER-BILLING-LAST-NAME-HERE>",
+        "register-billing-street": "<ENTER-REGISTER-BILLING-LAST-NAME-HERE>",
+        "register-billing-zip-code": "<ENTER-REGISTER-BILLING-ZIP-CODE-HERE>",
+        "register-billing-city": "<ENTER-REGISTER-BILLING-CITY-HERE>",
+        "register-billing-country": "<ENTER-REGISTER-BILLING-COUNTRY-HERE>",
+
+        "register-email-two": "<ENTER-REGISTER-EMAIL-TWO-HERE>",
+        "register-pw-two": "<ENTER-REGISTER-PW-TWO-HERE>",
+        "register-shipping-first-name": "<ENTER-SHIPPING-FIRST-NAME-HERE>",
+        "register-shipping-last-name": "<ENTER-SHIPPING-LAST-NAME-HERE>",
+        "register-shipping-street": "<ENTER-SHIPPING-STREET-HERE>",
+        "register-shipping-zip-code": "<ENTER-SHIPPING-ZIP-CODE>",
+        "register-shipping-city": "<ENTER-SHIPPING-CITY-HERE>",
+        "register-shipping-country": "<ENTER-SHIPPING-COUNTRY-HERE>"
     }
 }
