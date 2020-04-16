@@ -1,5 +1,5 @@
 {
-    "baseUrl": "<ENTER-YOUR-PORT-NUMBER-HERE>",
+    "baseUrl": "http://localhost:<ENTER-YOUR-PORT-NUMBER-HERE>",
     "viewportWidth": 560,
     "viewportHeight": 812,
     "env": {
