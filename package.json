@@ -10,7 +10,8 @@
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "precommit": "npm run lint",
-      "cypress:open": "cypress open"
+      "cypress:open": "cypress open",
+      "cypress:run": "cypress run"
   },
   "dependencies": {
     "@hubblecommerce/amazon-pay": "file:modules/@hubblecommerce/amazon-pay",
