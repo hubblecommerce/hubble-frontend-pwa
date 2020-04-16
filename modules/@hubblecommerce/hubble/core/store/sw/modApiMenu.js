@@ -125,18 +125,26 @@ export default function (ctx) {
                         obj.parentId = category.parentId;
                         obj.name = category.name;
 
+                        obj.url_path = false;
+
                         if(!_.isEmpty(category.seoUrls)) {
                             obj.url_path = category.seoUrls[0].seoPathInfo;
-                        } else {
-                            obj.url_path = '/';
+                        }
+
+                        if(category.type === 'folder') {
+                            obj.url_path = false;
                         }
 
                         obj.level = category.level;
-                        obj.active = category.is_active;
+                        obj.active = category.active;
                         obj.id = category._uniqueIdentifier;
 
                         return obj;
                     });
+
+                    mapped = mapped.filter(o => {
+                        return o.active;
+                    })
 
                     // Build required parent child relations from flat array
                     resolve( {

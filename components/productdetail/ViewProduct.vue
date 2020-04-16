@@ -26,9 +26,9 @@
 
                 <div v-if="$mq === 'sm'" class="product-description-container">
                     <div class="product-tabs md-elevation-2">
-                        <collapsible-description id="description" :is-collapsed="false" :toggle-text="$t('Description')">
+                        <collapsible-description id="description-anchor" :is-collapsed="false" :toggle-text="$t('Description')">
                             <div v-if="productData.description" class="tab-content">
-                                <p v-html="productData.description" />
+                                <div v-html="productData.description" />
                             </div>
                         </collapsible-description>
                     </div>
@@ -36,14 +36,14 @@
 
                 <div v-if="$mq === 'md' || $mq === 'lg'" class="product-description-container md-elevation-2">
                     <div class="product-description-wrp">
-                        <div id="description" />
+                        <div id="description-anchor" />
 
                         <div class="description-title headline-4 pt-4">
                             {{ $t('Description') }}
                         </div>
 
                         <div v-if="productData.description" class="description-content">
-                            <p v-html="productData.description" />
+                            <div v-html="productData.description" />
                         </div>
                     </div>
                 </div>

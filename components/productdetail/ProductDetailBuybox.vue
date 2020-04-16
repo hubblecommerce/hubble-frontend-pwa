@@ -21,7 +21,7 @@
         </div>
 
         <!-- Link to description -->
-        <a href="#description" class="description-link-wrp description-link link-primary" @click="openCollapsible()">{{ $t('See description') }}</a>
+        <a href="#description-anchor" class="description-link-wrp description-link link-primary" @click="openCollapsible()">{{ $t('See description') }}</a>
 
         <!-- Delivery info -->
         <product-detail-delivery :item="dataProduct" />

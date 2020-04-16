@@ -1,14 +1,24 @@
 <template>
     <div class="mega-menu-wrp" @mouseleave="hideChildren">
         <div class="level-0-wrp">
-            <nuxt-link
-                v-for="item in dataItems" :key="item.id"
-                class="menu-item"
-                :class="{ active: isActive === item.id }"
-                :to="itemUrlPath(item)"
-                @mouseenter.native="showChildren(item)"
-                v-text="item.name"
-            />
+            <template v-for="item in dataItems">
+                <div
+                    v-if="!item.url_path"
+                    :key="item.id"
+                    class="menu-item"
+                    :class="{ active: isActive === item.id }"
+                    @mouseenter="showChildren(item)"
+                    v-text="item.name"
+                />
+                <nuxt-link
+                    v-else
+                    :key="item.id"
+                    class="menu-item"
+                    :to="itemUrlPath(item)"
+                    @mouseenter.native="showChildren(item)"
+                    v-text="item.name"
+                />
+            </template>
         </div>
 
         <transition name="slide-top-bottom">
@@ -20,26 +30,25 @@
                     <template>
                         <div class="children-wrp">
                             <div v-for="child in activeCategory.children" v-if="showChild(child)" :key="child.id" class="child-wrp">
-                                <nuxt-link v-if="child.name"
-                                           :to="itemUrlPath(child)"
-                                           class="child-item" v-text="child.name"
-                                />
+                                <div v-if="!child.url_path" class="child-item" v-text="child.name" />
+                                <nuxt-link v-else :to="itemUrlPath(child)" class="child-item" v-text="child.name" />
 
-                                <nuxt-link v-for="subchild in child.children"
-                                           v-if="showChild(subchild)"
-                                           :key="subchild.id"
-                                           class="subchild-item"
-                                           :to="itemUrlPath(subchild)"
-                                           v-text="subchild.name"
-                                />
-
-                                <div v-for="item in child.menu_items" :key="item.id">
-                                    <nuxt-link v-if="item.manufacturer_info_url"
-                                               :to="'/'+item.manufacturer_info_url"
-                                               class="subchild-item"
-                                               v-text="item.manufacturer_name"
+                                <template v-for="subchild in child.children">
+                                    <div
+                                        v-if="!subchild.url_path"
+                                        :key="subchild.id"
+                                        class="subchild-item"
+                                        v-text="subchild.name"
                                     />
-                                </div>
+                                    <nuxt-link
+                                        v-else
+                                        :key="subchild.id"
+                                        class="subchild-item"
+                                        :to="itemUrlPath(subchild)"
+                                        v-text="subchild.name"
+                                    />
+                                </template>
+
                             </div>
                         </div>
                     </template>

@@ -63,7 +63,8 @@ export default function (ctx) {
                             term: payload.query,
                             limit: state.maxProductItems,
                             associations: {
-                                manufacturer: {}
+                                manufacturer: {},
+                                seoUrls: {}
                             },
                             // Get only Products with parent ID null
                             // because children (generated variants) are delivered from API
@@ -88,24 +89,15 @@ export default function (ctx) {
                                     .then((res) => {
                                         // Get all product urls to find urls of search result products
                                         dispatch('modApiResources/swGetProductUrls',{}, {root:true}).then(() => {
-                                            _.forEach(res.items, (item, key) => {
-                                                let matchingProduct = _.find(rootState.modApiResources.dataProductUrls, function(o) {
-                                                    return o.foreignKey === item.id;
-                                                });
+                                            commit('setProductItems', res.items);
 
-                                                // Set urls of matches
-                                                res.items[key].url_pds = matchingProduct.seoPathInfo;
+                                            // Set all items also in one array to handle key events
+                                            commit('setAutoCompleteResultsArray', state.autoCompleteResults.productItems);
+                                            commit('setSelectedItemPosition', -1);
+                                            commit('setSelectedItemId', null);
+                                            commit('setShowAutoCompleteResults', true);
 
-                                                commit('setProductItems', res.items);
-
-                                                // Set all items also in one array to handle key events
-                                                commit('setAutoCompleteResultsArray', state.autoCompleteResults.productItems);
-                                                commit('setSelectedItemPosition', -1);
-                                                commit('setSelectedItemId', null);
-                                                commit('setShowAutoCompleteResults', true);
-
-                                                resolve('OK');
-                                            });
+                                            resolve('OK');
                                         });
                                     });
                             }
@@ -188,24 +180,15 @@ export default function (ctx) {
                         dispatch('modApiCategory/mappingCategoryProducts', response.data, {root:true}).then((res) => {
                             // Get all product urls to find urls of search result products
                             dispatch('modApiResources/swGetProductUrls',{}, {root:true}).then(() => {
-                                _.forEach(res.items, (item, key) => {
-                                    let matchingProduct = _.find(rootState.modApiResources.dataProductUrls, function(o) {
-                                        return o.foreignKey === item.id;
-                                    });
+                                commit('modApiResources/setPageType', 'category' , {root: true});
 
-                                    // Set urls of matches
-                                    res.items[key].url_pds = matchingProduct.seoPathInfo;
+                                commit('modApiCategory/setDataCategoryProducts', {
+                                    data: {
+                                        result: res
+                                    }
+                                }, {root:true});
 
-                                    commit('modApiResources/setPageType', 'category' , {root: true});
-
-                                    commit('modApiCategory/setDataCategoryProducts', {
-                                        data: {
-                                            result: res
-                                        }
-                                    }, {root:true});
-
-                                    resolve('OK');
-                                });
+                                resolve('OK');
                             });
                         });
                     })

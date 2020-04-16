@@ -32,6 +32,7 @@ export default function (ctx) {
                 associations: {
                     manufacturer: {},
                     media: {},
+                    seoUrls: {},
                     cover: {}
                 }
             },
@@ -219,26 +220,13 @@ export default function (ctx) {
                             }
 
                             dispatch('mappingCategoryProducts', response.data).then((res) => {
-                                // Get all product urls to find urls of search result products
-                                dispatch('modApiResources/swGetProductUrls',{}, {root:true}).then(() => {
-                                    _.forEach(res.items, (item, key) => {
-                                        let matchingProduct = _.find(rootState.modApiResources.dataProductUrls, function(o) {
-                                            return o.foreignKey === item.id;
-                                        });
-
-                                        // Set urls of matches
-                                        res.items[key].url_pds = matchingProduct.seoPathInfo;
-
-                                        commit('setDataCategoryProducts', {
-                                            data: {
-                                                result: res
-                                            }
-                                        });
-
-                                        resolve();
-                                    });
-
+                                commit('setDataCategoryProducts', {
+                                    data: {
+                                        result: res
+                                    }
                                 });
+
+                                resolve();
                             });
                         })
                         .catch(response => {
@@ -287,9 +275,14 @@ export default function (ctx) {
                         obj.id = product.id;
                         obj.ean = product.ean;
                         obj.type = product.sw;
-                        if(product.cover !== null) {
+
+                        obj.image = '';
+                        if(product.cover != null) {
                             obj.image = product.cover.media.url;
+                        } else {
+                            // Todo: if not image isset insert placeholder image
                         }
+
                         obj.name = product.name;
                         obj.description = product.description;
                         obj.meta_title = product.metaTitle;

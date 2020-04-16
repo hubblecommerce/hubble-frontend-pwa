@@ -81,12 +81,34 @@ export default function (ctx) {
                         apiType: 'data',
                         endpoint: '/sales-channel-api/v1/dmf/page',
                         data: {
-                            path: payload
+                            path: payload,
+                            associations: {
+                                categories: {},
+                                manufacturer: {
+                                    associations: {
+                                        media: {}
+                                    }
+                                },
+                                media: {},
+                                seoUrls: {},
+                                crossSellings: {},
+                                children: {
+                                    associations: {
+                                        options: {
+                                            associations: {
+                                                group: {}
+                                            }
+                                        }
+                                    }
+                                },
+                            }
                         }
                     }, { root: true }).then(response => {
                         commit('setCmsObject', response.data.cmsPage);
 
                         resolve(response);
+                    }).catch((error) => {
+                        reject(error);
                     });
                 });
             },

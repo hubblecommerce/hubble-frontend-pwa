@@ -1,7 +1,13 @@
 import Middleware from './middleware'
 import {findCategoryByUrl, findProductByUrl} from '@hubblecommerce/hubble/core/utils/menuHelper';
 
-Middleware.apiResourceRoute = function({ store, route, error }) {
+Middleware.apiResourceRoute = async function({ store, route, error }) {
+    // Load detail page client side if its accessed via anchor
+    if(store.getters['modApiProduct/getOpenDetail']) {
+        store.commit('modApiResources/setPageType', 'product');
+        return;
+    }
+
     // remove leading '/'
     let path = route.path.slice(1);
 
@@ -15,91 +21,62 @@ Middleware.apiResourceRoute = function({ store, route, error }) {
 
     path = _.join(segments, '/');
 
-    // Lookup if url matches one of the category urls
-    let matchingCategory = findCategoryByUrl(store.getters['modApiMenu/getDataMenu'].result.items, path);
-    if(matchingCategory) {
+    try {
+        let pageResponse = await store.dispatch('modApiResources/getPage', path)
 
-        return new Promise((resolve, reject) => {
-
-            // Get page to set available filters
-            store.dispatch('modApiResources/getPage', path).then((pageResponse) => {
-
+        // Handle Categories
+        let matchingCategoryId = pageResponse.data.resourceIdentifier;
+        if(pageResponse.data.resourceType === 'frontend.navigation.page') {
+            return new Promise((resolve, reject) => {
                 store.dispatch('modApiRequests/mapFilterToFacets', pageResponse.data.listingConfiguration.availableFilters).then((facets) => {
                     store.commit('modApiRequests/setRequestFacets', facets);
                 });
 
-            });
+                // Get and store category
+                store.dispatch('modApiCategory/swGetCategory', matchingCategoryId).then(() => {
+                    store.commit('modApiResources/setPageType', 'category');
 
-            // Get and store category
-            store.dispatch('modApiCategory/swGetCategory', matchingCategory.id).then(() => {
+                    // Reset term of api request body,
+                    // in case user come from search page
+                    store.commit('modApiCategory/setTerm', null);
 
-                store.commit('modApiResources/setPageType', 'category');
+                    // Set filters from url query
+                    // important to call it first because it resets all filters
+                    if(route.query != null) {
+                        store.commit('modApiCategory/setFilters', route.query);
+                    }
 
-                // Reset term of api request body,
-                // in case user come from search page
-                store.commit('modApiCategory/setTerm', null);
+                    // Set limit to request if isset in url
+                    if(route.query.limit != null) {
+                        store.commit('modApiCategory/setLimit', route.query.limit);
+                        store.commit('modApiRequests/setPaginationPerPage', route.query.limit);
+                    }
 
-                // Set filters from url query
-                // important to call it first because it resets all filters
-                if(route.query != null) {
-                    store.commit('modApiCategory/setFilters', route.query);
-                }
+                    // Set page to request if isset in url
+                    if(route.query.page != null) {
+                        store.commit('modApiCategory/setPage', route.query.page);
+                    } else {
+                        store.commit('modApiCategory/setPage', 1);
+                    }
 
-                // Set limit to request if isset in url
-                if(route.query.limit != null) {
-                    store.commit('modApiCategory/setLimit', route.query.limit);
-                    store.commit('modApiRequests/setPaginationPerPage', route.query.limit);
-                }
+                    // Set order to request if isset in url
+                    if(route.query.sort != null) {
+                        store.commit('modApiCategory/setSorting', route.query.sort);
+                    } else {
+                        store.commit('modApiCategory/setSorting', 0);
+                    }
 
-                // Set page to request if isset in url
-                if(route.query.page != null) {
-                    store.commit('modApiCategory/setPage', route.query.page);
-                } else {
-                    store.commit('modApiCategory/setPage', 1);
-                }
-
-                // Set order to request if isset in url
-                if(route.query.sort != null) {
-                    store.commit('modApiCategory/setSorting', route.query.sort);
-                } else {
-                    store.commit('modApiCategory/setSorting', 0);
-                }
-
-                // Filter by category id
-                store.dispatch('modApiCategory/setApiRequestFilter', {
-                    type: 'contains',
-                    field: 'categoryTree',
-                    value: matchingCategory.id
-                }).then(() => {
-                    // Get products
-                    store.dispatch('modApiCategory/swGetProducts', matchingCategory.id).then(() => {
-                        resolve();
+                    // Filter by category id
+                    store.dispatch('modApiCategory/setApiRequestFilter', {
+                        type: 'contains',
+                        field: 'categoryTree',
+                        value: matchingCategoryId
+                    }).then(() => {
+                        // Get products
+                        store.dispatch('modApiCategory/swGetProducts', matchingCategoryId).then(() => {
+                            resolve();
+                        });
                     });
-                });
-
-            }).catch(() => {
-                error({statusCode: 404, message: 'Unknown URL'});
-                resolve();
-            });
-        });
-
-    }
-
-    // TODO: Find better solution to check if it's a valid product (path endpoint)
-    let matchingProduct = findProductByUrl(store.getters['modApiResources/getDataProductUrls'], path);
-    if(matchingProduct) {
-
-        store.commit('modApiProduct/setProductId', matchingProduct.foreignKey);
-
-        // Load detail page client side if its accessed via anchor
-        if(store.getters['modApiProduct/getOpenDetail']) {
-            store.commit('modApiResources/setPageType', 'product');
-        } else {
-            return new Promise((resolve, reject) => {
-                // Get and store category including products from api
-                store.dispatch('modApiProduct/getProductData', {path: path}).then(() => {
-                    store.commit('modApiResources/setPageType', 'product');
-                    resolve();
                 }).catch(() => {
                     error({statusCode: 404, message: 'Unknown URL'});
                     resolve();
@@ -107,5 +84,28 @@ Middleware.apiResourceRoute = function({ store, route, error }) {
             });
         }
 
+        // Handle Detailpage
+        let matchingProduct = pageResponse.data.product;
+        if(pageResponse.data.resourceType === 'frontend.detail.page') {
+            store.commit('modApiProduct/setProductId', pageResponse.data.product.id);
+
+            return new Promise((resolve, reject) => {
+                store.dispatch('modApiProduct/mappingProduct', {product: matchingProduct}).then((res) => {
+                    store.commit('modApiProduct/setDataProduct', {
+                        data: {
+                            result: {
+                                item: res
+                            }
+                        }
+                    });
+
+                    store.commit('modApiResources/setPageType', 'product');
+
+                    resolve('ok');
+                });
+            });
+        }
+    } catch(err) {
+        error({statusCode: 404, message: 'Unknown URL'});
     }
 };
