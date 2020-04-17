@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 const loginEmail = Cypress.env('login-email')
-const loginPw = Cypress.env('login-email')
+const loginPw = Cypress.env('login-pw')
 const loginWrongPw = Cypress.env('login-wrong-pw')
 
 describe('Accept Cookies', function() {
