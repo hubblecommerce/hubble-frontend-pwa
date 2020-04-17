@@ -64,7 +64,7 @@ describe('Buy products', function() {
 
     it('Change quantity of product', function () {
         cy.get('.quantity-selector').within(() => {
-            cy.get('select').select('5').should('have.value', '5')
+            cy.get('select').select('2').should('have.value', '2')
         })
     })
 
@@ -101,14 +101,15 @@ describe('Buy products', function() {
     it('Go to Shopping Cart', function () {
         cy.get('.checkout-btn').click()
 
-        cy.url().should('eq', 'http://localhost:3336/checkout/cart')
+        cy.url().should('include', '/checkout/cart')
     })
 
 
 
     it('Go to Shopping Cart', function () {
         cy.get('.checkout-btn').click()
-        cy.url().should('eq', 'http://localhost:3336/checkout/shopware-onepage')
+
+        cy.url().should('include', '/checkout/shopware-onepage')
     })
 
 
@@ -121,7 +122,7 @@ describe('Buy products', function() {
 
         cy.get('.summary-wrp > .button-primary').click()
 
-        cy.url().should('eq', 'http://localhost:3336/checkout/shopware-success')
+        cy.url().should('include', '/checkout/shopware-success')
 
         cy.contains('Thank you for your order at hubble!')
     })
