@@ -9,9 +9,6 @@ export default function (ctx) {
             // api
             apiLocale: null,
 
-            // resources
-            dataProductUrls: {},
-
             // stuff
             pageType: null,
 
@@ -27,17 +24,7 @@ export default function (ctx) {
             },
             setPageType: (state, item) => {
                 state.pageType = item;
-            },
-            setDataProductUrls: (state, payload) => {
-                state.dataProductUrls = payload;
-
-                if(state.dataMenuCacheable) {
-                    let _ttl = state.dataMenuCacheableTTL || state.cacheTTL;
-
-                    state.dataProductUrls.created_at_unixtime = datetimeUnixNow();
-                    state.dataProductUrls.expires_at_unixtime = datetimeUnixNowAddSecs(_ttl);
-                }
-            },
+            }
         },
         getters:  {
             getApiLocale: state => {
@@ -51,28 +38,6 @@ export default function (ctx) {
             }
         },
         actions: {
-            async swGetProductUrls({commit, state, dispatch}) {
-                return new Promise(function(resolve, reject) {
-                    if(!_.isEmpty(state.dataProductUrls)) {
-                        resolve();
-                    }
-
-                    dispatch('apiCall', {
-                        action: 'get',
-                        tokenType: 'sw',
-                        apiType: 'data',
-                        endpoint: '/sales-channel-api/v1/dmf/seo-url?filter[routeName]=frontend.detail.page&limit=500'
-                    }, { root: true })
-                        .then(response => {
-                            commit('setDataProductUrls', response.data.data);
-
-                            resolve('OK');
-                        })
-                        .catch(response => {
-                            reject('API request failed!');
-                        });
-                });
-            },
             async getPage({commit, dispatch}, payload) {
                 return new Promise((resolve, reject) => {
                     dispatch('apiCall', {

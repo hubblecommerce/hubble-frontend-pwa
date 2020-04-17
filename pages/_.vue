@@ -43,7 +43,6 @@
             'apiAuthenticate',
             'apiLocalization',
             'apiResourceMenu',
-            'apiResourceProductUrls',
             'apiResourceRoute',
             'apiResourceRequest',
             'trackClickPath'

@@ -87,18 +87,15 @@ export default function (ctx) {
                                 // map product data
                                 dispatch('modApiCategory/mappingCategoryProducts', response.data, {root:true})
                                     .then((res) => {
-                                        // Get all product urls to find urls of search result products
-                                        dispatch('modApiResources/swGetProductUrls',{}, {root:true}).then(() => {
-                                            commit('setProductItems', res.items);
+                                        commit('setProductItems', res.items);
 
-                                            // Set all items also in one array to handle key events
-                                            commit('setAutoCompleteResultsArray', state.autoCompleteResults.productItems);
-                                            commit('setSelectedItemPosition', -1);
-                                            commit('setSelectedItemId', null);
-                                            commit('setShowAutoCompleteResults', true);
+                                        // Set all items also in one array to handle key events
+                                        commit('setAutoCompleteResultsArray', state.autoCompleteResults.productItems);
+                                        commit('setSelectedItemPosition', -1);
+                                        commit('setSelectedItemId', null);
+                                        commit('setShowAutoCompleteResults', true);
 
-                                            resolve('OK');
-                                        });
+                                        resolve('OK');
                                     });
                             }
                         })
@@ -178,18 +175,15 @@ export default function (ctx) {
 
                         // map product data
                         dispatch('modApiCategory/mappingCategoryProducts', response.data, {root:true}).then((res) => {
-                            // Get all product urls to find urls of search result products
-                            dispatch('modApiResources/swGetProductUrls',{}, {root:true}).then(() => {
-                                commit('modApiResources/setPageType', 'category' , {root: true});
+                            commit('modApiResources/setPageType', 'category' , {root: true});
 
-                                commit('modApiCategory/setDataCategoryProducts', {
-                                    data: {
-                                        result: res
-                                    }
-                                }, {root:true});
+                            commit('modApiCategory/setDataCategoryProducts', {
+                                data: {
+                                    result: res
+                                }
+                            }, {root:true});
 
-                                resolve('OK');
-                            });
+                            resolve('OK');
                         });
                     })
                     .catch(response => {
