@@ -157,8 +157,8 @@ describe('Check Mobile Register', function() {
 
         cy.get('#privacyPolicy').check({force: true})
 
-        cy.get('.form-edit > .button-primary').click()
+        cy.get('.form-edit > .button-primary').click().wait(800)
 
-        cy.url().should('eq','http://localhost:3336/customer/dashboard')
+        cy.url().should('include','/customer/dashboard')
     })
 })
