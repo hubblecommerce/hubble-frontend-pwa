@@ -564,6 +564,11 @@
                 let birthday = this.form.baseData.birthday;
                 let phoneNumber = this.form.baseData.phone;
 
+                let shippingAddress = null;
+                if(process.env.API_TYPE === 'sw' && this.differentShippingAddress) {
+                    shippingAddress = this.form.addresses[1].payload;
+                }
+
                 // Extract data for api to handle
                 let userData = {
                     name: name,
@@ -572,7 +577,8 @@
                     password_confirm: passwordConfirm,
                     address: address,
                     birthday: birthday,
-                    phoneNumber: phoneNumber
+                    phoneNumber: phoneNumber,
+                    shippingAddress: shippingAddress
                 };
 
                 // Register new customer
@@ -592,7 +598,7 @@
                     }).then(response => {
                         // Get newly created wishlist id and save to store
                         this.setWishlistId(response.data.item.id);
-                        
+
                         this.saveToStore();
                     }).catch(response => {
                         // TODO: add catch clause implementation
@@ -600,7 +606,7 @@
 
                     // if double addressbook mode is true store address separately
                     // but not for SW API because the billing address is already set in register action
-                    if(this.alternativeShippingAddress && !process.env.API_TYPE === 'sw') {
+                    if(this.alternativeShippingAddress && process.env.API_TYPE !== 'sw') {
                         // Store Address
                         this.storeCustomerAddress(this.form.addresses[0]).then(() => {
                             // Store different shipping address

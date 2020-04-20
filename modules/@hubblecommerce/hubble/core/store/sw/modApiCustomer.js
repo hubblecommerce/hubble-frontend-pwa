@@ -70,7 +70,7 @@ export default function (ctx) {
             async register({dispatch, commit, state, getters}, payload) {
                 return new Promise((resolve, reject)  => {
                     // Map customer data to fit SW6 headless API
-                    const customer = {
+                    let customer = {
                         salutationId: payload.address.gender,
                         email: payload.email,
                         firstName: payload.address.firstName,
@@ -83,6 +83,18 @@ export default function (ctx) {
                         },
                         password: payload.password
                     };
+
+                    if(payload.shippingAddress !== null) {
+                        customer.shippingAddress = {
+                            salutationId: payload.shippingAddress.gender,
+                            firstName: payload.shippingAddress.firstName,
+                            lastName: payload.shippingAddress.lastName,
+                            street: payload.shippingAddress.street,
+                            zipcode: payload.shippingAddress.postal,
+                            city: payload.shippingAddress.city,
+                            countryId: payload.shippingAddress.country
+                        }
+                    }
 
                     dispatch('apiCall', {
                         action: 'post',
