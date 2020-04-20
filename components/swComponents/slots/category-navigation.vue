@@ -46,21 +46,10 @@
                 return 0;
             },
         },
-
-
         created() {
-            // Set data from store on create instead of use vuex store directly
-            // This prevents showing data of next category if user switches between categories
             if(!_.isEmpty(this.dataCategory.result)) {
                 this.categoryItem = this.dataCategory.result.item;
             }
-
         },
-
-
     }
 </script>
-
-<style scoped>
-
-</style>

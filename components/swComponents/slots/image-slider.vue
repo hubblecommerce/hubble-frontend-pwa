@@ -1,7 +1,6 @@
 <template>
     <div :class="elementClass" class="sw-image-slider">
         <div class="cms-element-alignment" :class="verticalAlign">
-
             <client-only>
                 <slider
                     :controls="true"
@@ -15,7 +14,6 @@
                     <template v-for="item in imageItems">
                         <img-lazy :src="item.media.url" :alt-info="item.media.alt" :title-info="item.media.title" />
                     </template>
-
                 </slider>
             </client-only>
         </div>

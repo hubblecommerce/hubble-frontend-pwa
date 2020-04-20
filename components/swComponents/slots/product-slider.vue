@@ -35,13 +35,13 @@
             }),
             verticalAlign() {
                 if(this.content.config && this.content.config.verticalAlign) {
-                    if(this.content.config.verticalAlign.value == "center") {
+                    if(this.content.config.verticalAlign.value === "center") {
                         return 'align-self-center'
                     }
-                    if(this.content.config.verticalAlign.value == "flex-end") {
+                    if(this.content.config.verticalAlign.value === "flex-end") {
                         return 'align-self-end'
                     }
-                    if(this.content.config.verticalAlign.value == "flex-end") {
+                    if(this.content.config.verticalAlign.value === "flex-end") {
                         return 'align-self-start'
                     }
                 }
@@ -59,6 +59,3 @@
         }
     };
 </script>
-
-<style lang="scss" scoped>
-</style>

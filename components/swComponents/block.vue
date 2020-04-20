@@ -1,7 +1,7 @@
 <template>
     <div class="cms-block" :class="blockClass" :style="backgroundStyles">
         <div class="cms-block-container" :style="paddingStyles">
-            <component :is="getComponent" :content="content" class="cms-block-container-row row cms-row"/>
+            <component :is="getComponent" :content="content" class="cms-block-container-row row cms-row" />
         </div>
     </div>
 </template>
@@ -22,11 +22,7 @@ import {sectionMixins} from './helper'
 
       computed: {
           getComponent() {
-              if(!this.content) return;
               return this.getBlockByType(this.content.type);
-          },
-          backgroundMediaMode() {
-              return this.content.backgroundMediaMode;
           },
           paddingStyles() {
               const padding = {
@@ -53,7 +49,3 @@ import {sectionMixins} from './helper'
 
   }
 </script>
-
-<style scoped>
-
-</style>

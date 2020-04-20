@@ -1,7 +1,7 @@
 <template>
     <div :class="elementClass">
         <div>
-            <div class="" v-html="rawHtml"></div>
+            <div class="" v-html="rawHtml" />
         </div>
     </div>
 </template>
@@ -38,7 +38,3 @@
 
     }
 </script>
-
-<style scoped>
-
-</style>

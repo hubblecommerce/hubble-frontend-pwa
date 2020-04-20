@@ -12,14 +12,14 @@
 <script>
   export default {
       name: 'NoComponent',
-      data() {
-          return {};
-      },
       props: {
           content: {
               type: Object,
               default: null
           }
+      },
+      data() {
+          return {};
       },
       computed: {
           elementType() {

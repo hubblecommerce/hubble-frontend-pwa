@@ -89,39 +89,3 @@ export default {
     }
 };
 </script>
-
-<style lang="scss" scoped>
-/*.sidebar-class {
-    display: flex;
-    width: 100%;
-    height: 100%;
-    //justify-content: center;
-    flex-direction: column;
-}
-
-.has-sidebar {
-    display: flex;
-    flex-direction: column;
-    position: relative;
-}
-
-.sw-blocks {
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    height: 100%;
-}
-
-@media (min-width: 1024px) {
-    !*.sw-blocks {
-            &:nth-child(2) > div:nth-child(1) {
-                min-height: 50vh;
-                margin-top: 20px;
-                //border-right: 1px solid black; // change to border color
-            }
-        }*!
-    .has-sidebar {
-        flex-direction: row;
-    }
-}*/
-</style>
