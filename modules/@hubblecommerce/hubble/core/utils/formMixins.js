@@ -36,14 +36,11 @@ const mapIsoToCountry = {
 
 const addBackendErrors = {
     methods: {
-        addBackendErrors: function(errors) {
-            // TODO: map sw6 api errors to hubble structure
-
-            // get error Messages as array
-            let errorMessages = _.mapValues(errors, val => {
-                return [val];
-            });
-            this.$refs.observer.setErrors(errorMessages);
+        addBackendErrors: function(error) {
+            // SW
+            if(process.env.API_TYPE === 'sw') {
+                return error.errors.map(val => val.detail);
+            }
         },
     }
 };

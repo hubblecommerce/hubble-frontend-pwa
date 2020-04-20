@@ -395,7 +395,9 @@
             <div class="validation-msg" v-text="$t(errors[0])" />
         </validation-provider>
 
-        <div class="error-message" v-text="error" />
+        <template v-for="error in errors">
+            <div class="error-message" v-text="error" />
+        </template>
 
         <button v-if="guest" class="button-primary" :disabled="processingRegister" @click.prevent="passes(submitRegisterGuestForm)">
             <span v-if="!processingRegister">{{ $t('Guest order') }}</span>
@@ -510,7 +512,7 @@
                     ]
                 }),
 
-                error: null
+                errors: []
             }
         },
 
@@ -542,6 +544,8 @@
                 setWishlistId: 'modWishlist/setWishlistId'
             }),
             submitRegisterForm: function() {
+                this.errors = [];
+
                 this.processingRegister = true;
 
                 // Set first address to shipping address to false
@@ -635,8 +639,10 @@
                     }
                 }).catch((error) => {
                     // Show api request error
-                    this.addBackendErrors(error.errors);
-                    this.error = error.message;
+                    _.forEach(this.addBackendErrors(error), error => {
+                        this.errors.push(error);
+                    })
+                    this.errors.push(error.message);
 
                     this.processingRegister = false;
                 });

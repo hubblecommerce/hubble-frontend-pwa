@@ -36,7 +36,9 @@
             <div class="validation-msg" v-text="$t(errors[0])" />
         </validation-provider>
 
-        <div class="error-message" v-text="error" />
+        <template v-for="error in errors">
+            <div class="error-message" v-text="error" />
+        </template>
 
         <div class="pw-reset" @click.prevent="toggleLoginForm" v-text="$t('Reset your Password')" />
 
@@ -94,7 +96,7 @@
                     email: '',
                     password: ''
                 }),
-                error: null,
+                errors: [],
                 showLoginForm: true,
             }
         },
@@ -125,7 +127,7 @@
                 };
 
                 // Clear error messages
-                this.error = null;
+                this.errors = [];
 
                 // Post request with login credentials
                 this.logIn(validCreds).then(() => {
@@ -179,9 +181,10 @@
                     })
 
                 }).catch((error) => {
-                    // Show api request error
-                    this.addBackendErrors(error.errors);
-                    this.error = this.$t('Login failed');
+                    this.errors.push(this.$t('Login failed'));
+                    _.forEach(this.addBackendErrors(error), error => {
+                        this.errors.push(error);
+                    })
                 });
             },
             // TODO: only show pw reset if not sw
@@ -205,10 +208,10 @@
                             password: ''
                         });
 
-                        this.error = '';
+                        this.errors = [];
                     });
                 }).catch(error => {
-                    this.error = 'Neues Password anfordern fehlgeschlagen';
+                    this.errors.push('Neues Password anfordern fehlgeschlagen');
                 });
             },
             toggleLoginForm: function () {
