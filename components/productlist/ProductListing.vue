@@ -64,21 +64,28 @@
                 required: false,
                 default() {
                     return {
-                        0: {
-                            items: 2,
-                            mouseDrag: true,
-                            controls: true
-                        },
-                        500: {
-                            items: 3,
-                            mouseDrag: true,
-                            controls: true
-                        },
-                        1000: {
-                            items: 6,
-                            controls: true,
-                            mouseDrag: false
-                        }
+                      0: {
+                        items: 1,
+                        mouseDrag: true,
+                        controls: true
+                      },
+                      500: {
+                        items: 2,
+                        controls: true
+                      },
+                      764: {
+                        items: 3,
+                        controls: true
+                      },
+                      992: {
+                        items: 4,
+                        controls: true,
+                        mouseDrag: false
+                      },
+                      1200: {
+                        items: 5,
+                        controls: true,
+                      }
                     }
                 }
             },

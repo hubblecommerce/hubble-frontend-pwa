@@ -10,16 +10,9 @@
     }
 
     .tns-outer {
-        width: 100%;
-        margin-left: 5px;
-
         .tns-controls {
             button {
                 z-index: 5;
-
-                i {
-                    font-size: 30px;
-                }
             }
 
             button:first-child {
@@ -28,16 +21,6 @@
 
             button:last-child {
                 right: 0;
-            }
-        }
-
-        .product-card {
-            position: relative;
-
-            &:hover {
-                .card-expand {
-                    display: none;
-                }
             }
         }
     }

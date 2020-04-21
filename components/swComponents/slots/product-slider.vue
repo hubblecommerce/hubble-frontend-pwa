@@ -1,7 +1,7 @@
 <template>
     <div :class="elementClass">
         <div class="cms-element-alignment" :class="verticalAlign">
-            <product-listing v-if="loaded" :data-items="dataItems" :is-slider="true" />
+            <product-listing v-if="loaded" :data-items="dataItems" :is-slider="true" :loop="false"/>
         </div>
     </div>
 </template>
@@ -59,14 +59,3 @@
         }
     };
 </script>
-
-<style lang="scss">
-    .cms-element-product-slider {
-        overflow: hidden;
-        .product-card:hover {
-            .card-expand {
-                display: none;
-            }
-        }
-    }
-</style>

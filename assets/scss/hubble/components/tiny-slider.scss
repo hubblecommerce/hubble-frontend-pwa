@@ -1,5 +1,8 @@
 .tns-outer {
   position: relative !important;
+  // with 100% minus the 2 times the width of control buttons (each 50px)
+  width: calc(100% - 100px);
+  margin: 0 auto;
 
   .tns-nav {
     position: absolute;
@@ -37,6 +40,10 @@
       background-color: transparent;
       background-image: none;
       border: none;
+    }
+
+    button i {
+      font-size: 30px;
     }
 
     button:disabled {

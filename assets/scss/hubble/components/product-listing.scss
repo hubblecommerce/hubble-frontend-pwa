@@ -22,6 +22,12 @@ $product-listing-gutter: 5px;
 
     .product-card {
       height: 100%;
+      position: relative;
+        &:hover {
+            .card-expand {
+                display: none;
+            }
+        }
     }
 
     img {
