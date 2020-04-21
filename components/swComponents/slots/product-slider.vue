@@ -59,3 +59,14 @@
         }
     };
 </script>
+
+<style lang="scss">
+    .cms-element-product-slider {
+        overflow: hidden;
+        .product-card:hover {
+            .card-expand {
+                display: none;
+            }
+        }
+    }
+</style>

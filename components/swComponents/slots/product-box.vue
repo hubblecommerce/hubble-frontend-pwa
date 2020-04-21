@@ -52,8 +52,12 @@
     };
 </script>
 
-<style lang="scss" scoped>
-    .actions {
-        display: none;
+<style lang="scss">
+    .cms-element-product-box {
+        .product-card:hover {
+            .card-expand {
+                display: none;
+            }
+        }
     }
 </style>
