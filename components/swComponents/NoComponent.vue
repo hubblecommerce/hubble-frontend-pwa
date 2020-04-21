@@ -1,10 +1,7 @@
 <template>
     <div>
         <span>
-        <b>
-          {{ elementType }}<i> {{ getBlockType }} </i>
-        </b>
-        is not implemented yet!
+        <b> {{ getBlockType }} </b> is not implemented yet!
       </span>
     </div>
 </template>
@@ -22,11 +19,8 @@
           return {};
       },
       computed: {
-          elementType() {
-              return this.content.slot ? `Slot` : `Block`;
-          },
           getBlockType() {
-              return this.content ? this.content.type : "";
+              return this.content.type;
           }
       }
   }
