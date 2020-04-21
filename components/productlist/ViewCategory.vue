@@ -86,13 +86,11 @@ export default {
 
     data() {
         return {
-            zippedPath: {},
             parentCategory: {},
             error: {
                 statusCode: 400,
                 message: 'Es liegen keine Ergebnisse für die ausgewählten Filter vor.'
             },
-            isCollapsed: true,
             categoryItem: {},
             categoryData: {},
 
@@ -172,42 +170,12 @@ export default {
 
             return 0;
         },
-        categoryLevel() {
-            if(!_.isEmpty(this.categoryItem)) {
-                return this.categoryItem.level;
-            }
-
-            return 0;
-        },
-        isImageArrayNull() {
-            if(this.parentCategory.children) {
-                return this.parentCategory.children.every( item => {
-                    return item.image === null;
-                })
-            }
-
-            return false;
-        },
         categoryProductStats() {
             return this.dataCategoryProducts.result.stats;
-        },
-        isManufacturer() {
-            if(!_.isEmpty(this.categoryItem)) {
-                return this.categoryItem.isManufacturer;
-            }
-
-            return false;
         },
         currentCategoryPath() {
             return this.categoryItem.path_urls.slice(-1)[0];
         },
-        manufacturerCategories() {
-            if(!_.isEmpty(this.requestCategoryFacets)) {
-                return this.requestCategoryFacets[0].options
-            }
-
-            return [];
-        }
     },
 
     created() {
