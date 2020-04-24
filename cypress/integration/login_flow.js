@@ -1,158 +1,91 @@
 /* eslint-disable */
 
-const loginEmail = Cypress.env('login-email')
-const loginPw = Cypress.env('login-pw')
-const loginWrongPw = Cypress.env('login-wrong-pw')
+import { getExistingUserData, viewPortSizes } from "./utils"
+
+const { loginEmail, loginPw, loginWrongPw } = getExistingUserData()
 
 
-describe('Login Flow', function() {
+describe('Login Flow', function () {
 
-    context('Desktop resolution 1300w x 600h', () => {
-        before(() => {
-            cy.visit('')
+    viewPortSizes.forEach(viewport => {
+        describe(`Tests for ${viewport.viewportWidth} w x ${viewport.viewportHeight} h`, function () {
 
-            cy.get('.cookie-notice')
-                .within(()=> {
-                    cy.get('.button-primary').click()
-                })
-        })
-
-
-
-        beforeEach(() => {
-            cy.viewport(1300, 660)
-        })
-
-
-
-        it('Click Login, no credentials', function () {
-            cy.get('.customer-account-cpt-wrp').click()
-
-            cy.get('form').within(()=> {
-                cy.get('.button-primary').click()
+            beforeEach(() => {
+                cy.viewport(viewport.viewportWidth, viewport.viewportHeight)
             })
 
-            cy.contains('Email is required')
-        })
 
 
+            it('clicks login, no credentials entered', function () {
+                cy.acceptCookies()
 
-        it('Login existing user', function () {
-            cy.get('#email').type(loginEmail)
-                .should('have.value', loginEmail)
+                cy.get('.customer-account-cpt-wrp button')
+                    .click()
 
-            cy.get('#password').type(loginPw)
-                .should('have.value', loginPw)
+                cy.contains('Login')
+                    .click()
 
-            cy.get('form').within(() => {
-                cy.get('.button-primary').click()
+                cy.contains('Email is required')
             })
 
-            cy.contains('Logout')
-        })
 
 
-
-        it('Logout logged in user', function () {
-            cy.get('.logout-button').click().wait(500)
-        })
-
-
-
-        it('Check if user is logged out', function () {
-            cy.get('.customer-account-cpt-wrp').click()
-
-            cy.get('form').within(() => {
-                cy.get('.button-primary').click()
+            it('logs in existing user', function () {
+                cy.login(loginEmail, loginPw, viewport.desktop)
             })
 
-            cy.contains('Email is required')
+
+
+            it('logs out logged-in user', function () {
+                cy.logout()
+            })
+
+
+
+            it('gets new password', function () {
+                cy.get('.customer-account-cpt-wrp button')
+                    .click()
+
+                cy.get('#email')
+                    .type(loginEmail)
+                    .should('have.value', loginEmail)
+
+                cy.contains('Reset your Password')
+                    .click()
+
+                cy.contains('Get new Password')
+                    .click()
+            })
+
+
+
+            it('clicks login, with invalid pw', function () {
+                cy.acceptCookies()
+
+                cy.get('.customer-account-cpt-wrp button')
+                    .click()
+
+                cy.contains('Login')
+                    .click()
+
+
+                cy.get('#email')
+                    .type(loginEmail)
+                    .should('have.value', loginEmail)
+
+                cy.get('#password')
+                    .type(loginWrongPw)
+                    .should('have.value', loginWrongPw)
+
+
+                cy.contains('Login')
+                    .click()
+
+                cy.get('.error-message').should('exist')
+
+                cy.contains('Login failed')
+            })
         })
     })
 
-
-    context('Mobile resolution 560w x 812h', () => {
-        before(() => {
-            cy.visit('')
-
-            cy.get('.cookie-notice')
-                .within(()=> {
-                    cy.get('.button-primary').click()
-                })
-        })
-
-
-
-        beforeEach(() => {
-            cy.viewport(560, 812)
-        })
-
-
-
-        it('Click Login, no credentials', function () {
-            cy.get('.customer-account-cpt-wrp').click()
-
-            cy.get('form').within(()=> {
-                cy.get('.button-primary').click()
-            })
-
-            cy.contains('Email is required')
-        })
-
-
-
-
-        it('Login existing user', function () {
-            cy.get('#email').type(loginEmail)
-                .should('have.value', loginEmail)
-
-            cy.get('#password').type(loginPw)
-                .should('have.value', loginPw)
-
-            cy.get('form').within(() => {
-                cy.get('.button-primary').click()
-            })
-
-            cy.contains('Logout')
-        })
-
-
-
-
-        it('Logout logged in user', function () {
-            cy.get('.logout-button').click().wait(500)
-        })
-
-
-
-
-        it('Check if user is logged out', function () {
-            cy.get('.customer-account-cpt-wrp').click()
-
-            cy.get('form').within(() => {
-                cy.get('.button-primary').click()
-            })
-
-            cy.contains('Email is required')
-        })
-
-
-
-        it('Login existing user, wrong PW', function () {
-            cy.get('.customer-account-cpt-wrp').click()
-
-            cy.get('#email').type(loginEmail)
-                .should('have.value', loginEmail)
-
-            cy.get('#password').type(loginWrongPw)
-                .should('have.value', loginWrongPw)
-
-            cy.get('form').within(() => {
-                cy.get('.button-primary').click()
-            })
-
-            cy.contains('Login failed')
-        })
-    })
 })
-
