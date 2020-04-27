@@ -29,7 +29,7 @@ describe('Buy Product Flow', function () {
             it('selects a product & adds to cart', function () {
                 cy.get('.listing-wrp .listing-item .product-card')
                     .should('be.visible')
-                    .pickRandomProduct(viewport.desktop)
+                    .pickRandomProduct()
 
 
                 cy.get('.add-to-cart').click()
