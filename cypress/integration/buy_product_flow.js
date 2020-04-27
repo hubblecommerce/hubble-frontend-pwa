@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import { getRandomInRange, viewPortSizes } from "./utils"
+import { viewPortSizes } from "./utils"
 
 
 describe('Buy Product Flow', function () {
@@ -21,33 +21,15 @@ describe('Buy Product Flow', function () {
 
 
             it('selects a category', function () {
-                cy.acceptCookies()
-
-
-                if (viewport.desktop) {
-                    cy.get('.menu-item').trigger('mouseenter')
-
-                    cy.get('.children-wrp .child-wrp').pickRandomCategory()
-                } else {
-                    cy.get('.menu-cpt-wrapper button')
-                        .should('have.class', 'navbar-toggler')
-                        .click()
-
-
-                    cy.get('.trigger').click()
-
-
-                    cy.get('.tree-wrp > :nth-child(1) > :nth-child(2) > :nth-child(1) > .sub-categories > :nth-child(1) > .trigger').click()
-
-
-                    cy.get('.button-primary').pickRandomCategory()
-                }
+                cy.pickCategory(viewport.desktop)
             })
+
+
 
             it('selects a product & adds to cart', function () {
                 cy.get('.listing-wrp .listing-item .product-card')
                     .should('be.visible')
-                    .pickRandomProduct()
+                    .pickRandomProduct(viewport.desktop)
 
 
                 cy.get('.add-to-cart').click()
@@ -65,51 +47,52 @@ describe('Buy Product Flow', function () {
                     .should('exist')
                     .click()
 
+
                 cy.url()
                     .should('include', '/checkout/cart')
                     .wait(800)
+
 
                 cy.contains('Go to checkout')
                     .should('exist')
                     .click()
 
-                cy.url()
-                    .should('include', '/checkout/login')
-
-                cy.contains('Guest order')
-                    .should('exist')
-                    .click()
 
                 cy.url()
-                    .should('include', '/checkout/shopware-guest')
+                    .should('include', '/checkout/shopware-onepage')
             })
 
 
 
             it('selects a payment method', function () {
-                cy.get('.payment-methods-wrp .method-wrp')
-                    .should('have.length', 3)
-                    .pickRandom()
-                })
+                cy.get('.payment-methods-wrp .method-wrp').then($paymentMethods => {
+                    cy.wrap($paymentMethods)
+                        .should('have.length', $paymentMethods.length)
+                        .pickRandom()
+                    })
+            })
 
 
 
             it('selects a shipping method', function () {
-                cy.get('.shipping-methods-wrp .method-wrp')
-                    .should('have.length', 2)
-                    .pickRandom()
+                cy.get('.shipping-methods-wrp .method-wrp').then($shippingMethods => {
+                    cy.wrap($shippingMethods)
+                        .should('have.length', $shippingMethods.length)
+                        .pickRandom()
+                })
             })
 
 
 
             it.skip('places order', function () {
-                cy.get('button').contains('Place Order').click()
+                cy.get('button')
+                    .contains('Place Order')
+                    .click()
             })
 
 
 
             it.skip('gets success message', function () {
-
                 cy.url().should('include', '/checkout/shopware-success')
 
                 cy.contains('Thank you for your order at hubble!')
