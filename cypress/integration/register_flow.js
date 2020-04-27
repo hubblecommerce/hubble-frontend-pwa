@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import { viewPortSizes } from "./utils"
+import { register, viewPortSizes } from "./utils"
 
 
 describe('Register Flow', function () {
@@ -14,17 +14,17 @@ describe('Register Flow', function () {
 
 
 
-            it('registers new user, billing == shipping address', function () {
-                cy.log(viewport.desktop)
-                cy.register(true, viewport.desktop)
+            context('registers new user, billing == shipping address', function () {
+                register(true, viewport.desktop)
             })
 
 
 
-            it('registers new user, billing !== shipping address', function () {
-                cy.register(false, viewport.desktop)
+            context('registers new user, billing !== shipping address', function () {
+                register(false, viewport.desktop)
             })
         })
+
     })
 
 })
