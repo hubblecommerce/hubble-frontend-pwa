@@ -138,6 +138,7 @@ export function register(shippingAndBillingAddressAreTheSame = true, desktop = t
 
 
         it('goes to register page & enters email & pw', function () {
+            // todo: simplify selector? -> icon -> no visible text
             cy.get('.customer-account-cpt-wrp button').click()
 
 
@@ -198,7 +199,8 @@ export function register(shippingAndBillingAddressAreTheSame = true, desktop = t
                     .should('be.checked')
             }
 
-
+            
+            // todo: simplify selector
             cy.get(':nth-child(1)')
                 .get('.hbl-select')
                 .find('select')
@@ -244,6 +246,7 @@ export function register(shippingAndBillingAddressAreTheSame = true, desktop = t
                 .should('have.value', registerBillingCity)
 
 
+            // todo: simplify selector
             cy.get('.billing-addresses-wrp')
                 .find('select')
                 .eq(1)
@@ -259,6 +262,7 @@ export function register(shippingAndBillingAddressAreTheSame = true, desktop = t
 
 
             if (!shippingAndBillingAddressAreTheSame) {
+                // todo: simplify selector
                 cy.get(':nth-child(2) select')
                     .children()
                     .eq(1)
@@ -266,6 +270,7 @@ export function register(shippingAndBillingAddressAreTheSame = true, desktop = t
 
 
                 cy.get('@availableSalutationsShipping').then(($salutationsShipping) => {
+                    // todo: simplify selector
                     cy.get(':nth-child(2) select')
                         .eq(2)
                         .select(selectAnOption($salutationsShipping))
@@ -297,12 +302,14 @@ export function register(shippingAndBillingAddressAreTheSame = true, desktop = t
                     .should('have.value', registerShippingCity)
 
 
+                // todo: simplify selector
                 cy.get('.shipping-addresses-wrp select')
                     .eq(1)
                     .children()
                     .as('countries')
 
 
+                // todo: simplify selector
                 cy.get('@countries').then(($countries) => {
                     cy.get('.shipping-addresses-wrp select')
                         .eq(1)
@@ -316,6 +323,7 @@ export function register(shippingAndBillingAddressAreTheSame = true, desktop = t
 
 
         it.skip('checks privacy notice box & registers', function () {
+            // todo: simplify selector
             cy.get('.hbl-checkbox > label')
                 .eq(1)
                 .click()
