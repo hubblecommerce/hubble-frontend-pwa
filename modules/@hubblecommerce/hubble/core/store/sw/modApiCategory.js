@@ -255,10 +255,11 @@ export default function (ctx) {
                     obj.meta_description = payload.metaDescription;
                     obj.level = payload.level;
                     obj.path_ids = payload.path.split('|').filter(s => s);
+                    obj.path_ids.push(payload.id)
                     obj.path_names = payload.breadcrumb;
                     obj.path_urls = [];
                     _.each(payload.breadcrumb, (crumb) => {
-                        obj.path_urls.push(slugify(crumb))
+                        obj.path_urls.push(slugify(crumb)+'/')
                     });
 
                     resolve(obj);
