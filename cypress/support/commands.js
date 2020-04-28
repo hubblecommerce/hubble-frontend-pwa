@@ -97,9 +97,17 @@ Cypress.Commands.add("pickRandomCategory", { prevSubject: true }, (subject) => {
 
 
 
+Cypress.Commands.add("pickRandomMenuItem", { prevSubject: true }, (subject) => {
+    cy.wrap(subject)
+        .eq(getRandomInRange(subject.length))
+        .wait(800)
+})
+
+
+
 Cypress.Commands.add("pickCategory", (desktop = true) => {
     if (desktop) {
-        cy.get('.menu-item').trigger('mouseenter')
+        cy.get('.menu-item').pickRandomMenuItem().trigger('mouseenter')
 
 
         cy.get('.children-wrp .child-wrp').pickRandomCategory()
@@ -109,10 +117,10 @@ Cypress.Commands.add("pickCategory", (desktop = true) => {
             .click()
 
 
-        cy.get('.trigger').click()
+        cy.get('.trigger').pickRandomMenuItem().click()
 
 
-        cy.get('.tree-wrp > :nth-child(1) > :nth-child(2) > :nth-child(1) > .sub-categories > :nth-child(1) > .trigger').click()
+        cy.get('.sub-categories .sub-categories .trigger').pickRandomMenuItem().click()
 
 
         cy.get('.button-primary').pickRandomCategory()
