@@ -32,7 +32,7 @@ describe('Buy Product Flow', function () {
                     .pickRandomProduct()
 
 
-                cy.get('.add-to-cart').click()
+                cy.contains('Add to Cart').click()
 
 
                 cy.contains('Successfully added item to cart.')

@@ -3,8 +3,8 @@
 import { getGuestData, selectAnOption, viewPortSizes } from "./utils"
 
 
-
 const { guestEmail, guestFirstName, guestLastName, guestStreet, guestZipCode, guestCity } = getGuestData()
+
 
 
 describe('Buy Product Guest Flow', function () {
@@ -25,13 +25,15 @@ describe('Buy Product Guest Flow', function () {
                 cy.pickCategory(viewport.desktop)
             })
 
+
+
             it('selects a product & adds to cart', function () {
                 cy.get('.listing-wrp .listing-item .product-card')
                     .should('be.visible')
                     .pickRandomProduct()
 
 
-                cy.get('.add-to-cart').click()
+                cy.contains('Add to Cart').click()
 
 
                 cy.contains('Successfully added item to cart.')
