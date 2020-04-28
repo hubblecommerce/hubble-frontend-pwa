@@ -321,6 +321,8 @@ export default (context) => {
                 "Recaptcha could not be executed.": "Recaptcha could not be executed.",
                 "Get new Password": "Get new Password",
                 "Oops, something went wrong": "Oops, something went wrong",
+                "Something went wrong": "Something went wrong",
+                "There are no products available in this category or for this filter.": "There are no products available in this category or for this filter.",
                 "Shipping to this country is not allowed": "Shipping to this country is not allowed",
                 "See description": "See description",
                 "select": "select",
