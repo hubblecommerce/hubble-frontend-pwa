@@ -3,7 +3,7 @@
 const { _ } = Cypress
 
 
-import { getExistingUserData, getRandomInRange } from "../integration/utils";
+import { getExistingUserData, getRandomInRange } from "./utils";
 
 
 const { loginEmail, loginPw } = getExistingUserData()
@@ -48,7 +48,7 @@ Cypress.Commands.add("login", (email = loginEmail, password = loginPw, desktop) 
 
     cy.contains('Logout')
 
-
+    // todo: simplify selector? -> icon -> no visible text
     cy.get('.overlay-header > .button-close-menu > .icon').click()
 })
 
@@ -104,7 +104,7 @@ Cypress.Commands.add("pickRandomMenuItem", { prevSubject: true }, (subject) => {
 })
 
 
-
+    // todo: simplify selectors?
 Cypress.Commands.add("pickCategory", (desktop = true) => {
     if (desktop) {
         cy.get('.menu-item').pickRandomMenuItem().trigger('mouseenter')
