@@ -34,18 +34,22 @@ export const selectAnOption = options => options[getRandomInRange(options.length
 
 
 
+const resolutions = Cypress.env('resolutions')
+
+
+
 const mobile = {
-    viewportWidth: 560,
-    viewportHeight: 812,
-    desktop: false
+    viewportWidth: resolutions.mobile.viewportWidth,
+    viewportHeight:resolutions.mobile.viewportHeight,
+    desktop: resolutions.mobile.desktop,
 }
 
 
 
 const desktop = {
-    viewportWidth: 1300,
-    viewportHeight: 660,
-    desktop: true
+    viewportWidth: resolutions.desktop.viewportWidth,
+    viewportHeight: resolutions.desktop.viewportHeight,
+    desktop: resolutions.desktop.desktop,
 }
 
 
@@ -156,7 +160,7 @@ export function register(shippingAndBillingAddressAreTheSame = true, desktop = t
                     .contains('Register')
                     .click()
 
-                
+
                 cy.get('.tabs-component-panels')
                     .contains('I am not having an account yet')
             }
