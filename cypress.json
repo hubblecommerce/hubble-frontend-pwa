@@ -1,6 +1,10 @@
 {
     "baseUrl": "http://localhost:3336",
     "video": false,
+    "defaultCommandTimeout": 100000,
+    "pageLoadTimeout": 100000,
+    "requestTimeout": 100000,
+    "responseTimeout": 100000,
     "env": {
         "resolutions": {
             "mobile": {
