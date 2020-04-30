@@ -168,7 +168,7 @@ describe('Buy Product Guest Flow', function () {
 
 
             it('gets success message', function () {
-                cy.url({timeout: 5000}).should('include', '/checkout/shopware-success')
+                cy.url().should('include', '/checkout/shopware-success')
 
                 cy.contains('Thank you for your order at hubble!')
             })
