@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import { viewPortSizes } from "./utils"
+import { viewPortSizes } from "../support/utils"
 
 
 describe('Buy Product Flow', function () {
@@ -84,7 +84,7 @@ describe('Buy Product Flow', function () {
 
 
 
-            it.skip('places order', function () {
+            it('places order', function () {
                 cy.get('button')
                     .contains('Place Order')
                     .click()
@@ -92,8 +92,8 @@ describe('Buy Product Flow', function () {
 
 
 
-            it.skip('gets success message', function () {
-                cy.url().should('include', '/checkout/shopware-success')
+            it('gets success message', function () {
+                cy.url({timeout: 5000}).should('include', '/checkout/shopware-success')
 
                 cy.contains('Thank you for your order at hubble!')
             })

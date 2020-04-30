@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import { getGuestData, selectAnOption, viewPortSizes } from "./utils"
+import { getGuestData, selectAnOption, viewPortSizes } from "../support/utils"
 
 
 const { guestEmail, guestFirstName, guestLastName, guestStreet, guestZipCode, guestCity } = getGuestData()
@@ -73,6 +73,7 @@ describe('Buy Product Guest Flow', function () {
 
 
             it('selects salutation', function () {
+                // todo: simplify selector
                 cy.get(':nth-child(1)')
                     .get('.hbl-select')
                     .find('select')
@@ -158,7 +159,7 @@ describe('Buy Product Guest Flow', function () {
 
 
 
-            it.skip('places order', function () {
+            it('places order', function () {
                 cy.get('button')
                     .contains('Place Order')
                     .click()
@@ -166,8 +167,8 @@ describe('Buy Product Guest Flow', function () {
 
 
 
-            it.skip('gets success message', function () {
-                cy.url().should('include', '/checkout/shopware-success')
+            it('gets success message', function () {
+                cy.url({timeout: 5000}).should('include', '/checkout/shopware-success')
 
                 cy.contains('Thank you for your order at hubble!')
             })
