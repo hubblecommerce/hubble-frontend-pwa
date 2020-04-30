@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import { getExistingUserData, viewPortSizes } from "./utils"
+import { getExistingUserData, viewPortSizes } from "../support/utils"
 
 const { loginEmail, loginPw, loginWrongPw } = getExistingUserData()
 

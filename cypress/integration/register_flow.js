@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import { register, viewPortSizes } from "./utils"
+import { register, viewPortSizes } from "../support/utils"
 
 
 describe('Register Flow', function () {
