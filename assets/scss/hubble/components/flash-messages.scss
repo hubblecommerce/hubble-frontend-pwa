@@ -1,7 +1,6 @@
 .flash-messages-wrp {
     position: fixed;
-    bottom: inherit;
-    top: 0;
+    bottom: 0;
     width: 100%;
     right: 0;
     left: 0;
@@ -14,7 +13,6 @@
         flex-direction: column;
         opacity: 1;
         position: relative;
-
     }
 
 
