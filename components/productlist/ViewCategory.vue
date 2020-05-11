@@ -15,12 +15,23 @@
         </div>
 
         <template v-if="isShopware">
-            <div class="container">
-                 <sw-section v-for="cmsSection in cmsSections"
-                            :key="cmsSection.id"
-                            :content="cmsSection"
-                 />
-            </div>
+            <template v-if="!errorNoProducts">
+                <div class="container">
+                     <sw-section v-for="cmsSection in cmsSections"
+                                :key="cmsSection.id"
+                                :content="cmsSection"
+                     />
+                </div>
+            </template>
+            <template v-else>
+                <div class="error-listing container flex-center flex-column">
+                    <error-no-items :error="error" />
+                    <button class="button-primary" @click="routeHistoryBack()">
+                        {{ $t('Back') }}
+                        <material-ripple />
+                    </button>
+                </div>
+            </template>
         </template>
 
         <template v-else>
@@ -56,7 +67,7 @@
                 <div class="error-listing container flex-center flex-column">
                     <error-no-items :error="error" />
                     <button class="button-primary" @click="routeHistoryBack()">
-                        Zurück
+                        {{ $t('Back') }}
                         <material-ripple />
                     </button>
                 </div>
@@ -82,6 +93,7 @@ export default {
         Pagination: () => import('./toolbar/Pagination'),
         GTMDataLayer: () => import('../utils/GTMDataLayer'),
         swSection: () => import('~/components/swComponents/section.vue'),
+        errorNoItems: () => import('~/components/error/noItems.vue'),
     },
 
     data() {
@@ -89,7 +101,7 @@ export default {
             parentCategory: {},
             error: {
                 statusCode: 400,
-                message: 'Es liegen keine Ergebnisse für die ausgewählten Filter vor.'
+                message: 'There are no products available in this category or for this filter.'
             },
             categoryItem: {},
             categoryData: {},
