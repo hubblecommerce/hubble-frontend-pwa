@@ -29,7 +29,7 @@
                     </div>
 
                     <div class="row">
-                        <flash-message v-if="qty > 0" :fade-out="false" :in-off-canvas="true" />
+                        <flash-messages v-if="qty > 0" :fade-out="false" :in-off-canvas="true" />
                     </div>
 
                     <div class="row">
