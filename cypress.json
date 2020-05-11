@@ -1,3 +1,22 @@
 {
-    "baseUrl": "http://localhost:3333"
+    "baseUrl": "http://localhost:3336",
+    "video": false,
+    "defaultCommandTimeout": 100000,
+    "pageLoadTimeout": 100000,
+    "requestTimeout": 100000,
+    "responseTimeout": 100000,
+    "env": {
+        "resolutions": {
+            "mobile": {
+                "viewportWidth": 560,
+                "viewportHeight": 812,
+                "desktop": false
+            },
+            "desktop": {
+                "viewportWidth": 1300,
+                "viewportHeight": 660,
+                "desktop": true
+            }
+        }
+    }
 }

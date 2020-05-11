@@ -86,3 +86,13 @@ package-lock.json
 static/OneSignalSDKWorker.js
 static/OneSignalSDKUpdaterWorker.js
 
+
+.DS_Store
+
+# Cypress
+cypress/.DS_Store
+cypress/integration/.DS_Store
+cypress/screenshots
+cypress/videos
+
+
