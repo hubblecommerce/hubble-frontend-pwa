@@ -258,8 +258,12 @@ export default function (ctx) {
                     obj.path_ids.push(payload.id)
                     obj.path_names = payload.breadcrumb;
                     obj.path_urls = [];
-                    _.each(payload.breadcrumb, (crumb) => {
-                        obj.path_urls.push(slugify(crumb)+'/')
+                    _.each(payload.breadcrumb, (crumb, index) => {
+                        let slugifiedCrumb = slugify(crumb) + '/';
+                        if(index > 1) {
+                            slugifiedCrumb = obj.path_urls[index-1] + slugifiedCrumb;
+                        }
+                        obj.path_urls.push(slugifiedCrumb);
                     });
 
                     resolve(obj);
