@@ -25,7 +25,7 @@
                 <template v-if="$mq === 'sm'">
                     <the-search-direct />
                 </template>
-                <flash-message />
+                <flash-messages v-if="!activeOffCanvas" />
             </div>
 
             <main>
@@ -53,7 +53,7 @@
                         <customer-menu />
                         <the-mini-cart />
                     </div>
-                    <flash-message />
+                    <flash-messages v-if="!activeOffCanvas" />
                 </div>
             </div>
 
@@ -83,14 +83,12 @@
     import TheSearchDirect from "../components/search/TheSearchDirect";
     import TheMiniCart from "../components/navigation/TheMiniCart";
     import CustomerMenu from '../components/navigation/CustomerMenu';
-
     import TheMobileMenu from "../components/navigation/TheMobileMenu";
-
     import TheMegaMenu from "../components/navigation/TheMegaMenu";
     import BackgroundBlur from "../components/utils/BackgroundBlur";
     import TheWishlist from "../components/navigation/TheWishlist";
     import CookieNotice from "../components/utils/CookieNotice";
-
+    import FlashMessages from "../components/utils/FlashMessages";
     export default {
         components: {
             TrustedShopsBadge: () => import('../components/utils/TrustedShopsBadge'),
@@ -107,28 +105,27 @@
             TheMobileMenu,
             TheLogo,
             CustomerMenu,
-            CookieNotice
+            CookieNotice,
+            FlashMessages
         },
-
         data() {
-          return {
-              menu: {},
-              userInteraction: false,
-              inView: false
-          }
+            return {
+                menu: {},
+                userInteraction: false,
+                inView: false
+            }
         },
-
         computed: {
             ...mapState({
                 dataMenu: state => state.modApiMenu.dataMenu,
-                showCookieNotice: state => state.modCookieNotice.showCookieNotice
+                showCookieNotice: state => state.modCookieNotice.showCookieNotice,
+                /* wednesday: */
+                activeOffCanvas: state => state.modNavigation.offcanvas.isActive
             })
         },
-
         created() {
             this.setMenuItems();
         },
-
         methods: {
             setMenuItems: function() {
                 if(! _.isEmpty(this.dataMenu.result)) {
@@ -146,7 +143,6 @@
                 return _.isEmpty(obj);
             }
         },
-
         head () {
             return this.$nuxtI18nSeo()
         }

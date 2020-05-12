@@ -22,7 +22,7 @@
                         </nuxt-link>
                     </div>
                 </div>
-                <flash-message />
+                <flash-messages v-if="!activeOffCanvas" />
             </div>
 
             <main>
@@ -49,7 +49,7 @@
                             </button>
                         </nuxt-link>
                     </div>
-                    <flash-message />
+                    <flash-messages v-if="!activeOffCanvas" />
                 </div>
             </div>
 
@@ -75,22 +75,23 @@
     import { mapState } from 'vuex';
     import ScrollToTop from "../components/utils/ScrollToTop";
     import TheLogo from "../components/navigation/TheLogo";
-
     import BackgroundBlur from "../components/utils/BackgroundBlur";
     import TheFooterCopyrightLight from "../components/footer/TheFooterCopyrightLight";
     import CookieNotice from "../components/utils/CookieNotice";
-
+    import FlashMessages from "../components/utils/FlashMessages";
     export default {
         components: {
             TheFooterCopyrightLight,
             BackgroundBlur,
             ScrollToTop,
             TheLogo,
-            CookieNotice
+            CookieNotice,
+            FlashMessages
         },
         computed: {
             ...mapState({
-                showCookieNotice: state => state.modCookieNotice.showCookieNotice
+                showCookieNotice: state => state.modCookieNotice.showCookieNotice,
+                activeOffCanvas: state => state.modNavigation.offcanvas.isActive
             })
         },
         methods: {
@@ -98,7 +99,6 @@
                 this.$router.go(-1);
             }
         },
-
         head () {
             return this.$nuxtI18nSeo()
         }

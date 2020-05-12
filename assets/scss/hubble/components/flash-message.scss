@@ -1,171 +1,33 @@
-.flash-message-wrp {
-    position: fixed;
-    bottom: inherit;
+.close-flash {
+    position: absolute;
     top: 0;
-    z-index: 1;
-    width: 100%;
-    left: 0;
-    padding: 20px 40px;
-    opacity: 1;
-    box-shadow: 0 4px 10px 0 rgba(41, 40, 47, .1);
-
-    &.info {
-        background: $background;
-        color: $text-primary;
-
-        i {
-            color: $text-primary;
-        }
-    }
-
-    &.success {
-        background: #d4fbe6;
-        color: $success-accent;
-        padding-left: 55px;
-
-        &:before {
-            font-family: 'icons';
-            content: '\e903';
-            color: $success-accent;
-            font-size: 23px;
-            line-height: 20px;
-            text-align: center;
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 15px;
-            width: 20px;
-            height: 20px;
-            margin: auto;
-        }
-
-        i {
-            color: $success-accent;
-        }
-    }
-
-    &.error {
-        background: lighten( $error-accent, 40% );
-        color: $error-accent;
-
-        i {
-            color: $error-accent;
-        }
-    }
-
-    .flash-message {
-        padding-right: 10px;
-    }
-
-    .close-flash {
-        position: absolute;
-        top: 0;
-        right: 0;
-    }
+    right: 0;
 }
 
-.flash-message-enter-active {
-    animation: fall-down .5s;
-}
-.flash-message-leave-active {
-    animation: fall-down .5s reverse;
+
+.flash-message {
+    padding-right: 10px;
 }
 
-@keyframes fall-down {
-    0% {
-        top: -100px;
-        opacity: 0;
-    }
-    100% {
-        top: 0;
-        opacity: 1;
-    }
-}
 
-/* Different styling for flash message in expand layer context */
 .transition-expand-wrp {
-    .flash-message-wrp {
-        position: relative;
-        top: inherit;
-        bottom: inherit;
-        left: inherit;
-        right: inherit;
-        width: 100%;
-        z-index: 0;
-
-        .flash-message {
-            padding-right: 30px;
-        }
-
-        .close-flash {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            right: 10px;
-        }
-    }
-}
-
-@media(min-width: 768px) {
-    .flash-message-wrp {
-        position: absolute;
-        bottom: inherit;
-        top: 101px;
-        width: 320px;
-        left: inherit;
-        right: 20px;
-        margin: 0 auto;
-        z-index: -2;
-        opacity: 1;
-    }
-
-    .flash-message-enter-active {
-        animation: fall-down .5s;
-    }
-    .flash-message-leave-active {
-        animation: fall-down .5s reverse;
-    }
-
-    @keyframes fall-down {
-        0% {
-            top: 56px;
-            opacity: 0;
-        }
-        100% {
-            top: 101px;
-            opacity: 1;
-        }
-    }
-
-    /* Different styling for flash message in expand layer context */
-    .transition-expand-wrp {
-        .flash-message-enter-active {
-            animation: none;
-        }
-        .flash-message-leave-active {
-            animation: none;
-        }
+    .close-flash {
+        bottom: 0;
+        right: 15px;
+        padding-left: 75px;
+        padding-right: 75px;
     }
 }
 
 
 @media(min-width: 1024px) {
-    /* Different styling for flash message in expand layer context */
     .transition-expand-wrp {
-        .flash-message-wrp {
-            padding-left: 75px;
+        .close-flash {
+            right: 35px;
+        }
 
-            &:before {
-                left: 35px;
-            }
-
-            .flash-message {
-                padding-right: 50px;
-            }
-
-            .close-flash {
-                right: 30px;
-            }
+        .flash-message {
+            padding-left: 20px;
         }
     }
 }
