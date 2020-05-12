@@ -7,7 +7,7 @@
             <trusted-shops-badge v-if="userInteraction" />
         </client-only>
 
-        <div v-if="$mq === 'sm' || $mq === 'md'" class="mobile-layout">
+        <div v-if="$mq === 'sm' || $mq === 'md'" class="mobile-layout" :class="{ disableScroll: activeOffCanvas }">
             <background-blur />
             <div class="header-wrp">
                 <div class="nav-wrp">
@@ -41,7 +41,7 @@
             <scroll-to-top />
         </div>
 
-        <div v-if="$mq === 'lg'" class="desktop-layout">
+        <div v-if="$mq === 'lg'" class="desktop-layout" :class="{ disableScroll: activeOffCanvas }">
             <background-blur />
             <div class="header-wrp">
                 <div class="nav-wrp">
@@ -119,7 +119,6 @@
             ...mapState({
                 dataMenu: state => state.modApiMenu.dataMenu,
                 showCookieNotice: state => state.modCookieNotice.showCookieNotice,
-                /* wednesday: */
                 activeOffCanvas: state => state.modNavigation.offcanvas.isActive
             })
         },

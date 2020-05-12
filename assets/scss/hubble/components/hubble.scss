@@ -1,4 +1,9 @@
 /* Layout */
+.disableScroll {
+    height: 100vh;
+    overflow: hidden;
+    position: fixed;
+}
 .mobile-layout {
     position: relative;
     min-height: 100vh;
