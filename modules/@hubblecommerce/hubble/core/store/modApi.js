@@ -186,21 +186,22 @@ export default function (ctx) {
                         payloadData = payload.data;
                     }
 
-                    // Set Store ID to request data
-                    if(!_.isEmpty(process.env.STORE_ID) && payloadData !== null) {
-                        _.assign(payloadData, {storeId: process.env.STORE_ID});
-                    }
-
-
-                    // Set data if data isset
+                    // Set params if params isset
                     let payloadParams = {};
                     if(!_.isEmpty(payload.params)) {
                         payloadParams = payload.params;
                     }
 
-                    // Set Store ID to request data
-                    if(!_.isEmpty(process.env.STORE_ID) && payloadParams !== null) {
-                        _.assign(payloadParams, {storeId: process.env.STORE_ID});
+                    if(process.env.API_TYPE === 'api') {
+                        // Set Store ID to request data
+                        if(!_.isEmpty(process.env.STORE_ID) && payloadData !== null) {
+                            _.assign(payloadData, {storeId: process.env.STORE_ID});
+                        }
+
+                        // Set Store ID to request params
+                        if(!_.isEmpty(process.env.STORE_ID) && payloadParams !== null) {
+                            _.assign(payloadParams, {storeId: process.env.STORE_ID});
+                        }
                     }
 
                     // Reset params if action is post
