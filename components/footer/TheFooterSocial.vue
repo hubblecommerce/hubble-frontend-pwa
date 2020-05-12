@@ -7,7 +7,7 @@
                     <div class="hidden-link-name">Visit us on Facebook</div>
                     <i class="icon icon-facebook" />
                 </a>
-                <a href="https://www.instagram.com/hubble/" target="_blank" rel="noopener">
+                <a href="https://www.instagram.com/hubblecommerce/" target="_blank" rel="noopener">
                     <div class="hidden-link-name">Follow us on Instagram</div>
                     <i class="icon icon-instagram" />
                 </a>
