@@ -3,7 +3,7 @@
 
         <noscript>Please enable JavaScript and refresh this page, to use this application.</noscript>
 
-        <div v-if="$mq === 'sm' || $mq === 'md'" class="mobile-layout hubble-light">
+        <div v-if="$mq === 'sm' || $mq === 'md'" class="mobile-layout hubble-light" :class="{ disableScroll: activeOffCanvas }">
             <background-blur />
             <div class="header-wrp">
                 <div class="nav-wrp">
@@ -36,7 +36,7 @@
             <scroll-to-top />
         </div>
 
-        <div v-if="$mq === 'lg'" class="desktop-layout hubble-light">
+        <div v-if="$mq === 'lg'" class="desktop-layout hubble-light" :class="{ disableScroll: activeOffCanvas }">
             <background-blur />
             <div class="header-wrp">
                 <div class="nav-wrp">
