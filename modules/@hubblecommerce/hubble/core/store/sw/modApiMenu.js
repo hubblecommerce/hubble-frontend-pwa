@@ -128,7 +128,7 @@ export default function (ctx) {
                         obj.url_path = false;
 
                         if(!_.isEmpty(category.seoUrls)) {
-                            obj.url_path = category.seoUrls[0].seoPathInfo;
+                            obj.url_path = category.seoUrls[0].seoPathInfo.toLowerCase();
                         }
 
                         if(category.type === 'folder') {
