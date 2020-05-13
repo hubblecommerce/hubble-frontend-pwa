@@ -1,9 +1,4 @@
 /* Layout */
-.disableScroll {
-    height: 100vh;
-    overflow: hidden;
-    position: fixed;
-}
 .mobile-layout {
     position: relative;
     min-height: 100vh;
@@ -146,7 +141,6 @@
   .cookie-notice {
       bottom: 5%;
   }
-
 }
 
 
@@ -167,7 +161,6 @@
     .mobile-layout {
         padding-bottom: 495px;
     }
-
     .nav-wrp {
         &:before {
           content: '';
