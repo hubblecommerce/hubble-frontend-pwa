@@ -71,13 +71,12 @@
                     <the-footer-copyright v-if="inView" />
                 </div>
             </div>
-
-            <client-only>
-                <div v-if="showCookieNotice" class="cookie-notice">
-                    <cookie-notice />
-                </div>
-            </client-only>
         </layout-wrapper>
+        <client-only>
+            <div v-if="showCookieNotice" class="cookie-notice">
+                <cookie-notice />
+            </div>
+        </client-only>
     </div>
 </template>
 
