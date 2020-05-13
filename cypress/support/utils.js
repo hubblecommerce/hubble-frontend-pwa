@@ -157,11 +157,6 @@ export function register(shippingAndBillingAddressAreTheSame = true, desktop = t
                     .contains('Register')
                     .click()
             } else {
-                cy.get('.tabs-component-tab')
-                    .contains('Register')
-                    .click()
-
-
                 cy.get('.tabs-component-panels')
                     .contains('I am not having an account yet')
             }
@@ -199,7 +194,7 @@ export function register(shippingAndBillingAddressAreTheSame = true, desktop = t
                     .should('be.checked')
             }
 
-            
+
             // todo: simplify selector
             cy.get(':nth-child(1)')
                 .get('.hbl-select')
