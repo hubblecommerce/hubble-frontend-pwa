@@ -1,6 +1,6 @@
 <template>
     <div class="container checkout-login customer-login">
-        <tabs v-if="$mq === 'sm' || $mq === 'md'" class="checkout-login-tabs">
+        <tabs v-if="$mq === 'sm' || $mq === 'md'" class="checkout-login-tabs" :default-tab="1">
             <tab class="login-tab" :name="$t('Login')">
                 <div class="checkout-login-wrp">
                     <login-form />
@@ -47,7 +47,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 </template>
 
