@@ -7,72 +7,77 @@
             <trusted-shops-badge v-if="userInteraction" />
         </client-only>
 
-        <div v-if="$mq === 'sm' || $mq === 'md'" class="mobile-layout">
-            <background-blur />
-            <div class="header-wrp">
-                <div class="nav-wrp">
-                    <the-mobile-menu v-if="!isEmpty(menu)" :data-items="menu" />
-                    <the-logo />
-                    <template v-if="$mq === 'md'">
+        <layout-wrapper v-if="$mq === 'sm' || $mq === 'md'">
+            <div class="mobile-layout">
+                <background-blur />
+                <div class="header-wrp">
+                    <div class="nav-wrp">
+                        <the-mobile-menu v-if="!isEmpty(menu)" :data-items="menu" />
+                        <the-logo />
+                        <template v-if="$mq === 'md'">
+                            <the-search-direct />
+                        </template>
+                        <div class="action-wrp d-flex">
+                            <the-wishlist />
+                            <customer-menu />
+                            <the-mini-cart />
+                        </div>
+                    </div>
+                    <template v-if="$mq === 'sm'">
                         <the-search-direct />
                     </template>
-                    <div class="action-wrp d-flex">
-                        <the-wishlist />
-                        <customer-menu />
-                        <the-mini-cart />
-                    </div>
-                </div>
-                <template v-if="$mq === 'sm'">
-                    <the-search-direct />
-                </template>
-                <flash-messages v-if="!activeOffCanvas" />
-            </div>
-
-            <main>
-                <nuxt />
-            </main>
-
-            <div class="footer" v-view.once="onceHandler">
-                <div class="white-border" />
-                <the-footer-social v-if="inView" />
-                <the-footer-mobile v-if="inView" />
-                <the-footer-copyright v-if="inView" />
-            </div>
-            <scroll-to-top />
-        </div>
-
-        <div v-if="$mq === 'lg'" class="desktop-layout">
-            <background-blur />
-            <div class="header-wrp">
-                <div class="nav-wrp">
-                    <the-logo />
-                    <the-mega-menu v-if="!isEmpty(menu)" :data-items="menu" />
-                    <the-search-direct />
-                    <div class="action-wrp d-flex align-items-center">
-                        <the-wishlist />
-                        <customer-menu />
-                        <the-mini-cart />
-                    </div>
                     <flash-messages v-if="!activeOffCanvas" />
                 </div>
+
+                <main>
+                    <nuxt />
+                </main>
+
+                <div class="footer" v-view.once="onceHandler">
+                    <div class="white-border" />
+                    <the-footer-social v-if="inView" />
+                    <the-footer-mobile v-if="inView" />
+                    <the-footer-copyright v-if="inView" />
+                </div>
+                <scroll-to-top />
+            </div>
+        </layout-wrapper>
+
+        <layout-wrapper v-if="$mq === 'lg'">
+            <div class="desktop-layout">
+                <background-blur />
+                <div class="header-wrp">
+                    <div class="nav-wrp">
+                        <the-logo />
+                        <the-mega-menu v-if="!isEmpty(menu)" :data-items="menu" />
+                        <the-search-direct />
+                        <div class="action-wrp d-flex align-items-center">
+                            <the-wishlist />
+                            <customer-menu />
+                            <the-mini-cart />
+                        </div>
+                        <flash-messages v-if="!activeOffCanvas" />
+                    </div>
+                </div>
+
+                <main>
+                    <nuxt />
+                </main>
+
+                <div class="footer" v-view.once="onceHandler">
+                    <the-footer-social v-if="inView" />
+                    <div class="white-border" />
+                    <the-footer-desktop v-if="inView" />
+                    <the-footer-copyright v-if="inView" />
+                </div>
             </div>
 
-            <main>
-                <nuxt />
-            </main>
-
-            <div class="footer" v-view.once="onceHandler">
-                <the-footer-social v-if="inView" />
-                <div class="white-border" />
-                <the-footer-desktop v-if="inView" />
-                <the-footer-copyright v-if="inView" />
-            </div>
-        </div>
-        <client-only>
-            <div v-if="showCookieNotice" class="cookie-notice">
-                <cookie-notice />
-            </div>
-        </client-only>
+            <client-only>
+                <div v-if="showCookieNotice" class="cookie-notice">
+                    <cookie-notice />
+                </div>
+            </client-only>
+        </layout-wrapper>
     </div>
 </template>
 
@@ -89,6 +94,8 @@
     import TheWishlist from "../components/navigation/TheWishlist";
     import CookieNotice from "../components/utils/CookieNotice";
     import FlashMessages from "../components/utils/FlashMessages";
+    import LayoutWrapper from "../components/utils/LayoutWrapper";
+
     export default {
         components: {
             TrustedShopsBadge: () => import('../components/utils/TrustedShopsBadge'),
@@ -106,7 +113,8 @@
             TheLogo,
             CustomerMenu,
             CookieNotice,
-            FlashMessages
+            FlashMessages,
+            LayoutWrapper
         },
         data() {
             return {
@@ -119,7 +127,6 @@
             ...mapState({
                 dataMenu: state => state.modApiMenu.dataMenu,
                 showCookieNotice: state => state.modCookieNotice.showCookieNotice,
-                /* wednesday: */
                 activeOffCanvas: state => state.modNavigation.offcanvas.isActive
             })
         },
@@ -143,8 +150,15 @@
                 return _.isEmpty(obj);
             }
         },
-        head () {
-            return this.$nuxtI18nSeo()
+        head() {
+            const i18nSeo = this.$nuxtI18nSeo();
+            return {
+                title: i18nSeo.title,
+                bodyAttrs: {
+                    class: this.activeOffCanvas ? 'disable-scroll' : '' ,
+                    ...i18nSeo.bodyAttrs
+                }
+            }
         }
     }
 </script>
