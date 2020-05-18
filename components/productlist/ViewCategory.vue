@@ -15,23 +15,12 @@
         </div>
 
         <template v-if="isShopware">
-            <template v-if="!errorNoProducts">
-                <div class="container">
-                     <sw-section v-for="cmsSection in cmsSections"
-                                :key="cmsSection.id"
-                                :content="cmsSection"
-                     />
-                </div>
-            </template>
-            <template v-else>
-                <div class="error-listing container flex-center flex-column">
-                    <error-no-items :error="error" />
-                    <button class="button-primary" @click="routeHistoryBack()">
-                        {{ $t('Back') }}
-                        <material-ripple />
-                    </button>
-                </div>
-            </template>
+            <div class="container">
+                 <sw-section v-for="cmsSection in cmsSections"
+                            :key="cmsSection.id"
+                            :content="cmsSection"
+                 />
+            </div>
         </template>
 
         <template v-else>

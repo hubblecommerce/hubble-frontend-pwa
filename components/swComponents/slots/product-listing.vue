@@ -1,6 +1,9 @@
 <template>
     <div>
-        <div class="d-flex justify-content-between container">
+        <div v-if="errorNoProducts" class="container">
+            <div class="error-message" v-text="$t('There are no products available in this category or for this filter.')" />
+        </div>
+        <div v-else class="d-flex justify-content-between container">
             <pagination />
             <div class="d-flex">
                 <selectable-limit :data-options="optionsLimit" />
@@ -45,6 +48,9 @@ import SelectableOrder from '../../productlist/toolbar/SelectableOrder'
                 }
 
                 return this.dataCategoryProducts.result.items
+            },
+            errorNoProducts() {
+                return _.isEmpty(this.categoryProductItems)
             },
 
         }
