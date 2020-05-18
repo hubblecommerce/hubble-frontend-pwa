@@ -5,6 +5,8 @@
     "pageLoadTimeout": 100000,
     "requestTimeout": 100000,
     "responseTimeout": 100000,
+    "viewportWidth": 1300,
+    "viewportHeight": 660,
     "env": {
         "resolutions": {
             "mobile": {
@@ -17,6 +19,7 @@
                 "viewportHeight": 660,
                 "desktop": true
             }
-        }
+        },
+        "emailBase": "<ENTER-YOUR-PREFIX-HERE>-$placeholder@<ENTER-YOUR-DOMAIN-HERE>.com"
     }
 }

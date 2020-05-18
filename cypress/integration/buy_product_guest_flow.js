@@ -8,7 +8,6 @@ const { guestEmail, guestFirstName, guestLastName, guestStreet, guestZipCode, gu
 
 
 describe('Buy Product Guest Flow', function () {
-
     viewPortSizes.forEach(viewport => {
 
         describe(`Tests for ${viewport.viewportWidth} w x ${viewport.viewportHeight} h`, function () {
@@ -20,7 +19,12 @@ describe('Buy Product Guest Flow', function () {
 
 
             it('selects a category', function () {
-                cy.acceptCookies()
+                if (viewport.desktop) {
+                    cy.acceptCookies()
+                } else {
+                    cy.visit('')
+                    cy.wait(200)
+                }
 
                 cy.pickCategory(viewport.desktop)
             })

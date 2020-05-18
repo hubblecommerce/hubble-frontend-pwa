@@ -3,10 +3,7 @@
 const { _ } = Cypress
 
 
-import { getExistingUserData, getRandomInRange } from "./utils";
-
-
-const { loginEmail, loginPw } = getExistingUserData()
+import { getRandomInRange, register} from "./utils";
 
 
 
@@ -26,9 +23,11 @@ Cypress.Commands.add("acceptCookies", () => {
 
 
 
-Cypress.Commands.add("login", (email = loginEmail, password = loginPw, desktop) => {
+Cypress.Commands.add("login", (email, password, desktop) => {
     if (!desktop) cy.get('.customer-account-cpt-wrp').click()
 
+
+    register(true, desktop, email, password)
 
     cy.get('#email')
         .type(email)
@@ -104,7 +103,7 @@ Cypress.Commands.add("pickRandomMenuItem", { prevSubject: true }, (subject) => {
 })
 
 
-    // todo: simplify selectors?
+// todo: simplify selectors?
 Cypress.Commands.add("pickCategory", (desktop = true) => {
     if (desktop) {
         cy.get('.menu-item').pickRandomMenuItem().trigger('mouseenter')
