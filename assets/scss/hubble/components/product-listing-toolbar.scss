@@ -20,6 +20,12 @@
 
         .filter-wrp {
             flex: 2;
+
+            .open-filter {
+                width: 180px;
+                margin-right: auto;
+                padding-left: 50px;
+            }
         }
         .limit {
             width: 100px !important;
