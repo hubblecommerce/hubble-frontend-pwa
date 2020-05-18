@@ -14,7 +14,7 @@
                     <div class="row overlay-header">
                         <button class="button-icon button-close-menu" @click="toggle()">
                             <i class="icon icon-close" aria-hidden="true" />
-                            
+
                             <material-ripple />
                         </button>
 
@@ -113,7 +113,8 @@ export default {
             this.hideMenu();
 
             this.$router.push({
-                path: this.localePath('customer-login')
+                path: this.localePath('customer-login'),
+                query: { tab: 1 }
             });
         }
     }
