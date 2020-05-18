@@ -1,6 +1,6 @@
 <template>
     <div class="container checkout-login customer-login">
-        <tabs v-if="$mq === 'sm' || $mq === 'md'" class="checkout-login-tabs">
+        <tabs v-if="$mq === 'sm' || $mq === 'md'" class="checkout-login-tabs" :default-tab="defaultTab">
             <tab class="login-tab" :name="$t('Login')">
                 <div class="checkout-login-wrp">
                     <login-form />
@@ -47,7 +47,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 </template>
 
@@ -80,7 +79,14 @@ export default {
     data() {
         return {
             showLoginForm: true,
-            showRegisterForm: false
+            showRegisterForm: false,
+            defaultTab: 0
+        }
+    },
+
+    created() {
+        if (this.$route.query.tab !== undefined) {
+            this.defaultTab = parseInt(this.$route.query.tab, 10)
         }
     },
 
@@ -102,6 +108,5 @@ export default {
             ]
         }
     }
-
 }
 </script>
