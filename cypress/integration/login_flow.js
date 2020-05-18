@@ -23,12 +23,7 @@ describe('Login Flow', function () {
 
 
                 it('clicks login, no credentials entered', function () {
-                    if (viewport.desktop) {
-                        cy.acceptCookies()
-                    } else {
-                        cy.visit('')
-                        cy.wait(200)
-                    }
+                    cy.acceptCookies()
 
                     cy.get('.customer-account-cpt-wrp button')
                         .click()
@@ -67,12 +62,7 @@ describe('Login Flow', function () {
 
 
                 it('clicks login, with invalid pw', function () {
-                    if (viewport.desktop) {
-                        cy.acceptCookies()
-                    } else {
-                        cy.visit('')
-                        cy.wait(200)
-                    }
+                    cy.acceptCookies()
 
                     cy.get('.customer-account-cpt-wrp button')
                         .click()

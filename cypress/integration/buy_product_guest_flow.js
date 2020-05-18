@@ -19,12 +19,7 @@ describe('Buy Product Guest Flow', function () {
 
 
             it('selects a category', function () {
-                if (viewport.desktop) {
-                    cy.acceptCookies()
-                } else {
-                    cy.visit('')
-                    cy.wait(200)
-                }
+                cy.acceptCookies()
 
                 cy.pickCategory(viewport.desktop)
             })

@@ -134,12 +134,7 @@ export function getGuestData () {
 
 export function register(shippingAndBillingAddressAreTheSame = true, desktop = true, emailParam, pwParam) {
     it('accepts Cookies', function () {
-        if (desktop) {
-            cy.acceptCookies()
-        } else {
-            cy.visit('')
-            cy.wait(200)
-        }
+        cy.acceptCookies()
     })
 
 
@@ -164,11 +159,6 @@ export function register(shippingAndBillingAddressAreTheSame = true, desktop = t
                 .contains('Register')
                 .click()
         } else {
-            cy.get('.tabs-component-tab')
-                .contains('Register')
-                .click()
-
-
             cy.get('.tabs-component-panels')
                 .contains('I am not having an account yet')
         }
