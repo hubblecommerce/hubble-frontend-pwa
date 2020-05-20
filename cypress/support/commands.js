@@ -109,7 +109,7 @@ Cypress.Commands.add("pickCategory", (desktop = true) => {
         cy.get('.menu-item').pickRandomMenuItem().trigger('mouseenter')
 
 
-        cy.get('.children-wrp .child-wrp').pickRandomCategory()
+        cy.get('.children-wrp .child-wrp .child-item').pickRandomCategory()
     } else {
         cy.get('.menu-cpt-wrapper button')
             .should('have.class', 'navbar-toggler')
