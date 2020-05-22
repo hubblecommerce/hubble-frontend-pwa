@@ -1,6 +1,9 @@
 import base64 from 'base-64'
 import localStorageHelper from "@hubblecommerce/hubble/core/utils/localStorageHelper";
 
+
+const _ = require("lodash-core");
+
 export default function (ctx) {
     const modCart = {
         namespaced: true,
@@ -102,7 +105,9 @@ export default function (ctx) {
 
                     // Get cart from sw to calculate totals
                     dispatch('swGetCart').then((res) => {
-                        dispatch('saveCartToStorage', {response: res}).then(() => {
+                        dispatch('saveCartToStorage', {
+                            response: res
+                        }).then(() => {
                             resolve('cart saved');
                         });
                     });
@@ -184,21 +189,34 @@ export default function (ctx) {
                             // Increase global cart counter
                             cart.items_qty = cart.items_qty + payload.qty;
                         }
-
-                        // Refresh cart item before store to cookie
-                        commit('setCart', cart);
                     }
 
-                    // Refresh data in cart from shop response
-                    let cartClone = _.cloneDeep(state.cart);
-                    _.forEach(payload.response.data.data.lineItems, (lineItem) => {
-                        _.forEach(cartClone.items, (cartItem) => {
-                            if(cartItem.id === lineItem.id) {
-                                cartItem.final_price_item.display_price_brutto = lineItem.price.unitPrice;
-                            }
-                        })
-                    });
-                    commit('setCart', cartClone);
+
+                    let responseProducts = payload.response.data.data.lineItems;
+                    let products = [];
+                    let cartItemsQuantity = 0;
+
+                    responseProducts.forEach((product) => {
+                        cartItemsQuantity += product.quantity;
+
+
+                        let mappedProductFromResponse = {
+                            name_orig: product.label,
+                            id: product.id,
+                            qty: product.quantity,
+                            special_price: null,
+                            image: product.cover.url,
+                        };
+
+
+                        products.push(mappedProductFromResponse);
+                    })
+
+                    commit('setCartItemsCount', cartItemsQuantity);
+
+                    commit('setCartItemsObj', products);
+
+
 
                     dispatch('setTotals', payload.response).then(() => {
                         // Store cart with all info in local storage
@@ -273,6 +291,8 @@ export default function (ctx) {
                             dispatch('saveCartToStorage', {cart: cart, qty: qty, response: res}).then(() => {
                                 resolve();
                             });
+                        }).catch((err) => {
+                            console.log("Error occured: ", err);
                         });
                     } else {
                         // Or just raise the qty of selected item

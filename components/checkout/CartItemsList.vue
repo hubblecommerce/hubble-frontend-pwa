@@ -23,12 +23,12 @@
                                 </div>
 
                                 <div class="row">
-                                    <template v-if="itemIsSpecial(item)">
+                                    <template v-if="false">
                                         <span class="product-price old-price" v-html="getPriceAndCurrency(item, 'display_price_brutto', priceSwitcherIncludeVat)" />
                                         <span class="product-price sale-price" v-html="getPriceAndCurrency(item, 'display_price_brutto_special', priceSwitcherIncludeVat)" />
                                     </template>
 
-                                    <template v-else>
+                                    <template v-else-if="false">
                                         <span class="product-price sale-price" v-html="getPriceAndCurrency(item, 'display_price_brutto', priceSwitcherIncludeVat)"></span>
                                     </template>
                                 </div>
