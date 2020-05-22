@@ -1,9 +1,6 @@
 import base64 from 'base-64'
 import localStorageHelper from "@hubblecommerce/hubble/core/utils/localStorageHelper";
 
-
-// const _ = require("lodash-core");
-
 export default function (ctx) {
     const modCart = {
         namespaced: true,
@@ -193,38 +190,12 @@ export default function (ctx) {
 
 
                     let responseProducts = payload.response.data.data.lineItems;
-                    let products = [];
-                    let cartItemsQuantity = 0;
+                    dispatch('mappingCartProducts', { products: responseProducts })
+                        .then((response) => {
+                            commit('setCartItemsObj', response.mappedProducts);
 
-                    responseProducts.forEach((product) => {
-                        cartItemsQuantity += product.quantity;
-
-
-                        let mappedProductFromResponse = {
-                            name_orig: product.label,
-                            id: product.id,
-                            qty: product.quantity,
-                            final_price_item: {
-                                special_price: null,
-                                display_price_brutto: product.price.unitPrice
-                            },
-                            image: product.cover.url,
-                            url_pds: null,
-                            variants: product.payload.options.map((option) => {
-                                return {
-                                    label: option.group,
-                                    value_label: option.option
-                                }
-                            })
-                        };
-
-
-                        products.push(mappedProductFromResponse);
-                    })
-
-                    commit('setCartItemsCount', cartItemsQuantity);
-
-                    commit('setCartItemsObj', products);
+                            commit('setCartItemsCount', response.cartItemsQuantity);
+                        })
 
 
 
@@ -519,7 +490,54 @@ export default function (ctx) {
             },
             async precalculateShippingCost({commit, dispatch}, payload) {
                 return true;
-            }
+            },
+
+            mappingCartProduct({ state, dispatch, rootState}, payload) {
+                return new Promise((resolve, reject) => {
+                    let product = payload.product;
+
+
+                    resolve({
+                        name_orig: product.label,
+                        id: product.id,
+                        qty: product.quantity,
+                        final_price_item: {
+                            special_price: null,
+                            display_price_brutto: product.price.unitPrice
+                        },
+                        image: product.cover.url,
+                        url_pds: null,
+                        variants: product.payload.options.map((option) => {
+                            return {
+                                label: option.group,
+                                value_label: option.option
+                            }
+                        })
+                    });
+                });
+            },
+            mappingCartProducts({ commit, state, dispatch, rootState}, payload) {
+                return new Promise((resolve, reject) => {
+                    let _products = payload.products
+                    let _mappedProducts = []
+                    let _cartItemsQuantity = 0
+
+
+                    _products.forEach((product) => {
+                        _cartItemsQuantity += product.quantity;
+                        dispatch('mappingCartProduct', { product: product })
+                            .then((response) => {
+                                _mappedProducts.push(response);
+                            })
+                    })
+
+
+                    resolve({
+                        mappedProducts: _mappedProducts,
+                        cartItemsQuantity: _cartItemsQuantity
+                    });
+                });
+            },
         }
     };
 
