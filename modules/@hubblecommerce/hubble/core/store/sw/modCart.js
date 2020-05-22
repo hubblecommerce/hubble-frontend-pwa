@@ -2,7 +2,7 @@ import base64 from 'base-64'
 import localStorageHelper from "@hubblecommerce/hubble/core/utils/localStorageHelper";
 
 
-const _ = require("lodash-core");
+// const _ = require("lodash-core");
 
 export default function (ctx) {
     const modCart = {
@@ -204,8 +204,18 @@ export default function (ctx) {
                             name_orig: product.label,
                             id: product.id,
                             qty: product.quantity,
-                            special_price: null,
+                            final_price_item: {
+                                special_price: null,
+                                display_price_brutto: product.price.unitPrice
+                            },
                             image: product.cover.url,
+                            url_pds: null,
+                            variants: product.payload.options.map((option) => {
+                                return {
+                                    label: option.group,
+                                    value_label: option.option
+                                }
+                            })
                         };
 
 
