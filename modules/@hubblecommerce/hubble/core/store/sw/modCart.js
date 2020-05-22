@@ -198,7 +198,6 @@ export default function (ctx) {
                         })
 
 
-
                     dispatch('setTotals', payload.response).then(() => {
                         // Store cart with all info in local storage
                         localStorageHelper.setCreatedAt(_.clone(state.cart), state.localStorageLifetime).then(response => {
@@ -518,9 +517,9 @@ export default function (ctx) {
             },
             mappingCartProducts({ commit, state, dispatch, rootState}, payload) {
                 return new Promise((resolve, reject) => {
-                    let _products = payload.products
-                    let _mappedProducts = []
-                    let _cartItemsQuantity = 0
+                    let _products = payload.products;
+                    let _mappedProducts = [];
+                    let _cartItemsQuantity = 0;
 
 
                     _products.forEach((product) => {
