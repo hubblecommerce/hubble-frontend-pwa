@@ -1,3 +1,5 @@
+import { slugify } from "@hubblecommerce/hubble/core/utils/menuHelper";
+
 export default function (ctx) {
     const modApiProduct = {
         namespaced: true,
@@ -156,8 +158,10 @@ export default function (ctx) {
 
                     if(!_.isEmpty(product.seoUrls)) {
                         obj.url_pds = product.seoUrls[(product.seoUrls.length - 1)].seoPathInfo;
-                    } else {
+                    } else if(!_.isEmpty(payload.path)) {
                         obj.url_pds = payload.path;
+                    } else {
+                        obj.url_pds = slugify(payload.product.name)
                     }
                     obj.stock_item = {
                         qty: product.stock,
