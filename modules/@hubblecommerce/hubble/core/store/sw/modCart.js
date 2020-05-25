@@ -179,24 +179,11 @@ export default function (ctx) {
             },
             saveCartToStorage({commit, state, dispatch, rootState, getters}, payload) {
                 return new Promise((resolve, reject) => {
-                    if(!_.isEmpty(payload.cart)) {
-                        let cart = payload.cart;
-
-                        if(payload.qty !== null) {
-                            // Increase global cart counter
-                            cart.items_qty = cart.items_qty + payload.qty;
-                        }
-                    }
-
-
-                    let responseProducts = payload.response.data.data.lineItems;
-                    dispatch('mappingCartProducts', { products: responseProducts })
-                        .then((response) => {
-                            commit('setCartItemsObj', response.mappedProducts);
-
-                            commit('setCartItemsCount', response.cartItemsQuantity);
-                        })
-
+                    // Map products from calculated cart response from sw to hubble data structure
+                    dispatch('mappingCartProducts', { products: payload.response.data.data.lineItems }).then((response) => {
+                        commit('setCartItemsObj', response.mappedProducts);
+                        commit('setCartItemsCount', response.cartItemsQuantity);
+                    });
 
                     dispatch('setTotals', payload.response).then(() => {
                         // Store cart with all info in local storage
@@ -272,7 +259,7 @@ export default function (ctx) {
                                 resolve();
                             });
                         }).catch((err) => {
-                            console.log("Error occured: ", err);
+                            console.log("Error occurred: ", err);
                         });
                     } else {
                         // Or just raise the qty of selected item
@@ -490,11 +477,9 @@ export default function (ctx) {
             async precalculateShippingCost({commit, dispatch}, payload) {
                 return true;
             },
-
             mappingCartProduct({ state, dispatch, rootState}, payload) {
                 return new Promise((resolve, reject) => {
                     let product = payload.product;
-
 
                     resolve({
                         name_orig: product.label,
@@ -521,15 +506,12 @@ export default function (ctx) {
                     let _mappedProducts = [];
                     let _cartItemsQuantity = 0;
 
-
                     _products.forEach((product) => {
                         _cartItemsQuantity += product.quantity;
-                        dispatch('mappingCartProduct', { product: product })
-                            .then((response) => {
-                                _mappedProducts.push(response);
-                            })
-                    })
-
+                        dispatch('mappingCartProduct', { product: product }).then((response) => {
+                            _mappedProducts.push(response);
+                        });
+                    });
 
                     resolve({
                         mappedProducts: _mappedProducts,
