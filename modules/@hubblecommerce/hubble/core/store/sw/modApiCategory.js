@@ -297,12 +297,14 @@ export default function (ctx) {
                             obj.manufacturer_id = product.manufacturer.id;
                             obj.manufacturer_name = product.manufacturer.name;
                         }
-                        if(product.seoUrls !== null) {
+                        if(! _.isEmpty(product.seoUrls)) {
                             _.forEach(product.seoUrls, (seoUrl) => {
                                 if(seoUrl.isCanonical) {
                                     obj.url_pds = seoUrl.seoPathInfo;
                                 }
                             });
+                        } else {
+                            obj.url_pds = slugify(product.name)
                         }
                         obj.stock_item = {
                             qty: product.stock,
