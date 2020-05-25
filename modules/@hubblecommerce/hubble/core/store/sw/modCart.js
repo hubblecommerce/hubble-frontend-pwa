@@ -102,7 +102,9 @@ export default function (ctx) {
 
                     // Get cart from sw to calculate totals
                     dispatch('swGetCart').then((res) => {
-                        dispatch('saveCartToStorage', {response: res}).then(() => {
+                        dispatch('saveCartToStorage', {
+                            response: res
+                        }).then(() => {
                             resolve('cart saved');
                         });
                     });
@@ -177,28 +179,11 @@ export default function (ctx) {
             },
             saveCartToStorage({commit, state, dispatch, rootState, getters}, payload) {
                 return new Promise((resolve, reject) => {
-                    if(!_.isEmpty(payload.cart)) {
-                        let cart = payload.cart;
-
-                        if(payload.qty !== null) {
-                            // Increase global cart counter
-                            cart.items_qty = cart.items_qty + payload.qty;
-                        }
-
-                        // Refresh cart item before store to cookie
-                        commit('setCart', cart);
-                    }
-
-                    // Refresh data in cart from shop response
-                    let cartClone = _.cloneDeep(state.cart);
-                    _.forEach(payload.response.data.data.lineItems, (lineItem) => {
-                        _.forEach(cartClone.items, (cartItem) => {
-                            if(cartItem.id === lineItem.id) {
-                                cartItem.final_price_item.display_price_brutto = lineItem.price.unitPrice;
-                            }
-                        })
+                    // Map products from calculated cart response from sw to hubble data structure
+                    dispatch('mappingCartProducts', { products: payload.response.data.data.lineItems }).then((response) => {
+                        commit('setCartItemsObj', response.mappedProducts);
+                        commit('setCartItemsCount', response.cartItemsQuantity);
                     });
-                    commit('setCart', cartClone);
 
                     dispatch('setTotals', payload.response).then(() => {
                         // Store cart with all info in local storage
@@ -273,6 +258,8 @@ export default function (ctx) {
                             dispatch('saveCartToStorage', {cart: cart, qty: qty, response: res}).then(() => {
                                 resolve();
                             });
+                        }).catch((err) => {
+                            console.log("Error occurred: ", err);
                         });
                     } else {
                         // Or just raise the qty of selected item
@@ -489,7 +476,49 @@ export default function (ctx) {
             },
             async precalculateShippingCost({commit, dispatch}, payload) {
                 return true;
-            }
+            },
+            mappingCartProduct({ state, dispatch, rootState}, payload) {
+                return new Promise((resolve, reject) => {
+                    let product = payload.product;
+
+                    resolve({
+                        name_orig: product.label,
+                        id: product.id,
+                        qty: product.quantity,
+                        final_price_item: {
+                            special_price: null,
+                            display_price_brutto: product.price.unitPrice
+                        },
+                        image: product.cover.url,
+                        url_pds: null,
+                        variants: product.payload.options.map((option) => {
+                            return {
+                                label: option.group,
+                                value_label: option.option
+                            }
+                        })
+                    });
+                });
+            },
+            mappingCartProducts({ commit, state, dispatch, rootState}, payload) {
+                return new Promise((resolve, reject) => {
+                    let _products = payload.products;
+                    let _mappedProducts = [];
+                    let _cartItemsQuantity = 0;
+
+                    _products.forEach((product) => {
+                        _cartItemsQuantity += product.quantity;
+                        dispatch('mappingCartProduct', { product: product }).then((response) => {
+                            _mappedProducts.push(response);
+                        });
+                    });
+
+                    resolve({
+                        mappedProducts: _mappedProducts,
+                        cartItemsQuantity: _cartItemsQuantity
+                    });
+                });
+            },
         }
     };
 

@@ -132,6 +132,7 @@ export default function (ctx) {
                         action: 'post',
                         tokenType: 'sw',
                         apiType: 'data',
+                        swContext: rootState.modCart.swtc,
                         endpoint: '/sales-channel-api/v1/customer/login',
                         data: loginCreds
                     }, { root: true })
