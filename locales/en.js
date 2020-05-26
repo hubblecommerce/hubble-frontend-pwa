@@ -92,6 +92,8 @@ export default (context) => {
                 "Password": "Password",
                 "Customer Account Dashboard": "Customer Account Dashboard",
                 "Account Information": "Account Information",
+                "Edit Customer Information": "Edit Customer Information",
+                "Edit Information": "Edit Information",
                 "Shipping Address": "Shipping Address",
                 "No shipping address": "No shipping address",
                 "Edit Address": "Edit Address",

@@ -100,6 +100,8 @@ export default (context) => {
                 "Upselling Products": "Was andere Kunden kauften",
                 "Customer Account Dashboard": "Benutzerkonto Übersicht",
                 "Account Information": "Kontoinformationen",
+                "Edit Customer Information": "Kundeninformationen bearbeiten",
+                "Edit Information": "Informationen bearbeiten",
                 "Edit": "Bearbeiten",
                 "Shipping Address": "Versandadresse",
                 "Edit Address": "Adresse bearbeiten",
