@@ -171,7 +171,13 @@ export default function (ctx) {
                                         resolve(response);
 
                                         // Save store to cookie
-                                        this.$cookies.set(state.cookieName, state.customer, {
+                                        this.$cookies.set(state.cookieName, {
+                                            customerAuth: state.customer.customerAuth,
+                                            customerData: {},
+                                            customerAddresses: [],
+                                            billingAddress: {},
+                                            shippingAddress: {}
+                                        }, {
                                             path: state.cookiePath,
                                             expires: getters.getCookieExpires
                                         });

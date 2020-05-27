@@ -30,7 +30,6 @@
                                         <div class="validation-msg" v-text="$t(errors[0])" />
                                     </validation-provider>
 
-
                                     <validation-provider v-slot="{ errors }" name="firstName" rules="required|max:30" mode="passive" tag="div" class="hbl-input-group">
                                         <input id="firstName"
                                                v-model="customerInfo.firstName"
@@ -46,7 +45,6 @@
 
                                         <div class="validation-msg" v-text="$t(errors[0])" />
                                     </validation-provider>
-
 
                                     <validation-provider v-slot="{ errors }" name="lastName" rules="required|max:30" mode="passive" tag="div" class="hbl-input-group">
                                         <input id="lastName"
@@ -64,9 +62,7 @@
                                         <div class="validation-msg" v-text="$t(errors[0])" />
                                     </validation-provider>
 
-
                                     <div class="dashboard__section__title">Please enter your Password to change your Email Address</div>
-
 
                                     <validation-provider vid="email" name="current-email" mode="passive" tag="div" class="hbl-input-group">
                                         <input id="current-email"
@@ -81,7 +77,6 @@
 
                                         <label for="current-email" v-text="'Current Email Address'" />
                                     </validation-provider>
-
 
                                     <validation-provider v-slot="{ errors }"
                                                          vid="email"
@@ -104,7 +99,6 @@
 
                                         <div class="validation-msg" v-text="$t(errors[0])" />
                                     </validation-provider>
-
 
                                     <validation-provider v-slot="{ errors }"
                                                          name="email-repeat"
@@ -150,7 +144,6 @@
                                         <div class="validation-msg" v-text="$t(errors[0])" />
                                     </validation-provider>
 
-
                                     <button class="button-primary w-100" @click.prevent="passes(saveChanges)">
                                         {{ 'Save Profile' }}
                                         <material-ripple />
@@ -168,7 +161,6 @@
 <script>
     import { salutations } from "@hubblecommerce/hubble/core/utils/formMixins";
     import { mapActions, mapState } from "vuex";
-
 
     export default {
         name: 'CustomerAccountInformation',
@@ -191,7 +183,6 @@
                     birthDay: null,
                     birthdayMonth: null,
                     birthdayYear: null,
-
 
                     currentEmail: '',
 
@@ -270,10 +261,10 @@
                 toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction'
             }),
             editCustomerInfo: function() {
-                    this.toggleOffcanvasAction({
-                        component: this.name,
-                        direction: 'rightLeft'
-                    })
+                this.toggleOffcanvasAction({
+                    component: this.name,
+                    direction: 'rightLeft'
+                })
             },
             saveChanges: function () {
                 return new Promise((resolve) => {
@@ -292,7 +283,6 @@
                                 this.customerInfo.email = '',
                                 this.customerInfo.emailRepeat = '',
                                 this.customerInfo.password = '',
-
 
                                 this.toggleOffcanvasAction({
                                     component: this.name,

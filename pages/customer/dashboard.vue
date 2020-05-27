@@ -1,6 +1,6 @@
 <template>
     <div class="main-container">
-        <div class="container customer-dashboard">
+        <div v-if="customerData" class="container customer-dashboard">
             <div class="headline-1 pt-4">
                 {{ $t('Hi,') }} {{ customerData.name }}
             </div>
@@ -88,15 +88,21 @@
             }
         },
 
+        mounted() {
+            if(this.customer.customerData == null || _.isEmpty(this.customer.customerData)) {
+                this.$store.dispatch('modApiCustomer/getCustomerInfo');
+            }
+        },
+
         computed: {
             ...mapState({
                 customer: state => state.modApiCustomer.customer
             }),
             customerData: function() {
-                return this.customer.customerData;
-            },
-            customerAddresses: function() {
-                return this.customer.customerAddresses;
+                if(this.customer.customerData != null && ! _.isEmpty(this.customer.customerData)) {
+                    return this.customer.customerData;
+                }
+                return false;
             }
         },
 
