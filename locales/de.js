@@ -406,6 +406,13 @@ export default (context) => {
                 "Register failed": "Registrierung fehlgeschlagen",
                 "Login failed": "Login fehlgeschlagen. Benutzername oder Passwort sind nicht korrekt.",
                 "Please complete your credit card information": "Bitte die Kreditkarteninformationen vervollständigen.",
+
+                "Please enter your password to change your email address": "Bitte geben Sie Ihr Passwort ein, um Ihre Email Addresse zu ändern",
+                "Current Email Address": "Aktuelle Email Addresse",
+                "New Email Address": "Neue Email Addresse",
+                "Confirm New Email Address": "Neue Email Addresse bestätigen",
+
+                "Save Profile": "Profil speichern"
             }
         )
     });

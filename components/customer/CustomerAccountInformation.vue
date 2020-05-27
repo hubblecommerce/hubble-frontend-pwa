@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button class="button-primary dashboard__section__button--edit" @click.prevent="editCustomerInfo">{{ $t('Edit Information') }}</button>
+        <button class="button-primary dashboard-section-button-edit" @click.prevent="editCustomerInfo">{{ $t('Edit Information') }}</button>
 
         <transition-expand-layer :right-left="true">
             <div v-if="showAccountInformation" class="transition-expand-wrp">
@@ -17,7 +17,7 @@
                     </div>
 
                     <div>
-                        <div class="row content-wrp dashboard__section__form">
+                        <div class="row content-wrp dashboard-section-form">
                             <div class="col-12">
                                 <validation-observer ref="observer" v-slot="{ passes }" tag="form" class="form-edit" @submit.prevent="passes(saveChanges)">
                                     <validation-provider v-slot="{ errors }" name="gender" rules="required" mode="passive" tag="div" class="hbl-select">
@@ -62,7 +62,7 @@
                                         <div class="validation-msg" v-text="$t(errors[0])" />
                                     </validation-provider>
 
-                                    <div class="dashboard__section__title">Please enter your Password to change your Email Address</div>
+                                    <div class="dashboard-section-title">{{ $t('Please enter your password to change your email address') }}</div>
 
                                     <validation-provider vid="email" name="current-email" mode="passive" tag="div" class="hbl-input-group">
                                         <input id="current-email"
@@ -72,10 +72,10 @@
                                                value=""
                                                placeholder=" "
                                                disabled
-                                               class="dashboard__section__input--disabled"
+                                               class="dashboard-section-input-disabled"
                                         >
 
-                                        <label for="current-email" v-text="'Current Email Address'" />
+                                        <label for="current-email" v-text="$t('Current Email Address')" />
                                     </validation-provider>
 
                                     <validation-provider v-slot="{ errors }"
@@ -117,7 +117,7 @@
                                                @paste="onPaste($event)"
                                         >
 
-                                        <label for="email-repeat" v-text="$t('Repeat New Email Address')+'*'" />
+                                        <label for="email-repeat" v-text="$t('Confirm New Email Address')+'*'" />
 
                                         <div class="validation-msg" v-text="$t(errors[0])" />
                                     </validation-provider>
@@ -145,7 +145,7 @@
                                     </validation-provider>
 
                                     <button class="button-primary w-100" @click.prevent="passes(saveChanges)">
-                                        {{ 'Save Profile' }}
+                                        {{ $t('Save Profile') }}
                                         <material-ripple />
                                     </button>
                                 </validation-observer>
@@ -217,7 +217,8 @@
 
                 return {
                     required: newEmail === '' ? false : true,
-                    email: true, confirmed: 'email'
+                    email: true,
+                    confirmed: 'email'
                 }
             },
             requiredPassword: function () {
@@ -315,23 +316,3 @@
         }
     }
 </script>
-
-<style scoped>
-    .dashboard__section__button--edit {
-        margin-top: 20px;
-    }
-
-    .dashboard__section__title {
-        font-weight: 700;
-        margin: 35px 0 15px 0;
-    }
-
-    .dashboard__section__form {
-        margin-top: 20px;
-    }
-
-    .dashboard__section__input--disabled {
-        color: grey;
-        background: white;
-    }
-</style>

@@ -367,6 +367,13 @@ export default (context) => {
                 "Login failed": "Login failed",
                 "Register failed": "Register failed",
                 "Please complete your credit card information": "Please complete your credit card information",
+
+                "Please enter your password to change your email address": "Please enter your password to change your email address",
+                "Current Email Address": "Current Email Address",
+                "New Email Address": "New Email Address",
+                "Confirm New Email Address": "Confirm New Email Address",
+
+                "Save Profile": "Save Profile"
             }
 
         )
