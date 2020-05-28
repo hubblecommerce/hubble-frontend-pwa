@@ -412,7 +412,13 @@ export default (context) => {
                 "New Email Address": "Neue Email Addresse",
                 "Confirm New Email Address": "Neue Email Addresse bestätigen",
 
-                "Save Profile": "Profil speichern"
+                "Save Profile": "Profil speichern",
+
+                "You successfully changed your information.": "Sie haben erfolgreich Ihre Informationen geändert.",
+
+                "Email could not be changed.": "Email konnte nicht geändert werden.",
+
+                "No network connection.": "Keine Netzwerk Verbindung vorhanden."
             }
         )
     });

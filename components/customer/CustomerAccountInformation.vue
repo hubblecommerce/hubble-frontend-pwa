@@ -30,7 +30,7 @@
                                         <div class="validation-msg" v-text="$t(errors[0])" />
                                     </validation-provider>
 
-                                    <validation-provider v-slot="{ errors }" name="firstName" rules="required|max:30" mode="passive" tag="div" class="hbl-input-group">
+                                    <validation-provider v-slot="{ errors }" name="firstName" rules="required|max:30" mode="eager" tag="div" class="hbl-input-group">
                                         <input id="firstName"
                                                v-model="customerInfo.firstName"
                                                type="text"
@@ -46,7 +46,7 @@
                                         <div class="validation-msg" v-text="$t(errors[0])" />
                                     </validation-provider>
 
-                                    <validation-provider v-slot="{ errors }" name="lastName" rules="required|max:30" mode="passive" tag="div" class="hbl-input-group">
+                                    <validation-provider v-slot="{ errors }" name="lastName" rules="required|max:30" mode="eager" tag="div" class="hbl-input-group">
                                         <input id="lastName"
                                                v-model="customerInfo.lastName"
                                                type="text"
@@ -126,7 +126,7 @@
                                     <validation-provider v-slot="{ errors }"
                                                          name="password"
                                                          :rules="requiredPassword"
-                                                         mode="passive"
+                                                         mode="eager"
                                                          tag="div"
                                                          class="hbl-input-group input-icon"
                                     >
@@ -144,6 +144,10 @@
                                         <div class="validation-msg" v-text="$t(errors[0])" />
                                     </validation-provider>
 
+                                    <template v-for="error in errors">
+                                        <div class="error-message" v-text="error" />
+                                    </template>
+
                                     <button class="button-primary w-100" @click.prevent="passes(saveChanges)">
                                         {{ $t('Save Profile') }}
                                         <material-ripple />
@@ -159,13 +163,13 @@
 </template>
 
 <script>
-    import { salutations } from "@hubblecommerce/hubble/core/utils/formMixins";
+    import { addBackendErrors, salutations } from "@hubblecommerce/hubble/core/utils/formMixins";
     import { mapActions, mapState } from "vuex";
 
     export default {
         name: 'CustomerAccountInformation',
 
-        mixins: [salutations],
+        mixins: [addBackendErrors, salutations],
 
         data() {
             return {
@@ -189,7 +193,9 @@
                     email: '',
                     emailRepeat: '',
                     password: ''
-                }
+                },
+
+                errors: []
             }
         },
 
@@ -268,34 +274,24 @@
                 })
             },
             saveChanges: function () {
-                return new Promise((resolve) => {
-                    this.updateCustomerInfo({
-                        firstName: this.customerInfo.firstName,
-                        lastName: this.customerInfo.lastName,
-                        salutationId: this.customerInfo.salutationId
-                    }).then(() => {
-                        if (this.customerInfo.email !== '') {
-                            this.updateCustomerEmail({
-                                email: this.customerInfo.email,
-                                emailRepeat: this.customerInfo.emailRepeat,
-                                password: this.customerInfo.password
-                            }).then(() =>
-                                this.customerInfo.currentEmail = this.customerData.email,
-                                this.customerInfo.email = '',
-                                this.customerInfo.emailRepeat = '',
-                                this.customerInfo.password = '',
+                this.errors = [];
 
-                                this.toggleOffcanvasAction({
-                                    component: this.name,
-                                    direction: 'rightLeft'
-                                })).then(() => {
-                                this.flashMessage({
-                                    flashType: 'success',
-                                    flashMessage: this.$t('You successfully changed your information.'),
-                                    keepOnRouteChange: true
-                                });
-                            })
-                        } else {
+                this.updateCustomerInfo({
+                    firstName: this.customerInfo.firstName,
+                    lastName: this.customerInfo.lastName,
+                    salutationId: this.customerInfo.salutationId
+                }).then(() => {
+                    if (this.customerInfo.email !== '') {
+                        this.updateCustomerEmail({
+                            email: this.customerInfo.email,
+                            emailRepeat: this.customerInfo.emailRepeat,
+                            password: this.customerInfo.password
+                        }).then(() => {
+                            this.customerInfo.currentEmail = this.customerData.email;
+                            this.customerInfo.email = '';
+                            this.customerInfo.emailRepeat = '';
+                            this.customerInfo.password = '';
+
                             this.toggleOffcanvasAction({
                                 component: this.name,
                                 direction: 'rightLeft'
@@ -305,9 +301,40 @@
                                     flashMessage: this.$t('You successfully changed your information.'),
                                     keepOnRouteChange: true
                                 });
+
+                                this.errors = [];
+                            }).catch((err) => {
+                                console.log(err);
                             })
-                        }
-                    })
+                        }).catch((err) => {
+                            this.errors.push(this.$t('Email could not be changed.'));
+                            _.forEach(this.addBackendErrors(err), error => {
+                                this.errors.push(error);
+                            })
+
+                            if (!this.offcanvas.isActive) {
+                                this.toggleOffcanvasAction({
+                                    component: this.name,
+                                    direction: 'rightLeft'
+                                })
+                            }
+                        })
+                    } else {
+                        this.toggleOffcanvasAction({
+                            component: this.name,
+                            direction: 'rightLeft'
+                        }).then(() => {
+                            this.flashMessage({
+                                flashType: 'success',
+                                flashMessage: this.$t('You successfully changed your information.'),
+                                keepOnRouteChange: true
+                            });
+
+                            this.errors = [];
+                        })
+                    }
+                }).catch((err) => {
+                    this.errors.push(this.$t('No network connection.'));
                 })
             },
             onPaste: function(e) {

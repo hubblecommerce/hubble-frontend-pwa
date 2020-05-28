@@ -373,7 +373,12 @@ export default (context) => {
                 "New Email Address": "New Email Address",
                 "Confirm New Email Address": "Confirm New Email Address",
 
-                "Save Profile": "Save Profile"
+                "Save Profile": "Save Profile",
+
+                "You successfully changed your information.": "You successfully changed your information.",
+
+                "Email could not be changed.": "Email could not be changed.",
+                "No network connection.": "No network connection."
             }
 
         )
