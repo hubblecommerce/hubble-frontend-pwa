@@ -100,6 +100,8 @@ export default (context) => {
                 "Upselling Products": "Was andere Kunden kauften",
                 "Customer Account Dashboard": "Benutzerkonto Übersicht",
                 "Account Information": "Kontoinformationen",
+                "Edit Customer Information": "Kundeninformationen bearbeiten",
+                "Edit Information": "Informationen bearbeiten",
                 "Edit": "Bearbeiten",
                 "Shipping Address": "Versandadresse",
                 "Edit Address": "Adresse bearbeiten",
@@ -404,6 +406,19 @@ export default (context) => {
                 "Register failed": "Registrierung fehlgeschlagen",
                 "Login failed": "Login fehlgeschlagen. Benutzername oder Passwort sind nicht korrekt.",
                 "Please complete your credit card information": "Bitte die Kreditkarteninformationen vervollständigen.",
+
+                "Please enter your password to change your email address": "Bitte geben Sie Ihr Passwort ein, um Ihre Email Addresse zu ändern",
+                "Current Email Address": "Aktuelle Email Addresse",
+                "New Email Address": "Neue Email Addresse",
+                "Confirm New Email Address": "Neue Email Addresse bestätigen",
+
+                "Save Profile": "Profil speichern",
+
+                "You successfully changed your information.": "Sie haben erfolgreich Ihre Informationen geändert.",
+
+                "Email could not be changed.": "Email konnte nicht geändert werden.",
+
+                "No network connection.": "Keine Netzwerk Verbindung vorhanden."
             }
         )
     });

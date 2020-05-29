@@ -1,6 +1,6 @@
 <template>
     <div class="main-container">
-        <div class="container customer-dashboard">
+        <div v-if="customerData" class="container customer-dashboard">
             <div class="headline-1 pt-4">
                 {{ $t('Hi,') }} {{ customerData.name }}
             </div>
@@ -32,12 +32,14 @@
                                 </div>
 
                                 <customer-password-change class="password-change-button" />
+
+                                <customer-account-information />
                             </div>
                         </div>
                     </div>
 
                     <customer-addresses />
-                    
+
                     <div class="row">
                         <div class="col-md-12">
                             <customer-order-list :title="$t('Recent Orders')" :limit="4" />
@@ -51,19 +53,22 @@
 
 <script>
     import { mapState } from 'vuex';
+
     import CustomerAccountNavigation from "../../components/customer/CustomerAccountNavigation";
     import CustomerOrderList from "../../components/customer/CustomerOrderList";
     import CustomerAddresses from "../../components/customer/CustomerAddresses";
     import CustomerPasswordChange from "../../components/customer/CustomerPasswordChange";
+    import CustomerAccountInformation from "../../components/customer/CustomerAccountInformation";
 
     export default {
         name: 'CustomerDashboard',
 
         components: {
-            CustomerAddresses,
-            CustomerOrderList,
             CustomerAccountNavigation,
-            CustomerPasswordChange
+            CustomerOrderList,
+            CustomerAddresses,
+            CustomerPasswordChange,
+            CustomerAccountInformation
         },
 
         layout: 'hubble',
@@ -83,15 +88,21 @@
             }
         },
 
+        mounted() {
+            if(this.customer.customerData == null || _.isEmpty(this.customer.customerData)) {
+                this.$store.dispatch('modApiCustomer/getCustomerInfo');
+            }
+        },
+
         computed: {
             ...mapState({
                 customer: state => state.modApiCustomer.customer
             }),
             customerData: function() {
-                return this.customer.customerData;
-            },
-            customerAddresses: function() {
-                return this.customer.customerAddresses;
+                if(this.customer.customerData != null && ! _.isEmpty(this.customer.customerData)) {
+                    return this.customer.customerData;
+                }
+                return false;
             }
         },
 

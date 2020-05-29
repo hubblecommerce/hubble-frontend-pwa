@@ -87,6 +87,7 @@
 
         data() {
             return {
+                name: 'CustomerPasswordChange',
                 form: new Form({
                     passwordOld: '',
                     password: '',

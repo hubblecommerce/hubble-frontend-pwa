@@ -172,7 +172,13 @@ export default function (ctx) {
                                         resolve(response);
 
                                         // Save store to cookie
-                                        this.$cookies.set(state.cookieName, state.customer, {
+                                        this.$cookies.set(state.cookieName, {
+                                            customerAuth: state.customer.customerAuth,
+                                            customerData: {},
+                                            customerAddresses: [],
+                                            billingAddress: {},
+                                            shippingAddress: {}
+                                        }, {
                                             path: state.cookiePath,
                                             expires: getters.getCookieExpires
                                         });
@@ -333,14 +339,19 @@ export default function (ctx) {
                         endpoint: '/sales-channel-api/v1/customer'
                     }, { root: true })
                         .then(response => {
-                            const baseData = {
+                            const customerData = {
                                 name: `${response.data.data.firstName} ${response.data.data.lastName}`,
+                                firstName: response.data.data.firstName,
+                                lastName: response.data.data.lastName,
+                                salutationId: response.data.data.salutationId,
+                                title: response.data.data.title,
+                                birthDay: response.data.data.birthday,
                                 email: response.data.data.email,
                                 defaultBillingAddressId: response.data.data.defaultBillingAddressId,
                                 defaultShippingAddressId: response.data.data.defaultShippingAddressId
                             };
 
-                            commit('setCustomerData', baseData);
+                            commit('setCustomerData', customerData);
 
                             const addresses = {
                                 billingDefault: response.data.data.defaultBillingAddress,
@@ -638,6 +649,62 @@ export default function (ctx) {
                     resolve();
                 });
             },
+            async updateCustomerInfo({dispatch, commit, state, getters}, payload) {
+                return new Promise((resolve, reject)  => {
+                    // Map customer data to fit SW6 headless API
+
+                    let editedCustomerData = {
+                        firstName: payload.firstName,
+                        lastName: payload.lastName,
+                        salutationId: payload.salutationId,
+                    }
+
+                    dispatch('apiCall', {
+                        action: 'patch',
+                        tokenType: 'sw',
+                        swContext: state.customer.customerAuth.token,
+                        apiType: 'data',
+                        endpoint: '/sales-channel-api/v1/customer',
+                        data: editedCustomerData
+                    }, { root: true })
+                        .then(() => {
+                            dispatch('getCustomerInfo').then(() => {
+                                resolve();
+                            })
+                        })
+                        .catch(response => {
+                            console.log("API patch request to update user profile information failed: %o", response);
+                            reject(response);
+                        });
+                });
+            },
+            async updateCustomerEmail({dispatch, commit, state, getters}, payload) {
+                return new Promise((resolve, reject)  => {
+                    // Map email customer data to fit SW6 headless API
+
+                    dispatch('apiCall', {
+                        action: 'patch',
+                        tokenType: 'sw',
+                        swContext: state.customer.customerAuth.token,
+                        apiType: 'data',
+                        endpoint: '/sales-channel-api/v1/customer/email',
+                        data: {
+                            email: payload.email,
+                            emailConfirmation: payload.emailRepeat,
+                            password: payload.password
+                        }
+                    }, { root: true })
+                        .then((response) => {
+                            dispatch('getCustomerInfo').then((response) => {
+                                resolve(response);
+                            })
+                        })
+                        .catch(response => {
+                            console.log("API patch request to update user email information failed: %o", response);
+                            reject(response);
+                        });
+                });
+            }
         }
     };
 
