@@ -89,19 +89,30 @@
 
         methods: {
             ...mapActions({
-                getOrdersFromStore: 'modApiCustomer/getOrders'
+                getOrdersFromStore: 'modApiCustomer/getOrders',
+                flashMessage: 'modFlash/flashMessage'
             }),
             getOrders: function() {
                 this.loading = true;
 
                 //Get orders from store
-                this.getOrdersFromStore().then((response) => {
-                    this.orders = response;
+                this.getOrdersFromStore()
+                    .then((response) => {
+                        this.orders = response;
 
-                    this.loading = false;
-                }).catch(() => {
-                    this.loading = false;
-                });
+                        this.loading = false;
+                    })
+                    .catch((res) => {
+                        console.log("getOrdersFromStore error: ", res);
+
+                        this.flashMessage({
+                            flashType: 'error',
+                            flashMessage: res === 'No network connection' ? this.$t(res) : this.$t('An error occurred'),
+                            keepOnRouteChange: true
+                        });
+
+                        this.loading = false;
+                    });
             },
             ordersExists: function() {
                 if(this.orders != null) {
