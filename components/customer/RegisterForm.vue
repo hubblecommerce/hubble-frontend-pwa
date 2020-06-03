@@ -1,7 +1,7 @@
 <template>
     <validation-observer ref="observer" v-slot="{ passes }" tag="form" class="form-edit register-form" @submit.prevent="passes(submitRegisterForm)">
         <div class="base-data-wrp">
-            <validation-provider v-slot="{ errors }" vid="email" name="email" rules="required|email" mode="passive" tag="div" class="hbl-input-group">
+            <validation-provider v-slot="{ errors }" vid="email" name="email" rules="required|email" mode="eager" tag="div" class="hbl-input-group">
                 <input id="email"
                        v-model="form.baseData.email"
                        type="text"
@@ -17,7 +17,7 @@
                 <div class="validation-msg" v-text="$t(errors[0])" />
             </validation-provider>
 
-            <validation-provider v-slot="{ errors }" name="email-repeat" rules="required|confirmed:email" mode="passive" tag="div" class="hbl-input-group">
+            <validation-provider v-slot="{ errors }" name="email-repeat" rules="required|email|confirmed:email" mode="eager" tag="div" class="hbl-input-group">
                 <input id="email-repeat"
                        v-model="form.baseData.emailRepeat"
                        type="text"
@@ -62,7 +62,7 @@
             </validation-provider>
 
             <template v-if="!guest">
-                <validation-provider v-slot="{ errors }" vid="password" name="password" rules="required|password:4" mode="passive" tag="div" class="hbl-input-group">
+                <validation-provider v-slot="{ errors }" vid="password" name="password" rules="required|password:4" mode="eager" tag="div" class="hbl-input-group">
                     <input id="password"
                            v-model="form.baseData.password"
                            type="password"
@@ -79,7 +79,7 @@
                     <div class="validation-msg" v-text="$t(errors[0])" />
                 </validation-provider>
 
-                <validation-provider v-slot="{ errors }" name="password confirmation" rules="required|confirmed:password" mode="passive" tag="div" class="hbl-input-group">
+                <validation-provider v-slot="{ errors }" name="password confirmation" rules="required|password:4|confirmed:password" mode="eager" tag="div" class="hbl-input-group">
                     <input id="passwordRepeat"
                            v-model="passwordRepeat"
                            type="password"
@@ -109,7 +109,7 @@
                 </div>
             </div>
 
-            <validation-provider v-slot="{ errors }" name="gender" rules="required" mode="passive" tag="div" class="hbl-select">
+            <validation-provider v-slot="{ errors }" name="gender" rules="required" mode="eager" tag="div" class="hbl-select">
                 <select v-model="form.addresses[0].payload.gender" class="select-text" :class="{invalid: errors.length > 0}" required>
                     <option v-for="salutation in salutations" :key="salutation.key" :value="salutation.key">{{ salutation.value }}</option>
                 </select>
@@ -119,7 +119,7 @@
                 <div class="validation-msg" v-text="$t(errors[0])" />
             </validation-provider>
 
-            <validation-provider v-slot="{ errors }" name="firstName" rules="required|max:30" mode="passive" tag="div" class="hbl-input-group">
+            <validation-provider v-slot="{ errors }" name="firstName" rules="required|max:30" mode="eager" tag="div" class="hbl-input-group">
                 <input id="billingFirstName"
                        v-model="form.addresses[0].payload.firstName"
                        type="text" name="billingFirstName"
@@ -133,7 +133,7 @@
                 <div class="validation-msg" v-text="$t(errors[0])" />
             </validation-provider>
 
-            <validation-provider v-slot="{ errors }" name="lastName" rules="required|max:30" mode="passive" tag="div" class="hbl-input-group">
+            <validation-provider v-slot="{ errors }" name="lastName" rules="required|max:30" mode="eager" tag="div" class="hbl-input-group">
                 <input id="billingLastName"
                        v-model="form.addresses[0].payload.lastName"
                        type="text"
@@ -150,7 +150,7 @@
             </validation-provider>
 
             <template v-if="streetIncludesHouseNo">
-                <validation-provider v-slot="{ errors }" name="street" rules="required|max:60" mode="passive" tag="div" class="hbl-input-group">
+                <validation-provider v-slot="{ errors }" name="street" rules="required|max:60" mode="eager" tag="div" class="hbl-input-group">
                     <input id="billingStreet"
                            v-model="form.addresses[0].payload.street"
                            type="text"
@@ -168,7 +168,7 @@
             </template>
 
             <div v-else class="form-row street-nr">
-                <validation-provider v-slot="{ errors }" name="street" rules="required|max:60" mode="passive" tag="div" class="hbl-input-group">
+                <validation-provider v-slot="{ errors }" name="street" rules="required|max:60" mode="eager" tag="div" class="hbl-input-group">
                     <input id="billingStreet"
                            v-model="form.addresses[0].payload.street"
                            type="text"
@@ -184,7 +184,7 @@
                     <div class="validation-msg" v-text="$t(errors[0])" />
                 </validation-provider>
 
-                <validation-provider v-slot="{ errors }" name="houseNo" rules="required|max:5" mode="passive" tag="div" class="hbl-input-group">
+                <validation-provider v-slot="{ errors }" name="houseNo" rules="required|max:5" mode="eager" tag="div" class="hbl-input-group">
                     <input id="billingHouseNr"
                            v-model="form.addresses[0].payload.houseNo"
                            type="text"
@@ -202,7 +202,7 @@
             </div>
 
             <div class="form-row zip-city">
-                <validation-provider v-slot="{ errors }" name="postal" rules="required|numeric|max:5" mode="passive" tag="div" class="hbl-input-group">
+                <validation-provider v-slot="{ errors }" name="postal" rules="required|numeric|max:5" mode="eager" tag="div" class="hbl-input-group">
                     <input id="billingZipCode"
                            v-model="form.addresses[0].payload.postal"
                            type="text"
@@ -218,7 +218,7 @@
                     <div class="validation-msg" v-text="$t(errors[0])" />
                 </validation-provider>
 
-                <validation-provider v-slot="{ errors }" name="city" rules="required|max:30" mode="passive" tag="div" class="hbl-input-group">
+                <validation-provider v-slot="{ errors }" name="city" rules="required|max:30" mode="eager" tag="div" class="hbl-input-group">
                     <input id="billingCity"
                            v-model="form.addresses[0].payload.city"
                            type="text" name="billingCity"
@@ -233,7 +233,7 @@
                 </validation-provider>
             </div>
 
-            <validation-provider v-slot="{ errors }" name="country" rules="required" mode="passive" tag="div" class="hbl-select">
+            <validation-provider v-slot="{ errors }" name="country" rules="required" mode="eager" tag="div" class="hbl-select">
                 <select v-model="form.addresses[0].payload.country" class="select-text" :class="{invalid: errors.length > 0}" required>
                     <option v-for="country in countries" :key="country.iso_code_2" :value="country.iso_code_2">{{ country.name }}</option>
                 </select>
@@ -247,7 +247,7 @@
         <validation-observer v-if="differentShippingAddress && alternativeShippingAddress" class="shipping-addresses-wrp" tag="div">
             <div class="headline headline-3" v-text="$t('My Shipping Address (not billing address)')" />
 
-            <validation-provider v-slot="{ errors }" name="gender" rules="required" mode="passive" tag="div" class="hbl-select">
+            <validation-provider v-slot="{ errors }" name="gender" rules="required" mode="eager" tag="div" class="hbl-select">
                 <select v-model="form.addresses[1].payload.gender" class="select-text" :class="{invalid: errors.length > 0}" required>
                     <option v-for="salutation in salutations" :key="salutation.key" :value="salutation.key">{{ salutation.value }}</option>
                 </select>
@@ -257,7 +257,7 @@
                 <div class="validation-msg" v-text="$t(errors[0])" />
             </validation-provider>
 
-            <validation-provider v-slot="{ errors }" name="firstName" rules="required|max:30" mode="passive" tag="div" class="hbl-input-group">
+            <validation-provider v-slot="{ errors }" name="firstName" rules="required|max:30" mode="eager" tag="div" class="hbl-input-group">
                 <input id="shippingFirstName"
                        v-model="form.addresses[1].payload.firstName"
                        type="text" name="shippingFirstName"
@@ -272,7 +272,7 @@
                 <div class="validation-msg" v-text="$t(errors[0])" />
             </validation-provider>
 
-            <validation-provider v-slot="{ errors }" name="lastName" rules="required|max:30" mode="passive" tag="div" class="hbl-input-group">
+            <validation-provider v-slot="{ errors }" name="lastName" rules="required|max:30" mode="eager" tag="div" class="hbl-input-group">
                 <input id="shippingLastName"
                        v-model="form.addresses[1].payload.lastName"
                        type="text"
@@ -289,7 +289,7 @@
             </validation-provider>
 
             <template v-if="streetIncludesHouseNo">
-                <validation-provider v-slot="{ errors }" name="street" rules="required|max:60" mode="passive" tag="div" class="hbl-input-group">
+                <validation-provider v-slot="{ errors }" name="street" rules="required|max:60" mode="eager" tag="div" class="hbl-input-group">
                     <input id="shippingStreet"
                            v-model="form.addresses[1].payload.street"
                            type="text"
@@ -307,7 +307,7 @@
             </template>
 
             <div v-else class="form-row street-nr">
-                <validation-provider v-slot="{ errors }" name="street" rules="required|max:60" mode="passive" tag="div" class="hbl-input-group">
+                <validation-provider v-slot="{ errors }" name="street" rules="required|max:60" mode="eager" tag="div" class="hbl-input-group">
                     <input id="shippingStreet"
                            v-model="form.addresses[1].payload.street"
                            type="text"
@@ -323,7 +323,7 @@
                     <div class="validation-msg" v-text="$t(errors[0])" />
                 </validation-provider>
 
-                <validation-provider v-slot="{ errors }" name="houseNo" rules="required|max:5" mode="passive" tag="div" class="hbl-input-group">
+                <validation-provider v-slot="{ errors }" name="houseNo" rules="required|max:5" mode="eager" tag="div" class="hbl-input-group">
                     <input id="shippingHouseNr"
                            v-model="form.addresses[1].payload.houseNo"
                            type="text"
@@ -341,7 +341,7 @@
             </div>
 
             <div class="form-row zip-city">
-                <validation-provider v-slot="{ errors }" name="postal" rules="required|numeric|max:5" mode="passive" tag="div" class="hbl-input-group">
+                <validation-provider v-slot="{ errors }" name="postal" rules="required|numeric|max:5" mode="eager" tag="div" class="hbl-input-group">
                     <input id="shippingZipCode"
                            v-model="form.addresses[1].payload.postal"
                            type="text"
@@ -357,7 +357,7 @@
                     <div class="validation-msg" v-text="$t(errors[0])" />
                 </validation-provider>
 
-                <validation-provider v-slot="{ errors }" name="city" rules="required|max:30" mode="passive" tag="div" class="hbl-input-group">
+                <validation-provider v-slot="{ errors }" name="city" rules="required|max:30" mode="eager" tag="div" class="hbl-input-group">
                     <input id="shippingCity"
                            v-model="form.addresses[1].payload.city"
                            type="text"
@@ -374,7 +374,7 @@
                 </validation-provider>
             </div>
 
-            <validation-provider v-slot="{ errors }" name="country" rules="required" mode="passive" tag="div" class="hbl-select">
+            <validation-provider v-slot="{ errors }" name="country" rules="required" mode="eager" tag="div" class="hbl-select">
                 <select v-model="form.addresses[1].payload.country" class="select-text" :class="{invalid: errors.length > 0}" required>
                     <option v-for="country in countries" :key="country.iso_code_2" :value="country.iso_code_2">{{ country.name }}</option>
                 </select>
@@ -487,7 +487,7 @@
                                 houseNo: '',
                                 postal: '',
                                 city: '',
-                                country: 'DE',
+                                country: '',
                                 company: ''
                             }
                         },
@@ -505,7 +505,7 @@
                                 houseNo: '',
                                 postal: '',
                                 city: '',
-                                country: 'DE',
+                                country: '',
                                 company: ''
                             }
                         }
@@ -527,7 +527,14 @@
 
         mounted() {
             if(_.isEmpty(this.countries)) {
-                this.getAvailableCountries();
+                this.getAvailableCountries()
+                    .catch((err) => {
+                        if (!this.errors.includes("No network connection")) {
+                            _.forEach(this.addBackendErrors(err), error => {
+                                this.errors.push(error);
+                            })
+                        }
+                    })
             }
         },
 
@@ -586,66 +593,73 @@
                 };
 
                 // Register new customer
-                this.register(userData).then(() => {
-                    let creds = {
-                        email: userData.email,
-                        password: userData.password
-                    };
+                this.register(userData)
+                    .then(() => {
+                        let creds = {
+                            email: userData.email,
+                            password: userData.password
+                        };
 
-                    // Save wishlist
-                    this.postWishlist({
-                        user_id: this.customer.customerData.id,
-                        wishlist: {
-                            qty: this.wishlistQty,
-                            items: this.wishlistState
-                        }
-                    }).then(response => {
-                        // Get newly created wishlist id and save to store
-                        this.setWishlistId(response.data.item.id);
-
-                        this.saveToStore();
-                    }).catch(response => {
-                        // TODO: add catch clause implementation
-                    });
-
-                    // if double addressbook mode is true store address separately
-                    // but not for SW API because the billing address is already set in register action
-                    if(this.alternativeShippingAddress && process.env.API_TYPE !== 'sw') {
-                        // Store Address
-                        this.storeCustomerAddress(this.form.addresses[0]).then(() => {
-                            // Store different shipping address
-                            if(this.differentShippingAddress) {
-                                this.storeCustomerAddress(this.form.addresses[1]).then(() => {
-                                    this.redirectToCheckout();
-                                }).catch((error) => {
-                                    // Show api request error
-                                    this.addBackendErrors(error.errors);
-                                    this.error = error.message;
-
-                                    this.processingRegister = false;
-                                });
-                            } else {
-                                this.redirectToCheckout();
+                        // Save wishlist
+                        this.postWishlist({
+                            user_id: this.customer.customerData.id,
+                            wishlist: {
+                                qty: this.wishlistQty,
+                                items: this.wishlistState
                             }
-                        }).catch((error) => {
-                            // Show api request error
-                            this.addBackendErrors(error.errors);
-                            this.error = error.message;
+                        }).then(response => {
+                            // Get newly created wishlist id and save to store
+                            this.setWishlistId(response.data.item.id);
 
-                            this.processingRegister = false;
+                            this.saveToStore();
+                        }).catch(response => {
+                            console.log("postWishlist error: ", response);
                         });
-                    } else {
-                        this.redirectToCheckout();
-                    }
-                }).catch((error) => {
-                    // Show api request error
-                    _.forEach(this.addBackendErrors(error), error => {
-                        this.errors.push(error);
-                    })
-                    this.errors.push(error.message);
 
-                    this.processingRegister = false;
-                });
+
+                        // if double addressbook mode is true store address separately
+                        // but not for SW API because the billing address is already set in register action
+                        if(this.alternativeShippingAddress && process.env.API_TYPE !== 'sw') {
+                            // Store Address
+                            this.storeCustomerAddress(this.form.addresses[0]).then(() => {
+                                // Store different shipping address
+                                if(this.differentShippingAddress) {
+                                    this.storeCustomerAddress(this.form.addresses[1]).then(() => {
+                                        this.redirectToCheckout();
+                                    }).catch((error) => {
+                                        _.forEach(this.addBackendErrors(error), error => {
+                                            this.errors.push(error);
+                                        })
+
+                                        this.processingRegister = false;
+                                    });
+                                } else {
+                                    this.redirectToCheckout();
+                                }
+                            }).catch((err) => {
+                                // Show api request error
+                                console.log("Api request error: ", err);
+
+                                _.forEach(this.addBackendErrors(err), error => {
+                                    this.errors.push(error);
+                                })
+
+                                this.processingRegister = false;
+                            });
+                        } else {
+                            this.redirectToCheckout();
+                        }
+                    })
+                    .catch((err) => {
+                        console.log("Api request error: ", err);
+
+                        // Show api request error
+                        _.forEach(this.addBackendErrors(err), error => {
+                            this.errors.push(error);
+                        })
+
+                        this.processingRegister = false;
+                    });
             },
             submitRegisterGuestForm: function() {
                 this.processingRegister = true;
@@ -661,7 +675,7 @@
                 }
 
                 // Clear error messages
-                this.error = null;
+                this.errors = [];
 
                 this.form.baseData.firstname = this.form.addresses[0].payload.firstName;
                 this.form.baseData.lastname = this.form.addresses[0].payload.lastName;
@@ -677,8 +691,7 @@
                         });
                     }
                 }).catch((error) => {
-                    // Show api request error
-                    this.error = this.$t('Register failed');
+                    this.errors.push(this.$t('Register failed'));
 
                     this.processingRegister = false;
                 });
