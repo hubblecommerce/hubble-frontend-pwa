@@ -143,24 +143,29 @@
                     }
                 }
                 // Get uuid from api
-                this.getUuid().then((uuid) => {
-                    // Store uuid as orderId to order in store
-                    this.setOrderId(uuid);
+                this.getUuid()
+                    .then((uuid) => {
+                        // Store uuid as orderId to order in store
+                        this.setOrderId(uuid);
 
-                    // Validate order and save to cookie then redirect to summary page
-                    this.createOrderPaymentAction().then(() => {
-                        this.$router.push({
-                            path: this.localePath('checkout-summary')
-                        });
-                    }).catch((error) => {
-                        this.flashMessage({
-                            flashType: 'error',
-                            flashMessage: this.$t(error)
-                        });
-                        
-                        console.log(error);
+                        // Validate order and save to cookie then redirect to summary page
+                        this.createOrderPaymentAction()
+                            .then(() => {
+                                this.$router.push({
+                                    path: this.localePath('checkout-summary')
+                                });
+                            })
+                            .catch((error) => {
+                                this.flashMessage({
+                                    flashType: 'error',
+                                    flashMessage: this.$t(error)
+                                });
+                                console.log(error);
+                            });
+                    })
+                    .catch((err) => {
+                        console.log("getUuid error: ", err);
                     });
-                });
             },
             isCurrentPath: function(routeName) {
                 if(this.$route.name.includes(routeName)) {

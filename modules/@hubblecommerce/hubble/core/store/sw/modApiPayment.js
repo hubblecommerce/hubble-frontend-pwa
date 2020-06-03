@@ -109,6 +109,8 @@ export default function (ctx) {
                             resolve(response);
                         })
                         .catch(error => {
+                            console.log("swGuestOrder error: ", error);
+
                             reject(error);
                         });
                 });
@@ -120,19 +122,29 @@ export default function (ctx) {
                 order.billingAddress.salutationId = order.salutationId;
 
                 return new Promise((resolve, reject)  => {
-                    dispatch('swGuestOrder', {order: order, swtc: payload.swtc}).then((res) => {
-                        dispatch('modCart/clearAll', {}, {root:true}).then(() => {
-                            dispatch('clearOrder').then(() => {
-                                commit('setCurrentOrder', res.data.data);
+                    dispatch('swGuestOrder', {order: order, swtc: payload.swtc})
+                        .then((res) => {
+                            dispatch('modCart/clearAll', {}, {root:true})
+                                .then(() => {
+                                    dispatch('clearOrder')
+                                        .then(() => {
+                                            commit('setCurrentOrder', res.data.data);
 
-                                commit('modApiCustomer/setCustomerAuth', {token: res.data['sw-context-token']}, { root: true });
+                                            commit('modApiCustomer/setCustomerAuth', {token: res.data['sw-context-token']}, { root: true });
 
-                                resolve(res);
-                            })
+                                            resolve(res);
+                                        })
+                                })
+                                .catch((err) => {
+                                    console.log("clearAll error: ", err);
+
+                                    reject(err);
+                                });
+                        }).catch((error) => {
+                            console.log("swGuestOrder error: ", error);
+
+                            reject(error);
                         });
-                    }).catch((error) => {
-                        reject(error);
-                    });
                 });
             },
             async swPlaceOrder({dispatch, rootState}) {
@@ -148,7 +160,8 @@ export default function (ctx) {
                             resolve(response);
                         })
                         .catch(response => {
-                            console.log("API post request failed: %o", response);
+                            console.log("swPlaceOrder - API post request failed: %o", response);
+
                             reject(response);
                         });
                 });
@@ -166,7 +179,8 @@ export default function (ctx) {
                             resolve(response);
                         })
                         .catch(response => {
-                            console.log("API post request failed: %o", response);
+                            console.log("swStartPayment - API post request failed: %o", response);
+
                             reject(response);
                         });
                 });
@@ -195,15 +209,27 @@ export default function (ctx) {
                 });
             },
             async placeOrder({dispatch, commit}) {
-                return new Promise((resolve)  => {
-                    dispatch('swPlaceOrder').then((response) => {
-                        dispatch('modCart/clearAll', {}, {root:true}).then(() => {
-                            dispatch('clearOrder').then(() => {
-                                commit('setCurrentOrder', response.data.data);
+                return new Promise((resolve, reject)  => {
+                    dispatch('swPlaceOrder')
+                        .then((response) => {
+                            dispatch('modCart/clearAll', {}, { root:true })
+                                .then(() => {
+                                    dispatch('clearOrder')
+                                        .then(() => {
+                                            commit('setCurrentOrder', response.data.data);
 
-                                resolve(response);
-                            })
-                        });
+                                            resolve(response);
+                                        })
+                                })
+                                .catch((err) => {
+                                    console.log("clearAll error: ", err);
+
+                                    reject(err);
+                                });
+                        })
+                        .catch((err) => {
+                            console.log("placeOrder error: ", err)
+                            reject(err);
                     });
                 });
             },
@@ -276,7 +302,7 @@ export default function (ctx) {
                         .catch(response => {
                             console.log('getShippingMethods failed: %o', response);
 
-                            reject('getShippingMethods failed!');
+                            reject(response);
                         });
                 });
             },
@@ -299,23 +325,27 @@ export default function (ctx) {
                         .catch(response => {
                             console.log('swSetPaymentMethod failed: %o', response);
 
-                            reject('swSetPaymentMethod failed!');
+                            reject(response);
                         });
                 });
             },
             async storeChosenPaymentMethod({commit, state, getters, dispatch}, payload) {
-                return new Promise((resolve) => {
-                    dispatch('swSetPaymentMethod', payload).then(() => {
-                        commit('setChosenPaymentMethod', payload);
+                return new Promise((resolve, reject) => {
+                    dispatch('swSetPaymentMethod', payload)
+                        .then(() => {
+                            commit('setChosenPaymentMethod', payload);
 
-                        // Save order from store to cookie
-                        this.$cookies.set(state.cookieNameOrder, state.order, {
-                            path: state.cookiePath,
-                            expires: getters.getCookieExpires
-                        });
+                            // Save order from store to cookie
+                            this.$cookies.set(state.cookieNameOrder, state.order, {
+                                path: state.cookiePath,
+                                expires: getters.getCookieExpires
+                            });
 
-                        resolve();
-                    })
+                            resolve();
+                        })
+                        .catch((err) => {
+                            reject(err);
+                        })
                 })
             },
             async swSetShippingMethod({commit, dispatch, rootState, state}, payload) {
@@ -341,23 +371,28 @@ export default function (ctx) {
                         .catch(response => {
                             console.log('swSetShippingMethod failed: %o', response);
 
-                            reject('swSetShippingMethod failed!');
+                            reject(response);
                         });
                 });
             },
             async storeChosenShippingMethod({commit, state, getters, dispatch}, payload) {
-                return new Promise((resolve) => {
-                    dispatch('swSetShippingMethod', payload).then(() => {
-                        commit('setChosenShippingMethod', payload);
+                return new Promise((resolve, reject) => {
+                    dispatch('swSetShippingMethod', payload)
+                        .then(() => {
+                            commit('setChosenShippingMethod', payload);
 
-                        // Save order from store to cookie
-                        this.$cookies.set(state.cookieNameOrder, state.order, {
-                            path: state.cookiePath,
-                            expires: getters.getCookieExpires
+                            // Save order from store to cookie
+                            this.$cookies.set(state.cookieNameOrder, state.order, {
+                                path: state.cookiePath,
+                                expires: getters.getCookieExpires
+                            });
+
+                            resolve();
+                        }).catch((err) => {
+                            console.log("storeChosenShippingMethod failed: ", err);
+
+                            reject(err);
                         });
-
-                        resolve();
-                    });
                 })
             },
             async clearOrder({commit, state}) {
