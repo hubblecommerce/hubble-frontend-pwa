@@ -30,10 +30,16 @@
 </template>
 
 <script>
-    import { mapActions} from 'vuex';
+    import { mapActions, mapState } from 'vuex';
 
     export default {
         name: "CustomerAccountNavigation",
+
+        computed: {
+            ...mapState({
+                offcanvas: state => state.modNavigation.offcanvas
+            })
+        },
 
         methods: {
             ...mapActions({
@@ -76,10 +82,20 @@
                     })
                     .catch(() => {
                         msg = this.$t('Logout failed');
-                        this.flashMessage({
-                            flashType: 'error',
-                            flashMessage: msg
-                        })
+
+                        if (this.offcanvas.isActive) {
+                            this.hideOffcanvasAction();
+
+                            this.flashMessage({
+                                flashType: 'error',
+                                flashMessage: msg
+                            })
+                        } else {
+                            this.flashMessage({
+                                flashType: 'error',
+                                flashMessage: msg
+                            })
+                        }
                     })
             },
             hideMenu: function() {
