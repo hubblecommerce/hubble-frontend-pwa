@@ -222,10 +222,14 @@
 
         created() {
             if(this.openDetail) {
-                this.getProductData({path: this.$router.history.current.params.dynamicRoute}).then(response => {
-                    this.loading = false;
-                    this.setOpenDetail(false);
-                });
+                this.getProductData({path: this.$router.history.current.params.dynamicRoute})
+                    .then(response => {
+                        this.loading = false;
+                        this.setOpenDetail(false);
+                    })
+                    .catch((err) => {
+                        console.log("getProductData error: ", err);
+                    });
             } else {
                 this.loading = false;
             }

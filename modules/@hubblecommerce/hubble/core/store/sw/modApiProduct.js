@@ -117,6 +117,8 @@ export default function (ctx) {
                             });
                         })
                         .catch(error => {
+                            console.log("getProductData error: ", error);
+
                             reject(error);
                         })
                 });

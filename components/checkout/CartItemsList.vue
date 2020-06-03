@@ -68,9 +68,9 @@
 </template>
 
 <script>
-    import {mapState, mapGetters, mapActions, mapMutations} from 'vuex';
+    import { mapState, mapGetters, mapActions, mapMutations } from 'vuex';
     import QtySelector from "../utils/QtySelector";
-    import {clearDataLayer} from "@hubblecommerce/hubble/core/utils/gtmHelper";
+    import { clearDataLayer } from "@hubblecommerce/hubble/core/utils/gtmHelper";
 
     export default {
         name: "CartItemsList",
@@ -81,6 +81,7 @@
 
         data() {
             return {
+                name: 'CartItemsList',
                 showLoader: false,
                 selectedQty: 0,
                 dataImageFilter: null,
@@ -93,7 +94,8 @@
                 cart: state => state.modCart.cart,
                 items: state => state.modCart.cart.items,
                 qty: state => state.modCart.cart.items_qty,
-                priceSwitcherIncludeVat: state => state.modPrices.priceSwitcherIncludeVat
+                priceSwitcherIncludeVat: state => state.modPrices.priceSwitcherIncludeVat,
+                offcanvas: state => state.modNavigation.offcanvas
             }),
             ...mapGetters({
                 productIsSpecial: 'modPrices/productIsSpecial',
@@ -117,7 +119,8 @@
                 resetMessage: 'modFlash/resetMessage',
                 delItem: 'modCart/delItem',
                 removeCouponAction: 'modCart/removeCoupon',
-                flashMessage: 'modFlash/flashMessage'
+                flashMessage: 'modFlash/flashMessage',
+                hideOffcanvasAction: 'modNavigation/hideOffcanvasAction'
             }),
             ...mapMutations({
                 setCartItemsObjQty: 'modCart/setCartItemsObjQty'
@@ -169,14 +172,38 @@
                     itemQty: newQty
                 });
 
-                this.updateItem({
-                    qty: delta
-                }).then(() => {
-                    this.precalculateShippingCost({
-                        cart: this.cart,
-                        country: 'DE'
+                this.updateItem({ qty: delta })
+                    .then(() => {
+                        this.precalculateShippingCost({
+                            cart: this.cart,
+                            country: 'DE'
+                        });
+                    })
+                    .catch((err) => {
+                        console.log("updateItem error: ", err);
+
+                        this.setCartItemsObjQty({
+                            itemId: id,
+                            itemQty: oldQty
+                        });
+
+
+                        if (this.offcanvas.isActive) {
+                            this.hideOffcanvasAction();
+
+                            this.flashMessage({
+                                flashType: 'error',
+                                flashMessage: err === 'No network connection' ? this.$t(err) : this.$t('An error occurred'),
+                                inOffCanvas: "true"
+                            })
+                        } else {
+                            this.flashMessage({
+                                flashType: 'error',
+                                flashMessage: err === 'No network connection' ? this.$t(err) : this.$t('An error occurred'),
+                                inOffCanvas: "true"
+                            })
+                        }
                     });
-                });
             },
             precalculateShippingCost: function(payload) {
                 let order = {
@@ -187,16 +214,35 @@
             },
             confirmRemoveItem: function(item) {
                 this.resetMessage();
-                this.delItem({
-                    data: item
-                }).then(() => {
-                    this.precalculateShippingCost({
-                        cart: this.cart,
-                        country: 'DE'
-                    });
 
-                    this.gtmRemoveFromCart(item);
-                });
+                this.delItem({ data: item })
+                    .then(() => {
+                        this.precalculateShippingCost({
+                            cart: this.cart,
+                            country: 'DE'
+                        });
+
+                        this.gtmRemoveFromCart(item);
+                    })
+                    .catch((err) => {
+                        console.log("delItem error: ", err);
+
+                        if (this.offcanvas.isActive) {
+                            this.hideOffcanvasAction();
+
+                            this.flashMessage({
+                                flashType: 'error',
+                                flashMessage: err === 'No network connection' ? this.$t(err) : this.$t('An error occurred'),
+                                keepOnRouteChange: true
+                            });
+                        } else {
+                            this.flashMessage({
+                                flashType: 'error',
+                                flashMessage: err === 'No network connection' ? this.$t(err) : this.$t('An error occurred'),
+                                keepOnRouteChange: true
+                            });
+                        }
+                    });
             },
             gtmRemoveFromCart: function(item) {
                 if(this.$gtm) {
@@ -244,7 +290,7 @@
                 this.removeCouponAction(couponCode).then(() => {
                     this.flashMessage({
                         flashType: 'success',
-                        flashMessage: 'Removed coupon from cart.'
+                        flashMessage: this.t('Removed coupon from cart.')
                     });
                 });
             },
