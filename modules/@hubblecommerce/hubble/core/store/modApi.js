@@ -250,8 +250,8 @@ export default function (ctx) {
                                 // The request was made but no response was received
                                 // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
                                 // http.ClientRequest in node.js
-
-                                rejection = error.request;
+                                if (payload.tokenType === 'sw') rejection = 'No network connection';
+                                else rejection = error.request;
                             } else {
                                 // Something happened in setting up the request that triggered an Error
                                 rejection = error.message;

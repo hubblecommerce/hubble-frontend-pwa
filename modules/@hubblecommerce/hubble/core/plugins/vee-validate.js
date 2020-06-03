@@ -37,17 +37,17 @@ extend('numeric', {
 extend('confirmed', {
     ...confirmed,
     message: (field) => {
-        if (field === 'password confirmation') {
-            return 'The password confirmation does not match.'
+        if (field === 'password confirmation' || field === 'new password confirmation') {
+            return 'The password confirmation does not match.';
         }
-        return 'The ' + field + ' confirmation does not match.'
+        return 'The ' + field + ' confirmation does not match.';
     }
 });
 
 extend('password', {
     ...min,
     message: (field, params) => {
-        return 'The password must be atleast 4 characters long.';
+        return 'The password must be at least 8 characters long.';
     }
 });
 

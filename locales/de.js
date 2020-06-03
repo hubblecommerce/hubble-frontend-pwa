@@ -195,7 +195,7 @@ export default (context) => {
                 "Current Password": "Aktuelles Passwort",
                 "New Password": "Neues Passwort",
                 "Confirm new Password": "Neues Passwort bestätigen",
-                "You successfully changed your password.": "Sie haben erfolgreich ihr Passwort geändert.",
+                "You successfully changed your password.": "Sie haben erfolgreich Ihr Passwort geändert.",
                 "Password could not be changed.": "Passwort konnte nicht geändert werden.",
                 "I am not having an account yet": "Ich habe noch kein Konto",
                 "Simply create a customer account with us.": "Erstellen Sie ganz einfach ein Kundenkonto bei uns.",
@@ -394,8 +394,10 @@ export default (context) => {
 
                 "The password confirmation does not match.": "Passwort wiederholen muss mit Passwort übereinstimmen",
                 "The email-repeat confirmation does not match.": "E-Mail Adresse wiederholen muss mit E-Mail Adresse übereinstimmen.",
+                "The email-repeat is required.": "E-Mail Adresse wiederholen muss mit E-Mail Adresse übereinstimmen.",
+                "The email-repeat must be a valid email address.": "Keine gültige E-Mail Adresse",
 
-                "The password must be atleast 4 characters long.": "Das Passwort muss mindestens 4 Zeichen lang sein",
+                "The password must be at least 8 characters long.": "Das Passwort muss mindestens 8 Zeichen lang sein",
                 "The email must be a valid email address.": "Keine gültige E-Mail Adresse",
 
                 "Birthday structure is not valid.": "Geburtstagsformat muss tt.mm.jahr sein",
@@ -418,7 +420,9 @@ export default (context) => {
 
                 "Email could not be changed.": "Email konnte nicht geändert werden.",
 
-                "No network connection.": "Keine Netzwerk Verbindung vorhanden."
+                "No network connection": "Keine Netzwerk Verbindung vorhanden",
+
+                "Resetting password is currently not available": "Passwort zurücksetzen ist zur Zeit nicht möglich"
             }
         )
     });
