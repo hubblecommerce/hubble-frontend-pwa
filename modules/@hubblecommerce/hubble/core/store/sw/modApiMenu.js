@@ -107,6 +107,8 @@ export default function (ctx) {
                             resolve(response);
                         })
                         .catch(error => {
+                            console.log("getMenu failed: ", error);
+
                             swMapApiError(error, reject);
                         });
                 });
