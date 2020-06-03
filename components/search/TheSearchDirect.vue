@@ -20,7 +20,7 @@
                            @focus="onFocus"
                            @blur="onBlur"
                     >
-                    
+
                     <label class="hidden-link-name" for="autocomplete-search">{{ $t('Search') }}</label>
                 </div>
 
@@ -124,7 +124,8 @@
                 redirectToItem: 'modSearch/redirectToItem',
                 changeSelectedItem: 'modSearch/changeSelectedItem',
                 getAutocompleteResultsAction: 'modSearch/getAutocompleteResults',
-                resetAutoCompleteResults: 'modSearch/resetAutoCompleteResults'
+                resetAutoCompleteResults: 'modSearch/resetAutoCompleteResults',
+                flashMessage: 'modFlash/flashMessage'
             }),
             ...mapMutations({
                 hideOffcanvas: 'modNavigation/hideOffcanvas'
@@ -209,9 +210,15 @@
                     .then(response => {
                         this.loading = false;
                     })
-                    .catch(error => {
-                        //console.log('error retrieving data!')
+                    .catch(err => {
+                        console.log('getAutocompleteResults error: ', err);
+
                         this.loading = false;
+
+                        this.flashMessage({
+                            flashType: 'error',
+                            flashMessage: err === 'No network connection' ? this.$t(err) : this.$t('An error occurred')
+                        });
                     });
                 }
             },
