@@ -29,6 +29,16 @@
                 />
             </div>
         </div>
+
+        <div v-if="noProductsFound">
+            <div class="autocomplete-headline" v-text="$t('No products found')" />
+            <div class="autocomplete-element-wrp">
+                <div class="autocomplete-element"
+                     v-text="$t('We are sorry there is no such product. Please try another one.')"
+                />
+            </div>
+        </div>
+
     </div>
 </template>
 
@@ -47,7 +57,10 @@
                 return !_.isEmpty(this.categoryItems);
             },
             showProducts: function () {
-                return !_.isEmpty(this.productItems);
+                return (!_.isEmpty(this.productItems) && !this.productItems.includes('No products found'));
+            },
+            noProductsFound: function() {
+                return _.isEmpty(this.categoryItems) && this.productItems.includes('No products found');
             }
         }
     }
