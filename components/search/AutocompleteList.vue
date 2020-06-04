@@ -57,10 +57,10 @@
                 return !_.isEmpty(this.categoryItems);
             },
             showProducts: function () {
-                return (!_.isEmpty(this.productItems) && !this.productItems.includes('No products found'));
+                return !_.isEmpty(this.productItems);
             },
             noProductsFound: function() {
-                return _.isEmpty(this.categoryItems) && this.productItems.includes('No products found');
+                return _.isEmpty(this.categoryItems) && _.isEmpty(this.productItems);
             }
         }
     }

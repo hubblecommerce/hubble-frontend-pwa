@@ -378,9 +378,14 @@ export default (context) => {
                 "You successfully changed your information.": "You successfully changed your information.",
 
                 "Email could not be changed.": "Email could not be changed.",
-                "No network connection.": "No network connection."
-            }
+                "No network connection.": "No network connection.",
 
+                "No products found": "No products found",
+
+                "We are sorry there is no such product. Please try another one.": "We are sorry there is no such product. Please try another one.",
+
+                "No search results for:": "No search results for:"
+            }
         )
     });
 }

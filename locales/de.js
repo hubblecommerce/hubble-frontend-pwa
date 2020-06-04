@@ -418,7 +418,11 @@ export default (context) => {
 
                 "Email could not be changed.": "Email konnte nicht geändert werden.",
 
-                "No network connection.": "Keine Netzwerk Verbindung vorhanden."
+                "No network connection.": "Keine Netzwerk Verbindung vorhanden.",
+
+                "No products found": "Keine Produkte gefunden",
+
+                "We are sorry there is no such product. Please try another one.": "Leider gibt es dieses Produkt nicht. Bitte suchen Sie nach einem anderen.",
             }
         )
     });

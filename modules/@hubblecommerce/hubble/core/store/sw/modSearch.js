@@ -80,7 +80,7 @@ export default function (ctx) {
                     }, { root: true })
                         .then(response => {
                             if(response.data.total === 0) {
-                                commit('setProductItems', ['No products found']);
+                                commit('setProductItems', []);
                                 commit('setShowAutoCompleteResults', true);
 
                                 resolve('No products found');
