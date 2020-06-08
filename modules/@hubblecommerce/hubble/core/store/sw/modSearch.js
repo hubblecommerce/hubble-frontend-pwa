@@ -80,9 +80,10 @@ export default function (ctx) {
                     }, { root: true })
                         .then(response => {
                             if(response.data.total === 0) {
-                                commit('setShowAutoCompleteResults', false);
+                                commit('setProductItems', []);
+                                commit('setShowAutoCompleteResults', true);
 
-                                resolve('OK');
+                                resolve('No products found');
                             } else {
                                 // map product data
                                 dispatch('modApiCategory/mappingCategoryProducts', response.data, {root:true})

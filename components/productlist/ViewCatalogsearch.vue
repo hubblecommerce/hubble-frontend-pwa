@@ -26,7 +26,7 @@
                     <div class="col-12">
                         <h1 class="title" v-text="noSearchResultLabel" />
                         <div class="headline-3">
-                            We are sorry there is no such product. Please try another one.
+                            {{ $t('We are sorry there is no such product. Please try another one.') }}
                         </div>
                     </div>
                 </div>
