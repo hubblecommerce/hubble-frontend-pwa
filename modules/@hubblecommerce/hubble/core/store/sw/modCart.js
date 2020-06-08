@@ -101,13 +101,18 @@ export default function (ctx) {
                     commit('setCartItemsCount', 0);
 
                     // Get cart from sw to calculate totals
-                    dispatch('swGetCart').then((res) => {
-                        dispatch('saveCartToStorage', {
-                            response: res
-                        }).then(() => {
-                            resolve('cart saved');
+                    dispatch('swGetCart')
+                        .then((res) => {
+                            dispatch('saveCartToStorage', { response: res })
+                                .then(() => {
+                                    resolve('cart saved');
+                                });
+                        })
+                        .catch((err) => {
+                            console.log("swGetCart error: ", err);
+
+                            reject(err);
                         });
-                    });
                 })
             },
             swGetCart({commit, state, dispatch, rootState, getters}) {
@@ -123,17 +128,26 @@ export default function (ctx) {
                             resolve(response);
                         })
                         .catch(error => {
+                            console.log("swGetCart error: ", error);
+
                             reject(error);
                         });
                 });
             },
             recalculateCart({dispatch}) {
                 return new Promise((resolve, reject) => {
-                    dispatch('swGetCart').then((response) => {
-                        dispatch('saveCartToStorage', {response: response}).then(() => {
-                            resolve();
+                    dispatch('swGetCart')
+                        .then((response) => {
+                            dispatch('saveCartToStorage', { response: response })
+                                .then(() => {
+                                    resolve();
+                                })
                         })
-                    });
+                        .catch((err) => {
+                            console.log("recalculateCart error: ", err);
+
+                            reject("Cart could not be recalculated");
+                        });
                 });
             },
             initCart({commit, state, dispatch, rootState, getters}) {
@@ -159,7 +173,9 @@ export default function (ctx) {
                             resolve(token);
                         })
                         .catch(error => {
-                            reject(error);
+                            console.log("initCart error: ", error);
+
+                            reject("Product could not be saved to cart");
                         });
                 });
             },
@@ -225,6 +241,8 @@ export default function (ctx) {
                             resolve(response);
                         })
                         .catch(error => {
+                            console.log("swAddtToCart error: ", error);
+
                             reject(error);
                         });
                 });
@@ -254,13 +272,18 @@ export default function (ctx) {
                         cart.items.push(item);
 
                         // Add to cart sw call
-                        dispatch('swAddtToCart', {item: item, qty: qty}).then((res) => {
-                            dispatch('saveCartToStorage', {cart: cart, qty: qty, response: res}).then(() => {
-                                resolve();
+                        dispatch('swAddtToCart', {item: item, qty: qty})
+                            .then((res) => {
+                                dispatch('saveCartToStorage', {cart: cart, qty: qty, response: res})
+                                    .then(() => {
+                                        resolve();
+                                    });
+                            })
+                            .catch((err) => {
+                                console.log("addToCart error ", err);
+
+                                reject(err);
                             });
-                        }).catch((err) => {
-                            console.log("Error occurred: ", err);
-                        });
                     } else {
                         // Or just raise the qty of selected item
                         _.forEach(cart.items, (cartItem, key) => {
@@ -270,11 +293,18 @@ export default function (ctx) {
                         });
 
                         // Add to cart sw call
-                        dispatch('swAddtToCart', {item: item, qty: qty}).then((res) => {
-                            dispatch('saveCartToStorage', {cart: cart, qty: qty, response: res}).then(() => {
-                                resolve();
+                        dispatch('swAddtToCart', { item: item, qty: qty })
+                            .then((res) => {
+                                dispatch('saveCartToStorage', {cart: cart, qty: qty, response: res})
+                                    .then(() => {
+                                        resolve();
+                                    });
+                            })
+                            .catch((err)  => {
+                                console.log("swAddtToCart error: ", err);
+
+                                reject(err);
                             });
-                        });
                     }
                 });
             },
@@ -300,17 +330,29 @@ export default function (ctx) {
                     // Check if swtc isset
                     if(state.swtc === '') {
                         // Init cart
-                        dispatch('initCart').then(() => {
-                            dispatch('addToCart', payload).then(() => {
-                                resolve();
+                        dispatch('initCart')
+                            .then(() => {
+                                dispatch('addToCart', payload)
+                                    .then(() => {
+                                        resolve();
+                                    })
+                                    .catch((err) => {
+                                        reject(err);
+                                    });
+                            })
+                            .catch((err) => {
+                                reject(err);
                             });
-                        });
                     }
 
                     if(state.swtc !== '') {
-                        dispatch('addToCart', payload).then(() => {
-                            resolve();
-                        });
+                        dispatch('addToCart', payload)
+                            .then(() => {
+                                resolve();
+                            })
+                            .catch((err) => {
+                                reject(err);
+                            });
                     }
                 });
             },
@@ -332,20 +374,29 @@ export default function (ctx) {
                             resolve(response);
                         })
                         .catch(error => {
+                            console.log("swUpdateLineItem error: ", error);
+
                             reject(error);
                         });
                 });
             },
             updateItem({commit, state, dispatch}, payload) {
-                return new Promise((resolve) => {
-                    // Update global cart counter
-                    commit('setCartItemsCount', state.cart.items_qty + payload.qty );
+                return new Promise((resolve, reject) => {
+                    dispatch('swUpdateLineItem', { id: state.productToUpdate, qty: state.qtyToUpdate })
+                        .then((res) => {
+                            // Update global cart counter
+                            commit('setCartItemsCount', state.cart.items_qty + payload.qty );
 
-                    dispatch('swUpdateLineItem', {id: state.productToUpdate, qty: state.qtyToUpdate}).then((res) => {
-                        dispatch('saveCartToStorage', {response: res}).then(() => {
-                            resolve('item updated');
+                            dispatch('saveCartToStorage', { response: res })
+                                .then(() => {
+                                    resolve('item updated');
+                                });
+                        })
+                        .catch((err) => {
+                            console.log("updateItem error: ", err);
+
+                            reject(err);
                         });
-                    });
                 });
             },
             swRemoveLineItem({commit, state, dispatch, rootState, getters}, payload) {
@@ -362,8 +413,10 @@ export default function (ctx) {
                         .then(response => {
                             resolve(response);
                         })
-                        .catch(error => {
-                            reject(error);
+                        .catch(err => {
+                            console.log("swRemoveLineItem error: ", err)
+
+                            reject(err);
                         });
                 });
             },
@@ -371,14 +424,21 @@ export default function (ctx) {
                 let item = payload.data;
 
                 return new Promise((resolve, reject) => {
-                    commit('delCartItemObj', item);
-                    commit('setCartItemsCount', state.cart.items_qty - item.qty);
+                    dispatch('swRemoveLineItem', { id: item.id })
+                        .then((res) => {
+                            commit('delCartItemObj', item);
+                            commit('setCartItemsCount', state.cart.items_qty - item.qty);
 
-                    dispatch('swRemoveLineItem', {id: item.id}).then((res) => {
-                        dispatch('saveCartToStorage', {response: res}).then(() => {
-                            resolve('item updated');
+                            dispatch('saveCartToStorage', { response: res })
+                                .then(() => {
+                                    resolve('item updated');
+                                });
+                        })
+                        .catch((err) => {
+                            console.log("swRemoveLineItem error: ", err);
+
+                            reject(err);
                         });
-                    });
                 })
             },
             setSwtcByCookie({commit, state, getters, dispatch}, payload) {

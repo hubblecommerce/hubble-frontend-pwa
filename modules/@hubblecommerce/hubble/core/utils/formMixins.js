@@ -39,7 +39,15 @@ const addBackendErrors = {
         addBackendErrors: function(error) {
             // SW
             if(process.env.API_TYPE === 'sw') {
-                return error.errors.map(val => val.detail);
+                if (!(error.errors === undefined)) {
+                    return error.errors.map(val => val.detail);
+                } else {
+                    const errors = [];
+
+                    errors.push(error);
+
+                    return errors;
+                }
             }
         },
     }
@@ -54,18 +62,26 @@ const salutations = {
 
     created() {
         if(process.env.API_TYPE === 'sw') {
-            this.$store.dispatch('modApiCustomer/swGetSalutations').then((response) => {
-               let mappedSalutations = [];
+            this.$store.dispatch('modApiCustomer/swGetSalutations')
+                .then((response) => {
+                   let mappedSalutations = [];
 
-               _.forEach(response.data.data, (salutation) => {
-                   mappedSalutations.push({
-                       key: salutation.id,
-                       value: this.$t(salutation.displayName)
-                   })
-               });
+                   _.forEach(response.data.data, (salutation) => {
+                       mappedSalutations.push({
+                           key: salutation.id,
+                           value: this.$t(salutation.displayName)
+                       })
+                   });
 
-               this.salutations = mappedSalutations;
-           })
+                   this.salutations = mappedSalutations;
+                })
+                .catch((err) => {
+                    console.log("swGetSalutations error: ", err);
+
+                    _.forEach(this.addBackendErrors(err), error => {
+                            this.errors.push(error);
+                    })
+                })
         } else {
             this.salutations = [
                 {
@@ -81,4 +97,4 @@ const salutations = {
     }
 };
 
-export {mapKeyToValue, mapIsoToCountry, addBackendErrors, salutations};
+export { mapKeyToValue, mapIsoToCountry, addBackendErrors, salutations };

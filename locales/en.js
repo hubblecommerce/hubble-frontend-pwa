@@ -351,12 +351,14 @@ export default (context) => {
 
                 "The password confirmation does not match.": "Password Confirm must be equal to password field",
                 "The email-repeat confirmation does not match.": "Email repetition must be equal to email field",
+                "The email-repeat is required.": "Email repetition must be equal to email field",
+                "The email-repeat must be a valid email address.": "Email structure is not valid",
 
                 "The field may not be longer than 5 characters.": "The field may not be longer than 5 characters.",
                 "The field may not be longer than 30 characters.": "The field may not be longer than 30 characters.",
                 "The field may not be longer than 60 characters.": "The field may not be longer than 60 characters.",
 
-                "The password must be atleast 8 characters long.": "The password must be atleast 8 characters long",
+                "The password must be at least 8 characters long.": "The password must be at least 8 characters long",
                 "The email must be a valid email address.": "Email structure is not valid",
 
                 "Birthday structure is not valid.": "Birthday structure needs to be dd.mm.year",
@@ -378,9 +380,12 @@ export default (context) => {
                 "You successfully changed your information.": "You successfully changed your information.",
 
                 "Email could not be changed.": "Email could not be changed.",
+
                 "No network connection.": "No network connection.",
 
                 "No products found": "No products found",
+
+                "Resetting password is currently not available": "Resetting password is currently not available",
 
                 "We are sorry there is no such product. Please try another one.": "We are sorry there is no such product. Please try another one.",
 

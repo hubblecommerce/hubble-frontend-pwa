@@ -111,12 +111,14 @@ export default function (ctx) {
                                 id: response.data.data
                             });
 
-                            dispatch('logIn', payload).then(() => {
-                                resolve(response);
-                            })
+                            dispatch('logIn', payload)
+                                .then(() => {
+                                    resolve(response);
+                                })
                         })
                         .catch(response => {
-                            console.log("API post request failed: %o", response);
+                            console.log("register - API post request failed: %o", response);
+
                             reject(response);
                         });
                 });
@@ -161,30 +163,39 @@ export default function (ctx) {
                             // Override / Set Cart Context Token
                             // because otherwise there would be two different context tokens (one for cart, one for customer) without
                             // any relation to each other
-                            dispatch('modCart/saveSwtc', response.data['sw-context-token'], {root:true}).then(() => {
-                                // Clear current cart
-                                // Get cart of logged in user
-                                // save cart to forage
-                                // TODO: merge cart items instead of removing them
-                                dispatch('modCart/clearAll', {}, {root:true}).then(() => {
-                                    // Get customer info and save to cookie
-                                    dispatch('getCustomerInfo').then(() => {
-                                        resolve(response);
+                            dispatch('modCart/saveSwtc', response.data['sw-context-token'], { root:true })
+                                .then(() => {
+                                    // Clear current cart
+                                    // Get cart of logged in user
+                                    // save cart to forage
+                                    // TODO: merge cart items instead of removing them
+                                    dispatch('modCart/clearAll', {}, { root:true })
+                                        .then(() => {
+                                            // Get customer info and save to cookie
+                                            dispatch('getCustomerInfo')
+                                                .then(() => {
+                                                    resolve(response);
 
-                                        // Save store to cookie
-                                        this.$cookies.set(state.cookieName, {
-                                            customerAuth: state.customer.customerAuth,
-                                            customerData: {},
-                                            customerAddresses: [],
-                                            billingAddress: {},
-                                            shippingAddress: {}
-                                        }, {
-                                            path: state.cookiePath,
-                                            expires: getters.getCookieExpires
+                                                    // Save store to cookie
+                                                    this.$cookies.set(state.cookieName, {
+                                                        customerAuth: state.customer.customerAuth,
+                                                        customerData: {},
+                                                        customerAddresses: [],
+                                                        billingAddress: {},
+                                                        shippingAddress: {}
+                                                    }, {
+                                                        path: state.cookiePath,
+                                                        expires: getters.getCookieExpires
+                                                    });
+                                                })
+                                                .catch((err) => {
+                                                    reject(err);
+                                                })
+                                        })
+                                        .catch((err) => {
+                                            console.log("clearAll failed", err)
                                         });
-                                    });
-                                })
-                            });
+                                });
                         })
                         .catch(response => {
                             reject(response);
@@ -365,7 +376,8 @@ export default function (ctx) {
                         })
                         .catch(response => {
                             console.log('getCustomerInfo failed: %o', response);
-                            reject('getCustomerInfo failed!');
+
+                            reject(response);
                         });
                 });
             },
@@ -380,16 +392,21 @@ export default function (ctx) {
                     }, { root: true })
                         .then(response => {
                             // Get customerinfo to know which addresses are set as default
-                            dispatch('getCustomerInfo').then(() => {
-                                dispatch('mapAddresses', response.data.data).then((mappedAddresses) => {
-                                    commit('setCustomerAddresses', mappedAddresses);
-                                    resolve('OK');
+                            dispatch('getCustomerInfo')
+                                .then(() => {
+                                    dispatch('mapAddresses', response.data.data).then((mappedAddresses) => {
+                                        commit('setCustomerAddresses', mappedAddresses);
+                                        resolve('OK');
+                                    });
+                                })
+                                .catch((err) => {
+                                    reject(err);
                                 });
-                            });
                         })
                         .catch(response => {
                             console.log('getCustomerAddresses failed: %o', response);
-                            reject('getCustomerAddresses failed!');
+
+                            reject(response);
                         });
                 });
             },
@@ -424,9 +441,10 @@ export default function (ctx) {
 
                             resolve(response);
                         })
-                        .catch(response => {
-                            console.log('storeCustomerAddress failed: %o', response);
-                            reject(response);
+                        .catch(err => {
+                            console.log('storeCustomerAddress failed: %o', err);
+
+                            reject(err);
                         });
                 });
             },
@@ -435,15 +453,27 @@ export default function (ctx) {
                     // TODO: Edit Address not implemented in SW6 headless API yet
 
                     if(payload.is_billing_default) {
-                        dispatch('setDefaultBillingAddress', payload.id).then(() => {
-                            resolve();
-                        })
+                        dispatch('setDefaultBillingAddress', payload.id)
+                            .then((response) => {
+                                resolve(response);
+                            })
+                            .catch((err) => {
+                                console.log("setDefaultBillingAddress failed: ", err);
+
+                                reject(err);
+                            })
                     }
 
                     if(payload.is_shipping_default) {
-                        dispatch('setDefaultShippingAddress', payload.id).then(() => {
-                            resolve();
-                        })
+                        dispatch('setDefaultShippingAddress', payload.id)
+                            .then((response) => {
+                                resolve(response);
+                            })
+                            .catch((err) => {
+                                console.log("setDefaultShippingAddress failed: ", err)
+
+                                reject(err);
+                            })
                     }
                 });
             },
@@ -462,9 +492,10 @@ export default function (ctx) {
                             .then(() => {
                                 resolve('OK');
                             })
-                            .catch(response => {
-                                console.log('deleteCustomerAddress failed: %o', response);
-                                reject('API request failed!');
+                            .catch((err) => {
+                                console.log('deleteCustomerAddress failed: %o', err);
+
+                                reject(err);
                             });
                     }
                 });
@@ -498,9 +529,10 @@ export default function (ctx) {
                         .then(response => {
                             resolve(response);
                         })
-                        .catch(response => {
-                            console.log('setDefaultBillingAddress failed: %o', response);
-                            reject('setDefaultBillingAddress failed!');
+                        .catch(err => {
+                            console.log('setDefaultBillingAddress failed: %o', err);
+
+                            reject(err)
                         });
                 })
             },
@@ -516,9 +548,10 @@ export default function (ctx) {
                         .then(response => {
                             resolve(response);
                         })
-                        .catch(response => {
-                            console.log('setDefaultBillingAddress failed: %o', response);
-                            reject('setDefaultBillingAddress failed!');
+                        .catch(err => {
+                            console.log('setDefaultBillingAddress failed: %o', err);
+
+                            reject(err);
                         });
                 })
             },
@@ -539,9 +572,10 @@ export default function (ctx) {
                                 resolve(mappedOrders);
                             });
                         })
-                        .catch(response => {
-                            console.log('getOrders failed: %o', response);
-                            reject('getOrders failed!');
+                        .catch(err => {
+                            console.log('getOrders failed: %o', err);
+
+                            reject(err);
                         });
                 })
             },
@@ -563,6 +597,8 @@ export default function (ctx) {
                             resolve(response);
                         })
                         .catch(error => {
+                            console.log('passwordUpdate failed: %o', error);
+
                             reject(error);
                         });
                 });
@@ -579,6 +615,8 @@ export default function (ctx) {
                             resolve(response);
                         })
                         .catch(error => {
+                            console.log('swGetSalutations failed: %o', error);
+
                             reject(error);
                         });
                 });
@@ -598,26 +636,32 @@ export default function (ctx) {
                             resolve(response);
                         })
                         .catch(error => {
+                            console.log('swGetCountries failed: %o', error);
+
                             reject(error);
                         });
                 });
             },
             async getAvailableCountries({commit, dispatch}) {
                 return new Promise(function(resolve, reject) {
-                    dispatch('swGetCountries').then((response) => {
-                        let mappedCountries = [];
+                    dispatch('swGetCountries')
+                        .then((response) => {
+                            let mappedCountries = [];
 
-                        _.forEach(response.data.data, (country) => {
-                            mappedCountries.push({
-                                name: country.name,
-                                iso_code_2: country.id
-                            })
+                            _.forEach(response.data.data, (country) => {
+                                mappedCountries.push({
+                                    name: country.name,
+                                    iso_code_2: country.id
+                                })
+                            });
+
+                            commit('setAvailableCountries', mappedCountries);
+
+                            resolve('OK');
+                        })
+                        .catch((res) => {
+                            reject(res);
                         });
-
-                        commit('setAvailableCountries', mappedCountries);
-
-                        resolve('OK');
-                    });
                 });
             },
             async postWishlist({dispatch}, payload) {
@@ -668,12 +712,14 @@ export default function (ctx) {
                         data: editedCustomerData
                     }, { root: true })
                         .then(() => {
-                            dispatch('getCustomerInfo').then(() => {
-                                resolve();
-                            })
+                            dispatch('getCustomerInfo')
+                                .then(() => {
+                                    resolve();
+                                })
                         })
                         .catch(response => {
                             console.log("API patch request to update user profile information failed: %o", response);
+
                             reject(response);
                         });
                 });
@@ -695,12 +741,19 @@ export default function (ctx) {
                         }
                     }, { root: true })
                         .then((response) => {
-                            dispatch('getCustomerInfo').then((response) => {
-                                resolve(response);
-                            })
+                            dispatch('getCustomerInfo')
+                                .then((response) => {
+                                    resolve(response);
+                                })
+                                .catch((err) => {
+                                    console.log("getCustomerInfo failed : %o", err);
+
+                                    reject(err);
+                                })
                         })
                         .catch(response => {
                             console.log("API patch request to update user email information failed: %o", response);
+
                             reject(response);
                         });
                 });

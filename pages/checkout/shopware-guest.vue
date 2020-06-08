@@ -14,7 +14,7 @@
                     <div class="headline headline-3 mb-3">Customerinformation</div>
                     <validation-observer ref="observer" v-slot="{ passes, invalid, validate }" tag="form" class="form-edit register-form" @submit.prevent="validate().then((e) => {submitForm(e)})">
                         <div class="base-data-wrp">
-                            <validation-provider v-slot="{ errors }" name="salutation" rules="required" mode="passive" tag="div" class="hbl-select">
+                            <validation-provider v-slot="{ errors }" name="salutation" rules="required" mode="eager" tag="div" class="hbl-select">
                                 <select v-model="orderObj.salutationId" class="select-text" :class="{invalid: errors.length > 0}" required>
                                     <option v-for="salutation in salutations" :key="salutation.id" :value="salutation.id">{{ salutation.displayName }}</option>
                                 </select>
@@ -22,7 +22,7 @@
                                 <div class="validation-msg" v-text="$t(errors[0])" />
                             </validation-provider>
 
-                            <validation-provider v-slot="{ errors }" vid="email" name="email" rules="required|email" mode="passive" tag="div" class="hbl-input-group">
+                            <validation-provider v-slot="{ errors }" vid="email" name="email" rules="required|email" mode="eager" tag="div" class="hbl-input-group">
                                 <input id="email"
                                        v-model="orderObj.email"
                                        type="text"
@@ -36,7 +36,7 @@
                                 <div class="validation-msg" v-text="$t(errors[0])" />
                             </validation-provider>
 
-                            <validation-provider v-slot="{ errors }" vid="firstName" name="firstName" rules="required" mode="passive" tag="div" class="hbl-input-group">
+                            <validation-provider v-slot="{ errors }" vid="firstName" name="firstName" rules="required" mode="eager" tag="div" class="hbl-input-group">
                                 <input id="firstName"
                                        v-model="orderObj.firstName"
                                        type="text"
@@ -50,7 +50,7 @@
                                 <div class="validation-msg" v-text="$t(errors[0])" />
                             </validation-provider>
 
-                            <validation-provider v-slot="{ errors }" vid="lastName" name="lastName" rules="required" mode="passive" tag="div" class="hbl-input-group">
+                            <validation-provider v-slot="{ errors }" vid="lastName" name="lastName" rules="required" mode="eager" tag="div" class="hbl-input-group">
                                 <input id="lastName"
                                        v-model="orderObj.lastName"
                                        type="text"
@@ -64,7 +64,7 @@
                                 <div class="validation-msg" v-text="$t(errors[0])" />
                             </validation-provider>
 
-                            <validation-provider v-slot="{ errors }" vid="street" name="street" rules="required" mode="passive" tag="div" class="hbl-input-group">
+                            <validation-provider v-slot="{ errors }" vid="street" name="street" rules="required" mode="eager" tag="div" class="hbl-input-group">
                                 <input id="street"
                                        v-model="orderObj.billingAddress.street"
                                        type="text"
@@ -79,7 +79,7 @@
                             </validation-provider>
 
                             <div class="form-row zip-city">
-                                <validation-provider v-slot="{ errors }" name="zipcode" rules="required|numeric|max:5" mode="passive" tag="div" class="hbl-input-group">
+                                <validation-provider v-slot="{ errors }" name="zipcode" rules="required|numeric|max:5" mode="eager" tag="div" class="hbl-input-group">
                                     <input id="zipCode"
                                            v-model="orderObj.billingAddress.zipcode"
                                            type="text"
@@ -93,7 +93,7 @@
                                     <div class="validation-msg" v-text="$t(errors[0])" />
                                 </validation-provider>
 
-                                <validation-provider v-slot="{ errors }" name="city" rules="required|max:30" mode="passive" tag="div" class="hbl-input-group">
+                                <validation-provider v-slot="{ errors }" name="city" rules="required|max:30" mode="eager" tag="div" class="hbl-input-group">
                                     <input id="city"
                                            v-model="orderObj.billingAddress.city"
                                            type="text"
@@ -107,7 +107,7 @@
                                     <div class="validation-msg" v-text="$t(errors[0])" />
                                 </validation-provider>
 
-                                <validation-provider v-slot="{ errors }" name="country" rules="required" mode="passive" tag="div" class="hbl-select">
+                                <validation-provider v-slot="{ errors }" name="country" rules="required" mode="eager" tag="div" class="hbl-select">
                                     <select v-model="orderObj.billingAddress.countryId" class="select-text" :class="{invalid: errors.length > 0}" required>
                                         <option v-if="country.active && country.shippingAvailable" v-for="country in countries" :key="country.id" :value="country.id">{{ country.name }}</option>
                                     </select>
@@ -167,6 +167,9 @@
                             </div>
                         </div>
 
+                        <template v-for="error in errors">
+                            <div class="error-message" v-text="error" />
+                        </template>
                     </validation-observer>
                 </div>
             </div>
@@ -180,6 +183,7 @@
     import Totals from "../../components/checkout/Totals";
     import PaymentMethods from "../../components/checkout/PaymentMethods";
     import ShippingMethods from "../../components/checkout/ShippingMethods";
+    import { addBackendErrors } from "@hubblecommerce/hubble/core/utils/formMixins";
 
     export default {
         name: "ShopwareGuest",
@@ -192,11 +196,14 @@
             'trackClickPath'
         ],
 
+        mixins : [addBackendErrors],
+
         layout: 'hubble_express',
 
         data() {
             return {
                 checkoutError: {},
+
                 orderObj: {
                     salutationId: "",
                     firstName: "",
@@ -209,7 +216,9 @@
                         city: "",
                         countryId: ""
                     }
-                }
+                },
+
+                errors: []
             }
         },
 
@@ -231,13 +240,34 @@
                 this.setCustomerAuth({token: this.$store.state.modCart.swtc});
             }
 
-            this.swGetSalutations().then((salutationResponse) => {
-                this.setSalutations(salutationResponse.data.data);
-            });
+            this.swGetSalutations()
+                .then((salutationResponse) => {
+                    this.setSalutations(salutationResponse.data.data);
 
-            this.swGetCountries().then((countryResponse) => {
-                this.setCountries(countryResponse.data.data);
-            });
+                })
+                .catch((err) => {
+                    console.log("swGetSalutations error: ", err);
+
+                    if (!this.errors.includes("No network connection")) {
+                        _.forEach(this.addBackendErrors(err), error => {
+                            this.errors.push(error);
+                        })
+                    }
+                });
+
+            this.swGetCountries()
+                .then((countryResponse) => {
+                    this.setCountries(countryResponse.data.data);
+                })
+                .catch((err) => {
+                    console.log("swGetCountries error: ", err);
+
+                    if (!this.errors.includes("No network connection")) {
+                        _.forEach(this.addBackendErrors(err), error => {
+                            this.errors.push(error);
+                        })
+                    }
+                });
         },
 
         methods: {
@@ -258,7 +288,6 @@
             isEmpty: function(val) {
                 return _.isEmpty(val);
             },
-
             placeOrder: function() {
 
                 this.setProcessingCheckout();
@@ -266,31 +295,45 @@
                 // Place order
                 // on success: clear cart and order and
                 // set response context token as new customer auth token (needed for payment)
-                this.placeGuestOrder({order: this.orderObj, swtc: this.swtc}).then((order) => {
+                this.placeGuestOrder({order: this.orderObj, swtc: this.swtc})
+                    .then((order) => {
 
-                    // Init payment
-                    this.swStartPayment(order.data.data.id).then((paymentResponse) => {
+                        // Init payment
+                        this.swStartPayment(order.data.data.id)
+                            .then((paymentResponse) => {
 
-                        // Reset cart context token as new customer auth token
-                        // because order context token is not needed anymore
-                        this.setCustomerAuth({});
+                                // Reset cart context token as new customer auth token
+                                // because order context token is not needed anymore
+                                this.setCustomerAuth({});
 
-                        if(paymentResponse.data.paymentUrl) {
-                            this.resetProcessingCheckout();
-                            window.open(paymentResponse.data.paymentUrl, "_self");
-                        }
+                                if(paymentResponse.data.paymentUrl) {
+                                    this.resetProcessingCheckout();
+                                    window.open(paymentResponse.data.paymentUrl, "_self");
+                                }
 
-                        if(_.isEmpty(paymentResponse.data)) {
-                            this.$router.push({
-                                path: this.localePath('checkout-shopware-success')
-                            }, () => {
-                                this.resetProcessingCheckout();
+                                if(_.isEmpty(paymentResponse.data)) {
+                                    this.$router.push({
+                                        path: this.localePath('checkout-shopware-success')
+                                    }, () => {
+                                        this.resetProcessingCheckout();
+                                    });
+                                }
+
+                            })
+                            .catch((err) => {
+                                console.log("swStartPayment error: ", err);
                             });
-                        }
 
+                    })
+                    .catch((err) => {
+                        console.log("placeGuestOrder error: ", err);
+
+                        this.errors.push(this.$t('Order could not be placed successfully'));
+
+                        _.forEach(this.addBackendErrors(err), error => {
+                            this.errors.push(error);
+                        })
                     });
-
-                });
 
             },
 

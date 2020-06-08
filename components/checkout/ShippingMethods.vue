@@ -29,7 +29,8 @@
 </template>
 
 <script>
-    import {mapState, mapGetters, mapActions, mapMutations} from 'vuex';
+    import { mapState, mapGetters, mapActions, mapMutations } from 'vuex';
+
     export default {
         name: "ShippingMethods",
 
@@ -63,26 +64,34 @@
 
                 this.setMethodById(newValue);
 
-                this.storeChosenShippingMethod(this.chosenMethodObj).then(() => {
-                    this.recalculateCart().then(() => {
-                        this.resetProcessingCheckout();
+                this.storeChosenShippingMethod(this.chosenMethodObj)
+                    .then(() => {
+                        this.recalculateCart()
+                            .then(() => {
+                                this.resetProcessingCheckout();
+                            });
+                    })
+                    .catch((err) => {
+                        this.flashMessage({
+                            flashType: 'error',
+                            flashMessage: err === 'No network connection' ? this.$t(err) : this.$t('An error occurred')
+                        });
                     });
-                });
             },
         },
 
         mounted() {
             this.loading = true;
             if(_.isEmpty(this.shippingMethods)) {
-                this.getShippingMethods().then(() => {
-                    this.setChosenShippingMethod();
-
-                    this.loading = false;
-                }).catch(() => {
-                    this.apiError = true;
-
-                    this.loading = false;
-                });
+                this.getShippingMethods()
+                    .then(() => {
+                        this.setChosenShippingMethod();
+                        this.loading = false;
+                    })
+                    .catch(() => {
+                        this.apiError = true;
+                        this.loading = false;
+                    });
             } else {
                 this.loading = false;
             }
@@ -92,7 +101,8 @@
             ...mapActions({
                 storeChosenShippingMethod: 'modApiPayment/storeChosenShippingMethod',
                 recalculateCart: 'modCart/recalculateCart',
-                getShippingMethodsFromAPI: 'modApiPayment/getShippingMethods'
+                getShippingMethodsFromAPI: 'modApiPayment/getShippingMethods',
+                flashMessage: 'modFlash/flashMessage'
             }),
             ...mapMutations({
                 setProcessingCheckout: 'modApiPayment/setProcessingCheckout',
@@ -101,13 +111,15 @@
             getShippingMethods: function() {
                 // Fetch methods from api, to make them accessible in vuex store
                 return new Promise((resolve, reject) => {
-                    this.getShippingMethodsFromAPI().then(() => {
-                        resolve();
-                    }).catch((error) => {
-                        this.loading = false;
+                    this.getShippingMethodsFromAPI()
+                        .then(() => {
+                            resolve();
+                        })
+                        .catch((error) => {
+                            console.log("getShippingMethods error: ", error);
 
-                        reject(error);
-                    });
+                            reject(error);
+                        });
                 })
             },
             setChosenShippingMethod: function() {

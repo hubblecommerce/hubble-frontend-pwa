@@ -87,6 +87,10 @@
             </div>
         </div>
 
+        <template v-for="error in uniqueErrors">
+            <div class="error-message" v-text="error" />
+        </template>
+
         <transition-expand-layer :right-left="true">
             <div v-if="showLayer" class="transition-expand-wrp">
                 <div class="container expand-content">
@@ -113,7 +117,7 @@
                                 </div>
 
                                 <validation-observer ref="observer" v-slot="{ passes }" tag="form" class="form-edit" @submit.prevent="passes(submitUpdateForm)">
-                                    <validation-provider v-slot="{ errors }" name="gender" rules="required" mode="passive" tag="div" class="hbl-select">
+                                    <validation-provider v-slot="{ errors }" name="gender" rules="required" mode="eager" tag="div" class="hbl-select">
                                         <select v-model="address.payload.gender" class="select-text" required>
                                             <option v-for="salutation in salutations"
                                                     :key="salutation.key"
@@ -129,7 +133,7 @@
                                         <div class="validation-msg" v-text="$t(errors[0])" />
                                     </validation-provider>
 
-                                    <validation-provider v-slot="{ errors }" name="firstName" rules="required|max:30" mode="passive" tag="div" class="hbl-input-group">
+                                    <validation-provider v-slot="{ errors }" name="firstName" rules="required|max:30" mode="eager" tag="div" class="hbl-input-group">
                                         <input id="firstName"
                                                v-model="address.payload.firstName"
                                                type="text"
@@ -145,7 +149,7 @@
                                         <div class="validation-msg" v-text="$t(errors[0])" />
                                     </validation-provider>
 
-                                    <validation-provider v-slot="{ errors }" name="lastName" rules="required|max:30" mode="passive" tag="div" class="hbl-input-group">
+                                    <validation-provider v-slot="{ errors }" name="lastName" rules="required|max:30" mode="eager" tag="div" class="hbl-input-group">
                                         <input id="lastName"
                                                v-model="address.payload.lastName"
                                                type="text"
@@ -162,7 +166,7 @@
                                     </validation-provider>
 
                                     <template v-if="streetIncludesHouseNo">
-                                        <validation-provider v-slot="{ errors }" name="street" rules="required|max:60" mode="passive" tag="div" class="hbl-input-group">
+                                        <validation-provider v-slot="{ errors }" name="street" rules="required|max:60" mode="eager" tag="div" class="hbl-input-group">
                                             <input id="street"
                                                    v-model="address.payload.street"
                                                    type="text"
@@ -180,7 +184,7 @@
                                     </template>
 
                                     <div v-else class="form-row street-nr">
-                                        <validation-provider v-slot="{ errors }" name="street" rules="required|max:60" mode="passive" tag="div" class="hbl-input-group">
+                                        <validation-provider v-slot="{ errors }" name="street" rules="required|max:60" mode="eager" tag="div" class="hbl-input-group">
                                             <input id="street"
                                                    v-model="address.payload.street"
                                                    type="text"
@@ -196,7 +200,7 @@
                                             <div class="validation-msg" v-text="$t(errors[0])" />
                                         </validation-provider>
 
-                                        <validation-provider v-slot="{ errors }" name="houseNo" rules="required|max:5" mode="passive" tag="div" class="hbl-input-group">
+                                        <validation-provider v-slot="{ errors }" name="houseNo" rules="required|max:5" mode="eager" tag="div" class="hbl-input-group">
                                             <input id="houseNr"
                                                    v-model="address.payload.houseNo"
                                                    type="text"
@@ -214,7 +218,7 @@
                                     </div>
 
                                     <div class="form-row zip-city">
-                                        <validation-provider v-slot="{ errors }" name="postal" rules="required|numeric|max:5" mode="passive" tag="div" class="hbl-input-group">
+                                        <validation-provider v-slot="{ errors }" name="postal" rules="required|numeric|max:5" mode="eager" tag="div" class="hbl-input-group">
                                             <input id="zipCode"
                                                    v-model="address.payload.postal"
                                                    type="text"
@@ -230,7 +234,7 @@
                                             <div class="validation-msg" v-text="$t(errors[0])" />
                                         </validation-provider>
 
-                                        <validation-provider v-slot="{ errors }" name="city" rules="required|max:30" mode="passive" tag="div" class="hbl-input-group">
+                                        <validation-provider v-slot="{ errors }" name="city" rules="required|max:30" mode="eager" tag="div" class="hbl-input-group">
                                             <input id="city"
                                                    v-model="address.payload.city"
                                                    type="text"
@@ -247,7 +251,7 @@
                                         </validation-provider>
                                     </div>
 
-                                    <validation-provider v-slot="{ errors }" name="country" rules="required" mode="passive" tag="div" class="hbl-select">
+                                    <validation-provider v-slot="{ errors }" name="country" rules="required" mode="eager" tag="div" class="hbl-select">
                                         <select v-model="address.payload.country" class="select-text" :class="{invalid: errors.length > 0}" required>
                                             <option v-for="country in countries" :key="country.iso_code_2" :value="country.iso_code_2">{{ country.name }}</option>
                                         </select>
@@ -257,7 +261,9 @@
                                         <div class="validation-msg" v-text="$t(errors[0])" />
                                     </validation-provider>
 
-                                    <div class="error-message" v-text="error" />
+                                    <template v-for="(error, index) in errors">
+                                        <div :key="index" class="error-message">{{ error }}.</div>
+                                    </template>
 
                                     <button v-if="formIsActiveAddressUpdate && !saveAsNewAddress"
                                             class="button-primary"
@@ -341,7 +347,9 @@
                                     </div>
                                 </div>
                                 <div class="actions">
-                                    <div class="error-message" v-text="error" />
+                                    <template v-for="(error, index) in errors">
+                                        <div :key="index" class="error-message">{{ error }}.</div>
+                                    </template>
 
                                     <button v-if="!selectedDelete.length > 0"
                                             class="button-primary"
@@ -410,7 +418,7 @@
 
                 saveAsNewAddress: false,
 
-                error: null,
+                errors: [],
 
                 addressTemplate: new Form(
                     {
@@ -426,7 +434,7 @@
                             houseNo: '',
                             postal: '',
                             city: '',
-                            country: 'DE',
+                            country: '',
                             company: ''
                         }
                     }
@@ -487,6 +495,9 @@
                 }
                 return addresses;
             },
+            uniqueErrors: function() {
+                return new Set(this.errors);
+            }
         },
 
         watch: {
@@ -523,7 +534,8 @@
                 toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction',
                 hideOffcanvasAction: 'modNavigation/hideOffcanvasAction',
                 editGuestAddress: 'modApiCustomer/editGuestAddress',
-                calculateShippingCosts: 'modCart/calculateShippingCosts'
+                calculateShippingCosts: 'modCart/calculateShippingCosts',
+                flashMessage: 'modFlash/flashMessage'
             }),
             toggle: function() {
                 return new Promise((resolve) => {
@@ -544,7 +556,7 @@
                         }
 
                         //reset error message
-                        this.error = '';
+                        this.errors = [];
                         resolve('OffCanvas toggled.');
                     })
                 });
@@ -561,15 +573,25 @@
                     this.loading = false;
                 } else {
                     // Get addresses from api if logged in user
-                    this.getCustomerAddresses().then(() => {
-                        this.mapAddresses();
+                    this.getCustomerAddresses()
+                        .then(() => {
+                            this.mapAddresses();
 
-                        this.loading = false;
-                    })
-                    .catch(() => {
-                        this.loading = false;
-                    });
+                            this.loading = false;
+                        })
+                        .catch((res) => {
+                            this.loading = false;
 
+                            console.log("getCustomerAddresses failed");
+
+                            this.errors.push(this.$t("Addresses could not be loaded"));
+
+                            if (!this.errors.includes("No network connection")) {
+                                _.forEach(this.addBackendErrors(res), error => {
+                                    this.errors.push(error);
+                                })
+                            }
+                        });
                 }
             },
             mapAddresses: function() {
@@ -670,19 +692,23 @@
                     address.payload = _.omit(address.payload, 'houseNo');
                 }
 
-                this.storeCustomerAddress(address).then(() => {
-                    // Refresh addresses and close offcanvas
-                    this.getAddresses();
+                this.storeCustomerAddress(address)
+                    .then(() => {
+                        // Refresh addresses and close offcanvas
+                        this.getAddresses();
 
-                    this.toggle();
-                })
-                .catch((error) => {
-                    // Show api request error
-                    this.addBackendErrors(error.errors);
+                        this.toggle();
+                    })
+                    .catch((err) => {
+                        // Show api request error
+                        console.log("storeCustomerAddress error: ", err);
 
-                    this.error = error.message;
-                    //this.error = this.$t('Store new address failed');
-                });
+                        this.errors.push(this.$t('Address could not be saved'));
+
+                        _.forEach(this.addBackendErrors(err), error => {
+                            this.errors.push(error);
+                        })
+                    });
             },
             submitUpdateForm: function() {
                 let address = this.address.getPayloadData();
@@ -695,31 +721,34 @@
                 // Do API call if is logged in user
                 if(!this.isGuest) {
                     // dispatch data to api ...
-                    this.editAddress(address).then(() => {
-                        // Refresh addresses and close offcanvas
-                        this.getAddresses();
+                    this.editAddress(address)
+                        .then(() => {
+                            // Refresh addresses and close offcanvas
+                            this.getAddresses();
 
-                        this.toggle();
-                    })
-                    .catch((error) => {
-                        // Show api request error
-                        this.addBackendErrors(error.errors);
+                            this.toggle();
+                        })
+                        .catch((err) => {
+                            console.log("editAddress error: ", err)
 
-                        this.error = error.message;
-                        //this.error = this.$t('Editing address failed');
-                    });
+                            // Show api request error
+                            _.forEach(this.addBackendErrors(err), error => {
+                                this.errors.push(error);
+                            })
+                        });
                 } else {
                     // Edit cookie if is guest
                     // dispatch data to api ...
-                    this.editGuestAddress(address).then(() => {
-                        this.getAddresses();
+                    this.editGuestAddress(address)
+                        .then(() => {
+                            this.getAddresses();
 
-                        this.toggle();
-                    })
-                    .catch(() => {
-                        // Show api request error
-                        this.error = this.$t('Editing address failed');
-                    });
+                            this.toggle();
+                        })
+                        .catch(() => {
+                            // Show api request error
+                            this.errors.push(this.$t('Editing address failed'));
+                        });
                 }
             },
             submitNewDefault: function(){
@@ -735,15 +764,22 @@
                             newDefaultAddress = _.omit(newDefaultAddress, 'houseNo');
                         }
 
-                        this.editAddress(newDefaultAddress).then(() => {
-                            this.getAddresses();
+                        this.editAddress(newDefaultAddress)
+                            .then(() => {
+                                this.getAddresses();
 
-                            this.toggle();
-                        }).catch((error) => {
-                            console.log(error);
-                            // Show api request error
-                            this.error = this.$t('Select new billing address failed');
-                        });
+                                this.toggle();
+                            })
+                            .catch((err) => {
+                                console.log("editAddress error: ", err);
+
+                                // Show api request error
+                                this.errors.push(this.$t('Selecting new billing address failed'));
+
+                                _.forEach(this.addBackendErrors(err), error => {
+                                    this.errors.push(error);
+                                })
+                            });
                     }
                 }
                 if(this.address.is_shipping){
@@ -758,14 +794,21 @@
                             newDefaultAddress = _.omit(newDefaultAddress, 'houseNo');
                         }
 
-                        this.editAddress(newDefaultAddress).then(() => {
-                            this.getAddresses();
-                            this.toggle();
-                        }).catch((error) => {
-                            console.log(error);
-                            // Show api request error
-                            this.error = this.$t('Select new shipping address failed');
-                        });
+                        this.editAddress(newDefaultAddress)
+                            .then(() => {
+                                this.getAddresses();
+                                this.toggle();
+                            })
+                            .catch((err) => {
+                                console.log("editAddress error: ", err);
+
+                                // Show api request error
+                                this.errors.push(this.$t('Selecting new shipping address failed'));
+
+                                _.forEach(this.addBackendErrors(err), error => {
+                                    this.errors.push(error);
+                                })
+                            });
                     }
                 }
             },
@@ -774,9 +817,13 @@
                 _.forEach(this.selectedDelete, (address) => {
                     this.deleteCustomerAddress(address).then(() => {
                         this.getAddresses();
-                    }).catch(() => {
+                    }).catch((err) => {
                         // Show api request error
-                        this.error = this.$t('Delete address failed');
+                        this.errors.push(this.$t('Deleting new shipping address failed'));
+
+                        _.forEach(this.addBackendErrors(err), error => {
+                            this.errors.push(error);
+                        })
                     });
                 });
 

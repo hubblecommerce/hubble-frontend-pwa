@@ -35,6 +35,10 @@
                     </div>
                 </div>
             </div>
+
+            <template v-for="error in errors">
+                <div class="error-message" v-text="error" />
+            </template>
         </div>
     </div>
 </template>
@@ -43,6 +47,7 @@
     import { mapState, mapMutations, mapActions } from 'vuex';
     import Totals from "../../components/checkout/Totals";
     import CustomerAddresses from "../../components/customer/CustomerAddresses";
+    import { addBackendErrors } from "@hubblecommerce/hubble/core/utils/formMixins";
 
     export default {
         name: "ShopwareOnepage",
@@ -63,6 +68,8 @@
 
         layout: 'hubble_express',
 
+        mixins : [addBackendErrors],
+
         data() {
             return {
                 isGuest: false,
@@ -81,7 +88,8 @@
                         city: "City",
                         countryId: ""
                     }
-                }
+                },
+                errors: []
             }
         },
 
@@ -126,23 +134,37 @@
                     return false;
                 }
 
-                let order = await this.placeOrderAction();
 
-                let paymentResponse = await this.swStartPayment(order.data.data.id);
+                let order;
+                let paymentResponse;
 
-                if(paymentResponse.data.paymentUrl) {
-                    this.resetProcessingCheckout();
-                    window.open(paymentResponse.data.paymentUrl, "_self");
-                }
+                try {
+                    order = await this.placeOrderAction();
 
-                if(_.isEmpty(paymentResponse.data)) {
-                    this.$router.push({
-                        path: this.localePath('checkout-shopware-success')
-                    }, () => {
+                    paymentResponse  = await this.swStartPayment(order.data.data.id);
+
+                    if(paymentResponse.data.paymentUrl) {
                         this.resetProcessingCheckout();
-                    });
-                }
 
+                        window.open(paymentResponse.data.paymentUrl, "_self");
+                    }
+
+                    if(_.isEmpty(paymentResponse.data)) {
+                        this.$router.push({
+                            path: this.localePath('checkout-shopware-success')
+                        }, () => {
+                            this.resetProcessingCheckout();
+                        });
+                    }
+                } catch (err) {
+                    console.log("placeOrder failed: ", err);
+
+                    this.errors.push(this.$t('Order could not be placed successfully'));
+
+                    _.forEach(this.addBackendErrors(err), error => {
+                        this.errors.push(error);
+                    })
+                }
             },
 
             submitForm: function(isValid) {

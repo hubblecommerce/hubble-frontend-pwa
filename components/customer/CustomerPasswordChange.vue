@@ -17,7 +17,7 @@
                     </div>
 
                     <validation-observer ref="observer" v-slot="{ passes }" class="password-change-form-wrp" tag="form" @submit.prevent="passes(submitUpdatePassword)">
-                        <validation-provider v-slot="{ errors }" name="email" rules="required|password" mode="passive" tag="div" class="hbl-input-group input-icon">
+                        <validation-provider v-slot="{ errors }" name="current password" rules="required|password:8" mode="eager" tag="div" class="hbl-input-group input-icon">
                             <input id="passwordOld"
                                    v-model="form.passwordOld"
                                    type="password"
@@ -33,7 +33,7 @@
                             <div class="validation-msg" v-text="$t(errors[0])" />
                         </validation-provider>
 
-                        <validation-provider v-slot="{ errors }" name="password" rules="required|password:4" mode="passive" tag="div" class="hbl-input-group input-icon">
+                        <validation-provider v-slot="{ errors }" name="new password" rules="required|password:8" mode="eager" tag="div" class="hbl-input-group input-icon">
                             <input id="password"
                                    v-model="form.password"
                                    type="password"
@@ -49,9 +49,9 @@
                             <div class="validation-msg" v-text="$t(errors[0])" />
                         </validation-provider>
 
-                        <validation-provider v-slot="{ errors }" name="email" rules="required" mode="passive" tag="div" class="hbl-input-group input-icon">
-                            <input id="passwordConfirm"
-                                   v-model="form.passwordConfirm"
+                        <validation-provider v-slot="{ errors }" name="new password confirmation" vid="newPasswordConfirmation" rules="required|password:8|confirmed:new password" mode="eager" tag="div" class="hbl-input-group input-icon">
+                            <input id="newPasswordConfirmation"
+                                   v-model="form.newPasswordConfirmation"
                                    type="password"
                                    autocomplete="on"
                                    value=""
@@ -60,12 +60,14 @@
                                    required
                             >
 
-                            <label for="passwordConfirm" v-text="$t('Confirm new Password')" />
+                            <label for="newPasswordConfirmation" v-text="$t('Confirm new Password')" />
 
                             <div class="validation-msg" v-text="$t(errors[0])" />
                         </validation-provider>
 
-                        <div class="error-message" v-text="error" />
+                        <template v-for="(error) in errors">
+                            <div class="error-message">{{ error }}.</div>
+                        </template>
 
                         <button class="button-primary w-100" @click.prevent="passes(submitUpdatePassword)">
                             {{ $t('Change your Password') }}
@@ -81,19 +83,24 @@
 <script>
     import { mapState, mapActions } from 'vuex';
     import Form from "@hubblecommerce/hubble/core/utils/form";
+    import {addBackendErrors} from "@hubblecommerce/hubble/core/utils/formMixins";
 
     export default {
         name: "CustomerPasswordChange",
 
+        mixins: [addBackendErrors],
+
         data() {
             return {
                 name: 'CustomerPasswordChange',
+
                 form: new Form({
                     passwordOld: '',
                     password: '',
-                    passwordConfirm: '',
+                    newPasswordConfirmation: '',
                 }),
-                error: ''
+
+                errors: []
             }
         },
 
@@ -116,24 +123,29 @@
                 let payload = {
                     password_old: this.form.passwordOld,
                     password: this.form.password,
-                    password_confirm: this.form.passwordConfirm
+                    password_confirm: this.form.newPasswordConfirmation
                 };
 
-                this.passwordUpdate(payload).then(() => {
-                    this.toggleOffcanvasAction({
-                        component: this.name,
-                        direction: 'rightLeft'
-                    }).then(() => {
-                        // Success Flash Message
-                        this.flashMessage({
-                            flashType: 'success',
-                            flashMessage: this.$t('You successfully changed your password.'),
-                            keepOnRouteChange: true
+                this.passwordUpdate(payload)
+                    .then(() => {
+                        this.toggleOffcanvasAction({
+                            component: this.name,
+                            direction: 'rightLeft'
+                        }).then(() => {
+                            // Success Flash Message
+                            this.flashMessage({
+                                flashType: 'success',
+                                flashMessage: this.$t('You successfully changed your password.'),
+                                keepOnRouteChange: true
+                            });
                         });
+                    }).catch((err) => {
+                        this.errors.push(this.$t('Password could not be changed'));
+
+                        _.forEach(this.addBackendErrors(err), error => {
+                            this.errors.push(error);
+                        })
                     });
-                }).catch(() => {
-                    this.error = this.$t('Password could not be changed.');
-                });
             },
             toggle: function() {
                 this.toggleOffcanvasAction({
@@ -141,12 +153,10 @@
                     direction: 'rightLeft'
                 }).then(() => {
                     // Reset data
-                    this.error = '';
-
                     this.form = new Form({
                         passwordOld: '',
                         password: '',
-                        passwordConfirm: '',
+                        newPasswordConfirmation: '',
                     });
                 });
             },

@@ -59,37 +59,40 @@
                 this.item.variants = this.selectedVariants;
 
                 // Add item and qty to cart store
-                this.addItem({
-                    item: this.item,
-                    qty: this.selectedQty
-                }).then(() => {
-                    if(process.env.API_TYPE === 'api') {
-                        this.resetSelectedVariants();
-                    }
+                this.addItem({ item: this.item, qty: this.selectedQty })
+                    .then(() => {
+                        if(process.env.API_TYPE === 'api') {
+                            this.resetSelectedVariants();
+                        }
 
-                    // Open Minicart Context
-                    this.toggleOffcanvasAction({
-                        component: 'TheMiniCart',
-                        direction: 'rightLeft'
-                    }).then(() => {
+                        // Open Minicart Context
+                        this.toggleOffcanvasAction({
+                            component: 'TheMiniCart',
+                            direction: 'rightLeft'
+                        })
+                            .then(() => {
+                                this.loaderState = false;
+
+                                // Display Success Message
+                                this.flashMessage({
+                                    flashType: 'success',
+                                    flashMessage: this.$t('Successfully added item to cart.')
+                                });
+                            });
+
+                            this.gtmAddToCart();
+                    })
+                    .catch((error) => {
+                        console.log("addItem error: ", error);
+                        
                         this.loaderState = false;
 
-                        // Display Success Message
+                        // Display Error Message (eg. Qty of item is at maxQty)
                         this.flashMessage({
-                            flashType: 'success',
-                            flashMessage: this.$t('Successfully added item to cart.')
+                            flashType: 'error',
+                            flashMessage: ( error === 'No network connection' || error === 'Product could not be saved to cart' ) ? this.$t(error) : this.$t('An error occurred')
                         });
                     });
-                    this.gtmAddToCart();
-                }).catch((error) => {
-                    this.loaderState = false;
-
-                    // Display Error Message (eg. Qty of item is at maxQty)
-                    this.flashMessage({
-                        flashType: 'error',
-                        flashMessage: this.$t(error)
-                    });
-                });
             },
             gtmAddToCart: function() {
                 if(this.$gtm) {

@@ -100,8 +100,10 @@ export default function (ctx) {
                                     });
                             }
                         })
-                        .catch(response => {
-                            reject('API request failed!');
+                        .catch(error => {
+                            console.log("getAutocompleteResults error: ", error);
+
+                            reject(error);
                         });
                 });
             },

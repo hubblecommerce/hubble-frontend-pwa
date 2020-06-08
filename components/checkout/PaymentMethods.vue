@@ -133,7 +133,8 @@
 </template>
 
 <script>
-    import {mapState, mapGetters, mapMutations, mapActions} from 'vuex';
+    import { mapState, mapGetters, mapMutations, mapActions } from 'vuex';
+
     export default {
         name: "PaymentMethods",
         data() {
@@ -241,13 +242,19 @@
                 }
 
                 if(!_.isEmpty(this.chosenMethodObj)) {
-                    this.storeChosenPaymentMethod(this.chosenMethodObj).then(() => {
-
-                        this.recalculateCart().then(() => {
-                            this.resetProcessingCheckout();
+                    this.storeChosenPaymentMethod(this.chosenMethodObj)
+                        .then(() => {
+                            this.recalculateCart()
+                                .then(() => {
+                                    this.resetProcessingCheckout();
+                                });
+                        })
+                        .catch((err) => {
+                            this.flashMessage({
+                                flashType: 'error',
+                                flashMessage: err === 'No network connection' ? this.$t(err) : this.$t('An error occurred')
+                            });
                         });
-
-                    });
                 } else {
                     this.resetProcessingCheckout();
                 }
@@ -300,7 +307,8 @@
             ...mapActions({
                 storeChosenPaymentMethod: 'modApiPayment/storeChosenPaymentMethod',
                 getPaymentMethodsAction: 'modApiPayment/getPaymentMethods',
-                recalculateCart: 'modCart/recalculateCart'
+                recalculateCart: 'modCart/recalculateCart',
+                flashMessage: 'modFlash/flashMessage',
             }),
             ...mapMutations({
                 setProcessingCheckout: 'modApiPayment/setProcessingCheckout',

@@ -354,17 +354,19 @@ export default function (ctx) {
                         endpoint: _endpoint
                     }, { root: true })
                         .then(response => {
-                            dispatch('mappingCategoryProducts', {data: response.data.data.products}).then((res) => {
-                                resolve({
-                                    data: {
-                                        result: res
-                                    }
+                            dispatch('mappingCategoryProducts', {data: response.data.data.products})
+                                .then((res) => {
+                                    resolve({
+                                        data: {
+                                            result: res
+                                        }
+                                    });
                                 });
-                            });
                         })
                         .catch(response => {
                             console.log("API get request failed: %o", response);
-                            reject('API request failed!');
+
+                            reject(response);
                         });
                 });
             },
@@ -399,7 +401,8 @@ export default function (ctx) {
                         })
                         .catch(response => {
                             console.log("API get request failed: %o", response);
-                            reject('API request failed!');
+
+                            reject(response);
                         });
                 });
             },

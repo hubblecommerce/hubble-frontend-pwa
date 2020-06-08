@@ -125,6 +125,7 @@
 
         mounted() {
             if(_.isEmpty(this.countries)) {
+                // TODO
                 this.getAvailableCountries('modApiCustomer/getAvailableCountries');
             }
             this.orderData = JSON.parse(this.order.payload);
