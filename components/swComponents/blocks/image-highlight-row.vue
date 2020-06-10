@@ -1,13 +1,13 @@
 <template>
     <div>
         <div class="col-md-4">
-            <component :is="leftSlot" class="col-md-4" :content="getContentByPosition(content.slots, 'left')" />
+            <component :is="leftSlot" :content="getContentByPosition(content.slots, 'left')" />
         </div>
         <div class="col-md-4">
-            <component :is="centerSlot" class="col-md-4" :content="getContentByPosition(content.slots, 'center')" />
+            <component :is="centerSlot" :content="getContentByPosition(content.slots, 'center')" />
         </div>
         <div class="col-md-4">
-            <component :is="rightSlot" class="col-md-4" :content="getContentByPosition(content.slots, 'right')" />
+            <component :is="rightSlot" :content="getContentByPosition(content.slots, 'right')" />
         </div>
     </div>
 </template>
@@ -27,18 +27,14 @@
         },
         computed: {
             leftSlot() {
-                return this.getSlotByPosition(this.content.slots, 'left');
+                return this.getSlotByPosition(this.content.slot, 'left');
             },
             centerSlot() {
-                return this.getSlotByPosition(this.content.slots, 'center');
+                return this.getSlotByPosition(this.content.slot, 'center');
             },
             rightSlot() {
-                return this.getSlotByPosition(this.content.slots, 'right');
+                return this.getSlotByPosition(this.content.slot, 'right');
             }
         }
     }
 </script>
-
-<style scoped>
-
-</style>
