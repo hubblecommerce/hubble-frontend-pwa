@@ -201,14 +201,17 @@ $spacers: map-merge(
 
 .align-self-start {
     align-self: flex-start !important;
+    width: 100%;
 }
 
 .align-self-center {
     align-self: center !important;
+    width: 100%;
 }
 
 .align-self-end {
     align-self: flex-end !important;
+    width: 100%;
 }
 
 .bg-light {

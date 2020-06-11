@@ -1,8 +1,16 @@
 <template>
     <div>
-        <component :is="leftSlot" class="col-md-4" :content="getContentByPosition(content.slots, 'left')" />
-        <component :is="centerSlot" class="col-md-4" :content="getContentByPosition(content.slots, 'center')" />
-        <component :is="rightSlot" class="col-md-4" :content="getContentByPosition(content.slots, 'right')" />
+        <div class="col-md-4">
+            <component :is="leftSlot" :content="getContentByPosition(content.slots, 'left')" />
+        </div>
+
+        <div class="col-md-4">
+            <component :is="centerSlot" :content="getContentByPosition(content.slots, 'center')" />
+        </div>
+
+        <div class="col-md-4">
+            <component :is="rightSlot" :content="getContentByPosition(content.slots, 'right')" />
+        </div>
     </div>
 </template>
 <script>
@@ -32,7 +40,3 @@
       }
   }
 </script>
-
-<style scoped>
-
-</style>

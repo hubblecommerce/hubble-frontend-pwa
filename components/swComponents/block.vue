@@ -1,5 +1,5 @@
 <template>
-    <div class="cms-block" :class="blockClass" :style="backgroundStyles">
+    <div class="cms-block" :class="[blockClass, backgroundImageExists]" :style="backgroundStyles">
         <div class="cms-block-container" :style="paddingStyles">
             <component :is="getComponent" :content="content" class="cms-block-container-row row cms-row" />
         </div>
@@ -31,6 +31,7 @@ import {sectionMixins} from './helper'
                   bottom: this.content.marginBottom ? this.content.marginBottom : 0,
                   left: this.content.marginLeft ? this.content.marginLeft : 0,
               }
+
               return {
                   padding: padding.top + ' ' + padding.right + ' ' + padding.bottom + ' ' + padding.left
               };
@@ -39,11 +40,19 @@ import {sectionMixins} from './helper'
               const {
                   backgroundColor,
                   backgroundMedia,
+                  backgroundMediaMode
               } = this.content;
+
               return {
                   backgroundColor,
                   backgroundImage: backgroundMedia ? `url(${backgroundMedia.url})` : null,
+                  backgroundSize: backgroundMediaMode ? backgroundMediaMode : null,
               };
+          },
+          backgroundImageExists() {
+              const { backgroundMedia } = this.content;
+
+              return backgroundMedia ? 'bg-image' : ''
           }
       }
 

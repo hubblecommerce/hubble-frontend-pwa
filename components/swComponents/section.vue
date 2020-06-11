@@ -74,7 +74,8 @@ export default {
                 'sw-slots': !this.isBlock,
                 'has-sidebar': this.hasSidebar,
                 'cms-section-sidebar': this.hasSidebar,
-                'row': this.hasSidebar
+                'row': this.hasSidebar,
+                'cms-section__padding--bottom': true
             };
         },
         // elementClasses if element has sidebar, same bootstrap col as shopware
@@ -89,3 +90,9 @@ export default {
     }
 };
 </script>
+
+<style>
+    .cms-section__padding--bottom {
+        padding-bottom: 50px;
+    }
+</style>

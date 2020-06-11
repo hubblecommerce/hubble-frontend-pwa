@@ -60,6 +60,24 @@
   }
 }
 
+.sw-blocks {
+
+    .tns-controls {
+
+        button {
+            width: inherit;
+        }
+
+        button:first-child {
+            left: -55px;
+        }
+
+        button:last-child {
+            right: -55px;
+        }
+    }
+}
+
 .tns-horizontal {
   &.tns-subpixel {
     &>.tns-item {

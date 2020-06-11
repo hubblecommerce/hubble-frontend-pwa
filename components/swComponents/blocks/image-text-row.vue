@@ -1,18 +1,31 @@
 <template>
-    <div>
-        <div class="col-md-4">
-            <component :is="leftImageSlot" class="col-md-4" :content="getContentByPosition(content.slots, 'left-image')" />
-            <component :is="leftTextSlot" class="col-md-4" :content="getContentByPosition(content.slots, 'left-text')" />
+        <div>
+            <div class="col-md-4">
+                <div>
+                    <component :is="leftImageSlot" :content="getContentByPosition(content.slots, 'left-image')" />
+                </div>
+                <div>
+                    <component :is="leftTextSlot" :content="getContentByPosition(content.slots, 'left-text')" />
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div>
+                    <component :is="centerImageSlot" :content="getContentByPosition(content.slots, 'center-image')" />
+                </div>
+                <div>
+                    <component :is="centerTextSlot" :content="getContentByPosition(content.slots, 'center-text')" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div>
+                    <component :is="rightImageSlot" :content="getContentByPosition(content.slots, 'right-image')" />
+                </div>
+                <div>
+                    <component :is="rightTextSlot" :content="getContentByPosition(content.slots, 'right-text')" />
+                </div>
+            </div>
         </div>
-        <div class="col-md-4">
-            <component :is="centerImageSlot" class="col-md-4" :content="getContentByPosition(content.slots, 'center-image')" />
-            <component :is="centerTextSlot" class="col-md-4" :content="getContentByPosition(content.slots, 'center-text')" />
-        </div>
-        <div class="col-md-4">
-            <component :is="rightImageSlot" class="col-md-4" :content="getContentByPosition(content.slots, 'right-image')" />
-            <component :is="rightTextSlot" class="col-md-4" :content="getContentByPosition(content.slots, 'right-text')" />
-        </div>
-    </div>
 </template>
 <script>
     import { blockMixins } from '../helper'
@@ -50,7 +63,3 @@
         }
     }
 </script>
-
-<style scoped>
-
-</style>
