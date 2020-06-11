@@ -10,7 +10,7 @@
             :breadcrumbs="breadcrumbs"
         />
 
-        <div class="container breadcrumbs-wrp">
+        <div class="container breadcrumbs-wrp" v-if="!onIndexPage">
             <breadcrumbs :path="breadcrumbs" />
         </div>
 
@@ -142,6 +142,9 @@ export default {
                 });
             }
             return array;
+        },
+        onIndexPage() {
+            return this.$route.path === '/';
         },
         categoryText() {
             if(!_.isEmpty(this.categoryItem)) {
