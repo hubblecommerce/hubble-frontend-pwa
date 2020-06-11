@@ -1,13 +1,13 @@
 <template>
     <div :class="elementClass">
         <div v-if="verticalAlign" class="cms-element-alignment" :class="verticalAlign">
-            <div class="cms-image-container" :class="($mq !== sm) && displayMode" :style="minHeight">
+            <div class="cms-image-container" :class="($mq !== sm || imgTypeSvg) && displayMode" :style="minHeight">
                 <img class="cms-image" :src="imgUrl" :alt-info="alt" :title-info="title" />
             </div>
         </div>
 
         <template v-else>
-            <div class="cms-image-container" :class="($mq !== sm) && displayMode" :style="minHeight">
+            <div class="cms-image-container" :class="($mq !== sm || imgTypeSvg) && displayMode" :style="minHeight">
                 <img class="cms-image" :src="imgUrl" :alt-info="alt" :title-info="title" />
             </div>
         </template>
@@ -36,6 +36,9 @@
             },
             imgUrl() {
                 return this.getMedia && this.getMedia.url;
+            },
+            imgTypeSvg() {
+                return this.imgUrl.includes('svg');
             },
             alt() {
                 return this.getMedia && this.getMedia.alt;
