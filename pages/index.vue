@@ -6,48 +6,8 @@
             page-title="Hubble demo"
             :breadcrumbs="[{'0': 'home'}]"
         />
-        <div class="container">
-            <div class="index-text-wrp">
-                <div class="intro-text" style="max-width: 740px; margin: 0 auto; display: block;">
-                    <h1 class="text-center intro-headline">Next Generation Shop Frontend</h1>
-                    <h2 class="text-center">We deliver high Performance. High Conversion Rates. Consistent and fast Innovation.</h2>
-                    <div class="text mb-4 text-center">
-                        hubble is a frontend-layer boosting legacy eCommerce plattforms.
-                        We embrace grown software, preserve existing business processes and deliver a Progressive Web App (PWA) in less than 90 days.
-                        Expcect a super high performance, dedicated focus on mobile commerce and extremly fast development cycles.
-                        Invest in the technology of tomorrow and scale that effect!
-                    </div>
-                    <h2 class="text-center">Any Device</h2>
-                    <div class="text mb-4 text-center">
-                        With a clear focus on mobile user experience, the hubble shop frontend is reliably supported on all modern devices.
-                        Automatically gain full advantages on desktop viewports as well.
-                        Address your target groups optimally across devices to expand them in the future.</div>
-                    <h2 class="text-center">Any Shop Platform</h2>
-                    <div class="text text-center">
-                        A quick integration into your existing IT infrastructure while keeping existing business processes make hubble a real game changer.
-                        Benefit from the advantages of great user experience and additional individual features.
-                        No extra cost for expensive app development.</div>
-                    <div class="text text-center">
-                        Gain new agility and flexibility, enabling positive customer experiences and more conversions.
-                    </div>
-                </div>
-            </div>
-            <div v-view.once="onceHandler">
-                <div class="new-products-wrp">
-                    <div class="new-products-header">
-                        <h2 class="headline headline-3 new-products-headline">New Products</h2>
-                    </div>
-                    <div class="product-carousel">
-                        <product-listing v-if="newProducts.length > 0 && inView"
-                                         :data-items="newProducts"
-                                         :responsive="slider.options.responsive"
-                                         :loop="false"
-                                         :is-slider="true"
-                        />
-                    </div>
-                </div>
-            </div>
-        </div>
+
+        <component :is="currentComponent" />
     </div>
 </template>
 
@@ -55,18 +15,25 @@
     import { mapActions } from "vuex";
     import GTMDataLayer from "../components/utils/GTMDataLayer";
     import {mapState} from "vuex";
+    import ViewCategory from "../components/productlist/ViewCategory";
+    import ViewProduct from "../components/productdetail/ViewProduct";
+    import ViewContent from "../components/cms/ViewContent";
 
     export default {
         name: "Index",
 
         components: {
             ProductListing: () => import('../components/productlist/ProductListing'),
-            GTMDataLayer
+            GTMDataLayer,
+            ViewCategory,
+            ViewProduct,
+            ViewContent
         },
 
         layout: 'hubble',
 
         middleware: [
+            'apiIndexRoute',
             'apiAuthenticate',
             'apiLocalization',
             'apiResourceMenu',
@@ -97,31 +64,19 @@
                             }
                         }
                     }
-                }
+                },
+                currentComponent:  ''
             }
         },
 
-        computed: {
-            ...mapState({
-                dataMenu: state => state.modApiMenu.dataMenu
-            })
+        created() {
+            this.currentComponent = 'view-category';
         },
 
         methods: {
             ...mapActions({
                 swGetCategoryProductsById: 'modApiCategory/swGetCategoryProductsById'
-            }),
-            onceHandler: function() {
-                if(process.env.API_TYPE === 'sw') {
-                    // Get id of first category that can be found
-                    const categoryId = this.dataMenu.result.items[0].id;
-
-                    this.swGetCategoryProductsById({id: categoryId}).then(response => {
-                        this.newProducts = response.data.result.items;
-                        this.inView = true;
-                    });
-                }
-            }
+            })
         },
 
         head () {
