@@ -27,13 +27,13 @@
         },
         computed: {
             leftSlot() {
-                return this.getSlotByPosition(this.content.slot, 'left');
+                return this.getSlotByPosition(this.content.slots, 'left');
             },
             centerSlot() {
-                return this.getSlotByPosition(this.content.slot, 'center');
+                return this.getSlotByPosition(this.content.slots, 'center');
             },
             rightSlot() {
-                return this.getSlotByPosition(this.content.slot, 'right');
+                return this.getSlotByPosition(this.content.slots, 'right');
             }
         }
     }

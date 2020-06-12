@@ -2,13 +2,13 @@
     <div :class="elementClass">
         <div v-if="verticalAlign" class="cms-element-alignment" :class="verticalAlign">
             <div class="cms-image-container" :class="($mq !== sm || imgTypeSvg) && displayMode" :style="minHeight">
-                <img class="cms-image" :src="imgUrl" :alt-info="alt" :title-info="title" />
+                <img-lazy class="cms-image" :src="imgUrl" :alt-info="alt" :alt="alt" :title-info="title" />
             </div>
         </div>
 
         <template v-else>
             <div class="cms-image-container" :class="($mq !== sm || imgTypeSvg) && displayMode" :style="minHeight">
-                <img class="cms-image" :src="imgUrl" :alt-info="alt" :title-info="title" />
+                <img-lazy class="cms-image" :src="imgUrl" :alt-info="alt" :alt="alt" :title-info="title" />
             </div>
         </template>
     </div>
