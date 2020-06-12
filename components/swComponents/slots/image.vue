@@ -1,14 +1,14 @@
 <template>
     <div :class="elementClass">
         <div v-if="verticalAlign" class="cms-element-alignment" :class="verticalAlign">
-            <div class="cms-image-container" :class="($mq !== sm || imgTypeSvg) && displayMode" :style="minHeight">
-                <img-lazy class="cms-image" :src="imgUrl" :alt-info="alt" :alt="alt" :title-info="title" />
+            <div class="cms-image-container" :class="setDisplayMode" :style="minHeight">
+                <img-lazy class="cms-image" :classes="`cms-image ${setDisplayMode}`" :src="imgUrl" :alt-info="alt" :alt="alt" :title-info="title" />
             </div>
         </div>
 
         <template v-else>
-            <div class="cms-image-container" :class="($mq !== sm || imgTypeSvg) && displayMode" :style="minHeight">
-                <img-lazy class="cms-image" :src="imgUrl" :alt-info="alt" :alt="alt" :title-info="title" />
+            <div class="cms-image-container" :class="setDisplayMode" :style="minHeight">
+                <img-lazy class="cms-image" :classes="`cms-image ${setDisplayMode}`" :src="imgUrl" :alt-info="alt" :alt="alt" :title-info="title" />
             </div>
         </template>
     </div>
@@ -48,6 +48,12 @@
             },
             displayMode() {
                 return `is-${this.content.config.displayMode.value}`;
+            },
+            setDisplayMode () {
+                if (this.$mq !== this.sm || this.imgTypeSvg) {
+                    return this.displayMode
+                }
+                return ''
             },
             minHeight() {
                 if(this.content.config.displayMode.value === 'cover') {
