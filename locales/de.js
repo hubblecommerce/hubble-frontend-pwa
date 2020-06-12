@@ -426,7 +426,11 @@ export default (context) => {
 
                 "We are sorry there is no such product. Please try another one.": "Leider gibt es dieses Produkt nicht. Bitte suchen Sie nach einem anderen.",
 
-                "Resetting password is currently not available": "Passwort zurücksetzen ist zur Zeit nicht möglich"
+                "Resetting password is currently not available": "Passwort zurücksetzen ist zur Zeit nicht möglich",
+
+                "You successfully signed up to our newsletter.": "Die Newsletter Anmeldung war erfolgreich.",
+
+                "Subscription was not successful" : "Anmeldung war nicht erfolgreich"
             }
         )
     });

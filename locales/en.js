@@ -383,6 +383,10 @@ export default (context) => {
 
                 "No network connection.": "No network connection.",
 
+                "You successfully signed up to our newsletter.": "You successfully signed up to our newsletter.",
+
+                "Subscription was not successful" : "Subscription was not successful",
+
                 "No products found": "No products found",
 
                 "Resetting password is currently not available": "Resetting password is currently not available",
