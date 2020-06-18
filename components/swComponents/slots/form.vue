@@ -32,10 +32,10 @@
                 return this.content.config.mailReceiver.value
             },
             getDefaultMailReceiver() {
-                return this.content.config.getDefaultMailReceiver.value
+                return this.content.config.defaultMailReceiver.value
             },
             getConfirmationText() {
-                return this.content.config.conformationText.value
+                return this.content.config.confirmationText.value
             }
         }
     }

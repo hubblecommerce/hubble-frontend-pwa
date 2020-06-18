@@ -1,12 +1,14 @@
 <template>
     <div>
-        <div class="col-md-6">
-            <component :is="leftTopSlot" class="col-md-4" :content="getContentByPosition(content.slots, 'left-top')" />
-            <component :is="leftBottomSlot" class="col-md-4" :content="getContentByPosition(content.slots, 'left-bottom')" />
+        <div class="col-md-6 image-simple-grid__side-images">
+            <div class="image-simple-grid__side-images--top">
+                <component :is="leftTopSlot" :content="getContentByPosition(content.slots, 'left-top')" />
+            </div>
 
+            <component :is="leftBottomSlot" :content="getContentByPosition(content.slots, 'left-bottom')" />
         </div>
         <div class="col-md-6">
-            <component :is="rightSlot" class="col-md-4" :content="getContentByPosition(content.slots, 'right')" />
+            <component :is="rightSlot" :content="getContentByPosition(content.slots, 'right')" />
         </div>
     </div>
 </template>
@@ -39,5 +41,11 @@
 </script>
 
 <style scoped>
+    .image-simple-grid__side-images {
+        height: 100%;
+    }
 
+    .image-simple-grid__side-images--top {
+        margin-bottom: 40px;
+    }
 </style>

@@ -4,7 +4,7 @@
             <client-only>
                 <slider
                     :controls="true"
-                    :gutter="10"
+                    :gutter="15"
                     :controls-text="controls"
                     :edge-padding="10"
                     :nav="false"
@@ -12,7 +12,12 @@
                     :items="1"
                 >
                     <template v-for="item in imageItems">
-                        <img-lazy :src="item.media.url" :alt-info="item.media.alt" :title-info="item.media.title" />
+                        <img-lazy
+                            :key="item.media.url"
+                            :src="item.media.url"
+                            :alt-info="item.media.alt"
+                            :title-info="item.media.title"
+                        />
                     </template>
                 </slider>
             </client-only>
