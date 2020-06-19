@@ -78,6 +78,42 @@
     }
 }
 
+.sw-blocks {
+    .cms-element-image-gallery {
+        .is--preview-left {
+            .image-gallery__preview {
+                .tns-ovh {
+                    overflow: hidden;
+                }
+                .tns-outer {
+                    top: 20px;
+                    width: 100%;
+                }
+                .tns-controls {
+                    button {
+                        height: inherit;
+                    }
+
+                    button:first-child {
+                        right: -55px;
+                        bottom: inherit;
+                        top: -30px;
+                    }
+
+                    button:last-child {
+                        top: inherit;
+                        left: -55px;
+                        bottom: -34px;
+                    }
+                }
+                .tns-carousel {
+                    padding-bottom: 25px;
+                }
+            }
+        }
+    }
+}
+
 .tns-horizontal {
   &.tns-subpixel {
     &>.tns-item {
