@@ -144,6 +144,15 @@ $spacer-xl: ( $spacer * 3 ) !default;
         }
     }
 }
+.cms-block-image-text-bubble,
+.cms-block-image-bubble-row {
+    .cms-element-image {
+        .LazyImage {
+            object-fit: cover;
+            height: 100%;
+        }
+    }
+}
 
 .cms-element-text,
 .cms-element-image,
