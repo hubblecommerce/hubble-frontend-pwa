@@ -7,11 +7,13 @@ $hbl-pagination-icon-font-size: 22px;
 .pagination {
     list-style: none;
     padding: 0;
-    margin: 0;
+    margin: 0 0 10px 0;
     display: flex;
     justify-content: center;
     z-index: 0;
     position: relative;
+    width: 100%;
+
 
     .page-item {
         padding: 0;
@@ -45,3 +47,11 @@ $hbl-pagination-icon-font-size: 22px;
         }
     }
 }
+
+@media(min-width: 768px) {
+   .pagination {
+       justify-content: flex-start;
+       align-items: center;
+   }
+}
+

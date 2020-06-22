@@ -8,12 +8,21 @@
   /* Open filter button */
   .open-filter {
     width: 100%;
-    margin-bottom: 10px;
+    margin-bottom: inherit;
 
     i {
       transform: rotate(90deg);
     }
   }
+}
+
+@media(min-width: 768px) {
+    .filter-wrp {
+        /* Open filter button */
+        .open-filter {
+            margin-bottom: 10px;
+        }
+    }
 }
 
 .facets-wrp {

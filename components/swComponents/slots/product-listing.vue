@@ -3,9 +3,9 @@
         <div v-if="errorNoProducts" class="container">
             <div class="error-message" v-text="$t('There are no products available in this category or for this filter.')" />
         </div>
-        <div v-else class="d-flex justify-content-between container">
+        <div v-else class="d-flex justify-content-between product-listing-toolbar__wrapper">
             <pagination />
-            <div class="d-flex">
+            <div class="d-flex product-listing-toolbar__selectables">
                 <selectable-limit :data-options="optionsLimit" />
                 <selectable-order :data-options="optionsSorter" />
             </div>
@@ -65,7 +65,30 @@ import SelectableOrder from '../../productlist/toolbar/SelectableOrder'
 
     .hbl-select {
         width: 180px;
-        margin-left: 10px;
-        margin-right: 10px;
+    }
+
+    .product-listing-toolbar__wrapper {
+        flex-wrap: wrap;
+    }
+
+    .product-listing-toolbar__selectables {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        height: 40px;
+        margin-bottom: 10px;
+    }
+
+
+    @media(min-width: 768px) {
+        .product-listing-toolbar__wrapper {
+            flex-wrap: inherit;
+        }
+        .product-listing-toolbar__selectables {
+            justify-content: flex-end;
+        }
+        .limit {
+            margin-right: 20px;
+        }
     }
 </style>
