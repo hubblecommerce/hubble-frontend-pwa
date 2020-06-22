@@ -86,6 +86,7 @@ import SelectableOrder from '../../productlist/toolbar/SelectableOrder'
         }
         .product-listing-toolbar__selectables {
             justify-content: flex-end;
+            order: 3;
         }
         .limit {
             margin-right: 20px;

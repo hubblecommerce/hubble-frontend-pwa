@@ -13,7 +13,7 @@ $hbl-pagination-icon-font-size: 22px;
     z-index: 0;
     position: relative;
     width: 100%;
-
+    order: 2;
 
     .page-item {
         padding: 0;
@@ -52,6 +52,12 @@ $hbl-pagination-icon-font-size: 22px;
    .pagination {
        justify-content: flex-start;
        align-items: center;
+
+       .page-item {
+           &:first-child {
+               margin-left: -10px;
+           }
+       }
    }
 }
 
