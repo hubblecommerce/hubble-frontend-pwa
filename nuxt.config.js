@@ -265,7 +265,8 @@ module.exports = {
             '@hubblecommerce/hubble',
             'vee-validate/dist/rules'
         ],
-        extractCSS: true
+        extractCSS: true,
+        loadingScreen: false
     },
 
     workbox: {
