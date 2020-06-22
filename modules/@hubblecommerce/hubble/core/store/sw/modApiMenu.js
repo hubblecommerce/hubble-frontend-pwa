@@ -2,6 +2,34 @@ import {sortMenuEntries, unflatten} from "@hubblecommerce/hubble/core/utils/menu
 import {datetimeUnixNow, datetimeUnixNowAddSecs} from "@hubblecommerce/hubble/core/utils/datetime";
 import {swMapApiError} from "@hubblecommerce/hubble/core/utils/swHelper";
 
+function mapEntriesRecursive(navigationEntries) {
+
+    return navigationEntries.map((category) => {
+        let obj = {};
+        obj.parentId = category.parentId;
+        obj.name = category.name;
+        obj.level = category.level;
+        obj.active = category.active;
+        obj.id = category._uniqueIdentifier;
+
+        // Set url
+        obj.url_path = false;
+        if(!_.isEmpty(category.seoUrls)) {
+            obj.url_path = category.seoUrls[0].seoPathInfo.toLowerCase();
+        }
+        if(category.type === 'folder') {
+            obj.url_path = false;
+        }
+
+        if(!_.isEmpty(category.children)) {
+            obj.children = mapEntriesRecursive(category.children);
+        }
+
+        return obj;
+    });
+
+}
+
 export default function (ctx) {
     const modApiMenu = {
         namespaced: true,
@@ -94,13 +122,23 @@ export default function (ctx) {
             async getMenu({commit, state, dispatch}, payload) {
                 return new Promise(function(resolve, reject) {
                     dispatch('apiCall', {
-                        action: 'get',
+                        action: 'post',
                         tokenType: 'sw',
                         apiType: 'data',
-                        endpoint: '/sales-channel-api/v1/category?limit=500&associations[seoUrls][]'
+                        endpoint: '/store-api/v1/navigation/main-navigation/main-navigation',
+                        data: {
+                            includes: {
+                                category: ["id", "parentId", "name", "level", "active", "_uniqueIdentifier", "seoUrls", "type", "children"]
+                            },
+                            buildTree: true,
+                            depth: 5,
+                            associations: {
+                                seoUrls: {}
+                            }
+                        }
                     }, { root: true })
                         .then(response => {
-                            dispatch('mappingMenu', response.data.data).then((res) => {
+                            dispatch('mappingMenu', response.data).then((res) => {
                                 commit('setDataMenu', res);
                             });
 
@@ -115,44 +153,13 @@ export default function (ctx) {
             },
             async mappingMenu({commit, state, dispatch}, payload) {
                 return new Promise(function(resolve, reject) {
-                    let mapped = payload.map((category) => {
-                        let obj = {};
-
-                        // Add 0 as value for parentId to root categories to make unflatten function work
-                        if(category.parentId === null) {
-                            category.parentId = 0;
-                        }
-
-                        // Map required properties from sw response to hubble requirements
-                        obj.parentId = category.parentId;
-                        obj.name = category.name;
-
-                        obj.url_path = false;
-
-                        if(!_.isEmpty(category.seoUrls)) {
-                            obj.url_path = category.seoUrls[0].seoPathInfo.toLowerCase();
-                        }
-
-                        if(category.type === 'folder') {
-                            obj.url_path = false;
-                        }
-
-                        obj.level = category.level;
-                        obj.active = category.active;
-                        obj.id = category._uniqueIdentifier;
-
-                        return obj;
-                    });
-
-                    mapped = mapped.filter(o => {
-                        return o.active;
-                    })
+                    let mapped = mapEntriesRecursive(payload);
 
                     // Build required parent child relations from flat array
                     resolve( {
                         data: {
                             result: {
-                                items: unflatten(mapped)
+                                items: mapped
                             }
                         }
                     });
