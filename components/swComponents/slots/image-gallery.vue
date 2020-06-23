@@ -32,9 +32,8 @@
                     :edge-padding="2"
                     :nav="false"
                     :lazyload="true"
-                    :items="getGalleryPosition === 'underneath' ? 5 : getPreviewImageCount"
+                    :responsive="getGalleryPosition === 'underneath' ? responsiveUnderneath : responsiveLeft"
                     :axis="getGalleryPosition === 'underneath' ? 'horizontal' : 'vertical'"
-                    :auto-height="false"
                 >
                     <div v-for="(item, index) in images" :key="item.mediaId" class="image-gallery__grid__container">
                         <button @click.prevent="changeActiveImageToSelected(index)">
@@ -45,8 +44,6 @@
                     </div>
                 </slider>
             </div>
-
-
         </div>
     </div>
 </template>
@@ -77,13 +74,34 @@
                     '<i class="icon icon-chevron-down"></i><span class="hidden-link-name">Navigate down</span>'
                 ],
 
-                activeImageIndex: 0
+                activeImageIndex: 0,
+
+                responsiveUnderneath: {
+                    0: {
+                        items: 5,
+                    },
+                    768: {
+                        items: 5,
+                    },
+                    1024: {
+                        items: 5,
+                    }
+                },
+
+                responsiveLeft: {
+                    0: {
+                        items: 3,
+                    },
+                    768: {
+                        items: 3,
+                    },
+                    1024: {
+                        items: 3,
+                    }
+                }
             }
         },
         computed: {
-            getPreviewImageCount () {
-                return (this.$mq === 'sm' || this.$mq === 'md') ? 3 : 4;
-            },
             getDisplayMode() {
                 return this.content.config.value;
             },
@@ -107,9 +125,19 @@
 
         watch: {
             activeImageIndex: {
-                immediate: true,
                 handler(newValue) {
                     if (newValue === undefined) this.activeImageIndex = 0;
+                    else this.activeImageIndex = newValue;
+
+                    if (this.$refs.tinySliderPreview) this.$refs.tinySliderPreview.slider.goTo(newValue);
+                }
+            },
+
+            $mq: {
+                handler() {
+                        if (this.$refs.tinySliderPreview) {
+                            this.$refs.tinySliderPreview.slider.goTo(this.activeImageIndex);
+                        }
                 }
             }
         },
@@ -119,20 +147,19 @@
         },
 
         mounted() {
-            this.activeImageIndex = 0;
+            this.$nextTick(() => {
+                this.activeImageIndex = 0;
 
-            if (this.$mq !== 'sm') this.$refs.tinySliderPreview.slider.goTo(this.activeImageIndex);
-
-            if (this.$mq !== 'sm') {
                 this.$refs.tinySlider.slider.events.on('indexChanged', (info) => {
-
                     this.activeImageIndex = info.index - 2;
 
-                    this.$refs.tinySliderPreview.slider.goTo(this.activeImageIndex === undefined ? 0 : this.activeImageIndex);
+                    if (this.$refs.tinySliderPreview) {
+                        this.$refs.tinySliderPreview.slider.goTo(this.activeImageIndex === undefined ? 0 : this.activeImageIndex);
+                    }
                 })
-            }
 
-            this.activeImageIndex =  this.$refs.tinySlider.slider.events.on('indexChanged', (info) => info.index - 2);
+                this.activeImageIndex =  this.$refs.tinySlider.slider.events.on('indexChanged', (info) => info.index - 2);
+            })
         },
 
         methods: {
@@ -141,7 +168,6 @@
                 this.$refs.tinySlider.slider.goTo(this.activeImageIndex);
             }
         }
-
     }
 </script>
 
