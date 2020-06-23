@@ -6,19 +6,33 @@ function mapEntriesRecursive(navigationEntries) {
 
     return navigationEntries.map((category) => {
         let obj = {};
-        obj.parentId = category.parentId;
+
+        // SW Shop API
+        //obj.parentId = category.parentId;
+        //obj.name = category.name;
+        //obj.level = category.level;
+        //obj.active = category.active;
+        //obj.id = category._uniqueIdentifier;
+        //
+        //// Set url
+        //obj.url_path = false;
+        //if(!_.isEmpty(category.seoUrls)) {
+        //    obj.url_path = category.seoUrls[0].seoPathInfo.toLowerCase();
+        //}
+        //if(category.type === 'folder') {
+        //    obj.url_path = false;
+        //}
+        //
+
+        // SW PWA
         obj.name = category.name;
         obj.level = category.level;
-        obj.active = category.active;
-        obj.id = category._uniqueIdentifier;
+        obj.id = category.name;
 
-        // Set url
-        obj.url_path = false;
-        if(!_.isEmpty(category.seoUrls)) {
-            obj.url_path = category.seoUrls[0].seoPathInfo.toLowerCase();
-        }
-        if(category.type === 'folder') {
+        if(category.route.path === '/') {
             obj.url_path = false;
+        } else {
+            obj.url_path = category.route.path;
         }
 
         if(!_.isEmpty(category.children)) {
@@ -125,7 +139,7 @@ export default function (ctx) {
                         action: 'post',
                         tokenType: 'sw',
                         apiType: 'data',
-                        endpoint: '/store-api/v1/navigation/main-navigation/main-navigation',
+                        endpoint: '/store-api/v1/pwa/navigation',
                         data: {
                             includes: {
                                 category: ["id", "parentId", "name", "level", "active", "_uniqueIdentifier", "seoUrls", "type", "children"]
@@ -138,7 +152,7 @@ export default function (ctx) {
                         }
                     }, { root: true })
                         .then(response => {
-                            dispatch('mappingMenu', response.data).then((res) => {
+                            dispatch('mappingMenu', response.data.children).then((res) => {
                                 commit('setDataMenu', res);
                             });
 

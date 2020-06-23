@@ -44,7 +44,7 @@ export default function (ctx) {
                         action: 'post',
                         tokenType: 'sw',
                         apiType: 'data',
-                        endpoint: '/sales-channel-api/v1/dmf/page',
+                        endpoint: '/store-api/v1/pwa/page',
                         data: {
                             path: payload,
                             associations: {

@@ -8,6 +8,7 @@ export default function (ctx) {
             dataCategoryProducts: {},
             apiRequestBody: {
                 limit: process.env.limiter_default,
+                "total-count-mode": true,
                 page: 1,
                 filter: [
                     {
@@ -254,17 +255,23 @@ export default function (ctx) {
                     obj.meta_keywords = payload.keywords;
                     obj.meta_description = payload.metaDescription;
                     obj.level = payload.level;
-                    obj.path_ids = payload.path.split('|').filter(s => s);
-                    obj.path_ids.push(payload.id)
-                    obj.path_names = payload.breadcrumb;
+
+                    obj.path_ids = [];
+                    obj.path_names = [];
                     obj.path_urls = [];
-                    _.each(payload.breadcrumb, (crumb, index) => {
-                        let slugifiedCrumb = slugify(crumb) + '/';
-                        if(index > 1) {
-                            slugifiedCrumb = obj.path_urls[index-1] + slugifiedCrumb;
-                        }
-                        obj.path_urls.push(slugifiedCrumb);
-                    });
+                    if(payload.path != null) {
+                        obj.path_ids = payload.path.split('|').filter(s => s);
+                        obj.path_ids.push(payload.id)
+                        obj.path_names = payload.breadcrumb;
+                        obj.path_urls = [];
+                        _.each(payload.breadcrumb, (crumb, index) => {
+                            let slugifiedCrumb = slugify(crumb) + '/';
+                            if(index > 1) {
+                                slugifiedCrumb = obj.path_urls[index-1] + slugifiedCrumb;
+                            }
+                            obj.path_urls.push(slugifiedCrumb);
+                        });
+                    }
 
                     resolve(obj);
                 });

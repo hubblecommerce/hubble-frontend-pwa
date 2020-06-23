@@ -2,13 +2,13 @@
     <div :class="elementClass">
         <div v-if="verticalAlign" class="cms-element-alignment" :class="verticalAlign">
             <div class="cms-image-container" :class="setDisplayMode" :style="minHeight">
-                <img-lazy class="cms-image" :classes="`cms-image ${setDisplayMode}`" :src="imgUrl" :alt-info="alt" :alt="alt" :title-info="title" />
+                <img-lazy v-if="imgUrl != null" class="cms-image" :classes="`cms-image ${setDisplayMode}`" :src="imgUrl" :alt-info="alt" :alt="alt" :title-info="title" />
             </div>
         </div>
 
         <template v-else>
             <div class="cms-image-container" :class="setDisplayMode" :style="minHeight">
-                <img-lazy class="cms-image" :classes="`cms-image ${setDisplayMode}`" :src="imgUrl" :alt-info="alt" :alt="alt" :title-info="title" />
+                <img-lazy v-if="imgUrl != null" class="cms-image" :classes="`cms-image ${setDisplayMode}`" :src="imgUrl" :alt-info="alt" :alt="alt" :title-info="title" />
             </div>
         </template>
     </div>
