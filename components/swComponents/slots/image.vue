@@ -38,7 +38,7 @@
                 return this.getMedia && this.getMedia.url;
             },
             imgTypeSvg() {
-                return this.imgUrl.includes('svg');
+                this.imgUrl && this.imgUrl.includes('svg');
             },
             alt() {
                 return this.getMedia && this.getMedia.alt;
