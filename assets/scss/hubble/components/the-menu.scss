@@ -40,7 +40,7 @@
     min-width: 250px;
 }
 
-/* Desktop */
+/* Tablet */
 @media(min-width: 768px) {
     .menu-cpt-wrapper {
         z-index: 20;
@@ -49,14 +49,23 @@
             margin-right: 15px;
         }
     }
+
     .menu-wrapper {
         width: 60%;
     }
+
     .menu-wrapper-desktop {
         .tree-menu {
             &:before {
                 display: none;
             }
         }
+    }
+}
+
+/* Desktop */
+@media(min-width: 1025px) {
+    .menu-cpt-wrapper {
+        display: none;
     }
 }

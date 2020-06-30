@@ -45,6 +45,7 @@
     background-color: $background;
     border-bottom: 1px solid $border-color;
     position: relative;
+    margin-bottom: 60px;
 
     display: flex;
     align-items: center;
@@ -66,7 +67,7 @@
     }
 
     .action-wrp {
-        padding: 0 10px 0 0;
+        padding: 0;
     }
 }
 
