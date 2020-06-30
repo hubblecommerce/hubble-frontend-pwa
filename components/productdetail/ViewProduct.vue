@@ -5,8 +5,8 @@
         </div>
 
         <div v-if="!loading" class="container main-container">
-            <div v-if="$mq === 'sm'" class="back-btn-wrp">
-                <button class="detail-back-btn" @click="historyBack()">
+            <div class="back-btn-wrp">
+                <button v-if="$mq === 'sm'" class="detail-back-btn" @click="historyBack()">
                     <i class="icon icon-chevron-left" />
                     <span class="hidden-link-name">{{ $t('Back') }}</span>
                     <material-ripple />

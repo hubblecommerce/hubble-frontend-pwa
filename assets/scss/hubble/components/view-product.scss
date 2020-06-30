@@ -2,21 +2,26 @@
     padding: 0;
 }
 
-.detail-back-btn {
-    position: relative;
+.back-btn-wrp {
+    min-height: 42px;
 
-    .hidden-link-name {
+    .detail-back-btn {
         position: relative;
-        vertical-align: middle;
-        text-indent: 0;
-        width: auto;
-        height: auto;
-    }
 
-    i {
-        vertical-align: middle;
+        .hidden-link-name {
+            position: relative;
+            vertical-align: middle;
+            text-indent: 0;
+            width: auto;
+            height: auto;
+        }
+
+        i {
+            vertical-align: middle;
+        }
     }
 }
+
 
 .detail-wrp {
     margin-bottom: 40px;
