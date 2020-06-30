@@ -53,6 +53,9 @@
 
     export default {
         name: "ImageGallerySlot",
+        components: {
+            Slider: () => { if(process.client) { return import('vue-tiny-slider') } },
+        },
         mixins: [slotMixins],
         props: {
             content: {

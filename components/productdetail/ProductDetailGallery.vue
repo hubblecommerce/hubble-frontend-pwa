@@ -119,7 +119,10 @@
     import 'vue-js-modal/dist/styles.css';
 
     export default {
-        components: {AddToWishlist},
+        components: {
+            AddToWishlist,
+            Slider: () => { if(process.client) { return import('vue-tiny-slider') } },
+        },
 
         data() {
             return {

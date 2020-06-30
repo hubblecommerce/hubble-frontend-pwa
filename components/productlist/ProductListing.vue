@@ -41,7 +41,8 @@
 
         components: {
             ProductListingCard,
-            GTMProductImpressions
+            GTMProductImpressions,
+            Slider: () => { if(process.client) { return import('vue-tiny-slider') } },
         },
 
         props: {

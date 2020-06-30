@@ -29,7 +29,9 @@
     import { slotMixins } from '../helper'
     export default {
         name: 'ImageSliderSlot',
-        components: { },
+        components: {
+            Slider: () => { if(process.client) { return import('vue-tiny-slider') } },
+        },
         mixins: [slotMixins],
         props: {
             content: {
