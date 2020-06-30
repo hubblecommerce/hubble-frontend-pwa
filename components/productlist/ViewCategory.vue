@@ -26,12 +26,13 @@
         <template v-else>
             <div class="container category-header">
                 <h1 class="title headline-1" v-text="categoryItem.name" />
-                <div>
-                    <text-excerpt v-if="($mq === 'sm' || $mq === 'md') && categoryText" :text="categoryText" :limit="300" />
-                </div>
-                <div>
+                <div :style="categoryText !== '' ? 'min-height: 95px;' : ''">
                     <client-only>
-                        <text-excerpt v-if="$mq === 'lg' && categoryText" :text="categoryText" :limit="900" />
+                        <text-excerpt
+                            v-if="categoryText"
+                            :text="categoryText"
+                            :limit="($mq === 'md' || $mq === 'sm') ? 300 : 900"
+                        />
                     </client-only>
                 </div>
             </div>
