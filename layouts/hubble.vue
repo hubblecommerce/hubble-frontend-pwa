@@ -58,9 +58,15 @@
 
 <script>
     import { mapState } from 'vuex';
+    import ScrollToTop from "../components/utils/ScrollToTop";
     import TheLogo from "../components/navigation/TheLogo";
     import TheSearchDirect from "../components/search/TheSearchDirect";
+    import TheMiniCart from "../components/navigation/TheMiniCart";
+    import CustomerMenu from '../components/navigation/CustomerMenu';
     import TheMobileMenu from "../components/navigation/TheMobileMenu";
+    import TheMegaMenu from "../components/navigation/TheMegaMenu";
+    import BackgroundBlur from "../components/utils/BackgroundBlur";
+    import TheWishlist from "../components/navigation/TheWishlist";
     import CookieNotice from "../components/utils/CookieNotice";
     import FlashMessages from "../components/utils/FlashMessages";
     import LayoutWrapper from "../components/utils/LayoutWrapper";
@@ -72,15 +78,15 @@
             TheFooterMobile: () => import('../components/footer/TheFooterMobile'),
             TheFooterCopyright: () => import('../components/footer/TheFooterCopyright'),
             TheFooterDesktop: () => import('../components/footer/TheFooterDesktop'),
-            TheWishlist: () => import('../components/navigation/TheWishlist'),
-            BackgroundBlur: () => import('../components/utils/BackgroundBlur'),
-            TheMegaMenu: () => import('../components/navigation/TheMegaMenu'),
-            ScrollToTop: () => import('../components/utils/ScrollToTop'),
-            TheMiniCart: () => import('../components/navigation/TheMiniCart'),
-            CustomerMenu: () => import('../components/navigation/CustomerMenu'),
+            TheWishlist,
+            BackgroundBlur,
+            TheMegaMenu,
+            ScrollToTop,
+            TheMiniCart,
             TheSearchDirect,
             TheMobileMenu,
             TheLogo,
+            CustomerMenu,
             CookieNotice,
             FlashMessages,
             LayoutWrapper
