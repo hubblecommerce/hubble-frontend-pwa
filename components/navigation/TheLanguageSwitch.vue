@@ -46,8 +46,15 @@
 </template>
 
 <script>
+    import Vue from 'vue'
+    import vClickOutside from 'v-click-outside'
+
     export default {
         name: "TheLanguageSwitch",
+
+        components: {
+            Collapsible: () => import('../utils/Collapsible')
+        },
 
         data() {
             return {
@@ -61,6 +68,10 @@
                 // Close menu layer if route changes
                 this.displaySwitch = false;
             }
+        },
+
+        created() {
+            Vue.use(vClickOutside);
         },
 
         mounted: function() {

@@ -32,6 +32,8 @@
 
 <script>
     import TransitionRotateX from "../../transitions/TransitionRotateX";
+    import Vue from "vue";
+    import vClickOutside from "v-click-outside";
 
     export default {
         name: "CollapsibleFilter",
@@ -75,6 +77,10 @@
             return {
                 collapse: true
             };
+        },
+
+        created() {
+            Vue.use(vClickOutside);
         },
 
         methods: {

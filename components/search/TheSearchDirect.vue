@@ -56,13 +56,14 @@
 
 <script>
     import { mapState, mapActions, mapMutations } from 'vuex';
-    import AutocompleteList from "./AutocompleteList";
+    import Vue from 'vue'
+    import vClickOutside from 'v-click-outside'
 
     export default {
         name: 'TheSearch',
 
         components: {
-            AutocompleteList
+            AutocompleteList: () => import('./AutocompleteList'),
         },
 
         data() {
@@ -78,6 +79,10 @@
                 timeout: null,
                 loading: false,
             }
+        },
+
+        created() {
+            Vue.use(vClickOutside);
         },
 
         computed: {

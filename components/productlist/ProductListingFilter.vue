@@ -95,7 +95,6 @@
     import {mapActions, mapGetters, mapMutations, mapState} from 'vuex';
 
     import SelectableFacet from './toolbar/SelectableFacet.vue';
-    import CollapsibleFilter from "./toolbar/CollapsibleFilter";
     import PriceSlider from "./toolbar/PriceSlider";
 
     export default {
@@ -103,7 +102,8 @@
 
         components: {
             PriceSlider,
-            CollapsibleFilter,
+            CollapsibleFilter: () => import('./toolbar/CollapsibleFilter'),
+            Collapsible: () => import('../utils/Collapsible'),
             SelectableFacet,
         },
 

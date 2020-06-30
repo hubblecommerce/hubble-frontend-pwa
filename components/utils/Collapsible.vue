@@ -35,6 +35,8 @@
 
 <script>
     import TransitionRotateX from "../transitions/TransitionRotateX";
+    import Vue from "vue";
+    import vClickOutside from "v-click-outside";
 
     export default {
         name: "Collapsible",
@@ -78,6 +80,10 @@
             return {
                 collapse: false
             };
+        },
+
+        created() {
+            Vue.use(vClickOutside);
         },
 
         methods: {
