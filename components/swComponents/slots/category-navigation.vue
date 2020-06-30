@@ -10,6 +10,8 @@
     import ProductListingSidebarNav from '../../productlist/ProductListingSidebarNav'
     import { mapState } from 'vuex'
     import { slotMixins } from '../helper'
+    import _ from 'lodash';
+
     export default {
         name: 'CategoryNavigationSlot',
         components: { ProductListingSidebarNav },

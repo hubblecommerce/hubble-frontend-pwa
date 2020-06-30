@@ -71,6 +71,7 @@
     import { mapState, mapGetters, mapActions, mapMutations } from 'vuex';
     import QtySelector from "../utils/QtySelector";
     import { clearDataLayer } from "@hubblecommerce/hubble/core/utils/gtmHelper";
+    import _ from 'lodash';
 
     export default {
         name: "CartItemsList",

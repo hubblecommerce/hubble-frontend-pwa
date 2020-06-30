@@ -22,6 +22,7 @@
 
 <script>
 import Block from './block';
+import _ from 'lodash';
 
 export default {
     name: 'Section',

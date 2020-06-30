@@ -87,6 +87,7 @@
     import Totals from "../../components/checkout/Totals";
     import base64 from "base-64";
     import CustomerAddresses from "../../components/customer/CustomerAddresses";
+    import _ from 'lodash';
 
     export default {
         name: "Summary",

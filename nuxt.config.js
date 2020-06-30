@@ -1,5 +1,4 @@
 const pkg = require('./package');
-import webpack from 'webpack';
 require('dotenv').config();
 
 module.exports = {
@@ -249,18 +248,17 @@ module.exports = {
     */
     build: {
         //analyze: true,
-        optimization: {
-            splitChunks: {
-                chunks: 'all',
-                // tells webpack to try to split chunks bigger than maxSize into smaller parts
-                maxSize: 200000
-            }
+        //optimization: {
+        //    splitChunks: {
+        //        chunks: 'all',
+        //        // tells webpack to try to split chunks bigger than maxSize into smaller parts
+        //        maxSize: 200000
+        //    }
+        //},
+        babel: {
+            plugins: ['lodash'],
+            presets: [["@babel/env", { "targets": { "node": 6 } }]]
         },
-        plugins: [
-            new webpack.ProvidePlugin({
-                '_': 'lodash-core'
-            }),
-        ],
         transpile: [
             '@hubblecommerce/hubble',
             'vee-validate/dist/rules'

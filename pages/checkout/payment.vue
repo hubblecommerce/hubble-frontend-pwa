@@ -30,6 +30,7 @@
     import Coupons from "../../components/checkout/Coupons";
     import OrderComment from "../../components/checkout/OrderComment";
     import CustomerAddresses from "../../components/customer/CustomerAddresses";
+    import _ from 'lodash';
 
     export default {
         name: "Payment",

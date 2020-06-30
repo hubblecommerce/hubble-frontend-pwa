@@ -184,6 +184,7 @@
     import PaymentMethods from "../../components/checkout/PaymentMethods";
     import ShippingMethods from "../../components/checkout/ShippingMethods";
     import { addBackendErrors } from "@hubblecommerce/hubble/core/utils/formMixins";
+    import _ from 'lodash';
 
     export default {
         name: "ShopwareGuest",

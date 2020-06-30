@@ -1,4 +1,5 @@
 import Middleware from './middleware'
+import _ from 'lodash';
 
 Middleware.orderValidate = function ({ isHMR, store, redirect, app }) {
     // ignore if called from hot module replacement

@@ -41,6 +41,7 @@
     import GTMDataLayer from "../utils/GTMDataLayer";
     import ProductListing from "./ProductListing";
     import ProductListingToolbar from "./ProductListingToolbar";
+    import _ from 'lodash';
 
     export default {
         name: 'ViewCatalogsearch',

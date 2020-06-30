@@ -71,6 +71,7 @@ import {mapState, mapGetters} from 'vuex';
 import Breadcrumbs from "../utils/Breadcrumbs";
 import TextExcerpt from "../utils/TextExcerpt";
 import ProductListingToolbar from "./ProductListingToolbar";
+import _ from 'lodash';
 
 export default {
     name: 'CategoryListing',

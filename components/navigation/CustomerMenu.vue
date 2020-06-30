@@ -51,6 +51,7 @@
 import { mapState, mapActions } from 'vuex';
 import CustomerAccountNavigation from "../customer/CustomerAccountNavigation";
 import LoginForm from "../customer/LoginForm";
+import _ from 'lodash';
 
 export default {
     name: 'CustomerMenu',

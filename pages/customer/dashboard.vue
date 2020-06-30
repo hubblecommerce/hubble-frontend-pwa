@@ -53,6 +53,7 @@
 
 <script>
     import { mapState } from 'vuex';
+    import _ from 'lodash';
 
     import CustomerAccountNavigation from "../../components/customer/CustomerAccountNavigation";
     import CustomerOrderList from "../../components/customer/CustomerOrderList";

@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 class localStorageHelper {
     static setCreatedAt(entity) {
         return new Promise((resolve) => {

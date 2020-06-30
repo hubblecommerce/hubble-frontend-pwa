@@ -70,6 +70,7 @@
     import CookieNotice from "../components/utils/CookieNotice";
     import FlashMessages from "../components/utils/FlashMessages";
     import LayoutWrapper from "../components/utils/LayoutWrapper";
+    import _ from 'lodash';
 
     export default {
         components: {

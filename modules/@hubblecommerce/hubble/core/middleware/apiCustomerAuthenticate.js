@@ -1,5 +1,6 @@
 import { datetimeUnixNow } from '@hubblecommerce/hubble/core/utils/datetime'
 import Middleware from './middleware'
+import _ from 'lodash';
 
 Middleware.apiCustomerAuthenticate = function ({ isHMR, store, redirect, app, route }) {
     // ignore if called from hot module replacement

@@ -77,6 +77,7 @@
     import Breadcrumbs from "../utils/Breadcrumbs";
     import ProductDetailRecommendations from "./ProductDetailRecommendations";
     import GTMDataLayer from "../utils/GTMDataLayer";
+    import _ from 'lodash';
 
     export default {
         name: "ViewProduct",

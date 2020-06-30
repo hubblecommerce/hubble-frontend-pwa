@@ -96,6 +96,7 @@
 
     import SelectableFacet from './toolbar/SelectableFacet.vue';
     import PriceSlider from "./toolbar/PriceSlider";
+    import _ from 'lodash';
 
     export default {
         name: 'ProductListingFilter',

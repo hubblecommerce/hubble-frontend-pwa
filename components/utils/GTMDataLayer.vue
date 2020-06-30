@@ -5,6 +5,7 @@
 <script>
     import {mapState} from 'vuex';
     import {clearDataLayer} from "@hubblecommerce/hubble/core/utils/gtmHelper";
+    import _ from 'lodash';
 
     export default {
         name: "GTMDataLayer",

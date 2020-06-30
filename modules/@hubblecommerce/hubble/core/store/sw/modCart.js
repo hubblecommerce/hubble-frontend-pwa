@@ -1,5 +1,6 @@
 import base64 from 'base-64'
 import localStorageHelper from "@hubblecommerce/hubble/core/utils/localStorageHelper";
+import _ from 'lodash';
 
 export default function (ctx) {
     const modCart = {

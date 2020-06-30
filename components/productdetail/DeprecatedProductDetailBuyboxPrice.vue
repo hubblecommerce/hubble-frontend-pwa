@@ -69,6 +69,7 @@
     import AddToWishlist from "../productutils/AddToWishlist";
     import { clearDataLayer } from "@hubblecommerce/hubble/core/utils/gtmHelper";
     import ProductDetailPrice from "./ProductDetailPrice";
+    import _ from 'lodash';
 
     export default {
 

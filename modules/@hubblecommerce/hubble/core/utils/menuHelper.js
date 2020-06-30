@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 /**
  * Helper Function to sort menu entries and their children alphabetically
  *

@@ -1,4 +1,5 @@
 import axios from 'axios'
+import _ from 'lodash';
 
 function getAccessToken(apiBaseUrl, apiEndpointAuth, apiClientId, apiClientSecret) {
     return new Promise(function(resolve, reject) {

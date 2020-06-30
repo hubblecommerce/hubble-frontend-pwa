@@ -117,6 +117,8 @@
     import Vue from "vue";
     import VModal from 'vue-js-modal/dist/ssr.index';
     import 'vue-js-modal/dist/styles.css';
+    import _ from 'lodash';
+
 
     export default {
         components: {

@@ -30,6 +30,7 @@
 
 <script>
     import { mapState, mapGetters, mapActions, mapMutations } from 'vuex';
+    import _ from 'lodash';
 
     export default {
         name: "ShippingMethods",

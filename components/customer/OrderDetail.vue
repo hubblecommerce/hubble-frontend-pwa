@@ -92,6 +92,7 @@
     import { mapState, mapActions, mapGetters } from 'vuex';
     import CartItemsListNonInteractive from "../checkout/CartItemsListNonInteractive";
     import {mapKeyToValue, mapIsoToCountry, salutations} from "@hubblecommerce/hubble/core/utils/formMixins";
+    import _ from 'lodash';
 
     export default {
         name: "OrderDetail",

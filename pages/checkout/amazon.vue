@@ -64,6 +64,7 @@
     import axios from 'axios';
     import Totals from "../../components/checkout/Totals";
     import { clearDataLayer } from "@hubblecommerce/hubble/core/utils/gtmHelper";
+    import _ from 'lodash';
 
     export default {
         name: "Amazon",

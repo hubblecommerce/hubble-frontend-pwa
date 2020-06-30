@@ -1,5 +1,4 @@
-
-const _ = require("lodash-core");
+import _ from 'lodash';
 
 export default function (ctx) {
     const modFlash = {

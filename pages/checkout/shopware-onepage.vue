@@ -48,6 +48,7 @@
     import Totals from "../../components/checkout/Totals";
     import CustomerAddresses from "../../components/customer/CustomerAddresses";
     import { addBackendErrors } from "@hubblecommerce/hubble/core/utils/formMixins";
+    import _ from 'lodash';
 
     export default {
         name: "ShopwareOnepage",

@@ -41,6 +41,8 @@
 
 <script>
     import {mapActions, mapGetters, mapMutations, mapState} from 'vuex';
+    import _ from 'lodash';
+
     export default {
         name: 'SelectedFacets',
 

@@ -2,6 +2,7 @@
  * Different Mixins for components using Forms
  *
  */
+import _ from 'lodash';
 
 const mapKeyToValue = {
   methods: {
