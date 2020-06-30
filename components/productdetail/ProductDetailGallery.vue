@@ -114,6 +114,9 @@
 <script>
     import {mapState, mapGetters} from 'vuex';
     import AddToWishlist from "../productutils/AddToWishlist";
+    import Vue from "vue";
+    import VModal from 'vue-js-modal/dist/ssr.index';
+    import 'vue-js-modal/dist/styles.css';
 
     export default {
         components: {AddToWishlist},
@@ -192,6 +195,17 @@
         watch: {
             dataProduct: function() {
                 this.$refs.productGallery.slider.goTo(0)
+            }
+        },
+
+        created() {
+            if(process.client) {
+                Vue.use(VModal, {
+                    componentName: 'vue-modal',
+                    dialog: true,
+                    dynamic: true,
+                    injectModalsContainer: true,
+                });
             }
         },
 
