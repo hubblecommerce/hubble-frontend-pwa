@@ -75,19 +75,16 @@
 
 <script>
     import { mapState } from 'vuex';
-    import ScrollToTop from "../components/utils/ScrollToTop";
     import TheLogo from "../components/navigation/TheLogo";
-    import BackgroundBlur from "../components/utils/BackgroundBlur";
-    import TheFooterCopyrightLight from "../components/footer/TheFooterCopyrightLight";
     import CookieNotice from "../components/utils/CookieNotice";
     import FlashMessages from "../components/utils/FlashMessages";
     import LayoutWrapper from "../components/utils/LayoutWrapper";
 
     export default {
         components: {
-            TheFooterCopyrightLight,
-            BackgroundBlur,
-            ScrollToTop,
+            TheFooterCopyrightLight: () => import('../components/footer/TheFooterCopyrightLight'),
+            BackgroundBlur: () => import('../components/utils/BackgroundBlur'),
+            ScrollToTop: () => import('../components/utils/ScrollToTop'),
             TheLogo,
             CookieNotice,
             FlashMessages,

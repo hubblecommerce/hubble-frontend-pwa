@@ -5,15 +5,17 @@
 </template>
 
 <script>
-    import error400 from '~/components/error/400.vue';
-    import error401 from '~/components/error/401.vue';
-    import error404 from '~/components/error/404.vue';
-    import error500 from '~/components/error/500.vue';
-    import error503 from '~/components/error/503.vue';
-    import errorDefault from '~/components/error/default.vue';
-
     export default {
         name: 'LayoutError',
+
+        components: {
+            error400: () => import('~/components/error/400.vue'),
+            error401: () => import('~/components/error/401.vue'),
+            error404: () => import('~/components/error/404.vue'),
+            error500: () => import('~/components/error/500.vue'),
+            error503: () => import('~/components/error/503.vue'),
+            ErrorDefault: () => import('~/components/error/default.vue'),
+        },
 
         layout: 'hubble',
 
@@ -27,26 +29,26 @@
         computed: {
             errorPage() {
                 if(this.error.statusCode === 400) {
-                    return error400;
+                    return 'error-400';
                 }
 
                 if(this.error.statusCode === 401) {
-                    return error401;
+                    return 'error-401';
                 }
 
                 if(this.error.statusCode === 404) {
-                    return error404;
+                    return 'error-404';
                 }
 
                 if(this.error.statusCode === 503) {
-                    return error503;
+                    return 'error-503';
                 }
 
                 if(process.env.DEFAULT_ERROR_PAGE === 'true') {
-                    return errorDefault;
+                    return 'error-default';
                 }
 
-                return error500;
+                return 'error-500';
             }
         }
     }
