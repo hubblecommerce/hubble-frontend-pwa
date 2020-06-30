@@ -1,6 +1,5 @@
 import base64 from 'base-64'
 import localStorageHelper from "@hubblecommerce/hubble/core/utils/localStorageHelper";
-import {getShippingCostsByCountry, getShippingCostsByCartVal} from "@hubblecommerce/hubble/core/utils/shippingCostHelper.js"
 
 export default function (ctx) {
     const modCart = {
@@ -391,57 +390,6 @@ export default function (ctx) {
                                 flashMessage: error.message
                             }, {root:true});
                             console.log('recalculateCart failed: %o', error);
-                            reject(error);
-                        });
-                });
-            },
-            async calculateShippingCosts({state, commit}, payload) {
-                return new Promise((resolve, reject)  => {
-                    // Get matching rules by country from tablerates
-                    let matchingCountries = getShippingCostsByCountry(payload);
-                    if(!matchingCountries) {
-                        reject('No matching countries in tablerates found for selected country');
-                        return;
-                    }
-
-                    // Get shipping costs by subtotal in cart from tablerates
-                    let matchingRule = getShippingCostsByCartVal(matchingCountries, state.cart.subtotal_with_discount);
-                    if(!matchingRule) {
-                        reject('No matching condition in tablerates found for subtotal value in cart');
-                        return;
-                    }
-
-                    let shippingCosts = matchingRule['Shipping Price'];
-                    if(shippingCosts === null) {
-                        reject('Error calculating shipping costs');
-                        return;
-                    }
-
-                    commit('setShippingCosts', shippingCosts);
-                    commit('setTotals');
-                    resolve('Calculated shipping cost and setTotals');
-                });
-            },
-            async recalculateShippingCost({commit, dispatch}, payload) {
-                return new Promise(function(resolve, reject) {
-                    dispatch('apiCall', {
-                        action: 'post',
-                        tokenType: 'api',
-                        apiType: 'payment',
-                        endpoint: '/api/cart/calculate_shipping',
-                        data: payload
-                    }, { root: true })
-                        .then(response => {
-                            // Return response if shipping is not allowed in this country
-                            if(!response.data.order.shippingAllowed) {
-                                resolve(response);
-                            }
-
-                            commit('setShippingCosts', response.data.order.shippingCost.price);
-                            commit('setTotals');
-                            resolve(response);
-                        })
-                        .catch(error => {
                             reject(error);
                         });
                 });
