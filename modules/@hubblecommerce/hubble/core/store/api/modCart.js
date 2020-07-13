@@ -7,6 +7,8 @@ export default function (ctx) {
     const modCart = {
         namespaced: true,
         state: () => ({
+            layerInitiated: false,
+
             shippingCosts: {
                 price: 4.99
             },
@@ -100,7 +102,10 @@ export default function (ctx) {
             },
             setTotals: (state) => {
                 state.cart.grand_total = state.cart.subtotal + state.shippingCosts;
-            }
+            },
+            initiateLayer: (state) => {
+                state.layerInitiated = true;
+            },
         },
         actions: {
             clearAll({commit, state, dispatch}) {
