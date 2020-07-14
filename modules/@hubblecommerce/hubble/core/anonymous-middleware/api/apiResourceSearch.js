@@ -1,6 +1,4 @@
-import Middleware from './middleware'
-
-Middleware.apiResourceSearch = function ({ store, route }) {
+export default function ({ store, route }) {
     return new Promise((resolve, reject) => {
         store.dispatch('modSearch/apiCatalogsearch', {
             query: route.query
