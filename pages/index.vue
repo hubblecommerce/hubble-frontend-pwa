@@ -14,26 +14,21 @@
 <script>
     import { mapActions } from "vuex";
     import GTMDataLayer from "../components/utils/GTMDataLayer";
-    import {mapState} from "vuex";
-    import ViewCategory from "../components/productlist/ViewCategory";
-    import ViewProduct from "../components/productdetail/ViewProduct";
-    import ViewContent from "../components/cms/ViewContent";
+    import apiIndexRoute from '@hubblecommerce/hubble/core/anonymous-middleware/apiIndexRoute'
 
     export default {
         name: "Index",
 
         components: {
             ProductListing: () => import('../components/productlist/ProductListing'),
+            ViewCategory: () => import("../components/productlist/ViewCategory"),
             GTMDataLayer,
-            ViewCategory,
-            ViewProduct,
-            ViewContent
         },
 
         layout: 'hubble',
 
         middleware: [
-            'apiIndexRoute',
+            apiIndexRoute,
             'apiAuthenticate',
             'apiLocalization',
             'apiResourceMenu',
@@ -42,7 +37,7 @@
 
         data() {
             return {
-                newProducts: [],
+                /*newProducts: [],
                 inView: false,
                 slider: {
                     options: {
@@ -64,7 +59,7 @@
                             }
                         }
                     }
-                },
+                },*/
                 currentComponent:  ''
             }
         },

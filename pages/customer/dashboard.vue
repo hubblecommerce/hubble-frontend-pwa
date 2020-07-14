@@ -60,6 +60,8 @@
     import CustomerAddresses from "../../components/customer/CustomerAddresses";
     import CustomerPasswordChange from "../../components/customer/CustomerPasswordChange";
     import CustomerAccountInformation from "../../components/customer/CustomerAccountInformation";
+    import apiCustomerAuthenticate from '@hubblecommerce/hubble/core/anonymous-middleware/apiCustomerAuthenticate'
+    import apiPaymentAuthenticate from '@hubblecommerce/hubble/core/anonymous-middleware/apiPaymentAuthenticate'
 
     export default {
         name: 'CustomerDashboard',
@@ -77,8 +79,8 @@
         middleware: [
             'apiAuthenticate',
             'apiLocalization',
-            'apiPaymentAuthenticate',
-            'apiCustomerAuthenticate',
+            apiPaymentAuthenticate,
+            apiCustomerAuthenticate,
             'apiResourceMenu',
             'trackClickPath'
         ],

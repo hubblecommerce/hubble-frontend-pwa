@@ -6,6 +6,7 @@
 
 <script>
     import ViewCatalogsearch from "../../components/productlist/ViewCatalogsearch";
+    import apiResourceRequest from '@hubblecommerce/hubble/core/anonymous-middleware/apiResourceRequest';
 
     export default {
         name: "Catalogsearch",
@@ -21,7 +22,7 @@
             'apiLocalization',
             'apiResourceMenu',
             'apiResourceSearch',
-            'apiResourceRequest',
+            apiResourceRequest,
             'trackClickPath'
         ]
     }

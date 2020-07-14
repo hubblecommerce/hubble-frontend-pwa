@@ -20,6 +20,9 @@
     import { mapState, mapActions } from 'vuex';
     import OrderDetail from "../../components/customer/OrderDetail";
     import _ from 'lodash';
+    import successValidate from '@hubblecommerce/hubble/core/anonymous-middleware/successValidate'
+    import apiCustomerAuthenticate from '@hubblecommerce/hubble/core/anonymous-middleware/apiCustomerAuthenticate'
+    import apiPaymentAuthenticate from '@hubblecommerce/hubble/core/anonymous-middleware/apiPaymentAuthenticate'
 
     export default {
         name: "Success",
@@ -27,9 +30,9 @@
         components: {OrderDetail},
 
         middleware: [
-            'apiPaymentAuthenticate',
-            'apiCustomerAuthenticate',
-            'successValidate',
+            apiPaymentAuthenticate,
+            apiCustomerAuthenticate,
+            successValidate,
             'apiLocalization',
             'trackClickPath'
         ],

@@ -8,6 +8,7 @@
 
 <script>
     import { mapState } from 'vuex';
+    import apiResourceRequest from '@hubblecommerce/hubble/core/anonymous-middleware/apiResourceRequest'
 
     export default {
         name: "RouteResolver",
@@ -41,7 +42,7 @@
             'apiLocalization',
             'apiResourceMenu',
             'apiResourceRoute',
-            'apiResourceRequest',
+            apiResourceRequest,
             'trackClickPath'
         ],
 

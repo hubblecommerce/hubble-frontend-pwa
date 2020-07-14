@@ -81,6 +81,7 @@
     import Tabs from "../../components/utils/Tabs";
     import Tab from "../../components/utils/Tab";
     import RegisterForm from "../../components/customer/RegisterForm";
+    import apiPaymentAuthenticate from '@hubblecommerce/hubble/core/anonymous-middleware/apiPaymentAuthenticate'
 
     export default {
         name: "Login",
@@ -94,7 +95,7 @@
 
         middleware: [
             'apiAuthenticate',
-            'apiPaymentAuthenticate',
+            apiPaymentAuthenticate,
             'apiLocalization',
             'trackClickPath'
         ],

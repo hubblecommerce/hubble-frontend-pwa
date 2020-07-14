@@ -17,6 +17,8 @@
     import { mapActions } from "vuex";
     import CustomerAccountNavigation from "../../../components/customer/CustomerAccountNavigation";
     import OrderDetail from "../../../components/customer/OrderDetail";
+    import apiCustomerAuthenticate from '@hubblecommerce/hubble/core/anonymous-middleware/apiCustomerAuthenticate'
+    import apiPaymentAuthenticate from '@hubblecommerce/hubble/core/anonymous-middleware/apiPaymentAuthenticate'
 
     export default {
         components: {OrderDetail, CustomerAccountNavigation},
@@ -26,8 +28,8 @@
         middleware: [
             'apiLocalization',
             'apiAuthenticate',
-            'apiPaymentAuthenticate',
-            'apiCustomerAuthenticate',
+            apiPaymentAuthenticate,
+            apiCustomerAuthenticate,
             'apiResourceMenu',
             'trackClickPath'
         ],
