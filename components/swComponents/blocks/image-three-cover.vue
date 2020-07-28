@@ -12,29 +12,29 @@
     </div>
 </template>
 <script>
-    import { blockMixins } from '../helper'
+import { blockMixins } from '../helper';
 
-    export default {
-        name: 'ImageThreeCoverBlock',
+export default {
+    name: 'ImageThreeCoverBlock',
 
-        mixins: [blockMixins],
+    mixins: [blockMixins],
 
-        props: {
-            content: {
-                type: Object,
-                default: () => ({})
-            }
+    props: {
+        content: {
+            type: Object,
+            default: () => ({}),
         },
-        computed: {
-            leftSlot() {
-                return this.getSlotByPosition(this.content.slots, 'left');
-            },
-            centerSlot() {
-                return this.getSlotByPosition(this.content.slots, 'center');
-            },
-            rightSlot() {
-                return this.getSlotByPosition(this.content.slots, 'right');
-            }
-        }
-    }
+    },
+    computed: {
+        leftSlot() {
+            return this.getSlotByPosition(this.content.slots, 'left');
+        },
+        centerSlot() {
+            return this.getSlotByPosition(this.content.slots, 'center');
+        },
+        rightSlot() {
+            return this.getSlotByPosition(this.content.slots, 'right');
+        },
+    },
+};
 </script>

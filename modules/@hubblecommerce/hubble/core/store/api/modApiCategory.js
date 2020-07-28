@@ -13,7 +13,7 @@ export default function (ctx) {
                 state.dataCategoryProducts = payload.data;
             },
         },
-        getters:  {
+        getters: {
             getDataCategory: state => {
                 return state.dataCategory;
             },
@@ -21,8 +21,7 @@ export default function (ctx) {
                 return state.dataCategoryProducts;
             },
         },
-        actions: {
-        }
+        actions: {},
     };
 
     ctx.store.registerModule('modApiCategory', modApiCategory);

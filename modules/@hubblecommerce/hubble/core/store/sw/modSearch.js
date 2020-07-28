@@ -9,22 +9,22 @@ export default function (ctx) {
             autoCompleteResultsArray: [],
             autoCompleteResults: {
                 categoryItems: [],
-                productItems: []
+                productItems: [],
             },
 
             showAutoCompleteResults: false,
 
             selectedItemPosition: -1,
-            selectedItemId: null
+            selectedItemId: null,
         }),
         getters: {
-            getAutoCompleteResults: (state) => {
+            getAutoCompleteResults: state => {
                 return state.autoCompleteResults;
             },
-            getAutoCompleteResultsArray: (state) => {
+            getAutoCompleteResultsArray: state => {
                 return state.autoCompleteResultsArray;
             },
-            getAutoCompleteResultsLength: (state) => {
+            getAutoCompleteResultsLength: state => {
                 return state.autoCompleteResults.categoryItems.length + state.autoCompleteResults.productItems.length;
             },
         },
@@ -54,66 +54,69 @@ export default function (ctx) {
         },
         actions: {
             // Api call to search/autocomplete
-            async getAutocompleteResults({commit, state, rootState, dispatch}, payload) {
-                return new Promise(function(resolve, reject) {
-                    dispatch('apiCall', {
-                        action: 'post',
-                        tokenType: 'sw',
-                        apiType: 'data',
-                        endpoint: '/sales-channel-api/v1/product',
-                        data: {
-                            term: payload.query,
-                            limit: state.maxProductItems,
-                            associations: {
-                                manufacturer: {},
-                                seoUrls: {}
+            async getAutocompleteResults({ commit, state, rootState, dispatch }, payload) {
+                return new Promise(function (resolve, reject) {
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'post',
+                            tokenType: 'sw',
+                            apiType: 'data',
+                            endpoint: '/sales-channel-api/v1/product',
+                            data: {
+                                term: payload.query,
+                                limit: state.maxProductItems,
+                                associations: {
+                                    manufacturer: {},
+                                    seoUrls: {},
+                                },
+                                // Get only Products with parent ID null
+                                // because children (generated variants) are delivered from API
+                                // with missing props like name etc.
+                                filter: [
+                                    {
+                                        type: 'equals',
+                                        field: 'parentId',
+                                        value: null,
+                                    },
+                                ],
                             },
-                            // Get only Products with parent ID null
-                            // because children (generated variants) are delivered from API
-                            // with missing props like name etc.
-                            filter: [
-                                {
-                                    type: 'equals',
-                                    field: 'parentId',
-                                    value: null
-                                }
-                            ]
-                        }
-                    }, { root: true })
+                        },
+                        { root: true }
+                    )
                         .then(response => {
-                            if(response.data.total === 0) {
+                            if (response.data.total === 0) {
                                 commit('setProductItems', []);
                                 commit('setShowAutoCompleteResults', true);
 
                                 resolve('No products found');
                             } else {
                                 // map product data
-                                dispatch('modApiCategory/mappingCategoryProducts', response.data, {root:true})
-                                    .then((res) => {
-                                        commit('setProductItems', res.items);
+                                dispatch('modApiCategory/mappingCategoryProducts', response.data, { root: true }).then(res => {
+                                    commit('setProductItems', res.items);
 
-                                        // Set all items also in one array to handle key events
-                                        commit('setAutoCompleteResultsArray', state.autoCompleteResults.productItems);
-                                        commit('setSelectedItemPosition', -1);
-                                        commit('setSelectedItemId', null);
-                                        commit('setShowAutoCompleteResults', true);
+                                    // Set all items also in one array to handle key events
+                                    commit('setAutoCompleteResultsArray', state.autoCompleteResults.productItems);
+                                    commit('setSelectedItemPosition', -1);
+                                    commit('setSelectedItemId', null);
+                                    commit('setShowAutoCompleteResults', true);
 
-                                        resolve('OK');
-                                    });
+                                    resolve('OK');
+                                });
                             }
                         })
                         .catch(error => {
-                            console.log("getAutocompleteResults error: ", error);
+                            console.log('getAutocompleteResults error: ', error);
 
                             reject(error);
                         });
                 });
             },
             // Reset data in store to initial state
-            resetAutoCompleteResults({commit}) {
+            resetAutoCompleteResults({ commit }) {
                 commit('setAutoCompleteResults', {
                     categoryItems: [],
-                    productItems: []
+                    productItems: [],
                 });
 
                 commit('setAutoCompleteResultsArray', []);
@@ -125,8 +128,8 @@ export default function (ctx) {
                 commit('setShowAutoCompleteResults', false);
             },
             // Change the selected item depending on key event
-            changeSelectedItem({state, commit}, payload) {
-                if(_.isEmpty(state.autoCompleteResultsArray)) {
+            changeSelectedItem({ state, commit }, payload) {
+                if (_.isEmpty(state.autoCompleteResultsArray)) {
                     return;
                 }
 
@@ -134,11 +137,11 @@ export default function (ctx) {
 
                 currentItemPosition = currentItemPosition + payload;
 
-                if(currentItemPosition < 0) {
+                if (currentItemPosition < 0) {
                     currentItemPosition = state.autoCompleteResultsArray.length - 1;
                 }
 
-                if(currentItemPosition >= state.autoCompleteResultsArray.length) {
+                if (currentItemPosition >= state.autoCompleteResultsArray.length) {
                     currentItemPosition = 0;
                 }
 
@@ -147,8 +150,8 @@ export default function (ctx) {
                 commit('setSelectedItemId', state.autoCompleteResultsArray[currentItemPosition].id);
             },
             // Redirect to product or category if an item is selected via keyevent
-            redirectToItem({state}) {
-                if(state.selectedItemPosition === -1) {
+            redirectToItem({ state }) {
+                if (state.selectedItemPosition === -1) {
                     return;
                 }
 
@@ -156,7 +159,7 @@ export default function (ctx) {
 
                 let url = '';
 
-                if(currentSelectedItem.url_path) {
+                if (currentSelectedItem.url_path) {
                     url = currentSelectedItem.url_path;
                 } else {
                     url = currentSelectedItem.url_pds;
@@ -164,39 +167,47 @@ export default function (ctx) {
 
                 ctx.app.router.push('/' + url);
             },
-            async apiCatalogsearch({commit, rootState, dispatch}) {
-                return new Promise(function(resolve, reject) {
-                    dispatch('apiCall', {
-                        action: 'post',
-                        tokenType: 'sw',
-                        apiType: 'data',
-                        endpoint: '/sales-channel-api/v1/product',
-                        data: rootState.modApiCategory.apiRequestBody
-                    }, { root: true })
-                    .then(response => {
-                        if(response.data.total === 0) {
-                            resolve('OK');
-                        }
+            async apiCatalogsearch({ commit, rootState, dispatch }) {
+                return new Promise(function (resolve, reject) {
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'post',
+                            tokenType: 'sw',
+                            apiType: 'data',
+                            endpoint: '/sales-channel-api/v1/product',
+                            data: rootState.modApiCategory.apiRequestBody,
+                        },
+                        { root: true }
+                    )
+                        .then(response => {
+                            if (response.data.total === 0) {
+                                resolve('OK');
+                            }
 
-                        // map product data
-                        dispatch('modApiCategory/mappingCategoryProducts', response.data, {root:true}).then((res) => {
-                            commit('modApiResources/setPageType', 'category' , {root: true});
+                            // map product data
+                            dispatch('modApiCategory/mappingCategoryProducts', response.data, { root: true }).then(res => {
+                                commit('modApiResources/setPageType', 'category', { root: true });
 
-                            commit('modApiCategory/setDataCategoryProducts', {
-                                data: {
-                                    result: res
-                                }
-                            }, {root:true});
+                                commit(
+                                    'modApiCategory/setDataCategoryProducts',
+                                    {
+                                        data: {
+                                            result: res,
+                                        },
+                                    },
+                                    { root: true }
+                                );
 
-                            resolve('OK');
+                                resolve('OK');
+                            });
+                        })
+                        .catch(response => {
+                            reject('API request failed!');
                         });
-                    })
-                    .catch(response => {
-                        reject('API request failed!');
-                    });
-                })
+                });
             },
-        }
+        },
     };
 
     ctx.store.registerModule('modSearch', modSearch);

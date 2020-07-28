@@ -10,33 +10,33 @@
 </template>
 
 <script>
-    import NewsletterSignUp from "../../utils/NewsletterSignUp";
+import NewsletterSignUp from '../../utils/NewsletterSignUp';
 
-    export default {
-        name: 'FormSlot',
-        components: {NewsletterSignUp},
-        props: {
-            content: {
-                type: Object,
-                default: () => ({})
-            }
+export default {
+    name: 'FormSlot',
+    components: { NewsletterSignUp },
+    props: {
+        content: {
+            type: Object,
+            default: () => ({}),
         },
-        computed: {
-            getType() {
-                return this.content.config.type.value
-            },
-            getTitle() {
-                return this.content.config.title.value
-            },
-            getMailReceiver() {
-                return this.content.config.mailReceiver.value
-            },
-            getDefaultMailReceiver() {
-                return this.content.config.defaultMailReceiver.value
-            },
-            getConfirmationText() {
-                return this.content.config.confirmationText.value
-            }
-        }
-    }
+    },
+    computed: {
+        getType() {
+            return this.content.config.type.value;
+        },
+        getTitle() {
+            return this.content.config.title.value;
+        },
+        getMailReceiver() {
+            return this.content.config.mailReceiver.value;
+        },
+        getDefaultMailReceiver() {
+            return this.content.config.defaultMailReceiver.value;
+        },
+        getConfirmationText() {
+            return this.content.config.confirmationText.value;
+        },
+    },
+};
 </script>

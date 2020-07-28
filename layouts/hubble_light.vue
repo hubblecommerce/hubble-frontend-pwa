@@ -1,6 +1,5 @@
 <template>
     <div>
-
         <noscript>Please enable JavaScript and refresh this page, to use this application.</noscript>
 
         <layout-wrapper v-if="$mq === 'sm' || $mq === 'md'">
@@ -75,40 +74,40 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex';
-    import ScrollToTop from "../components/utils/ScrollToTop";
-    import TheLogo from "../components/navigation/TheLogo";
-    import BackgroundBlur from "../components/utils/BackgroundBlur";
-    import TheFooterCopyrightLight from "../components/footer/TheFooterCopyrightLight";
-    import CheckoutProgressBar from "../components/checkout/CheckoutProgressBar";
-    import CookieNotice from "../components/utils/CookieNotice";
-    import FlashMessages from "../components/utils/FlashMessages";
-    import LayoutWrapper from "../components/utils/LayoutWrapper";
+import { mapState } from 'vuex';
+import ScrollToTop from '../components/utils/ScrollToTop';
+import TheLogo from '../components/navigation/TheLogo';
+import BackgroundBlur from '../components/utils/BackgroundBlur';
+import TheFooterCopyrightLight from '../components/footer/TheFooterCopyrightLight';
+import CheckoutProgressBar from '../components/checkout/CheckoutProgressBar';
+import CookieNotice from '../components/utils/CookieNotice';
+import FlashMessages from '../components/utils/FlashMessages';
+import LayoutWrapper from '../components/utils/LayoutWrapper';
 
-    export default {
-        components: {
-            CheckoutProgressBar,
-            TheFooterCopyrightLight,
-            BackgroundBlur,
-            ScrollToTop,
-            TheLogo,
-            CookieNotice,
-            FlashMessages,
-            LayoutWrapper
+export default {
+    components: {
+        CheckoutProgressBar,
+        TheFooterCopyrightLight,
+        BackgroundBlur,
+        ScrollToTop,
+        TheLogo,
+        CookieNotice,
+        FlashMessages,
+        LayoutWrapper,
+    },
+    computed: {
+        ...mapState({
+            showCookieNotice: state => state.modCookieNotice.showCookieNotice,
+            activeOffCanvas: state => state.modNavigation.offcanvas.isActive,
+        }),
+    },
+    methods: {
+        historyBack: function () {
+            this.$router.go(-1);
         },
-        computed: {
-            ...mapState({
-                showCookieNotice: state => state.modCookieNotice.showCookieNotice,
-                activeOffCanvas: state => state.modNavigation.offcanvas.isActive
-            })
-        },
-        methods: {
-            historyBack: function() {
-                this.$router.go(-1);
-            }
-        },
-        head () {
-            return this.$nuxtI18nSeo()
-        }
-    }
+    },
+    head() {
+        return this.$nuxtI18nSeo();
+    },
+};
 </script>

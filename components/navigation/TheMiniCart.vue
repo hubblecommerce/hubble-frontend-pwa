@@ -1,9 +1,6 @@
 <template>
     <div :class="hasItemsInCart" class="minicart-cpt-wrp">
-        <button class="button-icon cart-icon"
-                :class="setButtonStates"
-                @click="toggle()"
-        >
+        <button class="button-icon cart-icon" :class="setButtonStates" @click="toggle()">
             <i class="icon icon-cart" aria-hidden="true" />
 
             <span class="hidden-link-name">Toggle Cart</span>
@@ -24,73 +21,73 @@
 </template>
 
 <script>
-    import { mapState, mapActions, mapMutations } from 'vuex';
+import { mapState, mapActions, mapMutations } from 'vuex';
 
-    export default {
-        name: "TheMiniCart",
-        components: {
-            CartLayer: () => import('./CartLayer')
-        },
-        data() {
+export default {
+    name: 'TheMiniCart',
+    components: {
+        CartLayer: () => import('./CartLayer'),
+    },
+    data() {
+        return {
+            name: 'TheMiniCart',
+        };
+    },
+
+    computed: {
+        ...mapState({
+            initiated: state => state.modCart.layerInitiated,
+            qty: state => state.modCart.cart.items_qty,
+            offcanvas: state => state.modNavigation.offcanvas,
+        }),
+        hasItemsInCart: function () {
             return {
-                name: "TheMiniCart",
-            }
+                inCart: this.qty > 0,
+            };
         },
-
-        computed: {
-            ...mapState({
-                initiated: state => state.modCart.layerInitiated,
-                qty: state => state.modCart.cart.items_qty,
-                offcanvas: state => state.modNavigation.offcanvas,
-            }),
-            hasItemsInCart: function() {
-                return {
-                    inCart: this.qty > 0
-                }
-            },
-            setButtonStates: function() {
-                return {
-                    active: this.showMenu
-                }
-            },
-            cartItemsQtyAndLabel: function() {
-                if(this.qty > 99) {
-                    return '99+';
-                }
-
-                return this.qty;
-            },
-            showMenu: function() {
-                return this.offcanvas.component === this.name;
-            }
+        setButtonStates: function () {
+            return {
+                active: this.showMenu,
+            };
         },
-
-        watch: {
-            '$route.path': function() {
-                // Close menu layer if route changes
-                this.hideMenu();
+        cartItemsQtyAndLabel: function () {
+            if (this.qty > 99) {
+                return '99+';
             }
+
+            return this.qty;
         },
+        showMenu: function () {
+            return this.offcanvas.component === this.name;
+        },
+    },
 
-        methods: {
-            ...mapMutations({
-                initiateCartLayer: 'modCart/initiateLayer',
-            }),
-            ...mapActions({
-                toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction',
-                hideOffcanvasAction: 'modNavigation/hideOffcanvasAction'
-            }),
-            toggle: function() {
-                this.initiateCartLayer();
+    watch: {
+        '$route.path': function () {
+            // Close menu layer if route changes
+            this.hideMenu();
+        },
+    },
 
-                this.toggleOffcanvasAction({
-                    component: this.name,
-                    direction: 'rightLeft'
-                });
-            },
-            hideMenu: function() {
-                this.hideOffcanvasAction();
-            },
-        }
-    }
+    methods: {
+        ...mapMutations({
+            initiateCartLayer: 'modCart/initiateLayer',
+        }),
+        ...mapActions({
+            toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction',
+            hideOffcanvasAction: 'modNavigation/hideOffcanvasAction',
+        }),
+        toggle: function () {
+            this.initiateCartLayer();
+
+            this.toggleOffcanvasAction({
+                component: this.name,
+                direction: 'rightLeft',
+            });
+        },
+        hideMenu: function () {
+            this.hideOffcanvasAction();
+        },
+    },
+};
 </script>

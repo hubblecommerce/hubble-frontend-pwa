@@ -1,11 +1,10 @@
-import {sortMenuEntries, unflatten} from "@hubblecommerce/hubble/core/utils/menuHelper";
-import {datetimeUnixNow, datetimeUnixNowAddSecs} from "@hubblecommerce/hubble/core/utils/datetime";
-import {swMapApiError} from "@hubblecommerce/hubble/core/utils/swHelper";
+import { sortMenuEntries, unflatten } from '@hubblecommerce/hubble/core/utils/menuHelper';
+import { datetimeUnixNow, datetimeUnixNowAddSecs } from '@hubblecommerce/hubble/core/utils/datetime';
+import { swMapApiError } from '@hubblecommerce/hubble/core/utils/swHelper';
 import _ from 'lodash';
 
 function mapEntriesRecursive(navigationEntries) {
-
-    return navigationEntries.map((category) => {
+    return navigationEntries.map(category => {
         let obj = {};
 
         // SW Shop API
@@ -30,19 +29,18 @@ function mapEntriesRecursive(navigationEntries) {
         obj.level = category.level;
         obj.id = category.name;
 
-        if(category.route.path === '/') {
+        if (category.route.path === '/') {
             obj.url_path = false;
         } else {
             obj.url_path = category.route.path;
         }
 
-        if(!_.isEmpty(category.children)) {
+        if (!_.isEmpty(category.children)) {
             obj.children = mapEntriesRecursive(category.children);
         }
 
         return obj;
     });
-
 }
 
 export default function (ctx) {
@@ -54,7 +52,7 @@ export default function (ctx) {
             dataMenuCacheable: true,
         }),
         mutations: {
-            clearDataMenu: (state) => {
+            clearDataMenu: state => {
                 state.dataMenu = {};
             },
             setDataMenu: (state, payload) => {
@@ -65,19 +63,18 @@ export default function (ctx) {
                 state.menuItems = payload.data.result.items;
 
                 // Set Navigation structure from .env if isset
-                if(process.env.menu) {
+                if (process.env.menu) {
                     let map = process.env.menu;
 
                     // Clear menu structure of api get to set structure of mapping
                     state.dataMenu.result.items = [];
 
                     _.forEach(map, (val, key) => {
-
                         // Use menu item from api result by category id when it is set in config
-                        if(val.id !== null) {
+                        if (val.id !== null) {
                             // Get menu item from payload by id
-                            _.forEach(state.menuItems, (v, k) =>  {
-                                if(v.id === val.id) {
+                            _.forEach(state.menuItems, (v, k) => {
+                                if (v.id === val.id) {
                                     state.dataMenu.result.items[key] = v;
                                     state.dataMenu.result.items[key].name = val.name;
                                 }
@@ -85,30 +82,30 @@ export default function (ctx) {
                         }
 
                         // Build menu from virtual entries without id or real category
-                        if(typeof val.id === "undefined") {
+                        if (typeof val.id === 'undefined') {
                             // configure store as source for child elements
                             let childFromConfig = [];
 
-                            if(typeof val.childrenStore !== "undefined") {
+                            if (typeof val.childrenStore !== 'undefined') {
                                 childFromConfig = state[val.childrenStore];
                             }
 
                             // Set virtual menu items through config
                             state.dataMenu.result.items[key] = {
-                                id: 'virtual'+key,
+                                id: 'virtual' + key,
                                 name: val.name,
                                 url_path: val.url_path,
-                                children: childFromConfig
-                            }
+                                children: childFromConfig,
+                            };
                         }
 
                         // Add custom children to category if set
-                        _.forEach(val.children, (child) => {
+                        _.forEach(val.children, child => {
                             state.dataMenu.result.items[key].children.push(child);
                         });
 
                         // Sort menu entry and children of entry alphabetically if flag is set
-                        if(val.sortAlphabetically && !_.isEmpty(state.dataMenu.result.items[key].children)) {
+                        if (val.sortAlphabetically && !_.isEmpty(state.dataMenu.result.items[key].children)) {
                             state.dataMenu.result.items[key].children = sortMenuEntries(state.dataMenu.result.items[key].children);
                         }
                     });
@@ -116,13 +113,13 @@ export default function (ctx) {
 
                 state.dataMenu.locale = state.apiLocale;
 
-                if(state.dataMenuCacheable) {
+                if (state.dataMenuCacheable) {
                     state.dataMenu.created_at_unixtime = datetimeUnixNow();
                     state.dataMenu.expires_at_unixtime = datetimeUnixNowAddSecs(state.cacheTTL);
                 }
             },
         },
-        getters:  {
+        getters: {
             getDataMenu: state => {
                 return state.dataMenu;
             },
@@ -134,53 +131,57 @@ export default function (ctx) {
             },
         },
         actions: {
-            async getMenu({commit, state, dispatch}, payload) {
-                return new Promise(function(resolve, reject) {
-                    dispatch('apiCall', {
-                        action: 'post',
-                        tokenType: 'sw',
-                        apiType: 'data',
-                        endpoint: '/store-api/v1/pwa/navigation',
-                        data: {
-                            includes: {
-                                category: ["id", "parentId", "name", "level", "active", "_uniqueIdentifier", "seoUrls", "type", "children"]
+            async getMenu({ commit, state, dispatch }, payload) {
+                return new Promise(function (resolve, reject) {
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'post',
+                            tokenType: 'sw',
+                            apiType: 'data',
+                            endpoint: '/store-api/v1/pwa/navigation',
+                            data: {
+                                includes: {
+                                    category: ['id', 'parentId', 'name', 'level', 'active', '_uniqueIdentifier', 'seoUrls', 'type', 'children'],
+                                },
+                                buildTree: true,
+                                depth: 5,
+                                associations: {
+                                    seoUrls: {},
+                                },
                             },
-                            buildTree: true,
-                            depth: 5,
-                            associations: {
-                                seoUrls: {}
-                            }
-                        }
-                    }, { root: true })
+                        },
+                        { root: true }
+                    )
                         .then(response => {
-                            dispatch('mappingMenu', response.data.children).then((res) => {
+                            dispatch('mappingMenu', response.data.children).then(res => {
                                 commit('setDataMenu', res);
                             });
 
                             resolve(response);
                         })
                         .catch(error => {
-                            console.log("getMenu failed: ", error);
+                            console.log('getMenu failed: ', error);
 
                             swMapApiError(error, reject);
                         });
                 });
             },
-            async mappingMenu({commit, state, dispatch}, payload) {
-                return new Promise(function(resolve, reject) {
+            async mappingMenu({ commit, state, dispatch }, payload) {
+                return new Promise(function (resolve, reject) {
                     let mapped = mapEntriesRecursive(payload);
 
                     // Build required parent child relations from flat array
-                    resolve( {
+                    resolve({
                         data: {
                             result: {
-                                items: mapped
-                            }
-                        }
+                                items: mapped,
+                            },
+                        },
                     });
                 });
             },
-        }
+        },
     };
 
     ctx.store.registerModule('modApiMenu', modApiMenu);

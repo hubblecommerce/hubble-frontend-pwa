@@ -6,13 +6,13 @@
 </template>
 
 <script>
-    export default {
-        name: 'ErrorNoItems',
-        props: {
-            error: {
-                type: Object,
-                default: () => {}
-            }
-        }
-    }
+export default {
+    name: 'ErrorNoItems',
+    props: {
+        error: {
+            type: Object,
+            default: () => {},
+        },
+    },
+};
 </script>

@@ -14,8 +14,8 @@ for (const name in components) {
         props: {
             _hubblePayoneOptions: {
                 type: Object,
-                default: () => ({ ...options })
-            }
-        }
-    })
+                default: () => ({ ...options }),
+            },
+        },
+    });
 }

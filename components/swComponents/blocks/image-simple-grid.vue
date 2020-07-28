@@ -13,39 +13,39 @@
     </div>
 </template>
 <script>
-    import { blockMixins } from '../helper'
+import { blockMixins } from '../helper';
 
-    export default {
-        name: 'ImageSimpleGridBlock',
+export default {
+    name: 'ImageSimpleGridBlock',
 
-        mixins: [blockMixins],
+    mixins: [blockMixins],
 
-        props: {
-            content: {
-                type: Object,
-                default: () => ({})
-            }
+    props: {
+        content: {
+            type: Object,
+            default: () => ({}),
         },
-        computed: {
-            leftTopSlot() {
-                return this.getSlotByPosition(this.content.slots, 'left-top');
-            },
-            leftBottomSlot() {
-                return this.getSlotByPosition(this.content.slots, 'left-bottom');
-            },
-            rightSlot() {
-                return this.getSlotByPosition(this.content.slots, 'right');
-            }
-        }
-    }
+    },
+    computed: {
+        leftTopSlot() {
+            return this.getSlotByPosition(this.content.slots, 'left-top');
+        },
+        leftBottomSlot() {
+            return this.getSlotByPosition(this.content.slots, 'left-bottom');
+        },
+        rightSlot() {
+            return this.getSlotByPosition(this.content.slots, 'right');
+        },
+    },
+};
 </script>
 
 <style scoped>
-    .image-simple-grid__side-images {
-        height: 100%;
-    }
+.image-simple-grid__side-images {
+    height: 100%;
+}
 
-    .image-simple-grid__side-images--top {
-        margin-bottom: 40px;
-    }
+.image-simple-grid__side-images--top {
+    margin-bottom: 40px;
+}
 </style>

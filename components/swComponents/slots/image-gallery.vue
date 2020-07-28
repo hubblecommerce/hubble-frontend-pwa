@@ -1,6 +1,6 @@
 <template>
     <div :class="elementClass">
-        <div :class="getGalleryPositionClass" class="is-cover" :style="getVerticalAlignStyle" style="min-height: 270px">
+        <div :class="getGalleryPositionClass" class="is-cover" :style="getVerticalAlignStyle" style="min-height: 270px;">
             <div class="image-gallery__grid">
                 <slider
                     ref="tinySlider"
@@ -37,9 +37,7 @@
                 >
                     <div v-for="(item, index) in images" :key="item.mediaId" class="image-gallery__grid__container">
                         <button @click.prevent="changeActiveImageToSelected(index)">
-                            <img-lazy :src="item.mediaUrl"
-                                      :class="(activeImageIndex === index) && 'imageWithBorder'"
-                            />
+                            <img-lazy :src="item.mediaUrl" :class="activeImageIndex === index && 'imageWithBorder'" />
                         </button>
                     </div>
                 </slider>
@@ -49,127 +47,131 @@
 </template>
 
 <script>
-    import { slotMixins } from '../helper'
+import { slotMixins } from '../helper';
 
-    export default {
-        name: "ImageGallerySlot",
-        components: {
-            Slider: () => { if(process.client) { return import('vue-tiny-slider') } },
-        },
-        mixins: [slotMixins],
-        props: {
-            content: {
-                type: Object,
-                default: () => ({})
+export default {
+    name: 'ImageGallerySlot',
+    components: {
+        Slider: () => {
+            if (process.client) {
+                return import('vue-tiny-slider');
             }
         },
-        data() {
-            return {
-                images: [],
+    },
+    mixins: [slotMixins],
+    props: {
+        content: {
+            type: Object,
+            default: () => ({}),
+        },
+    },
+    data() {
+        return {
+            images: [],
 
-                controls: [
-                    '<i class="icon icon-chevron-left"></i><span class="hidden-link-name">Navigate left</span>',
-                    '<i class="icon icon-chevron-right"></i><span class="hidden-link-name">Navigate right</span>'
-                ],
+            controls: [
+                '<i class="icon icon-chevron-left"></i><span class="hidden-link-name">Navigate left</span>',
+                '<i class="icon icon-chevron-right"></i><span class="hidden-link-name">Navigate right</span>',
+            ],
 
-                controlsLeft: [
-                    '<i class="icon icon-chevron-up"></i><span class="hidden-link-name">Navigate up</span>',
-                    '<i class="icon icon-chevron-down"></i><span class="hidden-link-name">Navigate down</span>'
-                ],
+            controlsLeft: [
+                '<i class="icon icon-chevron-up"></i><span class="hidden-link-name">Navigate up</span>',
+                '<i class="icon icon-chevron-down"></i><span class="hidden-link-name">Navigate down</span>',
+            ],
 
-                activeImageIndex: 0,
+            activeImageIndex: 0,
 
-                responsiveUnderneath: {
-                    0: {
-                        items: 5,
-                    },
-                    768: {
-                        items: 5,
-                    },
-                    1024: {
-                        items: 5,
-                    }
+            responsiveUnderneath: {
+                0: {
+                    items: 5,
                 },
+                768: {
+                    items: 5,
+                },
+                1024: {
+                    items: 5,
+                },
+            },
 
-                responsiveLeft: {
-                    0: {
-                        items: 3,
-                    },
-                    768: {
-                        items: 3,
-                    },
-                    1024: {
-                        items: 3,
-                    }
+            responsiveLeft: {
+                0: {
+                    items: 3,
+                },
+                768: {
+                    items: 3,
+                },
+                1024: {
+                    items: 3,
+                },
+            },
+        };
+    },
+    computed: {
+        getDisplayMode() {
+            return this.content.config.value;
+        },
+        getGalleryPosition() {
+            return this.content.config.galleryPosition.value;
+        },
+        getGalleryPositionClass() {
+            return `is--preview-${this.getGalleryPosition}`;
+        },
+        getMinHeight() {
+            return this.content.config.minHeight.value;
+        },
+        getVerticalAlign() {
+            return this.content.config.verticalAlign.value;
+        },
+        getVerticalAlignStyle() {
+            if (!this.getVerticalAlign) return null;
+            else return `justify-content: ${this.element.config.verticalAlign.value};`;
+        },
+    },
+
+    watch: {
+        activeImageIndex: {
+            handler(newValue) {
+                if (newValue === undefined) this.activeImageIndex = 0;
+                else this.activeImageIndex = newValue;
+
+                if (this.$refs.tinySliderPreview) this.$refs.tinySliderPreview.slider.goTo(newValue);
+            },
+        },
+
+        $mq: {
+            handler() {
+                if (this.$refs.tinySliderPreview) {
+                    this.$refs.tinySliderPreview.slider.goTo(this.activeImageIndex);
                 }
-            }
+            },
         },
-        computed: {
-            getDisplayMode() {
-                return this.content.config.value;
-            },
-            getGalleryPosition() {
-                return this.content.config.galleryPosition.value;
-            },
-            getGalleryPositionClass() {
-              return `is--preview-${this.getGalleryPosition}`;
-            },
-            getMinHeight() {
-                return this.content.config.minHeight.value;
-            },
-            getVerticalAlign() {
-                return this.content.config.verticalAlign.value;
-            },
-            getVerticalAlignStyle() {
-              if (!this.getVerticalAlign) return null;
-              else return `justify-content: ${this.element.config.verticalAlign.value};`
-            }
-        },
+    },
 
-        watch: {
-            activeImageIndex: {
-                handler(newValue) {
-                    if (newValue === undefined) this.activeImageIndex = 0;
-                    else this.activeImageIndex = newValue;
+    created() {
+        this.images = this.content.config.sliderItems.value;
+    },
 
-                    if (this.$refs.tinySliderPreview) this.$refs.tinySliderPreview.slider.goTo(newValue);
+    mounted() {
+        this.$nextTick(() => {
+            this.activeImageIndex = 0;
+
+            this.$refs.tinySlider.slider.events.on('indexChanged', info => {
+                this.activeImageIndex = info.index - 2;
+
+                if (this.$refs.tinySliderPreview) {
+                    this.$refs.tinySliderPreview.slider.goTo(this.activeImageIndex === undefined ? 0 : this.activeImageIndex);
                 }
-            },
+            });
 
-            $mq: {
-                handler() {
-                        if (this.$refs.tinySliderPreview) {
-                            this.$refs.tinySliderPreview.slider.goTo(this.activeImageIndex);
-                        }
-                }
-            }
+            this.activeImageIndex = this.$refs.tinySlider.slider.events.on('indexChanged', info => info.index - 2);
+        });
+    },
+
+    methods: {
+        changeActiveImageToSelected(selection) {
+            this.activeImageIndex = selection;
+            this.$refs.tinySlider.slider.goTo(this.activeImageIndex);
         },
-
-        created() {
-            this.images = this.content.config.sliderItems.value;
-        },
-
-        mounted() {
-            this.$nextTick(() => {
-                this.activeImageIndex = 0;
-
-                this.$refs.tinySlider.slider.events.on('indexChanged', (info) => {
-                    this.activeImageIndex = info.index - 2;
-
-                    if (this.$refs.tinySliderPreview) {
-                        this.$refs.tinySliderPreview.slider.goTo(this.activeImageIndex === undefined ? 0 : this.activeImageIndex);
-                    }
-                })
-
-                this.activeImageIndex =  this.$refs.tinySlider.slider.events.on('indexChanged', (info) => info.index - 2);
-            })
-        },
-
-        methods: {
-            changeActiveImageToSelected (selection) {
-                this.activeImageIndex = selection;
-                this.$refs.tinySlider.slider.goTo(this.activeImageIndex);
-            }
-        }
-    }
+    },
+};
 </script>

@@ -14,29 +14,29 @@
     </div>
 </template>
 <script>
-  import { blockMixins } from '../helper'
+import { blockMixins } from '../helper';
 
-  export default {
-      name: 'CenterTextBlock',
+export default {
+    name: 'CenterTextBlock',
 
-      mixins: [blockMixins],
+    mixins: [blockMixins],
 
-      props: {
-          content: {
-              type: Object,
-              default: () => ({})
-          }
-      },
-      computed: {
-          leftSlot() {
-              return this.getSlotByPosition(this.content.slots, 'left');
-          },
-          centerSlot() {
-              return this.getSlotByPosition(this.content.slots, 'center');
-          },
-          rightSlot() {
-              return this.getSlotByPosition(this.content.slots, 'right');
-          }
-      }
-  }
+    props: {
+        content: {
+            type: Object,
+            default: () => ({}),
+        },
+    },
+    computed: {
+        leftSlot() {
+            return this.getSlotByPosition(this.content.slots, 'left');
+        },
+        centerSlot() {
+            return this.getSlotByPosition(this.content.slots, 'center');
+        },
+        rightSlot() {
+            return this.getSlotByPosition(this.content.slots, 'right');
+        },
+    },
+};
 </script>

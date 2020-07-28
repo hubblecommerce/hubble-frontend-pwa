@@ -29,7 +29,7 @@
 </template>
 
 <script>
-    export default {
-        name: "TheFooterSocial"
-    }
+export default {
+    name: 'TheFooterSocial',
+};
 </script>

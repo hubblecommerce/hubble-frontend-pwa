@@ -1,4 +1,4 @@
-import {isBefore, isAfter} from "@hubblecommerce/hubble/core/utils/dateTimeHelper";
+import { isBefore, isAfter } from '@hubblecommerce/hubble/core/utils/dateTimeHelper';
 import _ from 'lodash';
 
 export default function (ctx) {
@@ -8,24 +8,24 @@ export default function (ctx) {
             priceSwitcherIncludeVat: false,
             priceCurrency: 'EUR',
             priceCurrencySymbol: '€',
-            priceLocale: 'de-DE'
+            priceLocale: 'de-DE',
         }),
         getters: {
             priceAddVat: () => (price, vat) => {
                 return price * vat;
             },
-            priceDecFmt: () => (price) => {
+            priceDecFmt: () => price => {
                 return _.round(price, 2).toFixed(2);
             },
-            priceAddCur: (state) => (price) => {
+            priceAddCur: state => price => {
                 let localPrice = parseFloat(price);
 
-                localPrice = localPrice.toLocaleString(state.priceLocale, {minimumFractionDigits: 2});
+                localPrice = localPrice.toLocaleString(state.priceLocale, { minimumFractionDigits: 2 });
 
-                return localPrice  + ' ' + state.priceCurrencySymbol;
+                return localPrice + ' ' + state.priceCurrencySymbol;
             },
             getPriceAndCurrencyDecFmt: (state, getters) => (price, addVat, taxClass) => {
-                if(addVat) {
+                if (addVat) {
                     price = getters.priceAddVat(price, taxClass.value);
                 }
 
@@ -34,42 +34,42 @@ export default function (ctx) {
 
                 return price;
             },
-            productIsSpecial: () => (item) => {
-                if(item.final_price_item.special_price === null) {
+            productIsSpecial: () => item => {
+                if (item.final_price_item.special_price === null) {
                     return false;
                 }
 
                 let beg = null;
                 let end = null;
 
-                if(item.final_price_item.special_from_date !== null) {
+                if (item.final_price_item.special_from_date !== null) {
                     beg = new Date(item.final_price_item.special_from_date);
                 }
 
-                if(item.final_price_item.special_to_date !== null) {
+                if (item.final_price_item.special_to_date !== null) {
                     end = new Date(item.final_price_item.special_to_date);
                 }
 
                 // If no date range isset
-                if(_.isNull(beg) && _.isNull(end)) {
+                if (_.isNull(beg) && _.isNull(end)) {
                     return false;
                 }
 
                 // If only to date isset and today is before end
-                if(_.isNull(beg) && ! _.isNull(end)) {
-                    if(isBefore(end)) {
+                if (_.isNull(beg) && !_.isNull(end)) {
+                    if (isBefore(end)) {
                         return true;
                     }
                 }
                 // If only from date isset and today is after begin
-                else if(! _.isNull(beg) && _.isNull(end)) {
-                    if(isAfter(beg)) {
+                else if (!_.isNull(beg) && _.isNull(end)) {
+                    if (isAfter(beg)) {
                         return true;
                     }
                 }
                 // If both isset and today is after begin and before end
                 else {
-                    if(isAfter(beg) && isBefore(end)) {
+                    if (isAfter(beg) && isBefore(end)) {
                         return true;
                     }
                 }
@@ -83,27 +83,27 @@ export default function (ctx) {
                 return items.filter(tierPriceItem => tierPriceItem.price < item.final_price_item.price);
             },
             productHasTierPricesByGroupId: (state, getters) => (item, groupID) => {
-                if(_.isEmpty(item.tier_price_items)) {
+                if (_.isEmpty(item.tier_price_items)) {
                     return false;
                 }
 
-                if(_.isEmpty(getters.productGetTierPricesByGroupId(item, groupID))) {
+                if (_.isEmpty(getters.productGetTierPricesByGroupId(item, groupID))) {
                     return false;
                 }
 
                 return true;
             },
-            getTaxClassByLabel: (state) => (label) => {
+            getTaxClassByLabel: state => label => {
                 //TODO replace placeholder object with real data
                 let placeholderObject = {
                     id: 2,
                     label: 'VAT 19',
-                    value: 1.19
+                    value: 1.19,
                 };
                 return placeholderObject;
                 //return _.head(state.session.taxClasses.filter(item => item.label === label));
-            }
-        }
+            },
+        },
     };
 
     ctx.store.registerModule('modPrices', modPrices);

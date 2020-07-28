@@ -1,7 +1,5 @@
 <template>
     <div class="view-category">
-
-
         <g-t-m-data-layer
             v-if="loaded"
             :event="'categoryLoaded'"
@@ -10,16 +8,13 @@
             :breadcrumbs="breadcrumbs"
         />
 
-        <div class="container breadcrumbs-wrp" v-if="!onIndexPage">
+        <div v-if="!onIndexPage" class="container breadcrumbs-wrp">
             <breadcrumbs :path="breadcrumbs" />
         </div>
 
         <template v-if="isShopware">
             <div class="container">
-                 <sw-section v-for="cmsSection in cmsSections"
-                            :key="cmsSection.id"
-                            :content="cmsSection"
-                 />
+                <sw-section v-for="cmsSection in cmsSections" :key="cmsSection.id" :content="cmsSection" />
             </div>
         </template>
 
@@ -28,11 +23,7 @@
                 <h1 class="title headline-1" v-text="categoryItem.name" />
                 <div :style="categoryText !== '' ? 'min-height: 95px;' : ''">
                     <client-only>
-                        <text-excerpt
-                            v-if="categoryText"
-                            :text="categoryText"
-                            :limit="($mq === 'md' || $mq === 'sm') ? 300 : 900"
-                        />
+                        <text-excerpt v-if="categoryText" :text="categoryText" :limit="$mq === 'md' || $mq === 'sm' ? 300 : 900" />
                     </client-only>
                 </div>
             </div>
@@ -40,8 +31,13 @@
             <template v-if="!errorNoProducts">
                 <div class="container category-content-wrp">
                     <div class="category-products-wrp">
-                        <product-listing-toolbar :extra-class="{'fixed container': isSticky}" />
-                        <product-listing :data-items="categoryProductItems" list="Category" :extra-class="{'offset-top': isSticky}" :category="categoryItem.name" />
+                        <product-listing-toolbar :extra-class="{ 'fixed container': isSticky }" />
+                        <product-listing
+                            :data-items="categoryProductItems"
+                            list="Category"
+                            :extra-class="{ 'offset-top': isSticky }"
+                            :category="categoryItem.name"
+                        />
                         <div class="pagination-bottom">
                             <pagination />
                         </div>
@@ -67,10 +63,10 @@
 </template>
 
 <script>
-import {mapState, mapGetters} from 'vuex';
-import Breadcrumbs from "../utils/Breadcrumbs";
-import TextExcerpt from "../utils/TextExcerpt";
-import ProductListingToolbar from "./ProductListingToolbar";
+import { mapState, mapGetters } from 'vuex';
+import Breadcrumbs from '../utils/Breadcrumbs';
+import TextExcerpt from '../utils/TextExcerpt';
+import ProductListingToolbar from './ProductListingToolbar';
 import _ from 'lodash';
 
 export default {
@@ -92,7 +88,7 @@ export default {
             parentCategory: {},
             error: {
                 statusCode: 400,
-                message: 'There are no products available in this category or for this filter.'
+                message: 'There are no products available in this category or for this filter.',
             },
             categoryItem: {},
             categoryData: {},
@@ -104,8 +100,8 @@ export default {
             loaded: false,
 
             isShopware: process.env.API_TYPE === 'sw',
-            cmsSections: {}
-        }
+            cmsSections: {},
+        };
     },
 
     computed: {
@@ -113,20 +109,20 @@ export default {
             dataCategory: state => state.modApiCategory.dataCategory,
             dataCategoryProducts: state => state.modApiCategory.dataCategoryProducts,
             dataMenu: state => state.modApiMenu.dataMenu,
-            cmsObject: state => state.modApiResources.cmsObject
+            cmsObject: state => state.modApiResources.cmsObject,
         }),
         ...mapGetters({
-            requestCategoryFacets: 'modApiRequests/getRequestCategoryFacets'
+            requestCategoryFacets: 'modApiRequests/getRequestCategoryFacets',
         }),
         categoryProductItems() {
             if (_.isEmpty(this.dataCategoryProducts)) {
-                return this.dataCategoryProducts
+                return this.dataCategoryProducts;
             }
 
-            return this.dataCategoryProducts.result.items
+            return this.dataCategoryProducts.result.items;
         },
         errorNoProducts() {
-            return _.isEmpty(this.categoryProductItems)
+            return _.isEmpty(this.categoryProductItems);
         },
         breadcrumbs() {
             let array = [];
@@ -136,11 +132,11 @@ export default {
                 let names = this.categoryItem.path_names;
                 let urls = this.categoryItem.path_urls;
 
-                ids.forEach(function(element, index) {
+                ids.forEach(function (element, index) {
                     array[index] = {
                         name: names[index],
-                        url: urls[index]
-                    }
+                        url: urls[index],
+                    };
                 });
             }
             return array;
@@ -149,28 +145,28 @@ export default {
             return this.$route.path === '/';
         },
         categoryText() {
-            if(!_.isEmpty(this.categoryItem)) {
+            if (!_.isEmpty(this.categoryItem)) {
                 return this.categoryItem.teaser;
             }
 
             return '';
         },
         categoryTextLong() {
-            if(!_.isEmpty(this.categoryItem)) {
+            if (!_.isEmpty(this.categoryItem)) {
                 return this.categoryItem.description;
             }
 
             return '';
         },
         pathIds() {
-            if(!_.isEmpty(this.categoryItem)) {
+            if (!_.isEmpty(this.categoryItem)) {
                 return this.categoryItem.path_ids;
             }
 
             return [];
         },
         categoryId() {
-            if(!_.isEmpty(this.categoryItem)) {
+            if (!_.isEmpty(this.categoryItem)) {
                 return this.categoryItem.id;
             }
 
@@ -192,27 +188,31 @@ export default {
     },
 
     mounted() {
-        if(this.$mq === 'lg') {
-            window.addEventListener('scroll', ( event ) => {
-                // Clear our timeout throughout the scroll
-                window.clearTimeout( this.isScrolling );
-                // Set a timeout to run after scrolling ends
-                this.isScrolling = setTimeout(() => {
-                    // Run the callback
-                    this.handleScroll();
-                }, 66);
-            }, false);
+        if (this.$mq === 'lg') {
+            window.addEventListener(
+                'scroll',
+                event => {
+                    // Clear our timeout throughout the scroll
+                    window.clearTimeout(this.isScrolling);
+                    // Set a timeout to run after scrolling ends
+                    this.isScrolling = setTimeout(() => {
+                        // Run the callback
+                        this.handleScroll();
+                    }, 66);
+                },
+                false
+            );
         }
 
         this.loaded = true;
 
         this.$nextTick(() => {
             // Set position data for sticky elements
-            if(document.getElementsByClassName("listing-wrp")) {
-                if(this.$mq === 'lg') {
-                    if(document.getElementsByClassName("listing-wrp")[0]) {
+            if (document.getElementsByClassName('listing-wrp')) {
+                if (this.$mq === 'lg') {
+                    if (document.getElementsByClassName('listing-wrp')[0]) {
                         let bodyRect = document.body.getBoundingClientRect(),
-                            elemRect = document.getElementsByClassName("listing-wrp")[0].getBoundingClientRect();
+                            elemRect = document.getElementsByClassName('listing-wrp')[0].getBoundingClientRect();
                         this.position = elemRect.top - bodyRect.top;
                     }
                 }
@@ -221,31 +221,31 @@ export default {
     },
 
     methods: {
-        setCategoryItem: function() {
+        setCategoryItem: function () {
             // Set data from store on create instead of use vuex store directly
             // This prevents showing data of next category if user switches between categories
-            if(!_.isEmpty(this.dataCategory.result)) {
+            if (!_.isEmpty(this.dataCategory.result)) {
                 this.categoryItem = this.dataCategory.result.item;
             }
         },
-        setCategoryData: function() {
-            if(!_.isEmpty(this.dataMenu.result)) {
+        setCategoryData: function () {
+            if (!_.isEmpty(this.dataMenu.result)) {
                 this.categoryData = this.dataMenu.result.items;
             }
         },
-        setParentCategory: function() {
-            if(!_.isEmpty(this.categoryData)) {
-                this.categoryData.forEach((item) => {
-                    if(!_.isEmpty(this.categoryItem['path_ids'])) {
-                        if(item.id === this.categoryItem['path_ids'][0]) {
+        setParentCategory: function () {
+            if (!_.isEmpty(this.categoryData)) {
+                this.categoryData.forEach(item => {
+                    if (!_.isEmpty(this.categoryItem['path_ids'])) {
+                        if (item.id === this.categoryItem['path_ids'][0]) {
                             this.parentCategory = item;
                         }
                     }
                 });
             }
         },
-        setCmsSections: function() {
-            if(this.isShopware && !_.isEmpty(this.cmsObject)) {
+        setCmsSections: function () {
+            if (this.isShopware && !_.isEmpty(this.cmsObject)) {
                 this.cmsSections = this.cmsObject.sections;
             }
             return [];
@@ -254,7 +254,7 @@ export default {
             this.setStickyFlag();
         },
         setStickyFlag() {
-            if(this.$mq === 'lg' && window.pageYOffset > this.position) {
+            if (this.$mq === 'lg' && window.pageYOffset > this.position) {
                 this.isSticky = true;
             } else {
                 this.isSticky = false;
@@ -270,22 +270,21 @@ export default {
             metaKeywords = {},
             metaTitle = '';
 
-        if(!_.isEmpty(this.categoryItem.meta_description)) {
+        if (!_.isEmpty(this.categoryItem.meta_description)) {
             metaDescription = this.categoryItem.meta_description;
         } else {
             metaDescription = process.env.meta.category.metaDescription;
         }
 
-        if(!_.isEmpty(this.categoryItem.meta_keywords)) {
+        if (!_.isEmpty(this.categoryItem.meta_keywords)) {
             metaKeywords = this.categoryItem.meta_keywords;
         } else {
             metaKeywords = process.env.meta.category.metaKeywords;
         }
 
-        if(!_.isEmpty(this.categoryItem.meta_title)) {
+        if (!_.isEmpty(this.categoryItem.meta_title)) {
             metaTitle = this.categoryItem.meta_title;
-        }
-        else if(!_.isEmpty(this.categoryItem.name)) {
+        } else if (!_.isEmpty(this.categoryItem.name)) {
             metaTitle = this.categoryItem.name + process.env.meta.category.titleAdd;
         } else {
             metaTitle = process.env.meta.category.title;
@@ -297,9 +296,9 @@ export default {
                 // hid is used as unique identifier. Do not use `vmid` for it as it will not work
                 { hid: 'description', name: 'description', content: metaDescription },
                 { hid: 'keywords', name: 'keywords', content: metaKeywords },
-                { hid: 'robots', name: 'robots', content: 'INDEX, FOLLOW' }
-            ]
-        }
-    }
-}
+                { hid: 'robots', name: 'robots', content: 'INDEX, FOLLOW' },
+            ],
+        };
+    },
+};
 </script>

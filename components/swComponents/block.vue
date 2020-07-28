@@ -7,54 +7,49 @@
 </template>
 
 <script>
-import {sectionMixins} from './helper'
-  export default {
-      name: 'Block',
+import { sectionMixins } from './helper';
+export default {
+    name: 'Block',
 
-      mixins: [sectionMixins],
+    mixins: [sectionMixins],
 
-      props: {
-          content: {
-              type: Object,
-              default: () => ({})
-          }
-      },
+    props: {
+        content: {
+            type: Object,
+            default: () => ({}),
+        },
+    },
 
-      computed: {
-          getComponent() {
-              return this.getBlockByType(this.content.type);
-          },
-          paddingStyles() {
-              const padding = {
-                  top: this.content.marginTop ? this.content.marginTop : 0,
-                  right: this.content.marginRight ? this.content.marginRight : 0,
-                  bottom: this.content.marginBottom ? this.content.marginBottom : 0,
-                  left: this.content.marginLeft ? this.content.marginLeft : 0,
-              }
+    computed: {
+        getComponent() {
+            return this.getBlockByType(this.content.type);
+        },
+        paddingStyles() {
+            const padding = {
+                top: this.content.marginTop ? this.content.marginTop : 0,
+                right: this.content.marginRight ? this.content.marginRight : 0,
+                bottom: this.content.marginBottom ? this.content.marginBottom : 0,
+                left: this.content.marginLeft ? this.content.marginLeft : 0,
+            };
 
-              return {
-                  padding: padding.top + ' ' + padding.right + ' ' + padding.bottom + ' ' + padding.left
-              };
-          },
-          backgroundStyles() {
-              const {
-                  backgroundColor,
-                  backgroundMedia,
-                  backgroundMediaMode
-              } = this.content;
+            return {
+                padding: padding.top + ' ' + padding.right + ' ' + padding.bottom + ' ' + padding.left,
+            };
+        },
+        backgroundStyles() {
+            const { backgroundColor, backgroundMedia, backgroundMediaMode } = this.content;
 
-              return {
-                  backgroundColor,
-                  backgroundImage: backgroundMedia ? `url(${backgroundMedia.url})` : null,
-                  backgroundSize: backgroundMediaMode ? backgroundMediaMode : null,
-              };
-          },
-          backgroundImageExists() {
-              const { backgroundMedia } = this.content;
+            return {
+                backgroundColor,
+                backgroundImage: backgroundMedia ? `url(${backgroundMedia.url})` : null,
+                backgroundSize: backgroundMediaMode ? backgroundMediaMode : null,
+            };
+        },
+        backgroundImageExists() {
+            const { backgroundMedia } = this.content;
 
-              return backgroundMedia ? 'bg-image' : ''
-          }
-      }
-
-  }
+            return backgroundMedia ? 'bg-image' : '';
+        },
+    },
+};
 </script>

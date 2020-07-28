@@ -7,24 +7,24 @@
 </template>
 
 <script>
-    import {blockMixins} from "../helper";
+import { blockMixins } from '../helper';
 
-    export default {
-        name: "VimeoVideoBlock",
+export default {
+    name: 'VimeoVideoBlock',
 
-        mixins: [blockMixins],
+    mixins: [blockMixins],
 
-        props: {
-            content: {
-                type: Object,
-                default: () => ({})
-            }
+    props: {
+        content: {
+            type: Object,
+            default: () => ({}),
         },
+    },
 
-        computed: {
-            getSlot() {
-                return this.getSlotByPosition(this.content.slots, 'video');
-            }
-        }
-    }
+    computed: {
+        getSlot() {
+            return this.getSlotByPosition(this.content.slots, 'video');
+        },
+    },
+};
 </script>

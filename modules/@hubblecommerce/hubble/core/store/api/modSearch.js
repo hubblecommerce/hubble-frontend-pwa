@@ -10,22 +10,22 @@ export default function (ctx) {
             autoCompleteResultsArray: [],
             autoCompleteResults: {
                 categoryItems: [],
-                productItems: []
+                productItems: [],
             },
 
             showAutoCompleteResults: false,
 
             selectedItemPosition: -1,
-            selectedItemId: null
+            selectedItemId: null,
         }),
         getters: {
-            getAutoCompleteResults: (state) => {
+            getAutoCompleteResults: state => {
                 return state.autoCompleteResults;
             },
-            getAutoCompleteResultsArray: (state) => {
+            getAutoCompleteResultsArray: state => {
                 return state.autoCompleteResultsArray;
             },
-            getAutoCompleteResultsLength: (state) => {
+            getAutoCompleteResultsLength: state => {
                 return state.autoCompleteResults.categoryItems.length + state.autoCompleteResults.productItems.length;
             },
         },
@@ -54,54 +54,61 @@ export default function (ctx) {
             },
         },
         actions: {
-            async getAutocompleteResults({state, commit, dispatch}, payload) {
-                return new Promise(function(resolve, reject) {
-                    dispatch('apiCall', {
-                        action: 'get',
-                        tokenType: 'api',
-                        apiType: 'data',
-                        endpoint: '/api/json/search/autocomplete',
-                        params: {
-                            _term: payload.query
-                        }
-                    }, { root: true })
-                    .then(response => {
-                        if(response.data.result.stats.count === 0) {
-                            commit('setShowAutoCompleteResults', false);
-                        } else {
-                            _.forEach(response.data.result.groups, group => {
-                                let currentGroupItems = group.items;
-                                if(group.meta.label === 'Products') {
-                                    _.slice(currentGroupItems, 0, state.maxProductItems);
-                                    commit('setProductItems', group.items);
-                                }
-                                if(group.meta.label === 'Categories') {
-                                    _.slice(currentGroupItems, 0, state.maxCategoryItems);
-                                    commit('setCategoryItems', group.items);
-                                }
-                            });
+            async getAutocompleteResults({ state, commit, dispatch }, payload) {
+                return new Promise(function (resolve, reject) {
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'get',
+                            tokenType: 'api',
+                            apiType: 'data',
+                            endpoint: '/api/json/search/autocomplete',
+                            params: {
+                                _term: payload.query,
+                            },
+                        },
+                        { root: true }
+                    )
+                        .then(response => {
+                            if (response.data.result.stats.count === 0) {
+                                commit('setShowAutoCompleteResults', false);
+                            } else {
+                                _.forEach(response.data.result.groups, group => {
+                                    let currentGroupItems = group.items;
+                                    if (group.meta.label === 'Products') {
+                                        _.slice(currentGroupItems, 0, state.maxProductItems);
+                                        commit('setProductItems', group.items);
+                                    }
+                                    if (group.meta.label === 'Categories') {
+                                        _.slice(currentGroupItems, 0, state.maxCategoryItems);
+                                        commit('setCategoryItems', group.items);
+                                    }
+                                });
 
-                            // Set all items also in one array to handle key events
-                            commit('setAutoCompleteResultsArray', _.concat(state.autoCompleteResults.categoryItems, state.autoCompleteResults.productItems));
+                                // Set all items also in one array to handle key events
+                                commit(
+                                    'setAutoCompleteResultsArray',
+                                    _.concat(state.autoCompleteResults.categoryItems, state.autoCompleteResults.productItems)
+                                );
 
-                            commit('setSelectedItemPosition', -1);
-                            commit('setSelectedItemId', null);
+                                commit('setSelectedItemPosition', -1);
+                                commit('setSelectedItemId', null);
 
-                            commit('setShowAutoCompleteResults', true);
-                        }
+                                commit('setShowAutoCompleteResults', true);
+                            }
 
-                        resolve();
-                    })
-                    .catch(error => {
-                        reject(error);
-                    });
+                            resolve();
+                        })
+                        .catch(error => {
+                            reject(error);
+                        });
                 });
             },
             // Reset data in store to initial state
-            resetAutoCompleteResults({commit}) {
+            resetAutoCompleteResults({ commit }) {
                 commit('setAutoCompleteResults', {
                     categoryItems: [],
-                    productItems: []
+                    productItems: [],
                 });
 
                 commit('setAutoCompleteResultsArray', []);
@@ -112,8 +119,8 @@ export default function (ctx) {
                 commit('setShowAutoCompleteResults', false);
             },
             // Change the selected item depending on key event
-            changeSelectedItem({state, commit}, payload) {
-                if(_.isEmpty(state.autoCompleteResultsArray)) {
+            changeSelectedItem({ state, commit }, payload) {
+                if (_.isEmpty(state.autoCompleteResultsArray)) {
                     return;
                 }
 
@@ -121,11 +128,11 @@ export default function (ctx) {
 
                 currentItemPosition = currentItemPosition + payload;
 
-                if(currentItemPosition < 0) {
+                if (currentItemPosition < 0) {
                     currentItemPosition = state.autoCompleteResultsArray.length - 1;
                 }
 
-                if(currentItemPosition >= state.autoCompleteResultsArray.length) {
+                if (currentItemPosition >= state.autoCompleteResultsArray.length) {
                     currentItemPosition = 0;
                 }
 
@@ -133,13 +140,13 @@ export default function (ctx) {
                 commit('setSelectedItemId', state.autoCompleteResultsArray[currentItemPosition].id);
             },
             // Redirect to product or category if an item is selected via keyevent
-            redirectToItem({state}) {
-                if(state.selectedItemPosition === -1) return;
+            redirectToItem({ state }) {
+                if (state.selectedItemPosition === -1) return;
 
                 let currentSelectedItem = state.autoCompleteResultsArray[state.selectedItemPosition];
                 let url = '';
 
-                if(currentSelectedItem.url_path) {
+                if (currentSelectedItem.url_path) {
                     url = currentSelectedItem.url_path;
                 } else {
                     url = currentSelectedItem.url_pds;
@@ -147,47 +154,45 @@ export default function (ctx) {
 
                 ctx.app.router.push('/' + url);
             },
-            async apiCatalogsearch({commit, dispatch, rootGetters}, payload) {
-                return new Promise(function(resolve, reject) {
+            async apiCatalogsearch({ commit, dispatch, rootGetters }, payload) {
+                return new Promise(function (resolve, reject) {
                     let query = rootGetters['modApiRequests/queryPaginate'](payload.query);
 
-                    commit('modApiRequests/setPaginationOffset', query._from, {root: true});
-                    commit('modApiRequests/setPaginationPerPage', query._size, {root: true});
+                    commit('modApiRequests/setPaginationOffset', query._from, { root: true });
+                    commit('modApiRequests/setPaginationPerPage', query._size, { root: true });
 
-                    dispatch('apiCall', {
-                        action: 'get',
-                        tokenType: 'api',
-                        apiType: 'data',
-                        endpoint: '/api/json/search/catalogsearch',
-                        params: _.merge(
-                            {},
-                            query,
-                            {
-                                _withProps: _.join([
-                                    'facets',
-                                    'media_gallery',
-                                    'search_result_data_children',
-                                    'status'
-                                ], ',')
-                            }
-                        )
-                    }, { root: true })
-                    .then(response => {
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'get',
+                            tokenType: 'api',
+                            apiType: 'data',
+                            endpoint: '/api/json/search/catalogsearch',
+                            params: _.merge({}, query, {
+                                _withProps: _.join(['facets', 'media_gallery', 'search_result_data_children', 'status'], ','),
+                            }),
+                        },
+                        { root: true }
+                    )
+                        .then(response => {
+                            commit('modApiResources/setPageType', 'category', { root: true });
 
-                        commit('modApiResources/setPageType', 'category' , {root: true});
+                            commit(
+                                'modApiCategory/setDataCategoryProducts',
+                                {
+                                    data: response.data,
+                                },
+                                { root: true }
+                            );
 
-                        commit('modApiCategory/setDataCategoryProducts', {
-                            data: response.data
-                        }, {root: true});
-
-                        resolve('OK');
-                    })
-                    .catch(response => {
-                        reject('API request failed!');
-                    });
-                })
+                            resolve('OK');
+                        })
+                        .catch(response => {
+                            reject('API request failed!');
+                        });
+                });
             },
-        }
+        },
     };
     ctx.store.registerModule('modSearch', modSearch);
 }

@@ -1,51 +1,50 @@
 <template>
     <div class="hbl-select">
         <select id="selectable-order" v-model="modelSelected" class="select-text" required>
-            <option value="" disabled></option>
+            <option value="" disabled />
 
             <option v-for="(dataOption, index) in dataOptions" :key="index" :value="dataOption.option_id">
                 {{ $t(dataOption.label) }}
             </option>
         </select>
 
-        <span class="select-highlight"></span>
+        <span class="select-highlight" />
 
-        <label for="selectable-order" class="select-label" v-text="$t('Sort by')"></label>
+        <label for="selectable-order" class="select-label" v-text="$t('Sort by')" />
     </div>
 </template>
 
 <script>
-import {mapMutations, mapActions} from 'vuex';
+import { mapMutations, mapActions } from 'vuex';
 export default {
     name: 'SelectableOrder',
 
     props: {
         dataOptions: {
             type: Array,
-            required: true
-        }
+            required: true,
+        },
     },
 
     data() {
         return {
             name: 'SelectableOrder',
-            modelSelected: null
-        }
+            modelSelected: null,
+        };
     },
 
-
     watch: {
-        modelSelected: function(newValue) {
+        modelSelected: function (newValue) {
             this.setSelectedQueryParam({
                 name: 'sort',
-                data: newValue
+                data: newValue,
             });
             this.applyFilter();
-        }
+        },
     },
 
     created() {
-        if(this.$route.query.sort) {
+        if (this.$route.query.sort) {
             this.modelSelected = this.$route.query.sort;
         }
     },
@@ -57,6 +56,6 @@ export default {
         ...mapActions({
             applyFilter: 'modApiRequests/applyFilter',
         }),
-    }
-}
+    },
+};
 </script>

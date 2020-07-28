@@ -7,50 +7,42 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex';
-    import apiResourceRequest from '@hubblecommerce/hubble/core/anonymous-middleware/apiResourceRequest'
+import { mapState } from 'vuex';
+import apiResourceRequest from '@hubblecommerce/hubble/core/anonymous-middleware/apiResourceRequest';
 
-    export default {
-        name: "RouteResolver",
+export default {
+    name: 'RouteResolver',
 
-        components: {
-            ViewCategory: () => import("../components/productlist/ViewCategory"),
-            ViewProduct: () => import("../components/productdetail/ViewProduct"),
-            ViewContent: () => import("../components/cms/ViewContent"),
-        },
+    components: {
+        ViewCategory: () => import('../components/productlist/ViewCategory'),
+        ViewProduct: () => import('../components/productdetail/ViewProduct'),
+        ViewContent: () => import('../components/cms/ViewContent'),
+    },
 
-        layout: 'hubble',
+    layout: 'hubble',
 
-        data() {
-            return {
-                currentComponent:  ''
-            }
-        },
+    data() {
+        return {
+            currentComponent: '',
+        };
+    },
 
-        computed: {
-            ...mapState({
-                pageType: state => state.modApiResources.pageType
-            }),
-        },
+    computed: {
+        ...mapState({
+            pageType: state => state.modApiResources.pageType,
+        }),
+    },
 
-        created() {
-            this.currentComponent = 'view-' + this.pageType;
-        },
+    created() {
+        this.currentComponent = 'view-' + this.pageType;
+    },
 
-        middleware: [
-            'apiAuthenticate',
-            'apiLocalization',
-            'apiResourceMenu',
-            'apiResourceRoute',
-            apiResourceRequest,
-            'trackClickPath'
-        ],
+    middleware: ['apiAuthenticate', 'apiLocalization', 'apiResourceMenu', 'apiResourceRoute', apiResourceRequest, 'trackClickPath'],
 
-        transition: {
-            name: 'page-transition',
-            mode: 'out-in',
-            css: false
-        }
-    }
+    transition: {
+        name: 'page-transition',
+        mode: 'out-in',
+        css: false,
+    },
+};
 </script>
-

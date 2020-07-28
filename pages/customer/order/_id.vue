@@ -14,55 +14,46 @@
 </template>
 
 <script>
-    import { mapActions } from "vuex";
-    import CustomerAccountNavigation from "../../../components/customer/CustomerAccountNavigation";
-    import OrderDetail from "../../../components/customer/OrderDetail";
-    import apiCustomerAuthenticate from '@hubblecommerce/hubble/core/anonymous-middleware/apiCustomerAuthenticate'
-    import apiPaymentAuthenticate from '@hubblecommerce/hubble/core/anonymous-middleware/apiPaymentAuthenticate'
+import { mapActions } from 'vuex';
+import CustomerAccountNavigation from '../../../components/customer/CustomerAccountNavigation';
+import OrderDetail from '../../../components/customer/OrderDetail';
+import apiCustomerAuthenticate from '@hubblecommerce/hubble/core/anonymous-middleware/apiCustomerAuthenticate';
+import apiPaymentAuthenticate from '@hubblecommerce/hubble/core/anonymous-middleware/apiPaymentAuthenticate';
 
-    export default {
-        components: {OrderDetail, CustomerAccountNavigation},
+export default {
+    components: { OrderDetail, CustomerAccountNavigation },
 
-        layout: "hubble",
+    layout: 'hubble',
 
-        middleware: [
-            'apiLocalization',
-            'apiAuthenticate',
-            apiPaymentAuthenticate,
-            apiCustomerAuthenticate,
-            'apiResourceMenu',
-            'trackClickPath'
-        ],
+    middleware: ['apiLocalization', 'apiAuthenticate', apiPaymentAuthenticate, apiCustomerAuthenticate, 'apiResourceMenu', 'trackClickPath'],
 
-        data() {
-            return {
-                id: this.$route.params.id,
-                order: null
-            }
+    data() {
+        return {
+            id: this.$route.params.id,
+            order: null,
+        };
+    },
+
+    mounted() {
+        this.getCurrentOrder();
+    },
+
+    methods: {
+        ...mapActions({
+            getOrderById: 'modApiPayment/getOrderById',
+        }),
+        getCurrentOrder() {
+            // Get order from customer by id from url /orders/:id
+            this.getOrderById({ id: this.id }).then(res => {
+                this.order = res.data.item;
+            });
         },
+    },
 
-        mounted() {
-            this.getCurrentOrder();
-        },
-
-        methods: {
-            ...mapActions({
-                getOrderById: 'modApiPayment/getOrderById'
-            }),
-            getCurrentOrder() {
-                // Get order from customer by id from url /orders/:id
-                this.getOrderById({id: this.id}).then((res) => {
-                    this.order = res.data.item;
-                });
-            }
-        },
-
-        head() {
-            return {
-                meta: [
-                    { hid: 'robots', name: 'robots', content: 'NOINDEX, FOLLOW' }
-                ]
-            }
-        }
-    }
+    head() {
+        return {
+            meta: [{ hid: 'robots', name: 'robots', content: 'NOINDEX, FOLLOW' }],
+        };
+    },
+};
 </script>

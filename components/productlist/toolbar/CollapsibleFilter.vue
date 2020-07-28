@@ -31,65 +31,65 @@
 </template>
 
 <script>
-    import TransitionRotateX from "../../transitions/TransitionRotateX";
-    import Vue from "vue";
-    import vClickOutside from "v-click-outside";
+import TransitionRotateX from '../../transitions/TransitionRotateX';
+import Vue from 'vue';
+import vClickOutside from 'v-click-outside';
 
-    export default {
-        name: "CollapsibleFilter",
+export default {
+    name: 'CollapsibleFilter',
 
-        components: {
-            TransitionRotateX
+    components: {
+        TransitionRotateX,
+    },
+
+    props: {
+        toggleTag: {
+            type: [String, Array],
+            default: () => ['button'],
         },
-
-        props: {
-            toggleTag: {
-                type: [String, Array],
-                default: () => ['button']
-            },
-            toggleText: {
-                type: String,
-                default: ''
-            },
-            toggleClass: {
-                type: String,
-                default: ''
-            },
-            closeIconClass: {
-                type: String,
-                default: 'icon-minus'
-            },
-            openIconClass: {
-                type: String,
-                default: 'icon-plus'
-            },
-            applyButton: {
-                type: Boolean,
-                default: true
-            },
-            maxHeight: {
-                type: Number,
-                default: 700
-            }
+        toggleText: {
+            type: String,
+            default: '',
         },
-
-        data() {
-            return {
-                collapse: true
-            };
+        toggleClass: {
+            type: String,
+            default: '',
         },
-
-        created() {
-            Vue.use(vClickOutside);
+        closeIconClass: {
+            type: String,
+            default: 'icon-minus',
         },
-
-        methods: {
-            collapseContent: function() {
-                this.collapse = !this.collapse;
-            },
-            hideContent: function() {
-                this.collapse = true;
-            }
+        openIconClass: {
+            type: String,
+            default: 'icon-plus',
         },
-    }
+        applyButton: {
+            type: Boolean,
+            default: true,
+        },
+        maxHeight: {
+            type: Number,
+            default: 700,
+        },
+    },
+
+    data() {
+        return {
+            collapse: true,
+        };
+    },
+
+    created() {
+        Vue.use(vClickOutside);
+    },
+
+    methods: {
+        collapseContent: function () {
+            this.collapse = !this.collapse;
+        },
+        hideContent: function () {
+            this.collapse = true;
+        },
+    },
+};
 </script>

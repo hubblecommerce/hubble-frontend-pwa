@@ -1,6 +1,5 @@
 <template>
     <div class="container checkout-login">
-
         <tabs v-if="$mq === 'sm' || $mq === 'md'" class="checkout-login-tabs">
             <tab class="login-tab" :name="$t('Login')">
                 <div v-if="showLoginForm" class="checkout-login-wrp">
@@ -77,69 +76,62 @@
 </template>
 
 <script>
-    import LoginForm from '../../components/customer/LoginForm';
-    import Tabs from "../../components/utils/Tabs";
-    import Tab from "../../components/utils/Tab";
-    import RegisterForm from "../../components/customer/RegisterForm";
-    import apiPaymentAuthenticate from '@hubblecommerce/hubble/core/anonymous-middleware/apiPaymentAuthenticate'
+import LoginForm from '../../components/customer/LoginForm';
+import Tabs from '../../components/utils/Tabs';
+import Tab from '../../components/utils/Tab';
+import RegisterForm from '../../components/customer/RegisterForm';
+import apiPaymentAuthenticate from '@hubblecommerce/hubble/core/anonymous-middleware/apiPaymentAuthenticate';
 
-    export default {
-        name: "Login",
+export default {
+    name: 'Login',
 
-        components: {
-            RegisterForm,
-            LoginForm,
-            Tabs,
-            Tab
+    components: {
+        RegisterForm,
+        LoginForm,
+        Tabs,
+        Tab,
+    },
+
+    middleware: ['apiAuthenticate', apiPaymentAuthenticate, 'apiLocalization', 'trackClickPath'],
+
+    layout: 'hubble_light',
+
+    data() {
+        return {
+            showLoginForm: true,
+            showRegisterForm: false,
+            showRegisterGuestForm: false,
+        };
+    },
+
+    methods: {
+        toggleLoginForm: function () {
+            this.showLoginForm = !this.showLoginForm;
+            this.showRegisterForm = false;
+            this.showRegisterGuestForm = false;
         },
-
-        middleware: [
-            'apiAuthenticate',
-            apiPaymentAuthenticate,
-            'apiLocalization',
-            'trackClickPath'
-        ],
-
-        layout: 'hubble_light',
-
-        data() {
-            return {
-                showLoginForm: true,
-                showRegisterForm: false,
-                showRegisterGuestForm: false
-            }
+        toggleRegisterForm: function () {
+            this.showRegisterForm = !this.showRegisterForm;
+            this.showLoginForm = false;
+            this.showRegisterGuestForm = false;
         },
-
-        methods: {
-            toggleLoginForm: function() {
-                this.showLoginForm = !this.showLoginForm;
-                this.showRegisterForm = false;
-                this.showRegisterGuestForm = false;
-            },
-            toggleRegisterForm: function() {
-                this.showRegisterForm = !this.showRegisterForm;
-                this.showLoginForm = false;
-                this.showRegisterGuestForm = false;
-            },
-            toggleRegisterGuestForm: function() {
-                // If shopware mode, redirect to shopware guest checkout
-                if(process.env.API_TYPE === 'sw') {
-                    this.$router.push({path: this.localePath('checkout-shopware-guest')});
-                    return;
-                }
-
-                this.showRegisterGuestForm = !this.showRegisterGuestForm;
-                this.showLoginForm = false;
-                this.showRegisterForm = false;
+        toggleRegisterGuestForm: function () {
+            // If shopware mode, redirect to shopware guest checkout
+            if (process.env.API_TYPE === 'sw') {
+                this.$router.push({ path: this.localePath('checkout-shopware-guest') });
+                return;
             }
+
+            this.showRegisterGuestForm = !this.showRegisterGuestForm;
+            this.showLoginForm = false;
+            this.showRegisterForm = false;
         },
+    },
 
-        head() {
-            return {
-                meta: [
-                    { hid: 'robots', name: 'robots', content: 'NOINDEX, FOLLOW' }
-                ]
-            }
-        }
-    }
+    head() {
+        return {
+            meta: [{ hid: 'robots', name: 'robots', content: 'NOINDEX, FOLLOW' }],
+        };
+    },
+};
 </script>

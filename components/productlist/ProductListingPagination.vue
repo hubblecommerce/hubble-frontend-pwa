@@ -1,13 +1,9 @@
-<template>
-    
-</template>
+<template />
 
 <script>
-    export default {
-        name: "ProductListingPagination"
-    }
+export default {
+    name: 'ProductListingPagination',
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

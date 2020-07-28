@@ -4,10 +4,11 @@
             <loader v-if="loading" />
 
             <div v-if="mappedCrossSellings.length > 0">
-                <div v-for="result in mappedCrossSellings"
-                     v-if="result.crossSelling.active"
-                     class="container product-recommendation-slider"
-                     :style="result.crossSelling.position != null ? `order: ${result.crossSelling.position};` : ''"
+                <div
+                    v-for="result in mappedCrossSellings"
+                    v-if="result.crossSelling.active"
+                    class="container product-recommendation-slider"
+                    :style="result.crossSelling.position != null ? `order: ${result.crossSelling.position};` : ''"
                 >
                     <div class="block-title">
                         <div class="slider-title headline-1 pt-4" v-text="result.crossSelling.name" />
@@ -25,62 +26,64 @@
 </template>
 
 <script>
-    import { mapActions } from 'vuex';
-    import ProductListing from "../productlist/ProductListing";
-    import Loader from "../utils/Loader";
+import { mapActions } from 'vuex';
+import ProductListing from '../productlist/ProductListing';
+import Loader from '../utils/Loader';
 
-    export default {
-        name: "ProductDetailCrossSellingSw",
+export default {
+    name: 'ProductDetailCrossSellingSw',
 
-        components: {
-            Loader,
-            ProductListing
+    components: {
+        Loader,
+        ProductListing,
+    },
+
+    props: {
+        productId: {
+            type: String,
+            required: true,
         },
 
-        data() {
-            return {
-                mappedCrossSellings: [],
-                loading: false
-            }
+        crossSellings: {
+            type: Array,
+            required: true,
         },
+    },
 
-        props: {
-            productId: {
-                type: String,
-                required: true
-            },
+    data() {
+        return {
+            mappedCrossSellings: [],
+            loading: false,
+        };
+    },
 
-            crossSellings: {
-                type: Array,
-                required: true
-            }
+    computed: {
+        activeSellings: function () {
+            return this.crossSellings.filter(crossSelling => crossSelling.active);
         },
+    },
 
-        computed: {
-            activeSellings: function() {
-                return this.crossSellings.filter(crossSelling => crossSelling.active);
-            }
-        },
+    mounted() {
+        if (this.activeSellings.length > 0) {
+            this.loading = true;
+            this.fetchCrossSellings(this.productId);
+        }
+    },
 
-        mounted() {
-            if(this.activeSellings.length > 0) {
-                this.loading = true;
-                this.fetchCrossSellings(this.productId);
-            }
-        },
-
-        methods: {
-            ...mapActions({
-                swGetCrossSellingsByProductId: 'modApiCategory/swGetCrossSellingsByProductId'
-            }),
-            fetchCrossSellings: function(id) {
-                this.swGetCrossSellingsByProductId(id).then((response) => {
+    methods: {
+        ...mapActions({
+            swGetCrossSellingsByProductId: 'modApiCategory/swGetCrossSellingsByProductId',
+        }),
+        fetchCrossSellings: function (id) {
+            this.swGetCrossSellingsByProductId(id)
+                .then(response => {
                     this.loading = false;
                     this.mappedCrossSellings = response;
-                }).catch(() => {
+                })
+                .catch(() => {
                     this.loading = false;
                 });
-            },
-        }
-    }
+        },
+    },
+};
 </script>

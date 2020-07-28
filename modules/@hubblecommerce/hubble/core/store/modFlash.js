@@ -8,14 +8,14 @@ export default function (ctx) {
             flashMessage: '',
             flashType: 'info',
             keepOnRouteChange: false,
-            listOfFlashMessages: []
+            listOfFlashMessages: [],
         }),
 
         mutations: {
-            showFlash: (state) => {
+            showFlash: state => {
                 state.flashVisible = true;
             },
-            hideFlash: (state) => {
+            hideFlash: state => {
                 state.flashVisible = false;
             },
             setKeepOnRouteChange: (state, val) => {
@@ -31,22 +31,22 @@ export default function (ctx) {
                 // max 3 messages can be displayed at a time, older ones get pushed out: FIFO
                 if (state.listOfFlashMessages.length > 2) {
                     // step 1: delete first message in array which corresponds to the oldest message
-                    state.listOfFlashMessages.splice(0, 1)
+                    state.listOfFlashMessages.splice(0, 1);
 
                     // step 2: add new message at the end of the array
-                    state.listOfFlashMessages.push(messageObject)
+                    state.listOfFlashMessages.push(messageObject);
                 } else {
-                    state.listOfFlashMessages.push(messageObject)
+                    state.listOfFlashMessages.push(messageObject);
                 }
             },
             deleteMessageFromListOfFlashMessages: (state, id) => {
-                state.listOfFlashMessages = state.listOfFlashMessages.filter(message => message.id !== id)
+                state.listOfFlashMessages = state.listOfFlashMessages.filter(message => message.id !== id);
             },
         },
 
         actions: {
             flashMessage({ commit, state }, payload) {
-                return new Promise((resolve) => {
+                return new Promise(resolve => {
                     commit('showFlash');
 
                     let newMessageID = 0;
@@ -63,7 +63,7 @@ export default function (ctx) {
                             flashType: payload.flashType,
                             keepOnRouteChange: !!payload.keepOnRouteChange,
                             id: newMessageID,
-                            timeoutTime: 5000
+                            timeoutTime: 5000,
                         });
                     } else {
                         commit('addFlashMessageToList', {
@@ -71,37 +71,35 @@ export default function (ctx) {
                             flashType: payload.flashType,
                             keepOnRouteChange: !!payload.keepOnRouteChange,
                             id: newMessageID,
-                            timeoutTime: 5000
+                            timeoutTime: 5000,
                         });
                     }
 
                     resolve('Message flashed');
-                })
+                });
             },
             resetMessage({ commit }) {
-                return new Promise((resolve) => {
+                return new Promise(resolve => {
                     commit('hideFlash');
-
 
                     commit('setFlashMessage', '');
                     commit('setFlashType', 'info');
                     resolve('Message resetted');
-                })
+                });
             },
             deleteMessage({ commit }, idOfElementToDelete) {
-                return new Promise((resolve) => {
-                    commit('deleteMessageFromListOfFlashMessages', idOfElementToDelete)
-
+                return new Promise(resolve => {
+                    commit('deleteMessageFromListOfFlashMessages', idOfElementToDelete);
 
                     commit('setFlashMessage', '');
                     commit('setFlashType', 'info');
                     resolve('Message deleted');
-                })
+                });
             },
             resetKeepOnRouteChange({ commit }) {
                 commit('setKeepOnRouteChange', false);
-            }
-        }
+            },
+        },
     };
 
     ctx.store.registerModule('modFlash', modFlash);

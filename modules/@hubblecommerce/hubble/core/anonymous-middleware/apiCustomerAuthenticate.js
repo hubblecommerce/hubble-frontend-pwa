@@ -1,4 +1,4 @@
-import { datetimeUnixNow } from '@hubblecommerce/hubble/core/utils/datetime'
+import { datetimeUnixNow } from '@hubblecommerce/hubble/core/utils/datetime';
 import _ from 'lodash';
 
 export default function ({ isHMR, store, redirect, app, route }) {
@@ -10,10 +10,10 @@ export default function ({ isHMR, store, redirect, app, route }) {
     let customerAuth = null;
 
     // Get cookie serverside/clientside to check if user is logged in
-    if(process.server) {
+    if (process.server) {
         let cookie = app.$cookies.get(store.state.modApiCustomer.cookieName);
 
-        if(cookie){
+        if (cookie) {
             customerAuth = cookie.customerAuth;
         }
     } else {
@@ -21,18 +21,18 @@ export default function ({ isHMR, store, redirect, app, route }) {
     }
 
     // If cookie exists, check expiration date
-    if(! _.isEmpty(customerAuth)) {
+    if (!_.isEmpty(customerAuth)) {
         let expires_at = new Date(customerAuth.expires_at).getTime() / 1000;
 
         // check expiry of cachable object
-        if(expires_at >= datetimeUnixNow()) {
+        if (expires_at >= datetimeUnixNow()) {
             return;
         }
     }
 
     // Checks where to redirect depending on which route someone is trying to access
-    if(_.includes(route.path, '/checkout')){
+    if (_.includes(route.path, '/checkout')) {
         return redirect('/checkout/login');
     }
     return redirect('/customer/login');
-};
+}

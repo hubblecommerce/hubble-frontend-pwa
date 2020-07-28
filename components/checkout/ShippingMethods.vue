@@ -2,8 +2,8 @@
     <div v-if="!loading && !apiError" class="shipping-methods-wrp">
         <div class="headline headline-3" v-text="$t('Shipping methods')" />
 
-        <div v-for="method in shippingMethods" :key="method.key" v-if="method.active" class="method-wrp hbl-checkbox">
-            <input :id="'shipping-option-' + method.id" v-model="chosenMethod" type="radio" :value="method.id">
+        <div v-for="method in shippingMethods" v-if="method.active" :key="method.key" class="method-wrp hbl-checkbox">
+            <input :id="'shipping-option-' + method.id" v-model="chosenMethod" type="radio" :value="method.id" />
 
             <label :for="'shipping-option-' + method.id" class="method-label">
                 <span class="name" v-text="method.name" />
@@ -29,112 +29,111 @@
 </template>
 
 <script>
-    import { mapState, mapGetters, mapActions, mapMutations } from 'vuex';
-    import _ from 'lodash';
+import { mapState, mapGetters, mapActions, mapMutations } from 'vuex';
+import _ from 'lodash';
 
-    export default {
-        name: "ShippingMethods",
+export default {
+    name: 'ShippingMethods',
 
-        data() {
-            return {
-                loading: false,
-                apiError: false,
-                chosenMethod: '',
-                chosenMethodObj: {}
-            }
-        },
+    data() {
+        return {
+            loading: false,
+            apiError: false,
+            chosenMethod: '',
+            chosenMethodObj: {},
+        };
+    },
 
-        computed: {
-            ...mapState({
-                shippingMethods: state => state.modApiPayment.shippingMethods,
-                chosenShippingMethod: state => state.modApiPayment.order.chosenShippingMethod,
-                shippingError: state => state.modApiPayment.shippingError,
-                shippingAddress: state => state.modApiCustomer.customer.shippingAddress,
-                countries: state => state.modApiCustomer.availableCountries,
-                customerAddresses: state => state.modApiCustomer.customer.customerAddresses
-            }),
-            ...mapGetters({
-                getChosenShippingMethod: 'modApiPayment/getChosenShippingMethod'
-            }),
-        },
+    computed: {
+        ...mapState({
+            shippingMethods: state => state.modApiPayment.shippingMethods,
+            chosenShippingMethod: state => state.modApiPayment.order.chosenShippingMethod,
+            shippingError: state => state.modApiPayment.shippingError,
+            shippingAddress: state => state.modApiCustomer.customer.shippingAddress,
+            countries: state => state.modApiCustomer.availableCountries,
+            customerAddresses: state => state.modApiCustomer.customer.customerAddresses,
+        }),
+        ...mapGetters({
+            getChosenShippingMethod: 'modApiPayment/getChosenShippingMethod',
+        }),
+    },
 
-        watch: {
-            chosenMethod: function(newValue) {
-                // Start Checkout loader
-                this.setProcessingCheckout();
+    watch: {
+        chosenMethod: function (newValue) {
+            // Start Checkout loader
+            this.setProcessingCheckout();
 
-                this.setMethodById(newValue);
+            this.setMethodById(newValue);
 
-                this.storeChosenShippingMethod(this.chosenMethodObj)
-                    .then(() => {
-                        this.recalculateCart()
-                            .then(() => {
-                                this.resetProcessingCheckout();
-                            });
-                    })
-                    .catch((err) => {
-                        this.flashMessage({
-                            flashType: 'error',
-                            flashMessage: err === 'No network connection' ? this.$t(err) : this.$t('An error occurred')
-                        });
+            this.storeChosenShippingMethod(this.chosenMethodObj)
+                .then(() => {
+                    this.recalculateCart().then(() => {
+                        this.resetProcessingCheckout();
                     });
-            },
-        },
-
-        mounted() {
-            this.loading = true;
-            if(_.isEmpty(this.shippingMethods)) {
-                this.getShippingMethods()
-                    .then(() => {
-                        this.setChosenShippingMethod();
-                        this.loading = false;
-                    })
-                    .catch(() => {
-                        this.apiError = true;
-                        this.loading = false;
-                    });
-            } else {
-                this.loading = false;
-            }
-        },
-
-        methods: {
-            ...mapActions({
-                storeChosenShippingMethod: 'modApiPayment/storeChosenShippingMethod',
-                recalculateCart: 'modCart/recalculateCart',
-                getShippingMethodsFromAPI: 'modApiPayment/getShippingMethods',
-                flashMessage: 'modFlash/flashMessage'
-            }),
-            ...mapMutations({
-                setProcessingCheckout: 'modApiPayment/setProcessingCheckout',
-                resetProcessingCheckout: 'modApiPayment/resetProcessingCheckout'
-            }),
-            getShippingMethods: function() {
-                // Fetch methods from api, to make them accessible in vuex store
-                return new Promise((resolve, reject) => {
-                    this.getShippingMethodsFromAPI()
-                        .then(() => {
-                            resolve();
-                        })
-                        .catch((error) => {
-                            console.log("getShippingMethods error: ", error);
-
-                            reject(error);
-                        });
                 })
-            },
-            setChosenShippingMethod: function() {
-                if(!_.isEmpty(this.getChosenShippingMethod)) {
-                    this.chosenMethod = this.getChosenShippingMethod.id;
-                }
-            },
-            setMethodById: function(key) {
-                _.forEach(this.shippingMethods, (val) => {
-                    if(val.id === key ){
-                        this.chosenMethodObj = val;
-                    }
+                .catch(err => {
+                    this.flashMessage({
+                        flashType: 'error',
+                        flashMessage: err === 'No network connection' ? this.$t(err) : this.$t('An error occurred'),
+                    });
                 });
-            }
+        },
+    },
+
+    mounted() {
+        this.loading = true;
+        if (_.isEmpty(this.shippingMethods)) {
+            this.getShippingMethods()
+                .then(() => {
+                    this.setChosenShippingMethod();
+                    this.loading = false;
+                })
+                .catch(() => {
+                    this.apiError = true;
+                    this.loading = false;
+                });
+        } else {
+            this.loading = false;
         }
-    }
+    },
+
+    methods: {
+        ...mapActions({
+            storeChosenShippingMethod: 'modApiPayment/storeChosenShippingMethod',
+            recalculateCart: 'modCart/recalculateCart',
+            getShippingMethodsFromAPI: 'modApiPayment/getShippingMethods',
+            flashMessage: 'modFlash/flashMessage',
+        }),
+        ...mapMutations({
+            setProcessingCheckout: 'modApiPayment/setProcessingCheckout',
+            resetProcessingCheckout: 'modApiPayment/resetProcessingCheckout',
+        }),
+        getShippingMethods: function () {
+            // Fetch methods from api, to make them accessible in vuex store
+            return new Promise((resolve, reject) => {
+                this.getShippingMethodsFromAPI()
+                    .then(() => {
+                        resolve();
+                    })
+                    .catch(error => {
+                        console.log('getShippingMethods error: ', error);
+
+                        reject(error);
+                    });
+            });
+        },
+        setChosenShippingMethod: function () {
+            if (!_.isEmpty(this.getChosenShippingMethod)) {
+                this.chosenMethod = this.getChosenShippingMethod.id;
+            }
+        },
+        setMethodById: function (key) {
+            _.forEach(this.shippingMethods, val => {
+                if (val.id === key) {
+                    this.chosenMethodObj = val;
+                }
+            });
+        },
+    },
+};
 </script>

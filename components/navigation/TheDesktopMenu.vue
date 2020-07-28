@@ -2,48 +2,48 @@
     <div class="menu-cpt-wrapper">
         <div class="menu-wrapper-desktop">
             <div class="tree-wrp">
-                <desktop-categories :data-item="rootItem" :depth="0"></desktop-categories>
+                <desktop-categories :data-item="rootItem" :depth="0" />
             </div>
         </div>
     </div>
 </template>
 
 <script>
-    import DesktopCategories from "./navigation/DesktopCategories";
+import DesktopCategories from './navigation/DesktopCategories';
 
-    export default {
-        name: "TheDesktopMenu",
+export default {
+    name: 'TheDesktopMenu',
 
-        components: {
-            DesktopCategories
+    components: {
+        DesktopCategories,
+    },
+
+    props: {
+        dataItems: {
+            type: Array,
+            required: true,
         },
+    },
 
-        props: {
-            dataItems: {
-                type: Array,
-                required: true
-            }
-        },
+    data() {
+        return {
+            showMenu: false,
+        };
+    },
 
-        data() {
+    computed: {
+        rootItem: function () {
             return {
-                showMenu: false,
-            }
+                name: 'root',
+                children: this.dataItems,
+            };
         },
+    },
 
-        computed: {
-            rootItem: function() {
-                return {
-                    name: 'root',
-                    children: this.dataItems
-                }
-            }
+    methods: {
+        toggle: function () {
+            this.showMenu = !this.showMenu;
         },
-
-        methods: {
-            toggle: function() {
-                this.showMenu = !this.showMenu
-            }
-        }
-    }
+    },
+};
 </script>

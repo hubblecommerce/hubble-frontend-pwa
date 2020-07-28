@@ -10,17 +10,17 @@ export default function ({ isHMR, store, redirect, app }) {
     let order = app.$cookies.get(store.state.modApiPayment.cookieNameOrder);
 
     // If cookie exists
-    if(_.isEmpty(order)) {
+    if (_.isEmpty(order)) {
         return;
     }
 
     // Order cookie isset
-    if(!_.isEmpty(order)) {
+    if (!_.isEmpty(order)) {
         // Payment or shipping is empty
-        if(order.chosenPaymentMethod.id == null || order.chosenShippingMethod.id == null) {
+        if (order.chosenPaymentMethod.id == null || order.chosenShippingMethod.id == null) {
             return redirect('/checkout/payment');
         }
     }
 
     return redirect('/checkout/summary');
-};
+}

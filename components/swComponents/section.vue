@@ -2,19 +2,11 @@
     <div :class="[sectionType, sectionPadding, background]" class="container cms-section" :style="getBackgroundStyles">
         <div :class="[sectionClasses, sectionType, mobileSidebarBehavior, sizingMode]">
             <div v-if="hasSidebar" class="cms-section-sidebar-sidebar-content col-lg-4 col-xl-3">
-                <Block
-                    v-for="sidebarSlot in sidebarSlots"
-                    :key="sidebarSlot.id"
-                    :content="sidebarSlot"
-                />
+                <Block v-for="sidebarSlot in sidebarSlots" :key="sidebarSlot.id" :content="sidebarSlot" />
             </div>
 
             <div class="" :class="elementClasses">
-                <Block
-                    v-for="cmsSlot in elementsSlots"
-                    :key="cmsSlot.id"
-                    :content="cmsSlot"
-                />
+                <Block v-for="cmsSlot in elementsSlots" :key="cmsSlot.id" :content="cmsSlot" />
             </div>
         </div>
     </div>
@@ -28,14 +20,14 @@ export default {
     name: 'Section',
 
     components: {
-        Block
+        Block,
     },
 
     props: {
         content: {
             type: Object,
-            default: () => ({})
-        }
+            default: () => ({}),
+        },
     },
 
     computed: {
@@ -60,10 +52,7 @@ export default {
         sidebarSlots() {
             let sidebarSlots = [];
             _.forEach(this.cmsSlots, slot => {
-                if (
-                    slot.sectionPosition &&
-                    slot.sectionPosition === 'sidebar'
-                ) {
+                if (slot.sectionPosition && slot.sectionPosition === 'sidebar') {
                     sidebarSlots.push(slot);
                 }
             });
@@ -72,73 +61,73 @@ export default {
         hasSidebar() {
             return this.content && this.content.type === 'sidebar';
         },
-        getSizingMode () {
+        getSizingMode() {
             return this.content.sizingMode;
         },
-        getMobileBehavior () {
+        getMobileBehavior() {
             return this.content.mobileBehavior;
         },
-        getBackgroundMediaUrl () {
+        getBackgroundMediaUrl() {
             if (_.isEmpty(this.content.backgroundMedia)) return null;
             return this.content.backgroundMedia.url;
         },
-        getBackgroundMedia () {
+        getBackgroundMedia() {
             return this.content.backgroundMedia;
         },
-        getBackgroundMediaMode () {
+        getBackgroundMediaMode() {
             return this.content.backgroundMediaMode;
         },
-        getBackgroundColor () {
+        getBackgroundColor() {
             if (!this.content.backgroundColor) return null;
             return this.content.backgroundColor;
         },
         backgroundImageExists() {
             const { backgroundMedia } = this.content;
 
-            return backgroundMedia ? 'bg-image' : ''
+            return backgroundMedia ? 'bg-image' : '';
         },
-        getBackgroundStyles () {
+        getBackgroundStyles() {
             return {
                 backgroundColor: this.getBackgroundColor ? this.getBackgroundColor : null,
-                backgroundImage: this.getBackgroundMediaUrl  ? `url(${this.getBackgroundMediaUrl})` : null,
-                backgroundSize: this.getBackgroundMediaMode ? this.getBackgroundMediaMode : null
-            }
+                backgroundImage: this.getBackgroundMediaUrl ? `url(${this.getBackgroundMediaUrl})` : null,
+                backgroundSize: this.getBackgroundMediaMode ? this.getBackgroundMediaMode : null,
+            };
         },
-        mobileSidebarBehavior () {
+        mobileSidebarBehavior() {
             return {
                 'cms-section-sidebar-mobile-hidden': this.getMobileBehavior === 'hidden',
-                'cms-section-sidebar-mobile-wrap': this.getMobileBehavior === 'wrap'
-            }
+                'cms-section-sidebar-mobile-wrap': this.getMobileBehavior === 'wrap',
+            };
         },
-        sizingMode () {
+        sizingMode() {
             return {
-                'boxed': this.getSizingMode === 'boxed',
-                'full-width': this.getSizingMode === 'full_width'
-            }
+                boxed: this.getSizingMode === 'boxed',
+                'full-width': this.getSizingMode === 'full_width',
+            };
         },
-        sectionType () {
+        sectionType() {
             return {
                 'cms-section-sidebar': this.hasSidebar,
                 'cms-section-default': !this.hasSidebar,
-            }
+            };
         },
-        sectionPadding () {
+        sectionPadding() {
             return {
-                'cms-section__padding': true
-            }
+                'cms-section__padding': true,
+            };
         },
-        background () {
-          return {
-              'bg-image': this.getBackgroundMediaUrl  !== null,
-              'bg-color': this.getBackgroundColor !== null
-          }
+        background() {
+            return {
+                'bg-image': this.getBackgroundMediaUrl !== null,
+                'bg-color': this.getBackgroundColor !== null,
+            };
         },
         sectionClasses() {
             return {
                 'sw-blocks': this.isBlock,
                 'sw-slots': !this.isBlock,
 
-                'row': this.hasSidebar,
+                row: this.hasSidebar,
             };
         },
 
@@ -149,24 +138,24 @@ export default {
                 'col-xl-9': this.hasSidebar,
                 'cms-section-sidebar-main-content': this.hasSidebar,
 
-                'cms-section-default': !this.hasSidebar
+                'cms-section-default': !this.hasSidebar,
             };
-        }
-    }
+        },
+    },
 };
 </script>
 
 <style lang="scss">
-    .cms-section__padding {
-        padding-bottom: 50px;
-        padding-top: 50px;
-    }
+.cms-section__padding {
+    padding-bottom: 50px;
+    padding-top: 50px;
+}
 
-    @media(max-width: 768px) {
-        .cms-section-sidebar-mobile-hidden {
-            .cms-section-sidebar-sidebar-content {
-                display: none;
-            }
+@media (max-width: 768px) {
+    .cms-section-sidebar-mobile-hidden {
+        .cms-section-sidebar-sidebar-content {
+            display: none;
         }
     }
+}
 </style>

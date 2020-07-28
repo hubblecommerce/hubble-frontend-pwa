@@ -26,28 +26,31 @@
 </template>
 
 <script>
-    import {mapState} from 'vuex';
-    export default {
-        name: "PayoneChannel",
-        data() {
-            return {
-                loaded: false,
-                scriptError: false
-            }
-        },
-        computed: {
-            ...mapState({
-                chosenPaymentMethod: state => state.modApiPayment.order.chosenPaymentMethod
-            })
-        },
-        mounted() {
-            // Get namespace from module to call global function correctly
-            let moduleNamespace = '$'+this._hubblePayoneOptions.namespace;
-            this[moduleNamespace].loadPayoneScript().then(() => {
+import { mapState } from 'vuex';
+export default {
+    name: 'PayoneChannel',
+    data() {
+        return {
+            loaded: false,
+            scriptError: false,
+        };
+    },
+    computed: {
+        ...mapState({
+            chosenPaymentMethod: state => state.modApiPayment.order.chosenPaymentMethod,
+        }),
+    },
+    mounted() {
+        // Get namespace from module to call global function correctly
+        let moduleNamespace = '$' + this._hubblePayoneOptions.namespace;
+        this[moduleNamespace]
+            .loadPayoneScript()
+            .then(() => {
                 this.loaded = true;
-            }).catch((error) => {
+            })
+            .catch(error => {
                 this.scriptError = error;
             });
-        }
-    }
+    },
+};
 </script>

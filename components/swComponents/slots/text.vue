@@ -11,40 +11,36 @@
 </template>
 
 <script>
-    import { slotMixins } from '../helper'
+import { slotMixins } from '../helper';
 
-    export default {
-        name: 'TextSlot',
-        mixins: [slotMixins],
-        props: {
-            content: {
-                type: Object,
-                default: () => ({})
-            }
+export default {
+    name: 'TextSlot',
+    mixins: [slotMixins],
+    props: {
+        content: {
+            type: Object,
+            default: () => ({}),
         },
-        computed: {
-            rawHtml() {
-                return (
-                    this.content &&
-                    this.content.data &&
-                    this.content.data.content
-                );
-            },
-            verticalAlign() {
-                if(this.content.config && this.content.config.verticalAlign) {
-                    if(this.content.config.verticalAlign.value === "center") {
-                        return 'align-self-center'
-                    }
-                    if(this.content.config.verticalAlign.value === "flex-end") {
-                        return 'align-self-end'
-                    }
-                    if(this.content.config.verticalAlign.value === "flex-start") {
-                        return 'align-self-start'
-                    }
+    },
+    computed: {
+        rawHtml() {
+            return this.content && this.content.data && this.content.data.content;
+        },
+        verticalAlign() {
+            if (this.content.config && this.content.config.verticalAlign) {
+                if (this.content.config.verticalAlign.value === 'center') {
+                    return 'align-self-center';
                 }
-
-                return '';
+                if (this.content.config.verticalAlign.value === 'flex-end') {
+                    return 'align-self-end';
+                }
+                if (this.content.config.verticalAlign.value === 'flex-start') {
+                    return 'align-self-start';
+                }
             }
-        }
-    }
+
+            return '';
+        },
+    },
+};
 </script>

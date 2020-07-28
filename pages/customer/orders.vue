@@ -18,34 +18,25 @@
 </template>
 
 <script>
-    import CustomerAccountNavigation from "../../components/customer/CustomerAccountNavigation";
-    import CustomerOrderList from "../../components/customer/CustomerOrderList";
-    import apiCustomerAuthenticate from '@hubblecommerce/hubble/core/anonymous-middleware/apiCustomerAuthenticate'
-    import apiPaymentAuthenticate from '@hubblecommerce/hubble/core/anonymous-middleware/apiPaymentAuthenticate'
+import CustomerAccountNavigation from '../../components/customer/CustomerAccountNavigation';
+import CustomerOrderList from '../../components/customer/CustomerOrderList';
+import apiCustomerAuthenticate from '@hubblecommerce/hubble/core/anonymous-middleware/apiCustomerAuthenticate';
+import apiPaymentAuthenticate from '@hubblecommerce/hubble/core/anonymous-middleware/apiPaymentAuthenticate';
 
-    export default {
-        name: 'CustomerDashboard',
+export default {
+    name: 'CustomerDashboard',
 
-        components: {CustomerOrderList, CustomerAccountNavigation},
+    components: { CustomerOrderList, CustomerAccountNavigation },
 
-        layout: 'hubble',
+    layout: 'hubble',
 
-        middleware: [
-            'apiAuthenticate',
-            apiPaymentAuthenticate,
-            apiCustomerAuthenticate,
-            'apiLocalization',
-            'apiResourceMenu',
-            'trackClickPath'
-        ],
+    middleware: ['apiAuthenticate', apiPaymentAuthenticate, apiCustomerAuthenticate, 'apiLocalization', 'apiResourceMenu', 'trackClickPath'],
 
-        head() {
-            return {
-                title: this.$t('Customer Account Dashboard'),
-                meta: [
-                    { hid: 'robots', name: 'robots', content: 'NOINDEX, FOLLOW' }
-                ]
-            }
-        }
-    }
+    head() {
+        return {
+            title: this.$t('Customer Account Dashboard'),
+            meta: [{ hid: 'robots', name: 'robots', content: 'NOINDEX, FOLLOW' }],
+        };
+    },
+};
 </script>

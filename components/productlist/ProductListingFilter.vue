@@ -31,7 +31,13 @@
                         </div>
 
                         <div class="facet-wrp">
-                            <collapsible :display-via-if="true" :toggle-text="$t('Price')" :max-height="100" open-icon-class="icon-chevron-down" close-icon-class="icon-chevron-up">
+                            <collapsible
+                                :display-via-if="true"
+                                :toggle-text="$t('Price')"
+                                :max-height="100"
+                                open-icon-class="icon-chevron-down"
+                                close-icon-class="icon-chevron-up"
+                            >
                                 <price-slider
                                     :data-min-value="minPriceSelectable"
                                     :data-max-value="maxPriceSelectable"
@@ -72,7 +78,7 @@
 
             <div class="facet-wrp">
                 <collapsible-filter
-                    :class="{active: hasPriceFacetsSelected}"
+                    :class="{ active: hasPriceFacetsSelected }"
                     :toggle-text="$t('Price')"
                     :max-height="200"
                     open-icon-class="icon-chevron-down"
@@ -92,225 +98,222 @@
 </template>
 
 <script>
-    import {mapActions, mapGetters, mapMutations, mapState} from 'vuex';
+import { mapActions, mapGetters, mapMutations, mapState } from 'vuex';
 
-    import SelectableFacet from './toolbar/SelectableFacet.vue';
-    import PriceSlider from "./toolbar/PriceSlider";
-    import _ from 'lodash';
+import SelectableFacet from './toolbar/SelectableFacet.vue';
+import PriceSlider from './toolbar/PriceSlider';
+import _ from 'lodash';
 
-    export default {
-        name: 'ProductListingFilter',
+export default {
+    name: 'ProductListingFilter',
 
-        components: {
-            PriceSlider,
-            CollapsibleFilter: () => import('./toolbar/CollapsibleFilter'),
-            Collapsible: () => import('../utils/Collapsible'),
-            SelectableFacet,
-        },
+    components: {
+        PriceSlider,
+        CollapsibleFilter: () => import('./toolbar/CollapsibleFilter'),
+        Collapsible: () => import('../utils/Collapsible'),
+        SelectableFacet,
+    },
 
-        data() {
-            return {
-                name: 'ProductListingFilter',
-                showFilter: false,
-                filterRoute: {},
+    data() {
+        return {
+            name: 'ProductListingFilter',
+            showFilter: false,
+            filterRoute: {},
 
-                queryWellKnown: ['term', 'sort', 'limit'],
+            queryWellKnown: ['term', 'sort', 'limit'],
+        };
+    },
+
+    computed: {
+        ...mapState({
+            dataMenu: state => state.modApiMenu.dataMenu,
+            dataCategory: state => state.modApiCategory.dataCategory,
+            dataCategoryProducts: state => state.modApiCategory.dataCategoryProducts,
+            parsedQuery: state => state.modApiRequests.parsedQuery,
+            selectedFacets: state => state.modApiRequests.selectedFacets,
+            offcanvas: state => state.modNavigation.offcanvas,
+            priceCurrencySymbol: state => state.modPrices.priceCurrencySymbol,
+        }),
+        ...mapGetters({
+            requestNumberFacets: 'modApiRequests/getRequestNumberFacets',
+            requestStringFacets: 'modApiRequests/getRequestStringFacets',
+            requestFacets: 'modApiRequests/getRequestFacets',
+            requestPriceFacets: 'modApiRequests/getRequestPriceFacets',
+            requestCategoryFacets: 'modApiRequests/getRequestCategoryFacets',
+            getApiLocale: 'modApiResources/getApiLocale',
+        }),
+        categoryProductItems() {
+            if (_.isEmpty(this.dataCategoryProducts)) {
+                return this.dataCategoryProducts;
             }
+
+            return this.dataCategoryProducts.result.items;
         },
+        hasFacetsSelected() {
+            return (
+                this.hasNumberFacetsSelected ||
+                this.hasStringFacetsSelected ||
+                this.hasPriceFacetsSelected ||
+                (this.hasCategoryFacetsSelected && this.isSearchPage())
+            );
+        },
+        hasNumberFacetsSelected() {
+            let selected = false;
 
-        computed: {
-            ...mapState({
-                dataMenu: state => state.modApiMenu.dataMenu,
-                dataCategory: state => state.modApiCategory.dataCategory,
-                dataCategoryProducts: state => state.modApiCategory.dataCategoryProducts,
-                parsedQuery: state => state.modApiRequests.parsedQuery,
-                selectedFacets: state => state.modApiRequests.selectedFacets,
-                offcanvas: state => state.modNavigation.offcanvas,
-                priceCurrencySymbol: state => state.modPrices.priceCurrencySymbol
-            }),
-            ...mapGetters({
-                requestNumberFacets: 'modApiRequests/getRequestNumberFacets',
-                requestStringFacets: 'modApiRequests/getRequestStringFacets',
-                requestFacets: 'modApiRequests/getRequestFacets',
-                requestPriceFacets: 'modApiRequests/getRequestPriceFacets',
-                requestCategoryFacets: 'modApiRequests/getRequestCategoryFacets',
-                getApiLocale: 'modApiResources/getApiLocale'
-            }),
-            categoryProductItems() {
-                if (_.isEmpty(this.dataCategoryProducts)) {
-                    return this.dataCategoryProducts;
+            _.forEach(this.requestNumberFacets, facet => {
+                if (facet.selected) {
+                    selected = true;
                 }
+            });
 
-                return this.dataCategoryProducts.result.items;
-            },
-            hasFacetsSelected() {
-                return this.hasNumberFacetsSelected || this.hasStringFacetsSelected || this.hasPriceFacetsSelected || (this.hasCategoryFacetsSelected && this.isSearchPage());
-            },
-            hasNumberFacetsSelected() {
-                let selected = false
+            return selected;
+        },
+        hasStringFacetsSelected() {
+            let selected = false;
 
-                _.forEach(this.requestNumberFacets, facet => {
-                    if (facet.selected) {
-                        selected = true
-                    }
-                });
-
-                return selected
-            },
-            hasStringFacetsSelected() {
-                let selected = false
-
-                _.forEach(this.requestStringFacets, facet => {
-                    if (facet.selected) {
-                        selected = true
-                    }
-                });
-
-                return selected
-            },
-            hasPriceFacetsSelected() {
-
-                let selected = false
-
-
-                _.forEach(this.requestPriceFacets, facet => {
-                    if (facet.selected) {
-                        selected = true
-                    }
-                });
-
-                return selected
-            },
-            hasCategoryFacetsSelected() {
-                let selected = false
-
-
-                _.forEach(this.requestCategoryFacets, facet => {
-                    if (facet.selected) {
-                        selected = true
-                    }
-                });
-
-                return selected
-            },
-            maxPriceFacets() {
-                if (_.isEmpty(this.requestPriceFacets)) {
-                    return 1
+            _.forEach(this.requestStringFacets, facet => {
+                if (facet.selected) {
+                    selected = true;
                 }
+            });
 
-                let facet = _.head(_.filter(this.requestPriceFacets, (item) => item.key === 'price'));
+            return selected;
+        },
+        hasPriceFacetsSelected() {
+            let selected = false;
 
-                return !_.isEmpty(facet) ? parseInt(facet['facet-stats'].max) + 1 : 0
-            },
-            minPriceFacets() {
-                if (_.isEmpty(this.requestPriceFacets)) {
-                    return 0
+            _.forEach(this.requestPriceFacets, facet => {
+                if (facet.selected) {
+                    selected = true;
                 }
+            });
 
-                let facet = _.head(_.filter(this.requestPriceFacets, (item) => item.key === 'price'));
+            return selected;
+        },
+        hasCategoryFacetsSelected() {
+            let selected = false;
 
-                return !_.isEmpty(facet) ? parseInt(facet['facet-stats'].min) : 0
-            },
-            maxPriceSelected() {
-                return _.isNumber(this.parsedQuery['priceMax'])
-                    ? this.parsedQuery['priceMax']
-                    : this.maxPriceFacets
-            },
-            minPriceSelected() {
-                return _.isNumber(this.parsedQuery['priceMin'])
-                    ? this.parsedQuery['priceMin']
-                    : this.minPriceFacets
-            },
-            maxPriceSelectable() {
-                return this.maxPriceFacets > this.maxPriceSelected
-                    ? this.maxPriceFacets
-                    : this.maxPriceSelected
-            },
-            minPriceSelectable() {
-                return this.minPriceFacets < this.minPriceSelected
-                    ? this.minPriceFacets
-                    : this.minPriceSelected
-            },
-            showFilters: function() {
-                return this.offcanvas.component === this.name;
-            },
-            totalItems: function() {
-                if(this.dataCategoryProducts.result.stats != null) {
-                    return this.dataCategoryProducts.result.stats.total;
+            _.forEach(this.requestCategoryFacets, facet => {
+                if (facet.selected) {
+                    selected = true;
                 }
+            });
 
+            return selected;
+        },
+        maxPriceFacets() {
+            if (_.isEmpty(this.requestPriceFacets)) {
+                return 1;
+            }
+
+            let facet = _.head(_.filter(this.requestPriceFacets, item => item.key === 'price'));
+
+            return !_.isEmpty(facet) ? parseInt(facet['facet-stats'].max) + 1 : 0;
+        },
+        minPriceFacets() {
+            if (_.isEmpty(this.requestPriceFacets)) {
                 return 0;
             }
+
+            let facet = _.head(_.filter(this.requestPriceFacets, item => item.key === 'price'));
+
+            return !_.isEmpty(facet) ? parseInt(facet['facet-stats'].min) : 0;
         },
-
-        methods: {
-            ...mapMutations({
-                setPaginationPage: 'modApiRequests/setPaginationPage',
-                setSelectedFacetsParam: 'modApiRequests/setSelectedFacetsParam',
-                resetSelectedFacetsParam: 'modApiRequests/resetSelectedFacetsParam',
-            }),
-            ...mapActions({
-                toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction',
-                hideOffcanvasAction: 'modNavigation/hideOffcanvasAction',
-                applyFilter: 'modApiRequests/applyFilter',
-            }),
-            resetPagination: function() {
-                this.setPaginationPage(1);
-            },
-            getSelectedFacetOptionsLabel(facet) {
-                let selectedIds = facet.options.filter(item => item.selected);
-
-                let selectedLabels = _.join(selectedIds.map(item => item.label), ', ');
-
-                return selectedLabels;
-            },
-            routeOnPropertyRemoveAll: function() {
-                // always reset to 1st page
-                this.resetPagination();
-
-                // null property from nested storage object (facet)
-                this.resetSelectedFacetsParam();
-
-                // If current route is a search, keep the search term and remove rest of filter
-                let route;
-                if (this.$route.query.term) {
-                    route = {
-                        path: this.$route.path,
-                        query: {
-                            term: this.$route.query.term
-                        }
-                    };
-                } else {
-                    route = {
-                        path: this.$route.path,
-                        query: _.pick(this.$route.query, this.queryWellKnown)
-                    };
-                }
-
-                this.hideFilters().then(response => {
-                    this.$router.push(route)
-                })
-            },
-            toggle: function() {
-                this.showFilter = !this.showFilter;
-                this.toggleOffcanvasAction({
-                    component: this.name,
-                    direction: 'rightLeft'
-                });
-            },
-            hideFilters: function() {
-                this.hideOffcanvasAction();
-
-                return new Promise((resolve, reject) => {
-                    //this.showFilter = false;
-                    resolve()
-                })
-            },
-            isSearchPage: function() {
-                if(this.$router.history.current.path.includes('search')) {
-                    return true;
-                }
+        maxPriceSelected() {
+            return _.isNumber(this.parsedQuery['priceMax']) ? this.parsedQuery['priceMax'] : this.maxPriceFacets;
+        },
+        minPriceSelected() {
+            return _.isNumber(this.parsedQuery['priceMin']) ? this.parsedQuery['priceMin'] : this.minPriceFacets;
+        },
+        maxPriceSelectable() {
+            return this.maxPriceFacets > this.maxPriceSelected ? this.maxPriceFacets : this.maxPriceSelected;
+        },
+        minPriceSelectable() {
+            return this.minPriceFacets < this.minPriceSelected ? this.minPriceFacets : this.minPriceSelected;
+        },
+        showFilters: function () {
+            return this.offcanvas.component === this.name;
+        },
+        totalItems: function () {
+            if (this.dataCategoryProducts.result.stats != null) {
+                return this.dataCategoryProducts.result.stats.total;
             }
-        }
-    }
+
+            return 0;
+        },
+    },
+
+    methods: {
+        ...mapMutations({
+            setPaginationPage: 'modApiRequests/setPaginationPage',
+            setSelectedFacetsParam: 'modApiRequests/setSelectedFacetsParam',
+            resetSelectedFacetsParam: 'modApiRequests/resetSelectedFacetsParam',
+        }),
+        ...mapActions({
+            toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction',
+            hideOffcanvasAction: 'modNavigation/hideOffcanvasAction',
+            applyFilter: 'modApiRequests/applyFilter',
+        }),
+        resetPagination: function () {
+            this.setPaginationPage(1);
+        },
+        getSelectedFacetOptionsLabel(facet) {
+            let selectedIds = facet.options.filter(item => item.selected);
+
+            let selectedLabels = _.join(
+                selectedIds.map(item => item.label),
+                ', '
+            );
+
+            return selectedLabels;
+        },
+        routeOnPropertyRemoveAll: function () {
+            // always reset to 1st page
+            this.resetPagination();
+
+            // null property from nested storage object (facet)
+            this.resetSelectedFacetsParam();
+
+            // If current route is a search, keep the search term and remove rest of filter
+            let route;
+            if (this.$route.query.term) {
+                route = {
+                    path: this.$route.path,
+                    query: {
+                        term: this.$route.query.term,
+                    },
+                };
+            } else {
+                route = {
+                    path: this.$route.path,
+                    query: _.pick(this.$route.query, this.queryWellKnown),
+                };
+            }
+
+            this.hideFilters().then(response => {
+                this.$router.push(route);
+            });
+        },
+        toggle: function () {
+            this.showFilter = !this.showFilter;
+            this.toggleOffcanvasAction({
+                component: this.name,
+                direction: 'rightLeft',
+            });
+        },
+        hideFilters: function () {
+            this.hideOffcanvasAction();
+
+            return new Promise((resolve, reject) => {
+                //this.showFilter = false;
+                resolve();
+            });
+        },
+        isSearchPage: function () {
+            if (this.$router.history.current.path.includes('search')) {
+                return true;
+            }
+        },
+    },
+};
 </script>

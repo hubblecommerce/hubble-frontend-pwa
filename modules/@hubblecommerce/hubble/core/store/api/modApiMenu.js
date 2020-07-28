@@ -1,5 +1,5 @@
-import {sortMenuEntries} from "@hubblecommerce/hubble/core/utils/menuHelper";
-import {datetimeUnixNow, datetimeUnixNowAddSecs} from "@hubblecommerce/hubble/core/utils/datetime";
+import { sortMenuEntries } from '@hubblecommerce/hubble/core/utils/menuHelper';
+import { datetimeUnixNow, datetimeUnixNowAddSecs } from '@hubblecommerce/hubble/core/utils/datetime';
 import _ from 'lodash';
 
 export default function (ctx) {
@@ -10,11 +10,10 @@ export default function (ctx) {
             dataMenuCacheable: true,
         }),
         mutations: {
-            clearDataMenu: (state) => {
+            clearDataMenu: state => {
                 state.dataMenu = {};
             },
             setDataMenu: (state, payload) => {
-
                 // Set menu data from payload
                 state.dataMenu = payload.data;
 
@@ -22,19 +21,18 @@ export default function (ctx) {
                 state.menuItems = payload.data.result.items;
 
                 // Override menu with menu structure from config
-                if(process.env.menu) {
+                if (process.env.menu) {
                     let map = process.env.menu;
 
                     // Clear menu structure of api get to set structure of mapping
                     state.dataMenu.result.items = [];
 
                     _.forEach(map, (val, key) => {
-
                         // Use menu item from api result by category id when it is set in config
-                        if(val.id !== null) {
+                        if (val.id !== null) {
                             // Get menu item from payload by id
-                            _.forEach(state.menuItems, (v, k) =>  {
-                                if(v.id === val.id) {
+                            _.forEach(state.menuItems, (v, k) => {
+                                if (v.id === val.id) {
                                     state.dataMenu.result.items[key] = v;
                                     state.dataMenu.result.items[key].name = val.name;
                                 }
@@ -42,29 +40,28 @@ export default function (ctx) {
                         }
 
                         // Build menu from virtual entries without id or real category
-                        if(typeof val.id === "undefined") {
-
+                        if (typeof val.id === 'undefined') {
                             // configure store as source for child elements
                             let childFromConfig = [];
-                            if(typeof val.childrenStore !== "undefined") {
+                            if (typeof val.childrenStore !== 'undefined') {
                                 childFromConfig = state[val.childrenStore];
                             }
                             // Set virtual menu items through config
                             state.dataMenu.result.items[key] = {
-                                id: 'virtual'+key,
+                                id: 'virtual' + key,
                                 name: val.name,
                                 url_path: val.url_path,
-                                children: childFromConfig
-                            }
+                                children: childFromConfig,
+                            };
                         }
 
                         // Add custom children to category if set
-                        _.forEach(val.children, (child) => {
+                        _.forEach(val.children, child => {
                             state.dataMenu.result.items[key].children.push(child);
                         });
 
                         // Sort menu entry and children of entry alphabetically if flag is set
-                        if(val.sortAlphabetically && !_.isEmpty(state.dataMenu.result.items[key].children)) {
+                        if (val.sortAlphabetically && !_.isEmpty(state.dataMenu.result.items[key].children)) {
                             state.dataMenu.result.items[key].children = sortMenuEntries(state.dataMenu.result.items[key].children);
                         }
                     });
@@ -72,7 +69,7 @@ export default function (ctx) {
 
                 state.dataMenu.locale = state.apiLocale;
 
-                if(state.dataMenuCacheable) {
+                if (state.dataMenuCacheable) {
                     let _ttl = state.dataMenuCacheableTTL || state.cacheTTL;
 
                     state.dataMenu.created_at_unixtime = datetimeUnixNow();
@@ -80,7 +77,7 @@ export default function (ctx) {
                 }
             },
         },
-        getters:  {
+        getters: {
             getDataMenu: state => {
                 return state.dataMenu;
             },
@@ -92,33 +89,34 @@ export default function (ctx) {
             },
         },
         actions: {
-            async getMenu({commit, dispatch}) {
-                return new Promise(function(resolve, reject) {
-                    dispatch('apiCall', {
-                        action: 'get',
-                        tokenType: 'api',
-                        apiType: 'data',
-                        endpoint: '/api/json/menu/children',
-                        params: {
-                            _size: 30
-                        }
-                    }, { root: true })
-                    .then(response => {
+            async getMenu({ commit, dispatch }) {
+                return new Promise(function (resolve, reject) {
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'get',
+                            tokenType: 'api',
+                            apiType: 'data',
+                            endpoint: '/api/json/menu/children',
+                            params: {
+                                _size: 30,
+                            },
+                        },
+                        { root: true }
+                    )
+                        .then(response => {
+                            commit('setDataMenu', {
+                                data: response.data,
+                            });
 
-                        commit('setDataMenu', {
-                            data: response.data
+                            resolve('OK');
+                        })
+                        .catch(response => {
+                            reject('API request failed!');
                         });
-
-                        resolve('OK');
-                    })
-                    .catch(response => {
-                        reject('API request failed!');
-                    });
-
                 });
             },
-
-        }
+        },
     };
 
     ctx.store.registerModule('modApiMenu', modApiMenu);

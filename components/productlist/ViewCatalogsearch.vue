@@ -4,10 +4,7 @@
             event="searchResultLoaded"
             page-type="Search Result"
             :page-title="curSearchResultLabel"
-            :breadcrumbs="[
-                {'0': 'home'},
-                {'1': curSearchResultLabel},
-            ]"
+            :breadcrumbs="[{ '0': 'home' }, { '1': curSearchResultLabel }]"
         />
         <template v-if="hasCategoryProductItems">
             <div class="container search-content-wrp">
@@ -36,71 +33,71 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex';
-    import Pagination from './toolbar/Pagination.vue';
-    import GTMDataLayer from "../utils/GTMDataLayer";
-    import ProductListing from "./ProductListing";
-    import ProductListingToolbar from "./ProductListingToolbar";
-    import _ from 'lodash';
+import { mapState } from 'vuex';
+import Pagination from './toolbar/Pagination.vue';
+import GTMDataLayer from '../utils/GTMDataLayer';
+import ProductListing from './ProductListing';
+import ProductListingToolbar from './ProductListingToolbar';
+import _ from 'lodash';
 
-    export default {
-        name: 'ViewCatalogsearch',
+export default {
+    name: 'ViewCatalogsearch',
 
-        components: {
-            GTMDataLayer,
-            Pagination,
-            ProductListing,
-            ProductListingToolbar
-        },
+    components: {
+        GTMDataLayer,
+        Pagination,
+        ProductListing,
+        ProductListingToolbar,
+    },
 
-        computed: {
-            ...mapState({
-                dataCategory: state => state.modApiCategory.dataCategory,
-                dataCategoryProducts: state => state.modApiCategory.dataCategoryProducts
-            }),
-            categoryItem() {
-                if(_.isEmpty(this.dataCategory)) {
-                    return this.dataCategory;
-                }
-
-                // console.log("debug dataCategory.result: %o", this.dataCategory.result);
-                return this.dataCategory.result.item;
-            },
-            categoryProductItems() {
-                if(_.isEmpty(this.dataCategoryProducts)) {
-                    return this.dataCategoryProducts;
-                }
-
-                // console.log("debug categoryProductItems: %o", this.dataCategoryProducts.result);
-                return this.dataCategoryProducts.result.items;
-            },
-            hasCategoryProductItems() {
-                return ! _.isEmpty(this.categoryProductItems);
-            },
-            noSearchResultLabel() {
-                return this.$t('No search results for:') + ' ' + this.$route.query.term;
-            },
-            curSearchResultLabel() {
-                return this.$t('Search for:') + ' ' + this.$route.query.term;
+    computed: {
+        ...mapState({
+            dataCategory: state => state.modApiCategory.dataCategory,
+            dataCategoryProducts: state => state.modApiCategory.dataCategoryProducts,
+        }),
+        categoryItem() {
+            if (_.isEmpty(this.dataCategory)) {
+                return this.dataCategory;
             }
-        },
 
-        methods: {
-            isApiType: function(apiType) {
-                return process.env.API_TYPE === apiType;
+            // console.log("debug dataCategory.result: %o", this.dataCategory.result);
+            return this.dataCategory.result.item;
+        },
+        categoryProductItems() {
+            if (_.isEmpty(this.dataCategoryProducts)) {
+                return this.dataCategoryProducts;
             }
-        },
 
-        head () {
-            return {
-                title: this.curSearchResultLabel,
-                meta: [
+            // console.log("debug categoryProductItems: %o", this.dataCategoryProducts.result);
+            return this.dataCategoryProducts.result.items;
+        },
+        hasCategoryProductItems() {
+            return !_.isEmpty(this.categoryProductItems);
+        },
+        noSearchResultLabel() {
+            return this.$t('No search results for:') + ' ' + this.$route.query.term;
+        },
+        curSearchResultLabel() {
+            return this.$t('Search for:') + ' ' + this.$route.query.term;
+        },
+    },
+
+    methods: {
+        isApiType: function (apiType) {
+            return process.env.API_TYPE === apiType;
+        },
+    },
+
+    head() {
+        return {
+            title: this.curSearchResultLabel,
+            meta: [
                 // hid is used as unique identifier. Do not use `vmid` for it as it will not work
                 { hid: 'description', name: 'description', content: 'Generic Homepage Meta-Description' },
                 { hid: 'robots', name: 'robots', content: 'INDEX, FOLLOW' },
-                { hid: 'keywords', name: 'keywords', content: 'Home, Nuxt, Test' }
-                ]
-            }
-        }
-    }
+                { hid: 'keywords', name: 'keywords', content: 'Home, Nuxt, Test' },
+            ],
+        };
+    },
+};
 </script>

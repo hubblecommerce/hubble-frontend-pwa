@@ -1,4 +1,4 @@
-import { datetimeUnixNow, datetimeUnixNowAddSecs } from '@hubblecommerce/hubble/core/utils/datetime'
+import { datetimeUnixNow, datetimeUnixNowAddSecs } from '@hubblecommerce/hubble/core/utils/datetime';
 
 export default function (ctx) {
     const modApiResources = {
@@ -13,7 +13,7 @@ export default function (ctx) {
             pageType: null,
 
             // cmsObject
-            cmsObject: {}
+            cmsObject: {},
         }),
         mutations: {
             setCmsObject: (state, value) => {
@@ -24,9 +24,9 @@ export default function (ctx) {
             },
             setPageType: (state, item) => {
                 state.pageType = item;
-            }
+            },
         },
-        getters:  {
+        getters: {
             getApiLocale: state => {
                 return state.apiLocale;
             },
@@ -35,49 +35,55 @@ export default function (ctx) {
             },
             getDataProductUrls: state => {
                 return state.dataProductUrls;
-            }
+            },
         },
         actions: {
-            async getPage({commit, dispatch}, payload) {
+            async getPage({ commit, dispatch }, payload) {
                 return new Promise((resolve, reject) => {
-                    dispatch('apiCall', {
-                        action: 'post',
-                        tokenType: 'sw',
-                        apiType: 'data',
-                        endpoint: '/store-api/v1/pwa/page',
-                        data: {
-                            path: payload,
-                            associations: {
-                                categories: {},
-                                manufacturer: {
-                                    associations: {
-                                        media: {}
-                                    }
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'post',
+                            tokenType: 'sw',
+                            apiType: 'data',
+                            endpoint: '/store-api/v1/pwa/page',
+                            data: {
+                                path: payload,
+                                associations: {
+                                    categories: {},
+                                    manufacturer: {
+                                        associations: {
+                                            media: {},
+                                        },
+                                    },
+                                    media: {},
+                                    seoUrls: {},
+                                    crossSellings: {},
+                                    children: {
+                                        associations: {
+                                            options: {
+                                                associations: {
+                                                    group: {},
+                                                },
+                                            },
+                                        },
+                                    },
                                 },
-                                media: {},
-                                seoUrls: {},
-                                crossSellings: {},
-                                children: {
-                                    associations: {
-                                        options: {
-                                            associations: {
-                                                group: {}
-                                            }
-                                        }
-                                    }
-                                },
-                            }
-                        }
-                    }, { root: true }).then(response => {
-                        commit('setCmsObject', response.data.cmsPage);
+                            },
+                        },
+                        { root: true }
+                    )
+                        .then(response => {
+                            commit('setCmsObject', response.data.cmsPage);
 
-                        resolve(response);
-                    }).catch((error) => {
-                        reject(error);
-                    });
+                            resolve(response);
+                        })
+                        .catch(error => {
+                            reject(error);
+                        });
                 });
             },
-        }
+        },
     };
 
     ctx.store.registerModule('modApiResources', modApiResources);

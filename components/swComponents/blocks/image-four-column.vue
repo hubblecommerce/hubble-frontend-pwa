@@ -16,36 +16,34 @@
 </template>
 
 <script>
-    import { blockMixins } from '../helper'
+import { blockMixins } from '../helper';
 
-    export default {
-        name: 'ImageFourColumnBlock',
+export default {
+    name: 'ImageFourColumnBlock',
 
-        mixins: [blockMixins],
+    mixins: [blockMixins],
 
-        props: {
-            content: {
-                type: Object,
-                default: () => ({})
-            }
+    props: {
+        content: {
+            type: Object,
+            default: () => ({}),
         },
-        computed: {
-            leftSlot() {
-                return this.getSlotByPosition(this.content.slots, 'left');
-            },
-            centerLeftSlot() {
-                return this.getSlotByPosition(this.content.slots, 'center-left');
-            },
-            centerRightSlot() {
-                return this.getSlotByPosition(this.content.slots, 'center-right');
-            },
-            rightSlot() {
-                return this.getSlotByPosition(this.content.slots, 'right');
-            }
-        }
-    }
+    },
+    computed: {
+        leftSlot() {
+            return this.getSlotByPosition(this.content.slots, 'left');
+        },
+        centerLeftSlot() {
+            return this.getSlotByPosition(this.content.slots, 'center-left');
+        },
+        centerRightSlot() {
+            return this.getSlotByPosition(this.content.slots, 'center-right');
+        },
+        rightSlot() {
+            return this.getSlotByPosition(this.content.slots, 'right');
+        },
+    },
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

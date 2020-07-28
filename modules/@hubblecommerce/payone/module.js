@@ -1,12 +1,11 @@
-import {resolve, join} from 'path';
-import {readdirSync} from 'fs';
+import { resolve, join } from 'path';
+import { readdirSync } from 'fs';
 
 export default function nuxtHubble(moduleOptions) {
-
     // get all options for the module
     const options = {
         ...moduleOptions,
-        ...this.options.hubble.payone
+        ...this.options.hubble.payone,
     };
 
     // expose the namespace / set a default
@@ -20,7 +19,7 @@ export default function nuxtHubble(moduleOptions) {
         src: resolve(__dirname, 'plugins/lib/hosted-iframe.js'),
         fileName: join(namespace, 'plugins/lib/hosted-iframe.js'),
         ssr: false,
-        options
+        options,
     });
 
     // add payone response callback
@@ -28,21 +27,18 @@ export default function nuxtHubble(moduleOptions) {
         src: resolve(__dirname, 'plugins/lib/payone-response.js'),
         fileName: join(namespace, 'plugins/lib/payone-response.js'),
         ssr: false,
-        options
+        options,
     });
 
     // add all of the initial plugins
-    const pluginsToSync = [
-        'components/index.js',
-        'plugins/index.js'
-    ];
+    const pluginsToSync = ['components/index.js', 'plugins/index.js'];
 
     for (const pathString of pluginsToSync) {
         this.addPlugin({
             src: resolve(__dirname, pathString),
             fileName: join(namespace, pathString),
-            options
-        })
+            options,
+        });
     }
 
     // sync all of the files and folders to relevant places in the nuxt build dir (.nuxt/)
@@ -53,16 +49,13 @@ export default function nuxtHubble(moduleOptions) {
             this.addTemplate({
                 src: resolve(path, file),
                 fileName: join(namespace, pathString, file),
-                options
-            })
+                options,
+            });
         }
     }
 
     // add api calls as server middleware
-    const serverMiddlewares = [
-        'api/calcHash',
-        'api/calcHashHostedIFrame',
-    ];
+    const serverMiddlewares = ['api/calcHash', 'api/calcHashHostedIFrame'];
 
     for (const middleWare of serverMiddlewares) {
         const path = resolve(__dirname, middleWare);

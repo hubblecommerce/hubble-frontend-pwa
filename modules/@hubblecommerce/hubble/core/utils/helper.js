@@ -1,11 +1,10 @@
-import path from 'path'
-import fs from 'fs'
+import path from 'path';
+import fs from 'fs';
 
 export default class {
-
     static getFilesFromDir(targetDir) {
         // Get all filenames from directory
-        let directoryPath = path.join(__dirname, '/..'+targetDir);
+        let directoryPath = path.join(__dirname, '/..' + targetDir);
 
         // passing directoryPath and callback function and return as a promise
         return new Promise((resolve, reject) => {
@@ -16,8 +15,8 @@ export default class {
                 }
 
                 // Filer for . to extract directories
-                let filesOnly = files.filter((file) => {
-                    return file.indexOf(".") !== -1;
+                let filesOnly = files.filter(file => {
+                    return file.indexOf('.') !== -1;
                 });
 
                 resolve(filesOnly);
@@ -25,26 +24,25 @@ export default class {
         });
     }
 
-    static registerPlugins(context, files, type, blacklist)  {
+    static registerPlugins(context, files, type, blacklist) {
         return new Promise((resolve, reject) => {
-            files.forEach((filename) => {
+            files.forEach(filename => {
                 // Check if ssr
                 let serverRendering = true;
 
-                if(filename.indexOf('no_ssr') !== -1) {
+                if (filename.indexOf('no_ssr') !== -1) {
                     serverRendering = false;
                 }
 
-                if(blacklist != null) {
-                    if(!blacklist.includes(filename)) {
-                        context.addPlugin({src: path.resolve(__dirname, '../'+type+'/'+filename), ssr: serverRendering});
+                if (blacklist != null) {
+                    if (!blacklist.includes(filename)) {
+                        context.addPlugin({ src: path.resolve(__dirname, '../' + type + '/' + filename), ssr: serverRendering });
                     }
                 } else {
-                    context.addPlugin({src: path.resolve(__dirname, '../'+type+'/'+filename), ssr: serverRendering});
+                    context.addPlugin({ src: path.resolve(__dirname, '../' + type + '/' + filename), ssr: serverRendering });
                 }
             });
             resolve();
         });
     }
-
 }

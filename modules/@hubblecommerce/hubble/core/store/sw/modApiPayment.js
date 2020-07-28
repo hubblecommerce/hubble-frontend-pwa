@@ -20,7 +20,7 @@ export default function (ctx) {
                 id: '',
                 orderComment: '',
                 chosenPaymentMethod: {},
-                chosenShippingMethod: {}
+                chosenShippingMethod: {},
             },
             cookieNameOrder: 'hubbleOrder',
 
@@ -28,7 +28,7 @@ export default function (ctx) {
             currentOrder: {},
 
             // Checkout
-            processingCheckout: false
+            processingCheckout: false,
         }),
         mutations: {
             // Payment
@@ -78,15 +78,15 @@ export default function (ctx) {
                 state.currentOrder = payload;
             },
             // Checkout
-            setProcessingCheckout: (state) => {
+            setProcessingCheckout: state => {
                 state.processingCheckout = true;
             },
-            resetProcessingCheckout: (state) => {
+            resetProcessingCheckout: state => {
                 state.processingCheckout = false;
             },
         },
-        getters:  {
-            getCookieExpires: (state) => {
+        getters: {
+            getCookieExpires: state => {
                 return new Date(new Date().getTime() + state.cookieTTL * 60 * 1000);
             },
             getChosenPaymentMethod: state => {
@@ -94,106 +94,118 @@ export default function (ctx) {
             },
             getChosenShippingMethod: state => {
                 return state.order.chosenShippingMethod;
-            }
+            },
         },
         actions: {
-            async swGuestOrder({commit, state, dispatch, rootState, getters}, payload) {
+            async swGuestOrder({ commit, state, dispatch, rootState, getters }, payload) {
                 return new Promise((resolve, reject) => {
-                    dispatch('apiCall', {
-                        action: 'post',
-                        tokenType: 'sw',
-                        apiType: 'data',
-                        swContext: payload.swtc,
-                        endpoint: '/sales-channel-api/v1/checkout/guest-order',
-                        data: payload.order
-                    }, { root: true })
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'post',
+                            tokenType: 'sw',
+                            apiType: 'data',
+                            swContext: payload.swtc,
+                            endpoint: '/sales-channel-api/v1/checkout/guest-order',
+                            data: payload.order,
+                        },
+                        { root: true }
+                    )
                         .then(response => {
                             resolve(response);
                         })
                         .catch(error => {
-                            console.log("swGuestOrder error: ", error);
+                            console.log('swGuestOrder error: ', error);
 
                             reject(error);
                         });
                 });
             },
-            async placeGuestOrder({dispatch, commit}, payload) {
+            async placeGuestOrder({ dispatch, commit }, payload) {
                 let order = payload.order;
 
                 // Set salutation uuid
                 order.billingAddress.salutationId = order.salutationId;
 
-                return new Promise((resolve, reject)  => {
-                    dispatch('swGuestOrder', {order: order, swtc: payload.swtc})
-                        .then((res) => {
-                            dispatch('modCart/clearAll', {}, {root:true})
+                return new Promise((resolve, reject) => {
+                    dispatch('swGuestOrder', { order: order, swtc: payload.swtc })
+                        .then(res => {
+                            dispatch('modCart/clearAll', {}, { root: true })
                                 .then(() => {
-                                    dispatch('clearOrder')
-                                        .then(() => {
-                                            commit('setCurrentOrder', res.data.data);
+                                    dispatch('clearOrder').then(() => {
+                                        commit('setCurrentOrder', res.data.data);
 
-                                            commit('modApiCustomer/setCustomerAuth', {token: res.data['sw-context-token']}, { root: true });
+                                        commit('modApiCustomer/setCustomerAuth', { token: res.data['sw-context-token'] }, { root: true });
 
-                                            resolve(res);
-                                        })
+                                        resolve(res);
+                                    });
                                 })
-                                .catch((err) => {
-                                    console.log("clearAll error: ", err);
+                                .catch(err => {
+                                    console.log('clearAll error: ', err);
 
                                     reject(err);
                                 });
-                        }).catch((error) => {
-                            console.log("swGuestOrder error: ", error);
+                        })
+                        .catch(error => {
+                            console.log('swGuestOrder error: ', error);
 
                             reject(error);
                         });
                 });
             },
-            async swPlaceOrder({dispatch, rootState}) {
-                return new Promise((resolve, reject)  => {
-                    dispatch('apiCall', {
-                        action: 'post',
-                        tokenType: 'sw',
-                        apiType: 'data',
-                        swContext: rootState.modApiCustomer.customer.customerAuth.token,
-                        endpoint: '/sales-channel-api/v1/checkout/order',
-                    }, { root: true })
-                        .then((response) => {
+            async swPlaceOrder({ dispatch, rootState }) {
+                return new Promise((resolve, reject) => {
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'post',
+                            tokenType: 'sw',
+                            apiType: 'data',
+                            swContext: rootState.modApiCustomer.customer.customerAuth.token,
+                            endpoint: '/sales-channel-api/v1/checkout/order',
+                        },
+                        { root: true }
+                    )
+                        .then(response => {
                             resolve(response);
                         })
                         .catch(response => {
-                            console.log("swPlaceOrder - API post request failed: %o", response);
+                            console.log('swPlaceOrder - API post request failed: %o', response);
 
                             reject(response);
                         });
                 });
             },
-            async swStartPayment({dispatch, state, rootState}, payload) {
-                return new Promise((resolve, reject)  => {
-                    dispatch('apiCall', {
-                        action: 'post',
-                        tokenType: 'sw',
-                        apiType: 'data',
-                        swContext: rootState.modApiCustomer.customer.customerAuth.token,
-                        endpoint: `/sales-channel-api/v1/checkout/order/${payload}/pay`,
-                    }, { root: true })
-                        .then((response) => {
+            async swStartPayment({ dispatch, state, rootState }, payload) {
+                return new Promise((resolve, reject) => {
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'post',
+                            tokenType: 'sw',
+                            apiType: 'data',
+                            swContext: rootState.modApiCustomer.customer.customerAuth.token,
+                            endpoint: `/sales-channel-api/v1/checkout/order/${payload}/pay`,
+                        },
+                        { root: true }
+                    )
+                        .then(response => {
                             resolve(response);
                         })
                         .catch(response => {
-                            console.log("swStartPayment - API post request failed: %o", response);
+                            console.log('swStartPayment - API post request failed: %o', response);
 
                             reject(response);
                         });
                 });
             },
-            async validateOrder({dispatch, commit, state}) {
-                return new Promise((resolve, reject)  => {
+            async validateOrder({ dispatch, commit, state }) {
+                return new Promise((resolve, reject) => {
                     // Reset payment error
                     commit('setPaymentError', null);
 
                     // Reject with error message if payment method is not set
-                    if(_.isEmpty(state.order.chosenPaymentMethod)) {
+                    if (_.isEmpty(state.order.chosenPaymentMethod)) {
                         commit('setPaymentError', 'Please choose a payment method first');
                         reject('Please choose a payment method first');
                     }
@@ -202,7 +214,7 @@ export default function (ctx) {
                     commit('setShippingError', null);
 
                     // Reject with error message if payment method is not set
-                    if(_.isEmpty(state.order.chosenShippingMethod)) {
+                    if (_.isEmpty(state.order.chosenShippingMethod)) {
                         commit('setShippingError', 'Please choose a shipping method first');
                         reject('Please choose a shipping method first');
                     }
@@ -210,41 +222,40 @@ export default function (ctx) {
                     resolve();
                 });
             },
-            async placeOrder({dispatch, commit}) {
-                return new Promise((resolve, reject)  => {
+            async placeOrder({ dispatch, commit }) {
+                return new Promise((resolve, reject) => {
                     dispatch('swPlaceOrder')
-                        .then((response) => {
-                            dispatch('modCart/clearAll', {}, { root:true })
+                        .then(response => {
+                            dispatch('modCart/clearAll', {}, { root: true })
                                 .then(() => {
-                                    dispatch('clearOrder')
-                                        .then(() => {
-                                            commit('setCurrentOrder', response.data.data);
+                                    dispatch('clearOrder').then(() => {
+                                        commit('setCurrentOrder', response.data.data);
 
-                                            resolve(response);
-                                        })
+                                        resolve(response);
+                                    });
                                 })
-                                .catch((err) => {
-                                    console.log("clearAll error: ", err);
+                                .catch(err => {
+                                    console.log('clearAll error: ', err);
 
                                     reject(err);
                                 });
                         })
-                        .catch((err) => {
-                            console.log("placeOrder error: ", err)
+                        .catch(err => {
+                            console.log('placeOrder error: ', err);
                             reject(err);
-                    });
+                        });
                 });
             },
-            async setOrderByCookie({commit, state}) {
-                return new Promise((resolve) => {
+            async setOrderByCookie({ commit, state }) {
+                return new Promise(resolve => {
                     // try to retrieve auth user by cookie
                     let _cookie = this.$cookies.get(state.cookieNameOrder);
 
                     // no cookie? ok!
-                    if(! _cookie) {
+                    if (!_cookie) {
                         resolve({
                             success: true,
-                            message: 'order not known by cookie.'
+                            message: 'order not known by cookie.',
                         });
                     } else {
                         // Save cookie to store
@@ -253,27 +264,31 @@ export default function (ctx) {
                         resolve({
                             success: true,
                             message: 'order taken from cookie.',
-                            redirect: true
+                            redirect: true,
                         });
                     }
-                })
+                });
             },
             async applyCoupon() {
-                return new Promise((resolve, reject)  => {
+                return new Promise((resolve, reject) => {
                     reject('Sorry, coupons are currently not available.');
                 });
             },
-            async getPaymentMethods({commit, dispatch}) {
-                return new Promise((resolve, reject)  => {
-                    dispatch('apiCall', {
-                        action: 'get',
-                        tokenType: 'sw',
-                        apiType: 'data',
-                        endpoint: '/sales-channel-api/v1/payment-method',
-                        params: {
-                            limit: 500
-                        }
-                    }, { root: true })
+            async getPaymentMethods({ commit, dispatch }) {
+                return new Promise((resolve, reject) => {
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'get',
+                            tokenType: 'sw',
+                            apiType: 'data',
+                            endpoint: '/sales-channel-api/v1/payment-method',
+                            params: {
+                                limit: 500,
+                            },
+                        },
+                        { root: true }
+                    )
                         .then(response => {
                             // Save payment methods to store
                             commit('setPaymentMethods', response.data.data);
@@ -287,14 +302,18 @@ export default function (ctx) {
                         });
                 });
             },
-            async getShippingMethods({commit, dispatch}) {
-                return new Promise((resolve, reject)  => {
-                    dispatch('apiCall', {
-                        action: 'get',
-                        tokenType: 'sw',
-                        apiType: 'data',
-                        endpoint: '/sales-channel-api/v1/shipping-method'
-                    }, { root: true })
+            async getShippingMethods({ commit, dispatch }) {
+                return new Promise((resolve, reject) => {
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'get',
+                            tokenType: 'sw',
+                            apiType: 'data',
+                            endpoint: '/sales-channel-api/v1/shipping-method',
+                        },
+                        { root: true }
+                    )
                         .then(response => {
                             // Save payment methods to store
                             commit('setShippingMethods', response.data.data);
@@ -308,18 +327,22 @@ export default function (ctx) {
                         });
                 });
             },
-            async swSetPaymentMethod({commit, dispatch, rootState, state}, payload) {
-                return new Promise((resolve, reject)  => {
-                    dispatch('apiCall', {
-                        action: 'patch',
-                        tokenType: 'sw',
-                        apiType: 'data',
-                        swContext: rootState.modApiCustomer.customer.customerAuth.token,
-                        endpoint: '/sales-channel-api/v1/context',
-                        data: {
-                            paymentMethodId: payload.id
-                        }
-                    }, { root: true })
+            async swSetPaymentMethod({ commit, dispatch, rootState, state }, payload) {
+                return new Promise((resolve, reject) => {
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'patch',
+                            tokenType: 'sw',
+                            apiType: 'data',
+                            swContext: rootState.modApiCustomer.customer.customerAuth.token,
+                            endpoint: '/sales-channel-api/v1/context',
+                            data: {
+                                paymentMethodId: payload.id,
+                            },
+                        },
+                        { root: true }
+                    )
                         .then(response => {
                             // Save payment methods to store
                             resolve('OK');
@@ -331,7 +354,7 @@ export default function (ctx) {
                         });
                 });
             },
-            async storeChosenPaymentMethod({commit, state, getters, dispatch}, payload) {
+            async storeChosenPaymentMethod({ commit, state, getters, dispatch }, payload) {
                 return new Promise((resolve, reject) => {
                     dispatch('swSetPaymentMethod', payload)
                         .then(() => {
@@ -340,32 +363,36 @@ export default function (ctx) {
                             // Save order from store to cookie
                             this.$cookies.set(state.cookieNameOrder, state.order, {
                                 path: state.cookiePath,
-                                expires: getters.getCookieExpires
+                                expires: getters.getCookieExpires,
                             });
 
                             resolve();
                         })
-                        .catch((err) => {
+                        .catch(err => {
                             reject(err);
-                        })
-                })
+                        });
+                });
             },
-            async swSetShippingMethod({commit, dispatch, rootState, state}, payload) {
-                return new Promise((resolve, reject)  => {
-                    if(_.isEmpty(payload)) {
+            async swSetShippingMethod({ commit, dispatch, rootState, state }, payload) {
+                return new Promise((resolve, reject) => {
+                    if (_.isEmpty(payload)) {
                         resolve();
                     }
 
-                    dispatch('apiCall', {
-                        action: 'patch',
-                        tokenType: 'sw',
-                        apiType: 'data',
-                        swContext: rootState.modApiCustomer.customer.customerAuth.token,
-                        endpoint: '/sales-channel-api/v1/context',
-                        data: {
-                            shippingMethodId: payload.id
-                        }
-                    }, { root: true })
+                    dispatch(
+                        'apiCall',
+                        {
+                            action: 'patch',
+                            tokenType: 'sw',
+                            apiType: 'data',
+                            swContext: rootState.modApiCustomer.customer.customerAuth.token,
+                            endpoint: '/sales-channel-api/v1/context',
+                            data: {
+                                shippingMethodId: payload.id,
+                            },
+                        },
+                        { root: true }
+                    )
                         .then(response => {
                             // Save payment methods to store
                             resolve('OK');
@@ -377,7 +404,7 @@ export default function (ctx) {
                         });
                 });
             },
-            async storeChosenShippingMethod({commit, state, getters, dispatch}, payload) {
+            async storeChosenShippingMethod({ commit, state, getters, dispatch }, payload) {
                 return new Promise((resolve, reject) => {
                     dispatch('swSetShippingMethod', payload)
                         .then(() => {
@@ -386,19 +413,20 @@ export default function (ctx) {
                             // Save order from store to cookie
                             this.$cookies.set(state.cookieNameOrder, state.order, {
                                 path: state.cookiePath,
-                                expires: getters.getCookieExpires
+                                expires: getters.getCookieExpires,
                             });
 
                             resolve();
-                        }).catch((err) => {
-                            console.log("storeChosenShippingMethod failed: ", err);
+                        })
+                        .catch(err => {
+                            console.log('storeChosenShippingMethod failed: ', err);
 
                             reject(err);
                         });
-                })
+                });
             },
-            async clearOrder({commit, state}) {
-                return new Promise((resolve) => {
+            async clearOrder({ commit, state }) {
+                return new Promise(resolve => {
                     commit('setChosenPaymentMethod', {});
 
                     commit('setChosenShippingMethod', {});
@@ -407,9 +435,9 @@ export default function (ctx) {
                     this.$cookies.remove(state.cookieNameOrder);
 
                     resolve();
-                })
-            }
-        }
+                });
+            },
+        },
     };
 
     // Register vuex store module

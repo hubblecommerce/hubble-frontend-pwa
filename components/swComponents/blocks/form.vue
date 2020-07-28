@@ -4,27 +4,26 @@
             <component :is="getSlot" :content="getContentByPosition(content.slots, 'content')" />
         </div>
     </div>
-
 </template>
 
 <script>
-    import { blockMixins } from '../helper'
+import { blockMixins } from '../helper';
 
-    export default {
-        name: 'FormBlock',
+export default {
+    name: 'FormBlock',
 
-        mixins: [blockMixins],
+    mixins: [blockMixins],
 
-        props: {
-            content: {
-                type: Object,
-                default: () => ({})
-            }
+    props: {
+        content: {
+            type: Object,
+            default: () => ({}),
         },
-        computed: {
-            getSlot() {
-                return this.getSlotByPosition(this.content.slots, 'content');
-            }
-        }
-    }
+    },
+    computed: {
+        getSlot() {
+            return this.getSlotByPosition(this.content.slots, 'content');
+        },
+    },
+};
 </script>

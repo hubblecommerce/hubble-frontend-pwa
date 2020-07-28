@@ -1,5 +1,5 @@
 // plugins/index.js
-import * as helpers from './lib/index.js'
+import * as helpers from './lib/index.js';
 // get the options out using lodash templates
 const options = JSON.parse(`<%= JSON.stringify(options) %>`);
 // extract the namespace from the options
@@ -11,7 +11,7 @@ export default ({ store }, inject) => {
     // inject an object of functions into the app
     inject(namespace, {
         loadPayoneScript() {
-            return helpers.loadScript({ state, namespace })
-        }
-    })
-}
+            return helpers.loadScript({ state, namespace });
+        },
+    });
+};

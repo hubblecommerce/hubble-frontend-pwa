@@ -1,35 +1,35 @@
 <template>
     <div :class="{ 'disable-scroll': activeOffCanvas }">
-        <slot></slot>
+        <slot />
     </div>
 </template>
 
 <script>
-    import { mapState } from 'vuex';
+import { mapState } from 'vuex';
 
-    export default {
-        name: "LayoutWrapper",
+export default {
+    name: 'LayoutWrapper',
 
-        data() {
-            return {
-                offCanvasIsActive: false
-            }
-        },
-        computed: {
-            ...mapState({
-                activeOffCanvas: state => state.modNavigation.offcanvas.isActive
-            })
-        },
-    }
+    data() {
+        return {
+            offCanvasIsActive: false,
+        };
+    },
+    computed: {
+        ...mapState({
+            activeOffCanvas: state => state.modNavigation.offcanvas.isActive,
+        }),
+    },
+};
 </script>
 
 <style>
-    .disable-scroll {
-        overflow: hidden;
-    }
+.disable-scroll {
+    overflow: hidden;
+}
 
-    .disable-scroll .desktop-layout {
-        width: 100vw;
-        padding-right: 15px;
-    }
+.disable-scroll .desktop-layout {
+    width: 100vw;
+    padding-right: 15px;
+}
 </style>

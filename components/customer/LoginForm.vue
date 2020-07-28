@@ -3,30 +3,42 @@
         <div class="headline headline-3" v-text="$t('I already have an account')" />
 
         <validation-provider v-slot="{ errors }" name="email" rules="required|email" mode="eager" tag="div" class="hbl-input-group input-icon">
-                <input id="email"
-                       v-model="form.email"
-                       type="text" name="email"
-                       value=""
-                       :class="{invalid: errors.length > 0}"
-                       placeholder=" "
-                       required
-                >
+            <input
+                id="email"
+                v-model="form.email"
+                type="text"
+                name="email"
+                value=""
+                :class="{ invalid: errors.length > 0 }"
+                placeholder=" "
+                required
+            >
 
-                <label for="email" v-text="$t('Email Address')" />
+            <label for="email" v-text="$t('Email Address')" />
 
-                <i class="icon icon-mail" />
+            <i class="icon icon-mail" />
 
-                <div class="validation-msg" v-text="$t(errors[0])" />
+            <div class="validation-msg" v-text="$t(errors[0])" />
         </validation-provider>
 
-        <validation-provider v-slot="{ errors }" name="password" rules="required|password:8" mode="eager" tag="div" class="hbl-input-group input-icon">
-            <input id="password"
-                   v-model="form.password"
-                   type="password" name="password"
-                   autocomplete="on" value=""
-                   :class="{invalid: errors.length > 0}"
-                   placeholder=" "
-                   required
+        <validation-provider
+            v-slot="{ errors }"
+            name="password"
+            rules="required|password:8"
+            mode="eager"
+            tag="div"
+            class="hbl-input-group input-icon"
+        >
+            <input
+                id="password"
+                v-model="form.password"
+                type="password"
+                name="password"
+                autocomplete="on"
+                value=""
+                :class="{ invalid: errors.length > 0 }"
+                placeholder=" "
+                required
             >
 
             <label for="password" v-text="$t('Password')" />
@@ -48,17 +60,26 @@
         </button>
     </validation-observer>
 
-    <validation-observer v-else-if="!showLoginForm" ref="observer" v-slot="{ passes }" class="password-forgot-form" tag="form" @submit.prevent="passes(submitForgotPassword)">
+    <validation-observer
+        v-else-if="!showLoginForm"
+        ref="observer"
+        v-slot="{ passes }"
+        class="password-forgot-form"
+        tag="form"
+        @submit.prevent="passes(submitForgotPassword)"
+    >
         <div class="headline headline-3" v-text="$t('Reset your Password')" />
 
         <validation-provider v-slot="{ errors }" name="email" rules="required|email" mode="passive" tag="div" class="hbl-input-group input-icon">
-            <input id="email"
-                   v-model="form.email"
-                   type="text" name="email"
-                   value=""
-                   :class="{invalid: errors.length > 0}"
-                   placeholder=" "
-                   required
+            <input
+                id="email"
+                v-model="form.email"
+                type="text"
+                name="email"
+                value=""
+                :class="{ invalid: errors.length > 0 }"
+                placeholder=" "
+                required
             >
 
             <label for="email" v-text="$t('Email Address')" />
@@ -82,156 +103,158 @@
 </template>
 
 <script>
-    import { mapState, mapActions, mapMutations } from 'vuex';
-    import Form from '@hubblecommerce/hubble/core/utils/form';
-    import {addBackendErrors} from "@hubblecommerce/hubble/core/utils/formMixins";
-    import _ from 'lodash';
+import { mapState, mapActions, mapMutations } from 'vuex';
+import Form from '@hubblecommerce/hubble/core/utils/form';
+import { addBackendErrors } from '@hubblecommerce/hubble/core/utils/formMixins';
+import _ from 'lodash';
 
-    export default {
-        name: "LoginForm",
+export default {
+    name: 'LoginForm',
 
-        mixins: [addBackendErrors],
+    mixins: [addBackendErrors],
 
-        data() {
-            return {
-                curComponent: 'view-auth',
-                form: new Form({
-                    email: '',
-                    password: ''
-                }),
-                errors: [],
-                showLoginForm: true,
-            }
-        },
-
-        computed: {
-            ...mapState({
-                customer: state => state.modApiCustomer.customer,
-                wishlistState: state => state.modWishlist.wishlistItemsObj
-            })
-        },
-
-        methods: {
-            ...mapActions({
-                logIn: 'modApiCustomer/logIn',
-                getWishlist: 'modApiCustomer/getWishlist',
-                updateWishlist: 'modApiCustomer/updateWishlist',
-                saveToStore: 'modWishlist/saveToStore'
+    data() {
+        return {
+            curComponent: 'view-auth',
+            form: new Form({
+                email: '',
+                password: '',
             }),
-            ...mapMutations({
-                setWishlistId: 'modWishlist/setWishlistId',
-                setWishlistItemsCount: 'modWishlist/setWishlistItemsCount',
-                setWishlistItemsObj: 'modWishlist/setWishlistItemsObj'
-            }),
-            submitLoginForm: function() {
-                let validCreds = {
+            errors: [],
+            showLoginForm: true,
+        };
+    },
+
+    computed: {
+        ...mapState({
+            customer: state => state.modApiCustomer.customer,
+            wishlistState: state => state.modWishlist.wishlistItemsObj,
+        }),
+    },
+
+    methods: {
+        ...mapActions({
+            logIn: 'modApiCustomer/logIn',
+            getWishlist: 'modApiCustomer/getWishlist',
+            updateWishlist: 'modApiCustomer/updateWishlist',
+            saveToStore: 'modWishlist/saveToStore',
+        }),
+        ...mapMutations({
+            setWishlistId: 'modWishlist/setWishlistId',
+            setWishlistItemsCount: 'modWishlist/setWishlistItemsCount',
+            setWishlistItemsObj: 'modWishlist/setWishlistItemsObj',
+        }),
+        submitLoginForm: function () {
+            let validCreds = {
+                email: this.form.email,
+                password: this.form.password,
+            };
+
+            // Clear error messages
+            this.errors = [];
+
+            // Post request with login credentials
+            this.logIn(validCreds)
+                .then(() => {
+                    // Get wishlist of current customer from api and save to store
+                    this.getWishlist().then(response => {
+                        if (!_.isEmpty(response.data.item)) {
+                            // Merge Wishlist of store with existing user wishlist from api
+                            let state = _.clone(this.wishlistState);
+                            let mergedWishlists = _.merge(state, response.data.item.payload.items);
+                            let wishlistId = response.data.item.id;
+                            let wishlistQty = Object.keys(mergedWishlists).length;
+
+                            // Save to store
+                            this.setWishlistId(wishlistId);
+                            this.setWishlistItemsCount(wishlistQty);
+                            this.setWishlistItemsObj(mergedWishlists);
+                            this.saveToStore();
+
+                            // Update wishlist of api
+                            this.updateWishlist({
+                                user_id: this.customer.customerData.id,
+                                id: wishlistId,
+                                wishlist: {
+                                    qty: wishlistQty,
+                                    items: mergedWishlists,
+                                },
+                            });
+                        }
+
+                        // If current route is checkout, then do redirect to checkout
+                        if (this.$router.history.current.path.includes('/checkout')) {
+                            if (process.env.API_TYPE === 'sw') {
+                                this.$router.push({
+                                    path: this.localePath('checkout-shopware-onepage'),
+                                });
+
+                                return;
+                            }
+
+                            this.$router.push({
+                                path: this.localePath('checkout-payment'),
+                            });
+                        }
+
+                        // If current route is customer-login, then do redirect to dashboard
+                        if (this.$router.history.current.path.includes('/customer/login')) {
+                            this.$router.push({
+                                path: this.localePath('customer-dashboard'),
+                            });
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.log('logIn error: ', error);
+
+                    this.errors.push(this.$t('Login failed'));
+
+                    _.forEach(this.addBackendErrors(error), error => {
+                        this.errors.push(error);
+                    });
+                });
+        },
+        // TODO: only show pw reset if not sw
+        submitForgotPassword: function () {
+            if (process.env.API_TYPE === 'sw') {
+                if (!_.includes(this.errors, this.$t('Resetting password is currently not available'))) {
+                    this.errors.push(this.$t('Resetting password is currently not available'));
+                }
+            } else {
+                let payload = {
                     email: this.form.email,
-                    password: this.form.password
                 };
 
-                // Clear error messages
-                this.errors = [];
-
-                // Post request with login credentials
-                this.logIn(validCreds)
-                    .then(() => {
-                        // Get wishlist of current customer from api and save to store
-                        this.getWishlist().then(response => {
-                            if(!_.isEmpty(response.data.item)) {
-                                // Merge Wishlist of store with existing user wishlist from api
-                                let state = _.clone(this.wishlistState);
-                                let mergedWishlists = _.merge(state, response.data.item.payload.items);
-                                let wishlistId = response.data.item.id;
-                                let wishlistQty = Object.keys(mergedWishlists).length;
-
-                                // Save to store
-                                this.setWishlistId(wishlistId);
-                                this.setWishlistItemsCount(wishlistQty);
-                                this.setWishlistItemsObj(mergedWishlists);
-                                this.saveToStore();
-
-                                // Update wishlist of api
-                                this.updateWishlist({
-                                    user_id: this.customer.customerData.id,
-                                    id: wishlistId,
-                                    wishlist: {
-                                        qty: wishlistQty,
-                                        items: mergedWishlists
-                                    }
-                                });
-                            }
-
-                            // If current route is checkout, then do redirect to checkout
-                            if(this.$router.history.current.path.includes('/checkout')) {
-                                if(process.env.API_TYPE === 'sw') {
-                                    this.$router.push({
-                                        path: this.localePath('checkout-shopware-onepage')
-                                    });
-
-                                    return;
-                                }
-
-                                this.$router.push({
-                                    path: this.localePath('checkout-payment')
-                                });
-                            }
-
-                            // If current route is customer-login, then do redirect to dashboard
-                            if(this.$router.history.current.path.includes('/customer/login')) {
-                                this.$router.push({
-                                    path: this.localePath('customer-dashboard')
-                                });
-                            }
-                        })
-
-                    })
-                    .catch((error) => {
-                        console.log("logIn error: ", error);
-
-                        this.errors.push(this.$t('Login failed'));
-
-                        _.forEach(this.addBackendErrors(error), error => {
-                            this.errors.push(error);
-                        })
-                    });
-            },
-            // TODO: only show pw reset if not sw
-            submitForgotPassword: function () {
-                if(process.env.API_TYPE === 'sw') {
-                    if (!_.includes(this.errors, this.$t('Resetting password is currently not available'))) {
-                        this.errors.push(this.$t('Resetting password is currently not available'));
-                    }
-                } else {
-                    let payload = {
-                        email: this.form.email
-                    };
-
-                    this.$store.dispatch('modApiCustomer/passwordForgot', payload).then(response => {
+                this.$store
+                    .dispatch('modApiCustomer/passwordForgot', payload)
+                    .then(response => {
                         // close off canvas if in offcanvas and show success message
-                        this.$store.dispatch('modNavigation/hideOffcanvasAction').then(()=> {
+                        this.$store.dispatch('modNavigation/hideOffcanvasAction').then(() => {
                             this.$store.dispatch('modFlash/flashMessage', {
                                 flashType: 'success',
                                 flashMessage: 'Ihnen wurde ein neues Passwort an Ihre E-Mail Adresse gesendet.',
-                                keepOnRouteChange: true
+                                keepOnRouteChange: true,
                             });
 
                             // Reset data
                             this.form = new Form({
                                 email: '',
-                                password: ''
+                                password: '',
                             });
 
                             this.errors = [];
                         });
-                    }).catch(error => {
+                    })
+                    .catch(error => {
                         this.errors.push(this.$t('Neues Password anfordern fehlgeschlagen'));
                     });
-                }
-            },
-            toggleLoginForm: function () {
-                this.errors = [];
-                this.showLoginForm = !this.showLoginForm;
             }
-        }
-    }
+        },
+        toggleLoginForm: function () {
+            this.errors = [];
+            this.showLoginForm = !this.showLoginForm;
+        },
+    },
+};
 </script>

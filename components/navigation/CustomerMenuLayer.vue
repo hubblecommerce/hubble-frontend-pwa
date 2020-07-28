@@ -34,56 +34,56 @@
 </template>
 
 <script>
-    import { mapState, mapActions } from 'vuex';
-    import _ from 'lodash';
+import { mapState, mapActions } from 'vuex';
+import _ from 'lodash';
 
-    export default {
-        name: 'CustomerMenuLayer',
-        components: {
-            CustomerAccountNavigation: () => import('../customer/CustomerAccountNavigation'),
-            LoginForm: () => import('../customer/LoginForm'),
-        },
-        data() {
-            return {
-                name: 'CustomerMenu',
+export default {
+    name: 'CustomerMenuLayer',
+    components: {
+        CustomerAccountNavigation: () => import('../customer/CustomerAccountNavigation'),
+        LoginForm: () => import('../customer/LoginForm'),
+    },
+    data() {
+        return {
+            name: 'CustomerMenu',
+        };
+    },
+
+    computed: {
+        ...mapState({
+            customer: state => state.modApiCustomer.customer,
+        }),
+        isLoggedIn: function () {
+            if (!_.isEmpty(this.customer.customerAuth) && this.customer.customerAuth.token !== 'guest') {
+                return this.customer.customerAuth.token;
             }
+
+            return false;
         },
+    },
 
-        computed: {
-            ...mapState({
-                customer: state => state.modApiCustomer.customer,
-            }),
-            isLoggedIn: function() {
-                if(!_.isEmpty(this.customer.customerAuth) && this.customer.customerAuth.token !== 'guest') {
-                    return this.customer.customerAuth.token;
-                }
-
-                return false;
-            }
+    methods: {
+        ...mapActions({
+            toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction',
+            hideOffcanvasAction: 'modNavigation/hideOffcanvasAction',
+        }),
+        toggle: function () {
+            this.toggleOffcanvasAction({
+                component: this.name,
+                direction: 'rightLeft',
+            });
         },
+        hideMenu: function () {
+            this.hideOffcanvasAction();
+        },
+        showFormRegister: function () {
+            this.hideMenu();
 
-        methods: {
-            ...mapActions({
-                toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction',
-                hideOffcanvasAction: 'modNavigation/hideOffcanvasAction'
-            }),
-            toggle: function() {
-                this.toggleOffcanvasAction({
-                    component: this.name,
-                    direction: 'rightLeft'
-                });
-            },
-            hideMenu: function() {
-                this.hideOffcanvasAction();
-            },
-            showFormRegister: function() {
-                this.hideMenu();
-
-                this.$router.push({
-                    path: this.localePath('customer-login'),
-                    query: { tab: 1 }
-                });
-            }
-        }
-    }
+            this.$router.push({
+                path: this.localePath('customer-login'),
+                query: { tab: 1 },
+            });
+        },
+    },
+};
 </script>

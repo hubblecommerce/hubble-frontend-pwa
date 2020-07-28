@@ -5,14 +5,15 @@ export default function ({ isHMR, store, route, error }) {
     }
 
     // skip, if page type is not 'category'
-    if(store.state.modApiResources.pageType !== 'category') {
+    if (store.state.modApiResources.pageType !== 'category') {
         return;
     }
 
     return new Promise((resolve, reject) => {
-        store.dispatch('modApiRequests/parseRequest', {
-            query: route.query
-        })
+        store
+            .dispatch('modApiRequests/parseRequest', {
+                query: route.query,
+            })
             .then(response => {
                 resolve(response);
             })
@@ -21,5 +22,4 @@ export default function ({ isHMR, store, route, error }) {
                 resolve(response);
             });
     });
-
-};
+}

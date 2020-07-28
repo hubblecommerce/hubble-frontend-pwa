@@ -15,5 +15,5 @@ export default {
     PayoneChannelAjaxSb,
     PayoneChannelAjaxVor,
     PayoneChannelAjaxWlt,
-    PayoneChannelClientHostedIframe
-}
+    PayoneChannelClientHostedIframe,
+};

@@ -4,9 +4,7 @@
         <div class="row mb-3 product-headline d-flex">
             <div class="product-headline-info">
                 <h1 class="product-name headline-4" v-html="dataProduct.name" />
-                <div v-if="dataProduct.sku" class="sku">
-                    {{ $t('sku_label') }}: {{ dataProduct.sku }}
-                </div>
+                <div v-if="dataProduct.sku" class="sku"> {{ $t('sku_label') }}: {{ dataProduct.sku }} </div>
             </div>
             <product-detail-manufacturer :data-product="dataProduct" />
         </div>
@@ -21,7 +19,9 @@
         </div>
 
         <!-- Link to description -->
-        <a href="#description-anchor" class="description-link-wrp description-link link-primary" @click="openCollapsible()">{{ $t('See description') }}</a>
+        <a href="#description-anchor" class="description-link-wrp description-link link-primary" @click="openCollapsible()">{{
+            $t('See description')
+        }}</a>
 
         <!-- Delivery info -->
         <product-detail-delivery :item="dataProduct" />
@@ -44,66 +44,66 @@
 </template>
 
 <script>
-    import { mapState, mapMutations } from 'vuex'
-    import ProductDetailManufacturer from "./ProductDetailManufacturer";
-    import ProductDetailDelivery from "./ProductDetailDelivery";
-    import ProductDetailPrice from "./ProductDetailPrice";
-    import ProductDetailAddToCart from "./ProductDetailAddToCart";
-    import AddToWishlist from "../productutils/AddToWishlist";
+import { mapState, mapMutations } from 'vuex';
+import ProductDetailManufacturer from './ProductDetailManufacturer';
+import ProductDetailDelivery from './ProductDetailDelivery';
+import ProductDetailPrice from './ProductDetailPrice';
+import ProductDetailAddToCart from './ProductDetailAddToCart';
+import AddToWishlist from '../productutils/AddToWishlist';
 
-    export default {
-        components: {
-            AddToWishlist,
-            ProductDetailAddToCart,
-            ProductDetailPrice,
-            ProductDetailDelivery,
-            ProductDetailManufacturer,
-            ProductDetailBuyboxOptions: () => import('./ProductDetailBuyboxOptions'),
-            ProductDetailBuyboxOptionsSw: () => import('./ProductDetailBuyboxOptionsSw')
+export default {
+    components: {
+        AddToWishlist,
+        ProductDetailAddToCart,
+        ProductDetailPrice,
+        ProductDetailDelivery,
+        ProductDetailManufacturer,
+        ProductDetailBuyboxOptions: () => import('./ProductDetailBuyboxOptions'),
+        ProductDetailBuyboxOptionsSw: () => import('./ProductDetailBuyboxOptionsSw'),
+    },
+
+    data() {
+        return {
+            name: 'ProductDetailBuybox',
+        };
+    },
+
+    computed: {
+        ...mapState({
+            dataProduct: state => state.modApiProduct.dataProduct.result.item,
+            optionNotSelectedError: state => state.modApiProduct.optionNotSelectedError,
+        }),
+        attributeName: function () {
+            if (this.dataProduct.facets.string_facets[0]) {
+                return this.dataProduct.facets.string_facets[0]['label'];
+            }
+
+            return null;
         },
+        itemIsConfigurable: function () {
+            return this.dataProduct.type === 'configurable';
+        },
+    },
 
-        data() {
-            return {
-                name: 'ProductDetailBuybox'
+    created() {
+        this.resetSelectedVariants();
+        this.removeOptionNotSelectedError();
+    },
+
+    methods: {
+        ...mapMutations({
+            resetSelectedVariants: 'modApiProduct/resetSelectedVariants',
+            removeOptionNotSelectedError: 'modApiProduct/removeOptionNotSelectedError',
+            setCollapsed: 'modCollapsibleState/setCollapsed',
+        }),
+        openCollapsible: function () {
+            if (this.$mq === 'sm') {
+                this.setCollapsed();
             }
         },
-
-        computed: {
-            ...mapState({
-                dataProduct: state => state.modApiProduct.dataProduct.result.item,
-                optionNotSelectedError: state => state.modApiProduct.optionNotSelectedError
-            }),
-            attributeName: function() {
-                if (this.dataProduct.facets.string_facets[0]) {
-                    return this.dataProduct.facets.string_facets[0]['label'];
-                }
-
-                return null;
-            },
-            itemIsConfigurable: function() {
-                return this.dataProduct.type === 'configurable';
-            }
+        isApiType: function (type) {
+            return process.env.API_TYPE === type;
         },
-
-        created() {
-            this.resetSelectedVariants();
-            this.removeOptionNotSelectedError();
-        },
-
-        methods: {
-            ...mapMutations({
-                resetSelectedVariants: 'modApiProduct/resetSelectedVariants',
-                removeOptionNotSelectedError: 'modApiProduct/removeOptionNotSelectedError',
-                setCollapsed: 'modCollapsibleState/setCollapsed'
-            }),
-            openCollapsible: function() {
-                if(this.$mq === 'sm') {
-                    this.setCollapsed();
-                }
-            },
-            isApiType: function(type) {
-                return process.env.API_TYPE === type;
-            }
-        }
-    };
+    },
+};
 </script>

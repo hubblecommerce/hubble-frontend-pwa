@@ -1,20 +1,20 @@
 <template>
     <div>
         <div class="options-wrp">
-            <div class="option-wrp color" v-for="(facet, index) in facetsAvail" :key="index" :updating="isUpdating">
-                <div class="option-label" v-text="facet['facet-name']"></div>
+            <div v-for="(facet, index) in facetsAvail" :key="index" class="option-wrp color" :updating="isUpdating">
+                <div class="option-label" v-text="facet['facet-name']" />
                 <div class="option-val-wrp">
-                    <div v-for="(facetValue, vIndex) in facet['facet-values']"
+                    <div
+                        v-for="(facetValue, vIndex) in facet['facet-values']"
                         :key="vIndex"
                         class="option-val"
                         :class="[facetValue.selected ? 'active' : '', 'not-active']"
                         @click="selectFacetOption(facet, facetValue)"
                         @mouseover="activeIndex = vIndex"
-                        @mouseleave="activeIndex = null">
-                        <div class="swatchable" v-html="getSwatchable(facetValue)"></div>
-                        <div class="option-tooltip"
-                            v-if="activeIndex === vIndex"
-                            v-text="getFacetOptionLabel(facet, facetValue)"></div>
+                        @mouseleave="activeIndex = null"
+                    >
+                        <div class="swatchable" v-html="getSwatchable(facetValue)" />
+                        <div v-if="activeIndex === vIndex" class="option-tooltip" v-text="getFacetOptionLabel(facet, facetValue)" />
                     </div>
                 </div>
             </div>
@@ -23,316 +23,298 @@
 </template>
 
 <script>
-    import { mapGetters } from 'vuex';
-    import _ from 'lodash';
+import { mapGetters } from 'vuex';
+import _ from 'lodash';
 
-    export default {
-        name: "ProductListingCardOptions",
+export default {
+    name: 'ProductListingCardOptions',
 
-        data() {
-            return {
-                itemLoaded: {},
-                itemSelected: {},
-
-                facetsAvail: {},
-                facetsFilter: ['color_manufacturer'],
-
-                isUpdating: false,
-
-                uniqueOptions: {},
-
-                showTooltip: false,
-
-                activeIndex: null
-
-                // options: [
-                // 'color',
-                // 'size'
-                // ],
-                // visibleChanger: [
-                // 'color'
-                // ],
-                // mapping: {
-                //     color: {
-                //         53: 'green',
-                //         58: 'red',
-                //         60: 'yellow',
-                //         49: 'black',
-                //         50: 'blue',
-                //         57: 'purple',
-                //         56: 'orange',
-                //         51: 'brown',
-                //         52: 'grey'
-                //     },
-                //     size: {
-                //         167: 'XS',
-                //         168: 'S',
-                //         169: 'M',
-                //         170: 'L',
-                //         171: 'XL',
-                //         172: '28',
-                //         173: '29',
-                //         174: '30',
-                //         175: '31',
-                //         176: '32',
-                //         177: '33',
-                //         178: '34',
-                //         179: '35'
-                //     }
-                // },
-                // selected: undefined
-            }
+    props: {
+        item: {
+            type: Object,
+            required: true,
         },
+    },
 
-        props: {
-            item: {
-                type: Object,
-                required: true
-            }
+    data() {
+        return {
+            itemLoaded: {},
+            itemSelected: {},
+
+            facetsAvail: {},
+            facetsFilter: ['color_manufacturer'],
+
+            isUpdating: false,
+
+            uniqueOptions: {},
+
+            showTooltip: false,
+
+            activeIndex: null,
+
+            // options: [
+            // 'color',
+            // 'size'
+            // ],
+            // visibleChanger: [
+            // 'color'
+            // ],
+            // mapping: {
+            //     color: {
+            //         53: 'green',
+            //         58: 'red',
+            //         60: 'yellow',
+            //         49: 'black',
+            //         50: 'blue',
+            //         57: 'purple',
+            //         56: 'orange',
+            //         51: 'brown',
+            //         52: 'grey'
+            //     },
+            //     size: {
+            //         167: 'XS',
+            //         168: 'S',
+            //         169: 'M',
+            //         170: 'L',
+            //         171: 'XL',
+            //         172: '28',
+            //         173: '29',
+            //         174: '30',
+            //         175: '31',
+            //         176: '32',
+            //         177: '33',
+            //         178: '34',
+            //         179: '35'
+            //     }
+            // },
+            // selected: undefined
+        };
+    },
+
+    computed: {
+        ...mapGetters({
+            getSwatchesByOptionId: 'modSwatches/getSwatchesByOptionId',
+        }),
+        itemIsSimple() {
+            return this.itemLoaded.type === 'simple';
         },
+        itemIsGrouped() {
+            return this.itemLoaded.type === 'grouped';
+        },
+        itemIsConfigurable() {
+            return this.itemLoaded.type === 'configurable';
+        },
+        itemFacets() {
+            let _facets = null;
 
-        computed: {
-            ...mapGetters({
-                getSwatchesByOptionId: 'modSwatches/getSwatchesByOptionId'
-            }),
-            itemIsSimple() {
-                return this.itemLoaded.type === 'simple';
-            },
-            itemIsGrouped() {
-                return this.itemLoaded.type === 'grouped';
-            },
-            itemIsConfigurable() {
-                return this.itemLoaded.type === 'configurable';
-            },
-            itemFacets() {
-                let _facets = null;
+            if (_.has(this.itemLoaded.facets, 'string_facets')) {
+                _facets = this.itemLoaded.facets['string_facets'];
+            }
 
-                if(_.has(this.itemLoaded.facets, 'string_facets')) {
-                    _facets = this.itemLoaded.facets['string_facets'];
-                }
+            return _facets;
+        },
+        itemFacetsSuper() {
+            if (_.isEmpty(this.itemFacets)) {
+                return null;
+            }
 
-                return _facets;
-            },
-            itemFacetsSuper() {
-                if(_.isEmpty(this.itemFacets)) {
-                    return null;
-                }
+            let _facets = this.itemFacets.filter(item => item['type'] === 'super_attribute');
 
-                let _facets = this.itemFacets.filter(item => item['type'] === 'super_attribute');
-
-                // filter for wanted swatches
-                if(! _.isEmpty(this.facetsFilter)) {
-                    _facets = _facets.filter((item) => {
-                        return _.includes(this.facetsFilter, item['code']);
-                    })
-                }
-
-                return _facets;
-            },
-            itemFacetsSuperAllSelected() {
-                let _allSelected = true;
-
-                // loop through available facets
-                _.forEach(this.facetsAvail, (facet) => {
-
-                    // inform upper
-                    if(! facet.selected) {
-                        _allSelected = false;
-                    }
+            // filter for wanted swatches
+            if (!_.isEmpty(this.facetsFilter)) {
+                _facets = _facets.filter(item => {
+                    return _.includes(this.facetsFilter, item['code']);
                 });
-
-                return _allSelected;
             }
+
+            return _facets;
         },
+        itemFacetsSuperAllSelected() {
+            let _allSelected = true;
 
-        created() {
-            // use copy of loaded item based on vuex store
-            this.itemLoaded = this.item;
-
-            // use copy of original loaded item,
-            // but this might be changed by configuration
-            this.itemSelected = this.itemLoaded;
-
-            // use local copy of computed facets
-            this.facetsAvail = this.itemFacetsSuper;
-
-            // assign 'selected' (false) as default
-            _.forEach(this.facetsAvail, (facet) => {
-
-                facet.selected = false;
-
-                _.forEach(facet['facet-values'], (facetValue) => {
-                    facetValue.selected = false;
-                });
+            // loop through available facets
+            _.forEach(this.facetsAvail, facet => {
+                // inform upper
+                if (!facet.selected) {
+                    _allSelected = false;
+                }
             });
 
-            // assign color and/or image properties in case of 'color_manufacturer'
-            if(! _.isEmpty(this.itemFacetsSuper)) {
-                if(! _.isEmpty(this.itemFacetsSuper.filter(item => item['code'] === 'color_manufacturer'))) {
-                    this.assignFacetOptionValues('color_manufacturer');
+            return _allSelected;
+        },
+    },
+
+    created() {
+        // use copy of loaded item based on vuex store
+        this.itemLoaded = this.item;
+
+        // use copy of original loaded item,
+        // but this might be changed by configuration
+        this.itemSelected = this.itemLoaded;
+
+        // use local copy of computed facets
+        this.facetsAvail = this.itemFacetsSuper;
+
+        // assign 'selected' (false) as default
+        _.forEach(this.facetsAvail, facet => {
+            facet.selected = false;
+
+            _.forEach(facet['facet-values'], facetValue => {
+                facetValue.selected = false;
+            });
+        });
+
+        // assign color and/or image properties in case of 'color_manufacturer'
+        if (!_.isEmpty(this.itemFacetsSuper)) {
+            if (!_.isEmpty(this.itemFacetsSuper.filter(item => item['code'] === 'color_manufacturer'))) {
+                this.assignFacetOptionValues('color_manufacturer');
+            }
+        }
+    },
+
+    methods: {
+        getSwatchable(facetValue) {
+            if (facetValue.use_color) {
+                let _html = '<div class="swatchable-color">';
+
+                _html += '<div style="background-color: ' + facetValue.use_color + ';"></div>';
+
+                _html += '</div>';
+
+                return _html;
+            } else if (facetValue.use_image) {
+                return '<img src="' + facetValue.use_image + '" />';
+            } else {
+                return '<div class="no-swatch"></div>';
+            }
+        },
+        assignFacetOptionValues(facetCode) {
+            let _facet = _.head(this.itemFacetsSuper.filter(item => item['code'] === facetCode));
+
+            _.forEach(_facet['facet-values'], facetValue => {
+                let _option = this.getSwatchesByOptionId(facetCode, facetValue.id);
+
+                if (_.isEmpty(_option)) {
+                    facetValue['use_color'] = null;
+                    facetValue['use_image'] = null;
+                } else {
+                    // assign values ...
+                    facetValue['use_color'] = this.getFacetOptionColor(_option['small_color']);
+                    facetValue['use_image'] = this.getFacetOptionImage(_option['small_image'], 'medium', 149);
                 }
+            });
+        },
+        getFacetOptionColor(facetOptionColor) {
+            if (facetOptionColor !== '') {
+                return facetOptionColor;
             }
 
+            return null;
         },
+        getFacetOptionImage(facetOptionImgName, facetOptionImgSize, facetCodeAttrId) {
+            if (facetOptionImgName !== '') {
+                return _.join(
+                    ['https://www.design-bestseller.de/media/designbestseller_swatch', facetCodeAttrId, facetOptionImgSize, facetOptionImgName],
+                    '/'
+                );
+            }
 
-        methods: {
-            getSwatchable(facetValue) {
-                if(facetValue.use_color) {
-                    let _html = '<div class="swatchable-color">';
+            return facetOptionImgName;
+        },
+        selectFacetOption(facet, value) {
+            // reset 'selected' of given facet values
+            _.forEach(facet['facet-values'], facetValue => {
+                facetValue.selected = false;
+            });
 
-                    _html += '<div style="background-color: ' + facetValue.use_color + ';"></div>';
+            // mark facet 'selected'
+            facet.selected = true;
 
-                    _html += '</div>';
+            // mark facet value 'selected'
+            value.selected = true;
 
-                    return _html;
-                }
-                else if(facetValue.use_image) {
-                    return '<img src="' + facetValue.use_image + '" />';
-                }
-                else {
-                    return '<div class="no-swatch"></div>';
-                }
-            },
-            assignFacetOptionValues(facetCode) {
-                let _facet = _.head(this.itemFacetsSuper.filter(item => item['code'] === facetCode));
+            // enforce re-rendering dom !!
+            this.facetsAvail.push('nope');
+            this.facetsAvail.pop();
 
-                _.forEach(_facet['facet-values'], (facetValue) => {
-                    let _option = this.getSwatchesByOptionId(facetCode, facetValue.id);
+            if (this.itemFacetsSuperAllSelected) {
+                let _item = _.head(this.itemLoaded.search_result_data_children.filter(child => child.id === value.product_id));
 
-                    if(_.isEmpty(_option)) {
-                        facetValue['use_color'] = null;
-                        facetValue['use_image'] = null;
-                    } else {
-                        // assign values ...
-                        facetValue['use_color'] = this.getFacetOptionColor(_option['small_color']);
-                        facetValue['use_image'] = this.getFacetOptionImage(_option['small_image'], 'medium', 149);
-                    }
-                })
-            },
-            getFacetOptionColor(facetOptionColor) {
-                if(facetOptionColor !== '') {
-                    return facetOptionColor;
+                // merge itemSelected onto loadedItem
+                // note: omit 'media_gallery' to ensure array
+                this.itemSelected = _.merge({}, this.itemLoaded, _.omit(_item, ['type', 'media_gallery']));
+
+                if (this.itemSelected.url_pds === null) {
+                    this.itemSelected.url_pds = this.itemLoaded.url_pds;
                 }
 
-                return null;
-            },
-            getFacetOptionImage(facetOptionImgName, facetOptionImgSize, facetCodeAttrId) {
+                if (_.isArray(_item.media_gallery)) {
+                    this.itemSelected.media_gallery = _.merge({}, this.itemSelected.media_gallery, _item.media_gallery);
+                } else {
+                    let _media = {
+                        position: 0,
+                        disabled: 0,
+                        label: _item.name,
+                        value: _item.image,
+                    };
 
-                if(facetOptionImgName !== '') {
-                    return _.join([
-                        'https://www.design-bestseller.de/media/designbestseller_swatch',
-                        facetCodeAttrId,
-                        facetOptionImgSize,
-                        facetOptionImgName
-                        ], '/');
+                    this.itemSelected.media_gallery.unshift(_media);
                 }
 
-                return facetOptionImgName;
-            },
-            selectFacetOption(facet, value) {
+                // emit update to the parent
+                this.$parent.$emit('update-item-data', this.itemSelected);
+            }
+        },
+        getFacetOptionLabel(facet, value) {
+            return value.label;
+        },
+        toggleTooltip: function () {
+            this.showTooltip = true;
+        },
+        // getUniqueOptions: function() {
+        //     let uniqueOptions = {};
 
-                // reset 'selected' of given facet values
-                _.forEach(facet['facet-values'], (facetValue) => {
-                    facetValue.selected = false;
-                });
+        //     // Build object with options as properties
+        //     this.options.forEach((option) => {
+        //         uniqueOptions[option] = [];
 
-                // mark facet 'selected'
-                facet.selected = true;
+        //         // Fill option properties with unique option values per variant
+        //         this.children.forEach((child, index) => {
+        //             if(uniqueOptions[option].includes(child[option]) === false && child[option] != null) {
+        //                 uniqueOptions[option][index] = child[option];
+        //             }
+        //         });
 
-                // mark facet value 'selected'
-                value.selected = true;
+        //         // Remove empty keys from array
+        //         uniqueOptions[option] = uniqueOptions[option].filter(function (el) {
+        //             return el != null;
+        //         });
 
-                // enforce re-rendering dom !!
-                this.facetsAvail.push('nope');
-                this.facetsAvail.pop();
+        //     });
 
-                if(this.itemFacetsSuperAllSelected) {
+        //     return uniqueOptions;
+        // },
+        // updateVariant: function(option, variant) {
 
-                    let _item = _.head(
-                        this.itemLoaded.search_result_data_children.filter(
-                            child => child.id === value.product_id
-                        )
-                    );
+        //     // Update current product data if option triggers relevant data
+        //     if(this.visibleChanger.includes(option)) {
+        //         this.$parent.$emit('update-variant', variant);
 
-                    // merge itemSelected onto loadedItem
-                    // note: omit 'media_gallery' to ensure array
-                    this.itemSelected = _.merge({}, this.itemLoaded, _.omit(_item, [
-                        'type',
-                        'media_gallery'
-                    ]));
+        //         // Set current variant for selected state classes
+        //         this.selected = variant;
+        //     }
+        // },
+        // setClasses: function(option, variant) {
 
-                    if(this.itemSelected.url_pds === null) {
-                        this.itemSelected.url_pds = this.itemLoaded.url_pds;
-                    }
+        //     let classes = option;
 
-                    if(_.isArray(_item.media_gallery)) {
-                        this.itemSelected.media_gallery = _.merge({}, this.itemSelected.media_gallery, _item.media_gallery);
-                    }
-                    else {
-                        let _media = {
-                            position: 0,
-                            disabled: 0,
-                            label: _item.name,
-                            value: _item.image
-                        };
+        //     if(this.selected === variant ) {
+        //         classes = classes + " active";
+        //     }
 
-                        this.itemSelected.media_gallery.unshift(_media);
-                    }
-
-                    // emit update to the parent
-                    this.$parent.$emit('update-item-data', this.itemSelected);
-                }
-            },
-            getFacetOptionLabel(facet, value) {
-                return value.label;
-            },
-            toggleTooltip: function() {
-                this.showTooltip = true;
-            },
-            // getUniqueOptions: function() {
-            //     let uniqueOptions = {};
-
-            //     // Build object with options as properties
-            //     this.options.forEach((option) => {
-            //         uniqueOptions[option] = [];
-
-            //         // Fill option properties with unique option values per variant
-            //         this.children.forEach((child, index) => {
-            //             if(uniqueOptions[option].includes(child[option]) === false && child[option] != null) {
-            //                 uniqueOptions[option][index] = child[option];
-            //             }
-            //         });
-
-            //         // Remove empty keys from array
-            //         uniqueOptions[option] = uniqueOptions[option].filter(function (el) {
-            //             return el != null;
-            //         });
-
-            //     });
-
-            //     return uniqueOptions;
-            // },
-            // updateVariant: function(option, variant) {
-
-            //     // Update current product data if option triggers relevant data
-            //     if(this.visibleChanger.includes(option)) {
-            //         this.$parent.$emit('update-variant', variant);
-
-            //         // Set current variant for selected state classes
-            //         this.selected = variant;
-            //     }
-            // },
-            // setClasses: function(option, variant) {
-
-            //     let classes = option;
-
-            //     if(this.selected === variant ) {
-            //         classes = classes + " active";
-            //     }
-
-            //     return classes;
-            // }
-        }
-    };
-    //
+        //     return classes;
+        // }
+    },
+};
+//
 </script>

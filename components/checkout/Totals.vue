@@ -4,7 +4,7 @@
             <div>{{ $t('Subtotal') }}</div>
 
             <div>
-                <span class="float-right" v-html="getSubTotal()"></span>
+                <span class="float-right" v-html="getSubTotal()" />
             </div>
         </div>
 
@@ -12,7 +12,7 @@
             <div>{{ $t('Shipping Costs') }}</div>
 
             <div>
-                <span class="float-right" v-html="getShippingCosts()"></span>
+                <span class="float-right" v-html="getShippingCosts()" />
             </div>
         </div>
 
@@ -20,56 +20,56 @@
             <div>{{ $t('Totals') }}</div>
 
             <div>
-                <span class="float-right" v-html="getTotal()"></span>
+                <span class="float-right" v-html="getTotal()" />
             </div>
         </div>
     </div>
 </template>
 
 <script>
-    import { mapGetters } from 'vuex';
+import { mapGetters } from 'vuex';
 
-    export default {
-        name: "Totals",
+export default {
+    name: 'Totals',
 
-        computed: {
-            ...mapGetters({
-                getTotals: 'modCart/getTotals',
-                getSubtotals: 'modCart/getSubtotals',
-                priceDecFmt: 'modPrices/priceDecFmt',
-                priceAddCur: 'modPrices/priceAddCur',
-                getShippingCostsFromStore: 'modCart/getShippingCosts'
-            })
+    computed: {
+        ...mapGetters({
+            getTotals: 'modCart/getTotals',
+            getSubtotals: 'modCart/getSubtotals',
+            priceDecFmt: 'modPrices/priceDecFmt',
+            priceAddCur: 'modPrices/priceAddCur',
+            getShippingCostsFromStore: 'modCart/getShippingCosts',
+        }),
+    },
+
+    methods: {
+        getSubTotal: function () {
+            let subtotals = this.getSubtotals;
+
+            // Format subtotals
+            subtotals = this.priceDecFmt(subtotals);
+            subtotals = this.priceAddCur(subtotals);
+
+            return subtotals;
         },
+        getShippingCosts: function () {
+            let shippingCosts = this.getShippingCostsFromStore;
 
-        methods: {
-            getSubTotal: function() {
-                let subtotals = this.getSubtotals;
+            // Format shippingCosts
+            shippingCosts = this.priceDecFmt(shippingCosts);
+            shippingCosts = this.priceAddCur(shippingCosts);
 
-                // Format subtotals
-                subtotals = this.priceDecFmt(subtotals);
-                subtotals = this.priceAddCur(subtotals);
+            return shippingCosts;
+        },
+        getTotal: function () {
+            let total = this.getTotals;
 
-                return subtotals;
-            },
-            getShippingCosts: function() {
-                let shippingCosts = this.getShippingCostsFromStore;
+            // Format totals
+            total = this.priceDecFmt(total);
+            total = this.priceAddCur(total);
 
-                // Format shippingCosts
-                shippingCosts = this.priceDecFmt(shippingCosts);
-                shippingCosts = this.priceAddCur(shippingCosts);
-
-                return shippingCosts;
-            },
-            getTotal: function() {
-                let total = this.getTotals;
-
-                // Format totals
-                total = this.priceDecFmt(total);
-                total = this.priceAddCur(total);
-
-                return total;
-            }
-        }
-    }
+            return total;
+        },
+    },
+};
 </script>

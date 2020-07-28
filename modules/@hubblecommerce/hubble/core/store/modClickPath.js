@@ -3,22 +3,21 @@ export default function (ctx) {
         namespaced: true,
         state: () => ({
             clickPath: [],
-            clickPathHistoryCount: 5
+            clickPathHistoryCount: 5,
         }),
-        getters: {
-        },
+        getters: {},
         mutations: {
             setClickPath: (state, payload) => {
                 state.clickPath = payload;
             },
             appendToClickPath: (state, payload) => {
-                if(state.clickPath.length >= state.clickPathHistoryCount) {
+                if (state.clickPath.length >= state.clickPathHistoryCount) {
                     state.clickPath.shift();
                 }
 
                 state.clickPath.push(payload);
-            }
-        }
+            },
+        },
     };
 
     ctx.store.registerModule('modClickPath', modClickPath);

@@ -1,81 +1,81 @@
 <template>
     <div class="collapse-wrp">
         <button :class="toggleClass" class="toggle m-0 align-left headline-4" @click.prevent="collapseContent()">
-            <i v-if="toggleIconClass" :class="toggleIconClass"></i>
+            <i v-if="toggleIconClass" :class="toggleIconClass" />
 
             {{ toggleText }}
 
             <transition-rotate-x>
-                <i v-if="!collapsedState" class="icon icon-minus"></i>
+                <i v-if="!collapsedState" class="icon icon-minus" />
             </transition-rotate-x>
 
             <transition-rotate-x>
-                <i v-if="collapsedState" class="icon icon-plus"></i>
+                <i v-if="collapsedState" class="icon icon-plus" />
             </transition-rotate-x>
 
-            <material-ripple></material-ripple>
+            <material-ripple />
         </button>
 
         <transition @before-enter="beforeEnter" @after-enter="afterEnter" @before-leave="beforeLeave">
             <div v-if="!collapsedState" ref="collapseContent" class="collapse show collapse-item">
-                <slot></slot>
+                <slot />
             </div>
         </transition>
     </div>
 </template>
 
 <script>
-    import { mapState, mapMutations } from 'vuex'
-    import TransitionRotateX from "../transitions/TransitionRotateX";
+import { mapState, mapMutations } from 'vuex';
+import TransitionRotateX from '../transitions/TransitionRotateX';
 
-    export default {
-        name: "Collapsible",
+export default {
+    name: 'Collapsible',
 
-        components: {TransitionRotateX},
+    components: { TransitionRotateX },
 
-        props: {
-            toggleTag: {
-                type: [String, Array],
-                default: () => ['button']
-            },
-            toggleText: {
-                type: String,
-                default: ''
-            },
-            toggleClass: {
-                type: String,
-                default: ''
-            },
-            toggleIconClass: {
-                type: String,
-                default: ''
-            },
-            isCollapsed: {
-                required: false,
-                type: Boolean,
-                default: true
-            }
+    props: {
+        toggleTag: {
+            type: [String, Array],
+            default: () => ['button'],
         },
-
-        computed: {
-            ...mapState({
-                collapsedState: state => state.modCollapsibleState.collapsed
-            })
+        toggleText: {
+            type: String,
+            default: '',
         },
-        
-        methods: {
-            ...mapMutations({
-                collapseContent: 'modCollapsibleState/collapseContent'
-            }),
-            beforeEnter: function(el) {
-                el.style.maxHeight = 0;
-            },
-            afterEnter: function(el) {
-                el.style.maxHeight = '700px';
-            },
-            beforeLeave: function(el) {
-                el.style.maxHeight = '0';
-            },
-        }
-    }
+        toggleClass: {
+            type: String,
+            default: '',
+        },
+        toggleIconClass: {
+            type: String,
+            default: '',
+        },
+        isCollapsed: {
+            required: false,
+            type: Boolean,
+            default: true,
+        },
+    },
+
+    computed: {
+        ...mapState({
+            collapsedState: state => state.modCollapsibleState.collapsed,
+        }),
+    },
+
+    methods: {
+        ...mapMutations({
+            collapseContent: 'modCollapsibleState/collapseContent',
+        }),
+        beforeEnter: function (el) {
+            el.style.maxHeight = 0;
+        },
+        afterEnter: function (el) {
+            el.style.maxHeight = '700px';
+        },
+        beforeLeave: function (el) {
+            el.style.maxHeight = '0';
+        },
+    },
+};
 </script>
