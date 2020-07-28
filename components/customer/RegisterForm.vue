@@ -435,6 +435,7 @@
     import {mapState, mapActions, mapMutations} from 'vuex';
     import Form from '@hubblecommerce/hubble/core/utils/form';
     import {addBackendErrors, salutations} from "@hubblecommerce/hubble/core/utils/formMixins";
+    import _ from 'lodash';
 
     export default {
         name: "RegisterForm",

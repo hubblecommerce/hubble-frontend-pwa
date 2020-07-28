@@ -29,6 +29,7 @@
 
 <script>
     import { mapMutations, mapState } from 'vuex';
+    import _ from 'lodash';
 
     export default {
         name: "ProductDetailBuyboxOptionsSw",

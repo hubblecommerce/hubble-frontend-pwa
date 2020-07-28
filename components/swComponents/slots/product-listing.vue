@@ -20,6 +20,8 @@ import ProductListing from '../../productlist/ProductListing'
 import Pagination from '../../productlist/toolbar/Pagination'
 import SelectableLimit from '../../productlist/toolbar/SelectableLimit'
 import SelectableOrder from '../../productlist/toolbar/SelectableOrder'
+import _ from 'lodash';
+
     export default {
         name: 'ProductListingSlot',
         components: { ProductListing, Pagination, SelectableLimit, SelectableOrder },

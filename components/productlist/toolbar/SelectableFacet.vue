@@ -47,13 +47,12 @@ Component usage:
 
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
-import CollapsibleFilter from "./CollapsibleFilter";
 
 export default {
     name: 'SelectableFacet',
 
     components: {
-        CollapsibleFilter
+        CollapsibleFilter: () => import('./CollapsibleFilter')
     },
 
     props: {

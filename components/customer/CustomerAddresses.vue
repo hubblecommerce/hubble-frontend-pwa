@@ -381,6 +381,7 @@
     import { mapState, mapActions } from 'vuex';
     import Form from '@hubblecommerce/hubble/core/utils/form';
     import {mapKeyToValue, mapIsoToCountry, addBackendErrors, salutations} from "@hubblecommerce/hubble/core/utils/formMixins";
+    import _ from 'lodash';
 
     export default {
         name: "CustomerAddresses",

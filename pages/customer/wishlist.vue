@@ -44,6 +44,7 @@
     import { mapState, mapActions } from 'vuex';
     import WishlistItemsList from "../../components/customer/WishlistItemsList";
     import NewsletterForm from "../../components/utils/NewsletterForm";
+    import _ from 'lodash';
 
     export default {
         name: "Wishlist",

@@ -64,6 +64,9 @@
     import axios from 'axios';
     import Totals from "../../components/checkout/Totals";
     import { clearDataLayer } from "@hubblecommerce/hubble/core/utils/gtmHelper";
+    import _ from 'lodash';
+    import cartValidate from '@hubblecommerce/hubble/core/anonymous-middleware/cartValidate'
+    import apiPaymentAuthenticate from '@hubblecommerce/hubble/core/anonymous-middleware/apiPaymentAuthenticate'
 
     export default {
         name: "Amazon",
@@ -71,8 +74,8 @@
         components: {Totals},
 
         middleware: [
-            'apiPaymentAuthenticate',
-            'cartValidate',
+            apiPaymentAuthenticate,
+            cartValidate,
             'apiLocalization',
             'trackClickPath'
         ],

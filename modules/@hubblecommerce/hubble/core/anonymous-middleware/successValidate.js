@@ -1,6 +1,6 @@
-import Middleware from './middleware'
+import _ from 'lodash';
 
-Middleware.successValidate = function ({ isHMR, store, redirect, app }) {
+export default function ({ isHMR, store, redirect, app }) {
     // ignore if called from hot module replacement
     if (isHMR) {
         return;

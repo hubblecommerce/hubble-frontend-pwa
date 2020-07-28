@@ -6,6 +6,7 @@
 
 <script>
     import { slotMixins } from '../helper'
+    import _ from 'lodash';
 
     export default {
         name: "VimeoVideoSlot",

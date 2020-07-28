@@ -1,6 +1,9 @@
-import Middleware from './middleware'
+export default async function({ store, route, error }) {
 
-Middleware.apiIndexRoute = async function({ store, route, error }) {
+    if(process.env.API_TYPE !== 'sw') {
+        return;
+    }
+
     try {
         let pageResponse = await store.dispatch('apiCall', {
             action: 'post',

@@ -1,4 +1,5 @@
 import { slugify } from "@hubblecommerce/hubble/core/utils/menuHelper";
+import _ from 'lodash';
 
 export default function (ctx) {
     const modApiProduct = {

@@ -19,7 +19,7 @@
 <script>
     import { mapState } from 'vuex';
     import FlashMessage from "./FlashMessage";
-    const _ = require("lodash-core");
+    import _ from 'lodash';
     export default {
         name: "FlashMessages",
         components: {

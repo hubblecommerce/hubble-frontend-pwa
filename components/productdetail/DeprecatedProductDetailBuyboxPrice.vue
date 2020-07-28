@@ -69,6 +69,7 @@
     import AddToWishlist from "../productutils/AddToWishlist";
     import { clearDataLayer } from "@hubblecommerce/hubble/core/utils/gtmHelper";
     import ProductDetailPrice from "./ProductDetailPrice";
+    import _ from 'lodash';
 
     export default {
 
@@ -195,7 +196,8 @@
 
         methods: {
             ...mapMutations({
-                resetSelectedVariants: 'modApiProduct/resetSelectedVariants'
+                resetSelectedVariants: 'modApiProduct/resetSelectedVariants',
+                initiateCartLayer: 'modCart/initiateLayer',
             }),
             ...mapActions({
                 flashMessage: 'modFlash/flashMessage',
@@ -280,7 +282,8 @@
                         this.resetSelectedVariants();
                     }
 
-                    // Open Minicart Context
+                    // Load and open Minicart Context
+                    this.initiateCartLayer();
                     this.toggleOffcanvasAction({
                         component: 'TheMiniCart',
                         direction: 'rightLeft'

@@ -90,8 +90,10 @@
 </template>
 
 <script>
-
     import {mapGetters, mapMutations} from 'vuex';
+    import Vue from 'vue'
+    import vClickOutside from 'v-click-outside'
+    import _ from 'lodash';
 
     export default {
         name: 'TheSearch',
@@ -112,6 +114,10 @@
                 origImageFilter: '60x',
                 focus: false
             }
+        },
+
+        created() {
+            Vue.use(vClickOutside);
         },
 
         computed: {

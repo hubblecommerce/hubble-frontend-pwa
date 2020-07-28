@@ -1,4 +1,5 @@
 import Middleware from './middleware'
+import _ from 'lodash';
 
 Middleware.trackClickPath = function ({ store, route }) {
     // Set page type to cms if route is known (CMS Page) or dynamic and keep record from api (Category, Product, ...)

@@ -1,4 +1,5 @@
 import localStorageHelper from "@hubblecommerce/hubble/core/utils/localStorageHelper";
+import _ from 'lodash';
 
 export default function (ctx) {
     const modWishlist = {

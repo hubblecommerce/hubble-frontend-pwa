@@ -5,8 +5,8 @@
         </div>
 
         <div v-if="!loading" class="container main-container">
-            <div v-if="$mq === 'sm'" class="back-btn-wrp">
-                <button class="detail-back-btn" @click="historyBack()">
+            <div class="back-btn-wrp">
+                <button v-if="$mq === 'sm'" class="detail-back-btn" @click="historyBack()">
                     <i class="icon icon-chevron-left" />
                     <span class="hidden-link-name">{{ $t('Back') }}</span>
                     <material-ripple />
@@ -77,6 +77,7 @@
     import Breadcrumbs from "../utils/Breadcrumbs";
     import ProductDetailRecommendations from "./ProductDetailRecommendations";
     import GTMDataLayer from "../utils/GTMDataLayer";
+    import _ from 'lodash';
 
     export default {
         name: "ViewProduct",

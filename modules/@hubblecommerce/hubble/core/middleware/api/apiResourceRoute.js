@@ -1,4 +1,5 @@
 import Middleware from './middleware'
+import _ from 'lodash';
 
 Middleware.apiResourceRoute = function({ store, route, error }) {
     // remove leading '/'

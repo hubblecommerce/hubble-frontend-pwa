@@ -51,6 +51,10 @@
 
 <script>
     export default {
-        name: "TheFooterMobile"
+        name: "TheFooterMobile",
+
+        components: {
+            Collapsible: () => import('../utils/Collapsible')
+        }
     }
 </script>

@@ -84,6 +84,7 @@
     import { mapState, mapGetters, mapMutations} from 'vuex';
     import AddToWishlist from "../productutils/AddToWishlist";
     import ProductListingCardOptionsNonInteractive from "./ProductListingCardOptionsNonInteractive";
+    import _ from 'lodash';
 
     export default {
         name: 'ProductListingCard',

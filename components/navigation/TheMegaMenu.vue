@@ -65,6 +65,7 @@
 
 <script>
     import {mapActions, mapGetters} from 'vuex';
+    import _ from 'lodash';
 
     export default {
         name: "TheMegaMenu",

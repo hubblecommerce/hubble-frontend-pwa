@@ -1,7 +1,6 @@
-import Middleware from './middleware'
 import base64 from "base-64";
 
-Middleware.cartValidate = function ({ isHMR, store, redirect, app }) {
+export default function ({ isHMR, store, redirect, app }) {
     // ignore if called from hot module replacement
     if (isHMR) {
         return;

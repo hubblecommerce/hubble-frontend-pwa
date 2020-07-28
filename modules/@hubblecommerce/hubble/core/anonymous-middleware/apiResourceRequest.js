@@ -1,6 +1,4 @@
-import Middleware from './middleware'
-
-Middleware.apiResourceRequest = function ({ isHMR, store, route, error }) {
+export default function ({ isHMR, store, route, error }) {
     // ignore if called from hot module replacement
     if (isHMR) {
         return;

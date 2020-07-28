@@ -184,6 +184,8 @@
     import PaymentMethods from "../../components/checkout/PaymentMethods";
     import ShippingMethods from "../../components/checkout/ShippingMethods";
     import { addBackendErrors } from "@hubblecommerce/hubble/core/utils/formMixins";
+    import _ from 'lodash';
+    import cartValidate from '@hubblecommerce/hubble/core/anonymous-middleware/cartValidate'
 
     export default {
         name: "ShopwareGuest",
@@ -191,7 +193,7 @@
         components: {ShippingMethods, PaymentMethods, Totals},
 
         middleware: [
-            'cartValidate',
+            cartValidate,
             'apiLocalization',
             'trackClickPath'
         ],

@@ -134,6 +134,7 @@
 
 <script>
     import { mapState, mapGetters, mapMutations, mapActions } from 'vuex';
+    import _ from 'lodash';
 
     export default {
         name: "PaymentMethods",

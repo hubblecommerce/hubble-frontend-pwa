@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 export default function (ctx) {
     const modSearch = {
         namespaced: true,

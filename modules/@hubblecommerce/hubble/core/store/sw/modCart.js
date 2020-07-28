@@ -1,10 +1,13 @@
 import base64 from 'base-64'
 import localStorageHelper from "@hubblecommerce/hubble/core/utils/localStorageHelper";
+import _ from 'lodash';
 
 export default function (ctx) {
     const modCart = {
         namespaced: true,
         state: () => ({
+            layerInitiated: false,
+
             shippingCosts: 0,
 
             cart: {
@@ -91,7 +94,10 @@ export default function (ctx) {
             },
             setSwtc: (state, item) => {
                 state.swtc = item;
-            }
+            },
+            initiateLayer: (state) => {
+                state.layerInitiated = true;
+            },
         },
         actions: {
             clearAll({commit, dispatch}) {

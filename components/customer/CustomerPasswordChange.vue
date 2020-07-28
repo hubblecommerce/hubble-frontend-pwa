@@ -84,6 +84,7 @@
     import { mapState, mapActions } from 'vuex';
     import Form from "@hubblecommerce/hubble/core/utils/form";
     import {addBackendErrors} from "@hubblecommerce/hubble/core/utils/formMixins";
+    import _ from 'lodash';
 
     export default {
         name: "CustomerPasswordChange",

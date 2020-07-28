@@ -85,8 +85,12 @@
     import axios from 'axios';
     import CartItemsListNonInteractive from "../../components/checkout/CartItemsListNonInteractive";
     import Totals from "../../components/checkout/Totals";
-    import base64 from "base-64";
     import CustomerAddresses from "../../components/customer/CustomerAddresses";
+    import _ from 'lodash';
+    import orderValidate from '@hubblecommerce/hubble/core/anonymous-middleware/orderValidate'
+    import cartValidate from '@hubblecommerce/hubble/core/anonymous-middleware/cartValidate'
+    import apiCustomerAuthenticate from '@hubblecommerce/hubble/core/anonymous-middleware/apiCustomerAuthenticate'
+    import apiPaymentAuthenticate from '@hubblecommerce/hubble/core/anonymous-middleware/apiPaymentAuthenticate'
 
     export default {
         name: "Summary",
@@ -98,10 +102,10 @@
         },
 
         middleware: [
-            'apiPaymentAuthenticate',
-            'apiCustomerAuthenticate',
-            'cartValidate',
-            'orderValidate',
+            apiPaymentAuthenticate,
+            apiCustomerAuthenticate,
+            cartValidate,
+            orderValidate,
             'apiLocalization',
             'trackClickPath'
         ],

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { clearDataLayer } from "@hubblecommerce/hubble/core/utils/gtmHelper";
+import _ from 'lodash';
 
 function gtmPurchase(ctx, order) {
     return new Promise(resolve => {

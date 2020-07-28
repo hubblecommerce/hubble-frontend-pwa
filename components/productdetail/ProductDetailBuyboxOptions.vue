@@ -34,6 +34,7 @@
 
 <script>
     import { mapState, mapGetters, mapMutations } from 'vuex';
+    import _ from 'lodash';
 
     export default {
         name: "ProductDetailBuyboxOptions",

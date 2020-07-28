@@ -95,15 +95,16 @@
     import {mapActions, mapGetters, mapMutations, mapState} from 'vuex';
 
     import SelectableFacet from './toolbar/SelectableFacet.vue';
-    import CollapsibleFilter from "./toolbar/CollapsibleFilter";
     import PriceSlider from "./toolbar/PriceSlider";
+    import _ from 'lodash';
 
     export default {
         name: 'ProductListingFilter',
 
         components: {
             PriceSlider,
-            CollapsibleFilter,
+            CollapsibleFilter: () => import('./toolbar/CollapsibleFilter'),
+            Collapsible: () => import('../utils/Collapsible'),
             SelectableFacet,
         },
 

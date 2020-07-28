@@ -35,13 +35,15 @@
     import {mapState} from 'vuex';
     import GTMProductImpressions from "../utils/GTMProductImpressions";
     import ProductListingCard from "./ProductListingCard";
+    import _ from 'lodash';
 
     export default {
         name: 'ProductListing',
 
         components: {
             ProductListingCard,
-            GTMProductImpressions
+            GTMProductImpressions,
+            Slider: () => { if(process.client) { return import('vue-tiny-slider') } },
         },
 
         props: {

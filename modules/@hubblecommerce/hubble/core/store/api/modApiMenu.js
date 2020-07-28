@@ -1,5 +1,6 @@
 import {sortMenuEntries} from "@hubblecommerce/hubble/core/utils/menuHelper";
 import {datetimeUnixNow, datetimeUnixNowAddSecs} from "@hubblecommerce/hubble/core/utils/datetime";
+import _ from 'lodash';
 
 export default function (ctx) {
     const modApiMenu = {

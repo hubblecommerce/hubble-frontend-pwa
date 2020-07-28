@@ -1,7 +1,7 @@
 /*
 Shopware CMS Helper Functions
 */
-
+import _ from 'lodash';
 function returnSlotByType(type) {
     return () =>
         import('./slots/' + type).catch(() => {

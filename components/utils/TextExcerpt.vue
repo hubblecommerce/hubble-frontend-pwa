@@ -1,11 +1,13 @@
 <template>
     <div class="text-excerpt">
-        <div :class="{collapsed: isCollapsed}" class="text" v-html="truncatedText" />
-        <div v-if="isCollapsed" class="show-more" @click="toggleCollapse()" v-text="$t('Continue reading')" />
+        <div :class="{collapsed: isCollapsed && loaded}" class="text" v-html="truncatedText" />
+        <div v-if="isCollapsed && loaded" class="show-more" @click="toggleCollapse()" v-text="$t('Continue reading')" />
     </div>
 </template>
 
 <script>
+    import _ from 'lodash';
+
     export default {
         name: "TextExcerpt",
 
@@ -23,7 +25,8 @@
         data() {
             return {
                 isCollapsed: this.limit <= this.text.length,
-                onlyTruncateWords: true
+                onlyTruncateWords: true,
+                loaded: false,
             }
         },
 
@@ -32,8 +35,13 @@
                 if(this.isCollapsed ) {
                     return this.truncateText(this.text);
                 }
+
                 return this.text;
             }
+        },
+
+        created() {
+            this.loaded = true;
         },
 
         methods: {

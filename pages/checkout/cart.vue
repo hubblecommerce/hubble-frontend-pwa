@@ -88,6 +88,7 @@
             GTMDataLayer,
             Totals,
             Coupons: () => import('../../components/checkout/Coupons'),
+            Collapsible: () => import('../../components/utils/Collapsible'),
             CartItemsList
         },
 
