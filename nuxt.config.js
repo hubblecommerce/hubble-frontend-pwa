@@ -133,7 +133,9 @@ module.exports = {
     /*
     ** Plugins to load before mounting the App
     */
-    plugins: [],
+    plugins:[
+        { src: '~/plugins/clientside-initialization.js', mode: 'client' }
+    ],
 
     /*
     ** Nuxt.js modules
@@ -227,9 +229,9 @@ module.exports = {
     */
     hubble: {
         apiType: process.env.API_TYPE,
-        deactivateStores: [],
+        deactivateStores: ['modApiProduct.js'],
         deactivatePlugins: [],
-        deactivateMiddleware: [],
+        deactivateMiddleware: ['apiResourceRoute.js'],
         useTheme: false,
         gtmId: process.env.GOOGLE_TAG_MANAGER_ID,
         payone: {},

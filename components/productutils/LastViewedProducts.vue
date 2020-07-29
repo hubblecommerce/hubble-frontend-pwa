@@ -1,0 +1,35 @@
+<template>
+    <div class="last-viewed--wrp">
+        <div class="last-viewed--title">Last Viewed Products</div>
+        <div class="last-viewed--list">
+                <div v-for="product in viewedProducts" :key="product.id" class="last-viewed--clickable">
+                        <a :href="'/' + product.url_pds">
+                            <img-lazy :src="product.image"
+                                      :alt-info="product.name"
+                                      :title-info="product.name"
+                                      class="last-viewed--image"
+                            />
+                            <div class="last-viewed--name">{{ product.name }}</div>
+                        </a>
+                </div>
+        </div>
+    </div>
+</template>
+
+<script>
+    import { mapState } from "vuex";
+
+    export default {
+        name: "LastViewedProducts",
+
+        computed: {
+            ...mapState({
+                viewedProducts: state => state.modLastViewed.viewedProducts
+            })
+        },
+
+        created() {
+            if (process.client) this.$store.dispatch('modLastViewed/saveViewedProductsToLocalForage');
+        }
+    }
+</script>

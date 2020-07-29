@@ -56,6 +56,10 @@
                     />
                     <product-detail-recommendations v-if="hasProductsCrossByOrder" :product-id="productData.id" />
                 </div>
+
+                <div>
+                    <last-viewed-products />
+                </div>
             </div>
 
             <g-t-m-data-layer
@@ -78,6 +82,7 @@
     import ProductDetailRecommendations from "./ProductDetailRecommendations";
     import GTMDataLayer from "../utils/GTMDataLayer";
     import _ from 'lodash';
+    import LastViewedProducts from "../productutils/LastViewedProducts";
 
     export default {
         name: "ViewProduct",
@@ -90,7 +95,8 @@
             ProductDetailBuybox,
             ProductDetailGallery,
             CollapsibleDescription,
-            ProductDetailRecommendations
+            ProductDetailRecommendations,
+            LastViewedProducts
         },
 
         data() {
