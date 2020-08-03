@@ -3,5 +3,5 @@
     "singleQuote": true,
     "printWidth": 150,
     "htmlWhitespaceSensitivity": "strict",
-    "arrowParens": "avoid",
+    "arrowParens": "avoid"
 }

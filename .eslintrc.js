@@ -10,11 +10,12 @@ module.exports = {
     extends: [
         'eslint:recommended',
         'plugin:vue/recommended',
+        'plugin:nuxt/recommended',
         'plugin:prettier/recommended',
-        'plugin:nuxt/recommended'
+        'prettier/vue'
     ],
     plugins: [
-        'vue'
+        'vue',
     ],
     rules: {
         'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
