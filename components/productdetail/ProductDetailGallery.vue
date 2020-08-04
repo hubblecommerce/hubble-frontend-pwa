@@ -49,7 +49,7 @@
                                         :src="routeUrlGalleryThumbnail(image)"
                                         :alt="productData.name"
                                         :title="productData.name"
-                                    >
+                                    />
                                 </div>
                             </div>
                         </slider>
@@ -258,25 +258,11 @@ export default {
 
             // If customer domain isset get live images
             if (!_.isEmpty(process.env.CUSTOMER_DOMAIN)) {
-                let _letters = _.split(image, '', 2);
-
-                let _reference = _.join(
-                    [
-                        process.env.CUSTOMER_DOMAIN,
-                        'images/catalog/thumbnails/cache/400',
-                        // 'media/catalog/product',
-                        // _letters[0],
-                        // _letters[1],
-                        image,
-                    ],
-                    '/'
-                );
-
-                return _reference;
+                return _.join([process.env.CUSTOMER_DOMAIN, 'images/catalog/thumbnails/cache/400', image], '/');
             }
 
-            let _path = _.trim(process.env.config.IMG_BASE_URL, '/');
-            return _path + '/images/catalog/product/40x/' + image;
+            let path = _.trim(process.env.config.IMG_BASE_URL, '/');
+            return path + '/images/catalog/product/40x/' + image;
         },
         routeUrlSmallGallery(image) {
             if (process.env.API_TYPE === 'sw') {
@@ -285,48 +271,20 @@ export default {
 
             // If customer domain isset get live images
             if (!_.isEmpty(process.env.CUSTOMER_DOMAIN)) {
-                let _letters = _.split(image, '', 2);
-
-                let _reference = _.join(
-                    [
-                        process.env.CUSTOMER_DOMAIN,
-                        'images/catalog/thumbnails/cache/400',
-                        // 'media/catalog/product',
-                        // _letters[0],
-                        // _letters[1],
-                        image,
-                    ],
-                    '/'
-                );
-
-                return _reference;
+                return _.join([process.env.CUSTOMER_DOMAIN, 'images/catalog/thumbnails/cache/400', image], '/');
             }
 
-            let _path = _.trim(process.env.config.IMG_BASE_URL, '/');
-            return _path + '/images/catalog/product/295x/' + image;
+            let path = _.trim(process.env.config.IMG_BASE_URL, '/');
+            return path + '/images/catalog/product/295x/' + image;
         },
         routeUrlGallery(image) {
             // If customer domain isset get live images
             if (!_.isEmpty(process.env.CUSTOMER_DOMAIN)) {
-                let _letters = _.split(image, '', 2);
-
-                let _reference = _.join(
-                    [
-                        process.env.CUSTOMER_DOMAIN,
-                        'images/catalog/thumbnails/cache/400',
-                        // 'media/catalog/product',
-                        // _letters[0],
-                        // _letters[1],
-                        image,
-                    ],
-                    '/'
-                );
-
-                return _reference;
+                return _.join([process.env.CUSTOMER_DOMAIN, 'images/catalog/thumbnails/cache/400', image], '/');
             }
 
-            let _path = _.trim(process.env.config.IMG_BASE_URL, '/');
-            return _path + '/images/catalog/product/pds/' + image;
+            let path = _.trim(process.env.config.IMG_BASE_URL, '/');
+            return path + '/images/catalog/product/pds/' + image;
         },
         routeOriginalImage(image) {
             if (process.env.API_TYPE === 'sw') {
@@ -335,25 +293,11 @@ export default {
 
             // If customer domain isset get live images
             if (!_.isEmpty(process.env.CUSTOMER_DOMAIN)) {
-                let _letters = _.split(image, '', 2);
-
-                let _reference = _.join(
-                    [
-                        process.env.CUSTOMER_DOMAIN,
-                        'images/product_images/original_images',
-                        // 'media/catalog/product',
-                        // _letters[0],
-                        // _letters[1],
-                        image,
-                    ],
-                    '/'
-                );
-
-                return _reference;
+                return _.join([process.env.CUSTOMER_DOMAIN, 'images/product_images/original_images', image], '/');
             }
 
-            let _path = _.trim(process.env.config.IMG_BASE_URL, '/');
-            return _path + '/images/catalog/product/pds/' + image;
+            let path = _.trim(process.env.config.IMG_BASE_URL, '/');
+            return path + '/images/catalog/product/pds/' + image;
         },
         setDefaultProductImage() {
             if (process.env.API_TYPE === 'sw') {
@@ -364,24 +308,10 @@ export default {
             if (!_.isEmpty(process.env.CUSTOMER_DOMAIN)) {
                 let image = this.productData.image;
 
-                let _letters = _.split(image, '', 2);
-
-                let _reference = _.join(
-                    [
-                        process.env.CUSTOMER_DOMAIN,
-                        'images/catalog/thumbnails/cache/400',
-                        // 'media/catalog/product',
-                        // _letters[0],
-                        // _letters[1],
-                        image,
-                    ],
-                    '/'
-                );
-
-                this.currentImage = _reference;
+                this.currentImage = _.join([process.env.CUSTOMER_DOMAIN, 'images/catalog/thumbnails/cache/400', image], '/');
             } else {
-                let _path = _.trim(process.env.config.IMG_BASE_URL, '/');
-                this.currentImage = _path + '/images/catalog/product/440x/' + this.productData.image;
+                let path = _.trim(process.env.config.IMG_BASE_URL, '/');
+                this.currentImage = path + '/images/catalog/product/440x/' + this.productData.image;
             }
         },
         modalGalleryHide() {

@@ -11,7 +11,7 @@
                     :class="{ invalid: errors.length > 0 }"
                     placeholder=" "
                     required
-                >
+                />
 
                 <label for="email" v-text="$t('Email Address') + '*'" />
 
@@ -36,7 +36,7 @@
                     placeholder=" "
                     required
                     @paste="onPaste($event)"
-                >
+                />
 
                 <label for="email-repeat" v-text="$t('Repeat Email Address') + '*'" />
 
@@ -58,7 +58,7 @@
                     value=""
                     :class="{ invalid: errors.length > 0 }"
                     placeholder=" "
-                >
+                />
 
                 <label for="birthday" v-text="$t('Birthday')" />
 
@@ -85,7 +85,7 @@
                         :class="{ invalid: errors.length > 0 }"
                         placeholder=" "
                         required
-                    >
+                    />
 
                     <label for="password" v-text="$t('Password') + '*'" />
 
@@ -110,7 +110,7 @@
                         :class="{ invalid: errors.length > 0 }"
                         placeholder=" "
                         required
-                    >
+                    />
 
                     <label for="passwordRepeat" v-text="$t('Password repeat') + '*'" />
 
@@ -150,7 +150,7 @@
                     :class="{ invalid: errors.length > 0 }"
                     placeholder=" "
                     required
-                >
+                />
 
                 <label for="billingFirstName" v-text="$t('First Name') + '*'" />
 
@@ -167,7 +167,7 @@
                     :class="{ invalid: errors.length > 0 }"
                     placeholder=" "
                     required
-                >
+                />
 
                 <label for="billingLastName" v-text="$t('Last Name') + '*'" />
 
@@ -185,7 +185,7 @@
                         :class="{ invalid: errors.length > 0 }"
                         placeholder=" "
                         required
-                    >
+                    />
 
                     <label for="billingStreet" v-text="$t('Street') + '/' + $t('Houseno.') + '*'" />
 
@@ -204,7 +204,7 @@
                         :class="{ invalid: errors.length > 0 }"
                         placeholder=" "
                         required
-                    >
+                    />
 
                     <label for="billingStreet" v-text="$t('Street') + '*'" />
 
@@ -221,7 +221,7 @@
                         :class="{ invalid: errors.length > 0 }"
                         placeholder=" "
                         required
-                    >
+                    />
 
                     <label for="billingHouseNr" v-text="$t('Houseno.') + '*'" />
 
@@ -240,7 +240,7 @@
                         :class="{ invalid: errors.length > 0 }"
                         placeholder=" "
                         required
-                    >
+                    />
 
                     <label for="billingZipCode" v-text="$t('Zipcode') + '*'" />
 
@@ -257,7 +257,7 @@
                         :class="{ invalid: errors.length > 0 }"
                         placeholder=" "
                         required
-                    >
+                    />
 
                     <label for="billingCity" v-text="$t('City') + '*'" />
 
@@ -299,7 +299,7 @@
                     :class="{ invalid: errors.length > 0 }"
                     placeholder=" "
                     required
-                >
+                />
 
                 <label for="shippingFirstName" v-text="$t('First Name') + '*'" />
 
@@ -316,7 +316,7 @@
                     :class="{ invalid: errors.length > 0 }"
                     placeholder=" "
                     required
-                >
+                />
 
                 <label for="shippingLastName" v-text="$t('Last Name') + '*'" />
 
@@ -334,7 +334,7 @@
                         :class="{ invalid: errors.length > 0 }"
                         placeholder=" "
                         required
-                    >
+                    />
 
                     <label for="shippingStreet" v-text="$t('Street') + '/' + $t('Houseno.') + '*'" />
 
@@ -353,7 +353,7 @@
                         :class="{ invalid: errors.length > 0 }"
                         placeholder=" "
                         required
-                    >
+                    />
 
                     <label for="shippingStreet" v-text="$t('Street') + '*'" />
 
@@ -370,7 +370,7 @@
                         :class="{ invalid: errors.length > 0 }"
                         placeholder=" "
                         required
-                    >
+                    />
 
                     <label for="shippingHouseNr" v-text="$t('Houseno.') + '*'" />
 
@@ -389,7 +389,7 @@
                         :class="{ invalid: errors.length > 0 }"
                         placeholder=" "
                         required
-                    >
+                    />
 
                     <label for="shippingZipCode" v-text="$t('Zipcode') + '*'" />
 
@@ -406,7 +406,7 @@
                         :class="{ invalid: errors.length > 0 }"
                         placeholder=" "
                         required
-                    >
+                    />
 
                     <label for="shippingCity" v-text="$t('City') + '*'" />
 
@@ -646,11 +646,6 @@ export default {
             // Register new customer
             this.register(userData)
                 .then(() => {
-                    let creds = {
-                        email: userData.email,
-                        password: userData.password,
-                    };
-
                     // Save wishlist
                     this.postWishlist({
                         user_id: this.customer.customerData.id,
@@ -751,7 +746,7 @@ export default {
                         );
                     }
                 })
-                .catch(error => {
+                .catch(() => {
                     this.errors.push(this.$t('Register failed'));
 
                     this.processingRegister = false;

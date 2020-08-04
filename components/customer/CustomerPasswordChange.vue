@@ -40,7 +40,7 @@
                                 :class="{ invalid: errors.length > 0 }"
                                 placeholder=" "
                                 required
-                            >
+                            />
 
                             <label for="passwordOld" v-text="$t('Current Password')" />
 
@@ -64,7 +64,7 @@
                                 :class="{ invalid: errors.length > 0 }"
                                 placeholder=" "
                                 required
-                            >
+                            />
 
                             <label for="password" v-text="$t('New Password')" />
 
@@ -89,7 +89,7 @@
                                 :class="{ invalid: errors.length > 0 }"
                                 placeholder=" "
                                 required
-                            >
+                            />
 
                             <label for="newPasswordConfirmation" v-text="$t('Confirm new Password')" />
 

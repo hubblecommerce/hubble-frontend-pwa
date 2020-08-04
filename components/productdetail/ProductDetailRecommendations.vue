@@ -51,7 +51,7 @@ export default {
 
     methods: {
         ...mapActions({
-            getProductsCrossByOrderApiCall: 'modApiProduct/getProductsCrossByOrder', // map `this.add()` to `this.$store.dispatch('increment')`
+            getProductsCrossByOrderApiCall: 'modApiProduct/getProductsCrossByOrder',
         }),
         getProductsCrossByOrder: function () {
             return new Promise(resolve => {

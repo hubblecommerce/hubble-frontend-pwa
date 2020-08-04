@@ -9,7 +9,7 @@
             :class="compClasses"
             :alt="altInfo"
             :title="titleInfo"
-        >
+        />
         <transition name="fade">
             <div v-if="loading" class="loader lds-ellipsis">
                 <div />

@@ -38,7 +38,7 @@ export default function (ctx) {
             },
         },
         actions: {
-            async apiResolveUriData({ commit, state, dispatch, getters }, payload) {
+            async apiResolveUriData({ commit, dispatch, getters }, payload) {
                 return new Promise((resolve, reject) => {
                     let _outerReject = reject;
                     let _outerResolve = resolve;
@@ -48,7 +48,7 @@ export default function (ctx) {
                     return new Promise((resolve, reject) => {
                         // fetch category data, if known by uri object
                         if (payload.data.result.item.category_id) {
-                            let _endpoint = _.join(['/api/json/categories/', payload.data.result.item.category_id], '');
+                            let endpoint = _.join(['/api/json/categories/', payload.data.result.item.category_id], '');
 
                             dispatch(
                                 'apiCall',
@@ -56,7 +56,7 @@ export default function (ctx) {
                                     action: 'get',
                                     tokenType: 'api',
                                     apiType: 'data',
-                                    endpoint: _endpoint,
+                                    endpoint: endpoint,
                                     params: {
                                         _withProps: _.join(['path', 'path_ids', 'path_names', 'path_urls', 'display_mode', 'parent_id'], ','),
                                     },
@@ -74,14 +74,14 @@ export default function (ctx) {
 
                                     // resolve("category OK!");
                                 })
-                                .catch(response => {
+                                .catch(() => {
                                     _outerReject('failed to get category data!');
                                 });
                         }
 
                         // fetch product, if known by uri object
                         if (payload.data.result.item.product_id) {
-                            let _endpoint = _.join(['/api/json/products/', payload.data.result.item.product_id], '');
+                            let endpoint = _.join(['/api/json/products/', payload.data.result.item.product_id], '');
 
                             dispatch(
                                 'apiCall',
@@ -89,7 +89,7 @@ export default function (ctx) {
                                     action: 'get',
                                     tokenType: 'api',
                                     apiType: 'data',
-                                    endpoint: _endpoint,
+                                    endpoint: endpoint,
                                     params: {
                                         _withProps: _.join(
                                             ['facets', 'media_gallery', 'related_product_ids', 'search_result_data_children', 'status'],
@@ -114,12 +114,12 @@ export default function (ctx) {
                         } else if (payload.data.result.item.content_id === null) {
                             // fetch category products, if known by uri object
 
-                            let _endpoint = _.join(['/api/json/categories/', payload.data.result.item.category_id, '/products'], '');
+                            let endpoint = _.join(['/api/json/categories/', payload.data.result.item.category_id, '/products'], '');
 
-                            let _query = getters.getQueryPaginated(payload.query);
+                            let query = getters.getQueryPaginated(payload.query);
 
-                            commit('modApiRequests/setPaginationOffset', _query._from, { root: true });
-                            commit('modApiRequests/setPaginationPerPage', _query._size, { root: true });
+                            commit('modApiRequests/setPaginationOffset', query._from, { root: true });
+                            commit('modApiRequests/setPaginationPerPage', query._size, { root: true });
 
                             dispatch(
                                 'apiCall',
@@ -127,8 +127,8 @@ export default function (ctx) {
                                     action: 'get',
                                     tokenType: 'api',
                                     apiType: 'data',
-                                    endpoint: _endpoint,
-                                    params: _.merge({}, _query, {
+                                    endpoint: endpoint,
+                                    params: _.merge({}, query, {
                                         _withProps: _.join(['facets', 'media_gallery', 'search_result_data_children', 'status'], ','),
                                     }),
                                 },
@@ -150,7 +150,7 @@ export default function (ctx) {
 
                         // fetch cms content, if known by uri object
                         if (payload.data.result.item.content_id) {
-                            let _endpoint = _.join(['/api/json/cms/blocks/', payload.data.result.item.request_path], '');
+                            let endpoint = _.join(['/api/json/cms/blocks/', payload.data.result.item.request_path], '');
 
                             dispatch(
                                 'apiCall',
@@ -158,7 +158,7 @@ export default function (ctx) {
                                     action: 'get',
                                     tokenType: 'api',
                                     apiType: 'data',
-                                    endpoint: _endpoint,
+                                    endpoint: endpoint,
                                 },
                                 { root: true }
                             ).then(response => {

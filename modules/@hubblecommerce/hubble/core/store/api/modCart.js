@@ -225,7 +225,7 @@ export default function (ctx) {
                     });
                 });
             },
-            checkCouponInCart({ state }, couponCode) {
+            checkCouponInCart({ state }) {
                 return new Promise((resolve, reject) => {
                     // if coupon exist dont apply another coupon
                     if (_.isEmpty(state.cart.coupons)) {
@@ -235,7 +235,7 @@ export default function (ctx) {
                     }
                 });
             },
-            storeCouponToCart({ commit, state, getters }, payload) {
+            storeCouponToCart({ commit, state }, payload) {
                 return new Promise(resolve => {
                     // Refresh cart item before store to client store
                     commit('setCart', payload.order.cart);
@@ -260,7 +260,7 @@ export default function (ctx) {
                     });
                 });
             },
-            delItem({ commit, state, getters, dispatch }, payload) {
+            delItem({ commit, state, dispatch }, payload) {
                 let item = payload.data;
 
                 return new Promise((resolve, reject) => {

@@ -318,7 +318,7 @@ export default {
             setBicError: 'modApiPayment/setBicError',
             resetProcessingCheckout: 'modApiPayment/resetProcessingCheckout',
         }),
-        getPaymentMethods: function (order, coupon) {
+        getPaymentMethods: function () {
             return new Promise((resolve, reject) => {
                 // Get payment methods from api
                 this.getPaymentMethodsAction()

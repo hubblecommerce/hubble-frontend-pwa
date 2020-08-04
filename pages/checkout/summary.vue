@@ -45,13 +45,7 @@
 
             <div v-if="checkForSaleItemInCart()" class="order-info-wrp">
                 <p class="text-small">
-                    An dieser Stelle möchten wir unsere Online-Shop Kunden darauf hinweisen, dass trotz größter Sorgfalt, die Artikel im SALE-Bereich
-                    kleine Mängel aufweisen können. In wenigen Fällen können leichte Farbunterschiede bei den einzelnen Schuhen vorkommen, welche vor
-                    allem bei naturbelassenen Ledern auftreten können. Minimale Produktionsfehler sind bei Produkten aus dem SALE-Bereich nicht immer
-                    auszuschließen. Da bei den Verpackungen der SALE-Artikel keine 100%ige Unversehrtheit garantiert werden kann, werden diese
-                    Produkte teilweise in leicht beschädigter oder neutraler Verpackung geliefert. Selbstverständlich haben Sie auch auf SALE-Artikel
-                    ein 14-tägiges Rückgaberecht. Wir bedanken uns für Ihr Verständnis und wünschen Ihnen weiterhin viel Vergnügen in unserem
-                    Online-Shop!
+                    <!--Notice-->
                 </p>
                 <div class="hbl-checkbox">
                     <input id="order-info-check" v-model="acceptedInfo" type="checkbox" />
@@ -367,7 +361,7 @@ export default {
                         this.checkoutError.push(this.$t('Shipping to this country is not allowed'));
                     }
                 })
-                .catch(error => {
+                .catch(() => {
                     this.flashMessage({
                         flashType: 'error',
                         flashMessage: 'Shipping costs could not be calculated.',

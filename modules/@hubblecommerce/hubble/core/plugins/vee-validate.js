@@ -46,7 +46,7 @@ extend('confirmed', {
 
 extend('password', {
     ...min,
-    message: (field, params) => {
+    message: () => {
         return 'The password must be at least 8 characters long.';
     },
 });

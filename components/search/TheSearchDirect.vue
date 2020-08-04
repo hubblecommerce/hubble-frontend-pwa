@@ -19,7 +19,7 @@
                         @keydown.up.prevent="changeSelected($event)"
                         @focus="onFocus"
                         @blur="onBlur"
-                    >
+                    />
 
                     <label class="hidden-link-name" for="autocomplete-search">{{ $t('Search') }}</label>
                 </div>
@@ -79,10 +79,6 @@ export default {
         };
     },
 
-    created() {
-        Vue.use(vClickOutside);
-    },
-
     computed: {
         ...mapState({
             locale: state => state.modApiResources.apiLocale,
@@ -120,6 +116,10 @@ export default {
                 this.resetAutoComplete();
             }
         },
+    },
+
+    created() {
+        Vue.use(vClickOutside);
     },
 
     methods: {
@@ -210,7 +210,7 @@ export default {
                     locale: this.locale,
                     query: this.query,
                 })
-                    .then(response => {
+                    .then(() => {
                         this.loading = false;
                     })
                     .catch(err => {
@@ -285,10 +285,10 @@ export default {
             return new Promise(function (resolve, reject) {
                 _vue.$http
                     .post(_route, data)
-                    .then(response => {
+                    .then(() => {
                         resolve('stats OK');
                     })
-                    .catch(error => {
+                    .catch(() => {
                         reject('stats not OK');
                     });
             });

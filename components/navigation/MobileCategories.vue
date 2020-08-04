@@ -120,7 +120,7 @@ export default {
             // If current data item is set
             // and current data item id is included in category path
             // and current category has children
-            _.forEach(currentPathElement.categoryPath, (val, key) => {
+            _.forEach(currentPathElement.categoryPath, val => {
                 if (val.id === this.dataItem.id && typeof this.dataItem.id !== 'undefined' && this.hasChildren) {
                     // Open current navigation layer
                     this.isInCurrentCategoryPath = true;

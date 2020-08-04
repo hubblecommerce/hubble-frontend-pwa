@@ -118,7 +118,7 @@ export default function (ctx) {
                         });
                 });
             },
-            async logOut({ commit, state, dispatch }, payload) {
+            async logOut({ commit, state, dispatch }) {
                 return new Promise((resolve, reject) => {
                     dispatch(
                         'apiCall',
@@ -195,7 +195,7 @@ export default function (ctx) {
                         });
                 });
             },
-            async registerGuest({ commit, state, dispatch, getters }, payload) {
+            async registerGuest({ commit, state, getters }, payload) {
                 return new Promise(resolve => {
                     // Clear customer data
                     commit('clearCustomerData');
@@ -232,7 +232,7 @@ export default function (ctx) {
                     resolve('OK');
                 });
             },
-            async editAddress({ dispatch, state, getters }, payload) {
+            async editAddress({ dispatch }, payload) {
                 let _endpoint = _.join(['/api/customer/addresses', payload.id], '/');
 
                 return new Promise((resolve, reject) => {
@@ -280,7 +280,7 @@ export default function (ctx) {
                     resolve('OK');
                 });
             },
-            async getCustomerAddresses({ commit, state, getters, dispatch }, payload) {
+            async getCustomerAddresses({ commit, dispatch }, payload) {
                 let _endpoint = '/api/customer/addresses';
 
                 return new Promise((resolve, reject) => {
@@ -305,7 +305,7 @@ export default function (ctx) {
                         });
                 });
             },
-            async storeCustomerAddress({ state, getters, dispatch }, payload) {
+            async storeCustomerAddress({ dispatch }, payload) {
                 let _endpoint = '/api/customer/addresses';
 
                 return new Promise((resolve, reject) => {
@@ -329,7 +329,7 @@ export default function (ctx) {
                         });
                 });
             },
-            async deleteCustomerAddress({ state, getters, dispatch }, payload) {
+            async deleteCustomerAddress({ dispatch }, payload) {
                 let _endpoint = _.join(['/api/customer/addresses', payload.id], '/');
 
                 return new Promise((resolve, reject) => {
@@ -402,7 +402,7 @@ export default function (ctx) {
                         });
                 });
             },
-            async passwordUpdate({ dispatch, getters }, payload) {
+            async passwordUpdate({ dispatch }, payload) {
                 return new Promise((resolve, reject) => {
                     dispatch(
                         'apiCall',

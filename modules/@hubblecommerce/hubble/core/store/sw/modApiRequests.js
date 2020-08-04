@@ -41,7 +41,7 @@ export default function (ctx) {
             setSelectedFacetsParam: (state, payload) => {
                 state.selectedFacets[payload.name] = payload.data;
             },
-            resetSelectedFacetsParam: (state, payload) => {
+            resetSelectedFacetsParam: state => {
                 state.selectedFacets = _.pick(state.selectedFacets, state.queryWellKnown);
                 state.selectedFacets.priceMax = null;
                 state.selectedFacets.priceMin = null;
@@ -109,7 +109,7 @@ export default function (ctx) {
             },
         },
         actions: {
-            parseRequest({ commit, state, dispatch, rootState, rootGetters }, payload) {
+            parseRequest({ commit, dispatch }, payload) {
                 let _query = payload.query;
 
                 // If page is set in url set pagination page to query otherwise set to page 1
@@ -135,7 +135,7 @@ export default function (ctx) {
                         });
                 });
             },
-            parseRequestFacets({ commit, state }, payload) {
+            parseRequestFacets({ commit }, payload) {
                 let _query = payload.query;
 
                 let _propertyFacets = _.cloneDeep(payload.propertyFacets);
@@ -205,7 +205,7 @@ export default function (ctx) {
                     resolve('parseRequestQuery OK!');
                 });
             },
-            async mapFilterToFacets({ commit, state, rootState, dispatch, getters }, filters) {
+            async mapFilterToFacets({ commit }, filters) {
                 return new Promise((resolve, reject) => {
                     let facets = {
                         all: {
@@ -253,7 +253,7 @@ export default function (ctx) {
                 });
             },
             // applys set filters and set new url
-            applyFilter({ commit, state, dispatch, getters }, payload) {
+            applyFilter({ commit, state, dispatch, getters }) {
                 //reset pagination
                 commit('setPaginationPage', 1);
                 //take all filters and change path to new path with new filters

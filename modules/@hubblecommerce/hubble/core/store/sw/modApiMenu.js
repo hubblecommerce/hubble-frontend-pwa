@@ -1,4 +1,4 @@
-import { sortMenuEntries, unflatten } from '@hubblecommerce/hubble/core/utils/menuHelper';
+import { sortMenuEntries } from '@hubblecommerce/hubble/core/utils/menuHelper';
 import { datetimeUnixNow, datetimeUnixNowAddSecs } from '@hubblecommerce/hubble/core/utils/datetime';
 import { swMapApiError } from '@hubblecommerce/hubble/core/utils/swHelper';
 import _ from 'lodash';
@@ -73,7 +73,7 @@ export default function (ctx) {
                         // Use menu item from api result by category id when it is set in config
                         if (val.id !== null) {
                             // Get menu item from payload by id
-                            _.forEach(state.menuItems, (v, k) => {
+                            _.forEach(state.menuItems, v => {
                                 if (v.id === val.id) {
                                     state.dataMenu.result.items[key] = v;
                                     state.dataMenu.result.items[key].name = val.name;
@@ -131,7 +131,7 @@ export default function (ctx) {
             },
         },
         actions: {
-            async getMenu({ commit, state, dispatch }, payload) {
+            async getMenu({ commit, dispatch }) {
                 return new Promise(function (resolve, reject) {
                     dispatch(
                         'apiCall',
@@ -167,7 +167,7 @@ export default function (ctx) {
                         });
                 });
             },
-            async mappingMenu({ commit, state, dispatch }, payload) {
+            async mappingMenu({ commit }, payload) {
                 return new Promise(function (resolve, reject) {
                     let mapped = mapEntriesRecursive(payload);
 

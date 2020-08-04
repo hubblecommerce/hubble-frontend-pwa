@@ -16,8 +16,8 @@ Component usage:
             <div class="reset-facet" @click="resetAll()" v-text="$t('Reset Filter')">Zurücksetzen</div>
         </div>
 
-        <div class="input-wrp">
-            <div v-for="(option, optionIndex) in dataFacet.options" v-if="typeCheckbox" :key="optionIndex" class="hbl-checkbox">
+        <div v-if="typeCheckbox" class="input-wrp">
+            <div v-for="(option, optionIndex) in dataFacet.options" :key="optionIndex" class="hbl-checkbox">
                 <input :id="dataFacet.key + option['key']" v-model="modelSelected" type="checkbox" :value="option['key']" @change="changeFilter()" />
                 <label :for="dataFacet.key + option['key']">{{ option.label }}</label>
             </div>
@@ -84,7 +84,7 @@ export default {
                 return 'active';
             }
 
-            return;
+            return '';
         },
         facetTitle: function () {
             let selectedOptions = '';

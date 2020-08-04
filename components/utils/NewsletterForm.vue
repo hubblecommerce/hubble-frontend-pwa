@@ -49,7 +49,7 @@ Usage with:  v-if="$mq === 'md' || $mq === 'lg'"
                                     size="2"
                                     maxlength="2"
                                     name="MMERGE1[day]"
-                                >
+                                />
                             </span>
                             /
                             <span class="subfield monthfield">
@@ -63,7 +63,7 @@ Usage with:  v-if="$mq === 'md' || $mq === 'lg'"
                                     size="2"
                                     maxlength="2"
                                     name="MMERGE1[month]"
-                                >
+                                />
                             </span>
                             /
                             <span class="subfield yearfield">
@@ -77,7 +77,7 @@ Usage with:  v-if="$mq === 'md' || $mq === 'lg'"
                                     size="4"
                                     maxlength="4"
                                     name="MMERGE1[year]"
-                                >
+                                />
                             </span>
                         </div>
                     </div>

@@ -114,7 +114,7 @@ export default function (ctx) {
                         });
                 });
             },
-            async getRelatedProducts({ commit, state, dispatch }, payload) {
+            async getRelatedProducts({ commit, dispatch }, payload) {
                 return new Promise(function (resolve, reject) {
                     let endpoint = _.join(['/api/json/products/', payload.data, '/relations'], '');
 
@@ -135,12 +135,12 @@ export default function (ctx) {
 
                             resolve('OK');
                         })
-                        .catch(response => {
+                        .catch(() => {
                             reject('API request failed!');
                         });
                 });
             },
-            async getProductsCrossBuybox({ commit, state, dispatch }, payload) {
+            async getProductsCrossBuybox({ commit, dispatch }, payload) {
                 return new Promise((resolve, reject) => {
                     let endpoint = _.join(['/api/json/products/', payload.data, '/buybox'], '');
 
@@ -162,12 +162,12 @@ export default function (ctx) {
 
                             resolve(response.data);
                         })
-                        .catch(response => {
+                        .catch(() => {
                             reject('API request failed!');
                         });
                 });
             },
-            async getProductsCrossByOrder({ commit, state, dispatch }, payload) {
+            async getProductsCrossByOrder({ commit, dispatch }, payload) {
                 return new Promise((resolve, reject) => {
                     let endpoint = _.join(['/api/json/products/', payload.data, '/byorder'], '');
 
@@ -189,7 +189,7 @@ export default function (ctx) {
 
                             resolve(response.data);
                         })
-                        .catch(response => {
+                        .catch(() => {
                             reject('API request failed!');
                         });
                 });
@@ -216,7 +216,7 @@ export default function (ctx) {
 
                             resolve(response.data);
                         })
-                        .catch(response => {
+                        .catch(() => {
                             reject('API request failed!');
                         });
                 });

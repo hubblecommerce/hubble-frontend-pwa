@@ -4,7 +4,7 @@
             <nuxt-link :to="'/' + item.url_pds" class="col-9">
                 <div class="row align-items-center">
                     <div class="col-4">
-                        <img :src="itemImgPath(item)" alt="Product Image" :title="item.name" :class="classesImg">
+                        <img :src="itemImgPath(item)" alt="Product Image" :title="item.name" :class="classesImg" />
                     </div>
 
                     <div class="col-8">
@@ -170,12 +170,12 @@ export default {
             // let priceInclTax = this.$store.getters['modPrices/priceAddVat'](item.final_price_item[key], this.itemTaxClass(item).value);
             // this.subTotals[item.id] = _.round(priceInclTax, 2).toFixed(2) * item.qty;
 
-            let _price = item.final_price_item[key];
+            let price = item.final_price_item[key];
 
-            this.subTotals[item.id] = _.round(_price, 2).toFixed(2) * item.qty;
+            this.subTotals[item.id] = _.round(price, 2).toFixed(2) * item.qty;
 
             // Return formatted price incl. tax
-            return this.getPriceAndCurrencyDecFmt(_price, addVat, this.itemTaxClass(item));
+            return this.getPriceAndCurrencyDecFmt(price, addVat, this.itemTaxClass(item));
         },
         itemTaxClass: function (item) {
             return this.getTaxClassByLabel(item.final_price_item.tax_class_id);
@@ -203,8 +203,8 @@ export default {
                 return _.join([process.env.CUSTOMER_DOMAIN, 'images/catalog/thumbnails/cache/400', image], '/');
             }
 
-            let _path = _.trim(process.env.config.IMG_BASE_URL, '/');
-            return _path + '/images/catalog/product/' + this.imgFilter + '/' + item.image;
+            let path = _.trim(process.env.config.IMG_BASE_URL, '/');
+            return path + '/images/catalog/product/' + this.imgFilter + '/' + item.image;
         },
         confirmRemoveItem: function (item) {
             // Remove wishlist completely from store
@@ -254,7 +254,7 @@ export default {
             });
         },
         // Check if Item is available
-        itemIsAvailable: function (item) {
+        itemIsAvailable: function () {
             return true;
         },
         // Check if Item has Options

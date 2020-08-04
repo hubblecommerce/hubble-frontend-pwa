@@ -25,8 +25,8 @@
                 <div class="content-wrp">
                     <a href="#" class="logos">
                         <span class="hidden-link-name">{{ $t('Shipping methods') }}</span>
-                        <img alt="DHL" src="~/assets/images/shipping/dhl_200x120.png" >
-                        <img alt="GLS" src="~/assets/images/shipping/gls_200x120.png" >
+                        <img alt="DHL" src="~/assets/images/shipping/dhl_200x120.png" />
+                        <img alt="GLS" src="~/assets/images/shipping/gls_200x120.png" />
                     </a>
                 </div>
             </collapsible>

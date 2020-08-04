@@ -1,37 +1,46 @@
 <template>
     <div>
-        <div v-for="item in cart.items" v-if="cart.items.length > 0" :key="item.id" class="cart-items-list non-interactive item align-items-center">
-            <nuxt-link :to="'/' + hasLink(item)">
-                <img v-if="hasImage(item)" :src="itemImgPath(item)" class="product-img" alt="Product Image" :title="item.name" :class="classesImg" />
-                <div class="product-info">
-                    <div>
-                        <span class="product-name">{{ item.name_orig }}</span>
-                        <div v-for="variant in item.variants" :key="variant.id">
-                            <span class="selected-variants">{{ variant.label + ': ' + formatSize(variant.value_label) }}</span>
+        <template v-if="cart.items.length > 0">
+            <div v-for="item in cart.items" :key="item.id" class="cart-items-list non-interactive item align-items-center">
+                <nuxt-link :to="'/' + hasLink(item)">
+                    <img
+                        v-if="hasImage(item)"
+                        :src="itemImgPath(item)"
+                        class="product-img"
+                        alt="Product Image"
+                        :title="item.name"
+                        :class="classesImg"
+                    />
+                    <div class="product-info">
+                        <div>
+                            <span class="product-name">{{ item.name_orig }}</span>
+                            <div v-for="variant in item.variants" :key="variant.id">
+                                <span class="selected-variants">{{ variant.label + ': ' + formatSize(variant.value_label) }}</span>
+                            </div>
+                        </div>
+                        <div class="price-wrp">
+                            <span class="qty">{{ item.qty }} x </span>
+                            <template v-if="itemIsSpecial(item)">
+                                <span
+                                    class="product-price old-price"
+                                    v-html="getPriceAndCurrency(item, 'display_price_brutto', priceSwitcherIncludeVat)"
+                                />
+                                <span
+                                    class="product-price sale-price"
+                                    v-html="getPriceAndCurrency(item, 'display_price_brutto_special', priceSwitcherIncludeVat)"
+                                />
+                            </template>
+                            <template v-else>
+                                <span
+                                    class="product-price sale-price"
+                                    v-html="getPriceAndCurrency(item, 'display_price_brutto', priceSwitcherIncludeVat)"
+                                />
+                            </template>
                         </div>
                     </div>
-                    <div class="price-wrp">
-                        <span class="qty">{{ item.qty }} x </span>
-                        <template v-if="itemIsSpecial(item)">
-                            <span
-                                class="product-price old-price"
-                                v-html="getPriceAndCurrency(item, 'display_price_brutto', priceSwitcherIncludeVat)"
-                            />
-                            <span
-                                class="product-price sale-price"
-                                v-html="getPriceAndCurrency(item, 'display_price_brutto_special', priceSwitcherIncludeVat)"
-                            />
-                        </template>
-                        <template v-else>
-                            <span
-                                class="product-price sale-price"
-                                v-html="getPriceAndCurrency(item, 'display_price_brutto', priceSwitcherIncludeVat)"
-                            />
-                        </template>
-                    </div>
-                </div>
-            </nuxt-link>
-        </div>
+                </nuxt-link>
+            </div>
+        </template>
         <div v-if="!isEmpty(cart.coupons)">
             <template v-for="(coupon, key) in cart.coupons">
                 <div :key="key" class="cart-items-list item coupon align-items-center">
@@ -47,7 +56,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import _ from 'lodash';
 
 export default {
@@ -73,6 +82,13 @@ export default {
         ...mapState({
             priceSwitcherIncludeVat: state => state.modPrices.priceSwitcherIncludeVat,
         }),
+        ...mapGetters({
+            productIsSpecial: 'modPrices/productIsSpecial',
+            getPriceAndCurrencyDecFmt: 'modPrices/getPriceAndCurrencyDecFmt',
+            getTaxClassByLabel: 'modPrices/getTaxClassByLabel',
+            priceDecFmt: 'modPrices/priceDecFmt',
+            priceAddCur: 'modPrices/priceAddCur',
+        }),
         classesImg() {
             return 'img-minicart';
         },
@@ -87,25 +103,11 @@ export default {
 
             // If customer domain isset get live images
             if (!_.isEmpty(process.env.CUSTOMER_DOMAIN)) {
-                let _letters = _.split(image, '', 2);
-
-                let _reference = _.join(
-                    [
-                        process.env.CUSTOMER_DOMAIN,
-                        'images/catalog/thumbnails/cache/400',
-                        //'media/catalog/product',
-                        //_letters[0],
-                        //_letters[1],
-                        image,
-                    ],
-                    '/'
-                );
-
-                return _reference;
+                return _.join([process.env.CUSTOMER_DOMAIN, 'images/catalog/thumbnails/cache/400', image], '/');
             }
 
-            let _path = _.trim(process.env.config.IMG_BASE_URL, '/');
-            return _path + '/images/catalog/product/' + this.imgFilter + '/' + item.image;
+            let path = _.trim(process.env.config.IMG_BASE_URL, '/');
+            return path + '/images/catalog/product/' + this.imgFilter + '/' + item.image;
         },
         hasImage: function (item) {
             let image = false;
@@ -134,21 +136,21 @@ export default {
             return link;
         },
         itemIsSpecial: function (item) {
-            return this.$store.getters['modPrices/productIsSpecial'](item);
+            return this.productIsSpecial(item);
         },
         getPriceAndCurrency: function (item, key, addVat) {
-            let _price = item.final_price_item[key];
+            let price = item.final_price_item[key];
 
             // Return formatted price incl. tax
-            return this.$store.getters['modPrices/getPriceAndCurrencyDecFmt'](_price, addVat, this.itemTaxClass(item));
+            return this.getPriceAndCurrencyDecFmt(price, addVat, this.itemTaxClass(item));
         },
         itemTaxClass: function (item) {
-            return this.$store.getters['modPrices/getTaxClassByLabel'](item.final_price_item.tax_class_id);
+            return this.getTaxClassByLabel(item.final_price_item.tax_class_id);
         },
         getCouponVal: function (value) {
             let val;
-            val = this.$store.getters['modPrices/priceDecFmt'](value);
-            val = this.$store.getters['modPrices/priceAddCur'](value);
+            val = this.priceDecFmt(value);
+            val = this.priceAddCur(value);
             return val;
         },
         formatSize: function (size) {

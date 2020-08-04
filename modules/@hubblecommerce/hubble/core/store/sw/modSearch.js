@@ -54,7 +54,7 @@ export default function (ctx) {
         },
         actions: {
             // Api call to search/autocomplete
-            async getAutocompleteResults({ commit, state, rootState, dispatch }, payload) {
+            async getAutocompleteResults({ commit, state, dispatch }, payload) {
                 return new Promise(function (resolve, reject) {
                     dispatch(
                         'apiCall',
@@ -202,7 +202,7 @@ export default function (ctx) {
                                 resolve('OK');
                             });
                         })
-                        .catch(response => {
+                        .catch(() => {
                             reject('API request failed!');
                         });
                 });

@@ -1,5 +1,5 @@
 import Middleware from './middleware';
 
-Middleware.apiLocalization = function ({ app, store }) {
+Middleware.apiLocalization = function ({ store }) {
     store.commit('modApiResources/setApiLocale', 'de');
 };

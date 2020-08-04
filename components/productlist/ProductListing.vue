@@ -12,9 +12,11 @@
             </client-only>
         </template>
 
-        <div v-for="(item, index) in dataItems" v-if="!isSlider" :key="index" class="listing-item col-6 col-sm-6 col-md-4 col-lg-3">
-            <product-listing-card :key="item.id" :item-orig="item" />
-        </div>
+        <template v-if="!isSlider">
+            <div v-for="(item, index) in dataItems" :key="index" class="listing-item col-6 col-sm-6 col-md-4 col-lg-3">
+                <product-listing-card :key="item.id" :item-orig="item" />
+            </div>
+        </template>
 
         <g-t-m-product-impressions :products="dataItems" :list="list" :category="category" />
     </div>
@@ -132,13 +134,13 @@ export default {
             return parseInt(this.paginationPerPage);
         },
         lastPage: function () {
-            let _last = _.round(this.paginationItemsTotal / this.curPerPage, 4);
+            let last = _.round(this.paginationItemsTotal / this.curPerPage, 4);
 
-            if (_last > _.round(_last)) {
-                return _.round(_last) + 1;
+            if (last > _.round(last)) {
+                return _.round(last) + 1;
             }
 
-            return _.round(_last);
+            return _.round(last);
         },
         prevPage: function () {
             return this.curPage - 1;
@@ -151,13 +153,13 @@ export default {
     head() {
         if (!this.isSlider) {
             let link = [],
-                _path = _.trim(process.env.APP_BASE_URL, '/').concat(this.$router.currentRoute.path),
-                urlCanonical = _path,
-                urlNext = _path.concat('?page=' + this.nextPage),
-                urlPrev = _path.concat('?page=' + this.prevPage);
+                path = _.trim(process.env.APP_BASE_URL, '/').concat(this.$router.currentRoute.path),
+                urlCanonical = path,
+                urlNext = path.concat('?page=' + this.nextPage),
+                urlPrev = path.concat('?page=' + this.prevPage);
 
             if (this.curPage !== 1) {
-                urlCanonical = _path.concat('?page=' + this.curPage);
+                urlCanonical = path.concat('?page=' + this.curPage);
             }
 
             if (this.curPage !== 1 || !_.isEmpty(this.$route.query.page)) {

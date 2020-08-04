@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import { slotMixins } from '../helper';
 import ProductListing from '../../productlist/ProductListing';
 export default {
@@ -49,14 +49,18 @@ export default {
     },
 
     created() {
-        this.$store
-            .dispatch('modApiCategory/mappingCategoryProducts', {
-                data: this.content.data.products,
-            })
-            .then(res => {
-                this.dataItems = res.items;
-                this.loaded = true;
-            });
+        this.mappingCategoryProducts({
+            data: this.content.data.products,
+        }).then(res => {
+            this.dataItems = res.items;
+            this.loaded = true;
+        });
+    },
+
+    methods: {
+        ...mapActions({
+            mappingCategoryProducts: 'modApiCategory/mappingCategoryProducts',
+        }),
     },
 };
 </script>

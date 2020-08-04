@@ -1,5 +1,4 @@
 import Middleware from './middleware';
-import { findCategoryByUrl, findProductByUrl } from '@hubblecommerce/hubble/core/utils/menuHelper';
 import _ from 'lodash';
 
 Middleware.apiResourceRoute = async function ({ store, route, error }) {

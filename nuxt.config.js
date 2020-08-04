@@ -1,7 +1,7 @@
-const pkg = require('./package');
+import { description } from './package.json';
 require('dotenv').config();
 
-module.exports = {
+export default {
     mode: 'universal',
 
     env: {
@@ -91,7 +91,7 @@ module.exports = {
         meta: [
             { charset: 'utf-8' },
             { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-            { hid: 'description', name: 'description', content: pkg.description },
+            { hid: 'description', name: 'description', content: description },
             { content: 'width=device-width,initial-scale=1', name: 'viewport' },
             { hid: 'author', name: 'author', content: 'digital.manufaktur GmbH' },
         ],
@@ -110,7 +110,7 @@ module.exports = {
      */
     render: {
         bundleRenderer: {
-            shouldPreload: (file, type) => {
+            shouldPreload: () => {
                 return false;
             },
         },

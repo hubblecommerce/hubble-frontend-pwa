@@ -114,9 +114,9 @@ export default {
             return this.dataProduct.result.item;
         },
         routeUrlPds: function () {
-            let _path = _.trim(process.env.config.APP_BASE_URL, '/');
+            let path = _.trim(process.env.config.APP_BASE_URL, '/');
 
-            return _path + '/' + this.productData.url_pds;
+            return path + '/' + this.productData.url_pds;
         },
         routeUrlProductImg: function () {
             // If customer domain isset get live images
@@ -126,13 +126,13 @@ export default {
             }
 
             // If no customer domain isset get images from api
-            let _path = _.trim(process.env.config.IMG_BASE_URL, '/');
-            return _path + '/images/catalog/product/pds/' + this.productData.image;
+            let path = _.trim(process.env.config.IMG_BASE_URL, '/');
+            return path + '/images/catalog/product/pds/' + this.productData.image;
         },
         itemMinPriceBrutto: function () {
             if (!_.isEmpty(this.productData)) {
-                let _price = this.productData.final_price_item.min_price * 1.19;
-                return _.round(_price, 2);
+                let price = this.productData.final_price_item.min_price * 1.19;
+                return _.round(price, 2);
             }
             return null;
         },
@@ -169,14 +169,14 @@ export default {
 
             // If last visited page was a category then push category path of this category to breadcrumbs
             if (lastPathElement.pageType === 'category') {
-                _.forEach(lastPathElement.categoryPath, (val, key) => {
+                _.forEach(lastPathElement.categoryPath, val => {
                     path.push(val);
                 });
             }
 
             // If last visited page was search result, aggregate data for display link to search result set
             if (lastPathElement.pageType === 'search') {
-                _.forEach(lastPathElement.categoryPath, (val, key) => {
+                _.forEach(lastPathElement.categoryPath, val => {
                     path.push({
                         id: val.id,
                         name: this.$t('Search for: ') + val.name,
@@ -218,7 +218,7 @@ export default {
     created() {
         if (this.openDetail) {
             this.getProductData({ path: this.$router.history.current.params.dynamicRoute })
-                .then(response => {
+                .then(() => {
                     this.loading = false;
                     this.setOpenDetail(false);
                 })

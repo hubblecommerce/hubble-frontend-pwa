@@ -166,7 +166,7 @@ export default function (ctx) {
             },
         },
         actions: {
-            async swGetCategory({ commit, state, dispatch }, payload) {
+            async swGetCategory({ commit, dispatch }, payload) {
                 return new Promise(function (resolve, reject) {
                     let _endpoint = '/sales-channel-api/v1/category/' + payload + '?associations[media][]';
 
@@ -200,7 +200,7 @@ export default function (ctx) {
                         });
                 });
             },
-            async swGetProducts({ commit, state, dispatch, rootState }) {
+            async swGetProducts({ commit, state, dispatch }) {
                 return new Promise(function (resolve, reject) {
                     let _endpoint = '/sales-channel-api/v1/product';
 
@@ -243,7 +243,7 @@ export default function (ctx) {
                         });
                 });
             },
-            async mappingCategory({ commit, state, dispatch }, payload) {
+            async mappingCategory({ commit }, payload) {
                 return new Promise(function (resolve, reject) {
                     // MAPPING
                     let obj = {};
@@ -283,7 +283,7 @@ export default function (ctx) {
                     resolve(obj);
                 });
             },
-            async mappingCategoryProducts({ commit, state, dispatch }, payload) {
+            async mappingCategoryProducts({ commit }, payload) {
                 return new Promise(function (resolve, reject) {
                     // MAPPING
                     let mapped = [];
@@ -351,7 +351,7 @@ export default function (ctx) {
                     resolve(obj);
                 });
             },
-            async swGetCategoryProductsById({ commit, state, dispatch }, payload) {
+            async swGetCategoryProductsById({ dispatch }, payload) {
                 return new Promise(function (resolve, reject) {
                     let _endpoint =
                         '/sales-channel-api/v1/category/' +
@@ -388,13 +388,13 @@ export default function (ctx) {
                         });
                 });
             },
-            async setApiRequestFilter({ commit, state, dispatch }, payload) {
+            async setApiRequestFilter({ commit }, payload) {
                 return new Promise(function (resolve, reject) {
                     commit('setFilter', payload);
                     resolve();
                 });
             },
-            async swGetCrossSellingsByProductId({ commit, state, dispatch }, id) {
+            async swGetCrossSellingsByProductId({ dispatch }, id) {
                 return new Promise(function (resolve, reject) {
                     let _endpoint = `/sales-channel-api/v1/product/${id}/cross-selling` + '?associations[products][associations][seoUrls][]';
 

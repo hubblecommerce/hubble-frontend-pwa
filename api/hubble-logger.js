@@ -1,6 +1,6 @@
 import { logger } from '@hubblecommerce/hubble/core/utils/logger';
 
-const response = function (req, res, next) {
+const response = function (req, res) {
     if (req.method === 'POST') {
         let body = '';
 

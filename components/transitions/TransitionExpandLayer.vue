@@ -58,6 +58,21 @@ import { mapState } from 'vuex';
 export default {
     name: 'TransitionExpandLayer',
 
+    props: {
+        leftRight: {
+            type: Boolean,
+            required: false,
+        },
+        rightLeft: {
+            type: Boolean,
+            required: false,
+        },
+        bottomTop: {
+            type: Boolean,
+            required: false,
+        },
+    },
+
     data() {
         return {
             transitionMode: '',
@@ -74,21 +89,6 @@ export default {
                 return 'fade-to-white';
             }
             return 'expand-' + this.transitionMode;
-        },
-    },
-
-    props: {
-        leftRight: {
-            type: Boolean,
-            required: false,
-        },
-        rightLeft: {
-            type: Boolean,
-            required: false,
-        },
-        bottomTop: {
-            type: Boolean,
-            required: false,
         },
     },
 

@@ -15,7 +15,7 @@
                         value=""
                         @keyup.esc="clearQuery"
                         @focus="onFocus"
-                    >
+                    />
 
                     <span class="highlight" />
 
@@ -59,7 +59,7 @@
                                 v-else
                                 :key="itemIndex"
                                 class="result-item border-bottom d-flex align-items-center pt-3 pb-3 row"
-                                @mousedown="selectItem(item, group)"
+                                @mousedown="selectItem(item)"
                             >
                                 <div v-if="item.image" class="col-4">
                                     <div class="image-wrapper border">
@@ -83,7 +83,8 @@
                             <div class="row">
                                 <div class="col-12">
                                     <span class="no-results">
-                                        {{ $t('No search results for:') }} <i>{{ query }}</i></span>
+                                        {{ $t('No search results for:') }} <i>{{ query }}</i></span
+                                    >
                                 </div>
                             </div>
                         </div>
@@ -119,10 +120,6 @@ export default {
             origImageFilter: '60x',
             focus: false,
         };
-    },
-
-    created() {
-        Vue.use(vClickOutside);
     },
 
     computed: {
@@ -164,6 +161,10 @@ export default {
         },
     },
 
+    created() {
+        Vue.use(vClickOutside);
+    },
+
     methods: {
         ...mapMutations({
             hideOffcanvas: 'modNavigation/hideOffcanvas',
@@ -199,27 +200,27 @@ export default {
             this.queryShowResults = false;
         },
         itemUrl: function (item) {
-            let _url = '';
+            let url = '';
 
             // cms_pages (simplified)
             if (item.identifier) {
-                _url = item.identifier;
+                url = item.identifier;
             }
             // product or category items url
             else {
-                _url = item.url_pds ? item.url_pds : item.url_path;
+                url = item.url_pds ? item.url_pds : item.url_path;
             }
 
             if (this.locale !== 'de') {
-                return '/' + this.locale + '/' + _url;
+                return '/' + this.locale + '/' + url;
             }
 
-            return '/' + _url;
+            return '/' + url;
         },
         itemImgPath: function (group, item) {
             // If customer domain isset get live images
             if (!_.isEmpty(process.env.CUSTOMER_DOMAIN)) {
-                let _path = _.trim(process.env.config.IMG_BASE_URL, '/');
+                let path = _.trim(process.env.config.IMG_BASE_URL, '/');
 
                 if (group.meta.name === 'catalog_product') {
                     let image = item.image;
@@ -233,72 +234,68 @@ export default {
                     return _.join([process.env.CUSTOMER_DOMAIN, 'images/catalog/thumbnails/cache/400', image], '/');
                 }
 
-                return _path;
+                return path;
             }
 
             // If no customer domain isset get images from api
-            let _path = _.trim(process.env.config.IMG_BASE_URL, '/');
+            let path = _.trim(process.env.config.IMG_BASE_URL, '/');
 
-            if (group.meta.name === 'catalog_product') _path += '/images/catalog/product/' + this.imgFilter + '/' + item.image;
+            if (group.meta.name === 'catalog_product') path += '/images/catalog/product/' + this.imgFilter + '/' + item.image;
 
-            if (group.meta.name === 'catalog_category') _path += '/images/catalog/category/' + this.imgFilter + '/' + item.image;
+            if (group.meta.name === 'catalog_category') path += '/images/catalog/category/' + this.imgFilter + '/' + item.image;
 
-            return _path;
+            return path;
         },
-        selectItem: function (item, group) {
-            let _route = {
+        selectItem: function (item) {
+            let route = {
                 path: this.itemUrl(item),
             };
 
-            // bye search
             this.bye();
 
-            // push target to vuex router
-            this.$router.push(_route);
+            this.$router.push(route);
         },
         doSearch: _.debounce(function () {
-            let _vue = this;
-
-            let _endpoint = '/api/json/search/autocomplete';
+            let endpoint = '/api/json/search/autocomplete';
 
             // stop typing ...
-            _vue.queryIsTyping = false;
+            this.queryIsTyping = false;
 
             // return in case of too short
-            if (_vue.query.length < _vue.queryMinLength) {
+            if (this.query.length < this.queryMinLength) {
                 return;
             }
 
             // stop searching ...
-            _vue.queryIsSearching = true;
+            this.queryIsSearching = true;
 
             //Insert axios get call here
-            _vue.$store
+            this.$store
                 .dispatch(
                     'apiCall',
                     {
                         action: 'get',
                         tokenType: 'api',
                         apiType: 'data',
-                        endpoint: _endpoint,
+                        endpoint: endpoint,
                         params: {
-                            _term: _vue.query,
+                            _term: this.query,
                         },
                     },
                     { root: true }
                 )
                 .then(response => {
-                    _vue.queryIsSearching = false;
+                    this.queryIsSearching = false;
 
                     //let data = {}
 
-                    _vue.items = response.data.result.groups;
-                    _vue.stats = response.data.result.stats;
-                    _vue.queryShowResults = true;
+                    this.items = response.data.result.groups;
+                    this.stats = response.data.result.stats;
+                    this.queryShowResults = true;
 
-                    _vue.groupResults();
+                    this.groupResults();
                 })
-                .catch(error => {
+                .catch(() => {
                     console.log('error retrieving data!');
                 });
         }, 350), // END doSearch
@@ -307,10 +304,10 @@ export default {
                 return false;
             }
 
-            let _url = this.localePath('search-catalogsearch');
+            let url = this.localePath('search-catalogsearch');
 
-            let _route = {
-                path: _url,
+            let route = {
+                path: url,
                 query: {
                     term: this.query,
                 },
@@ -319,7 +316,7 @@ export default {
             // bye search
             this.bye();
 
-            this.$router.push(_route);
+            this.$router.push(route);
         },
         doCatalogSearchGrouped: function (group) {
             // only if
@@ -345,67 +342,65 @@ export default {
         },
         getGroupHeadline: function (item) {
             // assemble headline content
-            let _headline = '<h3>' + this.$t(item.meta.label) + ' (' + item.stats.total + ')</h3>';
+            let headline = '<h3>' + this.$t(item.meta.label) + ' (' + item.stats.total + ')</h3>';
 
             // in case of group products, link to catalog search with term
-            if (item.meta.name == 'catalog_product') {
-                _headline = "<span class='livesearch-link'>" + _headline + '</span>';
+            if (item.meta.name === 'catalog_product') {
+                headline = "<span class='livesearch-link'>" + headline + '</span>';
             }
 
-            return _headline;
+            return headline;
         },
         groupResults: function () {
-            let _group_l = { name: 'left', items: [], count: 0 };
-            let _group_r = { name: 'right', items: [], count: 0 };
+            let group_l = { name: 'left', items: [], count: 0 };
+            let group_r = { name: 'right', items: [], count: 0 };
 
             // group categories
-            let _group_categories = this.items.filter(item => item.meta.name === 'catalog_category');
+            let groupCategories = this.items.filter(item => item.meta.name === 'catalog_category');
 
-            if (!_.isEmpty(_group_categories)) {
-                let _cnt_items_group = _.size(_group_categories[0].items);
-                _group_l.count += _cnt_items_group;
+            if (!_.isEmpty(groupCategories)) {
+                let _cnt_items_group = _.size(groupCategories[0].items);
+                group_l.count += _cnt_items_group;
 
-                _group_l.items.push(_group_categories[0]);
+                group_l.items.push(groupCategories[0]);
             }
 
             // group pages
-            let _group_pages = this.items.filter(item => item.meta.name === 'cms_page');
+            let groupPages = this.items.filter(item => item.meta.name === 'cms_page');
 
-            if (!_.isEmpty(_group_pages)) {
-                let _cnt_items_group = _.size(_group_pages[0].items);
-                _group_l.count += _cnt_items_group;
+            if (!_.isEmpty(groupPages)) {
+                let cnt_items_group = _.size(groupPages[0].items);
+                group_l.count += cnt_items_group;
 
-                _group_l.items.push(_group_pages[0]);
+                group_l.items.push(groupPages[0]);
             }
 
             // group products
-            let _group_products = this.items.filter(item => item.meta.name === 'catalog_product');
+            let groupProducts = this.items.filter(item => item.meta.name === 'catalog_product');
 
-            if (!_.isEmpty(_group_products)) {
-                let _cnt_items_group = _.size(_group_products[0].items);
-                _group_r.count += _cnt_items_group;
+            if (!_.isEmpty(groupProducts)) {
+                let cnt_items_group = _.size(groupProducts[0].items);
+                group_r.count += cnt_items_group;
 
-                _group_r.items.push(_group_products[0]);
+                group_r.items.push(groupProducts[0]);
             }
 
-            let _my_groups = [];
-            _my_groups.push(_group_l);
-            _my_groups.push(_group_r);
+            let myGroups = [];
+            myGroups.push(group_l);
+            myGroups.push(group_r);
 
-            this.groups = _my_groups;
+            this.groups = myGroups;
         },
         sendStats: function (data) {
-            let _vue = this;
-
-            let _route = route('utilities.stats');
+            let route = route('utilities.stats');
 
             return new Promise(function (resolve, reject) {
-                _vue.$http
-                    .post(_route, data)
-                    .then(response => {
+                this.$http
+                    .post(route, data)
+                    .then(() => {
                         resolve('stats OK');
                     })
-                    .catch(error => {
+                    .catch(() => {
                         reject('stats not OK');
                     });
             });

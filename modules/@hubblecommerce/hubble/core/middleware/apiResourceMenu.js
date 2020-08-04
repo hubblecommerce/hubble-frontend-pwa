@@ -20,7 +20,7 @@ Middleware.apiResourceMenu = function ({ isHMR, store, error }) {
 
     return new Promise((resolve, reject) => {
         store
-            .dispatch('modApiMenu/getMenu', {})
+            .dispatch('modApiMenu/getMenu')
             .then(response => {
                 resolve(response);
             })

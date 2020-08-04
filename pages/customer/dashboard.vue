@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import _ from 'lodash';
 
 import CustomerAccountNavigation from '../../components/customer/CustomerAccountNavigation';
@@ -82,12 +82,6 @@ export default {
         };
     },
 
-    mounted() {
-        if (this.customer.customerData == null || _.isEmpty(this.customer.customerData)) {
-            this.$store.dispatch('modApiCustomer/getCustomerInfo');
-        }
-    },
-
     computed: {
         ...mapState({
             customer: state => state.modApiCustomer.customer,
@@ -98,6 +92,18 @@ export default {
             }
             return false;
         },
+    },
+
+    mounted() {
+        if (this.customer.customerData == null || _.isEmpty(this.customer.customerData)) {
+            this.getCustomerInfo();
+        }
+    },
+
+    methods: {
+        ...mapActions({
+            getCustomerInfo: 'modApiCustomer/getCustomerInfo',
+        }),
     },
 
     head() {

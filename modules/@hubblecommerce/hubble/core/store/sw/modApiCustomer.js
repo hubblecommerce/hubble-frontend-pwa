@@ -69,7 +69,7 @@ export default function (ctx) {
             },
         },
         actions: {
-            async register({ dispatch, commit, state, getters }, payload) {
+            async register({ dispatch, commit }, payload) {
                 return new Promise((resolve, reject) => {
                     // Map customer data to fit SW6 headless API
                     let customer = {
@@ -214,7 +214,7 @@ export default function (ctx) {
                         });
                 });
             },
-            async logOut({ commit, state, dispatch }, payload) {
+            async logOut({ commit, state, dispatch }) {
                 return new Promise((resolve, reject) => {
                     dispatch(
                         'apiCall',
@@ -271,7 +271,7 @@ export default function (ctx) {
                     }
                 });
             },
-            async mapAddresses({ commit, state, getters, dispatch }, addresses) {
+            async mapAddresses({ state }, addresses) {
                 return new Promise((resolve, reject) => {
                     let mappedAddresses = [];
 
@@ -309,7 +309,7 @@ export default function (ctx) {
                     resolve(mappedAddresses);
                 });
             },
-            async mapDefaultAddresses({ commit, state, getters, dispatch }, addresses) {
+            async mapDefaultAddresses({ dispatch }, addresses) {
                 return new Promise((resolve, reject) => {
                     let mappedAddresses = [],
                         billingDefault = addresses.billingDefault,
@@ -356,7 +356,7 @@ export default function (ctx) {
                     resolve(mappedAddresses);
                 });
             },
-            async getCustomerInfo({ commit, state, getters, dispatch }, payload) {
+            async getCustomerInfo({ commit, state, dispatch }) {
                 return new Promise((resolve, reject) => {
                     dispatch(
                         'apiCall',
@@ -401,7 +401,7 @@ export default function (ctx) {
                         });
                 });
             },
-            async getCustomerAddresses({ commit, state, getters, dispatch }, payload) {
+            async getCustomerAddresses({ commit, state, dispatch }) {
                 return new Promise((resolve, reject) => {
                     dispatch(
                         'apiCall',
@@ -434,7 +434,7 @@ export default function (ctx) {
                         });
                 });
             },
-            async storeCustomerAddress({ state, getters, dispatch }, address) {
+            async storeCustomerAddress({ state, dispatch }, address) {
                 return new Promise((resolve, reject) => {
                     let requestBody = {
                         salutationId: address.payload.gender,
@@ -476,7 +476,7 @@ export default function (ctx) {
                         });
                 });
             },
-            async editAddress({ dispatch, state, getters }, payload) {
+            async editAddress({ dispatch }, payload) {
                 return new Promise((resolve, reject) => {
                     // TODO: Edit Address not implemented in SW6 headless API yet
 
@@ -505,7 +505,7 @@ export default function (ctx) {
                     }
                 });
             },
-            async deleteCustomerAddress({ state, getters, dispatch }, payload) {
+            async deleteCustomerAddress({ state, dispatch }, payload) {
                 return new Promise((resolve, reject) => {
                     if (payload.is_billing_default || payload.is_shipping_default) {
                         reject('You cant delete any default address');
@@ -532,7 +532,7 @@ export default function (ctx) {
                     }
                 });
             },
-            async mapOrders({ commit, state, getters, dispatch }, orders) {
+            async mapOrders({ dispatch }, orders) {
                 return new Promise((resolve, reject) => {
                     let mappedOrders = [];
 
@@ -549,7 +549,7 @@ export default function (ctx) {
                     resolve(mappedOrders);
                 });
             },
-            async setDefaultBillingAddress({ dispatch, getters, state }, payload) {
+            async setDefaultBillingAddress({ dispatch, state }, payload) {
                 return new Promise((resolve, reject) => {
                     dispatch(
                         'apiCall',
@@ -572,7 +572,7 @@ export default function (ctx) {
                         });
                 });
             },
-            async setDefaultShippingAddress({ dispatch, getters, state }, payload) {
+            async setDefaultShippingAddress({ dispatch, state }, payload) {
                 return new Promise((resolve, reject) => {
                     dispatch(
                         'apiCall',
@@ -595,7 +595,7 @@ export default function (ctx) {
                         });
                 });
             },
-            async getOrders({ dispatch, getters, state }, payload) {
+            async getOrders({ dispatch, state }, payload) {
                 return new Promise((resolve, reject) => {
                     dispatch(
                         'apiCall',
@@ -623,7 +623,7 @@ export default function (ctx) {
                         });
                 });
             },
-            async passwordUpdate({ dispatch, getters, state }, payload) {
+            async passwordUpdate({ dispatch, state }, payload) {
                 return new Promise((resolve, reject) => {
                     dispatch(
                         'apiCall',
@@ -651,7 +651,7 @@ export default function (ctx) {
                         });
                 });
             },
-            async swGetSalutations({ commit, state, dispatch, rootState, getters }, payload) {
+            async swGetSalutations({ dispatch }, payload) {
                 return new Promise((resolve, reject) => {
                     dispatch(
                         'apiCall',
@@ -673,7 +673,7 @@ export default function (ctx) {
                         });
                 });
             },
-            async swGetCountries({ commit, state, dispatch, rootState, getters }, payload) {
+            async swGetCountries({ dispatch }, payload) {
                 return new Promise((resolve, reject) => {
                     dispatch(
                         'apiCall',
@@ -749,7 +749,7 @@ export default function (ctx) {
                     resolve();
                 });
             },
-            async updateCustomerInfo({ dispatch, commit, state, getters }, payload) {
+            async updateCustomerInfo({ dispatch, state }, payload) {
                 return new Promise((resolve, reject) => {
                     // Map customer data to fit SW6 headless API
 
@@ -783,7 +783,7 @@ export default function (ctx) {
                         });
                 });
             },
-            async updateCustomerEmail({ dispatch, commit, state, getters }, payload) {
+            async updateCustomerEmail({ dispatch, state }, payload) {
                 return new Promise((resolve, reject) => {
                     // Map email customer data to fit SW6 headless API
 
@@ -803,7 +803,7 @@ export default function (ctx) {
                         },
                         { root: true }
                     )
-                        .then(response => {
+                        .then(() => {
                             dispatch('getCustomerInfo')
                                 .then(response => {
                                     resolve(response);

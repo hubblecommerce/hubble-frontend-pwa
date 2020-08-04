@@ -120,12 +120,12 @@ export default {
             return null;
         },
         routeUrlPds: function () {
-            let _locale = this.getApiLocale;
+            let locale = this.getApiLocale;
 
             // direkt url
             if (this.isSlider) {
-                if (_locale !== 'de') {
-                    return '/' + _locale + '/' + _.join([this.itemOrig.url_pds], '/');
+                if (locale !== 'de') {
+                    return '/' + locale + '/' + _.join([this.itemOrig.url_pds], '/');
                 }
 
                 return '/' + _.join([this.itemOrig.url_pds], '/');
@@ -136,8 +136,8 @@ export default {
             //    return '/' + _.join([this.session.categorySelected.url_path, this.itemOrig.url_pds], '/');
             //}
 
-            if (_locale !== 'de') {
-                return '/' + _locale + '/' + this.itemOrig.url_pds;
+            if (locale !== 'de') {
+                return '/' + locale + '/' + this.itemOrig.url_pds;
             }
 
             return '/' + this.itemOrig.url_pds;
@@ -154,8 +154,8 @@ export default {
             }
 
             // If no customer domain isset get images from api
-            let _path = _.trim(process.env.config.IMG_BASE_URL, '/');
-            return _path + '/images/catalog/product/180x/' + this.itemData.image;
+            let path = _.trim(process.env.config.IMG_BASE_URL, '/');
+            return path + '/images/catalog/product/180x/' + this.itemData.image;
         },
         item: function () {
             return this.itemOrig;

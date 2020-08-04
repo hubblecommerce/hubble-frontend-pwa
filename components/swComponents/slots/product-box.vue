@@ -7,8 +7,10 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import { slotMixins } from '../helper';
 import ProductListingCard from '../../productlist/ProductListingCard';
+
 export default {
     name: 'ProductBoxSlot',
     components: { ProductListingCard },
@@ -44,10 +46,16 @@ export default {
     },
 
     created() {
-        this.$store.dispatch('modApiProduct/mappingProduct', this.content.data).then(response => {
+        this.mappingProduct(this.content.data).then(response => {
             this.itemOrig = response;
             this.loaded = true;
         });
+    },
+
+    methods: {
+        ...mapActions({
+            mappingProduct: 'modApiProduct/mappingProduct',
+        }),
     },
 };
 </script>

@@ -152,7 +152,7 @@
                                             :class="{ invalid: errors.length > 0 }"
                                             placeholder=" "
                                             required
-                                        >
+                                        />
 
                                         <label for="firstName" v-text="$t('First Name') + '*'" />
 
@@ -176,7 +176,7 @@
                                             :class="{ invalid: errors.length > 0 }"
                                             placeholder=" "
                                             required
-                                        >
+                                        />
 
                                         <label for="lastName" v-text="$t('Last Name') + '*'" />
 
@@ -201,7 +201,7 @@
                                                 :class="{ invalid: errors.length > 0 }"
                                                 placeholder=" "
                                                 required
-                                            >
+                                            />
 
                                             <label for="street" v-text="$t('Street') + '/' + $t('Houseno.') + '*'" />
 
@@ -227,7 +227,7 @@
                                                 :class="{ invalid: errors.length > 0 }"
                                                 placeholder=" "
                                                 required
-                                            >
+                                            />
 
                                             <label for="street" v-text="$t('Street') + '*'" />
 
@@ -251,7 +251,7 @@
                                                 :class="{ invalid: errors.length > 0 }"
                                                 placeholder=" "
                                                 required
-                                            >
+                                            />
 
                                             <label for="houseNr" v-text="$t('Houseno.') + '*'" />
 
@@ -277,7 +277,7 @@
                                                 :class="{ invalid: errors.length > 0 }"
                                                 placeholder=" "
                                                 required
-                                            >
+                                            />
 
                                             <label for="zipCode" v-text="$t('Zipcode') + '*'" />
 
@@ -301,7 +301,7 @@
                                                 :class="{ invalid: errors.length > 0 }"
                                                 placeholder=" "
                                                 required
-                                            >
+                                            />
 
                                             <label for="city" v-text="$t('City') + '*'" />
 
@@ -583,10 +583,10 @@ export default {
         defaultShippingAddress: function () {
             // recalculate shipping cost when shipping address changes
             this.calculateShippingCosts(this.defaultShippingAddress.country)
-                .then(response => {
+                .then(() => {
                     //console.log(response);
                 })
-                .catch(error => {
+                .catch(() => {
                     //console.log('Calculated Shipping costs failed: ', error);
                 });
         },

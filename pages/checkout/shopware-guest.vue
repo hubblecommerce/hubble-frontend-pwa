@@ -51,7 +51,7 @@
                                     :class="{ invalid: errors.length > 0 }"
                                     placeholder=" "
                                     required
-                                >
+                                />
                                 <label for="email" v-text="$t('Email Address') + '*'" />
                                 <div class="validation-msg" v-text="$t(errors[0])" />
                             </validation-provider>
@@ -74,7 +74,7 @@
                                     :class="{ invalid: errors.length > 0 }"
                                     placeholder=" "
                                     required
-                                >
+                                />
                                 <label for="firstName" v-text="$t('First Name') + '*'" />
                                 <div class="validation-msg" v-text="$t(errors[0])" />
                             </validation-provider>
@@ -97,7 +97,7 @@
                                     :class="{ invalid: errors.length > 0 }"
                                     placeholder=" "
                                     required
-                                >
+                                />
                                 <label for="lastName" v-text="$t('Last Name') + '*'" />
                                 <div class="validation-msg" v-text="$t(errors[0])" />
                             </validation-provider>
@@ -120,7 +120,7 @@
                                     :class="{ invalid: errors.length > 0 }"
                                     placeholder=" "
                                     required
-                                >
+                                />
                                 <label for="street" v-text="$t('Street') + '*'" />
                                 <div class="validation-msg" v-text="$t(errors[0])" />
                             </validation-provider>
@@ -143,7 +143,7 @@
                                         :class="{ invalid: errors.length > 0 }"
                                         placeholder=" "
                                         required
-                                    >
+                                    />
                                     <label for="zipCode" v-text="$t('Zipcode') + '*'" />
                                     <div class="validation-msg" v-text="$t(errors[0])" />
                                 </validation-provider>
@@ -165,7 +165,7 @@
                                         :class="{ invalid: errors.length > 0 }"
                                         placeholder=" "
                                         required
-                                    >
+                                    />
                                     <label for="city" v-text="$t('City') + '*'" />
                                     <div class="validation-msg" v-text="$t(errors[0])" />
                                 </validation-provider>
@@ -182,7 +182,8 @@
                                             v-if="country.active && country.shippingAvailable"
                                             :key="country.id"
                                             :value="country.id"
-                                            >{{ country.name }}</option>
+                                            >{{ country.name }}</option
+                                        >
                                     </select>
                                     <label class="select-label" v-text="$t('Country') + '*'" />
                                     <div class="validation-msg" v-text="$t(errors[0])" />
@@ -307,6 +308,7 @@ export default {
             salutations: state => state.modApiCustomer.salutations,
             processingCheckout: state => state.modApiPayment.processingCheckout,
             cart: state => state.modCart.cart,
+            customerAuth: state => state.modApiCustomer.customer.customerAuth,
         }),
     },
 
@@ -314,8 +316,8 @@ export default {
         // Set cart context as customer context for further api calls
         // Do this after swtc isset via cookie (mounted)
 
-        if (_.isEmpty(this.$store.state.modApiCustomer.customer.customerAuth)) {
-            this.setCustomerAuth({ token: this.$store.state.modCart.swtc });
+        if (_.isEmpty(this.customerAuth)) {
+            this.setCustomerAuth({ token: this.swtc });
         }
 
         this.swGetSalutations()

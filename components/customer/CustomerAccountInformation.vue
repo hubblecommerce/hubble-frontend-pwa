@@ -65,7 +65,7 @@
                                             :class="{ invalid: errors.length > 0 }"
                                             placeholder=" "
                                             required
-                                        >
+                                        />
 
                                         <label for="firstName" v-text="$t('First Name') + '*'" />
 
@@ -89,7 +89,7 @@
                                             :class="{ invalid: errors.length > 0 }"
                                             placeholder=" "
                                             required
-                                        >
+                                        />
 
                                         <label for="lastName" v-text="$t('Last Name') + '*'" />
 
@@ -108,7 +108,7 @@
                                             placeholder=" "
                                             disabled
                                             class="dashboard-section-input-disabled"
-                                        >
+                                        />
 
                                         <label for="current-email" v-text="$t('Current Email Address')" />
                                     </validation-provider>
@@ -130,7 +130,7 @@
                                             value=""
                                             :class="{ invalid: errors.length > 0 }"
                                             placeholder=" "
-                                        >
+                                        />
 
                                         <label for="email" v-text="$t('New Email Address') + '*'" />
 
@@ -154,7 +154,7 @@
                                             :class="{ invalid: errors.length > 0 }"
                                             placeholder=" "
                                             @paste="onPaste($event)"
-                                        >
+                                        />
 
                                         <label for="email-repeat" v-text="$t('Confirm New Email Address') + '*'" />
 
@@ -177,7 +177,7 @@
                                             value=""
                                             :class="{ invalid: errors.length > 0 }"
                                             placeholder=" "
-                                        >
+                                        />
 
                                         <label for="password" v-text="$t('Password')" />
 
@@ -380,7 +380,7 @@ export default {
                         });
                     }
                 })
-                .catch(err => {
+                .catch(() => {
                     this.errors.push(this.$t('No network connection.'));
                 });
         },

@@ -31,7 +31,7 @@ export default function (ctx) {
                         // Use menu item from api result by category id when it is set in config
                         if (val.id !== null) {
                             // Get menu item from payload by id
-                            _.forEach(state.menuItems, (v, k) => {
+                            _.forEach(state.menuItems, v => {
                                 if (v.id === val.id) {
                                     state.dataMenu.result.items[key] = v;
                                     state.dataMenu.result.items[key].name = val.name;
@@ -111,7 +111,7 @@ export default function (ctx) {
 
                             resolve('OK');
                         })
-                        .catch(response => {
+                        .catch(() => {
                             reject('API request failed!');
                         });
                 });

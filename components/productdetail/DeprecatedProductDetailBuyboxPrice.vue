@@ -8,7 +8,8 @@
             <p>
                 <span class="bold-text">{{ $t('no shipping costs') }}</span>
             </p>
-            <p>{{ $t('easy and') }} <span class="bold-text">{{ $t('free returns') }}</span> {{ $t('within Germany') }}
+            <p
+                >{{ $t('easy and') }} <span class="bold-text">{{ $t('free returns') }}</span> {{ $t('within Germany') }}
             </p>
         </div>
 

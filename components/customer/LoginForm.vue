@@ -12,7 +12,7 @@
                 :class="{ invalid: errors.length > 0 }"
                 placeholder=" "
                 required
-            >
+            />
 
             <label for="email" v-text="$t('Email Address')" />
 
@@ -39,7 +39,7 @@
                 :class="{ invalid: errors.length > 0 }"
                 placeholder=" "
                 required
-            >
+            />
 
             <label for="password" v-text="$t('Password')" />
 
@@ -80,7 +80,7 @@
                 :class="{ invalid: errors.length > 0 }"
                 placeholder=" "
                 required
-            >
+            />
 
             <label for="email" v-text="$t('Email Address')" />
 
@@ -138,6 +138,9 @@ export default {
             getWishlist: 'modApiCustomer/getWishlist',
             updateWishlist: 'modApiCustomer/updateWishlist',
             saveToStore: 'modWishlist/saveToStore',
+            passwordForgot: 'modApiCustomer/passwordForgot',
+            hideOffcanvasAction: 'modNavigation/hideOffcanvasAction',
+            flashMessage: 'modFlash/flashMessage',
         }),
         ...mapMutations({
             setWishlistId: 'modWishlist/setWishlistId',
@@ -226,12 +229,11 @@ export default {
                     email: this.form.email,
                 };
 
-                this.$store
-                    .dispatch('modApiCustomer/passwordForgot', payload)
-                    .then(response => {
+                this.passwordForgot(payload)
+                    .then(() => {
                         // close off canvas if in offcanvas and show success message
-                        this.$store.dispatch('modNavigation/hideOffcanvasAction').then(() => {
-                            this.$store.dispatch('modFlash/flashMessage', {
+                        this.hideOffcanvasAction().then(() => {
+                            this.flashMessage({
                                 flashType: 'success',
                                 flashMessage: 'Ihnen wurde ein neues Passwort an Ihre E-Mail Adresse gesendet.',
                                 keepOnRouteChange: true,
@@ -246,7 +248,7 @@ export default {
                             this.errors = [];
                         });
                     })
-                    .catch(error => {
+                    .catch(() => {
                         this.errors.push(this.$t('Neues Password anfordern fehlgeschlagen'));
                     });
             }

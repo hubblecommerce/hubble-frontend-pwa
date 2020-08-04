@@ -1,7 +1,7 @@
 import { logger } from '@hubblecommerce/hubble/core/utils/logger';
 import axios from 'axios';
 
-const response = function (req, res, next) {
+const response = function (req, res) {
     if (req.method === 'POST') {
         let body = '';
 

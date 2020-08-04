@@ -97,7 +97,7 @@ export default function (ctx) {
             },
         },
         actions: {
-            async swGuestOrder({ commit, state, dispatch, rootState, getters }, payload) {
+            async swGuestOrder({ dispatch }, payload) {
                 return new Promise((resolve, reject) => {
                     dispatch(
                         'apiCall',
@@ -176,7 +176,7 @@ export default function (ctx) {
                         });
                 });
             },
-            async swStartPayment({ dispatch, state, rootState }, payload) {
+            async swStartPayment({ dispatch, rootState }, payload) {
                 return new Promise((resolve, reject) => {
                     dispatch(
                         'apiCall',
@@ -199,7 +199,7 @@ export default function (ctx) {
                         });
                 });
             },
-            async validateOrder({ dispatch, commit, state }) {
+            async validateOrder({ commit, state }) {
                 return new Promise((resolve, reject) => {
                     // Reset payment error
                     commit('setPaymentError', null);
@@ -327,7 +327,7 @@ export default function (ctx) {
                         });
                 });
             },
-            async swSetPaymentMethod({ commit, dispatch, rootState, state }, payload) {
+            async swSetPaymentMethod({ dispatch, rootState }, payload) {
                 return new Promise((resolve, reject) => {
                     dispatch(
                         'apiCall',
@@ -343,7 +343,7 @@ export default function (ctx) {
                         },
                         { root: true }
                     )
-                        .then(response => {
+                        .then(() => {
                             // Save payment methods to store
                             resolve('OK');
                         })
@@ -373,7 +373,7 @@ export default function (ctx) {
                         });
                 });
             },
-            async swSetShippingMethod({ commit, dispatch, rootState, state }, payload) {
+            async swSetShippingMethod({ dispatch, rootState }, payload) {
                 return new Promise((resolve, reject) => {
                     if (_.isEmpty(payload)) {
                         resolve();
@@ -393,7 +393,7 @@ export default function (ctx) {
                         },
                         { root: true }
                     )
-                        .then(response => {
+                        .then(() => {
                             // Save payment methods to store
                             resolve('OK');
                         })

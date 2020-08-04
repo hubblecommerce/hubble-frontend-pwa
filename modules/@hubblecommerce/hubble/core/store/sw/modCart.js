@@ -120,7 +120,7 @@ export default function (ctx) {
                         });
                 });
             },
-            swGetCart({ commit, state, dispatch, rootState, getters }) {
+            swGetCart({ state, dispatch }) {
                 return new Promise((resolve, reject) => {
                     dispatch(
                         'apiCall',
@@ -158,7 +158,7 @@ export default function (ctx) {
                         });
                 });
             },
-            initCart({ commit, state, dispatch, rootState, getters }) {
+            initCart({ commit, state, dispatch, getters }) {
                 return new Promise((resolve, reject) => {
                     dispatch(
                         'apiCall',
@@ -191,7 +191,7 @@ export default function (ctx) {
                         });
                 });
             },
-            saveSwtc({ commit, state, dispatch, rootState, getters }, payload) {
+            saveSwtc({ commit, state, getters }, payload) {
                 return new Promise((resolve, reject) => {
                     // Set swtc to store
                     commit('setSwtc', payload);
@@ -205,7 +205,7 @@ export default function (ctx) {
                     resolve();
                 });
             },
-            saveCartToStorage({ commit, state, dispatch, rootState, getters }, payload) {
+            saveCartToStorage({ commit, state, dispatch, getters }, payload) {
                 return new Promise((resolve, reject) => {
                     // Map products from calculated cart response from sw to hubble data structure
                     dispatch('mappingCartProducts', { products: payload.response.data.data.lineItems }).then(response => {
@@ -235,7 +235,7 @@ export default function (ctx) {
                     });
                 });
             },
-            swAddtToCart({ commit, state, dispatch, rootState, getters }, payload) {
+            swAddtToCart({ state, dispatch }, payload) {
                 const _endpoint = `/sales-channel-api/v1/checkout/cart/product/${payload.item.id}`;
 
                 return new Promise((resolve, reject) => {
@@ -263,7 +263,7 @@ export default function (ctx) {
                         });
                 });
             },
-            addToCart({ commit, state, dispatch, rootState, getters }, payload) {
+            addToCart({ state, dispatch }, payload) {
                 return new Promise((resolve, reject) => {
                     // Add current cart to order object temporarily
                     let cart = _.cloneDeep(state.cart);
@@ -331,7 +331,7 @@ export default function (ctx) {
                     }
                 });
             },
-            setTotals({ commit, state, dispatch, rootState, getters }, payload) {
+            setTotals({ commit }, payload) {
                 return new Promise((resolve, reject) => {
                     commit('setSubtotals', payload.data.data.price.positionPrice);
 
@@ -346,7 +346,7 @@ export default function (ctx) {
                     resolve();
                 });
             },
-            addItem({ commit, state, dispatch, rootState, getters }, payload) {
+            addItem({ state, dispatch }, payload) {
                 return new Promise((resolve, reject) => {
                     // Check if swtc isset
                     if (state.swtc === '') {
@@ -377,7 +377,7 @@ export default function (ctx) {
                     }
                 });
             },
-            swUpdateLineItem({ commit, state, dispatch, rootState, getters }, payload) {
+            swUpdateLineItem({ state, dispatch }, payload) {
                 const _endpoint = `/sales-channel-api/v1/checkout/cart/line-item/${payload.id}`;
 
                 return new Promise((resolve, reject) => {
@@ -423,7 +423,7 @@ export default function (ctx) {
                         });
                 });
             },
-            swRemoveLineItem({ commit, state, dispatch, rootState, getters }, payload) {
+            swRemoveLineItem({ state, dispatch }, payload) {
                 const _endpoint = `/sales-channel-api/v1/checkout/cart/line-item/${payload.id}`;
 
                 return new Promise((resolve, reject) => {
@@ -448,7 +448,7 @@ export default function (ctx) {
                         });
                 });
             },
-            delItem({ commit, state, getters, dispatch }, payload) {
+            delItem({ commit, state, dispatch }, payload) {
                 let item = payload.data;
 
                 return new Promise((resolve, reject) => {
@@ -468,7 +468,7 @@ export default function (ctx) {
                         });
                 });
             },
-            setSwtcByCookie({ commit, state, getters, dispatch }, payload) {
+            setSwtcByCookie({ commit, state, getters }, payload) {
                 return new Promise(resolve => {
                     // try to retrieve auth user by cookie
                     let _cookie = this.$cookies.get(state.swtcCookieName);
@@ -496,7 +496,7 @@ export default function (ctx) {
                     }
                 });
             },
-            setByCookie({ commit, state, getters, dispatch }, payload) {
+            setByCookie({ commit, state, getters }, payload) {
                 return new Promise(resolve => {
                     // try to retrieve auth user by cookie
                     let _cookie = this.$cookies.get(state.cookieName);
@@ -555,15 +555,15 @@ export default function (ctx) {
                     });
                 });
             },
-            async calculateShippingCosts({ state, commit, dispatch }, payload) {
+            async calculateShippingCosts({ state }, payload) {
                 return new Promise((resolve, reject) => {
                     resolve();
                 });
             },
-            async precalculateShippingCost({ commit, dispatch }, payload) {
+            async precalculateShippingCost({ commit }, payload) {
                 return true;
             },
-            mappingCartProduct({ state, dispatch, rootState }, payload) {
+            mappingCartProduct({ dispatch }, payload) {
                 return new Promise((resolve, reject) => {
                     let product = payload.product;
 
@@ -586,7 +586,7 @@ export default function (ctx) {
                     });
                 });
             },
-            mappingCartProducts({ commit, state, dispatch, rootState }, payload) {
+            mappingCartProducts({ dispatch }, payload) {
                 return new Promise((resolve, reject) => {
                     let _products = payload.products;
                     let _mappedProducts = [];

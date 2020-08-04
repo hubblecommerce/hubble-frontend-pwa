@@ -131,7 +131,7 @@ export default function (ctx) {
                         });
                 });
             },
-            async mappingProduct({ commit, state, dispatch, router }, payload) {
+            async mappingProduct({ dispatch }, payload) {
                 return new Promise(function (resolve, reject) {
                     let obj = {};
 

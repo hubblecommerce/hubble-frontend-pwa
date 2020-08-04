@@ -290,7 +290,7 @@ export default {
                 };
             }
 
-            this.hideFilters().then(response => {
+            this.hideFilters().then(() => {
                 this.$router.push(route);
             });
         },

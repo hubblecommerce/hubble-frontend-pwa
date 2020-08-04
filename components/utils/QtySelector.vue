@@ -21,7 +21,7 @@
                 max="maxQty"
                 required
                 @blur="qtyOnBlur()"
-            >
+            />
             <span class="highlight" />
             <span class="bar" />
             <label for="quantity" v-text="$t('Quantity')" />

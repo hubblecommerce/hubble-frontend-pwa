@@ -1,64 +1,66 @@
 <template>
     <div>
         <transition-group name="list">
-            <div v-for="item in items" v-if="qty > 0" :key="item.id" class="cart-items-list row item align-items-center">
-                <nuxt-link :to="'/' + item.url_pds" class="col-9">
-                    <div class="row align-items-center">
-                        <div class="col-4">
-                            <img :src="itemImgPath(item)" class="product-img" alt="Product Image" :title="item.name_orig" :class="classesImg" >
-                        </div>
+            <template v-if="qty > 0">
+                <div v-for="item in items" :key="item.id" class="cart-items-list row item align-items-center">
+                    <nuxt-link :to="'/' + item.url_pds" class="col-9">
+                        <div class="row align-items-center">
+                            <div class="col-4">
+                                <img :src="itemImgPath(item)" class="product-img" alt="Product Image" :title="item.name_orig" :class="classesImg" />
+                            </div>
 
-                        <div class="col-8">
-                            <div class="container">
-                                <div class="row">
-                                    <span class="product-name">{{ item.name_orig }}</span>
-                                </div>
+                            <div class="col-8">
+                                <div class="container">
+                                    <div class="row">
+                                        <span class="product-name">{{ item.name_orig }}</span>
+                                    </div>
 
-                                <div class="row">
-                                    <ul class="selected-variants-wrp">
-                                        <li v-for="(variant, key) in item.variants" :key="key" class="selected-variants">
-                                            {{ variant.label }}: {{ formatSize(variant.value_label) }}
-                                        </li>
-                                    </ul>
-                                </div>
+                                    <div class="row">
+                                        <ul class="selected-variants-wrp">
+                                            <li v-for="(variant, key) in item.variants" :key="key" class="selected-variants">
+                                                {{ variant.label }}: {{ formatSize(variant.value_label) }}
+                                            </li>
+                                        </ul>
+                                    </div>
 
-                                <div class="row">
-                                    <template v-if="itemIsSpecial(item)">
-                                        <span
-                                            class="product-price old-price"
-                                            v-html="getPriceAndCurrency(item, 'display_price_brutto', priceSwitcherIncludeVat)"
-                                        />
-                                        <span
-                                            class="product-price sale-price"
-                                            v-html="getPriceAndCurrency(item, 'display_price_brutto_special', priceSwitcherIncludeVat)"
-                                        />
-                                    </template>
+                                    <div class="row">
+                                        <template v-if="itemIsSpecial(item)">
+                                            <span
+                                                class="product-price old-price"
+                                                v-html="getPriceAndCurrency(item, 'display_price_brutto', priceSwitcherIncludeVat)"
+                                            />
+                                            <span
+                                                class="product-price sale-price"
+                                                v-html="getPriceAndCurrency(item, 'display_price_brutto_special', priceSwitcherIncludeVat)"
+                                            />
+                                        </template>
 
-                                    <template v-else>
-                                        <span
-                                            class="product-price sale-price"
-                                            v-html="getPriceAndCurrency(item, 'display_price_brutto', priceSwitcherIncludeVat)"
-                                        />
-                                    </template>
+                                        <template v-else>
+                                            <span
+                                                class="product-price sale-price"
+                                                v-html="getPriceAndCurrency(item, 'display_price_brutto', priceSwitcherIncludeVat)"
+                                            />
+                                        </template>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </nuxt-link>
+                    </nuxt-link>
 
-                <div class="col-3 actions-wrp text-right">
-                    <qty-selector :qty="item.qty" :max-qty="getStockQtyOfVariant(item)" @changeQty="onChangeQty(item.id, $event)" />
+                    <div class="col-3 actions-wrp text-right">
+                        <qty-selector :qty="item.qty" :max-qty="getStockQtyOfVariant(item)" @changeQty="onChangeQty(item.id, $event)" />
 
-                    <div v-if="!showLoader" aria-hidden="true" class="remove-item" @click="confirmRemoveItem(item)" v-text="$t('Remove')" />
+                        <div v-if="!showLoader" aria-hidden="true" class="remove-item" @click="confirmRemoveItem(item)" v-text="$t('Remove')" />
 
-                    <div v-if="showLoader" class="lds-ring">
-                        <div />
-                        <div />
-                        <div />
-                        <div />
+                        <div v-if="showLoader" class="lds-ring">
+                            <div />
+                            <div />
+                            <div />
+                            <div />
+                        </div>
                     </div>
                 </div>
-            </div>
+            </template>
         </transition-group>
 
         <div v-if="!isEmpty(cart.coupons)">
@@ -147,18 +149,18 @@ export default {
                 return _.join([process.env.CUSTOMER_DOMAIN, 'images/catalog/thumbnails/cache/400', image], '/');
             }
 
-            let _path = _.trim(process.env.config.IMG_BASE_URL, '/');
+            let path = _.trim(process.env.config.IMG_BASE_URL, '/');
 
-            return _path + '/images/catalog/product/' + this.imgFilter + '/' + item.image;
+            return path + '/images/catalog/product/' + this.imgFilter + '/' + item.image;
         },
         itemIsSpecial: function (item) {
             return this.productIsSpecial(item);
         },
         getPriceAndCurrency: function (item, key, addVat) {
-            let _price = item.final_price_item[key];
+            let price = item.final_price_item[key];
 
             // Return formatted price incl. tax
-            return this.getPriceAndCurrencyDecFmt(_price, addVat, this.itemTaxClass(item));
+            return this.getPriceAndCurrencyDecFmt(price, addVat, this.itemTaxClass(item));
         },
         itemTaxClass: function (item) {
             return this.getTaxClassByLabel(item.final_price_item.tax_class_id);

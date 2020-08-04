@@ -62,10 +62,10 @@ export default {
             return !_.isEmpty(this.dataItem.children);
         },
         itemUrlPath: function () {
-            let _locale = this.getApiLocale;
+            let locale = this.getApiLocale;
 
-            if (_locale !== 'de') {
-                return '/' + _locale + '/' + this.dataItem.url_path;
+            if (locale !== 'de') {
+                return '/' + locale + '/' + this.dataItem.url_path;
             }
 
             return '/' + this.dataItem.url_path;
@@ -74,10 +74,10 @@ export default {
             return this.$parent.dataItem.name;
         },
         parentUrlPath: function () {
-            let _locale = this.getApiLocale;
+            let locale = this.getApiLocale;
 
-            if (_locale !== 'de') {
-                return '/' + _locale + '/' + this.$parent.dataItem.url_path;
+            if (locale !== 'de') {
+                return '/' + locale + '/' + this.$parent.dataItem.url_path;
             }
 
             return '/' + this.$parent.dataItem.url_path;
@@ -92,7 +92,7 @@ export default {
     },
 
     methods: {
-        toggleChildren: function (nodes, target) {
+        toggleChildren: function (nodes) {
             if (nodes) {
                 this.showChildren = !this.showChildren;
             }

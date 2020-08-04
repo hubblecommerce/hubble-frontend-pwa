@@ -104,10 +104,10 @@ export default {
             this.toggleOffcanvasAction({ component: this.name });
         },
         itemUrlPath: function (item) {
-            let _locale = this.getApiLocale;
+            let locale = this.getApiLocale;
 
-            if (_locale !== 'de') {
-                return '/' + _locale + '/' + item.url_path;
+            if (locale !== 'de') {
+                return '/' + locale + '/' + item.url_path;
             }
 
             return '/' + item.url_path;
@@ -150,9 +150,9 @@ export default {
                 return _.join([process.env.CUSTOMER_DOMAIN, image], '/');
             }
 
-            let _path = _.trim(process.env.config.IMG_BASE_URL, '/');
+            let path = _.trim(process.env.config.IMG_BASE_URL, '/');
 
-            return _path + '/images/catalog/product/' + this.imgFilter + '/' + item.image;
+            return path + '/images/catalog/product/' + this.imgFilter + '/' + item.image;
         },
     },
 };

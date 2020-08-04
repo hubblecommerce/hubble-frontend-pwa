@@ -11,13 +11,9 @@
                 <div v-if="!loading">
                     <div class="email-info text-center">
                         <span>{{ $t('We have sent you an order confirmation by e-mail') }}</span>
-                        <span v-if="!this.isEmpty(currentOrder)">{{ 'at ' + currentOrder.orderCustomer.email }}</span>
+                        <span v-if="!isEmpty(currentOrder)">{{ 'at ' + currentOrder.orderCustomer.email }}</span>
                     </div>
-                    <div
-                        v-if="!this.isEmpty(currentOrder)"
-                        class="email-info text-center"
-                        v-text="$t('Your order number: ' + currentOrder.orderNumber)"
-                    />
+                    <div v-if="!isEmpty(currentOrder)" class="email-info text-center" v-text="$t('Your order number: ' + currentOrder.orderNumber)" />
                 </div>
             </transition>
         </div>
