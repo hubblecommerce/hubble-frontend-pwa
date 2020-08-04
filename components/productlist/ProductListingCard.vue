@@ -2,7 +2,7 @@
     <div class="product-card">
         <a :href="routeUrlPds" @click.ctrl.exact="gtmProductClick()" @click.exact.prevent="openDetailPage()">
             <div class="card-media">
-                <img-lazy v-if="!isSlider" :src="routeUrlProductImg" :alt-info="itemData.name" :title-info="itemData.name" :classes="classesImg" />
+                <img-lazy v-if="!isSlider" class="img-listing" :src="routeUrlProductImg" :alt-info="itemData.name" :title-info="itemData.name" />
                 <img v-if="isSlider" :src="routeUrlProductImg" :alt="itemData.name" :title="itemData.name" />
             </div>
 
@@ -113,16 +113,13 @@ export default {
             getTaxClassByLabel: 'modPrices/getTaxClassByLabel',
             getPriceAndCurrencyDecFmt: 'modPrices/getPriceAndCurrencyDecFmt',
         }),
-        classesImg: function () {
-            return 'img-listing';
-        },
         classesExcl: function () {
             return null;
         },
         routeUrlPds: function () {
             let locale = this.getApiLocale;
 
-            // direkt url
+            // direct url
             if (this.isSlider) {
                 if (locale !== 'de') {
                     return '/' + locale + '/' + _.join([this.itemOrig.url_pds], '/');

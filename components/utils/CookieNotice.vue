@@ -48,7 +48,7 @@ export default {
             acceptCookieNotice: 'modCookieNotice/acceptCookieNotice',
         }),
         deactivateCookieNotice: function () {
-            this.acceptCookieNotice({});
+            this.acceptCookieNotice();
         },
     },
 };

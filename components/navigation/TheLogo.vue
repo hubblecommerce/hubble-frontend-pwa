@@ -13,11 +13,6 @@
 <script>
 export default {
     name: 'TheLogo',
-    data() {
-        return {
-            hubbleLogo: 'hubble-logo',
-        };
-    },
     computed: {
         logoPath: function () {
             return require(`~/assets/images/${process.env.THEME}/logo.svg`);

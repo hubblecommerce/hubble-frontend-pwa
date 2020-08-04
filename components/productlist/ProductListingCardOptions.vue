@@ -51,43 +51,6 @@ export default {
             showTooltip: false,
 
             activeIndex: null,
-
-            // options: [
-            // 'color',
-            // 'size'
-            // ],
-            // visibleChanger: [
-            // 'color'
-            // ],
-            // mapping: {
-            //     color: {
-            //         53: 'green',
-            //         58: 'red',
-            //         60: 'yellow',
-            //         49: 'black',
-            //         50: 'blue',
-            //         57: 'purple',
-            //         56: 'orange',
-            //         51: 'brown',
-            //         52: 'grey'
-            //     },
-            //     size: {
-            //         167: 'XS',
-            //         168: 'S',
-            //         169: 'M',
-            //         170: 'L',
-            //         171: 'XL',
-            //         172: '28',
-            //         173: '29',
-            //         174: '30',
-            //         175: '31',
-            //         176: '32',
-            //         177: '33',
-            //         178: '34',
-            //         179: '35'
-            //     }
-            // },
-            // selected: undefined
         };
     },
 
@@ -268,53 +231,6 @@ export default {
         getFacetOptionLabel(facet, value) {
             return value.label;
         },
-        toggleTooltip: function () {
-            this.showTooltip = true;
-        },
-        // getUniqueOptions: function() {
-        //     let uniqueOptions = {};
-
-        //     // Build object with options as properties
-        //     this.options.forEach((option) => {
-        //         uniqueOptions[option] = [];
-
-        //         // Fill option properties with unique option values per variant
-        //         this.children.forEach((child, index) => {
-        //             if(uniqueOptions[option].includes(child[option]) === false && child[option] != null) {
-        //                 uniqueOptions[option][index] = child[option];
-        //             }
-        //         });
-
-        //         // Remove empty keys from array
-        //         uniqueOptions[option] = uniqueOptions[option].filter(function (el) {
-        //             return el != null;
-        //         });
-
-        //     });
-
-        //     return uniqueOptions;
-        // },
-        // updateVariant: function(option, variant) {
-
-        //     // Update current product data if option triggers relevant data
-        //     if(this.visibleChanger.includes(option)) {
-        //         this.$parent.$emit('update-variant', variant);
-
-        //         // Set current variant for selected state classes
-        //         this.selected = variant;
-        //     }
-        // },
-        // setClasses: function(option, variant) {
-
-        //     let classes = option;
-
-        //     if(this.selected === variant ) {
-        //         classes = classes + " active";
-        //     }
-
-        //     return classes;
-        // }
     },
 };
-//
 </script>

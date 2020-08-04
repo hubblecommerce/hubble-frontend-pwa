@@ -107,13 +107,13 @@ export default {
             return 1;
         },
         lastPage: function () {
-            let _last = _.round(this.paginationItemsTotal / this.curPerPage, 4);
+            let last = _.round(this.paginationItemsTotal / this.curPerPage, 4);
 
-            if (_last > _.round(_last)) {
-                return _.round(_last) + 1;
+            if (last > _.round(last)) {
+                return _.round(last) + 1;
             }
 
-            return _.round(_last);
+            return _.round(last);
         },
         prevPage: function () {
             return this.curPage - 1;
@@ -124,64 +124,64 @@ export default {
         linksPages: function () {
             let links = [];
 
-            let _beg = 1;
-            let _end = null;
+            let beg = 1;
+            let end = null;
 
-            let _paginate = false;
+            let paginate = false;
 
-            if (this.lastPage >= this.paginateMax + 2) _paginate = true;
+            if (this.lastPage >= this.paginateMax + 2) paginate = true;
 
-            if (_paginate) {
+            if (paginate) {
                 /* on first page */
                 if (this.curPage === 1) {
-                    _beg = 1;
+                    beg = 1;
                 } else if (this.curPage === this.lastPage) {
                     /* on last page */
-                    _beg = this.lastPage - this.paginateMax;
+                    beg = this.lastPage - this.paginateMax;
                 } else {
                     /* somewhere in between */
                     /* +1 from first page */
                     if (this.curPage - 1 === 1) {
-                        _beg = this.curPage;
+                        beg = this.curPage;
                     } else if (this.curPage + 1 === this.lastPage) {
                         /* -1 from last page */
-                        _beg = this.lastPage - this.paginateMax;
+                        beg = this.lastPage - this.paginateMax;
                     } else {
                         /* somewhere in between */
-                        _beg = this.curPage - Math.floor(this.paginateMax / 2);
+                        beg = this.curPage - Math.floor(this.paginateMax / 2);
 
                         /* at least 2 */
-                        if (_beg < 2) _beg = 2;
+                        if (beg < 2) beg = 2;
 
                         /* close to the end */
                         if (this.lastPage - this.curPage <= Math.floor(this.paginateMax / 2)) {
-                            _beg = this.lastPage - this.paginateMax;
+                            beg = this.lastPage - this.paginateMax;
                         }
                     }
 
-                    /* _end -1, cause dotted appended */
-                    _end = _beg + this.paginateMax - 1;
+                    /* end -1, cause dotted appended */
+                    end = beg + this.paginateMax - 1;
                 }
 
-                if (!_end) _end = _beg + this.paginateMax;
+                if (!end) end = beg + this.paginateMax;
             }
 
-            if (!_end) _end = this.lastPage;
+            if (!end) end = this.lastPage;
 
             /* prepend dotted, if not on first page and not all */
-            if (this.dotsEnabled && _paginate && this.curPage !== 1 && _beg > 1) {
+            if (this.dotsEnabled && paginate && this.curPage !== 1 && beg > 1) {
                 links.push({ dotted: true });
             }
 
             /* numbered links */
-            let _cnt = _beg;
-            while (_cnt <= _end) {
-                links.push({ page: _cnt });
-                _cnt++;
+            let cnt = beg;
+            while (cnt <= end) {
+                links.push({ page: cnt });
+                cnt++;
             }
 
             /* append dotted, if not on last page and not all */
-            if (this.dotsEnabled && _paginate && this.curPage !== this.lastPage && _end < this.lastPage) {
+            if (this.dotsEnabled && paginate && this.curPage !== this.lastPage && end < this.lastPage) {
                 links.push({ dotted: true });
             }
 
@@ -229,26 +229,26 @@ export default {
             return new Promise((resolve, reject) => {
                 this.$nuxt.$loading.start();
 
-                let _query = _.omit(this.$route.query, 'page');
+                let query = _.omit(this.$route.query, 'page');
 
-                let _query2 = _.merge({}, _query, {
+                let query2 = _.merge({}, query, {
                     page: pageNumber,
                 });
 
-                let _route = {
+                let route = {
                     path: this.$route.path,
-                    query: _query2,
+                    query: query2,
                 };
 
                 // If last route was a search request, then only replace current route to keep history
                 // thats how we can do a go(-1) to reach the last non search page
                 if (this.$router.history.current.path === '/search/catalogsearch') {
-                    this.$router.replace(_route, () => {
+                    this.$router.replace(route, () => {
                         // Scroll to top after change route
                         window.scrollTo(0, 0);
                     });
                 } else {
-                    this.$router.push(_route, () => {
+                    this.$router.push(route, () => {
                         // Scroll to top after change route
                         window.scrollTo(0, 0);
                     });

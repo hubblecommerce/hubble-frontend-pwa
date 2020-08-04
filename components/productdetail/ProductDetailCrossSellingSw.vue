@@ -5,8 +5,9 @@
 
             <div v-if="mappedCrossSellings.length > 0">
                 <div
-                    v-for="result in mappedCrossSellings"
+                    v-for="(result, key) in mappedCrossSellings"
                     v-if="result.crossSelling.active"
+                    :key="key"
                     class="container product-recommendation-slider"
                     :style="result.crossSelling.position != null ? `order: ${result.crossSelling.position};` : ''"
                 >

@@ -23,17 +23,17 @@
 
         <validation-provider
             v-slot="{ errors }"
-            name="password"
+            name="loginPassword"
             rules="required|password:8"
             mode="eager"
             tag="div"
             class="hbl-input-group input-icon"
         >
             <input
-                id="password"
+                id="loginPassword"
                 v-model="form.password"
                 type="password"
-                name="password"
+                name="loginPassword"
                 autocomplete="on"
                 value=""
                 :class="{ invalid: errors.length > 0 }"
@@ -41,7 +41,7 @@
                 required
             />
 
-            <label for="password" v-text="$t('Password')" />
+            <label for="loginPassword" v-text="$t('Password')" />
 
             <i class="icon icon-lock" />
 
@@ -115,7 +115,6 @@ export default {
 
     data() {
         return {
-            curComponent: 'view-auth',
             form: new Form({
                 email: '',
                 password: '',

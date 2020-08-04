@@ -11,6 +11,3 @@ Vue.component('transition-pop-up', TransitionPopUp);
 Vue.component('transition-expand-layer', TransitionExpandLayer);
 Vue.component('material-ripple', MaterialRipple);
 Vue.component('flash-messages', FlashMessages);
-
-// prototype vue event bus
-Vue.prototype.$bus = new Vue();

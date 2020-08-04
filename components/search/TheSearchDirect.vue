@@ -251,10 +251,10 @@ export default {
             // stop searching ...
             this.queryIsSearching = true;
 
-            let _url = this.localePath('search-catalogsearch');
+            let url = this.localePath('search-catalogsearch');
 
-            let _route = {
-                path: _url,
+            let route = {
+                path: url,
                 query: {
                     term: this.query,
                 },
@@ -268,23 +268,21 @@ export default {
             // If last route was a search request, then only replace current route to keep history
             // thats how we can do a go(-1) to reach the last non search page
             if (this.$router.history.current.path === '/search/catalogsearch') {
-                this.$router.replace(_route, () => {
+                this.$router.replace(route, () => {
                     this.loading = false;
                 });
             } else {
-                this.$router.push(_route, () => {
+                this.$router.push(route, () => {
                     this.loading = false;
                 });
             }
         },
         sendStats: function (data) {
-            let _vue = this;
-
-            let _route = route('utilities.stats');
+            let route = route('utilities.stats');
 
             return new Promise(function (resolve, reject) {
-                _vue.$http
-                    .post(_route, data)
+                this.$http
+                    .post(route, data)
                     .then(() => {
                         resolve('stats OK');
                     })

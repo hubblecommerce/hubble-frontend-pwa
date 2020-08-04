@@ -41,10 +41,6 @@ export default {
             type: Number,
             required: true,
         },
-        firstItem: {
-            type: Boolean,
-            default: false,
-        },
     },
 
     data() {
@@ -98,7 +94,7 @@ export default {
             }
         },
         closeSubcategory: function () {
-            if (this.depth != 0) {
+            if (this.depth !== 0) {
                 this.$parent.showChildren = false;
                 this.showChildren = false;
             }

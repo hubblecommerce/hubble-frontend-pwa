@@ -6,7 +6,7 @@
                     <nuxt-link :to="'/' + item.url_pds" class="col-9">
                         <div class="row align-items-center">
                             <div class="col-4">
-                                <img :src="itemImgPath(item)" class="product-img" alt="Product Image" :title="item.name_orig" :class="classesImg" />
+                                <img :src="itemImgPath(item)" class="product-img img-minicart" alt="Product Image" :title="item.name_orig" />
                             </div>
 
                             <div class="col-8">
@@ -116,9 +116,6 @@ export default {
             priceDecFmt: 'modPrices/priceDecFmt',
             priceAddCur: 'modPrices/priceAddCur',
         }),
-        classesImg: function () {
-            return 'img-minicart';
-        },
         imgFilter: function () {
             return this.dataImageFilter ? this.dataImageFilter : this.origImageFilter;
         },
@@ -285,11 +282,7 @@ export default {
             }
         },
         getCouponVal: function (value) {
-            let val;
-            val = this.priceDecFmt(value);
-            val = this.priceAddCur(value);
-
-            return val;
+            return this.priceAddCur(value);
         },
         formatSize: function (size) {
             return size.replace('.0', '');

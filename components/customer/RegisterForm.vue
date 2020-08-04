@@ -503,8 +503,6 @@ export default {
 
     data() {
         return {
-            curComponent: 'view-auth',
-
             processingRegister: false,
 
             streetIncludesHouseNo: process.env.STREETINFO_INCLUDES_HOUSENO === 'true',

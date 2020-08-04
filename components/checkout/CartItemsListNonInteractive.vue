@@ -3,14 +3,7 @@
         <template v-if="cart.items.length > 0">
             <div v-for="item in cart.items" :key="item.id" class="cart-items-list non-interactive item align-items-center">
                 <nuxt-link :to="'/' + hasLink(item)">
-                    <img
-                        v-if="hasImage(item)"
-                        :src="itemImgPath(item)"
-                        class="product-img"
-                        alt="Product Image"
-                        :title="item.name"
-                        :class="classesImg"
-                    />
+                    <img v-if="hasImage(item)" :src="itemImgPath(item)" class="product-img img-minicart" alt="Product Image" :title="item.name" />
                     <div class="product-info">
                         <div>
                             <span class="product-name">{{ item.name_orig }}</span>
@@ -71,8 +64,6 @@ export default {
 
     data() {
         return {
-            showLoader: false,
-            selectedQty: 0,
             dataImageFilter: null,
             origImageFilter: '60x',
         };
@@ -89,9 +80,6 @@ export default {
             priceDecFmt: 'modPrices/priceDecFmt',
             priceAddCur: 'modPrices/priceAddCur',
         }),
-        classesImg() {
-            return 'img-minicart';
-        },
         imgFilter() {
             return this.dataImageFilter ? this.dataImageFilter : this.origImageFilter;
         },
@@ -110,7 +98,7 @@ export default {
             return path + '/images/catalog/product/' + this.imgFilter + '/' + item.image;
         },
         hasImage: function (item) {
-            let image = false;
+            let image;
 
             // Check if media gallery isset
             // because object structure of item from shop is different than from data API
@@ -123,7 +111,7 @@ export default {
             return image;
         },
         hasLink: function (item) {
-            let link = false;
+            let link;
 
             // Check if url isset
             // because object structure of item from shop is different than from data API
@@ -148,10 +136,7 @@ export default {
             return this.getTaxClassByLabel(item.final_price_item.tax_class_id);
         },
         getCouponVal: function (value) {
-            let val;
-            val = this.priceDecFmt(value);
-            val = this.priceAddCur(value);
-            return val;
+            return this.priceAddCur(value);
         },
         formatSize: function (size) {
             return size.replace('.0', '');

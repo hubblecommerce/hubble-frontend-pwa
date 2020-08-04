@@ -4,7 +4,7 @@
             <nuxt-link :to="'/' + item.url_pds" class="col-9">
                 <div class="row align-items-center">
                     <div class="col-4">
-                        <img :src="itemImgPath(item)" alt="Product Image" :title="item.name" :class="classesImg" />
+                        <img class="img-wishlist" :src="itemImgPath(item)" alt="Product Image" :title="item.name" />
                     </div>
 
                     <div class="col-8">
@@ -125,9 +125,6 @@ export default {
         },
         wishlistItemsQtyAndLabel: function () {
             return this.wishlistItemsQty;
-        },
-        classesImg: function () {
-            return 'img-wishlist';
         },
     },
 
@@ -253,12 +250,9 @@ export default {
                 path: this.localePath('customer-wishlist'),
             });
         },
-        // Check if Item is available
         itemIsAvailable: function () {
             return true;
         },
-        // Check if Item has Options
-        // to do: Check if Item needs options (e.g.: some dont need options Care Products)
         itemHasOptions: function (item) {
             return !_.isEmpty(item.options);
         },
