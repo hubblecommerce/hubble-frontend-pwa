@@ -4,7 +4,9 @@ import _ from 'lodash';
 export const state = () => ({
     cookieName: 'hubbleLastViewed',
     localStorageLifetime: 720, // 720 hours = 30 days,
-    viewedProducts: []
+    viewedProducts: [],
+    minToShow: 5,
+    maxSaved: 8
 })
 
 export const mutations = {
@@ -12,7 +14,7 @@ export const mutations = {
         let alreadyIncluded = state.viewedProducts.filter((viewedProduct) => viewedProduct.id === payload.id);
 
         if (alreadyIncluded.length === 0) {
-            if (state.viewedProducts.length === 4) {
+            if (state.viewedProducts.length === state.maxSaved) {
                 let slicedArray  = _.slice(state.viewedProducts,1);
 
                 slicedArray.push(payload);
@@ -24,7 +26,7 @@ export const mutations = {
         } else {
             let uniqueVisits = _.uniqBy(state.viewedProducts, product => product.id);
 
-            if (state.viewedProducts.length <= 4) {
+            if (state.viewedProducts.length <= state.maxSaved) {
                 state.viewedProducts = uniqueVisits;
             } else {
                 state.viewedProducts = _.slice(uniqueVisits,1);
@@ -38,7 +40,7 @@ export const mutations = {
         let uniqueVisits = _.uniqBy(payload, product => product.id);
 
         // remove oldest entry if maxLength is exceeded
-        if (uniqueVisits.length > 4) uniqueVisits = _.slice(uniqueVisits, 1);
+        if (uniqueVisits.length > state.maxSaved) uniqueVisits = _.slice(uniqueVisits, 1);
 
         state.viewedProducts = uniqueVisits;
     },

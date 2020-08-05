@@ -1,20 +1,40 @@
 .last-viewed--wrp {
-    .last-viewed--title {
-        text-transform: uppercase;
-        font-weight: 700;
-        padding-left: 12px;
-        padding-top: 20px;
+    .last-viewed--header {
+        display: flex;
+
+        .last-viewed--title {
+            text-transform: uppercase;
+            font-weight: 700;
+            padding-left: 12px;
+            padding-top: 20px;
+        }
+
+        .last-viewed--button--show-all {
+            padding-left: 40px;
+            padding-right: 40px;
+            margin-top: 12px;
+            margin-left: 12px;
+            color: $primary;
+            transition: all 0.45s ease-in-out;
+            border: 1px solid $primary;
+
+            &:hover {
+                background: $primary;
+                color: #fff;
+                box-shadow: 10px 10px 40px rgba(0, 0, 0, 0.06);
+            }
+        }
     }
 
     .last-viewed--list {
         display: flex;
         flex: 1;
         flex-wrap: wrap;
+        justify-content: center;
 
         .last-viewed--clickable {
             margin: 15px;
             padding: 5px;
-            transition: all 0.45s ease-in-out;
 
             a {
                 display: flex;
@@ -36,36 +56,27 @@
 
 @media(min-width: 768px) {
     .last-viewed--wrp {
-        .last-viewed--title {
-            padding-left: inherit;
-            text-transform: uppercase;
-            font-weight: 700;
+        .last-viewed--header {
+            .last-viewed--title {
+                padding-left: inherit;
+            }
         }
 
         .last-viewed--list {
-            display: flex;
-            justify-content: space-between;
+            justify-content: inherit;
 
             .last-viewed--clickable {
                 width: 150px;
-                margin: 15px;
                 transition: all 0.45s ease-in-out;
 
-                a {
-                    display: flex;
-                    flex-direction: column;
-                    height: 100%;
-                    justify-content: space-between;
+                &:first-of-type {
+                    margin-left: 0;
                 }
-            }
 
-            .last-viewed--clickable:first-of-type {
-                margin-left: 0;
-            }
-
-            .last-viewed--clickable:hover {
-                transform: scale(1.1);
-                box-shadow: 10px 10px 40px rgba(0, 0, 0, 0.06);
+                &:hover {
+                    transform: scale(1.1);
+                    box-shadow: 10px 10px 40px rgba(0, 0, 0, 0.06);
+                }
             }
 
             .last-viewed--image {
@@ -73,8 +84,6 @@
             }
 
             .last-viewed--name {
-                font-weight: 700;
-                text-align: center;
                 align-self: flex-end;
             }
         }
