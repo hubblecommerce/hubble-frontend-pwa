@@ -9,6 +9,7 @@
 <script>
     import { mapState } from 'vuex';
     import apiResourceRequest from '@hubblecommerce/hubble/core/anonymous-middleware/apiResourceRequest'
+    import lastViewedProductsProvide from '~/middleware-anonymous/lastViewedProductsProvide'
 
     export default {
         name: "RouteResolver",
@@ -43,7 +44,7 @@
             'apiResourceMenu',
             'apiResourceRoute',
             apiResourceRequest,
-            'lastViewedProductsProvide',
+            lastViewedProductsProvide,
             'trackClickPath'
         ],
 
