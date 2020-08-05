@@ -43,6 +43,7 @@
             'apiResourceMenu',
             'apiResourceRoute',
             apiResourceRequest,
+            'lastViewedProductsProvide',
             'trackClickPath'
         ],
 

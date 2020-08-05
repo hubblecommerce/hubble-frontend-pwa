@@ -231,7 +231,7 @@ module.exports = {
         apiType: process.env.API_TYPE,
         deactivateStores: ['modApiProduct.js'],
         deactivatePlugins: [],
-        deactivateMiddleware: ['apiResourceRoute.js'],
+        deactivateMiddleware: [],
         useTheme: false,
         gtmId: process.env.GOOGLE_TAG_MANAGER_ID,
         payone: {},
