@@ -14,3 +14,6 @@
 * [Documentation](https://docs.hubblecommerce.io/)
 * [Demo](https://demo.hubblecommerce.io/)
 * [hubblecommerce.io](https://www.hubblecommerce.io)
+
+## License
+hubble commerce source code is completely free and released under the MIT License.
