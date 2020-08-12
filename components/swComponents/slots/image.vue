@@ -2,13 +2,17 @@
     <div :class="elementClass">
         <div v-if="verticalAlign" class="cms-element-alignment" :class="verticalAlign">
             <div class="cms-image-container" :class="setDisplayMode" :style="minHeight">
-                <img-lazy v-if="imgUrl != null" class="cms-image" :classes="`cms-image ${setDisplayMode}`" :src="imgUrl" :alt-info="alt" :alt="alt" :title-info="title" />
+                <a :href="hasLink">
+                    <img-lazy v-if="imgUrl != null" class="cms-image" :classes="`cms-image ${setDisplayMode}`" :src="imgUrl" :alt-info="alt" :alt="alt" :title-info="title" />
+                </a>
             </div>
         </div>
 
         <template v-else>
             <div class="cms-image-container" :class="setDisplayMode" :style="minHeight">
-                <img-lazy v-if="imgUrl != null" class="cms-image" :classes="`cms-image ${setDisplayMode}`" :src="imgUrl" :alt-info="alt" :alt="alt" :title-info="title" />
+                <a :href="hasLink">
+                    <img-lazy v-if="imgUrl != null" class="cms-image" :classes="`cms-image ${setDisplayMode}`" :src="imgUrl" :alt-info="alt" :alt="alt" :title-info="title" />
+                </a>
             </div>
         </template>
     </div>
@@ -31,6 +35,9 @@
              }
         },
         computed: {
+            hasLink () {
+                return this.content.data.url ? this.content.data.url : '#'
+            },
             getMedia() {
                 return this.content && this.content.data && this.content.data.media;
             },
@@ -38,7 +45,7 @@
                 return this.getMedia && this.getMedia.url;
             },
             imgTypeSvg() {
-                this.imgUrl && this.imgUrl.includes('svg');
+                return this.imgUrl && this.imgUrl.includes('svg');
             },
             alt() {
                 return this.getMedia && this.getMedia.alt;

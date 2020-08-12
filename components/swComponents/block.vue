@@ -1,5 +1,5 @@
 <template>
-    <div class="cms-block" :class="[blockClass, backgroundImageExists]" :style="backgroundStyles">
+    <div class="cms-block" :class="[blockClass, backgroundImageExists, cssClass]" :style="backgroundStyles">
         <div class="cms-block-container" :style="paddingStyles">
             <component :is="getComponent" :content="content" class="cms-block-container-row row cms-row" />
         </div>
@@ -8,6 +8,8 @@
 
 <script>
 import {sectionMixins} from './helper'
+import _ from 'lodash';
+
   export default {
       name: 'Block',
 
@@ -36,6 +38,9 @@ import {sectionMixins} from './helper'
                   padding: padding.top + ' ' + padding.right + ' ' + padding.bottom + ' ' + padding.left
               };
           },
+          cssClass() {
+              return this.content.cssClass != null ? this.content.cssClass : '';
+          },
           backgroundStyles() {
               const {
                   backgroundColor,
@@ -54,7 +59,12 @@ import {sectionMixins} from './helper'
 
               return backgroundMedia ? 'bg-image' : ''
           }
-      }
+      },
 
+      created() {
+          if (_.includes(this.cssClass, 'revealOnRequest')) {
+              this.$store.commit('modCustomComponent/setShowCustomComponentInstead', true)
+          }
+      }
   }
 </script>

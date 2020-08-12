@@ -1,0 +1,54 @@
+.customImageTextCoverBox {
+    position: relative;
+    margin-left: 15px;
+
+    .cms-element-text {
+        padding: 30px 30px;
+        background: #000000;
+        color: #ffffff;
+        border: 1px solid #000000;
+        transition: all 0.45s ease-in-out;
+        display: flex;
+        align-items: center;
+
+        &:hover {
+            background: #ffffff;
+            color: #000000;
+            border: 1px solid #000000;
+            cursor: pointer;
+        }
+    }
+
+    .icon-arrow-right {
+        position: absolute;
+        right: 40px;
+        font-size: 20px;
+    }
+}
+
+@media(min-width: 1024px) {
+    .customImageTextCoverBox {
+
+        .cms-element-text {
+            position: absolute;
+            right: -150px;
+            bottom: 50px;
+            padding: 30px 90px;
+        }
+
+        .icon-arrow-right {
+            position: relative;
+            right: -40px;
+        }
+    }
+}
+
+@keyframes revealText {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}

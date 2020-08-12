@@ -7,11 +7,16 @@
         <template v-else>
             <div v-html="rawHtml" />
         </template>
+
+        <template v-if="showCustomComponentInstead">
+            <i class="icon icon-arrow-right" />
+        </template>
     </div>
 </template>
 
 <script>
     import { slotMixins } from '../helper'
+    import { mapState } from "vuex";
 
     export default {
         name: 'TextSlot',
@@ -23,6 +28,9 @@
             }
         },
         computed: {
+            ...mapState({
+                showCustomComponentInstead: state => state.modCustomComponent.showCustomComponentInstead,
+            }),
             rawHtml() {
                 return (
                     this.content &&
