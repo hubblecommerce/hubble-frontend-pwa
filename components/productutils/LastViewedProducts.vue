@@ -25,22 +25,27 @@
     export default {
         name: "LastViewedProducts",
 
+        props: {
+            numberOfItems: {
+                type: Number,
+                required: true
+            }
+        },
+
         computed: {
             ...mapState({
                 viewedProducts: state => state.modLastViewed.viewedProducts,
-                minToShow: state => state.modLastViewed.minToShow,
-                maxSaved: state => state.modLastViewed.maxSaved
             }),
             onViewedProductsPage: function () {
                 return this.$route.path.includes('/customer/viewedproducts');
             },
             selectionOfViewedProducts: function () {
-                if (this.onViewedProductsPage) {
-                    return this.viewedProducts.filter((viewedProduct, index) => index < this.maxSaved)
-                } else {
-                    return this.viewedProducts.filter((viewedProduct, index) => index < this.minToShow)
-                }
+                return this.viewedProducts.filter((viewedProduct, index) => index < this.numberOfItems)
             }
+        },
+
+        created() {
+            if (process.client && !(this.onViewedProductsPage)) this.$store.dispatch('modLastViewed/saveViewedProductsToLocalForage');
         },
 
         methods: {
@@ -51,8 +56,5 @@
             }
         },
 
-        created() {
-            if (process.client && !(this.onViewedProductsPage)) this.$store.dispatch('modLastViewed/saveViewedProductsToLocalForage');
-        }
     }
 </script>

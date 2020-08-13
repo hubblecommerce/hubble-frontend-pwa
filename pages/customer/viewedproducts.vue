@@ -2,7 +2,7 @@
     <div class="container">
         <client-only>
             <div v-if="viewedProducts.length">
-                <last-viewed-products />
+                <last-viewed-products :number-of-items="maxSaved" />
             </div>
             <div v-else>
                 <nuxt-link :to="localePath('index')">
@@ -30,7 +30,8 @@
 
         computed: {
             ...mapState({
-                viewedProducts: state => state.modLastViewed.viewedProducts
+                viewedProducts: state => state.modLastViewed.viewedProducts,
+                maxSaved: state => state.modLastViewed.maxSaved
             })
         },
 

@@ -58,7 +58,7 @@
                 </div>
 
                 <div>
-                    <last-viewed-products />
+                    <last-viewed-products :number-of-items="minToShow" />
                 </div>
             </div>
 
@@ -110,7 +110,8 @@
                 openDetail: state => state.modApiProduct.openDetail,
                 dataProduct: state => state.modApiProduct.dataProduct,
                 priceCurrency: state => state.modPrices.priceCurrency,
-                clickPath: state => state.modClickPath.clickPath
+                clickPath: state => state.modClickPath.clickPath,
+                minToShow: state => state.modLastViewed.minToShow
             }),
             productData: function() {
                 if(_.isEmpty(this.dataProduct)) {
