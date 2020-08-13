@@ -8,9 +8,9 @@
                 <component :is="rightSlot" :content="getContentByPosition(content.slots, 'right')" />
             </div>
         </template>
-        <div v-else>
-            <component :is="customComponent" :content="content" />
-        </div>
+         <div v-else>
+            <custom-image-text-cover :content="content" />
+         </div>
     </div>
 </template>
 
@@ -37,9 +37,6 @@
             ...mapState({
                 showCustomComponentInstead: state => state.modCustomComponent.showCustomComponentInstead,
             }),
-            customComponent () {
-                return 'custom-image-text-cover';
-            },
             leftSlot() {
                 return this.getSlotByPosition(this.content.slots, 'left');
             },
