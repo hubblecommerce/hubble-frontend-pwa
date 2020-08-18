@@ -1,15 +1,17 @@
 <template>
     <div class="customer-account-cpt-wrp">
-        <button class="button-icon"
+        <button class="button-icon account-icon"
                 :class="setButtonStates"
                 @click="toggle()"
         >
-            <i class="icon icon-account" /><span class="hidden-link-name">Account</span>
+            <i class="icon icon-account" aria-hidden="true" />
+
+            <span class="hidden-link-name">Account</span>
 
             <material-ripple />
         </button>
 
-        <transition-expand-layer :right-left="true">
+        <transition-expand-layer :top-bottom="true">
             <div v-if="showMenu" class="transition-expand-wrp">
                 <customer-menu-layer v-if="initiated" />
             </div>
@@ -65,7 +67,7 @@ export default {
 
             this.toggleOffcanvasAction({
                 component: this.name,
-                direction: 'rightLeft'
+                direction: 'topBottom'
             });
         },
         hideMenu: function() {
