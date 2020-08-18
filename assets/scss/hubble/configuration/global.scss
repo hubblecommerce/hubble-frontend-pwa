@@ -33,6 +33,10 @@ a, a:hover, a:focus {
   background: $primary;
 }
 
+main {
+    padding-top: 125px;
+}
+
 @media (min-width: 576px) {
   .container {
     max-width: 768px;

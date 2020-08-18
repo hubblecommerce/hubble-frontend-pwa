@@ -30,12 +30,14 @@
 }
 
 .header-wrp {
-    position: relative;
+    position: fixed;
     opacity: 1;
     min-height: 56px;
     background: $background;
     border-bottom: 1px solid $border-color;
     z-index: 60;
+    margin: 0 auto;
+    width: 100%;
 }
 
 /* Navigation */
@@ -108,9 +110,6 @@
     }
 
     .header-wrp {
-        position: fixed;
-        margin: 0 auto;
-        width: 100%;
         z-index: 100;
     }
 
