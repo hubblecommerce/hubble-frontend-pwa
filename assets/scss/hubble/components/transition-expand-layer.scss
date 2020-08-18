@@ -4,7 +4,7 @@ $expand-layer-width-desktop: 600px;
 
 .transition-expand-wrp {
     position: fixed;
-    top: 0;
+    top: 65px; /* bc nav-wrp has height 65px */
     right: 0;
     width: $expand-layer-width-mobile;
     height: 100%;
@@ -45,9 +45,10 @@ $expand-layer-width-desktop: 600px;
 @media(min-width: 768px) {
     .transition-expand-wrp {
         width: $expand-layer-width-tablet;
+        top: $header-height-desktop + 1px;
     }
     .expand-content {
-        height: calc(100vh - 81px);
+        padding-bottom: 81px;
     }
     .overlay-header {
         height: $header-height-desktop + 1px;
@@ -63,10 +64,9 @@ $expand-layer-width-desktop: 600px;
 @media(min-width: 1024px) {
     .transition-expand-wrp {
         width: $expand-layer-width-desktop;
-        top: $header-height-desktop + 1px;
     }
     .expand-content {
-        overflow-y: inherit;
+        // overflow-y: inherit;
     }
     .overlay-header {
         height: 100px;

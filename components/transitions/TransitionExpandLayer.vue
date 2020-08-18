@@ -90,6 +90,10 @@ export default {
                 type: Boolean,
                 required: false
             },
+            topBottom: {
+                type: Boolean,
+                required: false
+            },
         },
 
         created() {
@@ -106,21 +110,37 @@ export default {
                 this.transitionMode = "rightLeft";
             }
 
+            if(this.topBottom === true) {
+                this.transitionMode = "topBottom";
+            }
         }
 
     }
 </script>
 
 <style scoped lang="scss">
+    /* Animate Minicart overlay from top to bottom */
+    .expand-topBottom-enter-active, .expand-topBottom-leave-active {
+        transition: all .45s ease-in-out;
+    }
+    .expand-topBottom-enter, .expand-topBottom-leave-to {
+        top: 65px !important;
+        height: 0;
+    }
+    .expand-topBottom-enter-to, .expand-topBottom-leave {
+        top: 65px !important;
+        height: 100%;
+    }
+
     /* Animate Minicart overlay from bottom to top */
     .expand-bottomTop-enter-active, .expand-bottomTop-leave-active {
-        transition: all .2s ease;
+        transition: all .45s ease-in-out;
     }
     .expand-bottomTop-enter, .expand-bottomTop-leave-to {
         top: 100% !important;
     }
     .expand-bottomTop-enter-to, .expand-bottomTop-leave {
-        top: 0 !important;
+        top: 65px !important;
     }
 
     /* Animate Minicart overlay from left to right */
@@ -175,6 +195,19 @@ export default {
     }
 
     @media(min-width: 768px) {
+        /* Animate Minicart overlay from top to bottom */
+        .expand-topBottom-enter-active, .expand-topBottom-leave-active {
+            transition: all .45s ease-in-out;
+        }
+        .expand-topBottom-enter, .expand-topBottom-leave-to {
+            top: 81px !important;
+            height: 0;
+        }
+        .expand-topBottom-enter-to, .expand-topBottom-leave {
+            top: 81px !important;
+            height: 100%;
+        }
+
         /* Animate Minicart overlay from bottom to top */
         .expand-bottomTop-enter-active, .expand-bottomTop-leave-active {
             transition: all .3s ease;
