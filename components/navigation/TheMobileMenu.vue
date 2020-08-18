@@ -2,7 +2,7 @@
     <div class="menu-cpt-wrapper">
         <button class="button-icon navbar-toggler nav-icon" @click="toggle()">
             <i class="icon icon-menu" aria-hidden="true" />
-            
+
             <span class="hidden-link-name">Toggle Navbar</span>
 
             <material-ripple />
@@ -34,7 +34,7 @@
     export default {
         name: "TheMobileMenu",
 
-        components: { MobileCategories},
+        components: { MobileCategories },
 
         props: {
             dataItems: {

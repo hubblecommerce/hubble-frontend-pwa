@@ -45,11 +45,7 @@ export default function (ctx) {
 
                     // Toggle Off | Set direction from which offcanvas layer appears
                     _.forEach(state.offcanvas.direction, function(value, key) {
-                        if(payload.direction === key) {
-                            state.offcanvas.direction[key] = true;
-                        } else {
-                            state.offcanvas.direction[key] = false;
-                        }
+                        state.offcanvas.direction[key] = payload.direction === key;
                     });
 
                 }
@@ -63,11 +59,7 @@ export default function (ctx) {
 
                 // Set direction from which offcanvas layer appears
                 _.forEach(state.offcanvas.direction, function(value, key) {
-                    if(payload.direction === key) {
-                        state.offcanvas.direction[key] = true;
-                    } else {
-                        state.offcanvas.direction[key] = false;
-                    }
+                    state.offcanvas.direction[key] = payload.direction === key;
                 });
             },
             hideOffcanvas: (state) => {
@@ -88,11 +80,7 @@ export default function (ctx) {
                 // but current component is not target component for example in case of toggle
                 // then set transition mode to fade
                 // after that, change component name to trigger transition (handled in async actions toggleOffcanvasAction)
-                if(state.offcanvas.isActive === true && state.offcanvas.direction[payload.direction] === true && state.offcanvas.component !== payload.component) {
-                    state.offcanvas.sameLayerOpened = true;
-                } else {
-                    state.offcanvas.sameLayerOpened = false;
-                }
+                state.offcanvas.sameLayerOpened = state.offcanvas.isActive === true && state.offcanvas.direction[payload.direction] === true && state.offcanvas.component !== payload.component;
             },
             resetSameLayerOpened: (state) => {
                 state.offcanvas.sameLayerOpened = false;
