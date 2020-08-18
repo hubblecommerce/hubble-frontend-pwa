@@ -1,4 +1,17 @@
 .minicart-wrapper {
+    .actions {
+        margin-bottom: 20px;
+        position: sticky;
+        bottom: 65px;
+        background: white;
+        z-index: 600;
+        margin-left: -15px;
+        margin-right: -15px;
+        padding: 0 15px 15px;
+    }
+}
+
+.minicart-wrapper {
   a {
     color: $text-primary !important;
   }
@@ -63,7 +76,7 @@
         height: 2px;
         background: $accent;
         position: absolute;
-        bottom: -23px;
+        bottom: -15px;
         left: 0;
         border-radius: 0;
       }
@@ -162,9 +175,15 @@
       .item-count {
         color: #fff;
       }
-
     }
   }
+
+    .minicart-wrapper {
+        .actions {
+            bottom: 0;
+            margin-bottom: inherit;
+        }
+    }
 
   /* Relative checkout button */
   .checkout-btn {
@@ -194,7 +213,6 @@
     }
 
     .shopping-button {
-      float: left;
       width: 45%;
       margin: 20px 0 0 20px !important;
     }

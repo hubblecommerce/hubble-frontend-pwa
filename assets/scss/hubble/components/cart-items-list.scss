@@ -56,6 +56,9 @@
                 margin-left: 15px;
             }
         }
+        &:last-of-type {
+            padding-bottom: 65px;
+        }
     }
 
     &.non-interactive {
@@ -151,6 +154,11 @@
         }
         &.coupon {
             padding: 15px;
+        }
+        &.item {
+            &:last-of-type {
+                padding-bottom: 15px;
+            }
         }
     }
 }

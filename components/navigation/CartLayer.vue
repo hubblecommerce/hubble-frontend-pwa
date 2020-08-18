@@ -2,13 +2,6 @@
     <div class="minicart-wrapper">
         <div class="container expand-content">
             <div class="row overlay-header">
-                <button class="button-icon button-close-menu"
-                        @click="toggle()"
-                >
-                    <i class="icon icon-close" aria-hidden="true" />
-                    <material-ripple />
-                </button>
-
                 <div class="overlay-headline" v-text="$t('Cart')" />
             </div>
 
@@ -43,31 +36,34 @@
 
             <cart-items-list />
 
-            <div v-if="qty > 0" class="row totals bg-light">
-                <div class="col-6">
-                    {{ $t('Subtotal') }}
+            <div class="actions">
+                <div v-if="qty > 0" class="row totals bg-light">
+                    <div class="col-6">
+                        {{ $t('Subtotal') }}
+                    </div>
+
+                    <div class="col-6">
+                        <span class="float-right font-weight-bold" v-html="getSubTotal()" />
+                    </div>
                 </div>
 
-                <div class="col-6">
-                    <span class="float-right font-weight-bold" v-html="getSubTotal()" />
-                </div>
+
+                <button v-if="qty > 0"
+                        class="checkout-btn button-primary"
+                        @click.prevent="checkoutCart"
+                >
+                    {{ $t('shopping_cart') }}
+                    <material-ripple />
+                </button>
+
+                <button v-if="qty > 0"
+                        class="shopping-button button-secondary"
+                        @click.prevent="hideMenu"
+                >
+                    {{ $t('Keep shopping') }}
+                    <material-ripple />
+                </button>
             </div>
-
-            <button v-if="qty > 0"
-                    class="checkout-btn button-primary"
-                    @click.prevent="checkoutCart">
-                {{ $t('shopping_cart') }}
-                <material-ripple />
-            </button>
-
-            <button v-if="qty > 0"
-                    class="shopping-button button-secondary"
-                    @click.prevent="hideMenu"
-            >
-                {{ $t('Keep shopping') }}
-                <material-ripple />
-            </button>
-
         </div>
     </div>
 </template>
@@ -101,15 +97,8 @@
 
         methods: {
             ...mapActions({
-                toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction',
                 hideOffcanvasAction: 'modNavigation/hideOffcanvasAction'
             }),
-            toggle: function() {
-                this.toggleOffcanvasAction({
-                    component: this.name,
-                    direction: 'rightLeft'
-                });
-            },
             hideMenu: function() {
                 this.hideOffcanvasAction();
             },
