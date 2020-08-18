@@ -14,7 +14,7 @@
             </client-only>
         </button>
 
-        <transition-expand-layer :right-left="true">
+        <transition-expand-layer :top-bottom="true">
             <div v-if="showMenu" class="transition-expand-wrp">
                 <wishlist-layer v-if="initiated" />
             </div>
@@ -86,7 +86,7 @@
 
                 this.toggleOffcanvasAction({
                     component: this.name,
-                    direction: 'rightLeft'
+                    direction: 'topBottom'
                 });
             },
             hideMenu: function() {

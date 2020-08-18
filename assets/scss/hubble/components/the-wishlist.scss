@@ -13,7 +13,7 @@
 
   .actions {
       position: sticky;
-      bottom: 0;
+      bottom: 65px;
       padding: 0 15px 15px;
       background: $background;
       margin-left: -15px;
@@ -44,7 +44,7 @@
         height: 2px;
         background: $accent;
         position: absolute;
-        bottom: -23px;
+        bottom: -15px;
         left: 0;
         border-radius: 0;
       }
@@ -126,6 +126,7 @@
           background: #fff;
           display: inline-block;
           width: 100%;
+          bottom: 0;
       }
 
       .newsletter-wrp {

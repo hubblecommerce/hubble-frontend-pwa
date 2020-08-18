@@ -2,12 +2,6 @@
         <div class="wishlist-wrapper">
             <div class="container expand-content">
                 <div class="row overlay-header">
-                    <button class="button-icon button-close-menu" @click="toggle()">
-                        <i class="icon icon-close" aria-hidden="true" />
-
-                        <material-ripple />
-                    </button>
-
                     <div class="overlay-headline" v-text="$t('Wishlist')" />
                 </div>
 
@@ -64,7 +58,7 @@
     import {mapState,mapActions} from "vuex";
     export default {
         name: "WishlistLayer",
-        components: {WishlistItemsList},
+        components: { WishlistItemsList },
         data() {
             return {
                 name: "TheWishlist",
@@ -77,15 +71,8 @@
         },
         methods: {
             ...mapActions({
-                toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction',
                 hideOffcanvasAction: 'modNavigation/hideOffcanvasAction'
             }),
-            toggle: function() {
-                this.toggleOffcanvasAction({
-                    component: this.name,
-                    direction: 'rightLeft'
-                });
-            },
             hideMenu: function() {
                 this.hideOffcanvasAction();
             },
