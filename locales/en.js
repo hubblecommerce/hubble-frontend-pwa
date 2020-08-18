@@ -393,7 +393,9 @@ export default (context) => {
 
                 "We are sorry there is no such product. Please try another one.": "We are sorry there is no such product. Please try another one.",
 
-                "No search results for:": "No search results for:"
+                "No search results for:": "No search results for:",
+
+                "Last Viewed Products": "Last Viewed Products"
             }
         )
     });

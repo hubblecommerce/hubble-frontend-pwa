@@ -430,7 +430,9 @@ export default (context) => {
 
                 "You successfully signed up to our newsletter.": "Die Newsletter Anmeldung war erfolgreich.",
 
-                "Subscription was not successful" : "Anmeldung war nicht erfolgreich"
+                "Subscription was not successful" : "Anmeldung war nicht erfolgreich",
+
+                "Last Viewed Products": "Zuletzt angesehene Produkte"
             }
         )
     });

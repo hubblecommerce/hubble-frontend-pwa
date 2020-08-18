@@ -14,6 +14,13 @@
             </button>
         </nuxt-link>
 
+        <nuxt-link :to="localePath('customer-viewedproducts')" class="sidebar-link">
+            <button class="button-secondary">
+                {{ $t('Last Viewed Products') }}
+                <material-ripple />
+            </button>
+        </nuxt-link>
+
         <nuxt-link :to="localePath('customer-addresses')" class="sidebar-link">
             <button class="button-secondary">
                 {{ $t('Customer Addresses') }}
