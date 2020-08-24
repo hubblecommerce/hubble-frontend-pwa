@@ -17,6 +17,12 @@ $megamenu-columns: 5;
             padding: 30px 0;
             margin: 0px 15px;
             border: 2px solid transparent;
+            transition: all 0.45s ease-in-out;
+
+            &:hover {
+                color: $text-primary;
+                font-weight: bold;
+            }
 
             &.active {
                 border-bottom: 2px solid $primary;
@@ -56,6 +62,20 @@ $megamenu-columns: 5;
     .child-wrp {
         width: calc(100% / #{$megamenu-columns});
         margin-bottom: 20px;
+        padding: 5px 10px;
+        border: 1px solid white;
+        transition: all 0.45s ease-in-out;
+
+        &:hover {
+            border: 1px solid $text-primary;
+            background: $primary;
+        }
+
+        a {
+            &:hover {
+                color: $text-primary !important;
+            }
+        }
     }
 
     .child-item {

@@ -65,7 +65,7 @@ $hbl-input-icon-size: 19px;
         width: $hbl-input-icon-size;
         height: $hbl-input-icon-size;
         font-size: $hbl-input-icon-size;
-        color: $hbl-input-icon-color;
+        color: $text-primary;
         text-align: center;
     }
 
@@ -73,7 +73,7 @@ $hbl-input-icon-size: 19px;
     label {
         color: $hbl-input-label-color;
         font-size: $hbl-input-font-size;
-        font-weight: normal;
+        font-weight: bold;
         position: absolute;
         pointer-events: none;
         left: $hbl-input-padding;
@@ -96,7 +96,7 @@ $hbl-input-icon-size: 19px;
     }
 
     input:focus ~ label {
-        color: $hbl-input-highlight-color !important;
+        color: $text-primary !important;
     }
 
     /* BOTTOM BARS ================================= */

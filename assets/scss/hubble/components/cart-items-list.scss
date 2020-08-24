@@ -4,6 +4,14 @@
       display: block;
     }
 
+    a {
+        transition: all 0.45s ease-in-out;
+
+        &:hover {
+            color: $text-primary !important;
+            font-weight: bold;
+        }
+    }
 
     &.item {
         border-bottom: 1px solid $border-color;

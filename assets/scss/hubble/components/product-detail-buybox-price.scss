@@ -24,10 +24,18 @@
   height: 50px;
   padding: 0 30px;
   color: #fff;
-  background: $accent;
+  background: $text-primary;
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: all 0.45s ease-in-out;
+
+  &:hover {
+      background: $primary;
+      box-shadow: 10px 10px 40px rgba(0, 0, 0, 0.06);
+      color: $text-primary;
+      border: 1px solid $text-primary;
+  }
 
   i {
       position: absolute;

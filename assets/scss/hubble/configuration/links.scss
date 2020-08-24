@@ -13,5 +13,6 @@
 }
 
 a.nuxt-link-exact-active {
-  color: $accent !important;
+  color: $text-primary !important;
+  font-weight: bold;
 }

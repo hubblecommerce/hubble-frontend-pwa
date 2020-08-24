@@ -26,10 +26,16 @@
     letter-spacing: .4px;
     padding: 16px 16px;
     border-bottom: 1px solid $border-color;
+    transition: all 0.45s ease-in-out;
 
     .icon-chevron-right {
         margin-right: 3px;
         font-size: 23px;
+    }
+
+    &:hover {
+        font-weight: bold;
+        color: $text-primary;
     }
 }
 
@@ -43,12 +49,12 @@
     background-color: $background;
 
     .parent-link {
-        color: white;
+        color: $text-primary;
         height: 54px;
     }
 
     .back-tigger {
-        background: #fff;
+        background: $primary;
 
         i {
             vertical-align: middle;
@@ -185,7 +191,7 @@
 
         &:hover {
             text-decoration: none !important;
-            color: $primary !important;
+            color: $text-primary !important;
         }
     }
 

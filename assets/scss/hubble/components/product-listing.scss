@@ -13,6 +13,14 @@ $product-listing-gutter: 5px;
 
   .listing-item {
     padding: $product-listing-gutter;
+
+      a {
+          transition: all 0.45s ease-in-out;
+
+          &:hover {
+             color: $text-primary !important;
+          }
+      }
   }
 
   .slider-item {

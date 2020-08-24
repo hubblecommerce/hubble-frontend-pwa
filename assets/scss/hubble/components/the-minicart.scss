@@ -67,14 +67,14 @@
     }
 
     &.active {
-      color: $accent;
+      color: $button-primary-color;
       border-radius: 0;
 
       &:before {
         content: '';
         width: 100%;
-        height: 2px;
-        background: $accent;
+        height: 4px;
+        background: $button-primary-color;
         position: absolute;
         bottom: -15px;
         left: 0;
@@ -116,7 +116,7 @@
   font-weight: $font-weight-medium;
   top: 11px;
   right: -5px;
-  color: #fff;
+  color: $button-primary-color;
 }
 
 
@@ -170,10 +170,6 @@
       .cart-icon {
         position: relative;
         background: transparent;
-      }
-
-      .item-count {
-        color: #fff;
       }
     }
   }

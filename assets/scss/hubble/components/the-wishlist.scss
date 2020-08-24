@@ -35,14 +35,14 @@
     }
 
     &.active {
-      color: $accent;
+      color: $button-primary-color;
       border-radius: 0;
 
       &:before {
         content: '';
         width: 100%;
-        height: 2px;
-        background: $accent;
+        height: 4px;
+        background: $button-primary-color;
         position: absolute;
         bottom: -15px;
         left: 0;
@@ -111,7 +111,7 @@
       }
 
       .item-count {
-        color: #fff;
+        color: $button-primary-color;
       }
 
     }

@@ -1,6 +1,7 @@
 $button-primary-background-color: $primary;
-$button-primary-color: #fff;
+$button-primary-color: #000000;
 $button-secondary-background-color: $secondary;
+$button-secondary-border-color: $border-color;
 $button-font-size: $font-size-button;
 $button-padding: 6px 15px;
 $button-border-radius: 0;
@@ -66,7 +67,7 @@ button {
     &.button-primary {
         background-color: $button-primary-background-color;
         color: $button-primary-color;
-        border: 2px solid $button-primary-background-color;
+        border: 2px solid $button-primary-color;
 
         .material-ripple__component {
             background-color: #fff;
@@ -81,8 +82,13 @@ button {
 
     &.button-secondary {
         background-color: $button-secondary-background-color;
-        color: $primary;
-        border: 2px solid $button-secondary-background-color;
+        color: $button-primary-color;
+        border: 2px solid $border-color;
+        transition: all 0.45s ease-in-out;
+
+        &:hover {
+            border: 2px solid $button-primary-color;
+        }
 
         .material-ripple__component {
             background-color: $secondary;
@@ -120,7 +126,7 @@ button {
     }
 
     &.button-color-accent {
-        background-color: $accent;
+        background-color: $button-primary-color;
         color: #fff;
 
         .material-ripple__component {

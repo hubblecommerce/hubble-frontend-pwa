@@ -32,8 +32,11 @@
 
         // Highlight every link active to highlight paginated urls
         .nuxt-link-active {
-            color: $primary !important;
+            color: $text-primary !important;
             font-weight: bold;
+            padding: 5px 10px;
+            border: 1px solid $text-primary;
+            background: $primary;
         }
     }
 

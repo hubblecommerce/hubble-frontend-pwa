@@ -29,11 +29,11 @@
         min-width: 65px;
 
         &.nuxt-link-exact-active {
-            color: $primary !important;
+            color: $text-primary !important;
 
             .no, .icon {
                 background-color: $primary;
-                color: #fff;
+                color: $text-primary;
             }
         }
 
