@@ -164,6 +164,7 @@ export default function (ctx) {
                     if (process.env.API_TYPE === 'sw') {
                         headers = {
                             'sw-access-key': authToken,
+                            'Accept': 'application/json',
                             'Content-Type': 'application/json',
                         };
                     }

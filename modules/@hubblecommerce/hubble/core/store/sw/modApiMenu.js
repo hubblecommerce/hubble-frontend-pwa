@@ -139,7 +139,7 @@ export default function (ctx) {
                             action: 'post',
                             tokenType: 'sw',
                             apiType: 'data',
-                            endpoint: '/store-api/v1/pwa/navigation',
+                            endpoint: '/store-api/v3/pwa/navigation',
                             data: {
                                 includes: {
                                     category: ['id', 'parentId', 'name', 'level', 'active', '_uniqueIdentifier', 'seoUrls', 'type', 'children'],

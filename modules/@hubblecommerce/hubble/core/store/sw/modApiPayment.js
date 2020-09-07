@@ -106,7 +106,7 @@ export default function (ctx) {
                             tokenType: 'sw',
                             apiType: 'data',
                             swContext: payload.swtc,
-                            endpoint: '/sales-channel-api/v1/checkout/guest-order',
+                            endpoint: '/sales-channel-api/v3/checkout/guest-order',
                             data: payload.order,
                         },
                         { root: true }
@@ -162,7 +162,7 @@ export default function (ctx) {
                             tokenType: 'sw',
                             apiType: 'data',
                             swContext: rootState.modApiCustomer.customer.customerAuth.token,
-                            endpoint: '/sales-channel-api/v1/checkout/order',
+                            endpoint: '/sales-channel-api/v3/checkout/order',
                         },
                         { root: true }
                     )
@@ -185,7 +185,7 @@ export default function (ctx) {
                             tokenType: 'sw',
                             apiType: 'data',
                             swContext: rootState.modApiCustomer.customer.customerAuth.token,
-                            endpoint: `/sales-channel-api/v1/checkout/order/${payload}/pay`,
+                            endpoint: `/sales-channel-api/v3/checkout/order/${payload}/pay`,
                         },
                         { root: true }
                     )
@@ -282,7 +282,7 @@ export default function (ctx) {
                             action: 'get',
                             tokenType: 'sw',
                             apiType: 'data',
-                            endpoint: '/sales-channel-api/v1/payment-method',
+                            endpoint: '/sales-channel-api/v3/payment-method',
                             params: {
                                 limit: 500,
                             },
@@ -310,7 +310,7 @@ export default function (ctx) {
                             action: 'get',
                             tokenType: 'sw',
                             apiType: 'data',
-                            endpoint: '/sales-channel-api/v1/shipping-method',
+                            endpoint: '/sales-channel-api/v3/shipping-method',
                         },
                         { root: true }
                     )
@@ -336,7 +336,7 @@ export default function (ctx) {
                             tokenType: 'sw',
                             apiType: 'data',
                             swContext: rootState.modApiCustomer.customer.customerAuth.token,
-                            endpoint: '/sales-channel-api/v1/context',
+                            endpoint: '/sales-channel-api/v3/context',
                             data: {
                                 paymentMethodId: payload.id,
                             },
@@ -386,7 +386,7 @@ export default function (ctx) {
                             tokenType: 'sw',
                             apiType: 'data',
                             swContext: rootState.modApiCustomer.customer.customerAuth.token,
-                            endpoint: '/sales-channel-api/v1/context',
+                            endpoint: '/sales-channel-api/v3/context',
                             data: {
                                 shippingMethodId: payload.id,
                             },

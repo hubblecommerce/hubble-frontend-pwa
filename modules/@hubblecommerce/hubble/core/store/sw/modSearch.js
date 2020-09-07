@@ -62,7 +62,7 @@ export default function (ctx) {
                             action: 'post',
                             tokenType: 'sw',
                             apiType: 'data',
-                            endpoint: '/sales-channel-api/v1/product',
+                            endpoint: '/sales-channel-api/v3/product',
                             data: {
                                 term: payload.query,
                                 limit: state.maxProductItems,
@@ -175,7 +175,7 @@ export default function (ctx) {
                             action: 'post',
                             tokenType: 'sw',
                             apiType: 'data',
-                            endpoint: '/sales-channel-api/v1/product',
+                            endpoint: '/sales-channel-api/v3/product',
                             data: rootState.modApiCategory.apiRequestBody,
                         },
                         { root: true }

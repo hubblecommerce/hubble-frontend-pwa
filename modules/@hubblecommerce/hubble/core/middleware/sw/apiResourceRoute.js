@@ -83,7 +83,7 @@ Middleware.apiResourceRoute = async function ({ store, route, error }) {
                             });
                     })
                     .catch(() => {
-                        error({ statusCode: 404, message: 'Unknown URL' });
+                        error({ statusCode: 404, message: 'Unknown Category' });
                         resolve();
                     });
             });
@@ -111,6 +111,7 @@ Middleware.apiResourceRoute = async function ({ store, route, error }) {
             });
         }
     } catch (err) {
+        console.log(err);
         error({ statusCode: 404, message: 'Unknown URL' });
     }
 };
