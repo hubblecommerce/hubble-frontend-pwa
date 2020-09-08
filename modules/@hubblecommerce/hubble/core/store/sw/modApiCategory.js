@@ -25,12 +25,12 @@ export default function (ctx) {
                         },
                     },
                 ],
-                //sort: [
-                //    {
-                //        field: 'price',
-                //        direction: 'asc',
-                //    },
-                //],
+                sort: [
+                    {
+                        field: 'price',
+                        direction: 'asc',
+                    },
+                ],
                 associations: {
                     manufacturer: {},
                     media: {},
@@ -143,18 +143,18 @@ export default function (ctx) {
                 }
             },
             setSorting: (state, payload) => {
-                //let sort = _.find(process.env.sorter, { option_id: parseInt(payload) });
-                //let direction;
-                //
-                //if (sort.direction === 'asc') {
-                //    direction = '';
-                //}
-                //
-                //if (sort.direction === 'desc') {
-                //    direction = '-';
-                //}
-                //
-                //state.apiRequestBody.sort = direction + sort.order;
+                let sort = _.find(process.env.sorter, { option_id: parseInt(payload) });
+                let direction;
+
+                if (sort.direction === 'asc') {
+                    direction = '';
+                }
+
+                if (sort.direction === 'desc') {
+                    direction = '-';
+                }
+
+                state.apiRequestBody.sort = direction + sort.order;
             },
         },
         getters: {
@@ -200,9 +200,9 @@ export default function (ctx) {
                         });
                 });
             },
-            async swGetProducts({ commit, state, dispatch }) {
+            async swGetProducts({ commit, state, dispatch }, categoryId) {
                 return new Promise(function (resolve, reject) {
-                    let _endpoint = '/sales-channel-api/v3/product';
+                    let _endpoint = `/store-api/v3/product-listing/${categoryId}`;
 
                     dispatch(
                         'apiCall',
@@ -287,7 +287,7 @@ export default function (ctx) {
                 return new Promise(function (resolve, reject) {
                     // MAPPING
                     let mapped = [];
-                    _.forEach(payload.data, product => {
+                    _.forEach(payload.elements, product => {
                         let obj = {};
 
                         obj.id = product.id;
