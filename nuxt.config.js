@@ -217,6 +217,7 @@ export default {
                 ],
             },
         ],
+        'nuxt-purgecss'
     ],
 
     /*

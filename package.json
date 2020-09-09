@@ -59,6 +59,7 @@
     "lozad": "^1.14.0",
     "node-sass": "^4.13.0",
     "nodemon": "^1.19.4",
+    "nuxt-purgecss": "^1.0.0",
     "prettier": "^2.0.5",
     "sass-loader": "^7.3.1"
   }
