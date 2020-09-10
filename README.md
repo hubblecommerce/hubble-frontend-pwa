@@ -1,5 +1,3 @@
-<img src="https://docs.hubblecommerce.io/assets/images/hubblelogo.svg" style="height:50px" />
-
 # Next Generation Shopfrontend
 > Hoch performante Progressive Web App für jede gängige E-Commerce Plattform auf Basis von [Nuxt.js](https://nuxtjs.org/).
 
