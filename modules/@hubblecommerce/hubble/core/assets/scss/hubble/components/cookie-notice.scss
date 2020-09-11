@@ -1,0 +1,45 @@
+.cookie-notice-wrp {
+  background-color: $background;
+  width: 100%;
+  margin: 0 auto;
+  padding: 10px 5px 10px 5px;
+  box-shadow: 0 6px 10px 0 rgba(62,62,77,0.05), 0 1px 18px 0 rgba(62,62,77,0.02), 0 3px 5px -1px rgba(62,62,77,0.1);
+
+  .cookie-icon, .cookie-notice-button-wrp, .cookie-text-wrp {
+    margin: auto;
+  }
+
+  .cookie-text-wrp {
+    margin-bottom: 20px;
+    display: flex;
+  }
+
+  .cookie-icon {
+    font-size: 30px;
+    margin-right: 20px;
+  }
+
+  .cookie-notice-button {
+    width: 100%;
+  }
+}
+
+// Tablet
+@media(min-width: 768px) {
+  .cookie-notice-wrp {
+    width: 90%;
+    padding: 20px 30px 20px 30px;
+
+    .cookie-text-wrp {
+      margin-bottom: 0;
+    }
+  }
+}
+
+// Desktop
+@media(min-width: 1200px) {
+  .cookie-notice-wrp {
+    width: 80%;
+    padding: 30px 45px 30px 45px;
+  }
+}

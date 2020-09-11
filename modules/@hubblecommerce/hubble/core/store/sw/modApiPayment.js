@@ -1,9 +1,6 @@
 import _ from 'lodash';
 
-export default function (ctx) {
-    const modApiPayment = {
-        namespaced: true,
-        state: () => ({
+export const state = () => ({
             // Payment
             paymentMethods: {},
             paymentError: null,
@@ -28,79 +25,82 @@ export default function (ctx) {
             currentOrder: {},
 
             // Checkout
-            processingCheckout: false,
-        }),
-        mutations: {
+            processingCheckout: false
+})
+
+export const mutations = {
             // Payment
-            setPaymentMethods: (state, payload) => {
+            setPaymentMethods (state, payload)  {
                 state.paymentMethods = payload;
             },
-            setPaymentError: (state, payload) => {
+            setPaymentError (state, payload) {
                 state.paymentError = payload;
             },
-            setHostedIFrame: (state, payload) => {
+            setHostedIFrame (state, payload) {
                 state.hostedIFrame = payload;
             },
-            setIbanError: (state, payload) => {
+            setIbanError (state, payload) {
                 state.ibanError = payload;
             },
-            setBicError: (state, payload) => {
+            setBicError (state, payload) {
                 state.bicError = payload;
             },
             // Shipping
-            setShippingMethods: (state, payload) => {
+            setShippingMethods (state, payload) {
                 state.shippingMethods = payload;
             },
-            setShippingError: (state, payload) => {
+            setShippingError (state, payload) {
                 state.shippingError = payload;
             },
             // Order
-            setOrder: (state, payload) => {
+            setOrder (state, payload) {
                 state.order = payload;
             },
-            setChosenPaymentMethod: (state, payload) => {
+            setChosenPaymentMethod (state, payload) {
                 state.order.chosenPaymentMethod = payload;
             },
-            setChosenShippingMethod: (state, payload) => {
+            setChosenShippingMethod (state, payload) {
                 state.order.chosenShippingMethod = payload;
             },
-            setPseudoCardPan: (state, payload) => {
+            setPseudoCardPan (state, payload) {
                 state.order.chosenPaymentMethod.payload.pseudoCardPan = payload;
             },
-            setCardType: (state, payload) => {
+            setCardType (state, payload) {
                 state.order.chosenPaymentMethod.payload.cardType = payload;
             },
-            setCardExpireDate: (state, payload) => {
+            setCardExpireDate (state, payload) {
                 state.order.chosenPaymentMethod.payload.cardExpireDate = payload;
             },
             // SW
-            setCurrentOrder: (state, payload) => {
+            setCurrentOrder (state, payload) {
                 state.currentOrder = payload;
             },
             // Checkout
-            setProcessingCheckout: state => {
+            setProcessingCheckout (state)  {
                 state.processingCheckout = true;
             },
-            resetProcessingCheckout: state => {
+            resetProcessingCheckout (state)  {
                 state.processingCheckout = false;
-            },
-        },
-        getters: {
-            getCookieExpires: state => {
+            }
+}
+
+export const getters = {
+            getCookieExpires (state)  {
                 return new Date(new Date().getTime() + state.cookieTTL * 60 * 1000);
             },
-            getChosenPaymentMethod: state => {
+            getChosenPaymentMethod (state)  {
                 return state.order.chosenPaymentMethod;
             },
-            getChosenShippingMethod: state => {
+            getChosenShippingMethod (state) {
                 return state.order.chosenShippingMethod;
-            },
-        },
-        actions: {
+            }
+}
+
+export const actions = {
             async swGuestOrder({ dispatch }, payload) {
                 return new Promise((resolve, reject) => {
                     dispatch(
-                        'apiCall',
+                        'modApi/apiCall',
                         {
                             action: 'post',
                             tokenType: 'sw',
@@ -156,7 +156,7 @@ export default function (ctx) {
             async swPlaceOrder({ dispatch, rootState }) {
                 return new Promise((resolve, reject) => {
                     dispatch(
-                        'apiCall',
+                        'modApi/apiCall',
                         {
                             action: 'post',
                             tokenType: 'sw',
@@ -179,7 +179,7 @@ export default function (ctx) {
             async swStartPayment({ dispatch, rootState }, payload) {
                 return new Promise((resolve, reject) => {
                     dispatch(
-                        'apiCall',
+                        'modApi/apiCall',
                         {
                             action: 'post',
                             tokenType: 'sw',
@@ -277,7 +277,7 @@ export default function (ctx) {
             async getPaymentMethods({ commit, dispatch }) {
                 return new Promise((resolve, reject) => {
                     dispatch(
-                        'apiCall',
+                        'modApi/apiCall',
                         {
                             action: 'get',
                             tokenType: 'sw',
@@ -305,7 +305,7 @@ export default function (ctx) {
             async getShippingMethods({ commit, dispatch }) {
                 return new Promise((resolve, reject) => {
                     dispatch(
-                        'apiCall',
+                        'modApi/apiCall',
                         {
                             action: 'get',
                             tokenType: 'sw',
@@ -330,7 +330,7 @@ export default function (ctx) {
             async swSetPaymentMethod({ dispatch, rootState }, payload) {
                 return new Promise((resolve, reject) => {
                     dispatch(
-                        'apiCall',
+                        'modApi/apiCall',
                         {
                             action: 'patch',
                             tokenType: 'sw',
@@ -380,7 +380,7 @@ export default function (ctx) {
                     }
 
                     dispatch(
-                        'apiCall',
+                        'modApi/apiCall',
                         {
                             action: 'patch',
                             tokenType: 'sw',
@@ -436,10 +436,5 @@ export default function (ctx) {
 
                     resolve();
                 });
-            },
-        },
-    };
-
-    // Register vuex store module
-    ctx.store.registerModule('modApiPayment', modApiPayment);
+            }
 }

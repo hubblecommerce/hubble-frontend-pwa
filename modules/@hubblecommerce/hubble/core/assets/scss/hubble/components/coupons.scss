@@ -1,0 +1,33 @@
+.coupons-wrp {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    width: 100%;
+
+    .coupon-title {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+    .subline {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .hbl-input-group {
+        margin: 0;
+        flex: 1;
+    }
+
+    button {
+        width: 130px;
+    }
+}
+
+/* Tablet */
+@media(min-width: 768px) {
+    .coupons-wrp {
+        width: 45%;
+        padding-right: 10px;
+    }
+}

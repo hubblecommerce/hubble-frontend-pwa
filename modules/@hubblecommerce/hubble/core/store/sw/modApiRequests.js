@@ -1,9 +1,6 @@
 import _ from 'lodash';
 
-export default function (ctx) {
-    const modApiRequests = {
-        namespaced: true,
-        state: () => ({
+export const state = () => ({
             paginationPage: 1,
             paginationPerPage: process.env.limiter_default,
 
@@ -17,49 +14,51 @@ export default function (ctx) {
             },
             requestFacets: null,
 
-            queryWellKnown: ['term', 'page', 'sort', 'limit'],
-        }),
-        mutations: {
-            setPaginationPage: (state, value) => {
+            queryWellKnown: ['term', 'page', 'sort', 'limit']
+})
+
+export const mutations = {
+            setPaginationPage (state, value) {
                 state.paginationPage = value;
             },
-            setPaginationPerPage: (state, value) => {
+            setPaginationPerPage (state, value) {
                 state.paginationPerPage = value;
             },
-            setSelectedPriceMax: (state, value) => {
+            setSelectedPriceMax (state, value) {
                 state.selectedFacets.priceMax = value;
             },
-            setSelectedPriceMin: (state, value) => {
+            setSelectedPriceMin (state, value) {
                 state.selectedFacets.priceMin = value;
             },
-            setSelectedQueryParam: (state, payload) => {
+            setSelectedQueryParam (state, payload) {
                 state.parsedQuery[payload.name] = payload.data;
             },
-            setSelectedFacets: (state, items) => {
+            setSelectedFacets (state, items) {
                 state.selectedFacets = items;
             },
-            setSelectedFacetsParam: (state, payload) => {
+            setSelectedFacetsParam (state, payload) {
                 state.selectedFacets[payload.name] = payload.data;
             },
-            resetSelectedFacetsParam: state => {
+            resetSelectedFacetsParam (state) {
                 state.selectedFacets = _.pick(state.selectedFacets, state.queryWellKnown);
                 state.selectedFacets.priceMax = null;
                 state.selectedFacets.priceMin = null;
             },
-            setOptionsLimit: (state, payload) => {
+            setOptionsLimit (state, payload) {
                 state.optionsLimit = payload;
             },
-            setOptionsSorter: (state, payload) => {
+            setOptionsSorter (state, payload) {
                 state.optionsSorter = payload;
             },
-            setRequestFacets: (state, items) => {
+            setRequestFacets (state, items) {
                 state.requestFacets = items;
             },
-            setParsedQuery: (state, items) => {
+            setParsedQuery (state, items) {
                 state.parsedQuery = items;
-            },
-        },
-        getters: {
+            }
+}
+
+export const getters = {
             isNumeric: state => value => {
                 return !isNaN(parseFloat(value)) && isFinite(value);
             },
@@ -76,39 +75,40 @@ export default function (ctx) {
 
                 return _ok;
             },
-            getRequestFacets: state => {
+            getRequestFacets (state) {
                 return state.requestFacets;
             },
-            getRequestNumberFacets: state => {
+            getRequestNumberFacets (state) {
                 if (_.has(state.requestFacets, 'number_facets')) {
                     return _.map(state.requestFacets.number_facets, item => item);
                 }
 
                 return null;
             },
-            getRequestStringFacets: state => {
+            getRequestStringFacets (state)  {
                 if (_.has(state.requestFacets, 'string_facets')) {
                     return _.map(state.requestFacets.string_facets, item => item);
                 }
 
                 return null;
             },
-            getRequestPriceFacets: state => {
+            getRequestPriceFacets (state)  {
                 if (_.has(state.requestFacets, 'price_facets')) {
                     return _.map(state.requestFacets.price_facets, item => item);
                 }
 
                 return null;
             },
-            getRequestCategoryFacets: state => {
+            getRequestCategoryFacets (state)  {
                 if (_.has(state.requestFacets, 'category_facets')) {
                     return _.map(state.requestFacets.category_facets, item => item);
                 }
 
                 return null;
-            },
-        },
-        actions: {
+            }
+}
+
+export const actions = {
             parseRequest({ commit, dispatch }, payload) {
                 let _query = payload.query;
 
@@ -308,9 +308,5 @@ export default function (ctx) {
                 dispatch('modNavigation/hideOffcanvasAction', {}, { root: true }).then(() => {
                     ctx.app.router.push(filterRoute);
                 });
-            },
-        },
-    };
-
-    ctx.store.registerModule('modApiRequests', modApiRequests);
+            }
 }

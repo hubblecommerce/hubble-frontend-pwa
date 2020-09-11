@@ -1,0 +1,33 @@
+.close-flash {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+
+.flash-message {
+    padding-right: 10px;
+}
+
+
+.transition-expand-wrp {
+    .close-flash {
+        bottom: 0;
+        right: 15px;
+        padding-left: 75px;
+        padding-right: 75px;
+    }
+}
+
+
+@media(min-width: 1024px) {
+    .transition-expand-wrp {
+        .close-flash {
+            right: 35px;
+        }
+
+        .flash-message {
+            padding-left: 20px;
+        }
+    }
+}

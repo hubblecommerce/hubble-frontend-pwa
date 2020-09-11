@@ -1,0 +1,120 @@
+.payment-methods-wrp {
+    margin-bottom: 30px;
+
+    .headline {
+        margin-bottom: 20px;
+    }
+
+    .method-wrp {
+        padding: 0 15px;
+        background: $background-light;
+        border: 1px solid $border-color;
+        margin-bottom: 5px;
+
+        .hbl-checkbox {
+            margin: 0;
+        }
+
+        .method-label {
+            width: 100%;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            padding-right: 130px;
+        }
+
+        .name {
+            font-size: 16px;
+        }
+
+        .description {
+            display: none;
+        }
+
+        .method-image-1 {
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto 0;
+            width: 105px;
+            height: 24px;
+            background-image: url("~assets/images/payment/cc.png");
+            background-size: cover;
+        }
+
+        .method-image-2 {
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto 0;
+            width: 49px;
+            height: 12px;
+            background-image: url("~assets/images/payment/paypal.png");
+            background-size: cover;
+        }
+
+        .method-image-3 {
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto 0;
+            width: 35px;
+            height: 20px;
+            background-image: url("~assets/images/payment/nachnahme.png");
+            background-size: cover;
+        }
+
+        .online-bank-transfer-image {
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto 0;
+            width: 126px;
+            height: 26px;
+            background-image: url("~assets/images/payment/online-bank-transfer.png");
+            background-size: cover;
+        }
+
+        &.online-bank-transfer {
+            .payone-payment-wrp {
+                .method-label {
+                    padding-top: 10px;
+                    padding-bottom: 10px;
+                    margin-bottom: 10px;
+                }
+
+                .hbl-input-group {
+                    max-width: 300px;
+                }
+            }
+        }
+    }
+}
+
+.payment-methods-placeholder {
+    height: 260px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.payment-methods-api-error-wrp {
+    color: $error-accent;
+    margin: 20px 0;
+}
+
+/* Tablet */
+@media(min-width: 768px) {
+    .payment-methods-wrp {
+        .method-wrp {
+            .description {
+                display: inline;
+                margin-left: 20px;
+            }
+        }
+    }
+}

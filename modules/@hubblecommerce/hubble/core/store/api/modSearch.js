@@ -1,9 +1,6 @@
 import _ from 'lodash';
 
-export default function (ctx) {
-    const modSearch = {
-        namespaced: true,
-        state: () => ({
+export const state = () => ({
             maxProductItems: 5,
             maxCategoryItems: 5,
 
@@ -17,8 +14,8 @@ export default function (ctx) {
 
             selectedItemPosition: -1,
             selectedItemId: null,
-        }),
-        getters: {
+})
+export const getters = {
             getAutoCompleteResults: state => {
                 return state.autoCompleteResults;
             },
@@ -27,9 +24,10 @@ export default function (ctx) {
             },
             getAutoCompleteResultsLength: state => {
                 return state.autoCompleteResults.categoryItems.length + state.autoCompleteResults.productItems.length;
-            },
-        },
-        mutations: {
+            }
+}
+
+export const mutations = {
             setAutoCompleteResults: (state, value) => {
                 state.autoCompleteResults.categoryItems = value.categoryItems;
                 state.autoCompleteResults.productItems = value.productItems;
@@ -51,9 +49,10 @@ export default function (ctx) {
             },
             setShowAutoCompleteResults: (state, value) => {
                 state.showAutoCompleteResults = value;
-            },
-        },
-        actions: {
+            }
+}
+
+export const actions = {
             async getAutocompleteResults({ state, commit, dispatch }, payload) {
                 return new Promise(function (resolve, reject) {
                     dispatch(
@@ -192,7 +191,4 @@ export default function (ctx) {
                         });
                 });
             },
-        },
-    };
-    ctx.store.registerModule('modSearch', modSearch);
 }

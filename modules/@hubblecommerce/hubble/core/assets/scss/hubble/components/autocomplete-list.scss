@@ -1,0 +1,47 @@
+.autocomplete-list-wrp {
+  background: $background;
+  box-shadow: 0 6px 10px 0 rgba(62,62,77,0.05), 0 1px 18px 0 rgba(62,62,77,0.02), 0 3px 5px -1px rgba(62,62,77,0.1);
+
+  border-top: 1px solid $border-color;
+  border-bottom: 1px solid $border-color;
+  position: absolute;
+  width: 100%;
+  padding-top: 20px;
+  padding-bottom: 20px;
+
+  .autocomplete-headline {
+    padding: 0 30px 0 30px;
+    font-weight: bold;
+  }
+
+  .autocomplete-element-wrp {
+    display: flex;
+    flex-direction: column;
+    &:hover{
+      background: $secondary;
+    }
+  }
+
+  .autocomplete-element {
+    padding: 5px 35px 5px 35px;
+  }
+
+  .selected-item {
+    background: $secondary;
+
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+// Tablet
+@media(min-width: 768px) {
+  .autocomplete-list-wrp {
+    top: 47px;
+    right: 10px;
+    width: 500px;
+    border: 1px solid $border-color;
+  }
+}
+

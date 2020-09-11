@@ -1,0 +1,49 @@
+.product-info-wrp {
+
+    .color-select-wrp {
+        padding: 0 10px;
+
+        .color-label {
+            margin-bottom: 10px;
+            font-weight: $font-weight-bold;
+
+            .selected-color {
+                font-weight: $font-weight-medium;
+            }
+        }
+
+        .colors-wrp {
+
+            .color-list {
+                display: flex;
+                flex-wrap: wrap;
+                padding: 0;
+                margin-left: -5px;
+                margin-right: -5px;
+                margin-bottom: 10px;
+
+                a {
+                    width: 50px;
+                    margin: 10px 5px;
+                    padding: 5px;
+                    border: 1px solid $border-color;
+                    background: $background;
+                }
+
+                .nuxt-link-exact-active {
+                    border: 1px solid $accent;
+                }
+            }
+
+        }
+    }
+}
+
+@media(min-width: 768px) {
+    .product-info-wrp {
+
+        .color-select-wrp {
+            padding: 0;
+        }
+    }
+}

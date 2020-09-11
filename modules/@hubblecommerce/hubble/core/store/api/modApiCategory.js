@@ -1,28 +1,24 @@
-export default function (ctx) {
-    const modApiCategory = {
-        namespaced: true,
-        state: () => ({
+export const state = () => ({
             dataCategory: {},
             dataCategoryProducts: {},
-        }),
-        mutations: {
+})
+
+export const mutations = {
             setDataCategory: (state, payload) => {
                 state.dataCategory = payload.data;
             },
             setDataCategoryProducts: (state, payload) => {
                 state.dataCategoryProducts = payload.data;
-            },
-        },
-        getters: {
+            }
+}
+
+export const getters = {
             getDataCategory: state => {
                 return state.dataCategory;
             },
             getDataCategoryProducts: state => {
                 return state.dataCategoryProducts;
-            },
-        },
-        actions: {},
-    };
-
-    ctx.store.registerModule('modApiCategory', modApiCategory);
+            }
 }
+
+export const actions = {}

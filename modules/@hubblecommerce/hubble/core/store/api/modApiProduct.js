@@ -1,9 +1,6 @@
 import _ from 'lodash';
 
-export default function (ctx) {
-    const modApiProduct = {
-        namespaced: true,
-        state: () => ({
+export const state = () => ({
             dataProduct: {},
             dataProductRelations: {},
             dataProductsCrossBuybox: {},
@@ -18,8 +15,9 @@ export default function (ctx) {
             // Routing Information
             openDetail: false,
             productId: null,
-        }),
-        mutations: {
+})
+
+export const mutations = {
             setDataProduct: (state, payload) => {
                 state.dataProduct = payload.data;
             },
@@ -61,9 +59,10 @@ export default function (ctx) {
             },
             setProductId: (state, payload) => {
                 state.productId = payload;
-            },
-        },
-        getters: {
+            }
+}
+
+export const getters = {
             getMediaGalleryArray: state => {
                 if (!_.isEmpty(state.dataProduct)) {
                     let image = state.dataProduct.result.item.image,
@@ -83,9 +82,10 @@ export default function (ctx) {
             },
             getProductId: state => {
                 return state.productId;
-            },
-        },
-        actions: {
+            }
+}
+
+export const actions = {
             async getProductData({ commit, state, dispatch }) {
                 return new Promise(function (resolve, reject) {
                     let endpoint = _.join(['/api/json/products/', state.productId], '');
@@ -221,8 +221,4 @@ export default function (ctx) {
                         });
                 });
             },
-        },
-    };
-
-    ctx.store.registerModule('modApiProduct', modApiProduct);
 }

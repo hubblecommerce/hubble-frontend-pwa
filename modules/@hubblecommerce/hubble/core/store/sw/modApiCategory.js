@@ -1,10 +1,8 @@
-import { slugify } from '@hubblecommerce/hubble/core/utils/menuHelper';
+// import { slugify } from 'modules/@hubblecommerce/hubble/core/utils/menuHelper';
+import { slugify } from '~/utils/menuHelper';
 import _ from 'lodash';
 
-export default function (ctx) {
-    const modApiCategory = {
-        namespaced: true,
-        state: () => ({
+export const state = () => ({
             dataCategory: {},
             dataCategoryProducts: {},
             apiRequestBody: {
@@ -36,24 +34,25 @@ export default function (ctx) {
                     media: {},
                     seoUrls: {},
                     cover: {},
-                },
-            },
-        }),
-        mutations: {
-            setDataCategory: (state, payload) => {
+                }
+            }
+})
+
+export const mutations = {
+            setDataCategory (state, payload) {
                 state.dataCategory = payload.data;
             },
-            setDataCategoryProducts: (state, payload) => {
+            setDataCategoryProducts (state, payload) {
                 state.dataCategoryProducts = payload.data;
             },
-            setFilter: (state, payload) => {
+            setFilter (state, payload) {
                 _.remove(state.apiRequestBody.filter, function (o) {
                     // remove by field
                     return o.field === payload.field;
                 });
                 state.apiRequestBody.filter.push(payload);
             },
-            resetFilter: state => {
+            resetFilter (state) {
                 state.apiRequestBody.filter = [
                     {
                         type: 'equals',
@@ -69,16 +68,16 @@ export default function (ctx) {
                     },
                 ];
             },
-            setLimit: (state, payload) => {
+            setLimit (state, payload) {
                 state.apiRequestBody.limit = payload;
             },
-            setPage: (state, payload) => {
+            setPage (state, payload) {
                 state.apiRequestBody.page = payload;
             },
-            setTerm: (state, payload) => {
+            setTerm (state, payload) {
                 state.apiRequestBody.term = payload;
             },
-            setFilters: (state, query) => {
+            setFilters (state, query) {
                 // Reset all filters
                 state.apiRequestBody.filter = [];
 
@@ -142,7 +141,7 @@ export default function (ctx) {
                     state.apiRequestBody.filter.push(priceRangeFilter);
                 }
             },
-            setSorting: (state, payload) => {
+            setSorting (state, payload) {
                 let sort = _.find(process.env.sorter, { option_id: parseInt(payload) });
                 let direction;
 
@@ -155,23 +154,26 @@ export default function (ctx) {
                 }
 
                 state.apiRequestBody.sort = direction + sort.order;
-            },
-        },
-        getters: {
-            getDataCategory: state => {
+            }
+}
+
+export const getters = {
+            getDataCategory (state) {
                 return state.dataCategory;
             },
-            getDataCategoryProducts: state => {
+            getDataCategoryProducts (state) {
                 return state.dataCategoryProducts;
-            },
-        },
-        actions: {
+            }
+}
+
+export const actions = {
             async swGetCategory({ commit, dispatch }, payload) {
+                // console.log("payload in swGetCategory: ", payload);
                 return new Promise(function (resolve, reject) {
                     let _endpoint = '/sales-channel-api/v1/category/' + payload + '?associations[media][]';
 
                     dispatch(
-                        'apiCall',
+                        'modApi/apiCall',
                         {
                             action: 'get',
                             tokenType: 'sw',
@@ -205,7 +207,7 @@ export default function (ctx) {
                     let _endpoint = '/sales-channel-api/v1/product';
 
                     dispatch(
-                        'apiCall',
+                        'modApi/apiCall',
                         {
                             action: 'post',
                             tokenType: 'sw',
@@ -363,7 +365,7 @@ export default function (ctx) {
                         '&associations[media][]';
 
                     dispatch(
-                        'apiCall',
+                        'modApi/apiCall',
                         {
                             action: 'get',
                             tokenType: 'sw',
@@ -399,7 +401,7 @@ export default function (ctx) {
                     let _endpoint = `/sales-channel-api/v1/product/${id}/cross-selling` + '?associations[products][associations][seoUrls][]';
 
                     dispatch(
-                        'apiCall',
+                        'modApi/apiCall',
                         {
                             action: 'get',
                             tokenType: 'sw',
@@ -426,9 +428,5 @@ export default function (ctx) {
                             reject(response);
                         });
                 });
-            },
-        },
-    };
-
-    ctx.store.registerModule('modApiCategory', modApiCategory);
+            }
 }

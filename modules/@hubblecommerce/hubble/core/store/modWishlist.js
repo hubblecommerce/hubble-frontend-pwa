@@ -1,39 +1,39 @@
 import localStorageHelper from '@hubblecommerce/hubble/core/utils/localStorageHelper';
 import _ from 'lodash';
 
-export default function (ctx) {
-    const modWishlist = {
-        namespaced: true,
-        state: () => ({
+export const state = () => ({
             wishlistItemsCount: 0,
             wishlistItemsObj: {},
             wishlistId: false,
 
             cookieName: 'hubbleWishlist',
-            localStorageLifetime: 720, // 720 hours = 30 days
-        }),
-        getters: {},
-        mutations: {
-            setWishlistItemsCount: (state, qty) => {
+            localStorageLifetime: 720 // 720 hours = 30 days
+})
+
+export const getters = {}
+
+export const mutations = {
+            setWishlistItemsCount (state, qty) {
                 state.wishlistItemsCount = qty;
             },
-            delWishlistItemObj: (state, item) => {
+            delWishlistItemObj (state, item) {
                 state.wishlistItemsObj = _.omit(state.wishlistItemsObj, item.id);
             },
-            setWishlistItemObj: (state, item) => {
+            setWishlistItemObj (state, item) {
                 state.wishlistItemsObj[item.id] = item;
             },
-            setWishlistItemsObj: (state, items) => {
+            setWishlistItemsObj (state, items) {
                 state.wishlistItemsObj = items;
             },
-            setWishlistItemsObjQty: (state, payload) => {
+            setWishlistItemsObjQty (state, payload) {
                 state.wishlistItemsObj[payload.itemId]['qty'] = payload.itemQty;
             },
-            setWishlistId: (state, payload) => {
+            setWishlistId (state, payload) {
                 state.wishlistId = payload;
-            },
-        },
-        actions: {
+            }
+}
+
+export const actions = {
             clearAll({ commit }) {
                 return new Promise(resolve => {
                     commit('setWishlistItemsObj', {});
@@ -155,9 +155,5 @@ export default function (ctx) {
                     // Remove wishlist from local storage
                     this.$localForage.removeItem(state.cookieName);
                 });
-            },
-        },
-    };
-
-    ctx.store.registerModule('modWishlist', modWishlist);
+            }
 }

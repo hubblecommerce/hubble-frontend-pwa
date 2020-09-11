@@ -1,9 +1,6 @@
 import _ from 'lodash';
 
-export default function (ctx) {
-    const modNavigation = {
-        namespaced: true,
-        state: () => ({
+export const state = () => ({
             showMenu: false,
             offcanvas: {
                 component: '',
@@ -15,16 +12,17 @@ export default function (ctx) {
                     topBottom: false,
                 },
                 sameLayerOpened: false,
-            },
-        }),
-        mutations: {
-            showMenu: state => {
+            }
+})
+
+export const mutations = {
+            showMenu (state) {
                 state.showMenu = true;
             },
-            hideMenu: state => {
+            hideMenu (state) {
                 state.showMenu = false;
             },
-            toggleOffcanvas: (state, payload) => {
+            toggleOffcanvas (state, payload) {
                 // Set component name to identify current active layer
                 if (state.offcanvas.component === payload.component) {
                     state.offcanvas.component = '';
@@ -53,7 +51,7 @@ export default function (ctx) {
                     });
                 }
             },
-            showOffcanvas: (state, payload) => {
+            showOffcanvas (state, payload) {
                 // Set component name to identify current active layer
                 state.offcanvas.component = payload.component;
 
@@ -69,7 +67,7 @@ export default function (ctx) {
                     }
                 });
             },
-            hideOffcanvas: state => {
+            hideOffcanvas (state) {
                 // Set component name to identify current active layer
                 state.offcanvas.component = '';
 
@@ -81,7 +79,7 @@ export default function (ctx) {
                     state.offcanvas.direction[key] = false;
                 });
             },
-            setSameLayerOpened: (state, payload) => {
+            setSameLayerOpened (state, payload) {
                 // If isActive currently true
                 // and direction current is same as target
                 // but current component is not target component for example in case of toggle
@@ -99,9 +97,10 @@ export default function (ctx) {
             },
             resetSameLayerOpened: state => {
                 state.offcanvas.sameLayerOpened = false;
-            },
-        },
-        actions: {
+            }
+}
+
+export const actions = {
             async toggleOffcanvasAction({ commit, dispatch }, payload) {
                 return new Promise(resolve => {
                     dispatch('setSameLayerOpenedAction', {
@@ -152,9 +151,5 @@ export default function (ctx) {
 
                     resolve('resolved');
                 });
-            },
-        },
-    };
-
-    ctx.store.registerModule('modNavigation', modNavigation);
+            }
 }

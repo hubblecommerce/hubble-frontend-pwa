@@ -1,33 +1,30 @@
 import _ from 'lodash';
 
-export default function (ctx) {
-    const modFlash = {
-        namespaced: true,
-        state: () => ({
+export const state = () => ({
             flashVisible: false,
             flashMessage: '',
             flashType: 'info',
             keepOnRouteChange: false,
             listOfFlashMessages: [],
-        }),
+})
 
-        mutations: {
-            showFlash: state => {
+export const mutations = {
+            showFlash (state) {
                 state.flashVisible = true;
             },
-            hideFlash: state => {
+            hideFlash (state) {
                 state.flashVisible = false;
             },
-            setKeepOnRouteChange: (state, val) => {
+            setKeepOnRouteChange (state, val) {
                 state.keepOnRouteChange = !!val;
             },
-            setFlashMessage: (state, message) => {
+            setFlashMessage (state, message) {
                 state.flashMessage = message;
             },
-            setFlashType: (state, type) => {
+            setFlashType (state, type) {
                 state.flashType = type;
             },
-            addFlashMessageToList: (state, messageObject) => {
+            addFlashMessageToList (state, messageObject) {
                 // max 3 messages can be displayed at a time, older ones get pushed out: FIFO
                 if (state.listOfFlashMessages.length > 2) {
                     // step 1: delete first message in array which corresponds to the oldest message
@@ -39,12 +36,12 @@ export default function (ctx) {
                     state.listOfFlashMessages.push(messageObject);
                 }
             },
-            deleteMessageFromListOfFlashMessages: (state, id) => {
+            deleteMessageFromListOfFlashMessages (state, id) {
                 state.listOfFlashMessages = state.listOfFlashMessages.filter(message => message.id !== id);
-            },
-        },
+            }
+}
 
-        actions: {
+export const actions = {
             flashMessage({ commit, state }, payload) {
                 return new Promise(resolve => {
                     commit('showFlash');
@@ -98,9 +95,5 @@ export default function (ctx) {
             },
             resetKeepOnRouteChange({ commit }) {
                 commit('setKeepOnRouteChange', false);
-            },
-        },
-    };
-
-    ctx.store.registerModule('modFlash', modFlash);
+            }
 }

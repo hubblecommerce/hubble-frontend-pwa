@@ -1,0 +1,29 @@
+.badge-wrp {
+  display: flex;
+  flex-direction: row;
+
+  .badge {
+    display: block !important;
+    text-transform: uppercase;
+    font-size: $font-size-body;
+    font-weight: $font-weight-bold;
+    padding: 5px 0 5px 10px;
+    @include border-radius(0 2px 2px 0px !important);
+
+    // Sale
+    &.sale {
+      color: $error-accent;
+      background-color: transparent;
+    }
+    // Tipp
+    &.tip {
+      color: $warning-accent;
+      background-color: transparent;
+    }
+    // New
+    &.new {
+      color: $info-accent;
+      background-color: transparent;
+    }
+  }
+}

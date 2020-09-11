@@ -1,8 +1,7 @@
 import { datetimeUnixNow } from '@hubblecommerce/hubble/core/utils/datetime';
-import Middleware from './middleware';
 import _ from 'lodash';
 
-Middleware.apiResourceMenu = function ({ isHMR, store, error }) {
+export default function ({ isHMR, store, error }) {
     // ignore if called from hot module replacement
     if (isHMR) {
         return;

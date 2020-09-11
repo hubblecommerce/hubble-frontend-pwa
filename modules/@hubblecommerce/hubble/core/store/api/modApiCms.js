@@ -1,28 +1,24 @@
-export default function (ctx) {
-    const modApiCms = {
-        namespaced: true,
-        state: () => ({
+export const state = () => ({
             dataContent: {},
-            dataCustomContent: {},
-        }),
-        mutations: {
+            dataCustomContent: {}
+})
+
+export const mutations = {
             setDataContent: (state, payload) => {
                 state.dataContent = payload.data;
             },
             setDataCustomContent: (state, payload) => {
                 state.dataCustomContent = payload;
-            },
-        },
-        getters: {
+            }
+}
+
+export const getters = {
             getDataContent: state => {
                 return state.dataContent;
             },
             getDataCustomContent: state => {
                 return state.dataCustomContent;
-            },
-        },
-        actions: {},
-    };
-
-    ctx.store.registerModule('modApiCms', modApiCms);
+            }
 }
+
+export const actions = {}

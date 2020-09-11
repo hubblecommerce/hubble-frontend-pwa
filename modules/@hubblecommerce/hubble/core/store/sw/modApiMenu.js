@@ -1,6 +1,6 @@
-import { sortMenuEntries } from '@hubblecommerce/hubble/core/utils/menuHelper';
-import { datetimeUnixNow, datetimeUnixNowAddSecs } from '@hubblecommerce/hubble/core/utils/datetime';
-import { swMapApiError } from '@hubblecommerce/hubble/core/utils/swHelper';
+import { sortMenuEntries } from '~/utils/menuHelper';
+import { datetimeUnixNow, datetimeUnixNowAddSecs } from '~/utils/datetime';
+import { swMapApiError } from '~/utils/swHelper';
 import _ from 'lodash';
 
 function mapEntriesRecursive(navigationEntries) {
@@ -43,19 +43,17 @@ function mapEntriesRecursive(navigationEntries) {
     });
 }
 
-export default function (ctx) {
-    const modApiMenu = {
-        namespaced: true,
-        state: () => ({
+export const state = () => ({
             cacheTTL: 300,
             dataMenu: {},
-            dataMenuCacheable: true,
-        }),
-        mutations: {
-            clearDataMenu: state => {
+            dataMenuCacheable: true
+})
+
+export const mutations = {
+            clearDataMenu (state)  {
                 state.dataMenu = {};
             },
-            setDataMenu: (state, payload) => {
+            setDataMenu (state, payload) {
                 // Set menu data from payload
                 state.dataMenu = payload.data;
 
@@ -117,72 +115,69 @@ export default function (ctx) {
                     state.dataMenu.created_at_unixtime = datetimeUnixNow();
                     state.dataMenu.expires_at_unixtime = datetimeUnixNowAddSecs(state.cacheTTL);
                 }
-            },
-        },
-        getters: {
-            getDataMenu: state => {
+            }
+}
+
+export const getters = {
+            getDataMenu (state) {
                 return state.dataMenu;
             },
-            getDataMenuItems: state => {
+            getDataMenuItems (state) {
                 return state.dataMenu.items ? state.dataMenu.items : null;
             },
-            getDataMenuStats: state => {
+            getDataMenuStats (state) {
                 return state.dataMenu.stats ? state.dataMenu.stats : null;
-            },
-        },
-        actions: {
-            async getMenu({ commit, dispatch }) {
-                return new Promise(function (resolve, reject) {
-                    dispatch(
-                        'apiCall',
-                        {
-                            action: 'post',
-                            tokenType: 'sw',
-                            apiType: 'data',
-                            endpoint: '/store-api/v1/pwa/navigation',
-                            data: {
-                                includes: {
-                                    category: ['id', 'parentId', 'name', 'level', 'active', '_uniqueIdentifier', 'seoUrls', 'type', 'children'],
-                                },
-                                buildTree: true,
-                                depth: 5,
-                                associations: {
-                                    seoUrls: {},
-                                },
-                            },
+            }
+}
+
+export const actions = {
+    async getMenu({commit, dispatch, rootState}) {
+        return new Promise(function (resolve, reject) {
+            dispatch('modApi/apiCall',
+                {
+                    action: 'post',
+                    tokenType: 'sw',
+                    apiType: 'data',
+                    endpoint: '/store-api/v1/pwa/navigation',
+                    data: {
+                        includes: {
+                            category: ['id', 'parentId', 'name', 'level', 'active', '_uniqueIdentifier', 'seoUrls', 'type', 'children'],
                         },
-                        { root: true }
-                    )
-                        .then(response => {
-                            dispatch('mappingMenu', response.data.children).then(res => {
-                                commit('setDataMenu', res);
-                            });
-
-                            resolve(response);
-                        })
-                        .catch(error => {
-                            console.log('getMenu failed: ', error);
-
-                            swMapApiError(error, reject);
-                        });
-                });
-            },
-            async mappingMenu({ commit }, payload) {
-                return new Promise(function (resolve, reject) {
-                    let mapped = mapEntriesRecursive(payload);
-
-                    // Build required parent child relations from flat array
-                    resolve({
-                        data: {
-                            result: {
-                                items: mapped,
-                            },
+                        buildTree: true,
+                        depth: 5,
+                        associations: {
+                            seoUrls: {},
                         },
+                    },
+                },
+                { root: true }
+            )
+                .then(response => {
+                    dispatch('mappingMenu', response.data.children).then(res => {
+                        commit('setDataMenu', res);
                     });
-                });
-            },
-        },
-    };
 
-    ctx.store.registerModule('modApiMenu', modApiMenu);
+                    resolve(response);
+                })
+                .catch(error => {
+                    console.log('getMenu failed: ', error);
+
+                    swMapApiError(error, reject);
+                });
+        });
+    },
+    async mappingMenu({commit}, payload) {
+        return new Promise(function (resolve, reject) {
+            let mapped = mapEntriesRecursive(payload);
+
+            // Build required parent child relations from flat array
+            resolve({
+                data: {
+                    result: {
+                        items: mapped,
+                    },
+                },
+            });
+        });
+    }
 }

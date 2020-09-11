@@ -1,9 +1,6 @@
 import _ from 'lodash';
 
-export default function (ctx) {
-    const modApiRequests = {
-        namespaced: true,
-        state: () => ({
+export const state = () => ({
             paginationPage: 1,
             paginationPerPage: process.env.limiter_default,
             paginationOffset: 0,
@@ -19,8 +16,9 @@ export default function (ctx) {
             requestFacets: null,
 
             queryWellKnown: ['term', 'page', 'sort', 'limit'],
-        }),
-        mutations: {
+})
+
+export const mutations = {
             setPaginationOffset: (state, value) => {
                 state.paginationOffset = value;
             },
@@ -61,9 +59,10 @@ export default function (ctx) {
             },
             setParsedQuery: (state, items) => {
                 state.parsedQuery = items;
-            },
-        },
-        getters: {
+            }
+}
+
+export const getters = {
             isNumeric: () => value => {
                 return !isNaN(parseFloat(value)) && isFinite(value);
             },
@@ -186,9 +185,10 @@ export default function (ctx) {
                 }
 
                 return null;
-            },
-        },
-        actions: {
+            }
+}
+
+export const actions = {
             parseRequest({ commit, dispatch, rootGetters }, payload) {
                 let query = payload.query;
 
@@ -339,9 +339,5 @@ export default function (ctx) {
                 dispatch('modNavigation/hideOffcanvasAction', {}, { root: true }).then(() => {
                     ctx.app.router.push(filterRoute);
                 });
-            },
-        },
-    };
-
-    ctx.store.registerModule('modApiRequests', modApiRequests);
+            }
 }

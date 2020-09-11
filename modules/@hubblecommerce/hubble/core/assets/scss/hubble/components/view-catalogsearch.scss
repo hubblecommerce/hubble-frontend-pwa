@@ -1,0 +1,19 @@
+/* Same styling as view-category.scss */
+
+.view-catalogsearch {
+    .search-content-wrp {
+        padding: $base-padding $base-padding;
+    }
+}
+
+@media(min-width: 768px) {
+    .view-catalogsearch {
+        .search-content-wrp {
+            padding: $base-padding-md $base-padding-md;
+
+            .search-products-wrp {
+                padding: 0;
+            }
+        }
+    }
+}

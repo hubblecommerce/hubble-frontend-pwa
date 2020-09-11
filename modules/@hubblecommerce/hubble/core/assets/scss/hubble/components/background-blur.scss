@@ -1,0 +1,22 @@
+.background-blur {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    background-color: #000;
+    z-index: 50;
+    opacity: 0.5;
+}
+
+.fade-background-enter-active, .fade-background-leave-active {
+    transition: all .5s ease;
+}
+
+.fade-background-enter, .fade-background-leave-to {
+    opacity: 0;
+}
+
+.fade-background-enter-to, .fade-background-leave {
+    opacity: 0.5;
+}

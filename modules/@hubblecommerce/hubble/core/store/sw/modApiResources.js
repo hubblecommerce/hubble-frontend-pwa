@@ -1,9 +1,7 @@
-import { datetimeUnixNow, datetimeUnixNowAddSecs } from '@hubblecommerce/hubble/core/utils/datetime';
+// import { datetimeUnixNow, datetimeUnixNowAddSecs } from 'modules/@hubblecommerce/hubble/core/utils/datetime';
+import { datetimeUnixNow, datetimeUnixNowAddSecs } from '~/utils/datetime';
 
-export default function (ctx) {
-    const modApiResources = {
-        namespaced: true,
-        state: () => ({
+export const state = () => ({
             cacheTTL: 300,
 
             // api
@@ -13,35 +11,40 @@ export default function (ctx) {
             pageType: null,
 
             // cmsObject
-            cmsObject: {},
-        }),
-        mutations: {
-            setCmsObject: (state, value) => {
+            cmsObject: {}
+})
+
+export const mutations = {
+            setCmsObject (state, value) {
                 state.cmsObject = value;
             },
-            setApiLocale: (state, item) => {
+            setApiLocale (state, item) {
                 state.apiLocale = item;
             },
-            setPageType: (state, item) => {
+            setPageType (state, item) {
                 state.pageType = item;
-            },
-        },
-        getters: {
-            getApiLocale: state => {
+            }
+}
+
+export const getters = {
+            getApiLocale (state)  {
                 return state.apiLocale;
             },
-            getPageType: state => {
+            getPageType (state)  {
                 return state.pageType;
             },
-            getDataProductUrls: state => {
+            getDataProductUrls (state)  {
                 return state.dataProductUrls;
-            },
-        },
-        actions: {
-            async getPage({ commit, dispatch }, payload) {
+            }
+}
+
+export const actions = {
+            async getPage({ commit, dispatch, rootState }, payload) {
+                //console.log("context in actions: ", context);
+                // console.log("inside modApiResources the payload passed as the path has val: ", payload);
                 return new Promise((resolve, reject) => {
                     dispatch(
-                        'apiCall',
+                        'modApi/apiCall',
                         {
                             action: 'post',
                             tokenType: 'sw',
@@ -74,17 +77,16 @@ export default function (ctx) {
                         { root: true }
                     )
                         .then(response => {
+                            // console.log("api call was successful - response has val: ", response);
+
                             commit('setCmsObject', response.data.cmsPage);
 
                             resolve(response);
                         })
                         .catch(error => {
+                            console.log("inside modApiResources - the apicall to get page data was not successful")
                             reject(error);
                         });
                 });
-            },
-        },
-    };
-
-    ctx.store.registerModule('modApiResources', modApiResources);
+            }
 }

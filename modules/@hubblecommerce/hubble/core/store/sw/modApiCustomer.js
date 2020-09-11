@@ -1,9 +1,6 @@
 import _ from 'lodash';
 
-export default function (ctx) {
-    const modApiCustomer = {
-        namespaced: true,
-        state: () => ({
+export const state = () => ({
             customer: {
                 customerAuth: {},
                 customerData: {},
@@ -20,22 +17,23 @@ export default function (ctx) {
             // Cookie
             cookieName: 'hubbleAuthUser',
             cookiePath: '/',
-            cookieTTL: 360, // minutes
-        }),
-        mutations: {
+            cookieTTL: 360 // minutes
+})
+
+export const mutations = {
             /*
              * Customer mutations
              * */
-            setCustomer: (state, payload) => {
+            setCustomer (state, payload) {
                 state.customer = payload;
             },
-            setCustomerAuth: (state, payload) => {
+            setCustomerAuth (state, payload) {
                 state.customer.customerAuth = payload;
             },
-            setCustomerData: (state, payload) => {
+            setCustomerData (state, payload)  {
                 state.customer.customerData = payload;
             },
-            clearCustomerData: state => {
+            clearCustomerData (state) {
                 state.customer = {
                     customerAuth: {},
                     customerData: {},
@@ -44,31 +42,33 @@ export default function (ctx) {
                     shippingAddress: {},
                 };
             },
-            setCustomerAddresses: (state, payload) => {
+            setCustomerAddresses (state, payload) {
                 state.customer.customerAddresses = payload;
             },
-            setCountries: (state, payload) => {
+            setCountries (state, payload) {
                 // Sort countries by position
                 state.countries = payload.sort((a, b) => {
                     return a.position - b.position;
                 });
             },
-            setAvailableCountries: (state, payload) => {
+            setAvailableCountries (state, payload) {
                 state.availableCountries = payload;
             },
-            setSalutations: (state, payload) => {
+            setSalutations (state, payload) {
                 state.salutations = payload;
-            },
-        },
-        getters: {
-            getCookieExpires: state => {
+            }
+}
+
+export const getters = {
+            getCookieExpires (state)  {
                 return new Date(new Date().getTime() + state.cookieTTL * 60 * 1000);
             },
-            getCustomerAuth: state => {
+            getCustomerAuth (state)  {
                 return state.customer.customerAuth;
-            },
-        },
-        actions: {
+            }
+}
+
+export const actions = {
             async register({ dispatch, commit }, payload) {
                 return new Promise((resolve, reject) => {
                     // Map customer data to fit SW6 headless API
@@ -99,7 +99,7 @@ export default function (ctx) {
                     }
 
                     dispatch(
-                        'apiCall',
+                        'modApi/apiCall',
                         {
                             action: 'post',
                             tokenType: 'sw',
@@ -136,7 +136,7 @@ export default function (ctx) {
 
                 return new Promise((resolve, reject) => {
                     dispatch(
-                        'apiCall',
+                        'modApi/apiCall',
                         {
                             action: 'post',
                             tokenType: 'sw',
@@ -217,7 +217,7 @@ export default function (ctx) {
             async logOut({ commit, state, dispatch }) {
                 return new Promise((resolve, reject) => {
                     dispatch(
-                        'apiCall',
+                        'modApi/apiCall',
                         {
                             action: 'post',
                             tokenType: 'sw',
@@ -359,7 +359,7 @@ export default function (ctx) {
             async getCustomerInfo({ commit, state, dispatch }) {
                 return new Promise((resolve, reject) => {
                     dispatch(
-                        'apiCall',
+                        'modApi/apiCall',
                         {
                             action: 'get',
                             tokenType: 'sw',
@@ -404,7 +404,7 @@ export default function (ctx) {
             async getCustomerAddresses({ commit, state, dispatch }) {
                 return new Promise((resolve, reject) => {
                     dispatch(
-                        'apiCall',
+                        'modApi/apiCall',
                         {
                             action: 'get',
                             tokenType: 'sw',
@@ -447,7 +447,7 @@ export default function (ctx) {
                     };
 
                     dispatch(
-                        'apiCall',
+                        'modApi/apiCall',
                         {
                             action: 'post',
                             tokenType: 'sw',
@@ -511,7 +511,7 @@ export default function (ctx) {
                         reject('You cant delete any default address');
                     } else {
                         dispatch(
-                            'apiCall',
+                            'modApi/apiCall',
                             {
                                 action: 'delete',
                                 tokenType: 'sw',
@@ -552,7 +552,7 @@ export default function (ctx) {
             async setDefaultBillingAddress({ dispatch, state }, payload) {
                 return new Promise((resolve, reject) => {
                     dispatch(
-                        'apiCall',
+                        'modApi/apiCall',
                         {
                             action: 'patch',
                             tokenType: 'sw',
@@ -575,7 +575,7 @@ export default function (ctx) {
             async setDefaultShippingAddress({ dispatch, state }, payload) {
                 return new Promise((resolve, reject) => {
                     dispatch(
-                        'apiCall',
+                        'modApi/apiCall',
                         {
                             action: 'patch',
                             tokenType: 'sw',
@@ -598,7 +598,7 @@ export default function (ctx) {
             async getOrders({ dispatch, state }, payload) {
                 return new Promise((resolve, reject) => {
                     dispatch(
-                        'apiCall',
+                        'modApi/apiCall',
                         {
                             action: 'get',
                             tokenType: 'sw',
@@ -626,7 +626,7 @@ export default function (ctx) {
             async passwordUpdate({ dispatch, state }, payload) {
                 return new Promise((resolve, reject) => {
                     dispatch(
-                        'apiCall',
+                        'modApi/apiCall',
                         {
                             action: 'patch',
                             tokenType: 'sw',
@@ -654,7 +654,7 @@ export default function (ctx) {
             async swGetSalutations({ dispatch }, payload) {
                 return new Promise((resolve, reject) => {
                     dispatch(
-                        'apiCall',
+                        'modApi/apiCall',
                         {
                             action: 'get',
                             tokenType: 'sw',
@@ -676,7 +676,7 @@ export default function (ctx) {
             async swGetCountries({ dispatch }, payload) {
                 return new Promise((resolve, reject) => {
                     dispatch(
-                        'apiCall',
+                        'modApi/apiCall',
                         {
                             action: 'get',
                             tokenType: 'sw',
@@ -760,7 +760,7 @@ export default function (ctx) {
                     };
 
                     dispatch(
-                        'apiCall',
+                        'modApi/apiCall',
                         {
                             action: 'patch',
                             tokenType: 'sw',
@@ -788,7 +788,7 @@ export default function (ctx) {
                     // Map email customer data to fit SW6 headless API
 
                     dispatch(
-                        'apiCall',
+                        'modApi/apiCall',
                         {
                             action: 'patch',
                             tokenType: 'sw',
@@ -820,10 +820,5 @@ export default function (ctx) {
                             reject(response);
                         });
                 });
-            },
-        },
-    };
-
-    // Register vuex store module
-    ctx.store.registerModule('modApiCustomer', modApiCustomer);
+            }
 }

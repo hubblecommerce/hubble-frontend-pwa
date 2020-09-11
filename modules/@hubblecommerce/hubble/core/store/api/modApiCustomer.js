@@ -1,10 +1,7 @@
 import base64 from 'base-64';
 import _ from 'lodash';
 
-export default function (ctx) {
-    const modApiCustomer = {
-        namespaced: true,
-        state: () => ({
+export const state = () => ({
             customer: {
                 customerAuth: {},
                 customerData: {},
@@ -17,9 +14,10 @@ export default function (ctx) {
 
             cookieName: 'hubbleAuthUser',
             cookiePath: '/',
-            cookieTTL: 360, // minutes
-        }),
-        getters: {
+            cookieTTL: 360 // minutes
+})
+
+export const getters = {
             getCustomerAuth: state => {
                 return state.customer.customerAuth;
             },
@@ -31,9 +29,10 @@ export default function (ctx) {
             },
             getJsonDecoded: () => objJsonB64 => {
                 return JSON.parse(base64.decode(objJsonB64));
-            },
-        },
-        mutations: {
+            }
+}
+
+export const mutations = {
             setCustomer: (state, payload) => {
                 state.customer = payload;
             },
@@ -71,9 +70,10 @@ export default function (ctx) {
                     billingAddress: {},
                     shippingAddress: {},
                 };
-            },
-        },
-        actions: {
+            }
+}
+
+export const actions = {
             async logIn({ commit, state, dispatch, getters }, payload) {
                 return new Promise((resolve, reject) => {
                     dispatch(
@@ -500,9 +500,5 @@ export default function (ctx) {
 
                     resolve();
                 });
-            },
-        },
-    };
-
-    ctx.store.registerModule('modApiCustomer', modApiCustomer);
+            }
 }

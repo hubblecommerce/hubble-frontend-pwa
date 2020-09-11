@@ -1,9 +1,6 @@
 import _ from 'lodash';
 
-export default function (ctx) {
-    const modSearch = {
-        namespaced: true,
-        state: () => ({
+export const state = () => ({
             maxProductItems: 5,
 
             autoCompleteResultsArray: [],
@@ -15,49 +12,52 @@ export default function (ctx) {
             showAutoCompleteResults: false,
 
             selectedItemPosition: -1,
-            selectedItemId: null,
-        }),
-        getters: {
-            getAutoCompleteResults: state => {
+            selectedItemId: null
+})
+
+export const getters = {
+            getAutoCompleteResults (state) {
                 return state.autoCompleteResults;
             },
-            getAutoCompleteResultsArray: state => {
+            getAutoCompleteResultsArray (state)  {
                 return state.autoCompleteResultsArray;
             },
-            getAutoCompleteResultsLength: state => {
+            getAutoCompleteResultsLength (state)  {
                 return state.autoCompleteResults.categoryItems.length + state.autoCompleteResults.productItems.length;
-            },
-        },
-        mutations: {
-            setAutoCompleteResults: (state, value) => {
+            }
+}
+
+export const mutations = {
+            setAutoCompleteResults (state, value) {
                 state.autoCompleteResults.categoryItems = value.categoryItems;
                 state.autoCompleteResults.productItems = value.productItems;
             },
-            setCategoryItems: (state, value) => {
+            setCategoryItems (state, value) {
                 state.autoCompleteResults.categoryItems = value;
             },
-            setProductItems: (state, value) => {
+            setProductItems (state, value) {
                 state.autoCompleteResults.productItems = value;
             },
-            setAutoCompleteResultsArray: (state, value) => {
+            setAutoCompleteResultsArray (state, value) {
                 state.autoCompleteResultsArray = value;
             },
-            setSelectedItemPosition: (state, value) => {
+            setSelectedItemPosition (state, value) {
                 state.selectedItemPosition = value;
             },
-            setSelectedItemId: (state, value) => {
+            setSelectedItemId (state, value) {
                 state.selectedItemId = value;
             },
-            setShowAutoCompleteResults: (state, value) => {
+            setShowAutoCompleteResults (state, value) {
                 state.showAutoCompleteResults = value;
-            },
-        },
-        actions: {
+            }
+}
+
+export const actions = {
             // Api call to search/autocomplete
             async getAutocompleteResults({ commit, state, dispatch }, payload) {
                 return new Promise(function (resolve, reject) {
                     dispatch(
-                        'apiCall',
+                        'modApi/apiCall',
                         {
                             action: 'post',
                             tokenType: 'sw',
@@ -170,7 +170,7 @@ export default function (ctx) {
             async apiCatalogsearch({ commit, rootState, dispatch }) {
                 return new Promise(function (resolve, reject) {
                     dispatch(
-                        'apiCall',
+                        'modApi/apiCall',
                         {
                             action: 'post',
                             tokenType: 'sw',
@@ -206,9 +206,5 @@ export default function (ctx) {
                             reject('API request failed!');
                         });
                 });
-            },
-        },
-    };
-
-    ctx.store.registerModule('modSearch', modSearch);
+            }
 }

@@ -1,12 +1,8 @@
-export default function (ctx) {
-    const modApiNewsletter = {
-        namespaced: true,
-
-        actions: {
+export const actions = {
             async signUpToNewsletter({ dispatch, rootState }, payload) {
                 return new Promise((resolve, reject) => {
                     dispatch(
-                        'apiCall',
+                        'modApi/apiCall',
                         {
                             action: 'post',
                             tokenType: 'sw',
@@ -25,10 +21,5 @@ export default function (ctx) {
                             reject(err);
                         });
                 });
-            },
-        },
-    };
-
-    // Register vuex store module
-    ctx.store.registerModule('modApiNewsletter', modApiNewsletter);
+            }
 }

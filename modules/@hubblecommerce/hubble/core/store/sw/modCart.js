@@ -1,11 +1,8 @@
 import base64 from 'base-64';
-import localStorageHelper from '@hubblecommerce/hubble/core/utils/localStorageHelper';
+import localStorageHelper from '~/utils/localStorageHelper';
 import _ from 'lodash';
 
-export default function (ctx) {
-    const modCart = {
-        namespaced: true,
-        state: () => ({
+export const state = () => ({
             layerInitiated: false,
 
             shippingCosts: 0,
@@ -33,10 +30,11 @@ export default function (ctx) {
             swtcCookieName: 'hubbleSwtc',
 
             productToUpdate: '',
-            qtyToUpdate: null,
-        }),
-        getters: {
-            getCookieExpires: state => {
+            qtyToUpdate: null
+})
+
+export const getters = {
+            getCookieExpires (state)  {
                 return new Date(new Date().getTime() + state.cookieTTL * 60 * 60 * 1000);
             },
             getCartEncoded: (state, getters) => objJsonStr => {
@@ -45,33 +43,34 @@ export default function (ctx) {
             getCartDecoded: (state, getters) => objJsonB64 => {
                 return JSON.parse(base64.decode(objJsonB64));
             },
-            getSubtotals: state => {
+            getSubtotals (state) {
                 return state.cart.subtotal;
             },
-            getShippingCosts: state => {
+            getShippingCosts (state) {
                 return state.shippingCosts;
             },
-            getTotals: state => {
+            getTotals (state) {
                 return state.cart.grand_total;
             },
-            getSwtc: state => {
+            getSwtc (state) {
                 return state.swtc;
-            },
-        },
-        mutations: {
-            setCartItemsCount: (state, qty) => {
+            }
+}
+
+export const mutations = {
+            setCartItemsCount (state, qty) {
                 state.cart.items_qty = qty;
             },
-            delCartItemObj: (state, item) => {
+            delCartItemObj (state, item) {
                 _.pull(state.cart.items, item);
             },
-            setCart: (state, item) => {
+            setCart (state, item) {
                 state.cart = item;
             },
-            setCartItemsObj: (state, items) => {
+            setCartItemsObj (state, items) {
                 state.cart.items = items;
             },
-            setCartItemsObjQty: (state, payload) => {
+            setCartItemsObjQty (state, payload) {
                 _.forEach(state.cart.items, (cartItem, key) => {
                     if (cartItem.id === payload.itemId) {
                         state.cart.items[key].qty = payload.itemQty;
@@ -83,23 +82,24 @@ export default function (ctx) {
                 state.productToUpdate = payload.itemId;
                 state.qtyToUpdate = payload.itemQty;
             },
-            setSubtotals: (state, item) => {
+            setSubtotals (state, item) {
                 state.cart.subtotal = item;
             },
-            setShippingCosts: (state, item) => {
+            setShippingCosts (state, item) {
                 state.shippingCosts = item;
             },
-            setTotals: (state, item) => {
+            setTotals (state, item) {
                 state.cart.grand_total = item;
             },
-            setSwtc: (state, item) => {
+            setSwtc (state, item) {
                 state.swtc = item;
             },
-            initiateLayer: state => {
+            initiateLayer (state) {
                 state.layerInitiated = true;
-            },
-        },
-        actions: {
+            }
+}
+
+export const actions = {
             clearAll({ commit, dispatch }) {
                 return new Promise((resolve, reject) => {
                     // Reset cart object in store
@@ -123,7 +123,7 @@ export default function (ctx) {
             swGetCart({ state, dispatch }) {
                 return new Promise((resolve, reject) => {
                     dispatch(
-                        'apiCall',
+                        'modApi/apiCall',
                         {
                             action: 'get',
                             tokenType: 'sw',
@@ -161,7 +161,7 @@ export default function (ctx) {
             initCart({ commit, state, dispatch, getters }) {
                 return new Promise((resolve, reject) => {
                     dispatch(
-                        'apiCall',
+                        'modApi/apiCall',
                         {
                             action: 'post',
                             tokenType: 'sw',
@@ -240,7 +240,7 @@ export default function (ctx) {
 
                 return new Promise((resolve, reject) => {
                     dispatch(
-                        'apiCall',
+                        'modApi/apiCall',
                         {
                             action: 'post',
                             tokenType: 'sw',
@@ -382,7 +382,7 @@ export default function (ctx) {
 
                 return new Promise((resolve, reject) => {
                     dispatch(
-                        'apiCall',
+                        'modApi/apiCall',
                         {
                             action: 'patch',
                             tokenType: 'sw',
@@ -428,7 +428,7 @@ export default function (ctx) {
 
                 return new Promise((resolve, reject) => {
                     dispatch(
-                        'apiCall',
+                        'modApi/apiCall',
                         {
                             action: 'delete',
                             tokenType: 'sw',
@@ -528,7 +528,9 @@ export default function (ctx) {
             },
             setByForage({ commit, state }) {
                 return new Promise(resolve => {
+                    // console.log("this has val: ", this);
                     this.$localForage.getItem(state.cookieName).then(response => {
+                        console.log("in then block after getting item from localForage");
                         // Remove local storage if its invalid (end of lifetime)
                         if (!localStorageHelper.lifeTimeIsValid(response, state.localStorageLifetime)) {
                             this.$localForage.removeItem(state.cookieName);
@@ -605,9 +607,4 @@ export default function (ctx) {
                     });
                 });
             },
-        },
-    };
-
-    // Register vuex store module
-    ctx.store.registerModule('modCart', modCart);
 }
