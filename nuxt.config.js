@@ -4,6 +4,8 @@ require('dotenv').config();
 export default {
     mode: 'universal',
 
+    srcDir: '.hubble/',
+
     env: {
         config: {
             APP_BASE_URL: process.env.NODE_ENV === 'production' ? process.env.APP_BASE_URL : 'http://localhost/',
@@ -78,7 +80,7 @@ export default {
         },
     },
 
-    serverMiddleware: ['~/api/hubble-logger', '~/api/server-side-api-auth-call'],
+    // serverMiddleware: ['~/api/hubble-logger', '~/api/server-side-api-auth-call'],
 
     /*
      ** Headers of the page
@@ -117,20 +119,11 @@ export default {
     },
 
     /*
-     ** Global CSS
-     */
-    css: ['~/assets/css/main.css', '~/assets/css/vue-tiny-slider.css', '~/assets/scss/' + process.env.THEME + '/all.scss'],
-
-    /*
-     ** Plugins to load before mounting the App
-     */
-    plugins: [],
-
-    /*
      ** Nuxt.js modules
      */
     modules: [
-        ['@hubblecommerce/hubble'],
+        // ['@hubblecommerce/hubble', { preserveState: false }],
+        ['@hubblecommerce/hubble', { preserveState: true }],
         ['@hubblecommerce/payone'],
         ['@hubblecommerce/amazon-pay'],
         '@nuxtjs/axios',
@@ -215,7 +208,8 @@ export default {
                     'STREETINFO_INCLUDES_HOUSENO',
                     'ALTERNATIVE_SHIPPING_ADDRESS',
                 ],
-            },
+                path: '~/..'
+            }
         ],
     ],
 
