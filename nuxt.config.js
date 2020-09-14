@@ -162,7 +162,7 @@ export default {
                         file: 'en.js',
                     },
                 ],
-                langDir: '.hubble/locales/',
+                langDir: 'locales/',
                 lazy: true,
                 seo: false,
             },
