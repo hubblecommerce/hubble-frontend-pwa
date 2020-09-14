@@ -1,5 +1,5 @@
-import { sortMenuEntries } from '~/utils/menuHelper';
-import { datetimeUnixNow, datetimeUnixNowAddSecs } from '~/utils/datetime';
+import { sortMenuEntries } from '@hubblecommerce/hubble/core/utils/menuHelper';
+import { datetimeUnixNow, datetimeUnixNowAddSecs } from '@hubblecommerce/hubble/core/utils/datetime';
 import _ from 'lodash';
 
 export const state = () => ({

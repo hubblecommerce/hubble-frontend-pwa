@@ -1,6 +1,6 @@
-import { sortMenuEntries } from '~/utils/menuHelper';
-import { datetimeUnixNow, datetimeUnixNowAddSecs } from '~/utils/datetime';
-import { swMapApiError } from '~/utils/swHelper';
+import { sortMenuEntries } from '@hubblecommerce/hubble/core/utils/menuHelper';
+import { datetimeUnixNow, datetimeUnixNowAddSecs } from '@hubblecommerce/hubble/core/utils/datetime';
+import { swMapApiError } from '@hubblecommerce/hubble/core/utils/swHelper';
 import _ from 'lodash';
 
 function mapEntriesRecursive(navigationEntries) {

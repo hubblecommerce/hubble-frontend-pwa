@@ -1,5 +1,4 @@
-// test: commenting out MONDAY 7_9 -> import { logger } from '@hubblecommerce/hubble/core/utils/logger';
-/*import { logger } from '~/utils/logger';
+import { logger } from '@hubblecommerce/hubble/core/utils/logger';
 
 const response = function (req, res) {
     console.log("running the hubble logger");
@@ -45,5 +44,5 @@ const response = function (req, res) {
 export default {
     path: '/api/hubble-logger',
     handler: response,
-}; */
+};
 console.log("inside hubble-logger.js - everything is commented out");

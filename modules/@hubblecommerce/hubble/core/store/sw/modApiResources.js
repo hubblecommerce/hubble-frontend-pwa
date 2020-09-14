@@ -1,5 +1,4 @@
-// import { datetimeUnixNow, datetimeUnixNowAddSecs } from 'modules/@hubblecommerce/hubble/core/utils/datetime';
-import { datetimeUnixNow, datetimeUnixNowAddSecs } from '~/utils/datetime';
+import { datetimeUnixNow, datetimeUnixNowAddSecs } from '@hubblecommerce/hubble/core/utils/datetime';
 
 export const state = () => ({
             cacheTTL: 300,

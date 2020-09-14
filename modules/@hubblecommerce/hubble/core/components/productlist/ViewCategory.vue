@@ -79,8 +79,8 @@ export default {
         ProductListing: () => import('./ProductListing'),
         Pagination: () => import('./toolbar/Pagination'),
         GTMDataLayer: () => import('../utils/GTMDataLayer'),
-        swSection: () => import('~/components/swComponents/section.vue'),
-        errorNoItems: () => import('~/components/error/noItems.vue'),
+        swSection: () => import('../swComponents/section.vue'),
+        errorNoItems: () => import('../error/noItems.vue'),
     },
 
     data() {

@@ -4,8 +4,6 @@ require('dotenv').config();
 export default {
     mode: 'universal',
 
-    srcDir: '.hubble/',
-
     env: {
         config: {
             APP_BASE_URL: process.env.NODE_ENV === 'production' ? process.env.APP_BASE_URL : 'http://localhost/',
@@ -119,11 +117,20 @@ export default {
     },
 
     /*
+    ** Global CSS
+    */
+    css: [
+        '~/assets/css/main.css',
+        '~/assets/css/vue-tiny-slider.css',
+        '~/assets/scss/' + process.env.THEME + '/all.scss'
+    ],
+
+    /*
      ** Nuxt.js modules
      */
     modules: [
         // ['@hubblecommerce/hubble', { preserveState: false }],
-        ['@hubblecommerce/hubble', { preserveState: true }],
+        ['@hubblecommerce/hubble'],
         ['@hubblecommerce/payone'],
         ['@hubblecommerce/amazon-pay'],
         '@nuxtjs/axios',
@@ -155,7 +162,7 @@ export default {
                         file: 'en.js',
                     },
                 ],
-                langDir: 'locales/',
+                langDir: '.hubble/locales/',
                 lazy: true,
                 seo: false,
             },
@@ -217,7 +224,7 @@ export default {
      ** hubble module configuration
      */
     hubble: {
-        apiType: process.env.API_TYPE,
+        apiType: process.env.API_TYPE, //
         deactivateStores: [],
         deactivatePlugins: [],
         deactivateMiddleware: [],

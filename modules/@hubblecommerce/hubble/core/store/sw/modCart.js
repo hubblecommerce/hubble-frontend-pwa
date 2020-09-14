@@ -1,5 +1,5 @@
 import base64 from 'base-64';
-import localStorageHelper from '~/utils/localStorageHelper';
+import localStorageHelper from '@hubblecommerce/hubble/core/utils/localStorageHelper';
 import _ from 'lodash';
 
 export const state = () => ({

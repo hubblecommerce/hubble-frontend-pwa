@@ -1,5 +1,4 @@
-// import { logger } from '@hubblecommerce/hubble/core/utils/logger';
-/*import { logger } from '~/utils/logger';
+import { logger } from '@hubblecommerce/hubble/core/utils/logger';
 import axios from 'axios';
 
 const response = function (req, res) {
@@ -49,6 +48,6 @@ const response = function (req, res) {
 export default {
     path: '/api/server-side-api-auth-call',
     handler: response,
-}; */
+};
 
 console.log("inside server side api auth call.js")
