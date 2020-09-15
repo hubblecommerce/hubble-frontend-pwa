@@ -32,15 +32,14 @@ export default async function (moduleOptions) {
 
     this.nuxt.hook('build:before', (nuxt, buildOptions) => {
         this.options.alias = {
-            '~~':  path.join(__dirname, '/../../..'),
-            '@@':  path.join(__dirname, '/../../..'),
+            '~~':  rootDir,
+            '@@':  rootDir,
 
+            '~':  targetDir,
+            '@':  targetDir,
 
-            '~':  path.join(__dirname, '/../../..', this.options.srcDir),
-            '@':  path.join(__dirname, '/../../..', this.options.srcDir),
-
-            assets:  path.join(__dirname, '/../../..', this.options.srcDir, 'assets'),
-            static:  path.join(__dirname, '/../../..', this.options.srcDir, 'static'),
+            assets:  path.join(targetDir, 'assets'),
+            static:  path.join(targetDir, 'static'),
         }
     })
 
