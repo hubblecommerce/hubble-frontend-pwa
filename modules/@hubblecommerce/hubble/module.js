@@ -32,16 +32,18 @@ export default async function (moduleOptions) {
     const targetDir = path.join(this.options.rootDir, targetDirName);
     const rootDir = path.join(this.options.rootDir);
 
-    this.options.alias = {
-        '~~':  rootDir,
-        '@@':  rootDir,
+    const baseAliases = {
+        '~~': rootDir,
+        '@@': rootDir,
 
-        '~':  targetDir,
-        '@':  targetDir,
+        '~': targetDir,
+        '@': targetDir,
 
-        assets:  path.join(targetDir, 'assets'),
-        static:  path.join(targetDir, 'static'),
+        assets: path.join(targetDir, 'assets'),
+        static: path.join(targetDir, 'static'),
     }
+
+    this.options.alias = { ...this.options.aliases, ...baseAliases };
 
     const rootDirs = await listAllDirs(rootDir);
     let newDirs = [];
