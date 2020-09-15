@@ -32,18 +32,16 @@ export default async function (moduleOptions) {
     const targetDir = path.join(this.options.rootDir, targetDirName);
     const rootDir = path.join(this.options.rootDir);
 
-    this.nuxt.hook('build:before', (nuxt, buildOptions) => {
-        this.options.alias = {
-            '~~':  rootDir,
-            '@@':  rootDir,
+    this.options.alias = {
+        '~~':  rootDir,
+        '@@':  rootDir,
 
-            '~':  targetDir,
-            '@':  targetDir,
+        '~':  targetDir,
+        '@':  targetDir,
 
-            assets:  path.join(targetDir, 'assets'),
-            static:  path.join(targetDir, 'static'),
-        }
-    })
+        assets:  path.join(targetDir, 'assets'),
+        static:  path.join(targetDir, 'static'),
+    }
 
     const rootDirs = await listAllDirs(rootDir);
     let newDirs = [];
