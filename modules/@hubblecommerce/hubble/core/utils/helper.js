@@ -10,7 +10,7 @@ const notSelectedPossibleApiTypes = possibleApiTypes.filter((possibleApiType) =>
 
 const directoriesToExclude = notSelectedPossibleApiTypes.map((__notSelectedPossibleApiType) => `!**/${__notSelectedPossibleApiType}`)
 
-const getAllPlugins = pluginDirectory => globby([`${pluginDirectory}/**/*.js`, ...directoriesToExclude]); // register only js files - non-js files should be ignored
+export const getAllPlugins = pluginDirectory => globby([`${pluginDirectory}/**/*.js`, ...directoriesToExclude]); // register only js files - non-js files should be ignored
 
 
 const copyPlugins = async (context, plugins) => {

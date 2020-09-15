@@ -1,3 +1,5 @@
+import { getAllPlugins } from "./core/utils/helper";
+
 const path = require('path')
 const chokidar = require('chokidar');
 const fse = require('fs-extra');
@@ -73,6 +75,22 @@ export default async function (moduleOptions) {
     }
 
     console.log("init hubble core");
+
+    // register plugins from module
+    const modulePlugins = await getAllPlugins(path.resolve(baseDir, 'plugins'))
+    modulePlugins.forEach((modulePlugin) => {
+            // Check if ssr
+            let serverRendering = true;
+
+            if (modulePlugin.indexOf('no_ssr') !== -1) {
+                serverRendering = false;
+            }
+
+            this.options.plugins.push({
+                src: modulePlugin,
+                ssr: serverRendering
+            })
+    })
 
     // console.log(this.nuxt);
 
