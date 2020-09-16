@@ -1,4 +1,5 @@
-import { defaultDotEnv, defaultEnv, getAllPlugins } from "./core/utils/helper";
+import { defaultDotEnv, defaultEnv, defaultModulesAndSettings, getAllPlugins } from "./core/utils/helper";
+import _ from 'lodash';
 import defu from "defu";
 const path = require('path')
 const chokidar = require('chokidar');
@@ -38,6 +39,14 @@ export default async function (moduleOptions) {
     //this.options.env = _.isEmpty(this.options.env) ? defaultEnv : this.options.env;
 
     this.requireModule(['@nuxtjs/dotenv', defu(this.options.dotenv, defaultDotEnv)])
+
+    // merge existing top-level settings from nuxt.config w/ default module settings
+    defaultModulesAndSettings.forEach((defaultModule) => {
+        const mergedModuleOptions = defu(this.options[defaultModule.topLevelModuleName ? defaultModule.topLevelModuleName : defaultModule.moduleName], defaultModule.defaultModuleOptions)
+        const moduleToAdd = _.isEmpty(mergedModuleOptions) ? defaultModule.moduleName : [defaultModule.moduleName, mergedModuleOptions];
+
+        // todo: register module
+    })
 
     /*
      * Create module inheritance logic

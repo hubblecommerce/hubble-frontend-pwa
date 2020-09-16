@@ -129,6 +129,61 @@ export const defaultDotEnv = {
     path: '~/..'
 };
 
+export const defaultModulesAndSettings = [
+    {
+        moduleName: '@hubblecommerce/payone'
+    },
+    {
+        moduleName: '@hubblecommerce/amazon-pay'
+    },
+    {
+        moduleName: '@nuxtjs/axios'
+    },
+    {
+        moduleName: 'nuxt-mq',
+        defaultModuleOptions: {
+            breakpoints: {
+                sm: 768,
+                md: 1024,
+                lg: Infinity,
+            },
+            defaultBreakpoint: 'md', // Default breakpoint for SSR
+        }
+    },
+    {
+        moduleName: '@nuxtjs/recaptcha',
+        topLevelModuleName: 'recaptcha',
+        defaultModuleOptions: {
+            version: 3,
+            siteKey: process.env.GOOGLE_RECAPTCHA_SITEKEY,
+            language: 'de',
+            hideBadge: true,
+        }
+    },
+    {
+        moduleName: 'nuxt-i18n',
+        defaultModuleOptions: {
+            defaultLocale: 'en',
+            detectBrowserLanguage: false,
+            locales: [
+                {
+                    code: 'de',
+                    iso: 'de-DE',
+                    file: 'de.js',
+                },
+                {
+                    code: 'en',
+                    iso: 'en-US',
+                    file: 'en.js',
+                },
+            ],
+            langDir: `locales/`,
+            lazy: true,
+            seo: false
+        }
+    }
+]
+
 const copyPlugins = async (context, plugins) => {
     await Promise.all(plugins.map(async (__plugin) =>  fs.copySync(__plugin, `${context.options.srcDir}/${baseDirectoryInRoot}/${__fileInBaseDirectory}`)))
 }
