@@ -1,5 +1,5 @@
-import { getAllPlugins } from "./core/utils/helper";
-
+import { defaultDotEnv, defaultEnv, getAllPlugins } from "./core/utils/helper";
+import defu from "defu";
 const path = require('path')
 const chokidar = require('chokidar');
 const fse = require('fs-extra');
@@ -25,6 +25,19 @@ const targetDirName = '.hubble/';
 export default async function (moduleOptions) {
     // Set toplevel options of module
     const options = Object.assign({}, this.options.hubble, moduleOptions);
+
+    // merge existing settings from nuxt.config w/ default settings
+    // - option 1: merge
+    // -- merge w/ defu
+    this.options.env = defu(this.options.env, defaultEnv)
+
+    // -- merge without defu
+    // this.options.env = { ...defaultEnv, ...this.options.env }
+
+    // - option 2: override via nuxt.config
+    //this.options.env = _.isEmpty(this.options.env) ? defaultEnv : this.options.env;
+
+    this.requireModule(['@nuxtjs/dotenv', defu(this.options.dotenv, defaultDotEnv)])
 
     /*
      * Create module inheritance logic
