@@ -23,15 +23,40 @@ const apiTypeDirs = ['anonymous-middleware', 'middleware', 'plugins', 'store'];
 const targetDirName = '.hubble/';
 
 export default async function (moduleOptions) {
-    this.options.srcDir = targetDirName;
+    // Set toplevel options of module
     const options = Object.assign({}, this.options.hubble, moduleOptions);
 
-    // 1. Copy dirs from core module (base) to nuxt source dir
-    // 2. Copy dirs from nuxt except of blacklisted dirs to nuxt source dir
+    /*
+     * Create module inheritance logic
+     */
+    this.options.srcDir = targetDirName;
+
     const baseDir = path.join(this.options.rootDir, '/node_modules/@hubblecommerce/hubble/core');
     const targetDir = path.join(this.options.rootDir, targetDirName);
     const rootDir = path.join(this.options.rootDir);
 
+    // Get filtered list of root dirs
+    const rootDirs = await listAllDirs(rootDir);
+    let newDirs = [];
+    rootDirs.forEach(dir => {
+        if(!dirBlacklist.includes(getLastSectionOfPath(dir))) {
+            newDirs.push(dir);
+        }
+    });
+
+    // 1. Clear target dir
+    await fse.emptyDir(targetDir);
+
+    // 2. Copy dirs from core module (base) to nuxt source dir
+    await fse.copy(baseDir, targetDir);
+
+    // 3. Copy dirs from nuxt except of blacklisted dirs to nuxt source dir
+    await asyncCopyNewDirs(newDirs, targetDir);
+
+    // Resolve api type specific dirs inside nuxt source dir
+    await asyncCopyApiTypeDirs(apiTypeDirs, targetDir, options.apiType);
+
+    // Set aliases, to make them work in target dir
     const baseAliases = {
         '~~': rootDir,
         '@@': rootDir,
@@ -42,26 +67,11 @@ export default async function (moduleOptions) {
         assets: path.join(targetDir, 'assets'),
         static: path.join(targetDir, 'static'),
     }
-
     this.options.alias = { ...this.options.aliases, ...baseAliases };
 
-    const rootDirs = await listAllDirs(rootDir);
-    let newDirs = [];
-
-    rootDirs.forEach(dir => {
-        if(!dirBlacklist.includes(getLastSectionOfPath(dir))) {
-            newDirs.push(dir);
-        }
-    });
-
-    await fse.emptyDir(targetDir);
-    await fse.copy(baseDir, targetDir);
-    await asyncCopyNewDirs(newDirs, targetDir);
-
-    // Resolve api type specific dirs inside nuxt source dir
-    await asyncCopyApiTypeDirs(apiTypeDirs, targetDir, options.apiType);
-
-    // Register nuxt.js modules
+    /*
+     * Register nuxt.js modules
+     */
     this.addModule('localforage-nuxt');
     this.addModule('cookie-universal-nuxt', true);
 
@@ -74,25 +84,23 @@ export default async function (moduleOptions) {
         }]);
     }
 
-    console.log("init hubble core");
-
-    // register plugins from module
+    /*
+     * Register plugins from module
+     */
     const modulePlugins = await getAllPlugins(path.resolve(baseDir, 'plugins'))
     modulePlugins.forEach((modulePlugin) => {
-            // Check if ssr
-            let serverRendering = true;
+        // Check if ssr
+        let serverRendering = true;
 
-            if (modulePlugin.indexOf('no_ssr') !== -1) {
-                serverRendering = false;
-            }
+        if (modulePlugin.indexOf('no_ssr') !== -1) {
+            serverRendering = false;
+        }
 
-            this.options.plugins.push({
-                src: modulePlugin,
-                ssr: serverRendering
-            })
+        this.options.plugins.push({
+            src: modulePlugin,
+            ssr: serverRendering
+        })
     })
-
-    // console.log(this.nuxt);
 
     //const toTargetPath = (oldPath) => {
     //    let newPath = oldPath
