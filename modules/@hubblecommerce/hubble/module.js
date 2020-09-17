@@ -157,6 +157,37 @@ export default async function (moduleOptions) {
     //        fse.remove(toTargetPath(filePath))
     //    }
     //})
+
+    const toTargetPath = (oldPath) => {
+        let newPath = oldPath.replace(rootDir, targetDir)
+        return path.join(newPath) // todo
+    }
+
+    // todo: add apiTypeDirs
+    chokidar.watch(newDirs, { ignoreInitial: true })
+        .on('all', async (event, filePath) => {
+            const newDestination = toTargetPath(filePath)
+
+            if (event === 'add' || event === 'change') {
+                await fse.copy(filePath, newDestination)
+            }
+
+            if (event === 'unlink') {
+                const modulePath = filePath.replace(rootDir, baseDir);
+
+                fse.pathExists(modulePath, async (err, exists) => {
+                    if (exists) {
+                        // copy from module
+                        await fse.copy(modulePath, newDestination)
+                    } else if (!exists) {
+                        // path does not exist in module just remove from srcDir
+                        await fse.remove(newDestination)
+                    } else if (err) {
+                        console.log("err occurred: ", err)
+                    }
+                })
+            }
+        })
 }
 
 // avoid registering the same module twice
