@@ -1,6 +1,4 @@
 export default {
-    // serverMiddleware: ['~/api/hubble-logger', '~/api/server-side-api-auth-call'],
-
     /*
      ** Headers of the page
      */

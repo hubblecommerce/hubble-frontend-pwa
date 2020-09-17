@@ -1,3 +1,5 @@
+const path = require('path');
+
 export const defaultEnv = {
     config: {
         APP_BASE_URL: process.env.NODE_ENV === 'production' ? process.env.APP_BASE_URL : 'http://localhost/',
@@ -113,6 +115,21 @@ export const defaultDotEnv = {
         'ALTERNATIVE_SHIPPING_ADDRESS',
     ],
     path: '~/..'
+};
+
+export const defaultServerMiddleware = function (srcDir) {
+    const middlewares = [
+        'api/hubble-logger',
+        'api/server-side-api-auth-call'
+    ];
+
+    let result = [];
+
+    middlewares.forEach(middleware => {
+        result.push(path.join(srcDir, middleware),)
+    });
+
+    return result;
 };
 
 export const defaultModules = [

@@ -1,7 +1,6 @@
-import { defaultDotEnv, defaultEnv, defaultModules } from "./core/utils/helper";
-import _ from 'lodash';
+import { defaultDotEnv, defaultEnv, defaultModules, defaultServerMiddleware } from "./core/utils/config";
 import defu from "defu";
-const path = require('path')
+const path = require('path');
 const chokidar = require('chokidar');
 const fse = require('fs-extra');
 const globby = require('globby');
@@ -76,6 +75,7 @@ export default async function (moduleOptions) {
     * Override default if isset in nuxt.config.js
     */
     this.options.env = defu(this.options.env, defaultEnv);
+    this.options.serverMiddleware = this.options.serverMiddleware.concat(defaultServerMiddleware(targetDir));
 
     /*
      * Register nuxt.js modules
