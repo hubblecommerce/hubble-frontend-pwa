@@ -7,7 +7,7 @@
                 <material-ripple />
             </button>
 
-            <div class="overlay-headline">Dein Benutzerkonto</div>
+            <div class="overlay-headline" v-text="$t('Customer Account')" />
         </div>
 
         <div class="row content-wrp">
