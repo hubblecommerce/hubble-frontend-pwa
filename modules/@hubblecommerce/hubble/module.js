@@ -19,7 +19,7 @@ const asyncCopyApiTypeDirs = async (sourceDirs, targetDir, apiType) => {
 }
 const getPlugins = dir => globby([`${dir}/*.js`]);
 
-const dirBlacklist = ['cypress', 'modules', 'node_modules'];
+const dirBlacklist = ['cypress', 'modules', 'node_modules', 'logs'];
 const apiTypeDirs = ['anonymous-middleware', 'middleware', 'plugins', 'store'];
 const targetDirName = '.hubble/';
 
@@ -164,29 +164,31 @@ export default async function (moduleOptions) {
     }
 
     // todo: add apiTypeDirs
+    // todo: add ignored field
     chokidar.watch(newDirs, { ignoreInitial: true })
         .on('all', async (event, filePath) => {
-            const newDestination = toTargetPath(filePath)
+                const newDestination = filePath.includes(`/${process.env.API_TYPE}/`) ? toTargetPath(filePath.replace(`/${process.env.API_TYPE}/`, '/')) : toTargetPath(filePath);
 
-            if (event === 'add' || event === 'change') {
-                await fse.copy(filePath, newDestination)
-            }
+                if (event === 'add' || event === 'change') {
+                    await fse.copy(filePath, newDestination)
+                }
 
-            if (event === 'unlink') {
-                const modulePath = filePath.replace(rootDir, baseDir);
+                if (event === 'unlink') {
+                    const modulePath = filePath.replace(rootDir, baseDir);
 
-                fse.pathExists(modulePath, async (err, exists) => {
-                    if (exists) {
-                        // copy from module
-                        await fse.copy(modulePath, newDestination)
-                    } else if (!exists) {
-                        // path does not exist in module just remove from srcDir
-                        await fse.remove(newDestination)
-                    } else if (err) {
-                        console.log("err occurred: ", err)
-                    }
-                })
-            }
+                    fse.pathExists(modulePath, async (err, exists) => {
+                        if (exists) {
+                            // copy from module
+                            // todo
+                            await fse.copy(modulePath, newDestination)
+                        } else if (!exists) {
+                            // path does not exist in module just remove from srcDir
+                            await fse.remove(newDestination)
+                        } else if (err) {
+                            console.log("err occurred: ", err)
+                        }
+                    })
+                }
         })
 }
 
