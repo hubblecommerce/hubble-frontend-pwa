@@ -7,7 +7,7 @@
                 <material-ripple />
             </button>
 
-            <div class="overlay-headline">Dein Benutzerkontoooooo Version 2 </div>
+            <div class="overlay-headline">Dein Benutzerkonto</div>
         </div>
 
         <div class="row content-wrp">
