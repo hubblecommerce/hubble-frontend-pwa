@@ -1,5 +1,13 @@
-import { defaultDotEnv, defaultEnv, defaultModules, defaultServerMiddleware } from "./core/utils/config";
-import defu from "defu";
+import {
+    defaultDotEnv,
+    defaultEnv,
+    defaultModules,
+    defaultServerMiddleware,
+    defaultCss,
+    defaultBuildBabelConfig,
+    defaultBuildExtractCSSConfig,
+    defaultRouterPrefetchLinksConfig } from './core/utils/config';
+import defu from 'defu';
 const path = require('path');
 const chokidar = require('chokidar');
 const fse = require('fs-extra');
@@ -73,9 +81,36 @@ export default async function (moduleOptions) {
     /*
     * Set default configs for nuxt from module
     * Override default if isset in nuxt.config.js
+    * Override > Merging to let the user REMOVE things if necessary
     */
+    // Merge objects
+    // TODO: Add to configuration documentation
     this.options.env = defu(this.options.env, defaultEnv);
-    this.options.serverMiddleware = this.options.serverMiddleware.concat(defaultServerMiddleware(targetDir));
+
+    // Use default serverMiddleware if nuxt.config.js serverMiddleware node is empty
+    // TODO: Add to configuration documentation
+    this.options.serverMiddleware = this.options.serverMiddleware.length > 0 ? this.options.serverMiddleware : defaultServerMiddleware(targetDir);
+
+    // Use default css paths if nuxt.config.js css node is empty
+    // TODO: Add to configuration/theming documentation
+    this.options.css = this.options.css.length > 0 ? this.options.css : defaultCss;
+
+    // TODO: Add to configuration documentation
+    this.options.router.prefetchLinks = defaultRouterPrefetchLinksConfig;
+
+    // TODO: Add to configuration documentation
+    this.options.build.babel.plugins = this.options.build.babel.hasOwnProperty('plugins') ? this.options.build.babel.plugins : defaultBuildBabelConfig.plugins;
+    this.options.build.babel.presets = this.options.build.babel.hasOwnProperty('presets') ? this.options.build.babel.presets : defaultBuildBabelConfig.presets;
+    this.options.build.extractCSS = defaultBuildExtractCSSConfig;
+    this.options.build.transpile = this.options.build.transpile.length > 0 ? this.options.build.transpile : ['@hubblecommerce/hubble', 'vee-validate/dist/rules'];
+
+    // Remove preload links to reduce time to first meaningful paint
+    // https://cmty.app/nuxt/nuxt.js/issues/c6837
+    this.nuxt.hook("render:before", (ctx, options) => {
+        ctx.nuxt.options.render.bundleRenderer.shouldPreload = () => {
+            return false;
+        }
+    });
 
     /*
      * Register nuxt.js modules

@@ -72,7 +72,13 @@ export const defaultEnv = {
             metaDescription: 'Official hubble demo page.',
         },
     },
-}
+};
+
+export const defaultCss = [
+    '~/assets/css/main.css',
+    '~/assets/css/vue-tiny-slider.css',
+    '~/assets/scss/' + process.env.THEME + '/all.scss'
+];
 
 export const defaultDotEnv = {
     only: [
@@ -116,6 +122,15 @@ export const defaultDotEnv = {
     ],
     path: '~/..'
 };
+
+export const defaultBuildBabelConfig = {
+    plugins: ['lodash'],
+    presets: [['@babel/env', { targets: { node: 6 } }]],
+};
+
+export const defaultBuildExtractCSSConfig = true;
+
+export const defaultRouterPrefetchLinksConfig = false;
 
 export const defaultServerMiddleware = function (srcDir) {
     const middlewares = [
@@ -210,4 +225,4 @@ export const defaultModules = [
     {
         name: 'cookie-universal-nuxt'
     }
-]
+];

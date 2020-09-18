@@ -23,31 +23,16 @@ export default {
     loading: { color: '#fff' },
 
     /*
-     **
-     * Remove preload links to reduce time to first meaningful paint
-     * https://cmty.app/nuxt/nuxt.js/issues/c6837
-     */
-    render: {
-        bundleRenderer: {
-            shouldPreload: () => {
-                return false;
-            },
-        },
-    },
-
-    /*
     ** Global CSS
     */
-    css: [
-        '~/assets/css/main.css',
-        '~/assets/css/vue-tiny-slider.css',
-        '~/assets/scss/' + process.env.THEME + '/all.scss'
-    ],
+    css: [],
 
     /*
      ** Nuxt.js modules
      */
-    modules: [
+    modules: [],
+
+    buildModules: [
         ['@hubblecommerce/hubble']
     ],
 
@@ -55,11 +40,7 @@ export default {
      ** hubble module configuration
      */
     hubble: {
-        apiType: process.env.API_TYPE, //
-        deactivateStores: [],
-        deactivatePlugins: [],
-        deactivateMiddleware: [],
-        useTheme: false,
+        apiType: process.env.API_TYPE,
         gtmId: process.env.GOOGLE_TAG_MANAGER_ID,
         payone: {},
         amazonPay: {
@@ -67,25 +48,8 @@ export default {
         },
     },
 
-    router: {
-        prefetchLinks: false,
-        middleware: [],
-    },
-
     /*
      ** Build configuration
      */
-    build: {
-        babel: {
-            plugins: ['lodash'],
-            presets: [['@babel/env', { targets: { node: 6 } }]],
-        },
-        transpile: ['@hubblecommerce/hubble', 'vee-validate/dist/rules'],
-        extractCSS: true,
-    },
-
-    layoutTransition: {
-        name: 'layout',
-        mode: 'out-in',
-    }
+    build: {}
 };
