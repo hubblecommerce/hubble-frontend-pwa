@@ -193,10 +193,7 @@ export default async function (moduleOptions) {
     //    }
     //})
 
-    const toTargetPath = (oldPath) => {
-        let newPath = oldPath.replace(rootDir, targetDir)
-        return path.join(newPath) // todo
-    }
+    const toTargetPath = (oldPath) => path.resolve(oldPath.replace(rootDir, targetDir))
 
     const possibleApiTypes = ['sw', 'api'];
 
@@ -204,10 +201,13 @@ export default async function (moduleOptions) {
 
     const directoriesToExclude = notSelectedPossibleApiTypes.map((__notSelectedPossibleApiType) => `**/${__notSelectedPossibleApiType}/**`)
 
-    // todo
     const directoriesToWatch = [...newDirs, ...apiTypeDirs.map((apiTypeDir) => `${rootDir}/${apiTypeDir}`)]
 
-    chokidar.watch(directoriesToWatch, { ignoreInitial: true, ignored: directoriesToExclude })
+    const dirsToExclude = [...dirBlacklist, '.hubble', '.nuxt', '.hubble', '.idea']
+
+    const excludedDirectories = [...dirsToExclude.map((__blacklistedDir) => `${rootDir}/${__blacklistedDir}/**`)]
+
+    chokidar.watch(`${rootDir}`, { ignoreInitial: true, ignored: excludedDirectories })
         .on('all', async (event, filePath) => {
                 const newDestination = filePath.includes(`/${process.env.API_TYPE}/`) ? toTargetPath(filePath.replace(`/${process.env.API_TYPE}/`, '/')) : toTargetPath(filePath);
 
