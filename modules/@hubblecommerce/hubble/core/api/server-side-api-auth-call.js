@@ -49,5 +49,3 @@ export default {
     path: '/api/server-side-api-auth-call',
     handler: response,
 };
-
-console.log("inside server side api auth call.js")

@@ -204,8 +204,10 @@ export default async function (moduleOptions) {
 
     const directoriesToExclude = notSelectedPossibleApiTypes.map((__notSelectedPossibleApiType) => `**/${__notSelectedPossibleApiType}/**`)
 
-    // todo: add apiTypeDirs
-    chokidar.watch(newDirs, { ignoreInitial: true, ignored: directoriesToExclude })
+    // todo
+    const directoriesToWatch = [...newDirs, ...apiTypeDirs.map((apiTypeDir) => `${rootDir}/${apiTypeDir}`)]
+
+    chokidar.watch(directoriesToWatch, { ignoreInitial: true, ignored: directoriesToExclude })
         .on('all', async (event, filePath) => {
                 const newDestination = filePath.includes(`/${process.env.API_TYPE}/`) ? toTargetPath(filePath.replace(`/${process.env.API_TYPE}/`, '/')) : toTargetPath(filePath);
 

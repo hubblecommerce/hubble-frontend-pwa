@@ -1,7 +1,6 @@
 import { logger } from '@hubblecommerce/hubble/core/utils/logger';
 
 const response = function (req, res) {
-    console.log("running the hubble logger");
     if (req.method === 'POST') {
         let body = '';
 
@@ -45,4 +44,3 @@ export default {
     path: '/api/hubble-logger',
     handler: response,
 };
-console.log("inside hubble-logger.js - everything is commented out");
