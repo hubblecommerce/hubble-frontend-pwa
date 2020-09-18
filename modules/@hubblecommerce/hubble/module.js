@@ -163,9 +163,14 @@ export default async function (moduleOptions) {
         return path.join(newPath) // todo
     }
 
+    const possibleApiTypes = ['sw', 'api'];
+
+    const notSelectedPossibleApiTypes = possibleApiTypes.filter((possibleApiType) => possibleApiType !== process.env.API_TYPE);
+
+    const directoriesToExclude = notSelectedPossibleApiTypes.map((__notSelectedPossibleApiType) => `**/${__notSelectedPossibleApiType}/**`)
+
     // todo: add apiTypeDirs
-    // todo: add ignored field
-    chokidar.watch(newDirs, { ignoreInitial: true })
+    chokidar.watch(newDirs, { ignoreInitial: true, ignored: directoriesToExclude })
         .on('all', async (event, filePath) => {
                 const newDestination = filePath.includes(`/${process.env.API_TYPE}/`) ? toTargetPath(filePath.replace(`/${process.env.API_TYPE}/`, '/')) : toTargetPath(filePath);
 
@@ -179,7 +184,6 @@ export default async function (moduleOptions) {
                     fse.pathExists(modulePath, async (err, exists) => {
                         if (exists) {
                             // copy from module
-                            // todo
                             await fse.copy(modulePath, newDestination)
                         } else if (!exists) {
                             // path does not exist in module just remove from srcDir
