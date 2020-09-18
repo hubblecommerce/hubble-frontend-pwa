@@ -39,8 +39,6 @@ export const getters = {
 
 export const actions = {
             async getPage({ commit, dispatch, rootState }, payload) {
-                //console.log("context in actions: ", context);
-                // console.log("inside modApiResources the payload passed as the path has val: ", payload);
                 return new Promise((resolve, reject) => {
                     dispatch(
                         'modApi/apiCall',
@@ -76,14 +74,12 @@ export const actions = {
                         { root: true }
                     )
                         .then(response => {
-                            // console.log("api call was successful - response has val: ", response);
-
                             commit('setCmsObject', response.data.cmsPage);
 
                             resolve(response);
                         })
                         .catch(error => {
-                            console.log("inside modApiResources - the apicall to get page data was not successful")
+                            console.log("err occurred: ", error)
                             reject(error);
                         });
                 });

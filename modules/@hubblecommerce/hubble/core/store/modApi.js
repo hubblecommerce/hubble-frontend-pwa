@@ -193,14 +193,12 @@ export const actions = {
         let baseUrl;
         if (payload.apiType === 'data') {
             baseUrl = process.env.API_BASE_URL;
-            // console.log("the baseUrl for data inside apiCall - based on process.env.API_BASE_URL: ", baseUrl);
         }
         if (payload.apiType === 'payment') {
             baseUrl = process.env.API_PAYMENT_BASE_URL;
         }
 
         return new Promise(function (resolve, reject) {
-            console.log("inside promise about to send axios api req");
             axios({
                 method: payload.action,
                 url: baseUrl + payload.endpoint,
@@ -220,7 +218,6 @@ export const actions = {
                     resolve(response);
                 })
                 .catch(error => {
-                    // console.log("inside apiCall Promise catch block");
                     let rejection = error;
 
                     if (error.response) {

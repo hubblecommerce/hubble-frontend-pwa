@@ -167,7 +167,6 @@ export const getters = {
 
 export const actions = {
             async swGetCategory({ commit, dispatch }, payload) {
-                // console.log("payload in swGetCategory: ", payload);
                 return new Promise(function (resolve, reject) {
                     let _endpoint = '/sales-channel-api/v1/category/' + payload + '?associations[media][]';
 
