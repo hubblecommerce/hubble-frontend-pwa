@@ -209,7 +209,13 @@ export default async function (moduleOptions) {
 
     chokidar.watch(`${rootDir}`, { ignoreInitial: true, ignored: excludedDirectories })
         .on('all', async (event, filePath) => {
-                const newDestination = filePath.includes(`/${process.env.API_TYPE}/`) ? toTargetPath(filePath.replace(`/${process.env.API_TYPE}/`, '/')) : toTargetPath(filePath);
+                let newDestination = toTargetPath(filePath);
+
+                const hasApiSpecificSubfolders = apiTypeDirs.filter((__apiTypeDir) => filePath.includes(__apiTypeDir))
+                if (hasApiSpecificSubfolders.length !== 0) {
+                    if (filePath.includes(`/${process.env.API_TYPE}/`)) newDestination = toTargetPath(filePath.replace(`/${process.env.API_TYPE}/`, '/'));
+                    else return;
+                }
 
                 if (event === 'add' || event === 'change') {
                     await fse.copy(filePath, newDestination)
