@@ -30,7 +30,7 @@ const asyncCopyApiTypeDirs = async (sourceDirs, targetDir, apiType) => {
 }
 const getPlugins = dir => globby([`${dir}/*.js`]);
 
-const dirBlacklist = ['cypress', 'modules', 'node_modules', 'logs'];
+const dirBlacklist = ['cypress', 'modules', 'node_modules', 'logs', '.hubble', '.nuxt', '.idea'];
 const apiTypeDirs = ['anonymous-middleware', 'middleware', 'plugins', 'store'];
 const targetDirName = '.hubble/';
 
@@ -181,9 +181,7 @@ export default async function (moduleOptions) {
 
     const toTargetPath = (oldPath) => path.resolve(oldPath.replace(rootDir, targetDir))
 
-    const dirsToExclude = [...dirBlacklist, '.hubble', '.nuxt', '.idea']
-
-    const excludedDirectories = [...dirsToExclude.map((__blacklistedDir) => `${rootDir}/${__blacklistedDir}/**`)]
+    const excludedDirectories = [...dirBlacklist.map((__blacklistedDir) => `${rootDir}/${__blacklistedDir}/**`)]
 
     chokidar.watch(`${rootDir}`, { ignoreInitial: true, ignored: excludedDirectories })
         .on('all', async (event, filePath) => {
