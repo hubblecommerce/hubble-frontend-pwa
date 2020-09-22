@@ -19,15 +19,15 @@ const asyncCopyNewDirs = async (sourceDirs, targetDir) => {
     await Promise.all(sourceDirs.map(async sourceDir => {
         await fse.copy(sourceDir, path.join(targetDir, path.basename(sourceDir)));
     }));
-}
+};
 const asyncCopyApiTypeDirs = async (sourceDirs, targetDir, apiType) => {
     await Promise.all(sourceDirs.map(async sourceDir => {
         await fse.copy(path.join(targetDir, sourceDir, apiType), path.join(targetDir, sourceDir));
 
         const apiSpecificSubfolders = await listAllDirs(path.join(targetDir, sourceDir));
-        await Promise.all(apiSpecificSubfolders.map(async (__apiSpecificSubfolder) => await fse.remove(__apiSpecificSubfolder)))
+        await Promise.all(apiSpecificSubfolders.map(async (__apiSpecificSubfolder) => await fse.remove(__apiSpecificSubfolder)));
     }));
-}
+};
 const getPlugins = dir => globby([`${dir}/*.js`]);
 
 const dirBlacklist = ['cypress', 'modules', 'node_modules', 'logs', '.hubble', '.nuxt', '.idea'];
@@ -179,15 +179,15 @@ export default async function (moduleOptions) {
         });
     })
 
-    const toTargetPath = (oldPath) => path.resolve(oldPath.replace(rootDir, targetDir))
+    const toTargetPath = (oldPath) => path.resolve(oldPath.replace(rootDir, targetDir));
 
-    const excludedDirectories = [...dirBlacklist.map((__blacklistedDir) => `${rootDir}/${__blacklistedDir}/**`)]
+    const excludedDirectories = [...dirBlacklist.map((__blacklistedDir) => `${rootDir}/${__blacklistedDir}/**`)];
 
     chokidar.watch(`${rootDir}`, { ignoreInitial: true, ignored: excludedDirectories })
         .on('all', async (event, filePath) => {
                 let newDestination = toTargetPath(filePath);
 
-                const hasApiSpecificSubfolders = apiTypeDirs.filter((__apiTypeDir) => filePath.includes(__apiTypeDir))
+                const hasApiSpecificSubfolders = apiTypeDirs.filter((__apiTypeDir) => filePath.includes(__apiTypeDir));
                 if (hasApiSpecificSubfolders.length !== 0) {
                     if (filePath.includes(`/${process.env.API_TYPE}/`)) newDestination = toTargetPath(filePath.replace(`/${process.env.API_TYPE}/`, '/'));
                     else return;

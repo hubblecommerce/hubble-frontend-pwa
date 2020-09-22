@@ -301,12 +301,12 @@ export const actions = {
                 });
 
                 let filterRoute = {
-                    path: ctx.app.router.currentRoute.path,
+                    path: this.$router.currentRoute.path,
                     query: _.fromPairs(selected),
                 };
 
                 dispatch('modNavigation/hideOffcanvasAction', {}, { root: true }).then(() => {
-                    ctx.app.router.push(filterRoute);
+                    this.$router.push(filterRoute);
                 });
             }
 }
