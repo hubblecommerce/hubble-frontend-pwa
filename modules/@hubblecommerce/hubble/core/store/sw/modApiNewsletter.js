@@ -2,7 +2,7 @@ export const actions = {
             async signUpToNewsletter({ dispatch, rootState }, payload) {
                 return new Promise((resolve, reject) => {
                     dispatch(
-                        'modApi/apiCall',
+                        'apiCall',
                         {
                             action: 'post',
                             tokenType: 'sw',

@@ -123,7 +123,7 @@ export const actions = {
             swGetCart({ state, dispatch }) {
                 return new Promise((resolve, reject) => {
                     dispatch(
-                        'modApi/apiCall',
+                        'apiCall',
                         {
                             action: 'get',
                             tokenType: 'sw',
@@ -161,7 +161,7 @@ export const actions = {
             initCart({ commit, state, dispatch, getters }) {
                 return new Promise((resolve, reject) => {
                     dispatch(
-                        'modApi/apiCall',
+                        'apiCall',
                         {
                             action: 'post',
                             tokenType: 'sw',
@@ -240,7 +240,7 @@ export const actions = {
 
                 return new Promise((resolve, reject) => {
                     dispatch(
-                        'modApi/apiCall',
+                        'apiCall',
                         {
                             action: 'post',
                             tokenType: 'sw',
@@ -382,7 +382,7 @@ export const actions = {
 
                 return new Promise((resolve, reject) => {
                     dispatch(
-                        'modApi/apiCall',
+                        'apiCall',
                         {
                             action: 'patch',
                             tokenType: 'sw',
@@ -428,7 +428,7 @@ export const actions = {
 
                 return new Promise((resolve, reject) => {
                     dispatch(
-                        'modApi/apiCall',
+                        'apiCall',
                         {
                             action: 'delete',
                             tokenType: 'sw',
@@ -530,7 +530,6 @@ export const actions = {
                 return new Promise(resolve => {
                     // console.log("this has val: ", this);
                     this.$localForage.getItem(state.cookieName).then(response => {
-                        console.log("in then block after getting item from localForage");
                         // Remove local storage if its invalid (end of lifetime)
                         if (!localStorageHelper.lifeTimeIsValid(response, state.localStorageLifetime)) {
                             this.$localForage.removeItem(state.cookieName);

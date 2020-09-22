@@ -41,7 +41,7 @@ export const actions = {
             async getPage({ commit, dispatch, rootState }, payload) {
                 return new Promise((resolve, reject) => {
                     dispatch(
-                        'modApi/apiCall',
+                        'apiCall',
                         {
                             action: 'post',
                             tokenType: 'sw',

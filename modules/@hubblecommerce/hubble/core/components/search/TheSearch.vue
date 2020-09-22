@@ -272,7 +272,7 @@ export default {
             //Insert axios get call here
             this.$store
                 .dispatch(
-                    'modApi/apiCall',
+                    'apiCall',
                     {
                         action: 'get',
                         tokenType: 'api',

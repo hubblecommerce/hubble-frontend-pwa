@@ -102,7 +102,7 @@ export const actions = {
                     );
 
                     dispatch(
-                        'modApi/apiCall',
+                        'apiCall',
                         {
                             action: 'get',
                             tokenType: 'sw',

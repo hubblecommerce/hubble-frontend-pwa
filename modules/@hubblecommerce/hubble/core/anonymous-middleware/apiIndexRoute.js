@@ -5,7 +5,7 @@ export default async function ({ store, route, error }) {
 
     try {
         let pageResponse = await store.dispatch(
-            'modApi/apiCall',
+            'apiCall',
             {
                 action: 'post',
                 tokenType: 'sw',

@@ -99,7 +99,7 @@ export const actions = {
                     }
 
                     dispatch(
-                        'modApi/apiCall',
+                        'apiCall',
                         {
                             action: 'post',
                             tokenType: 'sw',
@@ -136,7 +136,7 @@ export const actions = {
 
                 return new Promise((resolve, reject) => {
                     dispatch(
-                        'modApi/apiCall',
+                        'apiCall',
                         {
                             action: 'post',
                             tokenType: 'sw',
@@ -217,7 +217,7 @@ export const actions = {
             async logOut({ commit, state, dispatch }) {
                 return new Promise((resolve, reject) => {
                     dispatch(
-                        'modApi/apiCall',
+                        'apiCall',
                         {
                             action: 'post',
                             tokenType: 'sw',
@@ -359,7 +359,7 @@ export const actions = {
             async getCustomerInfo({ commit, state, dispatch }) {
                 return new Promise((resolve, reject) => {
                     dispatch(
-                        'modApi/apiCall',
+                        'apiCall',
                         {
                             action: 'get',
                             tokenType: 'sw',
@@ -404,7 +404,7 @@ export const actions = {
             async getCustomerAddresses({ commit, state, dispatch }) {
                 return new Promise((resolve, reject) => {
                     dispatch(
-                        'modApi/apiCall',
+                        'apiCall',
                         {
                             action: 'get',
                             tokenType: 'sw',
@@ -447,7 +447,7 @@ export const actions = {
                     };
 
                     dispatch(
-                        'modApi/apiCall',
+                        'apiCall',
                         {
                             action: 'post',
                             tokenType: 'sw',
@@ -511,7 +511,7 @@ export const actions = {
                         reject('You cant delete any default address');
                     } else {
                         dispatch(
-                            'modApi/apiCall',
+                            'apiCall',
                             {
                                 action: 'delete',
                                 tokenType: 'sw',
@@ -552,7 +552,7 @@ export const actions = {
             async setDefaultBillingAddress({ dispatch, state }, payload) {
                 return new Promise((resolve, reject) => {
                     dispatch(
-                        'modApi/apiCall',
+                        'apiCall',
                         {
                             action: 'patch',
                             tokenType: 'sw',
@@ -575,7 +575,7 @@ export const actions = {
             async setDefaultShippingAddress({ dispatch, state }, payload) {
                 return new Promise((resolve, reject) => {
                     dispatch(
-                        'modApi/apiCall',
+                        'apiCall',
                         {
                             action: 'patch',
                             tokenType: 'sw',
@@ -598,7 +598,7 @@ export const actions = {
             async getOrders({ dispatch, state }, payload) {
                 return new Promise((resolve, reject) => {
                     dispatch(
-                        'modApi/apiCall',
+                        'apiCall',
                         {
                             action: 'get',
                             tokenType: 'sw',
@@ -626,7 +626,7 @@ export const actions = {
             async passwordUpdate({ dispatch, state }, payload) {
                 return new Promise((resolve, reject) => {
                     dispatch(
-                        'modApi/apiCall',
+                        'apiCall',
                         {
                             action: 'patch',
                             tokenType: 'sw',
@@ -654,7 +654,7 @@ export const actions = {
             async swGetSalutations({ dispatch }, payload) {
                 return new Promise((resolve, reject) => {
                     dispatch(
-                        'modApi/apiCall',
+                        'apiCall',
                         {
                             action: 'get',
                             tokenType: 'sw',
@@ -676,7 +676,7 @@ export const actions = {
             async swGetCountries({ dispatch }, payload) {
                 return new Promise((resolve, reject) => {
                     dispatch(
-                        'modApi/apiCall',
+                        'apiCall',
                         {
                             action: 'get',
                             tokenType: 'sw',
@@ -760,7 +760,7 @@ export const actions = {
                     };
 
                     dispatch(
-                        'modApi/apiCall',
+                        'apiCall',
                         {
                             action: 'patch',
                             tokenType: 'sw',
@@ -788,7 +788,7 @@ export const actions = {
                     // Map email customer data to fit SW6 headless API
 
                     dispatch(
-                        'modApi/apiCall',
+                        'apiCall',
                         {
                             action: 'patch',
                             tokenType: 'sw',

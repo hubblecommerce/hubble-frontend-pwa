@@ -57,7 +57,7 @@ export const actions = {
             async getAutocompleteResults({ commit, state, dispatch }, payload) {
                 return new Promise(function (resolve, reject) {
                     dispatch(
-                        'modApi/apiCall',
+                        'apiCall',
                         {
                             action: 'post',
                             tokenType: 'sw',
@@ -170,7 +170,7 @@ export const actions = {
             async apiCatalogsearch({ commit, rootState, dispatch }) {
                 return new Promise(function (resolve, reject) {
                     dispatch(
-                        'modApi/apiCall',
+                        'apiCall',
                         {
                             action: 'post',
                             tokenType: 'sw',

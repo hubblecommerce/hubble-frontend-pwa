@@ -133,7 +133,7 @@ export const getters = {
 export const actions = {
     async getMenu({commit, dispatch, rootState}) {
         return new Promise(function (resolve, reject) {
-            dispatch('modApi/apiCall',
+            dispatch('apiCall',
                 {
                     action: 'post',
                     tokenType: 'sw',

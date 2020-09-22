@@ -124,122 +124,125 @@ export const actions = {
         });
     },
 
-    async apiCall ({state, rootState}, payload) {
-        // Set token depending on tokentype
-        // Set correct token type of api by apiType
-        let authToken;
-        if (payload.tokenType === 'api') {
+    apiCall: {
+        root: true,
+        async handler ({state, rootState}, payload) {
+            // Set token depending on tokentype
+            // Set correct token type of api by apiType
+            let authToken;
+            if (payload.tokenType === 'api') {
+                if (payload.apiType === 'data') {
+                    authToken = state.apiResourcesAuthToken;
+                }
+                if (payload.apiType === 'payment') {
+                    authToken = state.apiPaymentAuthToken;
+                }
+            }
+            if (payload.tokenType === 'customer') {
+                authToken = rootState.modApiCustomer.customer.customerAuth.token;
+            }
+            if (payload.tokenType === 'sw') {
+                authToken = process.env.API_SW_ACCESS_KEY;
+            }
+
+            // Set custom headers depending on api type including authToken
+            let headers = {
+                Authorization: 'Bearer ' + authToken,
+            };
+
+            if (process.env.API_TYPE === 'sw') {
+                headers = {
+                    'sw-access-key': authToken,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                };
+            }
+
+            if (payload.swContext != null) {
+                _.assign(headers, {['sw-context-token']: payload.swContext});
+            }
+
+            // Set data if data isset
+            let payloadData = {};
+            if (!_.isEmpty(payload.data)) {
+                payloadData = payload.data;
+            }
+
+            // Set params if params isset
+            let payloadParams = {};
+            if (!_.isEmpty(payload.params)) {
+                payloadParams = payload.params;
+            }
+
+            if (process.env.API_TYPE === 'api') {
+                // Set Store ID to request data
+                if (!_.isEmpty(process.env.STORE_ID) && payloadData !== null) {
+                    _.assign(payloadData, {storeId: process.env.STORE_ID});
+                }
+
+                // Set Store ID to request params
+                if (!_.isEmpty(process.env.STORE_ID) && payloadParams !== null) {
+                    _.assign(payloadParams, {storeId: process.env.STORE_ID});
+                }
+            }
+
+            // Reset params if action is post
+            if (payload.action === 'post' || payload.action === 'patch') {
+                payloadParams = '';
+            }
+
+            // Set base url depending on api type
+            let baseUrl;
             if (payload.apiType === 'data') {
-                authToken = state.apiResourcesAuthToken;
+                baseUrl = process.env.API_BASE_URL;
             }
             if (payload.apiType === 'payment') {
-                authToken = state.apiPaymentAuthToken;
-            }
-        }
-        if (payload.tokenType === 'customer') {
-            authToken = rootState.modApiCustomer.customer.customerAuth.token;
-        }
-        if (payload.tokenType === 'sw') {
-            authToken = process.env.API_SW_ACCESS_KEY;
-        }
-
-        // Set custom headers depending on api type including authToken
-        let headers = {
-            Authorization: 'Bearer ' + authToken,
-        };
-
-        if (process.env.API_TYPE === 'sw') {
-            headers = {
-                'sw-access-key': authToken,
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            };
-        }
-
-        if (payload.swContext != null) {
-            _.assign(headers, {['sw-context-token']: payload.swContext});
-        }
-
-        // Set data if data isset
-        let payloadData = {};
-        if (!_.isEmpty(payload.data)) {
-            payloadData = payload.data;
-        }
-
-        // Set params if params isset
-        let payloadParams = {};
-        if (!_.isEmpty(payload.params)) {
-            payloadParams = payload.params;
-        }
-
-        if (process.env.API_TYPE === 'api') {
-            // Set Store ID to request data
-            if (!_.isEmpty(process.env.STORE_ID) && payloadData !== null) {
-                _.assign(payloadData, {storeId: process.env.STORE_ID});
+                baseUrl = process.env.API_PAYMENT_BASE_URL;
             }
 
-            // Set Store ID to request params
-            if (!_.isEmpty(process.env.STORE_ID) && payloadParams !== null) {
-                _.assign(payloadParams, {storeId: process.env.STORE_ID});
-            }
-        }
-
-        // Reset params if action is post
-        if (payload.action === 'post' || payload.action === 'patch') {
-            payloadParams = '';
-        }
-
-        // Set base url depending on api type
-        let baseUrl;
-        if (payload.apiType === 'data') {
-            baseUrl = process.env.API_BASE_URL;
-        }
-        if (payload.apiType === 'payment') {
-            baseUrl = process.env.API_PAYMENT_BASE_URL;
-        }
-
-        return new Promise(function (resolve, reject) {
-            axios({
-                method: payload.action,
-                url: baseUrl + payload.endpoint,
-                headers: headers,
-                params: payloadParams, // GET params
-                data: payloadData, // POST data
-            })
-                .then(response => {
-                    //console.log("API request  %o to %o finished: %o", payload.action, payload.endpoint, response);
-
-                    // Check if 200 response data has error the flag true
-                    // And if true, reject the errors
-                    if (response.status === 200 && response.data.error) {
-                        reject(response.data);
-                    }
-
-                    resolve(response);
+            return new Promise(function (resolve, reject) {
+                axios({
+                    method: payload.action,
+                    url: baseUrl + payload.endpoint,
+                    headers: headers,
+                    params: payloadParams, // GET params
+                    data: payloadData, // POST data
                 })
-                .catch(error => {
-                    let rejection = error;
+                    .then(response => {
+                        //console.log("API request  %o to %o finished: %o", payload.action, payload.endpoint, response);
 
-                    if (error.response) {
-                        // The request was made and the server responded with a status code
-                        // that falls out of the range of 2xx
+                        // Check if 200 response data has error the flag true
+                        // And if true, reject the errors
+                        if (response.status === 200 && response.data.error) {
+                            reject(response.data);
+                        }
 
-                        // reject errors
-                        rejection = error.response.data;
-                    } else if (error.request) {
-                        // The request was made but no response was received
-                        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                        // http.ClientRequest in node.js
-                        if (payload.tokenType === 'sw') rejection = 'No network connection';
-                        else rejection = error.request;
-                    } else {
-                        // Something happened in setting up the request that triggered an Error
-                        rejection = error.message;
-                    }
-                    //console.log("API request %o to %o failed: %o", payload.action, payload.endpoint, response);
-                    reject(rejection);
-                });
-        });
+                        resolve(response);
+                    })
+                    .catch(error => {
+                        let rejection = error;
+
+                        if (error.response) {
+                            // The request was made and the server responded with a status code
+                            // that falls out of the range of 2xx
+
+                            // reject errors
+                            rejection = error.response.data;
+                        } else if (error.request) {
+                            // The request was made but no response was received
+                            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                            // http.ClientRequest in node.js
+                            if (payload.tokenType === 'sw') rejection = 'No network connection';
+                            else rejection = error.request;
+                        } else {
+                            // Something happened in setting up the request that triggered an Error
+                            rejection = error.message;
+                        }
+                        //console.log("API request %o to %o failed: %o", payload.action, payload.endpoint, response);
+                        reject(rejection);
+                    });
+            });
+        }
     }
 
 }

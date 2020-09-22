@@ -100,7 +100,7 @@ export const actions = {
             async swGuestOrder({ dispatch }, payload) {
                 return new Promise((resolve, reject) => {
                     dispatch(
-                        'modApi/apiCall',
+                        'apiCall',
                         {
                             action: 'post',
                             tokenType: 'sw',
@@ -156,7 +156,7 @@ export const actions = {
             async swPlaceOrder({ dispatch, rootState }) {
                 return new Promise((resolve, reject) => {
                     dispatch(
-                        'modApi/apiCall',
+                        'apiCall',
                         {
                             action: 'post',
                             tokenType: 'sw',
@@ -179,7 +179,7 @@ export const actions = {
             async swStartPayment({ dispatch, rootState }, payload) {
                 return new Promise((resolve, reject) => {
                     dispatch(
-                        'modApi/apiCall',
+                        'apiCall',
                         {
                             action: 'post',
                             tokenType: 'sw',
@@ -277,7 +277,7 @@ export const actions = {
             async getPaymentMethods({ commit, dispatch }) {
                 return new Promise((resolve, reject) => {
                     dispatch(
-                        'modApi/apiCall',
+                        'apiCall',
                         {
                             action: 'get',
                             tokenType: 'sw',
@@ -305,7 +305,7 @@ export const actions = {
             async getShippingMethods({ commit, dispatch }) {
                 return new Promise((resolve, reject) => {
                     dispatch(
-                        'modApi/apiCall',
+                        'apiCall',
                         {
                             action: 'get',
                             tokenType: 'sw',
@@ -330,7 +330,7 @@ export const actions = {
             async swSetPaymentMethod({ dispatch, rootState }, payload) {
                 return new Promise((resolve, reject) => {
                     dispatch(
-                        'modApi/apiCall',
+                        'apiCall',
                         {
                             action: 'patch',
                             tokenType: 'sw',
@@ -380,7 +380,7 @@ export const actions = {
                     }
 
                     dispatch(
-                        'modApi/apiCall',
+                        'apiCall',
                         {
                             action: 'patch',
                             tokenType: 'sw',

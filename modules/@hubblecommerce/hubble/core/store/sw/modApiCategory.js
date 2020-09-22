@@ -171,7 +171,7 @@ export const actions = {
                     let _endpoint = '/sales-channel-api/v1/category/' + payload + '?associations[media][]';
 
                     dispatch(
-                        'modApi/apiCall',
+                        'apiCall',
                         {
                             action: 'get',
                             tokenType: 'sw',
@@ -205,7 +205,7 @@ export const actions = {
                     let _endpoint = '/sales-channel-api/v1/product';
 
                     dispatch(
-                        'modApi/apiCall',
+                        'apiCall',
                         {
                             action: 'post',
                             tokenType: 'sw',
@@ -363,7 +363,7 @@ export const actions = {
                         '&associations[media][]';
 
                     dispatch(
-                        'modApi/apiCall',
+                        'apiCall',
                         {
                             action: 'get',
                             tokenType: 'sw',
@@ -399,7 +399,7 @@ export const actions = {
                     let _endpoint = `/sales-channel-api/v1/product/${id}/cross-selling` + '?associations[products][associations][seoUrls][]';
 
                     dispatch(
-                        'modApi/apiCall',
+                        'apiCall',
                         {
                             action: 'get',
                             tokenType: 'sw',
