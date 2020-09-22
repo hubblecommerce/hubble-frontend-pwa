@@ -151,7 +151,7 @@ export const actions = {
                     url = currentSelectedItem.url_pds;
                 }
 
-                ctx.app.router.push('/' + url);
+                this.$router.push('/' + url);
             },
             async apiCatalogsearch({ commit, dispatch, rootGetters }, payload) {
                 return new Promise(function (resolve, reject) {
