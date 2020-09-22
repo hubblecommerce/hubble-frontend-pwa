@@ -16,14 +16,17 @@ const globby = require('globby');
 const listAllDirs = dir => globby(`${dir}/*`, { onlyDirectories: true });
 const getLastSectionOfPath = thePath => thePath.substring(thePath.lastIndexOf('/') + 1);
 const asyncCopyNewDirs = async (sourceDirs, targetDir) => {
-    await Promise.all(sourceDirs.map(async sourceDir =>
-        await fse.copy(sourceDir, path.join(targetDir, path.basename(sourceDir)))
-    ));
+    await Promise.all(sourceDirs.map(async sourceDir => {
+        await fse.copy(sourceDir, path.join(targetDir, path.basename(sourceDir)));
+    }));
 }
 const asyncCopyApiTypeDirs = async (sourceDirs, targetDir, apiType) => {
-    await Promise.all(sourceDirs.map(async sourceDir =>
-        await fse.copy(path.join(targetDir, sourceDir, apiType), path.join(targetDir, sourceDir))
-    ))
+    await Promise.all(sourceDirs.map(async sourceDir => {
+        await fse.copy(path.join(targetDir, sourceDir, apiType), path.join(targetDir, sourceDir));
+
+        const apiSpecificSubfolders = await listAllDirs(path.join(targetDir, sourceDir));
+        await Promise.all(apiSpecificSubfolders.map(async (__apiSpecificSubfolder) => await fse.remove(__apiSpecificSubfolder)))
+    }));
 }
 const getPlugins = dir => globby([`${dir}/*.js`]);
 
@@ -46,54 +49,24 @@ export default async function (moduleOptions) {
 
     // Get filtered list of root dirs
     const rootDirs = await listAllDirs(rootDir);
+    let newDirs = [];
+    rootDirs.forEach(dir => {
+        if(!dirBlacklist.includes(getLastSectionOfPath(dir))) {
+            newDirs.push(dir);
+        }
+    });
 
-    let newDirs = rootDirs.filter((dir) => ![...dirBlacklist, ...apiTypeDirs].includes(getLastSectionOfPath(dir)));
-
-    // Clear target dir
+    // 1. Clear target dir
     await fse.emptyDir(targetDir);
 
+    // 2. Copy dirs from core module (base) to nuxt source dir
+    await fse.copy(baseDir, targetDir);
 
-    const copyFlattened = async (folder) => {
-        const selectedApiSpecificFolders = folder.map((__folder) => `${__folder}/${process.env.API_TYPE}`)
-
-        await Promise.all(selectedApiSpecificFolders.map(async (__folderMapped) =>
-            await fse.copy(__folderMapped, path.resolve(targetDir, getLastSectionOfPath(__folderMapped.replace(`/${process.env.API_TYPE}`, ''))))
-        ))
-    }
-
-
-   const copyFilesOnly = async (filesInDirectory, toBeReplaced) => {
-        await Promise.all(filesInDirectory.map(async (__directory) => {
-            await fse.readdir(`${__directory}`, { withFileTypes: true }, async function (err, __files) {
-                const __filesInApiTypeDir = __files.filter((__file) => !__file.isDirectory()).map((__file) => __file.name);
-
-                await Promise.all(__filesInApiTypeDir.map(async (__file) =>
-                    await fse.copy(path.resolve(`${__directory}/${__file}`), path.resolve(`${__directory.replace(toBeReplaced, targetDir)}/${__file}`))
-                ))
-            })
-        }))
-   }
-
-
-    const moduleDirs = await listAllDirs(baseDir);
-    let newModuleDirs = moduleDirs.filter((dir) => !apiTypeDirs.includes(getLastSectionOfPath(dir)))
-    await Promise.all(newModuleDirs.map(async (__newModuleDirectory) => await fse.copy(__newModuleDirectory, path.resolve(targetDir, getLastSectionOfPath(__newModuleDirectory)))))
-
-
-    const moduleApiTypeDirs = await listAllDirs(baseDir);
-    let newApiTypeModuleDirs = moduleApiTypeDirs.filter((dir) => apiTypeDirs.includes(getLastSectionOfPath(dir)))
-    await copyFlattened(newApiTypeModuleDirs)
-    await copyFilesOnly(newApiTypeModuleDirs, baseDir);
-
-
-    // Copy dirs from nuxt except of blacklisted dirs & apiTypeDirs to nuxt source dir
+    // 3. Copy dirs from nuxt except of blacklisted dirs to nuxt source dir
     await asyncCopyNewDirs(newDirs, targetDir);
 
-
-    const apiSpecificFolderNonDirectoryContent = rootDirs.filter((dir) => apiTypeDirs.includes(getLastSectionOfPath(dir)))
-    await copyFilesOnly(apiSpecificFolderNonDirectoryContent, rootDir);
-    await copyFlattened(apiSpecificFolderNonDirectoryContent);
-
+    // Resolve api type specific dirs inside nuxt source dir
+    await asyncCopyApiTypeDirs(apiTypeDirs, targetDir, options.apiType);
 
     // Set aliases, to make them work in target dir
     const baseAliases = {
@@ -208,7 +181,7 @@ export default async function (moduleOptions) {
 
     const toTargetPath = (oldPath) => path.resolve(oldPath.replace(rootDir, targetDir))
 
-    const dirsToExclude = [...dirBlacklist, '.hubble', '.nuxt', '.hubble', '.idea']
+    const dirsToExclude = [...dirBlacklist, '.hubble', '.nuxt', '.idea']
 
     const excludedDirectories = [...dirsToExclude.map((__blacklistedDir) => `${rootDir}/${__blacklistedDir}/**`)]
 
