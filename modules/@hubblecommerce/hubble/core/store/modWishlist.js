@@ -10,8 +10,6 @@ export const state = () => ({
             localStorageLifetime: 720 // 720 hours = 30 days
 })
 
-export const getters = {}
-
 export const mutations = {
             setWishlistItemsCount (state, qty) {
                 state.wishlistItemsCount = qty;

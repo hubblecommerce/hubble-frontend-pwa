@@ -3,8 +3,6 @@ export const state = () => ({
     clickPathHistoryCount: 5
 })
 
-export const getters = {}
-
 export const mutations = {
     setClickPath (state, payload) {
         state.clickPath = payload;

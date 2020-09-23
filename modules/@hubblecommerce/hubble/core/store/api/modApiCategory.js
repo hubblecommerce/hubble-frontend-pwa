@@ -20,5 +20,3 @@ export const getters = {
                 return state.dataCategoryProducts;
             }
 }
-
-export const actions = {}
