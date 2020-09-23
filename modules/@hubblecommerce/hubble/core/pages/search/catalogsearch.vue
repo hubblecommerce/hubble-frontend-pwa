@@ -7,8 +7,7 @@
 <script>
 import ViewCatalogsearch from '../../components/productlist/ViewCatalogsearch';
 import apiResourceRequest from '~/anonymous-middleware/apiResourceRequest';
-import apiResourceSearchSw from '~/anonymous-middleware/apiResourceSearch';
-import apiResourceSearchApi from '~/anonymous-middleware/apiResourceSearch';
+import apiResourceSearch from '~/anonymous-middleware/apiResourceSearch';
 
 export default {
     name: 'Catalogsearch',
@@ -23,7 +22,7 @@ export default {
         'apiAuthenticate',
         'apiLocalization',
         'apiResourceMenu',
-        process.env.API_TYPE === 'sw' ? apiResourceSearchSw : apiResourceSearchApi,
+        apiResourceSearch,
         apiResourceRequest,
         'trackClickPath',
     ],
