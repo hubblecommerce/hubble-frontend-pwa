@@ -86,10 +86,10 @@ import CartItemsListNonInteractive from '../../components/checkout/CartItemsList
 import Totals from '../../components/checkout/Totals';
 import CustomerAddresses from '../../components/customer/CustomerAddresses';
 import _ from 'lodash';
-import orderValidate from '@hubblecommerce/hubble/core/anonymous-middleware/orderValidate';
-import cartValidate from '@hubblecommerce/hubble/core/anonymous-middleware/cartValidate';
-import apiCustomerAuthenticate from '@hubblecommerce/hubble/core/anonymous-middleware/apiCustomerAuthenticate';
-import apiPaymentAuthenticate from '@hubblecommerce/hubble/core/anonymous-middleware/apiPaymentAuthenticate';
+import orderValidate from '~/anonymous-middleware/orderValidate';
+import cartValidate from '~/anonymous-middleware/cartValidate';
+import apiCustomerAuthenticate from '~/anonymous-middleware/apiCustomerAuthenticate';
+import apiPaymentAuthenticate from '~/anonymous-middleware/apiPaymentAuthenticate';
 
 export default {
     name: 'Summary',

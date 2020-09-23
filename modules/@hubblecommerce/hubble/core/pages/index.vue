@@ -1,6 +1,5 @@
 <template>
     <div class="index-container">
-        Eine custom Seite im Modulordner
         <g-t-m-data-layer event="homepageLoaded" page-type="home" page-title="Hubble demo" :breadcrumbs="[{ '0': 'home' }]" />
 
         <component :is="currentComponent" />
@@ -10,7 +9,7 @@
 <script>
 import { mapActions } from 'vuex';
 import GTMDataLayer from '../components/utils/GTMDataLayer';
-import apiIndexRoute from '@hubblecommerce/hubble/core/anonymous-middleware/apiIndexRoute';
+import apiIndexRoute from '~/anonymous-middleware/apiIndexRoute';
 
 export default {
     name: 'Index',

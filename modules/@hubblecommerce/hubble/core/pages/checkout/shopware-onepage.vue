@@ -49,8 +49,8 @@ import Totals from '../../components/checkout/Totals';
 import CustomerAddresses from '../../components/customer/CustomerAddresses';
 import { addBackendErrors } from '@hubblecommerce/hubble/core/utils/formMixins';
 import _ from 'lodash';
-import cartValidate from '@hubblecommerce/hubble/core/anonymous-middleware/cartValidate';
-import apiCustomerAuthenticate from '@hubblecommerce/hubble/core/anonymous-middleware/apiCustomerAuthenticate';
+import cartValidate from '~/anonymous-middleware/cartValidate';
+import apiCustomerAuthenticate from '~/anonymous-middleware/apiCustomerAuthenticate';
 
 export default {
     name: 'ShopwareOnepage',

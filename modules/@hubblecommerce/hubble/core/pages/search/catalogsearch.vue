@@ -6,9 +6,9 @@
 
 <script>
 import ViewCatalogsearch from '../../components/productlist/ViewCatalogsearch';
-import apiResourceRequest from '@hubblecommerce/hubble/core/anonymous-middleware/apiResourceRequest';
-import apiResourceSearchSw from '@hubblecommerce/hubble/core/anonymous-middleware/sw/apiResourceSearch';
-import apiResourceSearchApi from '@hubblecommerce/hubble/core/anonymous-middleware/api/apiResourceSearch';
+import apiResourceRequest from '~/anonymous-middleware/apiResourceRequest';
+import apiResourceSearchSw from '~/anonymous-middleware/apiResourceSearch';
+import apiResourceSearchApi from '~/anonymous-middleware/apiResourceSearch';
 
 export default {
     name: 'Catalogsearch',

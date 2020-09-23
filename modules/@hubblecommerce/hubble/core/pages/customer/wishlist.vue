@@ -31,7 +31,7 @@
                     </div>
                 </div>
                 <div v-if="$mq === 'lg'" class="newsletter-container">
-                    <newsletter-form :title="$t('Newsletter registration')" form-title="Newaletter Abonnieren" />
+                    <newsletter-form :title="$t('Newsletter registration')" form-title="Newsletter Abonnieren" />
                 </div>
             </div>
         </client-only>

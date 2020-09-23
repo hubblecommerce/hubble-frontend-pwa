@@ -80,7 +80,7 @@ import LoginForm from '../../components/customer/LoginForm';
 import Tabs from '../../components/utils/Tabs';
 import Tab from '../../components/utils/Tab';
 import RegisterForm from '../../components/customer/RegisterForm';
-import apiPaymentAuthenticate from '@hubblecommerce/hubble/core/anonymous-middleware/apiPaymentAuthenticate';
+import apiPaymentAuthenticate from '~/anonymous-middleware/apiPaymentAuthenticate';
 
 export default {
     name: 'Login',

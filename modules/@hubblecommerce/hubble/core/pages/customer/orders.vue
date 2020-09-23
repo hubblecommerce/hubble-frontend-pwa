@@ -20,8 +20,8 @@
 <script>
 import CustomerAccountNavigation from '../../components/customer/CustomerAccountNavigation';
 import CustomerOrderList from '../../components/customer/CustomerOrderList';
-import apiCustomerAuthenticate from '@hubblecommerce/hubble/core/anonymous-middleware/apiCustomerAuthenticate';
-import apiPaymentAuthenticate from '@hubblecommerce/hubble/core/anonymous-middleware/apiPaymentAuthenticate';
+import apiCustomerAuthenticate from '~/anonymous-middleware/apiCustomerAuthenticate';
+import apiPaymentAuthenticate from '~/anonymous-middleware/apiPaymentAuthenticate';
 
 export default {
     name: 'CustomerDashboard',

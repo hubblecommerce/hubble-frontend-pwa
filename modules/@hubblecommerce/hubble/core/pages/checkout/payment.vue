@@ -31,9 +31,9 @@ import Coupons from '../../components/checkout/Coupons';
 import OrderComment from '../../components/checkout/OrderComment';
 import CustomerAddresses from '../../components/customer/CustomerAddresses';
 import _ from 'lodash';
-import cartValidate from '@hubblecommerce/hubble/core/anonymous-middleware/cartValidate';
-import apiCustomerAuthenticate from '@hubblecommerce/hubble/core/anonymous-middleware/apiCustomerAuthenticate';
-import apiPaymentAuthenticate from '@hubblecommerce/hubble/core/anonymous-middleware/apiPaymentAuthenticate';
+import cartValidate from '~/anonymous-middleware/cartValidate';
+import apiCustomerAuthenticate from '~/anonymous-middleware/apiCustomerAuthenticate';
+import apiPaymentAuthenticate from '~/anonymous-middleware/apiPaymentAuthenticate';
 
 export default {
     name: 'Payment',
