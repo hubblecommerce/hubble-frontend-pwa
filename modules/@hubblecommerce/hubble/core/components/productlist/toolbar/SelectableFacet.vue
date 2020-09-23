@@ -13,7 +13,7 @@ Component usage:
     >
         <div class="action-bar">
             <div class="selected-facets" v-text="modelSelected.length + $t(' selected')" />
-            <div class="reset-facet" @click="resetAll()" v-text="$t('Reset Filter')">Zurücksetzen</div>
+            <div class="reset-facet" @click="resetAll()" v-text="$t('Reset Filter')" />
         </div>
 
         <div v-if="typeCheckbox" class="input-wrp">

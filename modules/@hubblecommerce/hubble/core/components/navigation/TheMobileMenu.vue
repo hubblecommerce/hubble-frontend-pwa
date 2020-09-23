@@ -80,9 +80,6 @@ export default {
         toggle: function () {
             this.toggleOffcanvasAction({ component: this.name });
         },
-    },
-    /*created() {
-        console.log("this.dataItems: ", this.dataItems)
-    }*/
+    }
 };
 </script>

@@ -127,8 +127,6 @@ export default {
                 }
             });
         }
-
-       //  console.log("inside MobileCategories - dataItem.children: ", this.dataItem.menu_items)
     },
 
     methods: {

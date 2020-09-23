@@ -38,8 +38,6 @@
                     <div class="product-description-wrp">
                         <div id="description-anchor" />
 
-                        Die Produktbeschreibung auf der Produktdetailseite
-
                         <div class="description-title headline-4 pt-4">
                             {{ $t('Description') }}
                         </div>
