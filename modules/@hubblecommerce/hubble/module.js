@@ -21,6 +21,7 @@ const asyncCopyNewDirs = async (sourceDirs, targetDir) => {
     }));
 };
 const asyncCopyApiTypeDirs = async (sourceDirs, targetDir, apiType) => {
+    console.log("inside asyncCopyApiTypeDirs");
     await Promise.all(sourceDirs.map(async sourceDir => {
         await fse.copy(path.join(targetDir, sourceDir, apiType), path.join(targetDir, sourceDir));
 
@@ -179,43 +180,43 @@ export default async function (moduleOptions) {
         });
     });
 
-    if(this.options.dev) {
-        const toTargetPath = (oldPath) => path.resolve(oldPath.replace(rootDir, targetDir));
-        const excludedDirectories = [...dirBlacklist.map((__blacklistedDir) => `${rootDir}/${__blacklistedDir}/**`)];
-        chokidar.watch(`${rootDir}`, { ignoreInitial: true, ignored: excludedDirectories })
-            .on('all', async (event, filePath) => {
-                let newDestination = toTargetPath(filePath);
+    const toTargetPath = (oldPath) => path.resolve(oldPath.replace(rootDir, targetDir));
 
-                const hasApiSpecificSubfolders = apiTypeDirs.filter((__apiTypeDir) => filePath.includes(__apiTypeDir));
-                if (hasApiSpecificSubfolders.length !== 0) {
-                    if (filePath.includes(`/${process.env.API_TYPE}/`)) {
-                        newDestination = toTargetPath(filePath.replace(`/${process.env.API_TYPE}/`, '/'));
-                    } else {
-                        return;
+    const excludedDirectories = [...dirBlacklist.map((__blacklistedDir) => `${rootDir}/${__blacklistedDir}/**`)];
+
+    chokidar.watch(`${rootDir}`, { ignoreInitial: true, ignored: excludedDirectories })
+        .on('all', async (event, filePath) => {
+            let newDestination = toTargetPath(filePath);
+
+            const hasApiSpecificSubfolders = apiTypeDirs.filter((__apiTypeDir) => filePath.includes(__apiTypeDir));
+            if (hasApiSpecificSubfolders.length !== 0) {
+                if (filePath.includes(`/${process.env.API_TYPE}/`)) {
+                    newDestination = toTargetPath(filePath.replace(`/${process.env.API_TYPE}/`, '/'));
+                } else {
+                    return;
+                }
+            }
+
+            if (event === 'add' || event === 'change') {
+                await fse.copy(filePath, newDestination);
+            }
+
+            if (event === 'unlink') {
+                const modulePath = filePath.replace(rootDir, baseDir);
+
+                fse.pathExists(modulePath, async (err, exists) => {
+                    if (exists) {
+                        // copy from module
+                        await fse.copy(modulePath, newDestination);
+                    } else if (!exists) {
+                        // path does not exist in module just remove from srcDir
+                        await fse.remove(newDestination);
+                    } else if (err) {
+                        console.log("err occurred: ", err);
                     }
-                }
-
-                if (event === 'add' || event === 'change') {
-                    await fse.copy(filePath, newDestination);
-                }
-
-                if (event === 'unlink') {
-                    const modulePath = filePath.replace(rootDir, baseDir);
-
-                    fse.pathExists(modulePath, async (err, exists) => {
-                        if (exists) {
-                            // copy from module
-                            await fse.copy(modulePath, newDestination);
-                        } else if (!exists) {
-                            // path does not exist in module just remove from srcDir
-                            await fse.remove(newDestination);
-                        } else if (err) {
-                            console.log("err occurred: ", err);
-                        }
-                    });
-                }
-            });
-    }
+                });
+            }
+        });
 }
 
 // avoid registering the same module twice

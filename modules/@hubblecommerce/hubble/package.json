@@ -8,6 +8,9 @@
     "publishConfig": {
         "access": "public"
     },
+    "scripts": {
+        "postinstall": "node ./scripts/post-install.js"
+    },
     "dependencies": {
         "@hubblecommerce/amazon-pay": "file:../amazon-pay",
         "@hubblecommerce/payone": "file:../payone",
