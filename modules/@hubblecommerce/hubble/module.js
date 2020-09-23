@@ -177,7 +177,7 @@ export default async function (moduleOptions) {
             src: modulePlugin,
             ssr: serverRendering
         });
-    })
+    });
 
     const toTargetPath = (oldPath) => path.resolve(oldPath.replace(rootDir, targetDir));
 
@@ -185,34 +185,37 @@ export default async function (moduleOptions) {
 
     chokidar.watch(`${rootDir}`, { ignoreInitial: true, ignored: excludedDirectories })
         .on('all', async (event, filePath) => {
-                let newDestination = toTargetPath(filePath);
+            let newDestination = toTargetPath(filePath);
 
-                const hasApiSpecificSubfolders = apiTypeDirs.filter((__apiTypeDir) => filePath.includes(__apiTypeDir));
-                if (hasApiSpecificSubfolders.length !== 0) {
-                    if (filePath.includes(`/${process.env.API_TYPE}/`)) newDestination = toTargetPath(filePath.replace(`/${process.env.API_TYPE}/`, '/'));
-                    else return;
+            const hasApiSpecificSubfolders = apiTypeDirs.filter((__apiTypeDir) => filePath.includes(__apiTypeDir));
+            if (hasApiSpecificSubfolders.length !== 0) {
+                if (filePath.includes(`/${process.env.API_TYPE}/`)) {
+                    newDestination = toTargetPath(filePath.replace(`/${process.env.API_TYPE}/`, '/'));
+                } else {
+                    return;
                 }
+            }
 
-                if (event === 'add' || event === 'change') {
-                    await fse.copy(filePath, newDestination)
-                }
+            if (event === 'add' || event === 'change') {
+                await fse.copy(filePath, newDestination);
+            }
 
-                if (event === 'unlink') {
-                    const modulePath = filePath.replace(rootDir, baseDir);
+            if (event === 'unlink') {
+                const modulePath = filePath.replace(rootDir, baseDir);
 
-                    fse.pathExists(modulePath, async (err, exists) => {
-                        if (exists) {
-                            // copy from module
-                            await fse.copy(modulePath, newDestination)
-                        } else if (!exists) {
-                            // path does not exist in module just remove from srcDir
-                            await fse.remove(newDestination)
-                        } else if (err) {
-                            console.log("err occurred: ", err)
-                        }
-                    })
-                }
-        })
+                fse.pathExists(modulePath, async (err, exists) => {
+                    if (exists) {
+                        // copy from module
+                        await fse.copy(modulePath, newDestination);
+                    } else if (!exists) {
+                        // path does not exist in module just remove from srcDir
+                        await fse.remove(newDestination);
+                    } else if (err) {
+                        console.log("err occurred: ", err);
+                    }
+                });
+            }
+        });
 }
 
 // avoid registering the same module twice
