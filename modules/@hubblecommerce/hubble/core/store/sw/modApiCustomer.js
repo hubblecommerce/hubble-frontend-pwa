@@ -104,7 +104,7 @@ export const actions = {
                             action: 'post',
                             tokenType: 'sw',
                             apiType: 'data',
-                            endpoint: '/sales-channel-api/v1/customer',
+                            endpoint: '/sales-channel-api/v3/customer',
                             data: customer,
                         },
                         { root: true }
@@ -142,7 +142,7 @@ export const actions = {
                             tokenType: 'sw',
                             apiType: 'data',
                             swContext: rootState.modCart.swtc,
-                            endpoint: '/sales-channel-api/v1/customer/login',
+                            endpoint: '/sales-channel-api/v3/customer/login',
                             data: loginCreds,
                         },
                         { root: true }
@@ -223,7 +223,7 @@ export const actions = {
                             tokenType: 'sw',
                             apiType: 'data',
                             swContext: state.customer.customerAuth.token,
-                            endpoint: '/sales-channel-api/v1/customer/logout',
+                            endpoint: '/sales-channel-api/v3/customer/logout',
                         },
                         { root: true }
                     )
@@ -365,7 +365,7 @@ export const actions = {
                             tokenType: 'sw',
                             apiType: 'data',
                             swContext: state.customer.customerAuth.token,
-                            endpoint: '/sales-channel-api/v1/customer',
+                            endpoint: '/sales-channel-api/v3/customer',
                         },
                         { root: true }
                     )
@@ -410,7 +410,7 @@ export const actions = {
                             tokenType: 'sw',
                             apiType: 'data',
                             swContext: state.customer.customerAuth.token,
-                            endpoint: '/sales-channel-api/v1/customer/address',
+                            endpoint: '/sales-channel-api/v3/customer/address',
                         },
                         { root: true }
                     )
@@ -453,7 +453,7 @@ export const actions = {
                             tokenType: 'sw',
                             apiType: 'data',
                             swContext: state.customer.customerAuth.token,
-                            endpoint: '/sales-channel-api/v1/customer/address',
+                            endpoint: '/sales-channel-api/v3/customer/address',
                             data: requestBody,
                         },
                         { root: true }
@@ -517,7 +517,7 @@ export const actions = {
                                 tokenType: 'sw',
                                 apiType: 'data',
                                 swContext: state.customer.customerAuth.token,
-                                endpoint: `/sales-channel-api/v1/customer/address/${payload.id}`,
+                                endpoint: `/sales-channel-api/v3/customer/address/${payload.id}`,
                             },
                             { root: true }
                         )
@@ -558,7 +558,7 @@ export const actions = {
                             tokenType: 'sw',
                             apiType: 'data',
                             swContext: state.customer.customerAuth.token,
-                            endpoint: `/sales-channel-api/v1/customer/address/${payload}/default-billing`,
+                            endpoint: `/sales-channel-api/v3/customer/address/${payload}/default-billing`,
                         },
                         { root: true }
                     )
@@ -581,7 +581,7 @@ export const actions = {
                             tokenType: 'sw',
                             apiType: 'data',
                             swContext: state.customer.customerAuth.token,
-                            endpoint: `/sales-channel-api/v1/customer/address/${payload}/default-shipping`,
+                            endpoint: `/sales-channel-api/v3/customer/address/${payload}/default-shipping`,
                         },
                         { root: true }
                     )
@@ -604,7 +604,7 @@ export const actions = {
                             tokenType: 'sw',
                             apiType: 'data',
                             swContext: state.customer.customerAuth.token,
-                            endpoint: '/sales-channel-api/v1/customer/order',
+                            endpoint: '/sales-channel-api/v3/customer/order',
                             params: {
                                 limit: 500,
                             },
@@ -632,7 +632,7 @@ export const actions = {
                             tokenType: 'sw',
                             apiType: 'data',
                             swContext: state.customer.customerAuth.token,
-                            endpoint: '/sales-channel-api/v1/customer/password',
+                            endpoint: '/sales-channel-api/v3/customer/password',
                             data: {
                                 password: payload.password_old,
                                 newPassword: payload.password,
@@ -659,7 +659,7 @@ export const actions = {
                             action: 'get',
                             tokenType: 'sw',
                             apiType: 'data',
-                            endpoint: '/sales-channel-api/v1/salutation',
+                            endpoint: '/sales-channel-api/v3/salutation',
                         },
                         { root: true }
                     )
@@ -681,7 +681,7 @@ export const actions = {
                             action: 'get',
                             tokenType: 'sw',
                             apiType: 'data',
-                            endpoint: '/sales-channel-api/v1/country',
+                            endpoint: '/sales-channel-api/v3/country',
                             params: {
                                 limit: 500,
                             },
@@ -766,7 +766,7 @@ export const actions = {
                             tokenType: 'sw',
                             swContext: state.customer.customerAuth.token,
                             apiType: 'data',
-                            endpoint: '/sales-channel-api/v1/customer',
+                            endpoint: '/sales-channel-api/v3/customer',
                             data: editedCustomerData,
                         },
                         { root: true }
@@ -794,7 +794,7 @@ export const actions = {
                             tokenType: 'sw',
                             swContext: state.customer.customerAuth.token,
                             apiType: 'data',
-                            endpoint: '/sales-channel-api/v1/customer/email',
+                            endpoint: '/sales-channel-api/v3/customer/email',
                             data: {
                                 email: payload.email,
                                 emailConfirmation: payload.emailRepeat,

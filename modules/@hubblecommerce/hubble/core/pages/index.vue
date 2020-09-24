@@ -22,33 +22,16 @@ export default {
 
     layout: 'hubble',
 
-    middleware: [apiIndexRoute, 'apiAuthenticate', 'apiLocalization', 'apiResourceMenu', 'trackClickPath'],
+    middleware: [
+        apiIndexRoute,
+        'apiAuthenticate',
+        'apiLocalization',
+        'apiResourceMenu',
+        'trackClickPath'
+    ],
 
     data() {
         return {
-            /*newProducts: [],
-                inView: false,
-                slider: {
-                    options: {
-                        responsive: {
-                            0: {
-                                items: 2,
-                                mouseDrag: true,
-                                controls: true
-                            },
-                            500: {
-                                items: 3,
-                                mouseDrag: true,
-                                controls: true
-                            },
-                            1000: {
-                                items: 5,
-                                controls: true,
-                                mouseDrag: false
-                            }
-                        }
-                    }
-                },*/
             currentComponent: '',
         };
     },

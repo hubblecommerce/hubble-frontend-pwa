@@ -131,14 +131,14 @@ export const getters = {
 }
 
 export const actions = {
-    async getMenu({commit, dispatch, rootState}) {
+    async getMenu({ commit, dispatch }) {
         return new Promise(function (resolve, reject) {
             dispatch('apiCall',
                 {
                     action: 'post',
                     tokenType: 'sw',
                     apiType: 'data',
-                    endpoint: '/store-api/v1/pwa/navigation',
+                    endpoint: '/store-api/v3/pwa/navigation',
                     data: {
                         includes: {
                             category: ['id', 'parentId', 'name', 'level', 'active', '_uniqueIdentifier', 'seoUrls', 'type', 'children'],

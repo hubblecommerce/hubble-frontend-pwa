@@ -90,7 +90,7 @@ export const actions = {
                 return new Promise(function (resolve, reject) {
                     let endpoint = _.join(
                         [
-                            '/sales-channel-api/v1/product/',
+                            '/sales-channel-api/v3/product/',
                             state.productId,
                             '?associations[manufacturer][associations][media][]',
                             '&associations[seoUrls][]',
@@ -180,9 +180,9 @@ export const actions = {
                     obj.final_price_item = {
                         special_to_date: null,
                         special_from_date: null,
-                        display_price_netto: product.price[0].net,
+                        display_price_netto: product.calculatedPrice.calculatedTaxes[0].price - product.calculatedPrice.calculatedTaxes[0].tax,
                         display_price_netto_special: null,
-                        display_price_brutto: product.price[0].gross,
+                        display_price_brutto: product.calculatedPrice.calculatedTaxes[0].price,
                         display_price_brutto_special: null,
                         priceinfo: null,
                         tax_class_id: 1,

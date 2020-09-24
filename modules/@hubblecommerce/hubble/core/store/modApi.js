@@ -123,7 +123,18 @@ export const actions = {
                 });
         });
     },
-
+    /**
+     * @apiCall
+     *
+     * @param {Object} state
+     * @param {Object} payload
+     * @param payload.action Axios method e.g. 'get', 'post', 'patch', 'delete'
+     * @param payload.endpoint Endpoint of api e.g '/api/login'
+     * @param payload.tokenType Choose between type 'api' and 'customer'
+     * @param payload.apiType Choose between type 'data' and 'payment'
+     *
+     * returns {Promise}
+     */
     apiCall: {
         root: true,
         async handler ({state, rootState}, payload) {
@@ -153,8 +164,8 @@ export const actions = {
             if (process.env.API_TYPE === 'sw') {
                 headers = {
                     'sw-access-key': authToken,
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
                 };
             }
 
@@ -244,5 +255,4 @@ export const actions = {
             });
         }
     }
-
 }

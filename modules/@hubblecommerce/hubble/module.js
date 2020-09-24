@@ -21,7 +21,6 @@ const asyncCopyNewDirs = async (sourceDirs, targetDir) => {
     }));
 };
 const asyncCopyApiTypeDirs = async (sourceDirs, targetDir, apiType) => {
-    console.log("inside asyncCopyApiTypeDirs");
     await Promise.all(sourceDirs.map(async sourceDir => {
         await fse.copy(path.join(targetDir, sourceDir, apiType), path.join(targetDir, sourceDir));
 

@@ -33,7 +33,8 @@ export default {
     modules: [],
 
     buildModules: [
-        ['@hubblecommerce/hubble']
+        ['@hubblecommerce/hubble'],
+        'nuxt-purgecss'
     ],
 
     /*

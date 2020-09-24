@@ -129,7 +129,7 @@ export const actions = {
                             tokenType: 'sw',
                             apiType: 'data',
                             swContext: state.swtc,
-                            endpoint: '/sales-channel-api/v1/checkout/cart',
+                            endpoint: '/sales-channel-api/v3/checkout/cart',
                         },
                         { root: true }
                     )
@@ -166,7 +166,7 @@ export const actions = {
                             action: 'post',
                             tokenType: 'sw',
                             apiType: 'data',
-                            endpoint: '/sales-channel-api/v1/checkout/cart',
+                            endpoint: '/sales-channel-api/v3/checkout/cart',
                         },
                         { root: true }
                     )
@@ -236,7 +236,7 @@ export const actions = {
                 });
             },
             swAddtToCart({ state, dispatch }, payload) {
-                const _endpoint = `/sales-channel-api/v1/checkout/cart/product/${payload.item.id}`;
+                const _endpoint = `/sales-channel-api/v3/checkout/cart/product/${payload.item.id}`;
 
                 return new Promise((resolve, reject) => {
                     dispatch(
@@ -378,7 +378,7 @@ export const actions = {
                 });
             },
             swUpdateLineItem({ state, dispatch }, payload) {
-                const _endpoint = `/sales-channel-api/v1/checkout/cart/line-item/${payload.id}`;
+                const _endpoint = `/sales-channel-api/v3/checkout/cart/line-item/${payload.id}`;
 
                 return new Promise((resolve, reject) => {
                     dispatch(
@@ -424,7 +424,7 @@ export const actions = {
                 });
             },
             swRemoveLineItem({ state, dispatch }, payload) {
-                const _endpoint = `/sales-channel-api/v1/checkout/cart/line-item/${payload.id}`;
+                const _endpoint = `/sales-channel-api/v3/checkout/cart/line-item/${payload.id}`;
 
                 return new Promise((resolve, reject) => {
                     dispatch(

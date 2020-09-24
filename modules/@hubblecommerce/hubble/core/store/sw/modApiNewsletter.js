@@ -8,7 +8,7 @@ export const actions = {
                             tokenType: 'sw',
                             apiType: 'data',
                             swContext: rootState.modCart.swtc,
-                            endpoint: '/sales-channel-api/v1/newsletter/subscribe',
+                            endpoint: '/sales-channel-api/v3/newsletter/subscribe',
                             data: { email: payload.email },
                         },
                         { root: true }

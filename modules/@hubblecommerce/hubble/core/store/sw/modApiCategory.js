@@ -168,7 +168,7 @@ export const getters = {
 export const actions = {
             async swGetCategory({ commit, dispatch }, payload) {
                 return new Promise(function (resolve, reject) {
-                    let _endpoint = '/sales-channel-api/v1/category/' + payload + '?associations[media][]';
+                    let _endpoint = '/sales-channel-api/v3/category/' + payload + '?associations[media][]';
 
                     dispatch(
                         'apiCall',
@@ -200,9 +200,9 @@ export const actions = {
                         });
                 });
             },
-            async swGetProducts({ commit, state, dispatch }) {
+            async swGetProducts({ commit, state, dispatch }, categoryId) {
                 return new Promise(function (resolve, reject) {
-                    let _endpoint = '/sales-channel-api/v1/product';
+                    let _endpoint = `/store-api/v3/product-listing/${categoryId}`;
 
                     dispatch(
                         'apiCall',
@@ -287,7 +287,7 @@ export const actions = {
                 return new Promise(function (resolve, reject) {
                     // MAPPING
                     let mapped = [];
-                    _.forEach(payload.data, product => {
+                    _.forEach(payload.elements, product => {
                         let obj = {};
 
                         obj.id = product.id;
@@ -326,9 +326,9 @@ export const actions = {
                         obj.final_price_item = {
                             special_to_date: null,
                             special_from_date: null,
-                            display_price_netto: product.price[0].net,
+                            display_price_netto: product.calculatedPrice.calculatedTaxes[0].price - product.calculatedPrice.calculatedTaxes[0].tax,
                             display_price_netto_special: null,
-                            display_price_brutto: product.price[0].gross,
+                            display_price_brutto: product.calculatedPrice.calculatedTaxes[0].price,
                             display_price_brutto_special: null,
                             priceinfo: null,
                             tax_class_id: 1,
@@ -354,7 +354,7 @@ export const actions = {
             async swGetCategoryProductsById({ dispatch }, payload) {
                 return new Promise(function (resolve, reject) {
                     let _endpoint =
-                        '/sales-channel-api/v1/category/' +
+                        '/sales-channel-api/v3/category/' +
                         payload.id +
                         '?associations[products][associations][seoUrls][]' +
                         '&associations[products][associations][manufacturer][]' +
@@ -396,7 +396,7 @@ export const actions = {
             },
             async swGetCrossSellingsByProductId({ dispatch }, id) {
                 return new Promise(function (resolve, reject) {
-                    let _endpoint = `/sales-channel-api/v1/product/${id}/cross-selling` + '?associations[products][associations][seoUrls][]';
+                    let _endpoint = `/sales-channel-api/v3/product/${id}/cross-selling` + '?associations[products][associations][seoUrls][]';
 
                     dispatch(
                         'apiCall',

@@ -83,8 +83,7 @@ export default async function ({ store, route, error }) {
                             });
                     })
                     .catch(() => {
-                        console.log("getting categories was not successful");
-                        error({ statusCode: 404, message: 'Unknown URL' });
+                        error({ statusCode: 404, message: 'Unknown Category' });
                         resolve();
                     });
             });
@@ -112,6 +111,7 @@ export default async function ({ store, route, error }) {
             });
         }
     } catch (err) {
+        console.log(err);
         error({ statusCode: 404, message: 'Unknown URL' });
     }
 };
