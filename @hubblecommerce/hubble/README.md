@@ -42,6 +42,7 @@ hubble: {
 # sw = official Shopware 6 API (headless Channel)
 API_TYPE          = 'sw | api'
 API_SW_ACCESS_KEY = ''
+API_BASE_URL      = ''
 ```
 
 ## Development setup
