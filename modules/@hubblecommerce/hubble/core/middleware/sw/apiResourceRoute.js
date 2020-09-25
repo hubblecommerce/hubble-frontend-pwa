@@ -1,7 +1,6 @@
-import Middleware from './middleware';
 import _ from 'lodash';
 
-Middleware.apiResourceRoute = async function ({ store, route, error }) {
+export default async function ({ store, route, error }) {
     // Load detail page client side if its accessed via anchor
     if (store.getters['modApiProduct/getOpenDetail']) {
         store.commit('modApiResources/setPageType', 'product');
@@ -26,6 +25,7 @@ Middleware.apiResourceRoute = async function ({ store, route, error }) {
 
         // Handle Categories
         let matchingCategoryId = pageResponse.data.resourceIdentifier;
+
         if (pageResponse.data.resourceType === 'frontend.navigation.page') {
             return new Promise((resolve, reject) => {
                 store.dispatch('modApiRequests/mapFilterToFacets', pageResponse.data.listingConfiguration.availableFilters).then(facets => {
@@ -83,7 +83,7 @@ Middleware.apiResourceRoute = async function ({ store, route, error }) {
                             });
                     })
                     .catch(() => {
-                        error({ statusCode: 404, message: 'Unknown URL' });
+                        error({ statusCode: 404, message: 'Unknown Category' });
                         resolve();
                     });
             });
@@ -111,6 +111,7 @@ Middleware.apiResourceRoute = async function ({ store, route, error }) {
             });
         }
     } catch (err) {
+        console.log(err);
         error({ statusCode: 404, message: 'Unknown URL' });
     }
 };

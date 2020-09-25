@@ -1,9 +1,6 @@
 import _ from 'lodash';
 
-export default function (ctx) {
-    const modApiResources = {
-        namespaced: true,
-        state: () => ({
+export const state = () => ({
             cacheTTL: 300,
 
             // api
@@ -13,9 +10,10 @@ export default function (ctx) {
             dataUri: {},
 
             // stuff
-            pageType: null,
-        }),
-        mutations: {
+            pageType: null
+})
+
+export const mutations = {
             setApiLocale: (state, item) => {
                 state.apiLocale = item;
             },
@@ -25,8 +23,9 @@ export default function (ctx) {
             setPageType: (state, item) => {
                 state.pageType = item;
             },
-        },
-        getters: {
+}
+
+export const getters = {
             getApiLocale: state => {
                 return state.apiLocale;
             },
@@ -35,9 +34,10 @@ export default function (ctx) {
             },
             getPageType: state => {
                 return state.pageType;
-            },
-        },
-        actions: {
+            }
+}
+
+export const actions = {
             async apiResolveUriData({ commit, dispatch, getters }, payload) {
                 return new Promise((resolve, reject) => {
                     let _outerReject = reject;
@@ -179,9 +179,5 @@ export default function (ctx) {
 
                     resolve('OK, but should be resolved earlier!');
                 });
-            },
-        },
-    };
-
-    ctx.store.registerModule('modApiResources', modApiResources);
+            }
 }

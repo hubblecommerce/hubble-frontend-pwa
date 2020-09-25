@@ -1,9 +1,6 @@
 import _ from 'lodash';
 
-export default function (ctx) {
-    const modApiPayment = {
-        namespaced: true,
-        state: () => ({
+export const state = () => ({
             // Payment
             paymentMethods: {},
             paymentError: null,
@@ -28,75 +25,78 @@ export default function (ctx) {
             currentOrder: {},
 
             // Checkout
-            processingCheckout: false,
-        }),
-        mutations: {
+            processingCheckout: false
+})
+
+export const mutations = {
             // Payment
-            setPaymentMethods: (state, payload) => {
+            setPaymentMethods (state, payload)  {
                 state.paymentMethods = payload;
             },
-            setPaymentError: (state, payload) => {
+            setPaymentError (state, payload) {
                 state.paymentError = payload;
             },
-            setHostedIFrame: (state, payload) => {
+            setHostedIFrame (state, payload) {
                 state.hostedIFrame = payload;
             },
-            setIbanError: (state, payload) => {
+            setIbanError (state, payload) {
                 state.ibanError = payload;
             },
-            setBicError: (state, payload) => {
+            setBicError (state, payload) {
                 state.bicError = payload;
             },
             // Shipping
-            setShippingMethods: (state, payload) => {
+            setShippingMethods (state, payload) {
                 state.shippingMethods = payload;
             },
-            setShippingError: (state, payload) => {
+            setShippingError (state, payload) {
                 state.shippingError = payload;
             },
             // Order
-            setOrder: (state, payload) => {
+            setOrder (state, payload) {
                 state.order = payload;
             },
-            setChosenPaymentMethod: (state, payload) => {
+            setChosenPaymentMethod (state, payload) {
                 state.order.chosenPaymentMethod = payload;
             },
-            setChosenShippingMethod: (state, payload) => {
+            setChosenShippingMethod (state, payload) {
                 state.order.chosenShippingMethod = payload;
             },
-            setPseudoCardPan: (state, payload) => {
+            setPseudoCardPan (state, payload) {
                 state.order.chosenPaymentMethod.payload.pseudoCardPan = payload;
             },
-            setCardType: (state, payload) => {
+            setCardType (state, payload) {
                 state.order.chosenPaymentMethod.payload.cardType = payload;
             },
-            setCardExpireDate: (state, payload) => {
+            setCardExpireDate (state, payload) {
                 state.order.chosenPaymentMethod.payload.cardExpireDate = payload;
             },
             // SW
-            setCurrentOrder: (state, payload) => {
+            setCurrentOrder (state, payload) {
                 state.currentOrder = payload;
             },
             // Checkout
-            setProcessingCheckout: state => {
+            setProcessingCheckout (state)  {
                 state.processingCheckout = true;
             },
-            resetProcessingCheckout: state => {
+            resetProcessingCheckout (state)  {
                 state.processingCheckout = false;
-            },
-        },
-        getters: {
-            getCookieExpires: state => {
+            }
+}
+
+export const getters = {
+            getCookieExpires (state)  {
                 return new Date(new Date().getTime() + state.cookieTTL * 60 * 1000);
             },
-            getChosenPaymentMethod: state => {
+            getChosenPaymentMethod (state)  {
                 return state.order.chosenPaymentMethod;
             },
-            getChosenShippingMethod: state => {
+            getChosenShippingMethod (state) {
                 return state.order.chosenShippingMethod;
-            },
-        },
-        actions: {
+            }
+}
+
+export const actions = {
             async swGuestOrder({ dispatch }, payload) {
                 return new Promise((resolve, reject) => {
                     dispatch(
@@ -106,7 +106,7 @@ export default function (ctx) {
                             tokenType: 'sw',
                             apiType: 'data',
                             swContext: payload.swtc,
-                            endpoint: '/sales-channel-api/v1/checkout/guest-order',
+                            endpoint: '/sales-channel-api/v3/checkout/guest-order',
                             data: payload.order,
                         },
                         { root: true }
@@ -162,7 +162,7 @@ export default function (ctx) {
                             tokenType: 'sw',
                             apiType: 'data',
                             swContext: rootState.modApiCustomer.customer.customerAuth.token,
-                            endpoint: '/sales-channel-api/v1/checkout/order',
+                            endpoint: '/sales-channel-api/v3/checkout/order',
                         },
                         { root: true }
                     )
@@ -185,7 +185,7 @@ export default function (ctx) {
                             tokenType: 'sw',
                             apiType: 'data',
                             swContext: rootState.modApiCustomer.customer.customerAuth.token,
-                            endpoint: `/sales-channel-api/v1/checkout/order/${payload}/pay`,
+                            endpoint: `/sales-channel-api/v3/checkout/order/${payload}/pay`,
                         },
                         { root: true }
                     )
@@ -282,7 +282,7 @@ export default function (ctx) {
                             action: 'get',
                             tokenType: 'sw',
                             apiType: 'data',
-                            endpoint: '/sales-channel-api/v1/payment-method',
+                            endpoint: '/sales-channel-api/v3/payment-method',
                             params: {
                                 limit: 500,
                             },
@@ -310,7 +310,7 @@ export default function (ctx) {
                             action: 'get',
                             tokenType: 'sw',
                             apiType: 'data',
-                            endpoint: '/sales-channel-api/v1/shipping-method',
+                            endpoint: '/sales-channel-api/v3/shipping-method',
                         },
                         { root: true }
                     )
@@ -336,7 +336,7 @@ export default function (ctx) {
                             tokenType: 'sw',
                             apiType: 'data',
                             swContext: rootState.modApiCustomer.customer.customerAuth.token,
-                            endpoint: '/sales-channel-api/v1/context',
+                            endpoint: '/sales-channel-api/v3/context',
                             data: {
                                 paymentMethodId: payload.id,
                             },
@@ -386,7 +386,7 @@ export default function (ctx) {
                             tokenType: 'sw',
                             apiType: 'data',
                             swContext: rootState.modApiCustomer.customer.customerAuth.token,
-                            endpoint: '/sales-channel-api/v1/context',
+                            endpoint: '/sales-channel-api/v3/context',
                             data: {
                                 shippingMethodId: payload.id,
                             },
@@ -436,10 +436,5 @@ export default function (ctx) {
 
                     resolve();
                 });
-            },
-        },
-    };
-
-    // Register vuex store module
-    ctx.store.registerModule('modApiPayment', modApiPayment);
+            }
 }

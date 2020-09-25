@@ -1,7 +1,6 @@
-import Middleware from './middleware';
 import _ from 'lodash';
 
-Middleware.apiResourceRoute = function ({ store, route, error }) {
+export default async function ({ store, route, error }) {
     // remove leading '/'
     let path = route.path.slice(1);
 

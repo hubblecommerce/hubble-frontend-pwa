@@ -68,6 +68,9 @@ typings/
 # nuxt.js build output
 .nuxt
 
+# hubble build output
+.hubble
+
 # Nuxt generate
 dist
 

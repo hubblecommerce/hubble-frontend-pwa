@@ -1,0 +1,102 @@
+// Configuration, Variables and Mixins
+@import "configuration/reset"; // Reset styles for Crossbrowser support
+@import "configuration/theme"; // Global theme scss
+@import "configuration/colors"; // Global colors scss
+@import "configuration/typography"; // Global typography scss
+@import "configuration/bootstrap-essentials"; // Useful classes and mixins from Bootstrap
+@import "configuration/global"; // Global global scss
+@import "configuration/fonts"; // Global fonts scss
+@import "configuration/buttons"; // Global buttons scss
+@import "configuration/badges"; // Global badges scss
+@import "configuration/table"; // Global table scss
+@import "configuration/icon-set"; // Global icon-set scss
+@import "configuration/elevation"; // Global elevation classes scss
+@import "configuration/links"; // Global link classes scss
+
+// Components
+@import "components/view-product";
+@import "components/product-listing";
+@import "components/the-logo";
+@import "components/the-menu";
+@import "components/checkout";
+@import "components/product-listing-card";
+@import "components/collapsible";
+@import "components/product-listing-filter";
+@import "components/product-listing-sidebar-nav";
+@import "components/the-minicart";
+@import "components/pwa-navigation";
+@import "components/the-search";
+@import "components/mobile-categories";
+@import "components/the-footer";
+@import "components/tiny-slider";
+@import "components/the-language-switch";
+@import "components/input";
+@import "components/tabs";
+@import "components/transition-expand-layer";
+@import "components/select";
+@import "components/scroll-to-top";
+@import "components/product-options";
+@import "components/flash-message";
+@import "components/flash-messages";
+@import "components/switch";
+@import "components/the-mega-menu";
+@import "components/background-blur";
+@import "components/view-category";
+@import "components/breadcrumbs";
+@import "components/text-excerpt";
+@import "components/checkbox";
+@import "components/pagination";
+@import "components/product-detail-gallery";
+@import "components/product-detail-buybox";
+@import "components/product-detail-buybox-price";
+@import "components/view-catalogsearch";
+@import "components/img-lazy";
+@import "components/the-wishlist";
+@import "components/loading-animations";
+@import "components/hubble";
+@import "components/product-listing-card-options-non-interactive";
+@import "components/price-slider";
+@import "components/customer-menu";
+@import "components/add-to-wishlist";
+@import "components/cart-items-list";
+@import "components/checkout-cart";
+@import "components/checkout-login";
+@import "components/register-form";
+@import "components/checkout-progress-bar";
+@import "components/checkout-payment";
+@import "components/product-detail-recommendations";
+@import "components/customer-addresses";
+@import "components/payment";
+@import "components/payment-methods";
+@import "components/shipping-methods";
+@import "components/coupons";
+@import "components/order-comment";
+@import "components/checkout-summary";
+@import "components/checkout-success";
+@import "components/checkmark-circle";
+@import "components/order-detail";
+@import "components/dashboard";
+@import "components/wishlist-items-list";
+@import "components/customer-wishlist";
+@import "components/newsletter";
+@import "components/error-404";
+@import "components/recaptcha";
+@import "components/teaser";
+@import "components/index";
+@import "components/cookie-notice";
+@import "components/payone-channel-client-hosted-iframe";
+@import "components/product-detail-buybox-color-select";
+@import "components/autocomplete-list";
+@import "components/amazon-pay-button";
+@import "components/customer-password-change";
+@import "components/product-listing-toolbar";
+@import "components/selected-facets";
+@import "components/product-detail-cross-selling-sw";
+@import "components/customer-account-information";
+@import "components/image-gallery";
+
+// Shopware styling files
+@import "components/cms-element";
+@import "components/cms-block";
+@import "components/cms-sections";
+

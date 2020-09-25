@@ -1,10 +1,7 @@
 import { slugify } from '@hubblecommerce/hubble/core/utils/menuHelper';
 import _ from 'lodash';
 
-export default function (ctx) {
-    const modApiCategory = {
-        namespaced: true,
-        state: () => ({
+export const state = () => ({
             dataCategory: {},
             dataCategoryProducts: {},
             apiRequestBody: {
@@ -36,24 +33,25 @@ export default function (ctx) {
                     media: {},
                     seoUrls: {},
                     cover: {},
-                },
-            },
-        }),
-        mutations: {
-            setDataCategory: (state, payload) => {
+                }
+            }
+})
+
+export const mutations = {
+            setDataCategory (state, payload) {
                 state.dataCategory = payload.data;
             },
-            setDataCategoryProducts: (state, payload) => {
+            setDataCategoryProducts (state, payload) {
                 state.dataCategoryProducts = payload.data;
             },
-            setFilter: (state, payload) => {
+            setFilter (state, payload) {
                 _.remove(state.apiRequestBody.filter, function (o) {
                     // remove by field
                     return o.field === payload.field;
                 });
                 state.apiRequestBody.filter.push(payload);
             },
-            resetFilter: state => {
+            resetFilter (state) {
                 state.apiRequestBody.filter = [
                     {
                         type: 'equals',
@@ -69,16 +67,16 @@ export default function (ctx) {
                     },
                 ];
             },
-            setLimit: (state, payload) => {
+            setLimit (state, payload) {
                 state.apiRequestBody.limit = payload;
             },
-            setPage: (state, payload) => {
+            setPage (state, payload) {
                 state.apiRequestBody.page = payload;
             },
-            setTerm: (state, payload) => {
+            setTerm (state, payload) {
                 state.apiRequestBody.term = payload;
             },
-            setFilters: (state, query) => {
+            setFilters (state, query) {
                 // Reset all filters
                 state.apiRequestBody.filter = [];
 
@@ -142,7 +140,7 @@ export default function (ctx) {
                     state.apiRequestBody.filter.push(priceRangeFilter);
                 }
             },
-            setSorting: (state, payload) => {
+            setSorting (state, payload) {
                 let sort = _.find(process.env.sorter, { option_id: parseInt(payload) });
                 let direction;
 
@@ -155,20 +153,22 @@ export default function (ctx) {
                 }
 
                 state.apiRequestBody.sort = direction + sort.order;
-            },
-        },
-        getters: {
-            getDataCategory: state => {
+            }
+}
+
+export const getters = {
+            getDataCategory (state) {
                 return state.dataCategory;
             },
-            getDataCategoryProducts: state => {
+            getDataCategoryProducts (state) {
                 return state.dataCategoryProducts;
-            },
-        },
-        actions: {
+            }
+}
+
+export const actions = {
             async swGetCategory({ commit, dispatch }, payload) {
                 return new Promise(function (resolve, reject) {
-                    let _endpoint = '/sales-channel-api/v1/category/' + payload + '?associations[media][]';
+                    let _endpoint = '/sales-channel-api/v3/category/' + payload + '?associations[media][]';
 
                     dispatch(
                         'apiCall',
@@ -200,9 +200,9 @@ export default function (ctx) {
                         });
                 });
             },
-            async swGetProducts({ commit, state, dispatch }) {
+            async swGetProducts({ commit, state, dispatch }, categoryId) {
                 return new Promise(function (resolve, reject) {
-                    let _endpoint = '/sales-channel-api/v1/product';
+                    let _endpoint = `/store-api/v3/product-listing/${categoryId}`;
 
                     dispatch(
                         'apiCall',
@@ -287,7 +287,7 @@ export default function (ctx) {
                 return new Promise(function (resolve, reject) {
                     // MAPPING
                     let mapped = [];
-                    _.forEach(payload.data, product => {
+                    _.forEach(payload.elements, product => {
                         let obj = {};
 
                         obj.id = product.id;
@@ -326,9 +326,9 @@ export default function (ctx) {
                         obj.final_price_item = {
                             special_to_date: null,
                             special_from_date: null,
-                            display_price_netto: product.price[0].net,
+                            display_price_netto: product.calculatedPrice.calculatedTaxes[0].price - product.calculatedPrice.calculatedTaxes[0].tax,
                             display_price_netto_special: null,
-                            display_price_brutto: product.price[0].gross,
+                            display_price_brutto: product.calculatedPrice.calculatedTaxes[0].price,
                             display_price_brutto_special: null,
                             priceinfo: null,
                             tax_class_id: 1,
@@ -354,7 +354,7 @@ export default function (ctx) {
             async swGetCategoryProductsById({ dispatch }, payload) {
                 return new Promise(function (resolve, reject) {
                     let _endpoint =
-                        '/sales-channel-api/v1/category/' +
+                        '/sales-channel-api/v3/category/' +
                         payload.id +
                         '?associations[products][associations][seoUrls][]' +
                         '&associations[products][associations][manufacturer][]' +
@@ -396,7 +396,7 @@ export default function (ctx) {
             },
             async swGetCrossSellingsByProductId({ dispatch }, id) {
                 return new Promise(function (resolve, reject) {
-                    let _endpoint = `/sales-channel-api/v1/product/${id}/cross-selling` + '?associations[products][associations][seoUrls][]';
+                    let _endpoint = `/sales-channel-api/v3/product/${id}/cross-selling` + '?associations[products][associations][seoUrls][]';
 
                     dispatch(
                         'apiCall',
@@ -426,9 +426,5 @@ export default function (ctx) {
                             reject(response);
                         });
                 });
-            },
-        },
-    };
-
-    ctx.store.registerModule('modApiCategory', modApiCategory);
+            }
 }

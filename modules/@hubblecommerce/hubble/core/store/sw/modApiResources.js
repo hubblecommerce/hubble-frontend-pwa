@@ -1,9 +1,6 @@
 import { datetimeUnixNow, datetimeUnixNowAddSecs } from '@hubblecommerce/hubble/core/utils/datetime';
 
-export default function (ctx) {
-    const modApiResources = {
-        namespaced: true,
-        state: () => ({
+export const state = () => ({
             cacheTTL: 300,
 
             // api
@@ -13,32 +10,35 @@ export default function (ctx) {
             pageType: null,
 
             // cmsObject
-            cmsObject: {},
-        }),
-        mutations: {
-            setCmsObject: (state, value) => {
+            cmsObject: {}
+})
+
+export const mutations = {
+            setCmsObject (state, value) {
                 state.cmsObject = value;
             },
-            setApiLocale: (state, item) => {
+            setApiLocale (state, item) {
                 state.apiLocale = item;
             },
-            setPageType: (state, item) => {
+            setPageType (state, item) {
                 state.pageType = item;
-            },
-        },
-        getters: {
-            getApiLocale: state => {
+            }
+}
+
+export const getters = {
+            getApiLocale (state)  {
                 return state.apiLocale;
             },
-            getPageType: state => {
+            getPageType (state)  {
                 return state.pageType;
             },
-            getDataProductUrls: state => {
+            getDataProductUrls (state)  {
                 return state.dataProductUrls;
-            },
-        },
-        actions: {
-            async getPage({ commit, dispatch }, payload) {
+            }
+}
+
+export const actions = {
+            async getPage({ commit, dispatch, rootState }, payload) {
                 return new Promise((resolve, reject) => {
                     dispatch(
                         'apiCall',
@@ -46,7 +46,7 @@ export default function (ctx) {
                             action: 'post',
                             tokenType: 'sw',
                             apiType: 'data',
-                            endpoint: '/store-api/v1/pwa/page',
+                            endpoint: '/store-api/v3/pwa/page',
                             data: {
                                 path: payload,
                                 associations: {
@@ -79,12 +79,9 @@ export default function (ctx) {
                             resolve(response);
                         })
                         .catch(error => {
+                            console.log("err occurred: ", error)
                             reject(error);
                         });
                 });
-            },
-        },
-    };
-
-    ctx.store.registerModule('modApiResources', modApiResources);
+            }
 }

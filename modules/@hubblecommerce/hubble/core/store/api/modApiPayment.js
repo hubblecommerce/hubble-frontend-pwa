@@ -5,11 +5,7 @@ import { datetimeUnixNow, datetimeUnixNowAddSecs } from '@hubblecommerce/hubble/
 import base64 from 'base-64';
 import _ from 'lodash';
 
-export default function (ctx) {
-    // Create vuex store module
-    const modApiPayment = {
-        namespaced: true,
-        state: () => ({
+export const state = () => ({
             cacheTTL: 60,
             apiAuthResponse: {},
             apiAuthToken: null,
@@ -47,9 +43,10 @@ export default function (ctx) {
             cookieTTL: 360, // minutes
 
             // Amazon
-            amazonPayError: {},
-        }),
-        mutations: {
+            amazonPayError: {}
+})
+
+export const mutations = {
             setApiAuthResponse: (state, payload) => {
                 state.apiAuthResponse = payload.data;
                 state.apiAuthToken = payload.data.access_token;
@@ -130,8 +127,9 @@ export default function (ctx) {
             setShippingCountryError: (state, payload) => {
                 state.shippingCountryError = payload;
             },
-        },
-        getters: {
+        }
+
+export const getters = {
             getApiAuthToken: state => {
                 return state.apiAuthToken;
             },
@@ -171,8 +169,9 @@ export default function (ctx) {
             getFinalOrder: state => {
                 return state.finalOrder;
             },
-        },
-        actions: {
+}
+
+export const actions = {
             async getUuid({ dispatch }, payload) {
                 return new Promise((resolve, reject) => {
                     dispatch(
@@ -645,10 +644,5 @@ export default function (ctx) {
                             reject('deleteWishlist failed!');
                         });
                 });
-            },
-        },
-    };
-
-    // Register vuex store module
-    ctx.store.registerModule('modApiPayment', modApiPayment);
+            }
 }

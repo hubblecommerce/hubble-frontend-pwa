@@ -1,16 +1,14 @@
 import { isBefore, isAfter } from '@hubblecommerce/hubble/core/utils/dateTimeHelper';
 import _ from 'lodash';
 
-export default function (ctx) {
-    const modPrices = {
-        namespaced: true,
-        state: () => ({
+export const state = () => ({
             priceSwitcherIncludeVat: false,
             priceCurrency: 'EUR',
             priceCurrencySymbol: '€',
             priceLocale: 'de-DE',
-        }),
-        getters: {
+})
+
+export const getters = {
             priceAddVat: () => (price, vat) => {
                 return price * vat;
             },
@@ -102,9 +100,5 @@ export default function (ctx) {
                 };
                 return placeholderObject;
                 //return _.head(state.session.taxClasses.filter(item => item.label === label));
-            },
-        },
-    };
-
-    ctx.store.registerModule('modPrices', modPrices);
+            }
 }

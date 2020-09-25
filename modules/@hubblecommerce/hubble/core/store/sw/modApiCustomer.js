@@ -1,9 +1,6 @@
 import _ from 'lodash';
 
-export default function (ctx) {
-    const modApiCustomer = {
-        namespaced: true,
-        state: () => ({
+export const state = () => ({
             customer: {
                 customerAuth: {},
                 customerData: {},
@@ -20,22 +17,23 @@ export default function (ctx) {
             // Cookie
             cookieName: 'hubbleAuthUser',
             cookiePath: '/',
-            cookieTTL: 360, // minutes
-        }),
-        mutations: {
+            cookieTTL: 360 // minutes
+})
+
+export const mutations = {
             /*
              * Customer mutations
              * */
-            setCustomer: (state, payload) => {
+            setCustomer (state, payload) {
                 state.customer = payload;
             },
-            setCustomerAuth: (state, payload) => {
+            setCustomerAuth (state, payload) {
                 state.customer.customerAuth = payload;
             },
-            setCustomerData: (state, payload) => {
+            setCustomerData (state, payload)  {
                 state.customer.customerData = payload;
             },
-            clearCustomerData: state => {
+            clearCustomerData (state) {
                 state.customer = {
                     customerAuth: {},
                     customerData: {},
@@ -44,31 +42,33 @@ export default function (ctx) {
                     shippingAddress: {},
                 };
             },
-            setCustomerAddresses: (state, payload) => {
+            setCustomerAddresses (state, payload) {
                 state.customer.customerAddresses = payload;
             },
-            setCountries: (state, payload) => {
+            setCountries (state, payload) {
                 // Sort countries by position
                 state.countries = payload.sort((a, b) => {
                     return a.position - b.position;
                 });
             },
-            setAvailableCountries: (state, payload) => {
+            setAvailableCountries (state, payload) {
                 state.availableCountries = payload;
             },
-            setSalutations: (state, payload) => {
+            setSalutations (state, payload) {
                 state.salutations = payload;
-            },
-        },
-        getters: {
-            getCookieExpires: state => {
+            }
+}
+
+export const getters = {
+            getCookieExpires (state)  {
                 return new Date(new Date().getTime() + state.cookieTTL * 60 * 1000);
             },
-            getCustomerAuth: state => {
+            getCustomerAuth (state)  {
                 return state.customer.customerAuth;
-            },
-        },
-        actions: {
+            }
+}
+
+export const actions = {
             async register({ dispatch, commit }, payload) {
                 return new Promise((resolve, reject) => {
                     // Map customer data to fit SW6 headless API
@@ -104,7 +104,7 @@ export default function (ctx) {
                             action: 'post',
                             tokenType: 'sw',
                             apiType: 'data',
-                            endpoint: '/sales-channel-api/v1/customer',
+                            endpoint: '/sales-channel-api/v3/customer',
                             data: customer,
                         },
                         { root: true }
@@ -142,7 +142,7 @@ export default function (ctx) {
                             tokenType: 'sw',
                             apiType: 'data',
                             swContext: rootState.modCart.swtc,
-                            endpoint: '/sales-channel-api/v1/customer/login',
+                            endpoint: '/sales-channel-api/v3/customer/login',
                             data: loginCreds,
                         },
                         { root: true }
@@ -223,7 +223,7 @@ export default function (ctx) {
                             tokenType: 'sw',
                             apiType: 'data',
                             swContext: state.customer.customerAuth.token,
-                            endpoint: '/sales-channel-api/v1/customer/logout',
+                            endpoint: '/sales-channel-api/v3/customer/logout',
                         },
                         { root: true }
                     )
@@ -365,7 +365,7 @@ export default function (ctx) {
                             tokenType: 'sw',
                             apiType: 'data',
                             swContext: state.customer.customerAuth.token,
-                            endpoint: '/sales-channel-api/v1/customer',
+                            endpoint: '/sales-channel-api/v3/customer',
                         },
                         { root: true }
                     )
@@ -410,7 +410,7 @@ export default function (ctx) {
                             tokenType: 'sw',
                             apiType: 'data',
                             swContext: state.customer.customerAuth.token,
-                            endpoint: '/sales-channel-api/v1/customer/address',
+                            endpoint: '/sales-channel-api/v3/customer/address',
                         },
                         { root: true }
                     )
@@ -453,7 +453,7 @@ export default function (ctx) {
                             tokenType: 'sw',
                             apiType: 'data',
                             swContext: state.customer.customerAuth.token,
-                            endpoint: '/sales-channel-api/v1/customer/address',
+                            endpoint: '/sales-channel-api/v3/customer/address',
                             data: requestBody,
                         },
                         { root: true }
@@ -517,7 +517,7 @@ export default function (ctx) {
                                 tokenType: 'sw',
                                 apiType: 'data',
                                 swContext: state.customer.customerAuth.token,
-                                endpoint: `/sales-channel-api/v1/customer/address/${payload.id}`,
+                                endpoint: `/sales-channel-api/v3/customer/address/${payload.id}`,
                             },
                             { root: true }
                         )
@@ -558,7 +558,7 @@ export default function (ctx) {
                             tokenType: 'sw',
                             apiType: 'data',
                             swContext: state.customer.customerAuth.token,
-                            endpoint: `/sales-channel-api/v1/customer/address/${payload}/default-billing`,
+                            endpoint: `/sales-channel-api/v3/customer/address/${payload}/default-billing`,
                         },
                         { root: true }
                     )
@@ -581,7 +581,7 @@ export default function (ctx) {
                             tokenType: 'sw',
                             apiType: 'data',
                             swContext: state.customer.customerAuth.token,
-                            endpoint: `/sales-channel-api/v1/customer/address/${payload}/default-shipping`,
+                            endpoint: `/sales-channel-api/v3/customer/address/${payload}/default-shipping`,
                         },
                         { root: true }
                     )
@@ -604,7 +604,7 @@ export default function (ctx) {
                             tokenType: 'sw',
                             apiType: 'data',
                             swContext: state.customer.customerAuth.token,
-                            endpoint: '/sales-channel-api/v1/customer/order',
+                            endpoint: '/sales-channel-api/v3/customer/order',
                             params: {
                                 limit: 500,
                             },
@@ -632,7 +632,7 @@ export default function (ctx) {
                             tokenType: 'sw',
                             apiType: 'data',
                             swContext: state.customer.customerAuth.token,
-                            endpoint: '/sales-channel-api/v1/customer/password',
+                            endpoint: '/sales-channel-api/v3/customer/password',
                             data: {
                                 password: payload.password_old,
                                 newPassword: payload.password,
@@ -659,7 +659,7 @@ export default function (ctx) {
                             action: 'get',
                             tokenType: 'sw',
                             apiType: 'data',
-                            endpoint: '/sales-channel-api/v1/salutation',
+                            endpoint: '/sales-channel-api/v3/salutation',
                         },
                         { root: true }
                     )
@@ -681,7 +681,7 @@ export default function (ctx) {
                             action: 'get',
                             tokenType: 'sw',
                             apiType: 'data',
-                            endpoint: '/sales-channel-api/v1/country',
+                            endpoint: '/sales-channel-api/v3/country',
                             params: {
                                 limit: 500,
                             },
@@ -766,7 +766,7 @@ export default function (ctx) {
                             tokenType: 'sw',
                             swContext: state.customer.customerAuth.token,
                             apiType: 'data',
-                            endpoint: '/sales-channel-api/v1/customer',
+                            endpoint: '/sales-channel-api/v3/customer',
                             data: editedCustomerData,
                         },
                         { root: true }
@@ -794,7 +794,7 @@ export default function (ctx) {
                             tokenType: 'sw',
                             swContext: state.customer.customerAuth.token,
                             apiType: 'data',
-                            endpoint: '/sales-channel-api/v1/customer/email',
+                            endpoint: '/sales-channel-api/v3/customer/email',
                             data: {
                                 email: payload.email,
                                 emailConfirmation: payload.emailRepeat,
@@ -820,10 +820,5 @@ export default function (ctx) {
                             reject(response);
                         });
                 });
-            },
-        },
-    };
-
-    // Register vuex store module
-    ctx.store.registerModule('modApiCustomer', modApiCustomer);
+            }
 }

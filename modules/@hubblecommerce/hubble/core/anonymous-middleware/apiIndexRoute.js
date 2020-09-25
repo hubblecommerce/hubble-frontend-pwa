@@ -10,7 +10,7 @@ export default async function ({ store, route, error }) {
                 action: 'post',
                 tokenType: 'sw',
                 apiType: 'data',
-                endpoint: '/store-api/v1/category/home',
+                endpoint: '/store-api/v3/category/home',
                 data: {
                     associations: {
                         categories: {},

@@ -2,14 +2,12 @@ import { sortMenuEntries } from '@hubblecommerce/hubble/core/utils/menuHelper';
 import { datetimeUnixNow, datetimeUnixNowAddSecs } from '@hubblecommerce/hubble/core/utils/datetime';
 import _ from 'lodash';
 
-export default function (ctx) {
-    const modApiMenu = {
-        namespaced: true,
-        state: () => ({
+export const state = () => ({
             dataMenu: {},
-            dataMenuCacheable: true,
-        }),
-        mutations: {
+            dataMenuCacheable: true
+})
+
+export const mutations = {
             clearDataMenu: state => {
                 state.dataMenu = {};
             },
@@ -75,9 +73,10 @@ export default function (ctx) {
                     state.dataMenu.created_at_unixtime = datetimeUnixNow();
                     state.dataMenu.expires_at_unixtime = datetimeUnixNowAddSecs(_ttl);
                 }
-            },
-        },
-        getters: {
+            }
+}
+
+export const getters = {
             getDataMenu: state => {
                 return state.dataMenu;
             },
@@ -86,9 +85,10 @@ export default function (ctx) {
             },
             getDataMenuStats: state => {
                 return state.dataMenu.stats ? state.dataMenu.stats : null;
-            },
-        },
-        actions: {
+            }
+}
+
+export const actions = {
             async getMenu({ commit, dispatch }) {
                 return new Promise(function (resolve, reject) {
                     dispatch(
@@ -115,9 +115,5 @@ export default function (ctx) {
                             reject('API request failed!');
                         });
                 });
-            },
-        },
-    };
-
-    ctx.store.registerModule('modApiMenu', modApiMenu);
+            }
 }

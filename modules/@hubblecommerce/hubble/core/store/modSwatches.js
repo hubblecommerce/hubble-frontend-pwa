@@ -1,7 +1,4 @@
-export default function (ctx) {
-    const modSwatches = {
-        namespaced: true,
-        state: () => ({
+export const state = () => ({
             swatches: [],
 
             attributes: [
@@ -26,18 +23,15 @@ export default function (ctx) {
                     },
                 ],
             },
-        }),
-        getters: {
-            getSwatches: state => {
+})
+
+export const getters = {
+            getSwatches (state)  {
                 return state.swatches;
             },
             getSwatchesByOptionId: state => (attrCode, optionId) => {
                 let _index = state.byAttributeCode[attrCode].findIndex(item => item.option_id === optionId);
 
                 return state.byAttributeCode[attrCode][_index];
-            },
-        },
-    };
-
-    ctx.store.registerModule('modSwatches', modSwatches);
+            }
 }

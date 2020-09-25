@@ -1,8 +1,4 @@
-export default function (ctx) {
-    const modApiNewsletter = {
-        namespaced: true,
-
-        actions: {
+export const actions = {
             async signUpToNewsletter({ dispatch, rootState }, payload) {
                 return new Promise((resolve, reject) => {
                     dispatch(
@@ -12,7 +8,7 @@ export default function (ctx) {
                             tokenType: 'sw',
                             apiType: 'data',
                             swContext: rootState.modCart.swtc,
-                            endpoint: '/sales-channel-api/v1/newsletter/subscribe',
+                            endpoint: '/sales-channel-api/v3/newsletter/subscribe',
                             data: { email: payload.email },
                         },
                         { root: true }
@@ -25,10 +21,5 @@ export default function (ctx) {
                             reject(err);
                         });
                 });
-            },
-        },
-    };
-
-    // Register vuex store module
-    ctx.store.registerModule('modApiNewsletter', modApiNewsletter);
+            }
 }

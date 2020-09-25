@@ -2,10 +2,7 @@ import base64 from 'base-64';
 import localStorageHelper from '@hubblecommerce/hubble/core/utils/localStorageHelper';
 import _ from 'lodash';
 
-export default function (ctx) {
-    const modCart = {
-        namespaced: true,
-        state: () => ({
+export const state = () => ({
             layerInitiated: false,
 
             shippingCosts: {
@@ -33,8 +30,9 @@ export default function (ctx) {
             cookiePath: '/',
             cookieTTL: 720, // 720 hours = 30 days
             localStorageLifetime: 720, // 720 hours = 30 days
-        }),
-        getters: {
+})
+
+export const getters = {
             getCookieExpires: state => {
                 return new Date(new Date().getTime() + state.cookieTTL * 60 * 60 * 1000);
             },
@@ -60,9 +58,10 @@ export default function (ctx) {
                 }
 
                 return state.cart.grand_total;
-            },
-        },
-        mutations: {
+            }
+}
+
+export const mutations = {
             setCartItemsCount: (state, qty) => {
                 state.cart.items_qty = qty;
             },
@@ -105,8 +104,9 @@ export default function (ctx) {
             initiateLayer: state => {
                 state.layerInitiated = true;
             },
-        },
-        actions: {
+}
+
+export const actions = {
             clearAll({ commit, state, dispatch }) {
                 return new Promise((resolve, reject) => {
                     commit('setCartItemsObj', []);
@@ -433,9 +433,5 @@ export default function (ctx) {
                             reject(error);
                         });
                 });
-            },
-        },
-    };
-
-    ctx.store.registerModule('modCart', modCart);
+            }
 }

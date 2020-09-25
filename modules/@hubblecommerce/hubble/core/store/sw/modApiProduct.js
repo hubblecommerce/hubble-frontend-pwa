@@ -1,10 +1,7 @@
 import { slugify } from '@hubblecommerce/hubble/core/utils/menuHelper';
 import _ from 'lodash';
 
-export default function (ctx) {
-    const modApiProduct = {
-        namespaced: true,
-        state: () => ({
+export const state = () => ({
             dataProduct: {},
             dataProductRelations: {},
             dataProductsCrossBuybox: {},
@@ -18,55 +15,57 @@ export default function (ctx) {
 
             // Routing Information
             openDetail: false,
-            productId: null,
-        }),
-        mutations: {
-            setDataProduct: (state, payload) => {
+            productId: null
+})
+
+export const mutations = {
+            setDataProduct (state, payload) {
                 state.dataProduct = payload.data;
             },
-            setDataProductItem: (state, payload) => {
+            setDataProductItem (state, payload) {
                 state.dataProduct.result.item = payload.data;
             },
-            setDataProductRelations: (state, payload) => {
+            setDataProductRelations (state, payload) {
                 state.dataProductRelations = payload.data;
             },
-            setDataProductsCrossBuybox: (state, payload) => {
+            setDataProductsCrossBuybox (state, payload) {
                 state.dataProductsCrossBuybox = payload.data;
             },
-            setDataProductsCrossByOrder: (state, payload) => {
+            setDataProductsCrossByOrder (state, payload) {
                 state.dataProductsCrossByOrder = payload.data;
             },
-            setDataProductsCrossSimilar: (state, payload) => {
+            setDataProductsCrossSimilar (state, payload) {
                 state.dataProductsCrossSimilar = payload.data;
             },
-            setDataProductUpsellings: (state, payload) => {
+            setDataProductUpsellings (state, payload) {
                 state.dataProductUpsellings = payload.data;
             },
-            setOptionIsSelected: state => {
+            setOptionIsSelected (state)  {
                 state.optionIsSelected = true;
             },
-            setSelectedVariants: (state, payload) => {
+            setSelectedVariants (state, payload) {
                 state.selectedVariants = payload;
             },
-            resetSelectedVariants: state => {
+            resetSelectedVariants (state) {
                 state.optionIsSelected = false;
                 state.selectedVariants = [];
             },
-            setOptionNotSelectedError: state => {
+            setOptionNotSelectedError (state) {
                 state.optionNotSelectedError = true;
             },
-            removeOptionNotSelectedError: state => {
+            removeOptionNotSelectedError (state) {
                 state.optionNotSelectedError = false;
             },
-            setOpenDetail: (state, payload) => {
+            setOpenDetail (state, payload) {
                 state.openDetail = payload;
             },
-            setProductId: (state, payload) => {
+            setProductId (state, payload) {
                 state.productId = payload;
-            },
-        },
-        getters: {
-            getMediaGalleryArray: state => {
+            }
+}
+
+export const getters = {
+            getMediaGalleryArray (state) {
                 if (!_.isEmpty(state.dataProduct)) {
                     let allProductImages = [],
                         mediaGallery = state.dataProduct.result.item.media_gallery;
@@ -78,19 +77,20 @@ export default function (ctx) {
                     return allProductImages;
                 }
             },
-            getOpenDetail: state => {
+            getOpenDetail (state) {
                 return state.openDetail;
             },
-            getProductId: state => {
+            getProductId (state) {
                 return state.productId;
-            },
-        },
-        actions: {
+            }
+}
+
+export const actions = {
             async getProductData({ commit, state, dispatch }, payload) {
                 return new Promise(function (resolve, reject) {
                     let endpoint = _.join(
                         [
-                            '/sales-channel-api/v1/product/',
+                            '/sales-channel-api/v3/product/',
                             state.productId,
                             '?associations[manufacturer][associations][media][]',
                             '&associations[seoUrls][]',
@@ -180,9 +180,9 @@ export default function (ctx) {
                     obj.final_price_item = {
                         special_to_date: null,
                         special_from_date: null,
-                        display_price_netto: product.price[0].net,
+                        display_price_netto: product.calculatedPrice.calculatedTaxes[0].price - product.calculatedPrice.calculatedTaxes[0].tax,
                         display_price_netto_special: null,
-                        display_price_brutto: product.price[0].gross,
+                        display_price_brutto: product.calculatedPrice.calculatedTaxes[0].price,
                         display_price_brutto_special: null,
                         priceinfo: null,
                         tax_class_id: 1,
@@ -276,9 +276,5 @@ export default function (ctx) {
 
                     resolve(obj);
                 });
-            },
-        },
-    };
-
-    ctx.store.registerModule('modApiProduct', modApiProduct);
+            }
 }

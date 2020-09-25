@@ -1,8 +1,10 @@
-export default async ctx => {
-    await ctx.store.dispatch('modCart/setByForage', ctx);
-    await ctx.store.dispatch('modCart/setSwtcByCookie', ctx);
-    await ctx.store.dispatch('modApiCustomer/setByCookie', ctx);
-    await ctx.store.dispatch('modApiPayment/setOrderByCookie', ctx);
-    await ctx.store.dispatch('modWishlist/setByForage', ctx);
-    await ctx.store.dispatch('modCookieNotice/setByCookie', ctx);
+export default async (context) => {
+    if (!(process.server)) {
+        await context.store.dispatch('modCart/setByForage', context);
+        await context.store.dispatch('modCart/setSwtcByCookie', context);
+        await context.store.dispatch('modApiCustomer/setByCookie', context);
+        await context.store.dispatch('modApiPayment/setOrderByCookie', context);
+        await context.store.dispatch('modWishlist/setByForage', context);
+        await context.store.dispatch('modCookieNotice/setByCookie', context);
+    }
 };
