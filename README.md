@@ -15,11 +15,33 @@
 
 OS X & Linux:
 
+1. Install [NuxtJS](https://nuxtjs.org/guides/get-started/installation)
+2. Install hubble NuxtJs Module 
 ```sh
-git clone git@github.com:hubblecommerce/hubble-frontend-pwa.git
-cd hubble-frontend-pwa
-cp .env_example .env
-npm install 
+npm i @hubblecommerce/hubble
+```
+3. Add module to nuxt.config.js
+```js
+buildModules: [
+    ['@hubblecommerce/hubble']
+],
+
+/*
+ ** hubble module configuration
+ */
+hubble: {
+    apiType: process.env.API_TYPE
+},
+```
+4. Edit configs in .env file
+```sh
+# API
+# Define api type:
+# possible source parameters are:
+# api = hubble Api based on elastic search
+# sw = official Shopware 6 API (headless Channel)
+API_TYPE          = 'sw | api'
+API_SW_ACCESS_KEY = ''
 ```
 
 ## Development setup
