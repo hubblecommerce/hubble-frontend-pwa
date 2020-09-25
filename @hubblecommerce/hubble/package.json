@@ -1,6 +1,6 @@
 {
     "name": "@hubblecommerce/hubble",
-    "version": "1.0.2",
+    "version": "1.1.0",
     "description": "hubble core",
     "author": "hubble commerce",
     "license": "MIT",
@@ -12,8 +12,8 @@
         "postinstall": "node ./scripts/post-install.js"
     },
     "dependencies": {
-        "@hubblecommerce/amazon-pay": "file:../amazon-pay",
-        "@hubblecommerce/payone": "file:../payone",
+        "@hubblecommerce/amazon-pay": "^1.0.0",
+        "@hubblecommerce/payone": "^1.0.0",
         "@nuxtjs/axios": "^5.8.0",
         "@nuxtjs/recaptcha": "^0.6.1",
         "@nuxtjs/pwa": "^3.0.0-beta.19",
@@ -50,5 +50,21 @@
         "nodemon": "^1.19.4",
         "sass-loader": "^7.3.1",
         "nuxt-purgecss": "^1.0.0"
-    }
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/hubblecommerce/hubble-frontend-pwa/tree/master/%40hubblecommerce/hubble"
+    },
+    "keywords": [
+        "hubble",
+        "hubblecommerce",
+        "PWA",
+        "ecommerce",
+        "shop",
+        "magento",
+        "shopware",
+        "xtc",
+        "frontend",
+        "interface"
+    ]
 }

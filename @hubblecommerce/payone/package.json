@@ -1,14 +1,26 @@
 {
-    "name": "@hubblecommerce/payone",
-    "version": "1.0.0",
-    "description": "hubble payone integration",
-    "author": "hubble commerce",
-    "license": "MIT",
-    "main": "module.js",
-    "publishConfig": {
-        "access": "public"
-    },
-    "dependencies": {
-        "js-md5": "^0.7.3"
-    }
+  "name": "@hubblecommerce/payone",
+  "version": "1.0.0",
+  "description": "hubble payone integration",
+  "author": "hubble commerce",
+  "license": "MIT",
+  "main": "module.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "js-md5": "^0.7.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hubblecommerce/hubble-frontend-pwa/tree/master/%40hubblecommerce/payone"
+  },
+  "keywords": [
+    "hubble",
+    "hubblecommerce",
+    "checkout",
+    "payment",
+    "paymentmodule",
+    "payone"
+  ]
 }

@@ -1,15 +1,27 @@
 {
-    "name": "@hubblecommerce/amazon-pay",
-    "version": "1.0.0",
-    "description": "hubble amazon pay integration",
-    "author": "hubble commerce",
-    "license": "MIT",
-    "main": "module.js",
-    "publishConfig": {
-        "access": "public"
-    },
-    "dependencies": {
-        "xml-js": "^1.6.11",
-        "crypto-js": "^3.1.9-1"
-    }
+  "name": "@hubblecommerce/amazon-pay",
+  "version": "1.0.0",
+  "description": "hubble amazon pay integration",
+  "author": "hubble commerce",
+  "license": "MIT",
+  "main": "module.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "xml-js": "^1.6.11",
+    "crypto-js": "^3.1.9-1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hubblecommerce/hubble-frontend-pwa/tree/master/%40hubblecommerce/amazon-pay"
+  },
+  "keywords": [
+    "hubble",
+    "hubblecommerce",
+    "checkout",
+    "paymentmodule",
+    "amazon",
+    "amazonpay"
+  ]
 }
