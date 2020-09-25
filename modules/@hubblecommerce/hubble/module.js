@@ -115,6 +115,7 @@ export default async function (moduleOptions) {
      * TODO: https://nuxtjs.org/blog/moving-from-nuxtjs-dotenv-to-runtime-config/
      */
     this.requireModule(['@nuxtjs/dotenv', defu(this.options.dotenv, defaultDotEnv)]);
+    this.requireModule(['nuxt-purgecss']);
 
     // Override module options
     defaultModules.forEach((defaultModule) => {
