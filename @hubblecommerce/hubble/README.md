@@ -1,5 +1,5 @@
 # Next Generation Shopfrontend
-> Hoch performante Progressive Web App für jede gängige E-Commerce Plattform auf Basis von [Nuxt.js](https://nuxtjs.org/).
+> Hochperformante Progressive Web App für jede gängige E-Commerce Plattform auf Basis von [Nuxt.js](https://nuxtjs.org/).
 
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/hubblecommerce/hubble-frontend-pwa)
 ![GitHub contributors](https://img.shields.io/github/contributors/hubblecommerce/hubble-frontend-pwa)
