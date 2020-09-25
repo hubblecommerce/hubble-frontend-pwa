@@ -115,7 +115,7 @@ const sign = function (data, key) {
     return hash.toString(CryptoJS.enc.Base64);
 };
 
-export default {
-    path: '/api/amazon-calc-signature-auth-and-capture',
-    handler: response,
+module.exports = {
+  path: '/api/amazon-calc-signature-auth-and-capture',
+  handler: response,
 };

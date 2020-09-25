@@ -2,7 +2,7 @@ require('dotenv').config();
 const convert = require('xml-js');
 const axios = require('axios');
 const CryptoJS = require('crypto-js');
-import { logger } from '@hubblecommerce/hubble/core/utils/logger';
+const logger = require('@hubblecommerce/hubble/core/utils/logger');
 
 // Set sandboxmode to url
 let sandboxMode = '';
@@ -32,21 +32,21 @@ const response = function (req, res, next) {
 
     // Getting the MerchantID/sellerID, MWS secret Key, MWS Access Key from the configuration file
     if (typeof process.env.AMAZON_PAY_MERCHANT_ID == 'undefined' || process.env.AMAZON_PAY_MERCHANT_ID === '') {
-        logger.error('merchantId not set in the configuration file');
+        logger.logger.error('merchantId not set in the configuration file');
         res.writeHead(401);
         res.end('merchantId not set in the configuration file');
         return;
     }
 
     if (typeof process.env.AMAZON_PAY_ACCESS_KEY == 'undefined' || process.env.AMAZON_PAY_ACCESS_KEY === '') {
-        logger.error('accessKey not set in the configuration file');
+        logger.logger.error('accessKey not set in the configuration file');
         res.writeHead(401);
         res.end('accessKey not set in the configuration file');
         return;
     }
 
     if (typeof process.env.AMAZON_PAY_SECRET_KEY == 'undefined' || process.env.AMAZON_PAY_SECRET_KEY === '') {
-        logger.error('secretKey not set in the configuration file');
+        logger.logger.error('secretKey not set in the configuration file');
         res.writeHead(401);
         res.end('secretKey not set in the configuration file');
         return;
@@ -100,7 +100,7 @@ const response = function (req, res, next) {
         })
         .catch(error => {
             // Write error response to log file
-            logger.error('Amazon API Call Error: %s', error.response);
+            logger.logger.error('Amazon API Call Error: %s', error.response);
 
             // Write status from api to response trigger catch of axios call
             res.writeHead(error.response.status);
@@ -144,7 +144,7 @@ const sign = function (data, key) {
     return hash.toString(CryptoJS.enc.Base64);
 };
 
-export default {
-    path: '/api/amazon-get-order-reference-details',
-    handler: response,
+module.exports = {
+  path: '/api/amazon-get-order-reference-details',
+  handler: response,
 };

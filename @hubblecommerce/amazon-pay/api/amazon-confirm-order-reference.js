@@ -2,7 +2,7 @@ require('dotenv').config();
 const convert = require('xml-js');
 const axios = require('axios');
 const CryptoJS = require('crypto-js');
-import { logger } from '@hubblecommerce/hubble/core/utils/logger';
+const logger = require('@hubblecommerce/hubble/core/utils/logger');
 
 // Set sandboxmode to url
 let sandboxMode = '';
@@ -97,7 +97,7 @@ const response = function (req, res, next) {
         })
         .catch(error => {
             // Write error response to log file
-            logger.error('Amazon API Call Error: %s', error.response);
+            logger.logger.error('Amazon API Call Error: %s', error.response);
 
             // Write status from api to response trigger catch of axios call
             res.writeHead(error.response.status);
@@ -141,7 +141,7 @@ const sign = function (data, key) {
     return hash.toString(CryptoJS.enc.Base64);
 };
 
-export default {
-    path: '/api/amazon-confirm-order-reference',
-    handler: response,
+module.exports = {
+  path: '/api/amazon-confirm-order-reference',
+  handler: response,
 };

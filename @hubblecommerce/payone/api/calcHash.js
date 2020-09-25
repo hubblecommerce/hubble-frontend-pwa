@@ -1,6 +1,6 @@
 require('dotenv').config();
-import { logger } from '@hubblecommerce/hubble/core/utils/logger';
-import md5 from 'js-md5';
+const logger = require('@hubblecommerce/hubble/core/utils/logger');
+const md5 = require('js-md5');
 
 const response = function (req, res, next) {
     // Only accept GET requests
@@ -28,7 +28,7 @@ const response = function (req, res, next) {
             });
         })
         .catch(response => {
-            logger.error('Could not build sorted request string, check your parameters ' + response);
+            logger.logger.error('Could not build sorted request string, check your parameters ' + response);
             res.writeHead(400);
             res.end('Could not build sorted request string, check your parameters ' + response);
             return;
@@ -101,7 +101,7 @@ const hashString = function (string) {
     });
 };
 
-export default {
-    path: '/api/calc-hash',
-    handler: response,
+module.exports = {
+  path: '/api/calc-hash',
+  handler: response,
 };
