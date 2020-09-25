@@ -100,7 +100,10 @@ export default async function (moduleOptions) {
     this.options.build.babel.plugins = this.options.build.babel.hasOwnProperty('plugins') ? this.options.build.babel.plugins : defaultBuildBabelConfig.plugins;
     this.options.build.babel.presets = this.options.build.babel.hasOwnProperty('presets') ? this.options.build.babel.presets : defaultBuildBabelConfig.presets;
     this.options.build.extractCSS = defaultBuildExtractCSSConfig;
-    this.options.build.transpile = this.options.build.transpile.length > 0 ? this.options.build.transpile : ['@hubblecommerce/hubble', 'vee-validate/dist/rules'];
+    this.options.build.transpile = this.options.build.transpile.length > 0 ? this.options.build.transpile : ['@hubblecommerce/hubble', '@hubblecommerce/payone', '@hubblecommerce/amazon-pay', 'vee-validate/dist/rules'];
+
+    // Deactivate auto import function by nuxt because hubble components are already dynamic imported
+    this.options.components = false;
 
     // Remove preload links to reduce time to first meaningful paint
     // https://cmty.app/nuxt/nuxt.js/issues/c6837
