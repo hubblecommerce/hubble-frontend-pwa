@@ -64,23 +64,20 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex';
-import Breadcrumbs from '../utils/Breadcrumbs';
-import TextExcerpt from '../utils/TextExcerpt';
-import ProductListingToolbar from './ProductListingToolbar';
 import _ from 'lodash';
 
 export default {
     name: 'CategoryListing',
 
     components: {
-        Breadcrumbs,
-        ProductListingToolbar,
-        TextExcerpt,
         ProductListing: () => import('./ProductListing'),
         Pagination: () => import('./toolbar/Pagination'),
         GTMDataLayer: () => import('../utils/GTMDataLayer'),
         swSection: () => import('../swComponents/section.vue'),
         errorNoItems: () => import('../error/noItems.vue'),
+        Breadcrumbs: () => import('../utils/Breadcrumbs'),
+        TextExcerpt: () => import('../utils/TextExcerpt'),
+        ProductListingToolbar: () => import('./ProductListingToolbar'),
     },
 
     data() {
