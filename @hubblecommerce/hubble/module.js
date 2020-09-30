@@ -30,7 +30,7 @@ const asyncCopyApiTypeDirs = async (sourceDirs, targetDir, apiType) => {
 };
 const getPlugins = dir => globby([`${dir}/*.js`]);
 
-const dirBlacklist = ['cypress', 'modules', 'node_modules', 'logs', '.hubble', '.nuxt', '.idea'];
+const dirBlacklist = ['cypress', 'node_modules', 'logs', '.hubble', '.nuxt', '.idea'];
 const apiTypeDirs = ['anonymous-middleware', 'middleware', 'plugins', 'store'];
 const targetDirName = '.hubble/';
 
@@ -177,18 +177,39 @@ export default async function (moduleOptions) {
         });
     });
 
+    /*
+     * File watcher for dev purposes
+     */
     const toTargetPath = (oldPath) => path.resolve(oldPath.replace(rootDir, targetDir));
 
     const excludedDirectories = [...dirBlacklist.map((__blacklistedDir) => `${rootDir}/${__blacklistedDir}/**`)];
 
     chokidar.watch(`${rootDir}`, { ignoreInitial: true, ignored: excludedDirectories })
         .on('all', async (event, filePath) => {
-            let newDestination = toTargetPath(filePath);
+            let newDestination = '';
 
-            const hasApiSpecificSubfolders = apiTypeDirs.filter((__apiTypeDir) => filePath.includes(__apiTypeDir));
+            // Build file destination for local modules mode (Contribution Setup)
+            if(filePath.includes('/modules/')) {
+                let moduleCoreDir = filePath.match(/@hubblecommerce\/hubble\/core\//);
+
+                if(moduleCoreDir != null) {
+                    let relativePath = filePath.substr(moduleCoreDir[0].length + moduleCoreDir.index);
+
+                    newDestination = path.join(targetDir, relativePath);
+                }
+            } else {
+                newDestination = toTargetPath(filePath);
+            }
+
+            if(newDestination === '') {
+                return;
+            }
+
+            // Check for api specific dirs and resolve them
+            const hasApiSpecificSubfolders = apiTypeDirs.filter((__apiTypeDir) => newDestination.includes(__apiTypeDir));
             if (hasApiSpecificSubfolders.length !== 0) {
-                if (filePath.includes(`/${process.env.API_TYPE}/`)) {
-                    newDestination = toTargetPath(filePath.replace(`/${process.env.API_TYPE}/`, '/'));
+                if (newDestination.includes(`/${process.env.API_TYPE}/`)) {
+                    newDestination = newDestination.replace(`/${process.env.API_TYPE}/`, '/');
                 } else {
                     return;
                 }
