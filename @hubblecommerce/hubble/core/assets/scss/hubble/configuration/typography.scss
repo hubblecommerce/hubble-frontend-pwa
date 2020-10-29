@@ -1,184 +1,130 @@
-/* Headlines */
-$font-size-h1: 18px;
-$line-height-h1: 21px;
+@mixin font-size($fs-map, $fs-breakpoints: $breakpoints) {
+  @each $fs-breakpoint, $fs-font-size in $fs-map {
+    @if $fs-breakpoint == null {
+      @include make-font-size($fs-font-size);
+    }
+    @else {
+      // If $fs-font-size is a key that exists in
+      // $fs-breakpoints, use the value
+      @if map-has-key($fs-breakpoints, $fs-breakpoint) {
+        $fs-breakpoint: map-get($fs-breakpoints, $fs-breakpoint);
+      }
+      @media screen and (min-width: $fs-breakpoint) {
+        @include make-font-size($fs-font-size);
+      }
+    }
+  }
+}
 
-$font-size-h2: 18px;
-$line-height-h2: 21px;
+// Utility function for mixin font-size
+@mixin make-font-size($fs-font-size) {
+  // If $fs-font-size is a list, include
+  // both font-size and line-height
+  @if type-of($fs-font-size) == "list" {
+    font-size: nth($fs-font-size, 1);
+    @if (length($fs-font-size) > 1) {
+      line-height: nth($fs-font-size, 2);
+    }
+  }
+  @else {
+    font-size: $fs-font-size;
+  }
+}
 
-$font-size-h3: 18px;
-$line-height-h3: 21px;
-
-$font-size-h4: 16px;
-$line-height-h4: 21px;
-
-/* Text */
-$font-size-body: 14px;
-$line-height-body: 22px;
-
-$font-size-body-small: 13px;
-$line-height-body-small: 21px;
-
-$font-size-subtitle: 16px;
-$font-size-subtitle-small: 14px;
-
-$font-size-caption: 13px;
-$font-size-button: 16px;
-
-/* Common */
+/* Font Weight */
 $font-weight-bold: 700;
 $font-weight-medium: 500;
 $font-weight-regular: 400;
 $font-weight-light: 300;
 
-p {
-  font-size: $font-size-body;
-  line-height: $line-height-body;
-  font-weight: $font-weight-regular;
-}
+/* Font Size + Line Height */
+// Usage:
+// define variable of $breakpoints or set an individual breakpoint e.g. 600px
+// first parameter is font-size, second is line-height
+$text-font-sizes: (
+  null : (14px, 21px),
+  tablet : (16px, 24px),
+  desktop : (16px, 24px)
+);
 
-h1 {
-  font-size: $font-size-h1;
-  line-height: $line-height-h1;
-  font-weight: $font-weight-bold;
-}
+$small-text-font-sizes: (
+  null : (13px, 21px),
+  tablet : (14px, 22px),
+  desktop : (14px, 22px)
+);
 
-h2 {
-  font-size: $font-size-h2;
-  line-height: $line-height-h2;
-  font-weight: $font-weight-bold;
-}
+$h1-font-sizes: (
+  null : (21px, 24px),
+  tablet : (31px, 36px),
+  desktop : (31px, 36px)
+);
 
-h3 {
-  font-size: $font-size-h3;
-  line-height: $line-height-h3;
-  font-weight: $font-weight-regular;
-}
+$h2-font-sizes: (
+  null : (21px, 24px),
+  tablet : (24px, 28px),
+  desktop : (24px, 28px)
+);
 
-h4 {
-  font-size: $font-size-h4;
-  line-height: $line-height-h4;
-  font-weight: $font-weight-regular;
-}
+$h3-font-sizes: (
+  null : (20px, 23px),
+  tablet : (22px, 26px),
+  desktop : (22px, 26px)
+);
 
-.headline-1 {
-  font-size: $font-size-h1;
-  line-height: $line-height-h1;
-  font-weight: $font-weight-bold;
-}
+$h4-font-sizes: (
+  null : (18px, 22px),
+  tablet : (20px, 23px),
+  desktop : (20px, 23px)
+);
 
-.headline-2 {
-  font-size: $font-size-h2;
-  line-height: $line-height-h2;
-  font-weight: $font-weight-bold;
-}
+$h5-font-sizes: (
+  null : (16px, 19px),
+  tablet : (18px, 22px),
+  desktop : (18px, 22px)
+);
 
-.headline-3 {
-  font-size: $font-size-h3;
-  line-height: $line-height-h3;
-  font-weight: $font-weight-bold;
-}
+$h6-font-sizes: (
+  null : (16px, 19px),
+  tablet : (18px, 22px),
+  desktop : (18px, 22px)
+);
 
-.headline-4 {
-  font-size: $font-size-h4;
-  line-height: $line-height-h4;
-  font-weight: $font-weight-bold;
-}
-
-.text {
-  font-size: $font-size-body;
-  line-height: $line-height-body;
+p, .text {
+  @include font-size($text-font-sizes);
   font-weight: $font-weight-regular;
 }
 
 .text-small {
-  font-size: $font-size-body-small;
-  line-height: $line-height-body-small;
+  @include font-size($small-text-font-sizes);
   font-weight: $font-weight-regular;
 }
 
-/* From Tablet */
-@media(min-width: 768px) {
-  $font-size-h1: 22px;
-  $font-size-h2: 21px;
-
-  $font-size-body-small: 14px;
-  $line-height-body-small: 22px;
-
-  h1 {
-    font-size: $font-size-h1;
-    line-height: $line-height-h1;
-    font-weight: $font-weight-bold;
-  }
-
-  h2 {
-    font-size: $font-size-h2;
-    line-height: $line-height-h2;
-    font-weight: $font-weight-bold;
-  }
-
-  .headline-1 {
-    font-size: $font-size-h1;
-    line-height: $line-height-h1;
-    font-weight: $font-weight-bold;
-  }
-
-  .headline-2 {
-    font-size: $font-size-h2;
-    line-height: $line-height-h2;
-    font-weight: $font-weight-bold;
-  }
-
-  .text-small {
-    font-size: $font-size-body-small;
-    line-height: $line-height-body-small;
-    font-weight: $font-weight-regular;
-  }
+h1, .headline-1 {
+  @include font-size($h1-font-sizes);
+  font-weight: $font-weight-regular;
 }
 
-/* From Desktop */
-@media(min-width: 1024px) {
-  $font-size-h1: 22px;
-  $font-size-h2: 21px;
+h2, .headline-2 {
+  @include font-size($h2-font-sizes);
+  font-weight: $font-weight-regular;
+}
 
-  $line-height-h1: 31px;
-  $line-height-h2: 29px;
+h3, .headline-3 {
+  @include font-size($h3-font-sizes);
+  font-weight: $font-weight-regular;
+}
 
-  $font-size-body: 16px;
-  $line-height-body: 26px;
+h4, .headline-4 {
+  @include font-size($h4-font-sizes);
+  font-weight: $font-weight-regular;
+}
 
-  h1 {
-    font-size: $font-size-h1;
-    line-height: $line-height-h1;
-    font-weight: $font-weight-bold;
-  }
+h5, .headline-5 {
+  @include font-size($h5-font-sizes);
+  font-weight: $font-weight-bold;
+}
 
-  h2 {
-    font-size: $font-size-h2;
-    line-height: $line-height-h2;
-    font-weight: $font-weight-bold;
-  }
-
-  .headline-1 {
-    font-size: $font-size-h1;
-    line-height: $line-height-h1;
-    font-weight: $font-weight-bold;
-  }
-
-  .headline-2 {
-    font-size: $font-size-h2;
-    line-height: $line-height-h2;
-    font-weight: $font-weight-bold;
-  }
-
-  p {
-    font-size: $font-size-body;
-    line-height: $line-height-body;
-    font-weight: $font-weight-regular;
-  }
-
-  .text {
-    font-size: $font-size-body;
-    line-height: $line-height-body;
-    font-weight: $font-weight-regular;
-  }
+h6, .headline-6 {
+  @include font-size($h6-font-sizes);
+  font-weight: $font-weight-bold;
 }

@@ -1,17 +1,34 @@
-$primary: #880E4F !default;
-$secondary: #EAE9EA !default;
-$accent: #880E4F !default;
-$highlight: #BD1A20 !default;
-$background: #fff !default;
-$background-light: #F8F8F8 !default;
-$border-color: #EAE9EA !default;
-$text-primary: #2C2E31 !default;
-$text-primary-on-background: #2C2E31 !default;
-$available-accent: #76BD1A !default;
-$font-family: 'Lato', Helvetica, Arial, sans-serif !default;
-$text-light: #535358 !default;
-$header-height-desktop: 80px !default;
-$border-radius: 0 !default;
+$error-accent: #721c25;
+$success-accent: #2db96c;
+$info-accent: #0b5460;
+$warning-accent: #856404;
 
+$green: #5CDB95;
+$blue: #05386B;
+$gold: #D4A76F;
+$darker-gray: #3E3E4D;
+$dark-gray: #94949E;
+$gray: #E7E8E9;
+$light-gray: #F7F7FA;
+$white: #FFFFFF;
+
+$primary: $green !default;
+$secondary: $blue !default;
+$accent: $green !default;
+$background: $white !default;
+$background-light: $light-gray !default;
+$border-color: $gray !default;
+$text-primary: $darker-gray !default;
+$text-light: $dark-gray !default;
+
+$font-family: 'Karla', sans-serif !default;
+
+$border-radius: 0 !default;
+$header-height-desktop: 80px !default;
 $base-padding: 10px !default;
 $base-padding-md: 20px !default;
+
+$breakpoints: (
+  tablet : 768px,
+  desktop : 1024px
+);

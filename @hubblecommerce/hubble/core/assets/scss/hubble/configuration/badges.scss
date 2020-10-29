@@ -5,7 +5,7 @@
   .badge {
     display: block !important;
     text-transform: uppercase;
-    font-size: $font-size-body;
+    @include font-size($text-font-sizes);
     font-weight: $font-weight-bold;
     padding: 5px 0 5px 10px;
     @include border-radius(0 2px 2px 0px !important);

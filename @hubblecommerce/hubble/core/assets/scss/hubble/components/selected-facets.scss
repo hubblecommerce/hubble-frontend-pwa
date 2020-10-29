@@ -11,8 +11,7 @@
     }
 
     .reset-label {
-        font-size: $font-size-body;
-        line-height: 17px;
+        @include font-size($text-font-sizes);
         text-decoration: underline;
         font-weight: $font-weight-bold;
         margin: 0 0 10px 0;

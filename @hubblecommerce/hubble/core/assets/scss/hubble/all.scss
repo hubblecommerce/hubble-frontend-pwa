@@ -1,17 +1,15 @@
 // Configuration, Variables and Mixins
 @import "configuration/reset"; // Reset styles for Crossbrowser support
-@import "configuration/theme"; // Global theme scss
-@import "configuration/colors"; // Global colors scss
-@import "configuration/typography"; // Global typography scss
+@import "configuration/theme"; // Global theme variables
+@import "configuration/typography"; // Global typography
 @import "configuration/bootstrap-essentials"; // Useful classes and mixins from Bootstrap
-@import "configuration/global"; // Global global scss
-@import "configuration/fonts"; // Global fonts scss
-@import "configuration/buttons"; // Global buttons scss
-@import "configuration/badges"; // Global badges scss
-@import "configuration/table"; // Global table scss
-@import "configuration/icon-set"; // Global icon-set scss
-@import "configuration/elevation"; // Global elevation classes scss
-@import "configuration/links"; // Global link classes scss
+@import "configuration/global"; // Global styles for html standard elements
+@import "configuration/fonts"; // Global fonts
+@import "configuration/buttons"; // Global buttons
+@import "configuration/badges"; // Global badges
+@import "configuration/table"; // Global table
+@import "configuration/icon-set"; // Global icon-set
+@import "configuration/elevation"; // Global elevation classes
 
 // Components
 @import "components/view-product";

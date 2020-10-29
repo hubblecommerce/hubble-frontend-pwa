@@ -20,7 +20,7 @@
     position: relative;
     z-index: 1;
     cursor: pointer;
-    font-size: $font-size-button;
+    font-size: 16px;
     font-weight: $font-weight-medium;
     text-transform: uppercase;
     letter-spacing: .4px;
@@ -178,7 +178,7 @@
 
     .trigger {
         padding: 12px !important;
-        font-size: $font-size-button;
+        font-size: 16px;
         color: $accent !important;
         font-weight: $font-weight-medium;
         text-transform: none;

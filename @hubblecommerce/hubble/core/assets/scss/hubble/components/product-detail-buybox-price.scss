@@ -5,7 +5,7 @@
     font-weight: 600;
   }
   .old-price {
-    font-size: $font-size-caption;
+    @include font-size($text-font-sizes);
     text-decoration: line-through;
 
     & + .sale-price {
@@ -48,8 +48,7 @@
 }
 
 .sku {
-  font-size: $font-size-caption;
-  line-height: 21px;
+  @include font-size($text-font-sizes);
   margin-bottom: 0;
 }
 

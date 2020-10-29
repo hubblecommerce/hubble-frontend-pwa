@@ -21,10 +21,6 @@ $megamenu-columns: 5;
             &.active {
                 border-bottom: 2px solid $primary;
             }
-
-            &:nth-child(6) {
-                color: $highlight;
-            }
         }
     }
 

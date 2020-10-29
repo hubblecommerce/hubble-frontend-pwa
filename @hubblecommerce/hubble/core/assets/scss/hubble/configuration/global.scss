@@ -16,6 +16,7 @@ body {
   overflow-x: hidden;
 }
 
+/* Links */
 a {
   color: $text-primary;
 }
@@ -26,6 +27,31 @@ a:hover, a:focus {
 
 a, a:hover, a:focus {
   text-decoration: none;
+}
+
+.link-primary {
+  cursor: pointer;
+  color: $blue;
+  text-decoration: underline;
+
+  &:hover {
+    color: $blue;
+    text-decoration: none;
+  }
+
+  &:focus {
+    color: $blue;
+    text-decoration: none;
+  }
+}
+
+.hidden-link-name {
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 /* nuxt.js specific */

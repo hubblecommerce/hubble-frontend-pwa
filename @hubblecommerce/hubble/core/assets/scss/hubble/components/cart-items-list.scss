@@ -29,7 +29,7 @@
         }
 
         .product-name {
-            font-size: $font-size-caption;
+            @include font-size($text-font-sizes);
             margin-bottom: 3px;
         }
 
@@ -39,7 +39,7 @@
 
         .selected-variants {
             list-style: none;
-            font-size: $font-size-body;
+            @include font-size($text-font-sizes);
         }
 
         .product-price, .product-qty, .separator {
@@ -86,16 +86,6 @@
             .price-wrp {
                 margin-left: auto;
                 width: 100%;
-
-                //.qty {
-                //    font-size: $font-size-body;
-                //}
-                //
-                //.product-price {
-                //    min-width: 70px;
-                //    display: inline-block;
-                //    text-align: right;
-                //}
             }
         }
     }

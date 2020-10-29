@@ -70,8 +70,7 @@
     }
 
     .unit-price-wrp {
-      font-size: $font-size-body;
-      line-height: $line-height-body;
+      @include font-size($text-font-sizes);
       color: $text-light;
     }
   }
@@ -97,8 +96,7 @@
   }
 
   .manufacturer {
-    font-size: $font-size-body;
-    line-height: 17px;
+    @include font-size($text-font-sizes);
     font-weight: $font-weight-bold;
     margin-bottom: 5px;
   }
@@ -109,8 +107,7 @@
   }
 
   .product-price {
-    font-size: 18px;
-    line-height: $line-height-body;
+    @include font-size($text-font-sizes);
     font-weight: $font-weight-bold;
     color: $text-primary;
     margin-bottom: 10px;

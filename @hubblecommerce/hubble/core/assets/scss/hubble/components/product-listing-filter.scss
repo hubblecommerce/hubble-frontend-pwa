@@ -111,8 +111,7 @@
 
     .toggle {
       height: 42px;
-      font-size: $font-size-body;
-      line-height: 17px;
+      @include font-size($text-font-sizes);
       background-color: rgba(228, 228, 228, .3);
       position: relative;
 
@@ -129,7 +128,7 @@
       display: flex;
       justify-content: space-between;
       border-bottom: 1px solid $border-color;
-      font-size: $font-size-body;
+      @include font-size($text-font-sizes);
       padding: 10px 15px;
 
       .selected-facets {

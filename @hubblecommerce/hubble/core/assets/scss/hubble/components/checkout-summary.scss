@@ -10,7 +10,7 @@
         a {
             text-decoration: underline;
             font-weight: $font-weight-bold;
-            font-size: $font-size-body;
+            @include font-size($text-font-sizes);
         }
     }
 
@@ -34,7 +34,7 @@
         a {
             text-decoration: underline;
             font-weight: $font-weight-bold;
-            font-size: $font-size-body;
+            @include font-size($text-font-sizes);
         }
     }
 

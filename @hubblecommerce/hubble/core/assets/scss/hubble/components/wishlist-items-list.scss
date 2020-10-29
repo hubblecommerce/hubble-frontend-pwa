@@ -29,11 +29,11 @@
   }
 
   .product-name {
-    font-size: $font-size-caption;
+    @include font-size($text-font-sizes);
   }
 
   .selected-variants {
-    font-size: $font-size-body;
+    @include font-size($text-font-sizes);
     margin-bottom: 5px;
   }
 
