@@ -3,35 +3,52 @@ Input Example:
 
 Without Validation:
 <div class="hbl-input-group input-icon">
-  <input type="text" placeholder=" " required>
-  <span class="highlight"></span>
-  <span class="bar"></span>
-  <label>Name</label>
-  <i class="icon icon-optional"></i>
+    <input type="text" placeholder=" " required />
+    <span class="highlight"></span>
+    <span class="bar"></span>
+    <label>Name</label>
+    <i class="icon icon-optional"></i>
 </div>
 
 With Validation:
 <validation-provider v-slot="{ errors }" rules="rule1|rule2" mode="passive" tag="div" class="hbl-input-group input-icon">
-  <input type="text" name="name" :class="{invalid: errors.length > 0}" placeholder=" " required>
-  <label>Name></label>
-  <i class="icon icon-optional"></i>
-  <div class="validation-msg" v-text="$t(errors[0])" />
+    <input type="text" name="name" :class="{invalid: errors.length > 0}" placeholder=" " required>
+    <label :class="{invalid: errors.length > 0}">Name></label>
+    <i class="icon icon-optional"></i>
+    <div class="validation-msg" v-text="$t(errors[0])" />
 </validation-provider>
+
+Textarea Example:
+
+<div class="hbl-input-group input-icon">
+    <textarea id="input5" placeholder="Textarea" rows="4" cols="50" required />
+    <label for="input5">Invalid Input *</label>
+    <i class="icon icon-optional"></i>
+</div>
 */
 
-$hbl-input-border: 1px solid $border-color;
-$hbl-input-background: $background-light;
-$hbl-input-font-size: 14px;
-$hbl-input-padding: 7px;
+$hbl-input-border: 2px solid $border-color;
+$hbl-input-background: $white;
+$hbl-input-font-size: 16px;
+$hbl-input-padding: 10px;
+$hbl-input-line-height: 19px;
+
+$hbl-input-focus-border: 2px solid $darker-gray;
+
 $hbl-input-label-color: $text-light;
-$hbl-input-icon-color: $primary;
-$hbl-input-highlight-color: $primary;
+$hbl-input-label-focus-height: 14px;
+$hbl-input-label-focus-font-size: 12px;
+$hbl-input-label-focus-color: $text-primary;
+
 $hbl-input-icon-size: 19px;
+$hbl-input-icon-color: $text-primary;
+
+$hbl-input-highlight-color: $primary;
 
 /* form starting stylings ------------------------------- */
 .hbl-input-group {
     position: relative;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 
     input, textarea {
         background: $hbl-input-background;
@@ -40,14 +57,16 @@ $hbl-input-icon-size: 19px;
         display: block;
         width: 100%;
         border: $hbl-input-border;
+        line-height: $hbl-input-line-height;
 
         &.invalid {
-            border-bottom: 1px solid red;
+            border-color: $error-accent !important;
         }
     }
 
     input:focus, textarea:focus {
-        outline: 1px solid $hbl-input-label-color;
+        outline: none;
+        border: $hbl-input-focus-border;
     }
 
     /* Icons ======================================= */
@@ -59,7 +78,8 @@ $hbl-input-icon-size: 19px;
 
     .icon {
         position: absolute;
-        top: 10px;
+        top: 0;
+        bottom: 0;
         margin: auto;
         right: $hbl-input-padding;
         width: $hbl-input-icon-size;
@@ -77,10 +97,18 @@ $hbl-input-icon-size: 19px;
         position: absolute;
         pointer-events: none;
         left: $hbl-input-padding;
-        top: $hbl-input-padding;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        height: $hbl-input-line-height;
+        line-height: $hbl-input-line-height;
         transition: 0.2s ease all;
         -moz-transition: 0.2s ease all;
         -webkit-transition: 0.2s ease all;
+
+        &.invalid {
+            color: $error-accent !important;
+        }
     }
 
     textarea + label {
@@ -89,14 +117,15 @@ $hbl-input-icon-size: 19px;
 
     /* active state */
     input:focus ~ label, input:not(:placeholder-shown) ~ label {
-        top: 0;
-        font-size: 10px;
-        line-height: 14px;
-        color: rgba(0, 0, 0, 0.6);
-    }
+        top: -($hbl-input-label-focus-height / 2);
+        height: $hbl-input-label-focus-height;
+        line-height: $hbl-input-label-focus-height;
+        margin: 0;
 
-    input:focus ~ label {
-        color: $hbl-input-highlight-color !important;
+        font-size: $hbl-input-label-focus-font-size;
+        background: $hbl-input-background;
+        color: $hbl-input-label-focus-color;
+        padding: 0 5px;
     }
 
     /* BOTTOM BARS ================================= */
@@ -159,11 +188,13 @@ $hbl-input-icon-size: 19px;
         from { background:$hbl-input-highlight-color; }
         to 	{ width:0; background:transparent; }
     }
-}
 
-.validation-msg {
-    width: 100%;
-    font-size: 12px;
-    color: red;
-    line-height: 18px;
+    .validation-msg {
+        position: absolute;
+        margin: 5px;
+        width: 100%;
+        font-size: 12px;
+        color: $error-accent;
+        line-height: 12px;
+    }
 }

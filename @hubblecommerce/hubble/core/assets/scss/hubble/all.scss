@@ -10,6 +10,9 @@
 @import "configuration/table"; // Global table
 @import "configuration/icon-set"; // Global icon-set
 @import "configuration/elevation"; // Global elevation classes
+@import "configuration/input"; // Global input text & textarea styles
+@import "configuration/select"; // Global input select styles
+@import "configuration/checkbox"; // Global checkbox & radio button styles
 
 // Components
 @import "components/view-product";
@@ -28,10 +31,8 @@
 @import "components/the-footer";
 @import "components/tiny-slider";
 @import "components/the-language-switch";
-@import "components/input";
 @import "components/tabs";
 @import "components/transition-expand-layer";
-@import "components/select";
 @import "components/scroll-to-top";
 @import "components/product-options";
 @import "components/flash-message";
@@ -42,7 +43,6 @@
 @import "components/view-category";
 @import "components/breadcrumbs";
 @import "components/text-excerpt";
-@import "components/checkbox";
 @import "components/pagination";
 @import "components/product-detail-gallery";
 @import "components/product-detail-buybox";
