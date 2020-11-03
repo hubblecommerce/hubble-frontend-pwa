@@ -1,10 +1,9 @@
 <template>
     <div class="flash-messages-wrp">
         <transition-group name="flash">
-            <span v-for="messageObject in messagesToDisplay" :key="messageObject.id" class="flashMessageContainer">
+            <span v-for="messageObject in messagesToDisplay" :key="messageObject.id" class="flash-message-container">
                 <flash-message
                     :message-text="messageObject.flashMessage"
-                    class="flashBox"
                     :id-of-text="messageObject.id"
                     :flashtype="messageObject.flashType"
                     :fade-out="fadeOut"

@@ -13,6 +13,9 @@
 @import "configuration/input"; // Global input text & textarea styles
 @import "configuration/select"; // Global input select styles
 @import "configuration/checkbox"; // Global checkbox & radio button styles
+@import "configuration/flash-message"; // Global flash-message styles
+
+
 
 // Components
 @import "components/view-product";
@@ -35,8 +38,6 @@
 @import "components/transition-expand-layer";
 @import "components/scroll-to-top";
 @import "components/product-options";
-@import "components/flash-message";
-@import "components/flash-messages";
 @import "components/switch";
 @import "components/the-mega-menu";
 @import "components/background-blur";

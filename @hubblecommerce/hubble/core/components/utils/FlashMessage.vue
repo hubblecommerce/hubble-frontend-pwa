@@ -1,5 +1,5 @@
 <template>
-    <div v-if="showMessage" :class="flashtype">
+    <div v-if="showMessage" class="flash-box" :class="flashtype">
         <div class="flash-message" v-text="flashMessage" />
         <button class="button-icon close-flash" @click="hideMessage()">
             <i class="icon icon-close" />
