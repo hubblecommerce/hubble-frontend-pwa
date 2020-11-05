@@ -18,6 +18,14 @@ $button-text-transform: uppercase;
 $button-line-height: 17px;
 $button-padding: 13px 25px;
 
+$button-icon-width: 40px;
+$button-icon-height: 40px;
+$button-icon-font-size: 20px;
+$button-icon-padding: 10px;
+$button-icon-background: transparent;
+$button-icon-hover-background: transparent;
+$button-icon-focus-background: transparent;
+
 button {
     position: relative;
     overflow: hidden;
@@ -123,21 +131,25 @@ button {
     }
 
     &.button-icon {
-        min-width: 40px;
-        min-height: 40px;
-        padding: 12px;
+        min-width: $button-icon-width;
+        min-height: $button-icon-height;
+        padding: $button-icon-padding;
         display: flex;
         justify-content: center;
         align-items: center;
         border-radius: 50px;
-        background: transparent;
+        background: $button-icon-background;
+
+        i {
+            font-size: $button-icon-font-size;
+        }
 
         &:hover {
-            background: transparent;
+            background: $button-icon-hover-background;
         }
 
         &:focus {
-            background: transparent;
+            background: $button-icon-focus-background;
         }
     }
 }

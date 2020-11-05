@@ -15,7 +15,7 @@ $hbl-checkbox-background-color: $white;
 
 $hbl-checkbox-size: 20px;
 $hbl-checkbox-margin-bottom: 15px;
-$hbl-checkbox-border-width: 2px;
+$hbl-checkbox-border-width: 1px;
 $hbl-checkbox-border-radius: 4px;
 $hbl-checkmark-width: 12px;
 $hbl-checkbox-label-padding: 10px;
@@ -24,8 +24,8 @@ $hbl-checkbox-label-font-size: 14px;
 $hbl-checkbox-line-height: 17px;
 
 // inside of radiobox
-$hbl-radiobox-width: $hbl-checkbox-size - ($hbl-checkbox-border-width*4);
-
+$hbl-radiobox-inner-width: $hbl-checkbox-size - ($hbl-checkbox-border-width * 2) - 6;
+$hbl-radiobox-inner-position-left: 4px;
 
 .hbl-checkbox {
     position: relative;
@@ -130,9 +130,9 @@ $hbl-radiobox-width: $hbl-checkbox-size - ($hbl-checkbox-border-width*4);
                 content: '';
                 background: $hbl-checkbox-checked-color;
                 position: absolute;
-                width: $hbl-radiobox-width;
-                height: $hbl-radiobox-width;
-                left: $hbl-checkbox-border-width*2;
+                width: $hbl-radiobox-inner-width;
+                height: $hbl-radiobox-inner-width;
+                left: $hbl-radiobox-inner-position-left;
                 border-radius: 100%;
                 transition: all 0.3s ease;
                 opacity: 0;
