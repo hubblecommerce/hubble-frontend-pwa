@@ -20,6 +20,7 @@
                         <div class="overlay-headline" v-text="menuTitle" />
                     </div>
                     <div class="row tree-wrp">
+                        <search-trigger />
                         <mobile-categories :data-item="rootItem" :depth="0" />
                     </div>
                 </div>
@@ -31,10 +32,11 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import MobileCategories from './MobileCategories';
+import SearchTrigger from "./../search/SearchTrigger";
 export default {
     name: 'TheMobileMenu',
 
-    components: { MobileCategories },
+    components: {SearchTrigger, MobileCategories },
 
     props: {
         dataItems: {

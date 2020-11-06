@@ -1,64 +1,77 @@
 <template>
     <div class="search-wrapper">
-        <form id="search_mini_form" action="#">
-            <div class="input-wrp">
-                <div class="hbl-input-group">
-                    <input
-                        id="autocomplete-search"
-                        ref="search"
-                        v-model="query"
-                        :placeholder="$t('Search')"
-                        :disabled="queryIsDisabled"
-                        autocomplete="off"
-                        type="text"
-                        name="term"
-                        value=""
-                        @keyup.esc="clearQuery"
-                        @keydown.enter.prevent="onEnter($event)"
-                        @keydown.down.prevent="changeSelected($event)"
-                        @keydown.up.prevent="changeSelected($event)"
-                        @focus="onFocus"
-                        @blur="onBlur"
-                    />
+        <transition-expand-layer :right-left="true">
+            <div v-if="showSearch" class="transition-expand-wrp">
+                <div class="container expand-content">
+                    <div class="row overlay-header">
+                        <button class="button-icon button-close-menu" @click="toggle()">
+                            <i class="icon icon-close" aria-hidden="true" />
+                            <material-ripple />
+                        </button>
+                        <div class="overlay-headline" v-text="$t('Search')" />
+                    </div>
 
-                    <label class="hidden-link-name" for="autocomplete-search">{{ $t('Search') }}</label>
+                    <div class="row">
+                        <form id="search_mini_form" action="#">
+                            <div class="input-wrp">
+                                <div class="hbl-input-group">
+                                    <input
+                                        id="autocomplete-search"
+                                        ref="search"
+                                        v-model="query"
+                                        :placeholder="$t('Search')"
+                                        :disabled="queryIsDisabled"
+                                        autocomplete="off"
+                                        type="text"
+                                        name="term"
+                                        value=""
+                                        @keyup.esc="clearQuery"
+                                        @keydown.enter.prevent="onEnter($event)"
+                                        @keydown.down.prevent="changeSelected($event)"
+                                        @keydown.up.prevent="changeSelected($event)"
+                                        @focus="onFocus"
+                                        @blur="onBlur"
+                                    />
+                                    <label class="hidden-link-name" for="autocomplete-search">{{ $t('Search') }}</label>
+                                </div>
+
+                                <button class="button-icon" type="submit" title="Search" @click.prevent="clearQuery">
+                                    <span class="hidden-link-name">Search</span>
+
+                                    <transition name="fade">
+                                        <i v-if="!focus && !loading" class="icon icon-search" />
+                                        <i v-if="focus && !loading" class="icon icon-close" />
+                                        <div v-if="loading" class="loader lds-ring">
+                                            <div />
+                                            <div />
+                                            <div />
+                                            <div />
+                                        </div>
+                                    </transition>
+
+                                    <material-ripple />
+                                </button>
+                            </div>
+                        </form>
+
+                        <transition name="fade">
+                            <autocomplete-list v-if="showAutoCompleteResults" v-click-outside="resetAutoComplete" class="autocomplete-list" />
+                        </transition>
+                    </div>
                 </div>
-
-                <button class="button-icon" type="submit" title="Search" @click.prevent="clearQuery">
-                    <span class="hidden-link-name">Search</span>
-
-                    <transition name="fade">
-                        <i v-if="!focus && !loading" class="icon icon-search" />
-
-                        <i v-if="focus && !loading" class="icon icon-close" />
-
-                        <div v-if="loading" class="loader lds-ring">
-                            <div />
-                            <div />
-                            <div />
-                            <div />
-                        </div>
-                    </transition>
-
-                    <material-ripple />
-                </button>
             </div>
-        </form>
-
-        <transition name="fade">
-            <autocomplete-list v-if="showAutoCompleteResults" v-click-outside="resetAutoComplete" class="autocomplete-list" />
-        </transition>
+        </transition-expand-layer>
     </div>
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import Vue from 'vue';
 import vClickOutside from 'v-click-outside';
 import _ from 'lodash';
 
 export default {
-    name: 'TheSearch',
+    name: 'TheSearchContext',
 
     components: {
         AutocompleteList: () => import('./AutocompleteList'),
@@ -84,6 +97,7 @@ export default {
             locale: state => state.modApiResources.apiLocale,
             selectedItemId: state => state.modSearch.selectedItemId,
             showAutoCompleteResults: state => state.modSearch.showAutoCompleteResults,
+            offcanvas: state => state.modNavigation.offcanvas
         }),
         inputIsSelected: function () {
             return _.isNull(this.selectedItemId);
@@ -96,6 +110,9 @@ export default {
             } else {
                 return '✓ Done';
             }
+        },
+        showSearch: function () {
+            return this.offcanvas.component === this.$options.name;
         },
     },
 
@@ -116,6 +133,14 @@ export default {
                 this.resetAutoComplete();
             }
         },
+        showSearch: function(newVal) {
+            if(newVal) {
+                // Need to set timeout to wait until transition of layer is done
+                setTimeout(() => {
+                    this.$refs.search.focus();
+                }, 200);
+            }
+        }
     },
 
     created() {
@@ -129,13 +154,9 @@ export default {
             getAutocompleteResultsAction: 'modSearch/getAutocompleteResults',
             resetAutoCompleteResults: 'modSearch/resetAutoCompleteResults',
             flashMessage: 'modFlash/flashMessage',
-        }),
-        ...mapMutations({
-            hideOffcanvas: 'modNavigation/hideOffcanvas',
+            toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction',
         }),
         onFocus: function () {
-            this.hideOffcanvas();
-
             if (this.queryIsDisabled) {
                 return;
             }
@@ -289,6 +310,12 @@ export default {
                     .catch(() => {
                         reject('stats not OK');
                     });
+            });
+        },
+        toggle: function () {
+            this.toggleOffcanvasAction({
+                component: 'TheSearchContext',
+                direction: 'rightLeft',
             });
         },
     },

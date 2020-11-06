@@ -117,6 +117,7 @@ $hbl-input-highlight-color: $primary;
 
     /* active state */
     input:focus ~ label, input:not(:placeholder-shown) ~ label {
+        width: auto;
         top: -($hbl-input-label-focus-height / 2);
         height: $hbl-input-label-focus-height;
         line-height: $hbl-input-label-focus-height;

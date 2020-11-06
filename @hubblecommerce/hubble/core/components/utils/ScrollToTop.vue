@@ -2,7 +2,7 @@
     <transition name="fade">
         <button v-if="show" class="scroll-to-top" @click="scrollToTop()">
             <div class="hidden-link-name">Scroll to top</div>
-            <i class="icon chevron-up" />
+            <i class="icon icon-chevron-up" />
             <material-ripple />
         </button>
     </transition>

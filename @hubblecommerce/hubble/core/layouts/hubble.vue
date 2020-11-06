@@ -9,20 +9,22 @@
         <layout-wrapper>
             <div :class="{ 'mobile-layout': $mq === 'sm' || $mq === 'md', 'desktop-layout': $mq === 'lg' }">
                 <background-blur />
-                <div class="header-wrp">
-                    <div class="nav-wrp">
-                        <the-mobile-menu v-if="($mq === 'sm' || $mq === 'md') && !isEmpty(menu)" :data-items="menu" />
+
+                <header class="header-wrp">
+                    <div class="nav-wrp container">
                         <the-logo />
-                        <the-mega-menu v-if="$mq === 'lg' && !isEmpty(menu)" :data-items="menu" />
-                        <the-search-direct />
                         <div class="action-wrp d-flex align-items-center">
+                            <the-mobile-menu v-if="($mq === 'sm' || $mq === 'md') && !isEmpty(menu)" :data-items="menu" />
+                            <the-mini-cart />
                             <the-wishlist />
                             <customer-menu />
-                            <the-mini-cart />
                         </div>
                     </div>
+                    <nav class="container">
+                        <the-mega-menu v-if="$mq === 'lg' && !isEmpty(menu)" :data-items="menu" />
+                    </nav>
                     <flash-messages v-if="!activeOffCanvas" />
-                </div>
+                </header>
 
                 <main>
                     <nuxt />
@@ -47,6 +49,8 @@
             </div>
         </layout-wrapper>
 
+        <the-search-context />
+
         <client-only>
             <div v-if="showCookieNotice" class="cookie-notice">
                 <cookie-notice />
@@ -59,7 +63,7 @@
 import { mapState } from 'vuex';
 import ScrollToTop from '../components/utils/ScrollToTop';
 import TheLogo from '../components/navigation/TheLogo';
-import TheSearchDirect from '../components/search/TheSearchDirect';
+import TheSearchContext from '../components/search/TheSearchContext';
 import TheMiniCart from '../components/navigation/TheMiniCart';
 import CustomerMenu from '../components/navigation/CustomerMenu';
 import TheMobileMenu from '../components/navigation/TheMobileMenu';
@@ -83,7 +87,7 @@ export default {
         TheMegaMenu,
         ScrollToTop,
         TheMiniCart,
-        TheSearchDirect,
+        TheSearchContext,
         TheMobileMenu,
         TheLogo,
         CustomerMenu,

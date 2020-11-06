@@ -4,6 +4,7 @@
     min-height: 100vh;
     overflow: hidden;
     display: block;
+    padding-bottom: 60px;
 
     &.hubble-light {
         padding-bottom: 175px;
@@ -34,7 +35,6 @@
     opacity: 1;
     min-height: 56px;
     background: $background;
-    border-bottom: 1px solid $border-color;
     z-index: 60;
 }
 
@@ -45,7 +45,6 @@
     background-color: $background;
     border-bottom: 1px solid $border-color;
     position: relative;
-    margin-bottom: 60px;
 
     display: flex;
     align-items: center;
@@ -67,7 +66,16 @@
     }
 
     .action-wrp {
-        padding: 0;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+
+        display: flex;
+        justify-content: space-around;
+
+        background: #fff;
+        padding: 10px;
     }
 }
 
@@ -143,9 +151,6 @@
       bottom: 5%;
   }
 }
-
-
-
 
 @media(min-width: 992px) {
     .desktop-layout {
