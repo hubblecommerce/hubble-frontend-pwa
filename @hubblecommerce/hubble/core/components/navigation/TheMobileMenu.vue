@@ -1,24 +1,25 @@
 <template>
     <div class="menu-cpt-wrapper">
         <button class="button-icon navbar-toggler nav-icon" @click="toggle()">
-            <i class="icon icon-menu" aria-hidden="true" />
+            <i v-if="$mq === 'sm'" class="icon icon-search-menu" aria-hidden="true" />
+            <i v-if="$mq === 'md'" class="icon icon-menu" aria-hidden="true" />
             <span class="hidden-link-name">Toggle Navbar</span>
             <material-ripple />
         </button>
 
-        <transition-expand-layer :left-right="true">
-            <div v-if="showMenu" class="menu-wrapper">
+        <transition-expand-layer :direction="{ sm: 'bottomTop', md: 'rightLeft', lg: 'rightLeft' }">
+            <div v-if="showMenu" class="menu-wrapper transition-expand-wrp">
                 <div class="container">
                     <div class="row overlay-header">
                         <button class="button-icon button-close-menu" @click="toggle()">
-                            <i class="icon icon-close" aria-hidden="true" />
+                            <i class="icon icon-x" aria-hidden="true" />
                             <material-ripple />
                         </button>
                         <div class="overlay-headline" v-text="menuTitle" />
                     </div>
 
                     <div class="row tree-wrp">
-                        <search-trigger />
+                        <search-trigger v-if="($mq === 'sm')"/>
 
                         <mobile-categories :data-item="rootItem" :depth="0" />
                     </div>

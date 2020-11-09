@@ -9,7 +9,7 @@
                 @click.prevent="onClick"
             />
             <label for="search-trigger">{{ $t('Search') }}</label>
-            <i  class="icon icon-search" />
+            <i  class="icon icon-search1" />
         </div>
     </div>
 </template>

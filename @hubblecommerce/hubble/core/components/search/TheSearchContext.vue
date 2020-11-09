@@ -1,11 +1,11 @@
 <template>
     <div class="search-wrapper">
-        <transition-expand-layer :bottom-top="true">
+        <transition-expand-layer :direction="{ sm: 'bottomTop', md: 'rightLeft', lg: 'rightLeft' }">
             <div v-if="showSearch" class="transition-expand-wrp">
                 <div class="container expand-content">
                     <div class="row overlay-header">
                         <button class="button-icon button-close-menu" @click="toggle()">
-                            <i class="icon icon-close" aria-hidden="true" />
+                            <i class="icon icon-x" aria-hidden="true" />
                             <material-ripple />
                         </button>
                         <div class="overlay-headline" v-text="$t('Search')" />
@@ -38,8 +38,8 @@
                                         <span class="hidden-link-name">Search</span>
 
                                         <transition name="fade">
-                                            <i v-if="!focus && !loading" class="icon icon-search" />
-                                            <i v-if="focus && !loading" class="icon icon-close" />
+                                            <i v-if="!focus && !loading" class="icon icon-search1" />
+                                            <i v-if="focus && !loading" class="icon icon-x" />
                                             <div v-if="loading" class="loader lds-ring">
                                                 <div />
                                                 <div />

@@ -14,6 +14,7 @@
                     <div class="nav-wrp container">
                         <the-logo />
                         <div class="action-wrp d-flex align-items-center">
+                            <search-trigger v-if="($mq === 'md' || $mq === 'lg')" />
                             <the-mobile-menu v-if="($mq === 'sm' || $mq === 'md') && !isEmpty(menu)" :data-items="menu" />
                             <the-mini-cart />
                             <the-wishlist />
@@ -74,9 +75,11 @@ import CookieNotice from '../components/utils/CookieNotice';
 import FlashMessages from '../components/utils/FlashMessages';
 import LayoutWrapper from '../components/utils/LayoutWrapper';
 import _ from 'lodash';
+import SearchTrigger from "@/modules/hubble-frontend-pwa/@hubblecommerce/hubble/core/components/search/SearchTrigger";
 
 export default {
     components: {
+        SearchTrigger,
         TrustedShopsBadge: () => import('../components/utils/TrustedShopsBadge'),
         TheFooterSocial: () => import('../components/footer/TheFooterSocial'),
         TheFooterMobile: () => import('../components/footer/TheFooterMobile'),

@@ -71,7 +71,7 @@
 .back-tigger {
     position: fixed;
     top: 9px;
-    left: 5px;
+    right: 5px;
     z-index: 1;
 
     .button-icon {
@@ -100,8 +100,9 @@
 }
 
 @media(min-width: 768px) {
-
     .tree-menu {
+        position: static;
+
         .back-tigger {
             top: 20px;
         }

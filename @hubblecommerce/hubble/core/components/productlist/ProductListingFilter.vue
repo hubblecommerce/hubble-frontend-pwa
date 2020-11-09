@@ -6,12 +6,12 @@
             <material-ripple />
         </button>
 
-        <transition-expand-layer v-if="$mq === 'sm' || $mq === 'md'" :right-left="true">
+        <transition-expand-layer v-if="$mq === 'sm' || $mq === 'md'" :direction="{ sm: 'bottomTop', md: 'rightLeft', lg: 'rightLeft' }">
             <div v-if="showFilters" class="transition-expand-wrp">
                 <div class="container position-static">
                     <div class="row overlay-header">
                         <button class="button-icon button-close-menu" @click="toggle()">
-                            <i class="icon icon-close" aria-hidden="true" />
+                            <i class="icon icon-x" aria-hidden="true" />
 
                             <material-ripple />
                         </button>

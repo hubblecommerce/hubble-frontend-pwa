@@ -85,6 +85,7 @@
 .layout-enter-active, .layout-leave-active {
     transition: opacity .1s;
 }
+
 .layout-enter, .layout-leave-active {
     opacity: 0;
 }
@@ -102,7 +103,7 @@
 /* Tablet */
 @media(min-width: 768px) {
     .mobile-layout {
-        //padding-bottom: 495px;
+        padding-bottom: 0;
 
         &.hubble-light {
             padding-bottom: 160px;
@@ -125,33 +126,19 @@
     }
 
     .nav-wrp {
-        margin: 0 auto;
-        padding: 0 15px;
-        display: flex;
-        justify-content: flex-start;
-        position: relative;
         @include make-container-max-widths($max-widths: $container-max-widths, $breakpoints: $grid-breakpoints);
-        align-items: center;
-        border: none;
         height: $header-height-desktop;
 
-        .action-wrp{
-            padding: 0 0 0 0;
-        }
-
-        .button-icon {
-            margin-left: 10px;
-
-            &:first-child {
-                margin-left: 0;
-            }
+        .action-wrp {
+            position: relative;
+            padding: 0;
+            @include elevation-0;
         }
     }
 
-
-  .cookie-notice {
-      bottom: 5%;
-  }
+    .cookie-notice {
+        bottom: 5%;
+    }
 }
 
 @media(min-width: 992px) {
@@ -171,20 +158,21 @@
     }
     .nav-wrp {
         &:before {
-          content: '';
-          background: $background;
-          width: 100vw;
-          height: 100%;
-          margin-left: calc(-50vw + 50%);
-          position: absolute;
-          left: 0;
-          top: 0;
+            content: '';
+            background: $background;
+            width: 100vw;
+            height: 100%;
+            margin-left: calc(-50vw + 50%);
+            position: absolute;
+            left: 0;
+            top: 0;
         }
 
         .action-wrp {
             .wishlist-cpt-wrp {
                 margin: 0 5px 0 15px;
             }
+
             .minicart-cpt-wrp {
                 margin: 0 0 0 5px;
             }

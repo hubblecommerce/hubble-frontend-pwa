@@ -9,7 +9,7 @@
                 </a>
                 <a href="https://www.instagram.com/hubblecommerce/" target="_blank" rel="noopener">
                     <div class="hidden-link-name">Follow us on Instagram</div>
-                    <i class="icon icon-instagram" />
+                    <i class="icon icon-instagram1" />
                 </a>
             </div>
         </div>

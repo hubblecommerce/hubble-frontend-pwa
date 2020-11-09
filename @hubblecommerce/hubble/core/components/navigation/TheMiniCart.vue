@@ -1,7 +1,7 @@
 <template>
     <div :class="hasItemsInCart" class="minicart-cpt-wrp">
-        <button class="button-icon cart-icon" :class="setButtonStates" @click="toggle()">
-            <i class="icon icon-cart" aria-hidden="true" />
+        <button class="button-icon" :class="setButtonStates" @click="toggle()">
+            <i class="icon icon-shopping-bag" aria-hidden="true" />
 
             <span class="hidden-link-name">Toggle Cart</span>
 
@@ -12,7 +12,7 @@
             </client-only>
         </button>
 
-        <transition-expand-layer :right-left="true">
+        <transition-expand-layer :direction="{ sm: 'bottomTop', md: 'rightLeft', lg: 'rightLeft' }">
             <div v-if="showMenu" class="transition-expand-wrp">
                 <cart-layer v-if="initiated" />
             </div>

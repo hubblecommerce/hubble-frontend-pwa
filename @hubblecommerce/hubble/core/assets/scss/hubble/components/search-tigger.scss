@@ -1,3 +1,8 @@
+$hbl-search-trigger-background: $light-gray;
+
+$hbl-search-trigger-tablet-width: 300px;
+$hbl-search-trigger-tablet-background: $white;
+
 .search-trigger-wrp {
     position: relative;
     width: 100%;
@@ -7,5 +12,15 @@
 
     .hbl-input-group {
         margin: 0;
+    }
+}
+
+/* Tablet */
+@media(min-width: 768px) {
+    .search-trigger-wrp {
+        width: $hbl-search-trigger-tablet-width;
+        margin-left: auto;
+        border: none;
+        background: $hbl-search-trigger-tablet-background;
     }
 }

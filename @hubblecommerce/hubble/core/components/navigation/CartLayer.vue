@@ -3,7 +3,7 @@
         <div class="container expand-content">
             <div class="row overlay-header">
                 <button class="button-icon button-close-menu" @click="toggle()">
-                    <i class="icon icon-close" aria-hidden="true" />
+                    <i class="icon icon-x" aria-hidden="true" />
                     <material-ripple />
                 </button>
 

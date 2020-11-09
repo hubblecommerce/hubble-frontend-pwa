@@ -25,9 +25,9 @@
                 <button class="button-icon" type="submit" title="Search" @click.prevent="clearQuery">
                     <div class="hidden-link-name">Search</div>
 
-                    <i v-if="!focus" class="icon icon-search" />
+                    <i v-if="!focus" class="icon icon-search1" />
 
-                    <i v-if="focus" class="icon icon-close" />
+                    <i v-if="focus" class="icon icon-x" />
 
                     <material-ripple />
                 </button>

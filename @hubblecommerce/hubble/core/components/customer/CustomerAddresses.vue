@@ -88,12 +88,12 @@
             <div class="error-message" v-text="error" />
         </template>
 
-        <transition-expand-layer :right-left="true">
+        <transition-expand-layer :direction="{ sm: 'bottomTop', md: 'rightLeft', lg: 'rightLeft' }">
             <div v-if="showLayer" class="transition-expand-wrp">
                 <div class="container expand-content">
                     <div class="row overlay-header">
                         <button class="button-icon button-close-menu" @click="toggle()">
-                            <i class="icon icon-close" aria-hidden="true" />
+                            <i class="icon icon-x" aria-hidden="true" />
                             <material-ripple />
                         </button>
                         <div v-if="formIsActiveAddressUpdate" class="overlay-headline" v-text="$t('Edit address')" />
