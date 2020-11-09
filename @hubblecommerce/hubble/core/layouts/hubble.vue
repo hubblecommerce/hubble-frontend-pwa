@@ -21,7 +21,7 @@
                             <the-mini-cart />
                         </div>
                     </div>
-                    <nav class="container">
+                    <nav>
                         <the-mega-menu v-if="$mq === 'lg' && !isEmpty(menu)" :data-items="menu" />
                     </nav>
                     <flash-messages v-if="!activeOffCanvas" />

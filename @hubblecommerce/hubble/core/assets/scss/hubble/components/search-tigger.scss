@@ -19,7 +19,7 @@ $hbl-search-trigger-tablet-background: $white;
 @media(min-width: 768px) {
     .search-trigger-wrp {
         width: $hbl-search-trigger-tablet-width;
-        max-height: $header-height-desktop;
+        max-height: $header-height-desktop - 1px;
         margin-left: auto;
         border: none;
         background: $hbl-search-trigger-tablet-background;

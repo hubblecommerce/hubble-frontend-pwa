@@ -1,5 +1,5 @@
 <template>
-    <div class="mega-menu-wrp" @mouseleave="hideChildren">
+    <div class="mega-menu-wrp container" @mouseleave="hideChildren">
         <div class="level-0-wrp">
             <template v-for="item in dataItems">
                 <div
@@ -14,6 +14,8 @@
                     v-else
                     :key="item.id"
                     class="menu-item"
+                    :name="item.name"
+                    :class="{ active: isActive === item.id }"
                     :to="itemUrlPath(item)"
                     @mouseenter.native="showChildren(item)"
                     v-text="item.name"
@@ -21,7 +23,7 @@
             </template>
         </div>
 
-        <transition name="slide-top-bottom">
+        <transition name="fade">
             <div v-if="showMenu && activeCategory.children" :class="'fixed-container ' + activeCategory.url_path" @mouseleave="hideChildren">
                 <div class="max-width-container">
                     <template>

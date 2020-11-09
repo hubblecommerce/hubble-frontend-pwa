@@ -218,6 +218,8 @@
 @media(min-width: 1024px) {
     .search-wrapper {
         .transition-expand-wrp {
+            top: 0;
+
             .expand-content {
                 max-width: none;
             }
