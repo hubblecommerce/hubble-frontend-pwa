@@ -66,22 +66,7 @@
     background-color: $background;
 
     #search_mini_form {
-        >.input-wrp {
-            margin: 10px;
-
-            .button-icon {
-                font-size: 20px;
-                padding: 7px;
-            }
-        }
-
-        #autocomplete-search {
-            line-height: 18px;
-            border: 1px solid $border-color;
-            font-size: 14px;
-            background-color: #F8F8F8;
-            padding: 10px;
-        }
+        width: 100%;
 
         .loader {
             position: absolute;
@@ -94,19 +79,23 @@
 
     .input-wrp {
         position: relative;
+        padding: 16px;
+        background: $light-gray;
+        border-bottom: 1px solid $border-color;
 
-        input {
-            width: 100%;
-        }
-
-        .bar {
-            width: 100%;
+        .hbl-input-group {
+            margin: 0;
         }
 
         button {
             position: absolute;
             right: 0;
             bottom: 0;
+
+            i {
+                line-height: 20px;
+                height: 21px;
+            }
         }
     }
 }

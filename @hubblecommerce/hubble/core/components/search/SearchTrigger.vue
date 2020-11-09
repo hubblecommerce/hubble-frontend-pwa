@@ -25,11 +25,11 @@ export default {
     },
     methods: {
         ...mapMutations({
-            hideOffcanvas: 'modNavigation/hideOffcanvas',
+            hideOffcanvas: 'modNavigation/hideOffcanvas'
         }),
         ...mapActions({
             toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction',
-            hideOffcanvasAction: 'modNavigation/hideOffcanvasAction',
+            hideOffcanvasAction: 'modNavigation/hideOffcanvasAction'
         }),
         onClick: function () {
             this.hideOffcanvas();
@@ -38,9 +38,9 @@ export default {
         toggle: function () {
             this.toggleOffcanvasAction({
                 component: 'TheSearchContext',
-                direction: 'rightLeft',
+                direction: 'rightLeft'
             });
-        },
+        }
     }
 }
 </script>

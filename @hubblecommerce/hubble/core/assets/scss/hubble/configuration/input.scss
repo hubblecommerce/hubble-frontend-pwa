@@ -27,13 +27,13 @@ Textarea Example:
 </div>
 */
 
-$hbl-input-border: 2px solid $border-color;
+$hbl-input-border: 1px solid $border-color;
 $hbl-input-background: $white;
 $hbl-input-font-size: 16px;
 $hbl-input-padding: 10px;
 $hbl-input-line-height: 19px;
 
-$hbl-input-focus-border: 2px solid $darker-gray;
+$hbl-input-focus-border: 1px solid $darker-gray;
 
 $hbl-input-label-color: $text-light;
 $hbl-input-label-focus-height: 14px;

@@ -1,6 +1,6 @@
 <template>
     <div class="search-wrapper">
-        <transition-expand-layer :right-left="true">
+        <transition-expand-layer :bottom-top="true">
             <div v-if="showSearch" class="transition-expand-wrp">
                 <div class="container expand-content">
                     <div class="row overlay-header">
@@ -33,24 +33,24 @@
                                         @blur="onBlur"
                                     />
                                     <label class="hidden-link-name" for="autocomplete-search">{{ $t('Search') }}</label>
+
+                                    <button class="button-icon" type="submit" title="Search" @click.prevent="clearQuery">
+                                        <span class="hidden-link-name">Search</span>
+
+                                        <transition name="fade">
+                                            <i v-if="!focus && !loading" class="icon icon-search" />
+                                            <i v-if="focus && !loading" class="icon icon-close" />
+                                            <div v-if="loading" class="loader lds-ring">
+                                                <div />
+                                                <div />
+                                                <div />
+                                                <div />
+                                            </div>
+                                        </transition>
+
+                                        <material-ripple />
+                                    </button>
                                 </div>
-
-                                <button class="button-icon" type="submit" title="Search" @click.prevent="clearQuery">
-                                    <span class="hidden-link-name">Search</span>
-
-                                    <transition name="fade">
-                                        <i v-if="!focus && !loading" class="icon icon-search" />
-                                        <i v-if="focus && !loading" class="icon icon-close" />
-                                        <div v-if="loading" class="loader lds-ring">
-                                            <div />
-                                            <div />
-                                            <div />
-                                            <div />
-                                        </div>
-                                    </transition>
-
-                                    <material-ripple />
-                                </button>
                             </div>
                         </form>
 

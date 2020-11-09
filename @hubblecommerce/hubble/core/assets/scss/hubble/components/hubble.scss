@@ -40,7 +40,7 @@
 
 /* Navigation */
 .nav-wrp {
-    height: 65px;
+    height: 56px;
     width: 100%;
     background-color: $background;
     border-bottom: 1px solid $border-color;
@@ -74,8 +74,10 @@
         display: flex;
         justify-content: space-around;
 
-        background: #fff;
         padding: 10px;
+        background: $white;
+
+        @include elevation-12;
     }
 }
 
