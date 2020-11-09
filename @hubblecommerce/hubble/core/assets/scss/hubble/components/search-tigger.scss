@@ -7,7 +7,7 @@ $hbl-search-trigger-tablet-background: $white;
     position: relative;
     width: 100%;
     background: $light-gray;
-    padding: 16px;
+    padding: 15px;
     border-bottom: 1px solid $border-color;
 
     .hbl-input-group {
@@ -19,6 +19,7 @@ $hbl-search-trigger-tablet-background: $white;
 @media(min-width: 768px) {
     .search-trigger-wrp {
         width: $hbl-search-trigger-tablet-width;
+        max-height: $header-height-desktop;
         margin-left: auto;
         border: none;
         background: $hbl-search-trigger-tablet-background;

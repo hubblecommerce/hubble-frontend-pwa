@@ -28,6 +28,7 @@ Textarea Example:
 */
 
 $hbl-input-border: 1px solid $border-color;
+$hbl-input-border-radius: 2px;
 $hbl-input-background: $white;
 $hbl-input-font-size: 16px;
 $hbl-input-padding: 10px;
@@ -40,7 +41,7 @@ $hbl-input-label-focus-height: 14px;
 $hbl-input-label-focus-font-size: 12px;
 $hbl-input-label-focus-color: $text-primary;
 
-$hbl-input-icon-size: 19px;
+$hbl-input-icon-size: 24px;
 $hbl-input-icon-color: $text-primary;
 
 $hbl-input-highlight-color: $primary;
@@ -57,6 +58,7 @@ $hbl-input-highlight-color: $primary;
         display: block;
         width: 100%;
         border: $hbl-input-border;
+        border-radius: $hbl-input-border-radius;
         line-height: $hbl-input-line-height;
 
         &.invalid {

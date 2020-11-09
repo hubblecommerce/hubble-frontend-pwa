@@ -32,7 +32,7 @@
 
             <div class="d-flex cart-button-wrp">
                 <button :disabled="loaderState" type="button" :title="$t('add_to_cart')" class="add-to-cart m-0 w-100" @click.prevent="addToCart">
-                    <i class="icon icon-cart" aria-hidden="true" />
+                    <i class="icon icon-shopping-bag" aria-hidden="true" />
                     <span v-if="!loaderState" class="cart-button-label headline-4">{{ $t('add_to_cart') }}</span>
                     <div v-if="loaderState" class="lds-ellipsis">
                         <div />
@@ -47,7 +47,7 @@
 
         <div v-if="$mq === 'md' || $mq === 'lg'" class="d-flex cart-button-wrp">
             <button :disabled="loaderState" type="button" :title="$t('add_to_cart')" class="add-to-cart m-0 w-100" @click.prevent="addToCart">
-                <i class="icon icon-cart" aria-hidden="true" />
+                <i class="icon icon-shopping-bag" aria-hidden="true" />
                 <span v-if="!loaderState" class="cart-button-label headline-4">{{ $t('add_to_cart') }}</span>
                 <div v-if="loaderState" class="lds-ellipsis">
                     <div />

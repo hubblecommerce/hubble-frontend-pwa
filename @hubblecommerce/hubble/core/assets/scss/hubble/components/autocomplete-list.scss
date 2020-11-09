@@ -5,26 +5,15 @@
     padding-bottom: 20px;
 
     .autocomplete-headline {
-        padding: 0 30px 0 30px;
         font-weight: bold;
     }
 
     .autocomplete-element-wrp {
         display: flex;
         flex-direction: column;
-
-        &:hover {
-            background: $secondary;
-        }
-    }
-
-    .autocomplete-element {
-        padding: 5px 35px 5px 35px;
     }
 
     .selected-item {
-        background: $secondary;
-
         &:focus {
             outline: none;
         }
@@ -34,10 +23,9 @@
 // Tablet
 @media(min-width: 768px) {
     .autocomplete-list-wrp {
-        top: 47px;
-        right: 10px;
-        width: 500px;
-        border: 1px solid $border-color;
+        margin: 0 auto;
+        border-bottom: 1px solid $border-color;
+        @include make-container-max-widths($max-widths: $container-max-widths, $breakpoints: $grid-breakpoints);
     }
 }
 

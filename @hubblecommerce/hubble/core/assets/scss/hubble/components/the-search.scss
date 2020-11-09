@@ -153,61 +153,18 @@
         width: 30%;
         z-index: 25;
     }
+
     .search-wrapper {
         position: relative;
-        top: inherit;
-        left: inherit;
-        width: 280px;
-        height: auto;
-        background-color: transparent;
+
+        .transition-expand-wrp {
+            width: 100%;
+        }
 
         .input-wrp {
-            margin: 9px auto;
-            background: lighten($primary, 5%);
-            padding-top: 0;
-            height: 36px;
-            min-height: auto;
-            border-radius: 2px 2px 2px 2px;
-
-            label {
-                margin: 0;
-                top: 0;
-                left: 20px;
-                line-height: 36px;
-            }
-
-            input {
-                width: 100%;
-                line-height: 36px;
-                height: 36px;
-                padding-left: 20px;
-                border-bottom: 1px solid $primary;
-            }
-
-            input:valid ~ label {
-                top: 0;
-            }
-
-            input:focus ~ label {
-                visibility: hidden;
-            }
-
-            .bar {
-                width: 100%;
-            }
-
-            &::before {
-                background: #fff !important;
-            }
-
-            &::after {
-                background: transparent !important;
-            }
-
-            button {
-                position: absolute;
-                right: 0;
-                top: -1px;
+            .hbl-input-group {
+                margin: 0 auto;
+                width: 360px;
             }
         }
     }
@@ -260,7 +217,10 @@
 /* Desktop */
 @media(min-width: 1024px) {
     .search-wrapper {
-        width: 230px;
-        margin-left: auto;
+        .transition-expand-wrp {
+            .expand-content {
+                max-width: none;
+            }
+        }
     }
 }

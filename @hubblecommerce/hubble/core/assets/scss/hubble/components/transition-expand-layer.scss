@@ -69,7 +69,7 @@ $expand-layer-width-desktop: 600px;
         overflow-y: inherit;
     }
     .overlay-header {
-        height: 100px;
+        height: $header-height-desktop + 1px;
 
         .button-close-menu {
             top: 0;

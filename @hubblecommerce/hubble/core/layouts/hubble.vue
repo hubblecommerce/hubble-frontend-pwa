@@ -16,9 +16,9 @@
                         <div class="action-wrp d-flex align-items-center">
                             <search-trigger v-if="($mq === 'md' || $mq === 'lg')" />
                             <the-mobile-menu v-if="($mq === 'sm' || $mq === 'md') && !isEmpty(menu)" :data-items="menu" />
-                            <the-mini-cart />
                             <the-wishlist />
                             <customer-menu />
+                            <the-mini-cart />
                         </div>
                     </div>
                     <nav class="container">

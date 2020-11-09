@@ -21,7 +21,7 @@
 
                 <transition name="fade">
                     <div v-if="qty <= 0" class="empty-cart">
-                        <i class="icon icon-cart" />
+                        <i class="icon icon-shopping-bag" />
 
                         <div class="headline-1" v-text="$t('Your shopping cart is empty')" />
 

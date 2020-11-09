@@ -169,8 +169,16 @@
         }
 
         .action-wrp {
+            .menu-cpt-wrapper {
+                display: none;
+            }
+
             .wishlist-cpt-wrp {
-                margin: 0 5px 0 15px;
+                margin: 0 5px 0 10px;
+            }
+
+            .customer-account-cpt-wrp {
+                margin: 0 5px;
             }
 
             .minicart-cpt-wrp {
