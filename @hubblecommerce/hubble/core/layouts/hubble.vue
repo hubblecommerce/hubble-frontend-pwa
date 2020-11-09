@@ -20,6 +20,7 @@
                             <customer-menu />
                             <the-mini-cart />
                         </div>
+                        <the-header-action-icon class="header-action-icon" v-if="$mq === 'sm'"/>
                     </div>
                     <nav>
                         <the-mega-menu v-if="$mq === 'lg' && !isEmpty(menu)" :data-items="menu" />
@@ -80,6 +81,7 @@ import SearchTrigger from "@/modules/hubble-frontend-pwa/@hubblecommerce/hubble/
 export default {
     components: {
         SearchTrigger,
+        TheHeaderActionIcon: () => import('../components/navigation/TheHeaderActionIcon'),
         TrustedShopsBadge: () => import('../components/utils/TrustedShopsBadge'),
         TheFooterSocial: () => import('../components/footer/TheFooterSocial'),
         TheFooterMobile: () => import('../components/footer/TheFooterMobile'),

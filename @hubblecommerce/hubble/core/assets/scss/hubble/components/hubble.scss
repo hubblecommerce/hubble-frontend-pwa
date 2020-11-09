@@ -49,6 +49,11 @@
     display: flex;
     align-items: center;
 
+    .header-action-icon{
+      position: absolute;
+      right: 10px;
+    }
+
     .button-icon {
         font-size: 20px;
         padding: 8px;
