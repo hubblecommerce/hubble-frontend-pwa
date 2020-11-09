@@ -44,6 +44,7 @@ export default context => {
             'link-privacy-policy': '/data-privacy',
             'link-delivery-and-shipping-costs': '/delivery-and-shipping-costs',
             'link-terms-and-conditions': '/terms-and-conditions',
+            Page: 'Page',
             Pages: 'Pages',
             Products: 'Products',
             Categories: 'Categories',
@@ -285,6 +286,8 @@ export default context => {
             'terms and conditions.': 'terms and conditions.',
             'Before submitting your order, you will once again see the data and products you have entered, with the help of the Change links next to the individual data you have the opportunity to correct them again. You can end the order process at any time by closing your browser or by clicking on the button "Order by Paypal".':
                 'Before submitting your order, you will once again see the data and products you have entered, with the help of the Change links next to the individual data you have the opportunity to correct them again. You can end the order process at any time by closing your browser or by clicking on the button "Order by Paypal".',
+            New: 'New',
+            Sale: 'Sale',
             'Please choose a payment method first': 'Please choose a payment method first',
             'Please choose a shipping method first': 'Please choose a shipping method first',
             'Edit shipping method': 'Edit shipping method',

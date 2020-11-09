@@ -8,30 +8,25 @@
             :breadcrumbs="breadcrumbs"
         />
 
-        <div v-if="!onIndexPage" class="container breadcrumbs-wrp">
-            <breadcrumbs :path="breadcrumbs" />
-        </div>
-
         <template v-if="isShopware">
+            <div v-if="!onIndexPage" class="container breadcrumbs-wrp">
+                <breadcrumbs :path="breadcrumbs" />
+            </div>
             <div class="container">
                 <sw-section v-for="cmsSection in cmsSections" :key="cmsSection.id" :content="cmsSection" />
             </div>
         </template>
 
         <template v-else>
-            <div class="container category-header">
+            <div class="container category-header" :style="categoryImage">
+                <breadcrumbs :path="breadcrumbs" />
                 <h1 class="title headline-1" v-text="categoryItem.name" />
-                <div :style="categoryText !== '' ? 'min-height: 95px;' : ''">
-                    <client-only>
-                        <text-excerpt v-if="categoryText" :text="categoryText" :limit="$mq === 'md' || $mq === 'sm' ? 300 : 900" />
-                    </client-only>
-                </div>
             </div>
 
             <template v-if="!errorNoProducts">
                 <div class="container category-content-wrp">
                     <div class="category-products-wrp">
-                        <product-listing-toolbar :extra-class="{ 'fixed container': isSticky }" />
+                        <product-listing-toolbar v-if="$mq === 'lg' || $mq === 'md'" :extra-class="{ 'fixed container': isSticky }" />
                         <product-listing
                             :data-items="categoryProductItems"
                             list="Category"
@@ -175,6 +170,12 @@ export default {
         currentCategoryPath() {
             return this.categoryItem.path_urls.slice(-1)[0];
         },
+        categoryImage() {
+            /*if(!_.isEmpty(this.categoryItem.image)) {
+                return 'background-image: url("' + this.categoryItem.image + '"); color: #FFFFFF;'
+            }*/
+            return '';
+        }
     },
 
     created() {
