@@ -24,8 +24,11 @@ $hbl-checkbox-label-font-size: 14px;
 $hbl-checkbox-line-height: 17px;
 
 // inside of radiobox
-$hbl-radiobox-inner-width: $hbl-checkbox-size - ($hbl-checkbox-border-width * 2) - 6;
-$hbl-radiobox-inner-position-left: 4px;
+$hbl-radiobox-gap-size: 3px;
+
+$hbl-radiobox-inner-position-left: $hbl-radiobox-gap-size + $hbl-checkbox-border-width;
+$hbl-radiobox-inner-width: $hbl-checkbox-size - ($hbl-checkbox-border-width * 2) - ($hbl-radiobox-gap-size * 2);
+
 
 .hbl-checkbox {
     position: relative;
