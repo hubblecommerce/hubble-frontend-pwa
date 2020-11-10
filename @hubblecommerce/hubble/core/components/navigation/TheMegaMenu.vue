@@ -13,6 +13,7 @@
                 <nuxt-link
                     v-else
                     :key="item.id"
+                    :ref="item.id"
                     class="menu-item"
                     :name="item.name"
                     :class="{ active: isActive === item.id }"
@@ -24,7 +25,12 @@
         </div>
 
         <transition name="fade">
-            <div v-if="showMenu && activeCategory.children" :class="'fixed-container ' + activeCategory.url_path" @mouseleave="hideChildren">
+            <div v-if="showMenu && activeCategory.children"
+                 :class="'fixed-container ' + activeCategory.url_path"
+                 ref="megaMenuLayer"
+                 @mouseleave="hideChildren"
+                 :style="`left: ${layerLeft}px;`"
+            >
                 <div class="max-width-container">
                     <template>
                         <div class="children-wrp">
@@ -72,6 +78,7 @@ export default {
             isActive: null,
             activeCategory: {},
             limit: 12,
+            layerLeft: 0
         };
     },
 
@@ -123,8 +130,23 @@ export default {
 
                 this.showOffcanvasAction({ component: this.name });
                 this.resetAutoCompleteResults();
+
+                setTimeout(() => {
+                    this.setLayerPosition(this.$refs[item.id][0]);
+                }, 1);
             } else {
                 this.hideOffcanvasAction();
+            }
+        },
+        setLayerPosition: function(triggerElement) {
+            const triggerPosition = triggerElement.$el.offsetLeft;
+            const parentPosition = triggerElement.$parent.$el.getBoundingClientRect();
+            const layerPosition = this.$refs.megaMenuLayer.getBoundingClientRect();
+
+            if((triggerPosition + layerPosition.width) > parentPosition.width) {
+                this.layerLeft = parentPosition.width - layerPosition.width;
+            } else {
+                this.layerLeft = triggerPosition;
             }
         },
         // Check if child should be displayed
