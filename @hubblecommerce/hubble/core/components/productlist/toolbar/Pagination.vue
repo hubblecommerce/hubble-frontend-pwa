@@ -1,53 +1,22 @@
 <template>
-    <ul class="pagination">
-        <li class="page-item">
-            <button :class="{ disabled: paginationPrevDisabled }" :disabled="paginationPrevDisabled" @click="loadFirstPage">
-                <i class="icon icon-chevrons-left" />
-                <span class="hidden-link-name">First Page</span>
-                <material-ripple />
-            </button>
-        </li>
-        <li class="page-item">
-            <button :class="{ disabled: paginationPrevDisabled }" :disabled="paginationPrevDisabled" @click="loadPrevPage">
-                <i class="icon icon-chevron-left" />
-                <span class="hidden-link-name">Previous</span>
-                <material-ripple />
-            </button>
-        </li>
-        <template v-for="(link, index) in linksPages">
-            <li :key="index" class="page-item">
-                <template v-if="link.dotted">
-                    <span class="dots disabled hidden-xs"><i class="icon" /></span>
-                </template>
-
-                <template v-else>
-                    <button v-if="link.page === curPage" class="current" disabled="disabled">
-                        {{ link.page }}
-                        <material-ripple />
-                    </button>
-
-                    <button v-else @click="loadNumberedPage(link.page)">
-                        <span>{{ link.page }}</span>
-                        <material-ripple />
-                    </button>
-                </template>
-            </li>
-        </template>
-        <li class="page-item">
-            <button :class="{ disabled: paginationNextDisabled }" :disabled="paginationNextDisabled" @click="loadNextPage">
-                <i class="icon icon-chevron-right" />
-                <span class="hidden-link-name">Next Page</span>
-                <material-ripple />
-            </button>
-        </li>
-        <li class="page-item">
-            <button :class="{ disabled: paginationNextDisabled }" :disabled="paginationNextDisabled" @click="loadLastPage">
-                <i class="icon icon-chevrons-right" />
-                <span class="hidden-link-name">Last Page</span>
-                <material-ripple />
-            </button>
-        </li>
-    </ul>
+    <div class="pagination">
+        <button class="button-icon" :class="{ disabled: paginationPrevDisabled }" :disabled="paginationPrevDisabled" @click="loadPrevPage">
+            <i class="icon icon-chevron-left" />
+            <span class="hidden-link-name">Previous</span>
+            <material-ripple />
+        </button>
+        <div>
+            <span v-text="$t('Page')" />
+            <span class="page-number" v-text="curPage" />
+            <span v-text="$t('pagination_from')" />
+            <span v-text="lastPage" class="page-number last-page" :class="{ disabled: paginationNextDisabled }" @click="loadLastPage" />
+        </div>
+        <button class="button-icon" :class="{ disabled: paginationNextDisabled }" :disabled="paginationNextDisabled" @click="loadNextPage">
+            <i class="icon icon-chevron-right" />
+            <span class="hidden-link-name">Next Page</span>
+            <material-ripple />
+        </button>
+    </div>
 </template>
 
 <script>

@@ -189,6 +189,7 @@ export default context => {
             Apply: 'Apply',
             'Your choice:': 'Your choice:',
             'Reset all': 'Reset all',
+            pagination_from: 'from',
             'Follow us:': 'Follow us:',
             'Newsletter registration': 'Newsletter registration',
             'Subscribe our Newsletter': 'Subscribe our Newsletter',

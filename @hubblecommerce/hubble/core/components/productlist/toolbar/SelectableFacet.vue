@@ -5,8 +5,8 @@ Component usage:
 
 <template>
     <collapsible-filter
-        :class="activeClass"
-        :toggle-text="facetTitle"
+        :toggle-text="dataFacet.label"
+        :toggle-amount="modelSelected.length"
         :max-height="maxHeight"
         open-icon-class="icon-chevron-down"
         close-icon-class="icon-chevron-up"
@@ -79,20 +79,6 @@ export default {
         ...mapState({
             selectedFacets: state => state.modApiRequests.selectedFacets,
         }),
-        activeClass: function () {
-            if (this.modelSelected.length > 0) {
-                return 'active';
-            }
-
-            return '';
-        },
-        facetTitle: function () {
-            let selectedOptions = '';
-            if (this.modelSelected.length > 0) {
-                selectedOptions = ' (' + this.modelSelected.length + ')';
-            }
-            return this.dataFacet.label + selectedOptions;
-        },
         maxHeight: function () {
             if (this.$mq === 'lg') {
                 return 500;

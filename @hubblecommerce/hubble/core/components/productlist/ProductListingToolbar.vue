@@ -1,15 +1,24 @@
 <template>
-    <div class="toolbar-wrp" :class="extraClass">
-        <product-listing-filter />
+    <div class="toolbar-wrp">
+        <div class="top-toolbar" :class="extraClass">
+            <product-listing-filter />
 
-        <selected-facets />
+            <selected-facets />
+        </div>
+
+        <div class="bottom-toolbar">
+            <pagination/>
+            <selectable-order class="selectable-order" :data-options="optionsSorter" />
+        </div>
     </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
 import ProductListingFilter from './ProductListingFilter';
 import SelectedFacets from './toolbar/SelectedFacets';
+import Pagination from './toolbar/Pagination';
+import SelectableOrder from './toolbar/SelectableOrder';
+import { mapState } from 'vuex'
 
 export default {
     name: 'ProductListingToolbar',
@@ -17,6 +26,8 @@ export default {
     components: {
         ProductListingFilter,
         SelectedFacets,
+        Pagination,
+        SelectableOrder,
     },
 
     props: {
@@ -26,5 +37,11 @@ export default {
             default: () => {},
         },
     },
+
+    computed: {
+        ...mapState({
+            optionsSorter: state => state.modApiRequests.optionsSorter,
+        }),
+    }
 };
 </script>

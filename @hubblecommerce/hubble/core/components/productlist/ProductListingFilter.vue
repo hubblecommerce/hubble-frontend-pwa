@@ -1,6 +1,6 @@
 <template>
     <div class="filter-wrp">
-        <button v-if="$mq === 'sm' || $mq === 'md'" class="open-filter" @click="toggle()">
+        <button v-if="$mq === 'sm' || $mq === 'md'" class="button-icon open-filter" @click="toggle()">
             <i class="icon icon-sliders left" />
             <material-ripple />
         </button>

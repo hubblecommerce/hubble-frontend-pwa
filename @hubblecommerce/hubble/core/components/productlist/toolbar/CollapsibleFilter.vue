@@ -1,7 +1,9 @@
 <template>
-    <div v-click-outside="hideContent" class="collapse-wrp filter">
+    <div v-click-outside="hideContent" class="collapse-wrp filter" :class="collapsibleOpenClass">
         <button :class="toggleClass" class="toggle m-0 align-left headline-4" @mousedown="collapseContent()">
             {{ toggleText }}
+
+            <span class="item-amount" v-if="toggleAmount > 0" v-text="toggleAmount" />
 
             <transition-rotate-x>
                 <i v-if="collapse" :class="openIconClass" class="icon" />
@@ -51,6 +53,10 @@ export default {
             type: String,
             default: '',
         },
+        toggleAmount: {
+            type: Number,
+            default: 0,
+        },
         toggleClass: {
             type: String,
             default: '',
@@ -81,6 +87,15 @@ export default {
 
     created() {
         Vue.use(vClickOutside);
+    },
+
+    computed: {
+        collapsibleOpenClass: function () {
+            if(!this.collapse) {
+                return 'open';
+            }
+            return '';
+        }
     },
 
     methods: {

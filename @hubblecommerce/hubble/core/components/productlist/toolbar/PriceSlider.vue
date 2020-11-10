@@ -1,11 +1,11 @@
 <template>
     <div class="price-slider">
-        <div class="price text-left">
+        <div class="price text-left" :class="priceMinSelected ? 'price-selected' : ''">
             <span v-text="curMinLabel" />
             <span v-html="curCurrencySign" />
         </div>
 
-        <div class="price text-right">
+        <div class="price text-right" :class="priceMaxSelected ? 'price-selected' : ''">
             <span v-text="curMaxLabel" />
             <span v-html="curCurrencySign" />
         </div>
@@ -86,6 +86,12 @@ export default {
         curCurrencySign: function () {
             return this.priceCurrencySymbol;
         },
+        priceMinSelected() {
+            return this.initialMin !== this.dataMinSelected;
+        },
+        priceMaxSelected() {
+            return this.initialMax !== this.dataMaxSelected;
+        }
     },
 
     created() {

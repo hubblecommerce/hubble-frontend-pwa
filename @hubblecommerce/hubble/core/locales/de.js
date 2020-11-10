@@ -219,6 +219,7 @@ export default context => {
             Apply: 'Anwenden',
             'Your choice:': 'Ihre Auswahl:',
             'Reset all': 'Alle Filter zurücksetzen',
+            pagination_from: 'von',
             'Follow us:': 'Folgen Sie uns:',
             'Newsletter registration': 'Newsletter Anmeldung',
             'Subscribe our Newsletter': 'Newsletter abonnieren',

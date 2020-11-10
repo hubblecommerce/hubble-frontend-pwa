@@ -9,20 +9,7 @@
   .open-filter {
     width: 100%;
     margin-bottom: inherit;
-
-    i {
-      transform: rotate(90deg);
-    }
   }
-}
-
-@media(min-width: 768px) {
-    .filter-wrp {
-        /* Open filter button */
-        .open-filter {
-            margin-bottom: 10px;
-        }
-    }
 }
 
 .facets-wrp {
@@ -36,12 +23,12 @@
 
     .facet-wrp {
       margin-left: 0;
-      margin-right: 20px;
+      margin-right: 5px;
       margin-bottom: 10px;
       position: relative;
 
       .toggle {
-        border-radius: 24px;
+        border-radius: 2px;
         border: 1px solid $border-color;
         height: 33px;
         font-weight: $font-weight-regular;
@@ -69,13 +56,26 @@
     }
 
     .collapse-wrp {
-      &.active {
+      .item-amount {
+        color: $green;
+        border-radius: 100%;
+        background: $secondary;
+        margin-left: 5px;
+        width: 21px;
+        height: 21px;
+        font-weight: $font-weight-bold;
+        font-size: 14px;
+        line-height: 21px;
+        text-align: center;
+      }
+
+      &.open {
         .toggle {
           background: $primary;
-          color: $background;
+          color: $secondary;
 
           i {
-            color: $background;
+            color: $secondary;
             z-index: 0;
           }
         }
@@ -118,7 +118,6 @@
       .icon {
         font-size: 24px;
         line-height: 21px;
-        color: $text-light;
         top: 10px;
         right: 15px;
       }
@@ -136,9 +135,9 @@
       }
       .reset-facet {
         text-align: right;
-        font-weight: $font-weight-bold;
         text-decoration: underline;
         cursor: pointer;
+        color: $secondary;
       }
     }
 
