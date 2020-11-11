@@ -148,7 +148,7 @@
 
 @media(min-width: 992px) {
     .desktop-layout {
-        padding-bottom: 818px;
+        padding-bottom: 705px;
 
         &.hubble-light {
             padding-bottom: 125px;
@@ -162,9 +162,12 @@
         padding-bottom: 495px;
     }
     .nav-wrp {
+        border: none;
+
         &:before {
             content: '';
             background: $background;
+            border-bottom: 1px solid $border-color;
             width: 100vw;
             height: 100%;
             margin-left: calc(-50vw + 50%);
@@ -190,32 +193,5 @@
                 margin: 0 0 0 5px;
             }
         }
-    }
-}
-
-@media(min-width: 1090px) {
-    .desktop-layout {
-        padding-bottom: 818px;
-    }
-}
-
-@media(min-width: 1120px) {
-    .desktop-layout {
-        padding-bottom: 660px;
-    }
-}
-
-@media(min-width: 1200px) {
-    .mobile-layout {
-        padding-bottom: 495px;
-    }
-    .desktop-layout {
-        padding-bottom: 660px;
-    }
-}
-
-@media(min-width: 1235px) {
-    .desktop-layout {
-        padding-bottom: 500px;
     }
 }

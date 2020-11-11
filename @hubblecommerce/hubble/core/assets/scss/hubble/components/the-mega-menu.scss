@@ -4,7 +4,7 @@ $megamenu-background: $darkest-gray;
 $megamenu-item-text-transform: uppercase;
 $megamenu-item-font-size: 16px;
 $megamenu-item-color: $white;
-$megamenu-item-line-height: 19px;
+$megamenu-item-line-height: 17px;
 $megamenu-item-highlight-size: 2px;
 $megamenu-item-highlight-color: $primary;
 
@@ -20,16 +20,29 @@ nav {
         display: flex;
         justify-content: flex-start;
         align-items: center;
+        height: $megamenu-height + $megamenu-item-highlight-size;
 
         .menu-item {
+            height: $megamenu-item-line-height + $megamenu-item-highlight-size;
             text-transform: $megamenu-item-text-transform;
             font-size: $megamenu-item-font-size;
             line-height: $megamenu-item-line-height;
-            padding-top: (($megamenu-height - $megamenu-item-line-height - $megamenu-item-highlight-size) / 2);
-            padding-bottom: (($megamenu-height - $megamenu-item-line-height - $megamenu-item-highlight-size) / 2);
-            margin: 0 50px 0 0;
+            margin: 0 25px 0 0;
             border: $megamenu-item-highlight-size solid transparent;
             color: $megamenu-item-color;
+
+            /* Display only one line and cut with '...' */
+            -moz-hyphens: auto;
+            -ms-hyphens: auto;
+            -webkit-hyphens: auto;
+            display: block;
+            display: -webkit-box;
+            hyphens: auto;
+            word-wrap: break-word;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
 
             &:last-child {
                 margin: 0;
