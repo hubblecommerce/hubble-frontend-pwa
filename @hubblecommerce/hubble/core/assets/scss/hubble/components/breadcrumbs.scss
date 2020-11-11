@@ -1,6 +1,7 @@
 .breadcrumbs {
-    display: none;
-    padding: 15px 0;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
 
     ul {
         align-items: center;
@@ -10,15 +11,12 @@
 
         li {
             margin-right: 5px;
-            font-size: 14px;
         }
     }
 
     .row {
-        // Do not highlight Home (/) on link active
         .breadcrumb-item:first-child {
             .nuxt-link-active {
-                color: $text-light !important;
                 font-weight: normal;
             }
         }
@@ -27,13 +25,10 @@
     .breadcrumb-item {
         a {
             vertical-align: middle;
-            color: $text-light;
         }
 
-        // Highlight every link active to highlight paginated urls
         .nuxt-link-active {
-            color: $primary !important;
-            font-weight: bold;
+            font-weight: normal;
         }
     }
 
@@ -42,14 +37,11 @@
     }
 
     .breadcrumb-item + .breadcrumb-item::before {
-        font-family: 'icons';
-        content: "\e941";
+        content: " / ";
         width: 15px;
         display: inline-block;
         margin-right: 5px;
         padding: 0;
-        font-size: 17px;
-        line-height: 21px;
         vertical-align: middle;
     }
 }

@@ -1,85 +1,47 @@
+$hbl-logo-wrp-height: 55px;
+$hbl-logo-width: 92px;
+$hbl-logo-width-desktop: 115px;
+
 .logo-wrp {
-  height: 55px;
-  display: flex;
-  align-items: center;
-  text-align: center;
-  width: 100%;
-  z-index: 1;
+    height: $hbl-logo-wrp-height;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    width: 100%;
 }
 
 .logo {
-  margin: 0 auto 0 0;
-  display: block;
-  overflow: hidden;
-  vertical-align: middle;
-  height: auto;
-
-  img {
-    width: 75px;
-  }
-
-  .logo-desktop {
-    display: none;
-  }
-
-  .logo-mobile {
+    margin: 0 auto;
     display: block;
-  }
+    overflow: hidden;
+    vertical-align: middle;
+    height: auto;
 
-  #logo {
-    path, polygon {
-      fill: $accent;
-      &.bg-primary {
-        fill: $primary;
-      }
+    picture {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        img {
+            position: relative;
+            width: $hbl-logo-width;
+        }
     }
-  }
 }
 
 /* Tablet */
 @media(min-width: 768px) {
-  .logo-wrp {
-    margin-right: auto;
-    width: auto;
-    border-bottom: 0;
-    height: 25px;
-  }
-  .logo {
-    display: block;
-
-    img {
-      position: relative;
-      top: inherit;
+    .logo-wrp {
+        margin-right: 0;
+        width: auto;
     }
-
-    .logo-desktop {
-      display: block;
-    }
-
-    .logo-mobile {
-      display: none;
-    }
-
-    #logo {
-      path, polygon {
-        fill: #fff;
-        &.bg-primary {
-          fill: #fff;
-        }
-      }
-    }
-  }
 }
 
 /* Desktop */
 @media(min-width: 1024px) {
-  .logo-wrp {
-    margin-right: 0;
-  }
-
-  .logo {
-    img {
-      width: 115px;
+    .logo {
+        img {
+            width: $hbl-logo-width-desktop;
+        }
     }
-  }
 }

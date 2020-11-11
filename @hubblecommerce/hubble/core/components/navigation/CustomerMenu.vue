@@ -6,7 +6,7 @@
             <material-ripple />
         </button>
 
-        <transition-expand-layer :right-left="true">
+        <transition-expand-layer :direction="{ sm: 'bottomTop', md: 'rightLeft', lg: 'rightLeft' }">
             <div v-if="showMenu" class="transition-expand-wrp">
                 <customer-menu-layer v-if="initiated" />
             </div>

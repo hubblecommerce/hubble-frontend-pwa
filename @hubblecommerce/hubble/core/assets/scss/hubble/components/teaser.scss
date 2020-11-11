@@ -35,8 +35,7 @@
 
                     .description-headline {
                         text-transform: uppercase;
-                        font-size: $font-size-h4;;
-                        line-height: $line-height-h4;
+                        @include font-size($h4-font-sizes);
                         margin-bottom: 4px;
                     }
                 }
@@ -107,8 +106,7 @@
 
                     .description-headline {
                         text-transform: uppercase;
-                        font-size: $font-size-h3;
-                        line-height: $line-height-h3;
+                        @include font-size($h3-font-sizes);
                         margin-bottom: 6px;
                     }
 
@@ -133,8 +131,7 @@
 
                         .description-headline {
                             text-transform: uppercase;
-                            font-size: $font-size-h3;
-                            line-height: $line-height-h3;
+                            @include font-size($h3-font-sizes);
                             margin-bottom: 6px;
                         }
 

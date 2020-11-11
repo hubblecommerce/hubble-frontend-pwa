@@ -1,12 +1,19 @@
 .price-slider {
     display: block;
     position: relative;
-}
-.price.text-left {
+
+  .price.text-left, .price.text-right {
+    &.price-selected {
+      font-weight: $font-weight-bold;
+    }
+  }
+
+  .price.text-left {
     float: left;
-}
-.price.text-right {
+  }
+  .price.text-right {
     float: right;
+  }
 }
 
 .vue-slider-component {

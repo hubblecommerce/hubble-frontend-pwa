@@ -1,8 +1,6 @@
 .menu-cpt-wrapper {
-
     .navbar-toggler {
         padding: 10px;
-        margin-right: 5px;
     }
 
     .collapse-wrp {
@@ -13,15 +11,6 @@
 }
 
 .menu-wrapper {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: $background;
-    z-index: 6;
-    max-width: none;
-
     .tree-wrp {
         position: relative;
     }
@@ -44,10 +33,6 @@
 @media(min-width: 768px) {
     .menu-cpt-wrapper {
         z-index: 20;
-
-        .navbar-toggler {
-            margin-right: 15px;
-        }
     }
 
     .menu-wrapper {

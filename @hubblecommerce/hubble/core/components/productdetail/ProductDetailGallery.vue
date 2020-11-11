@@ -77,7 +77,7 @@
                         <div class="hidden-link-name">
                             {{ $t('close') }}
                         </div>
-                        <i class="icon icon-close" />
+                        <i class="icon icon-x" />
                         <material-ripple />
                     </button>
 

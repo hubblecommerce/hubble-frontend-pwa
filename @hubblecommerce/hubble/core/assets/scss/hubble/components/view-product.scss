@@ -93,12 +93,12 @@
     }
 
     .sale-price {
-        font-size: $font-size-h2;
+        @include font-size($h2-font-sizes);
         font-weight: $font-weight-bold;
     }
 
     .old-price {
-        font-size: $font-size-caption;
+        @include font-size($text-font-sizes);
         text-decoration: line-through;
 
         & + .sale-price {
@@ -108,13 +108,12 @@
     }
 
     .unit-price-wrp {
-        font-size: $font-size-body;
-        line-height: $line-height-body;
+        @include font-size($text-font-sizes);
         color: $text-light;
     }
 
     .info {
-        font-size: $font-size-caption;
+        @include font-size($text-font-sizes);
     }
 }
 
@@ -164,7 +163,7 @@
 .product-description-container {
     &.mobile-layout {
         .tab-content p {
-            font-size: $font-size-body-small;
+            @include font-size($small-text-font-sizes);
         }
     }
 
@@ -224,8 +223,7 @@
         }
 
         .description-content p {
-            font-size: $font-size-body-small;
-            line-height: 24px;
+            @include font-size($small-text-font-sizes);
         }
 
         .description-title {

@@ -1,95 +1,130 @@
 .toolbar-wrp{
-    margin-bottom: 10px;
+  margin-bottom: 10px;
+  position: relative;
+
+  .item-count-wrp {
     position: relative;
+    margin: 10px;
+  }
 
-
-
-
-    .item-count-wrp {
-        position: relative;
-        margin: 10px;
-    }
+  .bottom-toolbar {
+    display: none;
+  }
 }
 
-/* Desktop */
 @media(min-width: 768px) {
-    .toolbar-wrp {
-        display: flex;
-        justify-content: flex-end;
-        flex-wrap: wrap;
+  .toolbar-wrp {
+    display: flex;
+    justify-content: space-between;
 
-        .filter-wrp {
-            flex: 2;
+    .bottom-toolbar {
+      display: block;
+      .pagination {
+        align-items: center;
+      }
 
-            .open-filter {
-                width: 180px;
-                margin-right: auto;
-                padding-left: 50px;
-            }
-        }
-        .limit {
-            width: 100px !important;
-        }
+      .selectable-order {
+        display: none;
+      }
 
-        .hbl-select {
-            width: 180px;
-            margin-left: 10px;
-            margin-right: 10px;
-        }
-
-        .item-count-wrp {
-            position: absolute;
-            margin: 0;
-            left: 0;
-            top: 60px;
-        }
+      .hbl-select {
+        width: 180px;
+      }
     }
+
+    .item-count-wrp {
+      position: absolute;
+      margin: 0;
+      left: 0;
+      top: 60px;
+    }
+  }
 }
 
 @media(min-width: 1024px) {
-    .toolbar-wrp{
-        &.fixed {
-            position: fixed;
-            width: 100%;
-            left: 0;
-            right: 0;
-            top: 81px;
-            z-index: 10;
-            background: $background;
-            padding: 15px;
-            margin-bottom: 0;
+  .toolbar-wrp{
+    display: block;
+    .top-toolbar {
+      display: flex;
+      justify-content: flex-end;
+      flex-wrap: wrap;
 
-            &:before {
-                content: '';
-                width: 100vw;
-                height: 100%;
-                position: absolute;
-                top: 0;
-                left: 0;
-                margin-left: calc(-50vw + 50%);
-                background-color: $background;
-                border-bottom: 1px solid $border-color;
-            }
+      .filter-wrp {
+        flex: 2;
 
-            .facets-wrp .facet-wrp .toggle .icon {
-                z-index: 0;
-            }
+        .open-filter {
+          width: 180px;
+          margin-right: auto;
+          padding-left: 50px;
+        }
+      }
 
-            .selected-filters .selected-label {
-                z-index: 1;
-            }
+      .limit {
+        width: 100px !important;
+      }
 
-            .item-count-wrp {
-                top: 50px;
-                right: 15px;
-            }
+      &.fixed {
+        position: fixed;
+        width: 100%;
+        left: 0;
+        right: 0;
+        top: $header-height-desktop + 48px; //todo: 48px change to variable
+        z-index: 10;
+        background: $background;
+        padding: 15px;
+        margin-bottom: 0;
+
+        &:before {
+          content: '';
+          width: 100vw;
+          height: 100%;
+          position: absolute;
+          top: 0;
+          left: 0;
+          margin-left: calc(-50vw + 50%);
+          background-color: $background;
+          border-bottom: 1px solid $border-color;
+        }
+
+        .facets-wrp .facet-wrp .toggle .icon {
+          z-index: 0;
+        }
+
+        .selected-filters .selected-label {
+          z-index: 1;
         }
 
         .item-count-wrp {
-            position: absolute;
-            top: 45px;
-            right: 8px;
-            left: initial;
+          top: 50px;
+          right: 15px;
         }
+      }
     }
+
+    .bottom-toolbar {
+      padding-top: 15px;
+      width: 100%;
+      position: relative;
+      display: flex;
+
+      .pagination {
+        position: absolute;
+        left: 0;
+        right: 0;
+      }
+
+      .selectable-order {
+        display: block;
+        margin-bottom: 0;
+        margin-left: auto;
+      }
+    }
+
+    .item-count-wrp {
+      position: absolute;
+      top: 45px;
+      right: 8px;
+      left: initial;
+    }
+  }
 }

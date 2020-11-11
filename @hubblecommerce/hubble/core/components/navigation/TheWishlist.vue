@@ -12,7 +12,7 @@
             </client-only>
         </button>
 
-        <transition-expand-layer :right-left="true">
+        <transition-expand-layer :direction="{ sm: 'bottomTop', md: 'rightLeft', lg: 'rightLeft' }">
             <div v-if="showMenu" class="transition-expand-wrp">
                 <wishlist-layer v-if="initiated" />
             </div>

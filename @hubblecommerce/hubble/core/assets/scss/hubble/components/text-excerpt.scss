@@ -5,8 +5,7 @@
 
     .show-more {
         display: inline;
-        font-size: $font-size-body;
-        line-height: $line-height-body;
+        @include font-size($text-font-sizes);
         color: $text-primary;
         text-decoration: underline;
         cursor: pointer;

@@ -1,17 +1,19 @@
 // Configuration, Variables and Mixins
 @import "configuration/reset"; // Reset styles for Crossbrowser support
-@import "configuration/theme"; // Global theme scss
-@import "configuration/colors"; // Global colors scss
-@import "configuration/typography"; // Global typography scss
+@import "configuration/theme"; // Global theme variables
+@import "configuration/typography"; // Global typography
 @import "configuration/bootstrap-essentials"; // Useful classes and mixins from Bootstrap
-@import "configuration/global"; // Global global scss
-@import "configuration/fonts"; // Global fonts scss
-@import "configuration/buttons"; // Global buttons scss
-@import "configuration/badges"; // Global badges scss
-@import "configuration/table"; // Global table scss
-@import "configuration/icon-set"; // Global icon-set scss
-@import "configuration/elevation"; // Global elevation classes scss
-@import "configuration/links"; // Global link classes scss
+@import "configuration/global"; // Global styles for html standard elements
+@import "configuration/fonts"; // Global fonts
+@import "configuration/buttons"; // Global buttons
+@import "configuration/badges"; // Global badges
+@import "configuration/table"; // Global table
+@import "configuration/icon-set"; // Global icon-set
+@import "configuration/elevation"; // Global elevation classes
+@import "configuration/input"; // Global input text & textarea styles
+@import "configuration/select"; // Global input select styles
+@import "configuration/checkbox"; // Global checkbox & radio button styles
+@import "configuration/flash-message"; // Global flash-message styles
 
 // Components
 @import "components/view-product";
@@ -30,21 +32,16 @@
 @import "components/the-footer";
 @import "components/tiny-slider";
 @import "components/the-language-switch";
-@import "components/input";
 @import "components/tabs";
 @import "components/transition-expand-layer";
-@import "components/select";
 @import "components/scroll-to-top";
 @import "components/product-options";
-@import "components/flash-message";
-@import "components/flash-messages";
 @import "components/switch";
 @import "components/the-mega-menu";
 @import "components/background-blur";
 @import "components/view-category";
 @import "components/breadcrumbs";
 @import "components/text-excerpt";
-@import "components/checkbox";
 @import "components/pagination";
 @import "components/product-detail-gallery";
 @import "components/product-detail-buybox";
@@ -94,9 +91,9 @@
 @import "components/product-detail-cross-selling-sw";
 @import "components/customer-account-information";
 @import "components/image-gallery";
+@import "components/search-tigger";
 
 // Shopware styling files
 @import "components/cms-element";
 @import "components/cms-block";
 @import "components/cms-sections";
-

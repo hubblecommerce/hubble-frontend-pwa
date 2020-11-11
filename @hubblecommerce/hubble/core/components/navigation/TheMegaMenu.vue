@@ -1,5 +1,5 @@
 <template>
-    <div class="mega-menu-wrp" @mouseleave="hideChildren">
+    <div class="mega-menu-wrp container" @mouseleave="hideChildren">
         <div class="level-0-wrp">
             <template v-for="item in dataItems">
                 <div
@@ -13,7 +13,10 @@
                 <nuxt-link
                     v-else
                     :key="item.id"
+                    :ref="item.id"
                     class="menu-item"
+                    :name="item.name"
+                    :class="{ active: isActive === item.id }"
                     :to="itemUrlPath(item)"
                     @mouseenter.native="showChildren(item)"
                     v-text="item.name"
@@ -21,8 +24,13 @@
             </template>
         </div>
 
-        <transition name="slide-top-bottom">
-            <div v-if="showMenu && activeCategory.children" :class="'fixed-container ' + activeCategory.url_path" @mouseleave="hideChildren">
+        <transition name="fade">
+            <div v-if="showMenu && activeCategory.children"
+                 :class="'fixed-container ' + activeCategory.url_path"
+                 ref="megaMenuLayer"
+                 @mouseleave="hideChildren"
+                 :style="`left: ${layerLeft}px;`"
+            >
                 <div class="max-width-container">
                     <template>
                         <div class="children-wrp">
@@ -37,12 +45,6 @@
                             </div>
                         </div>
                     </template>
-
-                    <div
-                        v-if="activeCategory.image != null"
-                        class="category-teaser"
-                        :style="'background-image: url(' + itemImgPath(activeCategory) + ')'"
-                    />
                 </div>
             </div>
         </transition>
@@ -70,6 +72,7 @@ export default {
             isActive: null,
             activeCategory: {},
             limit: 12,
+            layerLeft: 0
         };
     },
 
@@ -121,8 +124,23 @@ export default {
 
                 this.showOffcanvasAction({ component: this.name });
                 this.resetAutoCompleteResults();
+
+                setTimeout(() => {
+                    this.setLayerPosition(this.$refs[item.id][0]);
+                }, 1);
             } else {
                 this.hideOffcanvasAction();
+            }
+        },
+        setLayerPosition: function(triggerElement) {
+            const triggerPosition = triggerElement.$el.offsetLeft;
+            const parentPosition = triggerElement.$parent.$el.getBoundingClientRect();
+            const layerPosition = this.$refs.megaMenuLayer.getBoundingClientRect();
+
+            if((triggerPosition + layerPosition.width) > parentPosition.width) {
+                this.layerLeft = parentPosition.width - layerPosition.width;
+            } else {
+                this.layerLeft = triggerPosition;
             }
         },
         // Check if child should be displayed
@@ -141,19 +159,7 @@ export default {
             this.showMenu = false;
 
             this.isActive = null;
-        },
-        itemImgPath: function (item) {
-            // If customer domain isset get live images
-            if (!_.isEmpty(process.env.CUSTOMER_DOMAIN)) {
-                let image = item.image;
-
-                return _.join([process.env.CUSTOMER_DOMAIN, image], '/');
-            }
-
-            let path = _.trim(process.env.config.IMG_BASE_URL, '/');
-
-            return path + '/images/catalog/product/' + this.imgFilter + '/' + item.image;
-        },
+        }
     },
 };
 </script>

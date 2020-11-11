@@ -2,65 +2,97 @@
 *,
 *::before,
 *::after {
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  font-family: $font-family;
-  color: $text-primary;
-  line-height: 24px;
-  font-size: 1rem;
-  background-color: #fff;
-  overflow-x: hidden;
+    font-family: $font-family;
+    color: $text-primary;
+    line-height: 24px;
+    font-size: 1rem;
+    background-color: #fff;
+    overflow-x: hidden;
 }
 
+/* Links */
 a {
-  color: $text-primary;
+    color: $text-primary;
 }
 
 a:hover, a:focus {
-  color: $primary;
+    color: $primary;
 }
 
 a, a:hover, a:focus {
-  text-decoration: none;
+    text-decoration: none;
+}
+
+.link-primary {
+    cursor: pointer;
+    color: $blue;
+    text-decoration: underline;
+
+    &:hover {
+        color: $blue;
+        text-decoration: none;
+    }
+
+    &:focus {
+        color: $blue;
+        text-decoration: none;
+    }
+}
+
+.hidden-link-name {
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 /* nuxt.js specific */
 .nuxt-progress {
-  background: $primary;
+    background: $primary;
 }
 
 @media (min-width: 576px) {
-  .container {
-    max-width: 768px;
-  }
+    .container {
+        max-width: 768px;
+    }
 }
 
 @media(min-width: 768px) {
-  body {
-    padding-bottom: 0;
-  }
+    body {
+        padding-bottom: 0;
+    }
 
-  .container {
-    max-width: 768px;
-  }
+    .container {
+        max-width: 768px;
+    }
 
-  main {
-    padding-top: $header-height-desktop + 1px;
-  }
+    main {
+        padding-top: $header-height-desktop;
+    }
 }
 
 @media(min-width: 992px) {
-  .container {
-    max-width: 1200px;
-  }
+    .container {
+        max-width: 1200px;
+    }
+}
+
+@media(min-width: 1024px) {
+    main {
+        padding-top: $header-height-desktop + $header-navigation-height-desktop;
+    }
 }
 
 @media(min-width: 1200px) {
-  .container {
-    max-width: map-get($container-max-widths, xl);
-  }
+    .container {
+        max-width: map-get($container-max-widths, xl);
+    }
 }

@@ -28,11 +28,6 @@
 
   .wishlist-icon {
     overflow: visible;
-    .icon {
-      &:before {
-        font-size: 20px;
-      }
-    }
 
     &.active {
       color: $accent;

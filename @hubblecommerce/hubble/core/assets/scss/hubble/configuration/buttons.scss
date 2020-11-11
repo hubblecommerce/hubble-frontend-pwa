@@ -1,35 +1,66 @@
+$button-color: $darker-gray;
+$button-background-color: $gray;
+$button-border: none;
+$button-border-radius: 2px;
+
+$button-primary-color: $secondary;
 $button-primary-background-color: $primary;
-$button-primary-color: #fff;
+$button-primary-border: none;
+
+$button-secondary-color: $primary;
 $button-secondary-background-color: $secondary;
-$button-font-size: $font-size-button;
-$button-padding: 6px 15px;
-$button-border-radius: 0;
+$button-secondary-border: none;
+
+$button-font-size: 14px;
+$button-font-weight: bold;
+$button-text-transform: uppercase;
+
+$button-line-height: 17px;
+$button-padding: 13px 25px;
+
+$button-icon-width: 40px;
+$button-icon-height: 40px;
+$button-icon-font-size: 24px;
+$button-icon-padding: 10px;
+$button-icon-background: transparent;
+$button-icon-hover-background: transparent;
+$button-icon-focus-background: transparent;
 
 button {
     position: relative;
     overflow: hidden;
+    padding: $button-padding;
+
+    border: $button-border;
+    border-radius: $button-border-radius;
+    outline: none;
+
     text-decoration: none;
     letter-spacing: .4px;
-    outline: none;
     font-size: $button-font-size;
-    padding: $button-padding;
-    border: 2px solid transparent;
-    background: transparent;
+    line-height: $button-line-height;
+    text-transform: $button-text-transform;
+    font-weight: $button-font-weight;
+
+    color: $button-color;
+    background: $button-background-color;
     cursor: pointer;
-    border-radius: $button-border-radius;
     transition: all .2s ease-in-out;
+
+    &:focus {
+        text-decoration: none;
+        outline: none;
+        background: darken($button-background-color, 15%);
+    }
 
     &:disabled,
     &[disabled] {
-        //color: $button-primary-background-color !important;
-    }
+        opacity: .6;
 
-    &:hover {
-        text-decoration: none;
-    }
-
-    &:focus {
-        outline: none;
+        &:hover {
+            box-shadow: none !important;
+            cursor: not-allowed;
+        }
     }
 
     &.toggle {
@@ -64,82 +95,61 @@ button {
     }
 
     &.button-primary {
-        background-color: $button-primary-background-color;
         color: $button-primary-color;
-        border: 2px solid $button-primary-background-color;
+        background-color: $button-primary-background-color;
+        border: $button-primary-border;
+
+        &:focus {
+            background-color: darken($button-primary-background-color, 15%);
+        }
 
         .material-ripple__component {
             background-color: #fff;
             opacity: 0.8;
         }
-
-        &:disabled,
-        &[disabled] {
-            color: $button-primary-background-color !important;
-        }
     }
 
     &.button-secondary {
+        color: $button-secondary-color;
         background-color: $button-secondary-background-color;
-        color: $primary;
-        border: 2px solid $button-secondary-background-color;
+        border: $button-secondary-border;
+
+        &:focus {
+            background-color: darken($button-secondary-background-color, 15%);
+        }
 
         .material-ripple__component {
             background-color: $secondary;
             opacity: 0.5;
         }
-
-        &:disabled,
-        &[disabled] {
-            color: $button-secondary-background-color !important;
-        }
     }
 
-    &.button-primary, &.button-secondary {
-        &:disabled,
-        &[disabled] {
-            background-color: $border-color !important;
-            border: 2px solid $border-color !important;
-
-            &:hover {
-                box-shadow: none !important;
-                border: 2px solid $border-color !important;
-                cursor: not-allowed;
-            }
-        }
+    i {
+        vertical-align: middle;
+        font-size: 19px;
+        line-height: 14px;
     }
 
     &.button-icon {
-        min-width: 40px;
-        min-height: 40px;
-        padding: 12px;
+        min-width: $button-icon-width;
+        min-height: $button-icon-height;
+        padding: $button-icon-padding;
         display: flex;
         justify-content: center;
         align-items: center;
         border-radius: 50px;
-    }
+        background: $button-icon-background;
 
-    &.button-color-accent {
-        background-color: $accent;
-        color: #fff;
-
-        .material-ripple__component {
-            background-color: #fff;
-            opacity: 0.5;
+        i {
+            font-size: $button-icon-font-size;
         }
-    }
 
-    i {
-        width: 20px;
-        height: 20px;
-        font-size: 20px;
+        &:hover {
+            background: $button-icon-hover-background;
+        }
 
-        &.left {
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            margin: auto 15px;
+        &:focus {
+            background: $button-icon-focus-background;
         }
     }
 }
@@ -157,16 +167,21 @@ button {
 
 @media(min-width: 768px) {
     button {
+        &:hover {
+            text-decoration: none;
+            outline: none;
+            background: darken($button-background-color, 5%);
+        }
+
         &.button-primary {
             &:hover {
-                background-color: lighten($button-primary-background-color, 5%);
-                box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
+                background-color: darken($button-primary-background-color, 5%);
             }
         }
 
         &.button-secondary {
             &:hover {
-                background-color: lighten($button-secondary-background-color, 5%);
+                background-color: darken($button-secondary-background-color, 5%);
             }
         }
     }

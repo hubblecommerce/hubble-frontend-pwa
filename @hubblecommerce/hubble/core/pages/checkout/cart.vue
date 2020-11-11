@@ -52,7 +52,7 @@
                 </div>
             </div>
             <div v-else class="cart-wrp empty-cart">
-                <i class="icon icon-cart" />
+                <i class="icon icon-shopping-bag" />
                 <div class="headline-1" v-text="$t('Your shopping cart is empty')" />
                 <nuxt-link :to="localePath('index')">
                     <button class="button-primary">

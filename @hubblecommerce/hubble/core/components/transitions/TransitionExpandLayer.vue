@@ -2,7 +2,7 @@
 Component Usage:
 
 In Template:
-<transition-expand-layer :rightLeft="true">
+<transition-expand-layer :rightLeft="true" :direction="{ sm: 'bottomTop', md: 'rightLeft', lg: 'rightLeft' }">
   <div v-if="showLayer" class="transition-expand-wrp">
     <div class="container expand-content">
 
@@ -71,6 +71,10 @@ export default {
             type: Boolean,
             required: false,
         },
+        direction: {
+            type: Object,
+            required: false
+        }
     },
 
     data() {
@@ -84,32 +88,39 @@ export default {
             offcanvas: state => state.modNavigation.offcanvas,
         }),
         transMode: function () {
+            let transitionMode = '';
+
+            try {
+                if(this.direction[this.$mq] != null) {
+                    transitionMode = this.direction[this.$mq];
+                }
+            } catch {
+                if (this.bottomTop === true) {
+                    transitionMode = 'bottomTop';
+                }
+
+                if (this.leftRight === true) {
+                    transitionMode = 'leftRight';
+                }
+
+                if (this.rightLeft === true) {
+                    transitionMode = 'rightLeft';
+                }
+            }
+
             // If the layer that is supposed to be opened on same direction then only fade the content and not slide the whole layer
             if (this.offcanvas.sameLayerOpened) {
                 return 'fade-to-white';
             }
-            return 'expand-' + this.transitionMode;
-        },
-    },
 
-    created() {
-        if (this.bottomTop === true) {
-            this.transitionMode = 'bottomTop';
+            return 'expand-' + transitionMode;
         }
-
-        if (this.leftRight === true) {
-            this.transitionMode = 'leftRight';
-        }
-
-        if (this.rightLeft === true) {
-            this.transitionMode = 'rightLeft';
-        }
-    },
+    }
 };
 </script>
 
 <style scoped lang="scss">
-/* Animate Minicart overlay from bottom to top */
+/* Animate overlay from bottom to top */
 .expand-bottomTop-enter-active,
 .expand-bottomTop-leave-active {
     transition: all 0.2s ease;
@@ -123,7 +134,7 @@ export default {
     top: 0 !important;
 }
 
-/* Animate Minicart overlay from left to right */
+/* Animate overlay from left to right */
 .expand-leftRight-enter-active,
 .expand-leftRight-leave-active {
     transition: all 0.2s ease-in-out;
@@ -137,7 +148,7 @@ export default {
     left: 0 !important;
 }
 
-/* Animate Minicart overlay from right to left */
+/* Animate overlay from right to left */
 .expand-rightLeft-enter-active,
 .expand-rightLeft-leave-active {
     transition: all 0.1s ease-in-out;
@@ -151,7 +162,7 @@ export default {
     right: 0 !important;
 }
 
-/* Animate Minicart overlay from right to left */
+/* Animate overlay from right to left */
 .fade-to-white-enter-active,
 .fade-to-white-leave-active {
     transition: all 0.2s ease-in-out;
@@ -184,7 +195,7 @@ export default {
 }
 
 @media (min-width: 768px) {
-    /* Animate Minicart overlay from bottom to top */
+    /* Animate overlay from bottom to top */
     .expand-bottomTop-enter-active,
     .expand-bottomTop-leave-active {
         transition: all 0.3s ease;
@@ -200,7 +211,7 @@ export default {
         opacity: 1;
     }
 
-    /* Animate Minicart overlay from right to left */
+    /* Animate overlay from right to left */
     .expand-rightLeft-enter-active,
     .expand-rightLeft-leave-active {
         transition: all 0.2s ease-in-out;

@@ -1,37 +1,32 @@
 <template>
-    <div class="toolbar-wrp" :class="extraClass">
-        <product-listing-filter class="" />
+    <div class="toolbar-wrp">
+        <div class="top-toolbar" :class="extraClass">
+            <product-listing-filter />
 
-        <selectable-limit :data-options="optionsLimit" />
+            <selected-facets />
+        </div>
 
-        <selectable-order :data-options="optionsSorter" />
-
-        <pagination />
-
-        <selected-facets />
-
-        <ItemCount />
+        <div class="bottom-toolbar">
+            <pagination/>
+            <selectable-order class="selectable-order" :data-options="optionsSorter" />
+        </div>
     </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
 import ProductListingFilter from './ProductListingFilter';
-import SelectableLimit from './toolbar/SelectableLimit.vue';
-import SelectableOrder from './toolbar/SelectableOrder.vue';
-import Pagination from './toolbar/Pagination';
-import ItemCount from './toolbar/ItemCount';
 import SelectedFacets from './toolbar/SelectedFacets';
+import Pagination from './toolbar/Pagination';
+import SelectableOrder from './toolbar/SelectableOrder';
+import { mapState } from 'vuex'
 
 export default {
     name: 'ProductListingToolbar',
 
     components: {
-        SelectedFacets,
-        ItemCount,
         ProductListingFilter,
+        SelectedFacets,
         Pagination,
-        SelectableLimit,
         SelectableOrder,
     },
 
@@ -45,9 +40,8 @@ export default {
 
     computed: {
         ...mapState({
-            optionsLimit: state => state.modApiRequests.optionsLimit,
             optionsSorter: state => state.modApiRequests.optionsSorter,
         }),
-    },
+    }
 };
 </script>

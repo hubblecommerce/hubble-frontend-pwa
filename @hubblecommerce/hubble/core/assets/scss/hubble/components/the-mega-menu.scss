@@ -1,39 +1,77 @@
-$megamenu-columns: 5;
+$megamenu-height: $header-navigation-height-desktop;
+$megamenu-background: $darkest-gray;
+
+$megamenu-item-text-transform: uppercase;
+$megamenu-item-font-size: 16px;
+$megamenu-item-color: $white;
+$megamenu-item-line-height: 17px;
+$megamenu-item-highlight-size: 2px;
+$megamenu-item-highlight-color: $primary;
+
+nav {
+    background-color: $megamenu-background;
+}
 
 .mega-menu-wrp {
-    margin: 0 auto 0 30px;
     position: relative;
+    height: $megamenu-height + $megamenu-item-highlight-size;
 
     .level-0-wrp {
         display: flex;
-        justify-content: space-between;
+        justify-content: flex-start;
         align-items: center;
+        height: $megamenu-height + $megamenu-item-highlight-size;
 
         .menu-item {
-            height: $header-height-desktop + 1px;
-            text-transform: uppercase;
-            font-size: 16px;
-            line-height: 18px;
-            padding: 30px 0;
-            margin: 0px 15px;
-            border: 2px solid transparent;
+            height: $megamenu-item-line-height + $megamenu-item-highlight-size;
+            text-transform: $megamenu-item-text-transform;
+            font-size: $megamenu-item-font-size;
+            line-height: $megamenu-item-line-height;
+            margin: 0 25px 0 0;
+            border: $megamenu-item-highlight-size solid transparent;
+            color: $megamenu-item-color;
 
-            &.active {
-                border-bottom: 2px solid $primary;
+            /* Display only one line and cut with '...' */
+            -moz-hyphens: auto;
+            -ms-hyphens: auto;
+            -webkit-hyphens: auto;
+            display: block;
+            display: -webkit-box;
+            hyphens: auto;
+            word-wrap: break-word;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+
+            &:last-child {
+                margin: 0;
             }
 
-            &:nth-child(6) {
-                color: $highlight;
+            &:after {
+                display: block;
+                content: attr(name);
+                font-weight:bold;
+                visibility: hidden;
+                overflow: hidden;
+                height: 0;
+
+                text-transform: $megamenu-item-text-transform;
+                font-size: $megamenu-item-font-size;
+                line-height: $megamenu-item-line-height;
+            }
+
+            &.active {
+                border-bottom: $megamenu-item-highlight-size solid $megamenu-item-highlight-color;
+                font-weight: $font-weight-bold;
             }
         }
     }
 
     .fixed-container {
-        position: fixed;
-        top: $header-height-desktop + 1px;
-        left: 0;
-        width: 100%;
-        border-bottom: 1px solid $border-color;
+        position: absolute;
+        top: $megamenu-height + 2;
+        border: 1px solid $border-color;
         background-color: $background;
         z-index: -1;
     }
@@ -42,20 +80,22 @@ $megamenu-columns: 5;
         max-width: map_get($container-max-widths, xl);
         display: flex;
         margin: 0 auto;
-        padding: 50px 15px;
+        padding: 15px 20px;
     }
 
     .children-wrp {
         display: flex;
-        flex-wrap: wrap;
         flex-direction: column;
-        width: 75%;
-        max-height: 400px;
+        width: 100%;
     }
 
     .child-wrp {
-        width: calc(100% / #{$megamenu-columns});
+        min-width: 200px;
         margin-bottom: 20px;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
     }
 
     .child-item {
@@ -74,14 +114,6 @@ $megamenu-columns: 5;
         line-height: 15px;
     }
 
-    .category-teaser {
-        width: 25%;
-        max-height: 390px;
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: 50% 50%;
-    }
-
     .slide-top-bottom-enter-active, .slide-top-bottom-leave-active {
         transition: all .1s ease;
     }
@@ -94,17 +126,5 @@ $megamenu-columns: 5;
     .slide-top-bottom-enter-to, .slide-top-bottom-leave {
         top: $header-height-desktop + 1px;
         opacity: 1;
-    }
-
-    .manufacturer-sub-col {
-        width: 25%;
-
-        .spacer {
-            margin-top: 20px;
-        }
-
-        a {
-            display: block;
-        }
     }
 }

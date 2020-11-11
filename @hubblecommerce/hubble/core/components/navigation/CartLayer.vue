@@ -3,7 +3,7 @@
         <div class="container expand-content">
             <div class="row overlay-header">
                 <button class="button-icon button-close-menu" @click="toggle()">
-                    <i class="icon icon-close" aria-hidden="true" />
+                    <i class="icon icon-x" aria-hidden="true" />
                     <material-ripple />
                 </button>
 
@@ -21,7 +21,7 @@
 
                 <transition name="fade">
                     <div v-if="qty <= 0" class="empty-cart">
-                        <i class="icon icon-cart" />
+                        <i class="icon icon-shopping-bag" />
 
                         <div class="headline-1" v-text="$t('Your shopping cart is empty')" />
 

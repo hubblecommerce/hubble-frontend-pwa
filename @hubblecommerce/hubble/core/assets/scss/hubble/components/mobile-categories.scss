@@ -12,6 +12,7 @@
 }
 
 .tree-menu {
+    position: relative;
     width: 100%;
     margin-left: 0;
 }
@@ -20,7 +21,7 @@
     position: relative;
     z-index: 1;
     cursor: pointer;
-    font-size: $font-size-button;
+    font-size: 16px;
     font-weight: $font-weight-medium;
     text-transform: uppercase;
     letter-spacing: .4px;
@@ -70,7 +71,7 @@
 .back-tigger {
     position: fixed;
     top: 9px;
-    left: 5px;
+    right: 5px;
     z-index: 1;
 
     .button-icon {
@@ -99,8 +100,9 @@
 }
 
 @media(min-width: 768px) {
-
     .tree-menu {
+        position: static;
+
         .back-tigger {
             top: 20px;
         }
@@ -178,7 +180,7 @@
 
     .trigger {
         padding: 12px !important;
-        font-size: $font-size-button;
+        font-size: 16px;
         color: $accent !important;
         font-weight: $font-weight-medium;
         text-transform: none;

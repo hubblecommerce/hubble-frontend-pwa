@@ -2,80 +2,58 @@
     <div class="product-card">
         <a :href="routeUrlPds" @click.ctrl.exact="gtmProductClick()" @click.exact.prevent="openDetailPage()">
             <div class="card-media">
+                <div class="actions">
+                    <div class="badge-wrp">
+                        <div v-if="itemIsSpecial" class="badge sale">
+                             {{ $t('Sale') }}
+                        </div>
+
+                        <div v-if="itemIsNew" class="badge new">
+                            {{ $t('New') }}
+                        </div>
+                    </div>
+                </div>
+
                 <img-lazy v-if="!isSlider" class="img-listing" :src="routeUrlProductImg" :alt-info="itemData.name" :title-info="itemData.name" />
                 <img v-if="isSlider" :src="routeUrlProductImg" :alt="itemData.name" :title="itemData.name" />
             </div>
 
             <div class="product-card-info-wrp-link">
                 <div class="product-card-info-wrp">
-                    <div v-if="itemData.manufacturer_name !== null" class="manufacturer" v-text="itemData.manufacturer_name" />
-                    <div v-if="itemData.name !== null" class="product-name text-small" v-text="itemData.name" />
+                    <div v-if="itemData.name !== null" class="product-name" v-text="itemData.name" />
+
                     <div :class="classesExcl" class="price-box price-excluding-tax product-price">
                         <template v-if="itemIsSpecial">
-                            <span class="old-price price">
-                                <span v-html="getPriceAndCurrency('display_price_brutto', priceSwitcherIncludeVat)" />
-                            </span>
-
-                            <span class="sale-price grey-label bodytext2">
-                                <span v-html="getPriceAndCurrency('display_price_brutto_special', priceSwitcherIncludeVat)" />
-                            </span>
+                            <span class="sale-price" v-html="getPriceAndCurrency('display_price_brutto_special', priceSwitcherIncludeVat)" />
+                            <span class="old-price" v-html="getPriceAndCurrency('display_price_brutto', priceSwitcherIncludeVat)" />
                         </template>
 
                         <template v-else-if="itemHasCheapPrice">
                             <span class="minimal cheapest-label">{{ $t('cheap_price_label') }}</span>
-
-                            <span class="grey-label bodytext2">
-                                <span v-html="getCheapPriceAndCurrency(priceSwitcherIncludeVat)" />
-                            </span>
+                            <span v-html="getCheapPriceAndCurrency(priceSwitcherIncludeVat)" />
                         </template>
 
                         <template v-else>
-                            <span class="grey-label bodytext2">
-                                <span v-html="getPriceAndCurrency('display_price_brutto', priceSwitcherIncludeVat)" />
-                            </span>
+                            <span v-html="getPriceAndCurrency('display_price_brutto', priceSwitcherIncludeVat)" />
                         </template>
 
                         <div v-if="itemOrig.final_price_item.priceinfo !== null" class="unit-price-wrp">
                             <span class="price" v-text="getPriceAndCurrency('priceinfo', false)" />
-
                             <span class="label" v-text="'/l'" />
                         </div>
                     </div>
                 </div>
             </div>
-
-            <div class="card-expand">
-                <product-listing-card-options-non-interactive :item="itemOrig" :facet-codes="[]" />
-            </div>
         </a>
-
-        <div class="actions">
-            <div class="badge-wrp">
-                <div v-if="itemIsSpecial" class="badge sale" v-text="itemDiscountPercent" />
-
-                <div v-if="itemIsNew" class="badge new">
-                    {{ $t('New') }}
-                </div>
-            </div>
-
-            <add-to-wishlist :item="itemData" />
-        </div>
     </div>
 </template>
 
 <script>
 import { mapState, mapGetters, mapMutations } from 'vuex';
-import AddToWishlist from '../productutils/AddToWishlist';
-import ProductListingCardOptionsNonInteractive from './ProductListingCardOptionsNonInteractive';
 import _ from 'lodash';
 
 export default {
     name: 'ProductListingCard',
-
-    components: {
-        AddToWishlist,
-        ProductListingCardOptionsNonInteractive,
-    },
 
     props: {
         itemOrig: {

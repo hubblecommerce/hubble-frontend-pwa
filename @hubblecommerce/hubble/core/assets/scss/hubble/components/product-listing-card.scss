@@ -4,10 +4,9 @@
   justify-content: flex-start;
   width: 100%;
   height: 100%;
-  padding: 20px;
   background-color: $background;
   transition: all .2s ease-in;
-  border: 1px solid transparent;
+  border: 1px solid $gray;
   cursor: pointer;
 
   .card-media {
@@ -32,8 +31,8 @@
 
   .actions {
     position: absolute;
-    right: 10px;
-    top: 10px;
+    left: 3px;
+    top: 3px;
 
     display: flex;
     align-items: center;
@@ -44,7 +43,8 @@
   }
 
   .product-card-info-wrp {
-    text-align: center;
+    padding: 12px;
+    text-align: left;
     min-height: 120px;
     display: flex;
     flex-direction: column;
@@ -52,26 +52,22 @@
   }
 
   .price-box {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-
+    font-weight: $font-weight-bold;
     .old-price {
-      width: 100%;
       font-size: 12px;
-      line-height: 15px;
+      line-height: 14px;
       font-weight: $font-weight-regular;
       text-decoration: line-through;
+      color: $dark-gray;
     }
 
     .sale-price {
       color: $error-accent;
+      margin-right: 10px;
     }
 
     .unit-price-wrp {
-      font-size: $font-size-body;
-      line-height: $line-height-body;
+      @include font-size($text-font-sizes);
       color: $text-light;
     }
   }
@@ -97,20 +93,20 @@
   }
 
   .manufacturer {
-    font-size: $font-size-body;
-    line-height: 17px;
+    @include font-size($text-font-sizes);
     font-weight: $font-weight-bold;
     margin-bottom: 5px;
   }
 
   .product-name {
-    line-height: 16px;
-    margin-bottom: 15px;
+    font-size: 14px;
+    line-height: 17px;
+    margin-bottom: 5px;
+    font-weight: $font-weight-bold;
   }
 
   .product-price {
-    font-size: 18px;
-    line-height: $line-height-body;
+    @include font-size($text-font-sizes);
     font-weight: $font-weight-bold;
     color: $text-primary;
     margin-bottom: 10px;
@@ -120,16 +116,12 @@
 
 @media(min-width: 768px) {
   .product-card {
-    .card-media {
-      margin-bottom: 10px;
-    }
     .price-box {
       display: block;
       line-height: inherit;
 
       .old-price {
         width: auto;
-        margin-right: 10px;
         vertical-align: middle;
       }
 
@@ -142,13 +134,16 @@
       font-weight: $font-weight-bold;
       margin-bottom: 5px;
     }
+    .product-name {
+      margin-bottom: 32px;
+    }
   }
 }
 
 @media(min-width: 1024px) {
   .product-card {
     &:hover {
-      box-shadow: 0 4px 10px 0 rgba(41, 40, 47, 0.1);
+      box-shadow: 0 2px 5px 0 rgba(41, 40, 47, 0.1);
       border: 1px solid $border-color;
 
       .card-expand {
@@ -157,6 +152,15 @@
         top: 98%;
         z-index: 1;
       }
+    }
+
+    .product-card-info-wrp {
+      padding: 20px;
+    }
+
+    .actions {
+        left: 10px;
+        top: 10px;
     }
   }
 }

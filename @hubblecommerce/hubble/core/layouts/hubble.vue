@@ -9,43 +9,45 @@
         <layout-wrapper>
             <div :class="{ 'mobile-layout': $mq === 'sm' || $mq === 'md', 'desktop-layout': $mq === 'lg' }">
                 <background-blur />
-                <div class="header-wrp">
-                    <div class="nav-wrp">
-                        <the-mobile-menu v-if="($mq === 'sm' || $mq === 'md') && !isEmpty(menu)" :data-items="menu" />
+
+                <header class="header-wrp">
+                    <div class="nav-wrp container">
                         <the-logo />
-                        <the-mega-menu v-if="$mq === 'lg' && !isEmpty(menu)" :data-items="menu" />
-                        <the-search-direct />
                         <div class="action-wrp d-flex align-items-center">
+                            <search-trigger v-if="($mq === 'md' || $mq === 'lg')" />
+                            <the-mobile-menu v-if="($mq === 'sm' || $mq === 'md') && !isEmpty(menu)" :data-items="menu" />
                             <the-wishlist />
                             <customer-menu />
                             <the-mini-cart />
                         </div>
+                        <the-header-action-icon class="header-action-icon" v-if="$mq === 'sm'"/>
                     </div>
+                    <nav>
+                        <the-mega-menu v-if="$mq === 'lg' && !isEmpty(menu)" :data-items="menu" />
+                    </nav>
                     <flash-messages v-if="!activeOffCanvas" />
-                </div>
+                </header>
 
                 <main>
                     <nuxt />
                 </main>
 
-                <div v-view.once="onceHandler" class="footer">
-                    <template v-if="$mq === 'sm' || $mq === 'md'">
-                        <div class="white-border" />
-                        <the-footer-social v-if="inView" />
-                        <the-footer-mobile v-if="inView" />
-                        <the-footer-copyright v-if="inView" />
-                    </template>
-
-                    <template v-if="$mq === 'lg'">
-                        <the-footer-social v-if="inView" />
-                        <div class="white-border" />
-                        <the-footer-desktop v-if="inView" />
-                        <the-footer-copyright v-if="inView" />
-                    </template>
+                <div class="footer">
+                    <div v-if="$mq === 'lg'" class="newsletter-footer-wrp">
+                        <newsletter />
+                    </div>
+                    <client-only>
+                        <the-footer-mobile v-if="$mq === 'sm' || $mq === 'md'" />
+                        <the-footer-desktop v-if="$mq === 'lg'" />
+                    </client-only>
+                    <the-post-footer />
                 </div>
+
                 <scroll-to-top v-if="$mq === 'sm' || $mq === 'md'" />
             </div>
         </layout-wrapper>
+
+        <the-search-context />
 
         <client-only>
             <div v-if="showCookieNotice" class="cookie-notice">
@@ -59,7 +61,7 @@
 import { mapState } from 'vuex';
 import ScrollToTop from '../components/utils/ScrollToTop';
 import TheLogo from '../components/navigation/TheLogo';
-import TheSearchDirect from '../components/search/TheSearchDirect';
+import TheSearchContext from '../components/search/TheSearchContext';
 import TheMiniCart from '../components/navigation/TheMiniCart';
 import CustomerMenu from '../components/navigation/CustomerMenu';
 import TheMobileMenu from '../components/navigation/TheMobileMenu';
@@ -69,21 +71,25 @@ import TheWishlist from '../components/navigation/TheWishlist';
 import CookieNotice from '../components/utils/CookieNotice';
 import FlashMessages from '../components/utils/FlashMessages';
 import LayoutWrapper from '../components/utils/LayoutWrapper';
+import SearchTrigger from "../components/search/SearchTrigger";
+import Newsletter from "../components/utils/Newsletter";
 import _ from 'lodash';
 
 export default {
     components: {
+        Newsletter,
+        SearchTrigger,
+        TheHeaderActionIcon: () => import('../components/navigation/TheHeaderActionIcon'),
         TrustedShopsBadge: () => import('../components/utils/TrustedShopsBadge'),
-        TheFooterSocial: () => import('../components/footer/TheFooterSocial'),
         TheFooterMobile: () => import('../components/footer/TheFooterMobile'),
-        TheFooterCopyright: () => import('../components/footer/TheFooterCopyright'),
+        ThePostFooter: () => import('../components/footer/ThePostFooter'),
         TheFooterDesktop: () => import('../components/footer/TheFooterDesktop'),
         TheWishlist,
         BackgroundBlur,
         TheMegaMenu,
         ScrollToTop,
         TheMiniCart,
-        TheSearchDirect,
+        TheSearchContext,
         TheMobileMenu,
         TheLogo,
         CustomerMenu,

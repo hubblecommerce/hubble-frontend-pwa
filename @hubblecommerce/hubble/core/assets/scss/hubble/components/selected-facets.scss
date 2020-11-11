@@ -11,12 +11,11 @@
     }
 
     .reset-label {
-        font-size: $font-size-body;
-        line-height: 17px;
+        @include font-size($text-font-sizes);
         text-decoration: underline;
-        font-weight: $font-weight-bold;
         margin: 0 0 10px 0;
         cursor: pointer;
+        color: $secondary;
     }
 
     button {
@@ -28,6 +27,14 @@
         font-size: 12px;
         line-height: 15px;
         padding: 3px 15px;
+        color: $text-primary;
+        text-transform: none;
+        font-weight: $font-weight-regular;
+
+        &:hover {
+            color: $secondary;
+            background: $primary;
+        }
 
         i {
             margin-left: 5px;

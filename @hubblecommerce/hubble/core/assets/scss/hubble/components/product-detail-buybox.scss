@@ -58,6 +58,7 @@
         padding: 0;
         margin-bottom: 8px;
         max-width: 100% !important;
+        @include font-size($h4-font-sizes);
     }
 
     .options-wrp {
@@ -164,10 +165,6 @@
             .add-to-wishlist-wrp {
                 right: 35px;
                 top: 20px;
-            }
-
-            .product-name {
-                font-size: $font-size-subtitle;
             }
 
             .sku {

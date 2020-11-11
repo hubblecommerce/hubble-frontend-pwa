@@ -63,17 +63,13 @@ $expand-layer-width-desktop: 600px;
 @media(min-width: 1024px) {
     .transition-expand-wrp {
         width: $expand-layer-width-desktop;
-        top: $header-height-desktop + 1px;
+        top: $header-height-desktop;
     }
     .expand-content {
         overflow-y: inherit;
     }
     .overlay-header {
-        height: 100px;
-
         .button-close-menu {
-            top: 0;
-            bottom: 0;
             left: 25px;
         }
     }

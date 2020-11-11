@@ -3,9 +3,9 @@
         <div class="selected-label" v-text="$t('Your choice:')" />
         <div v-if="hasCategoryFacetsSelected && isSearchPage()" class="filter">
             <div v-for="(facet, facetIndex) in requestCategoryFacets" v-if="facet.selected" :key="facetIndex" class="filter">
-                <button class="button button-secondary" @click="routeOnPropertyRemove(facet.key)">
+                <button class="button" @click="routeOnPropertyRemove(facet.key)">
                     {{ getSelectedFacetOptionsLabel(facet) }}
-                    <i class="icon icon-close" />
+                    <i class="icon icon-x" />
                     <material-ripple />
                 </button>
             </div>
@@ -14,7 +14,7 @@
         <div v-for="(facet, facetIndex) in requestStringFacets" v-if="facet.selected" :key="facetIndex" class="filter">
             <button class="button button-secondary" @click="routeOnPropertyRemove(facet.key)">
                 {{ getSelectedFacetOptionsLabel(facet) }}
-                <i class="icon icon-close" />
+                <i class="icon icon-x" />
                 <material-ripple />
             </button>
         </div>
@@ -22,7 +22,7 @@
         <div v-if="hasPriceFacetsSelected" class="filter">
             <button class="button button-secondary" @click="routeOnPropertyRemove('price')">
                 {{ $t('price') }}: {{ formatPrice(requestPriceFacets[0].filtered.from) }} - {{ formatPrice(requestPriceFacets[0].filtered.to) }}
-                <i class="icon icon-close" />
+                <i class="icon icon-x" />
                 <material-ripple />
             </button>
         </div>
