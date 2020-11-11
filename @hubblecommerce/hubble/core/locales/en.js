@@ -147,7 +147,7 @@ export default context => {
             Back: 'Back',
             'Show parent': 'Show {parent}',
             'Show all parent': 'Show all {parent}',
-            copyright_footer: 'Powered by hubble',
+            copyright_footer: 'Copyright © 2020 digital.manufaktur GmbH. All rights reserved',
             'Place Order': 'Place Order',
             'Search for:': 'Search for:',
             Searchresults: 'Searchresults',

@@ -1,35 +1,15 @@
-/* Bootstrap scss variables */
-$container-max-widths: (
-    sm: 540px,
-    md: 768px,
-    lg: 1200px,
-    xl: 1640px
-);
-
-$grid-breakpoints: (
-    xs: 0,
-    sm: 576px,
-    md: 768px,
-    lg: 1024px,
-    xl: 1200px
-) !default;
-
-$enable-grid-classes: true !default;
-$grid-columns: 12 !default;
-$grid-gutter-width: 30px !default;
-
 // This variable affects the `.h-*` and `.w-*` classes.
 $sizes: () !default;
 // stylelint-disable-next-line scss/dollar-variable-default
 $sizes: map-merge(
-        (
-            25: 25%,
-            50: 50%,
-            75: 75%,
-            100: 100%,
-            auto: auto
-        ),
-        $sizes
+    (
+        25: 25%,
+        50: 50%,
+        75: 75%,
+        100: 100%,
+        auto: auto
+    ),
+    $sizes
 );
 
 // Spacing
@@ -42,15 +22,15 @@ $spacer: 1rem !default;
 $spacers: () !default;
 // stylelint-disable-next-line scss/dollar-variable-default
 $spacers: map-merge(
-        (
-            0: 0,
-            1: ($spacer * .25),
-            2: ($spacer * .5),
-            3: $spacer,
-            4: ($spacer * 1.5),
-            5: ($spacer * 3)
-        ),
-        $spacers
+    (
+        0: 0,
+        1: ($spacer * .25),
+        2: ($spacer * .5),
+        3: $spacer,
+        4: ($spacer * 1.5),
+        5: ($spacer * 3)
+    ),
+    $spacers
 );
 
 /* Functions */

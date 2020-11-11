@@ -1,6 +1,11 @@
 <template>
     <div class="container">
         <div class="row footer-link-wrp">
+            <collapsible :toggle-text="$t('Newsletter')">
+                <div class="content-wrp">
+                    <Newsletter />
+                </div>
+            </collapsible>
             <collapsible :toggle-text="$t('Service')">
                 <div class="content-wrp">
                     <div class="links">
@@ -50,10 +55,12 @@
 </template>
 
 <script>
+import Newsletter from "../../components/utils/Newsletter";
 export default {
     name: 'TheFooterMobile',
 
     components: {
+        Newsletter,
         Collapsible: () => import('../utils/Collapsible'),
     },
 };

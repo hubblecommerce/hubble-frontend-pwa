@@ -1,6 +1,6 @@
 <template>
     <div v-click-outside="hideContent" class="collapse-wrp">
-        <button :class="toggleClass" class="toggle m-0 align-left headline-4" @mousedown.prevent="collapseContent()">
+        <button class="toggle m-0 align-left headline-4" :class="toggleClasses" @mousedown.prevent="collapseContent()">
             {{ toggleText }}
 
             <transition-rotate-x>
@@ -59,11 +59,11 @@ export default {
         },
         closeIconClass: {
             type: String,
-            default: 'icon-minus',
+            default: 'icon-chevron-up',
         },
         openIconClass: {
             type: String,
-            default: 'icon-plus',
+            default: 'icon-chevron-down',
         },
         maxHeight: {
             type: Number,
@@ -73,6 +73,20 @@ export default {
             type: Boolean,
             required: false,
         },
+    },
+
+    computed: {
+        toggleClasses: function() {
+            let classes = '';
+
+            if(this.collapse) {
+                classes = 'active';
+            }
+
+            classes += this.toggleClass;
+
+            return classes;
+        }
     },
 
     data() {
@@ -100,7 +114,7 @@ export default {
         },
         hideContent: function () {
             this.collapse = false;
-        },
+        }
     },
 };
 </script>

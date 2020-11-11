@@ -32,21 +32,17 @@
                     <nuxt />
                 </main>
 
-                <div v-view.once="onceHandler" class="footer">
-                    <template v-if="$mq === 'sm' || $mq === 'md'">
-                        <div class="white-border" />
-                        <the-footer-social v-if="inView" />
-                        <the-footer-mobile v-if="inView" />
-                        <the-footer-copyright v-if="inView" />
-                    </template>
-
-                    <template v-if="$mq === 'lg'">
-                        <the-footer-social v-if="inView" />
-                        <div class="white-border" />
-                        <the-footer-desktop v-if="inView" />
-                        <the-footer-copyright v-if="inView" />
-                    </template>
+                <div class="footer">
+                    <div v-if="$mq === 'lg'" class="newsletter-footer-wrp">
+                        <newsletter />
+                    </div>
+                    <client-only>
+                        <the-footer-mobile v-if="$mq === 'sm' || $mq === 'md'" />
+                        <the-footer-desktop v-if="$mq === 'lg'" />
+                    </client-only>
+                    <the-post-footer />
                 </div>
+
                 <scroll-to-top v-if="$mq === 'sm' || $mq === 'md'" />
             </div>
         </layout-wrapper>
@@ -75,17 +71,18 @@ import TheWishlist from '../components/navigation/TheWishlist';
 import CookieNotice from '../components/utils/CookieNotice';
 import FlashMessages from '../components/utils/FlashMessages';
 import LayoutWrapper from '../components/utils/LayoutWrapper';
+import SearchTrigger from "../components/search/SearchTrigger";
+import Newsletter from "../components/utils/Newsletter";
 import _ from 'lodash';
-import SearchTrigger from "@/modules/hubble-frontend-pwa/@hubblecommerce/hubble/core/components/search/SearchTrigger";
 
 export default {
     components: {
+        Newsletter,
         SearchTrigger,
         TheHeaderActionIcon: () => import('../components/navigation/TheHeaderActionIcon'),
         TrustedShopsBadge: () => import('../components/utils/TrustedShopsBadge'),
-        TheFooterSocial: () => import('../components/footer/TheFooterSocial'),
         TheFooterMobile: () => import('../components/footer/TheFooterMobile'),
-        TheFooterCopyright: () => import('../components/footer/TheFooterCopyright'),
+        ThePostFooter: () => import('../components/footer/ThePostFooter'),
         TheFooterDesktop: () => import('../components/footer/TheFooterDesktop'),
         TheWishlist,
         BackgroundBlur,

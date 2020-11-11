@@ -1,15 +1,45 @@
 .footer {
-    background-color: $background-light;
+    background-color: $white;
     padding: 0;
 
-    .pre-footer-wrp {
-        border-bottom: 2px solid $background;
-        padding-top: 20px;
+    .newsletter-box {
+        .newsletter-headline {
+            display: none;
+        }
+
+        .newsletter-subline {
+            margin-bottom: 20px;
+        }
+
+        .hbl-input-group {
+            margin-bottom: 0;
+        }
     }
 
     .footer-link-wrp {
-        padding-top: 15px;
-        padding-bottom: 15px;
+        .toggle {
+            padding: 10px 20px;
+            background-color: $white;
+            border: 1px solid $border-color;
+            text-transform: uppercase;
+            text-align: left;
+
+            &.active {
+                background-color: $background-light;
+            }
+        }
+
+        .collapse-wrp {
+            margin-bottom: -1px;
+        }
+
+        .collapse {
+            background-color: $background-light;
+        }
+
+        .content-wrp {
+            padding: 20px;
+        }
 
         .links {
             a {
@@ -19,142 +49,85 @@
         }
     }
 
-    .follow-us-wrp {
-        margin: 0 0 40px;
+    .logos {
         display: flex;
         align-items: center;
+        flex-wrap: wrap;
+        margin-left: -5px;
 
-        .follow-us-label {
-            text-transform: uppercase;
+        img {
+            width: 75px;
+            border: 1px solid $border-color;
+            margin-right: 5px;
+            margin-bottom: 20px;
+            margin-left: 5px;
         }
+    }
+
+    .post-footer-wrp {
+        border-top: 1px solid $border-color;
+    }
+
+    .follow-us-wrp {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px 0;
 
         .follow-us-icons {
             display: flex;
 
             .icon {
-                width: 26px;
+                width: 20px;
                 height: 26px;
                 line-height: 26px;
-                font-size: 26px;
-                margin-left: 20px;
+                font-size: 20px;
+                margin: 0 12px;
                 vertical-align: sub;
             }
         }
     }
 
-    .newsletter-footer-wrp {
-
-        .newsletter-headline {
-            text-transform: uppercase;
-        }
-
-        .newsletter-subline {
-            margin-bottom: 20px;
-        }
-
-        button {
-            margin-bottom: 20px;
-        }
-    }
-
-    .collapse-wrp {
-        .toggle {
-            text-transform: uppercase;
-            border: none;
-            text-align: left;
-        }
-        .content-wrp {
-            padding: 10px 15px;
-        }
-    }
-
-    .logos {
-        display: flex;
-        align-items: center;
-        flex-wrap: wrap;
-        margin-left: -20px;
-
-        img {
-            width: 75px;
-            border: 1px solid $border-color;
-            margin-right: 20px;
-            margin-bottom: 20px;
-            margin-left: 20px;
-        }
-    }
-
-
-}
-
-.sub-footer {
-    border-top: 1px solid $border-color;
-    text-align: center;
-    padding: 20px 15px;
-    margin: 0;
-
-    .copyright {
+    .copyright-wrp {
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 20px;
-
-        .seal {
-            margin-right: 10px;
-
-            img {
-                width: 85px;
-            }
-        }
 
         .copyright-text {
-            text-align: left;
-            max-width: 80%;
+            text-align: center;
         }
     }
 
-    .footer-hint {
-        margin-bottom: 10px;
-    }
+    .logo-wrp {
+        height: 66px;
+        padding: 20px 0;
 
-    p {
-        margin: 0;
-        font-size: 14px;
+        .logo picture img {
+            width: 70px;
+        }
     }
-}
-
-.white-border {
-    width: 100%;
-    border-bottom: 2px solid $background;
 }
 
 @media(min-width: 768px) {
     .footer {
         width: 100%;
 
-        .pre-footer-wrp {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid $background;
-            padding: 30px 15px;
-        }
-
-        .follow-us-wrp {
-            margin: 0;
-
-            .follow-us-label {
-                font-size: 18px;
-            }
-        }
-
         .newsletter-footer-wrp {
-            border-bottom: 0;
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
+            background-color: $background-light;
+            padding: 60px;
+
+            .newsletter-box {
+                width: 700px;
+                padding: 30px 40px;
+                background-color: $white;
+            }
 
             .newsletter-headline {
-                font-size: 18px;
+                display: block;
+                margin-bottom: 10px;
             }
 
             .newsletter-subline {
@@ -163,33 +136,12 @@
             }
 
             .text-wrp {
-                margin-right: 30px;
-            }
-
-            button {
-                margin: 0;
+                margin-bottom: 30px;
             }
         }
 
-        .copyright {
-            display: block;
-            padding: 20px 60px;
-            position: relative;
-            text-align: center;
-            margin-bottom: 0;
-
-            .seal {
-                position: absolute;
-                left: 0;
-                top: 0;
-                bottom: 0;
-                margin: auto 0;
-            }
-
-            .copyright-text {
-                text-align: center;
-                max-width: inherit;
-            }
+        .copyright-wrp {
+            padding: 20px 0;
         }
 
         &.hubble-light {
@@ -206,32 +158,19 @@
         position: absolute;
         bottom: 0;
 
-        .pre-footer-wrp {
-            border: none;
-        }
-        .newsletter-footer-wrp {
-            .text-wrp {
-                margin-right: 90px;
-            }
-        }
         .footer-desktop {
-            padding: 50px 15px;
+            padding: 40px 15px;
             display: flex;
+            justify-content: space-between;
 
             .column {
                 min-width: 250px;
-
-                &:last-child {
-                    width: 490px;
-                    margin-left: auto;
-                }
+                max-width: 300px;
             }
 
             .title {
                 font-weight: $font-weight-bold;
-                font-size: 16px;
                 margin-bottom: 15px;
-                text-transform: uppercase;
             }
 
             .links {
@@ -244,6 +183,25 @@
                         text-decoration: none;
                     }
                 }
+            }
+        }
+
+        .follow-us-wrp {
+            justify-content: flex-start;
+            height: 100%;
+
+            .follow-us-icons {
+                &:first-child {
+                    .icon {
+                        margin-left: 0;
+                    }
+                }
+            }
+        }
+
+        .logo-wrp {
+            .logo {
+                margin: 0 0 0 auto;
             }
         }
 
@@ -275,4 +233,3 @@
         }
     }
 }
-

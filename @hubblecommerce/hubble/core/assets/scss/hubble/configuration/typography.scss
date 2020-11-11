@@ -1,4 +1,4 @@
-@mixin font-size($fs-map, $fs-breakpoints: $breakpoints) {
+@mixin font-size($fs-map, $fs-breakpoints: $grid-breakpoints) {
   @each $fs-breakpoint, $fs-font-size in $fs-map {
     @if $fs-breakpoint == null {
       @include make-font-size($fs-font-size);
@@ -39,54 +39,54 @@ $font-weight-light: 300;
 
 /* Font Size + Line Height */
 // Usage:
-// define variable of $breakpoints or set an individual breakpoint e.g. 600px
+// define variable of $grid-breakpoints or set an individual breakpoint e.g. 600px
 // first parameter is font-size, second is line-height
 $text-font-sizes: (
   null : (14px, 21px),
-  tablet : (16px, 24px),
-  desktop : (16px, 24px)
+  md : (16px, 24px),
+  lg : (16px, 24px)
 );
 
 $small-text-font-sizes: (
   null : (13px, 21px),
-  tablet : (14px, 22px),
-  desktop : (14px, 22px)
+  md : (14px, 22px),
+  lg : (14px, 22px)
 );
 
 $h1-font-sizes: (
   null : (21px, 24px),
-  tablet : (31px, 36px),
-  desktop : (31px, 36px)
+  md : (31px, 36px),
+  lg : (31px, 36px)
 );
 
 $h2-font-sizes: (
   null : (21px, 24px),
-  tablet : (24px, 28px),
-  desktop : (24px, 28px)
+  md : (24px, 28px),
+  lg : (24px, 28px)
 );
 
 $h3-font-sizes: (
   null : (20px, 23px),
-  tablet : (22px, 26px),
-  desktop : (22px, 26px)
+  md : (22px, 26px),
+  lg : (22px, 26px)
 );
 
 $h4-font-sizes: (
   null : (18px, 22px),
-  tablet : (20px, 23px),
-  desktop : (20px, 23px)
+  md : (20px, 23px),
+  lg : (20px, 23px)
 );
 
 $h5-font-sizes: (
   null : (16px, 19px),
-  tablet : (18px, 22px),
-  desktop : (18px, 22px)
+  md : (18px, 22px),
+  lg : (18px, 22px)
 );
 
 $h6-font-sizes: (
   null : (16px, 19px),
-  tablet : (18px, 22px),
-  desktop : (18px, 22px)
+  md : (18px, 22px),
+  lg : (18px, 22px)
 );
 
 p, .text {

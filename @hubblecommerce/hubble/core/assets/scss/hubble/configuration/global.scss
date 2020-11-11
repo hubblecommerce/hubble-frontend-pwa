@@ -75,8 +75,7 @@ a, a:hover, a:focus {
   }
 
   main {
-    // todo: add 48px (size of mega menu as theme variable)
-    padding-top: $header-height-desktop + 48px + 1px;
+    padding-top: $header-height-desktop + $header-navigation-height-desktop + 1px;
   }
 }
 

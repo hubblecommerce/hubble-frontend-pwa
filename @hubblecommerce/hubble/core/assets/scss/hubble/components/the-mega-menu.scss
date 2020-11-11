@@ -1,5 +1,4 @@
-$megamenu-columns: 5;
-$megamenu-height: 46px;
+$megamenu-height: $header-navigation-height-desktop;
 $megamenu-background: $darkest-gray;
 
 $megamenu-item-text-transform: uppercase;
@@ -100,14 +99,6 @@ nav {
         display: inline-block;
         font-size: 16px;
         line-height: 15px;
-    }
-
-    .category-teaser {
-        width: 25%;
-        max-height: 390px;
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: 50% 50%;
     }
 
     .slide-top-bottom-enter-active, .slide-top-bottom-leave-active {

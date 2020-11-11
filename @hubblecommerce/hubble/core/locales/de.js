@@ -170,7 +170,7 @@ export default context => {
             Back: 'Zurück',
             'Show parent': '{parent} anzeigen',
             'Show all parent': 'Alle {parent} anzeigen',
-            copyright_footer: 'Powered by hubble',
+            copyright_footer: 'Copyright © 2020 digital.manufaktur GmbH. Alle Rechte vorbehalten',
             'Place Order': 'Kostenpflichtig bestellen',
             'Search for:': 'Suchergebnisse für:',
             Searchresults: 'Suchergebnisse',

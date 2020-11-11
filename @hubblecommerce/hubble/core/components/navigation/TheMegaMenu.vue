@@ -45,12 +45,6 @@
                             </div>
                         </div>
                     </template>
-
-                    <div
-                        v-if="activeCategory.image != null"
-                        class="category-teaser"
-                        :style="'background-image: url(' + itemImgPath(activeCategory) + ')'"
-                    />
                 </div>
             </div>
         </transition>
@@ -165,19 +159,7 @@ export default {
             this.showMenu = false;
 
             this.isActive = null;
-        },
-        itemImgPath: function (item) {
-            // If customer domain isset get live images
-            if (!_.isEmpty(process.env.CUSTOMER_DOMAIN)) {
-                let image = item.image;
-
-                return _.join([process.env.CUSTOMER_DOMAIN, image], '/');
-            }
-
-            let path = _.trim(process.env.config.IMG_BASE_URL, '/');
-
-            return path + '/images/catalog/product/' + this.imgFilter + '/' + item.image;
-        },
+        }
     },
 };
 </script>
