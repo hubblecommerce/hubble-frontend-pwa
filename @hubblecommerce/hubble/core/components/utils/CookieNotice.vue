@@ -13,9 +13,7 @@
                 </div>
             </div>
             <div class="col-3 cookie-notice-button-wrp">
-                <button class="float-right button button-primary" @click="deactivateCookieNotice">
-                    Verstanden
-                </button>
+                <button class="float-right button button-primary" @click="deactivateCookieNotice" v-text="'Verstanden'" />
             </div>
         </template>
         <template v-if="$mq === 'sm'">
