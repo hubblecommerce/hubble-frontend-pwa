@@ -1,26 +1,26 @@
 <template>
     <div>
         <div class="summary-row sub-totals bg-light">
-            <div>{{ $t('Subtotal') }}</div>
+            <div v-text="$t('Subtotal')" />
 
             <div>
-                <span class="float-right" v-html="getSubTotal()" />
+                <span class="float-right" v-text="getSubTotal()" />
             </div>
         </div>
 
         <div class="summary-row shipping-costs bg-light">
-            <div>{{ $t('Shipping Costs') }}</div>
+            <div v-text="$t('Shipping Costs')" />
 
             <div>
-                <span class="float-right" v-html="getShippingCosts()" />
+                <span class="float-right" v-text="getShippingCosts()" />
             </div>
         </div>
 
         <div class="summary-row totals bg-light">
-            <div>{{ $t('Totals') }}</div>
+            <div v-text="$t('Totals')" />
 
             <div>
-                <span class="float-right" v-html="getTotal()" />
+                <span class="float-right" v-text="getTotal()" />
             </div>
         </div>
     </div>
