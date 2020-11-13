@@ -1,7 +1,8 @@
 <template>
-    <div class="row cookie-notice-wrp">
-        <template v-if="$mq === 'lg' || $mq === 'md'">
-            <div class="col-9 cookie-text-wrp">
+<div class="row cookie-notice-wrp">
+    <template v-if="$mq === 'lg' || $mq === 'md'">
+        <transition name="page">
+            <div class="col-9 cookie-text-wrp" v-show="shouldTransition">
                 <div class="cookie-icon">
                     <i class="icon icon-cookie" />
                 </div>
@@ -12,14 +13,18 @@
                     <nuxt-link class="link-primary" :to="'/Datenschutz'">Datenschutz.</nuxt-link>
                 </div>
             </div>
-            <div class="col-3 cookie-notice-button-wrp">
+        </transition>
+        <transition name="page">
+            <div class="col-3 cookie-notice-button-wrp" v-show="shouldTransition">
                 <button class="float-right button button-primary" @click="deactivateCookieNotice">
                     Verstanden
                 </button>
             </div>
-        </template>
-        <template v-if="$mq === 'sm'">
-            <div class="row cookie-notice-wrp">
+        </transition>
+    </template>
+    <template v-if="$mq === 'sm'">
+        <transition name="page">
+            <div class="row cookie-notice-wrp" v-show="shouldTransition">
                 <div class="row col-12 cookie-text-wrp">
                     <div class="text">
                         Diese Website verwendet Cookies, um die Interaktion mit anderen Websites und sozialen Netzwerken zu ermöglichen sowie den
@@ -33,12 +38,15 @@
                     </button>
                 </div>
             </div>
-        </template>
-    </div>
+        </transition>
+    </template>
+</div>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import {
+    mapActions
+} from 'vuex';
 
 export default {
     name: 'CookieNotice',
@@ -46,9 +54,11 @@ export default {
     methods: {
         ...mapActions({
             acceptCookieNotice: 'modCookieNotice/acceptCookieNotice',
+            shouldTransition: true,
         }),
         deactivateCookieNotice: function () {
             this.acceptCookieNotice();
+            this.shouldTransition == true ? this.shouldTransition = false : this.shouldTransition = true;
         },
     },
 };
