@@ -3,7 +3,7 @@
         <!-- Header -->
         <div class="row mb-3 product-headline d-flex">
             <div class="product-headline-info">
-                <h1 class="product-name headline-4" v-html="dataProduct.name" />
+                <h1 class="product-name headline-4" v-text="dataProduct.name" />
                 <div v-if="dataProduct.sku" class="sku"> {{ $t('sku_label') }}: {{ dataProduct.sku }} </div>
             </div>
             <product-detail-manufacturer :data-product="dataProduct" />
@@ -30,13 +30,7 @@
         <product-detail-price :item="dataProduct" />
 
         <!-- Add to cart -->
-        <div v-if="$mq === 'sm'" class="row">
-            <div class="col-12">
-                <product-detail-add-to-cart :item="dataProduct" />
-            </div>
-        </div>
-
-        <div v-if="$mq === 'md' || $mq === 'lg'" class="d-flex cart-button-wrp">
+        <div class="d-flex cart-button-wrp">
             <product-detail-add-to-cart :item="dataProduct" />
             <add-to-wishlist v-if="$mq === 'lg'" class="add-to-wishlist-button" :item="dataProduct" />
         </div>
