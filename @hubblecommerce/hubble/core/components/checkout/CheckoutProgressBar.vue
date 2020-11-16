@@ -1,9 +1,7 @@
 <template>
     <div class="container progress-bar-wrp">
         <nuxt-link class="step" :to="localePath('checkout-login')">
-            <div v-if="!isLoggedIn" class="no">
-                1
-            </div>
+            <div v-if="!isLoggedIn" class="no" v-text="'1'" />
 
             <div v-if="isLoggedIn" class="icon icon-check" />
 
@@ -11,9 +9,7 @@
         </nuxt-link>
 
         <nuxt-link class="step" :to="localePath('checkout-payment')">
-            <div v-if="!paymentSelected && !isOrderSuccess" class="no">
-                2
-            </div>
+            <div v-if="!paymentSelected && !isOrderSuccess" class="no" v-text="'2'" />
 
             <div v-if="paymentSelected || isOrderSuccess" class="icon icon-check" />
 
@@ -21,9 +17,7 @@
         </nuxt-link>
 
         <div class="step" :class="{ 'nuxt-link-exact-active': isCurrentPath('checkout-summary') }" @click="createOrder()">
-            <div v-if="!isOrderSuccess" class="no">
-                3
-            </div>
+            <div v-if="!isOrderSuccess" class="no" v-text="'3'" />
 
             <div v-if="isOrderSuccess" class="icon icon-check" />
 
@@ -31,9 +25,7 @@
         </div>
 
         <div class="step" :class="{ 'nuxt-link-exact-active': isCurrentPath('checkout-success') }">
-            <div class="no">
-                4
-            </div>
+            <div class="no" v-text="'4'" />
 
             {{ $t('Complete') }}
         </div>
