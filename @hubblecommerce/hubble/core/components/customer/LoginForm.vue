@@ -110,7 +110,7 @@ import _ from 'lodash';
 
 export default {
     name: 'LoginForm',
-
+    
     mixins: [addBackendErrors],
 
     data() {
@@ -234,7 +234,7 @@ export default {
                         this.hideOffcanvasAction().then(() => {
                             this.flashMessage({
                                 flashType: 'success',
-                                flashMessage: 'Ihnen wurde ein neues Passwort an Ihre E-Mail Adresse gesendet.',
+                                flashMessage: 'A new password has been sent to your e-mail adress.',
                                 keepOnRouteChange: true,
                             });
 
@@ -248,7 +248,7 @@ export default {
                         });
                     })
                     .catch(() => {
-                        this.errors.push(this.$t('Neues Password anfordern fehlgeschlagen'));
+                        this.errors.push(this.$t('Requesting a new password has failed.'));
                     });
             }
         },
