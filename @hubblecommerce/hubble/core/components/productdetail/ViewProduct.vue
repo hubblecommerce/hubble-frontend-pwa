@@ -28,7 +28,7 @@
                     <div class="product-tabs md-elevation-2">
                         <collapsible-description id="description-anchor" :is-collapsed="false" :toggle-text="$t('Description')">
                             <div v-if="productData.description" class="tab-content">
-                                <div v-html="productData.description" />
+                                <div v-text="productData.description" />
                             </div>
                         </collapsible-description>
                     </div>
@@ -43,7 +43,7 @@
                         </div>
 
                         <div v-if="productData.description" class="description-content">
-                            <div v-html="productData.description" />
+                            <div v-text="productData.description" />
                         </div>
                     </div>
                 </div>
@@ -194,18 +194,6 @@ export default {
             return path;
         },
         gtmECommerceData: function () {
-            //let price = this.getPriceAndCurrency('display_price_brutto');
-            //
-            //if(this.itemIsSpecial) {
-            //    price = this.getPriceAndCurrency('display_price_brutto_special');
-            //}
-            //
-            //return {
-            //    'name': this.productData.name_orig,
-            //    'id': this.productData.id,
-            //    'price': price,
-            //    'brand': this.productData.manufacturer_name
-            //}
         },
         hasProductsCrossByOrder: function () {
             if (!_.isEmpty(this.productData)) {
