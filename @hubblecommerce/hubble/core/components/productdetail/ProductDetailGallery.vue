@@ -22,7 +22,7 @@
                     >
                         <div v-for="(image, index) in allProductImages" :key="index" class="gallery-item">
                             <a class="fancybox-trigger" onclick="return false;" @click="modalGalleryShow(index)">
-                                <img :src="routeUrlSmallGallery(image)" :alt="productData.name" :title="productData.name" />
+                                <img-lazy :src="routeUrlSmallGallery(image)" :alt="productData.name" :title="productData.name" />
                             </a>
                         </div>
                     </slider>
@@ -44,7 +44,7 @@
                         >
                             <div v-for="(image, index) in allProductImages" :key="index">
                                 <div class="thumbnail-image-wrp d-flex" :class="{ selected: index === currentIndex }" @click="goToGallery(index)">
-                                    <img
+                                    <img-lazy
                                         class="thumbnail-img"
                                         :src="routeUrlGalleryThumbnail(image)"
                                         :alt="productData.name"
@@ -59,7 +59,7 @@
                 <div v-if="productData.media_gallery == null && productData.image">
                     <div class="gallery-item">
                         <a class="fancybox-trigger">
-                            <img :src="routeUrlSmallGallery(productData.image)" :alt="productData.name" :title="productData.name" />
+                            <img-lazy :src="routeUrlSmallGallery(productData.image)" :alt="productData.name" :title="productData.name" />
                         </a>
                     </div>
                 </div>
@@ -83,7 +83,7 @@
 
                     <slider ref="gallerySlider" :speed="200" :loop="true" :gutter="0" :mouse-drag="true" :controls-text="controls" items="1">
                         <div v-for="(image, index) in allProductImages" :key="index" class="gallery-item">
-                            <img :src="routeOriginalImage(image)" :alt="productData.name" :title="productData.name" />
+                            <img-lazy :src="routeOriginalImage(image)" :alt="productData.name" :title="productData.name" />
                         </div>
                     </slider>
                 </div>
@@ -207,7 +207,7 @@ export default {
             if (this.$refs.productGallery) {
                 this.$refs.productGallery.slider.events.on('indexChanged', () => {
                     let info = this.$refs.productGallery.slider.getInfo();
-
+                    
                     if (info.cloneCount >= 2) {
                         // Add 1 to index to prevent division with 0
                         let index = info.index + 1;
