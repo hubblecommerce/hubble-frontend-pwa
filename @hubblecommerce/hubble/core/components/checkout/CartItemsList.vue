@@ -12,7 +12,7 @@
                             <div class="col-8">
                                 <div class="container">
                                     <div class="row">
-                                        <span class="product-name">{{ item.name_orig }}</span>
+                                        <span class="product-name" v-text="item.name_orig" />
                                     </div>
 
                                     <div class="row">
@@ -27,18 +27,18 @@
                                         <template v-if="itemIsSpecial(item)">
                                             <span
                                                 class="product-price old-price"
-                                                v-html="getPriceAndCurrency(item, 'display_price_brutto', priceSwitcherIncludeVat)"
+                                                v-text="getPriceAndCurrency(item, 'display_price_brutto', priceSwitcherIncludeVat)"
                                             />
                                             <span
                                                 class="product-price sale-price"
-                                                v-html="getPriceAndCurrency(item, 'display_price_brutto_special', priceSwitcherIncludeVat)"
+                                                v-text="getPriceAndCurrency(item, 'display_price_brutto_special', priceSwitcherIncludeVat)"
                                             />
                                         </template>
 
                                         <template v-else>
                                             <span
                                                 class="product-price sale-price"
-                                                v-html="getPriceAndCurrency(item, 'display_price_brutto', priceSwitcherIncludeVat)"
+                                                v-text="getPriceAndCurrency(item, 'display_price_brutto', priceSwitcherIncludeVat)"
                                             />
                                         </template>
                                     </div>
@@ -80,7 +80,6 @@
 
 <script>
 import { mapState, mapGetters, mapActions, mapMutations } from 'vuex';
-import QtySelector from '../utils/QtySelector';
 import { clearDataLayer } from '@hubblecommerce/hubble/core/utils/gtmHelper';
 import _ from 'lodash';
 
@@ -88,7 +87,7 @@ export default {
     name: 'CartItemsList',
 
     components: {
-        QtySelector,
+        QtySelector: () => import('../utils/QtySelector')
     },
 
     data() {
