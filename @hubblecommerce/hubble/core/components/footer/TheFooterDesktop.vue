@@ -23,22 +23,22 @@
                 <div class="title">{{ $t('Shipping methods') }}</div>
                 <a href="https://www.hubblecommerce.io/" class="logos">
                     <span class="hidden-link-name">{{ $t('Shipping methods') }}</span>
-                    <img-lazy :src="require('~/assets/images/shipping/dhl_200x120.png')" alt="DHL" />
-                    <img-lazy :src="require('~/assets/images/shipping/gls_200x120.png')" alt="GLS" />
+                    <img-lazy :src="require('~/assets/images/shipping/dhl_200x120.png')" :alt-info="'DHL'" :title-info="'DHL'" />
+                    <img-lazy :src="require('~/assets/images/shipping/gls_200x120.png')" :alt-info="'GLS'" :title-info="'GLS'" />
                 </a>
             </div>
             <div class="column">
                 <div class="title">{{ $t('Pay easy and secure') }}</div>
                 <a href="https://www.hubblecommerce.io/" class="logos">
                     <span class="hidden-link-name">{{ $t('Pay easy and secure') }}</span>
-                    <img-lazy :src="require('~/assets/images/payment/rechnung_200x120.png')" alt-info="Rechnung" />
-                    <img-lazy :src="require('~/assets/images/payment/visa_200x120.png')" alt-info="Visa" />
-                    <img-lazy :src="require('~/assets/images/payment/mastercard_200x120.png')" alt-info="Mastercard" />
-                    <img-lazy :src="require('~/assets/images/payment/aa_200x120.png')" alt-info="American Express" />
-                    <img-lazy :src="require('~/assets/images/payment/giropay_200x120.png')" alt-info="Giropay" />
-                    <img-lazy :src="require('~/assets/images/payment/paypal_200x120.png')" alt-info="Paypal" />
-                    <img-lazy :src="require('~/assets/images/payment/klarna_200x120.png')" alt-info="Klarna" />
-                    <img-lazy :src="require('~/assets/images/payment/amazon_pay_200x120.png')" alt-info="Amazon Pay" />
+                    <img-lazy :src="require('~/assets/images/payment/rechnung_200x120.png')" :alt-info="'Rechnung'" :title-info="'Rechnung'" />
+                    <img-lazy :src="require('~/assets/images/payment/visa_200x120.png')" :alt-info="'Visa'" :title-info="'Visa'" />
+                    <img-lazy :src="require('~/assets/images/payment/mastercard_200x120.png')" :alt-info="'Mastercard'" :title-info="'Mastercard'" />
+                    <img-lazy :src="require('~/assets/images/payment/aa_200x120.png')" :alt-info="'American Express'" :title-info="'American Express'" />
+                    <img-lazy :src="require('~/assets/images/payment/giropay_200x120.png')" :alt-info="'Giropay'" :title-info="'Giropay'" />
+                    <img-lazy :src="require('~/assets/images/payment/paypal_200x120.png')" :alt-info="'Paypal'" :title-info="'Paypal'" />
+                    <img-lazy :src="require('~/assets/images/payment/klarna_200x120.png')" :alt-info="'Klarna'" :title-info="'Klarna'" />
+                    <img-lazy :src="require('~/assets/images/payment/amazon_pay_200x120.png')" :alt-info="'Amazon Pay'" :title-info="'Amazon Pay'" />
                 </a>
             </div>
         </div>
