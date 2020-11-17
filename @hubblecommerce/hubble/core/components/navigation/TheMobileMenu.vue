@@ -31,12 +31,13 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import MobileCategories from './MobileCategories';
-import SearchTrigger from "./../search/SearchTrigger";
 export default {
     name: 'TheMobileMenu',
 
-    components: {SearchTrigger, MobileCategories },
+    components: {
+        SearchTrigger: () => import('../search/SearchTrigger'),
+        MobileCategories: () => import('./MobileCategories')
+    },
 
     props: {
         dataItems: {
