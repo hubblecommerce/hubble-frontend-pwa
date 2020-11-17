@@ -85,16 +85,21 @@ export const defaultDotEnv = {
         'APP_BASE_URL',
         'IMG_BASE_URL',
         'API_TYPE',
-        'API_SW_ACCESS_KEY',
+        // 'API_SW_ACCESS_KEY',
+        'API_BASE_PFX',
         'API_BASE_URL',
-        'API_BASE_URL',
-        'API_CLIENT_ID',
-        'API_CLIENT_SECRET',
-        'API_ENDPOINT_AUTH',
+        // 'API_CLIENT_ID',
+        // 'API_CLIENT_SECRET',
+        // 'API_CLIENT_USERNAME',
+        // 'API_CLIENT_PASSWORD',
+        // 'API_ENDPOINT_AUTH',
+        'API_PAYMENT_BASE_PFX',
         'API_PAYMENT_BASE_URL',
-        'API_PAYMENT_CLIENT_ID',
-        'API_PAYMENT_CLIENT_SECRET',
-        'API_PAYMENT_ENDPOINT_AUTH',
+        // 'API_PAYMENT_CLIENT_ID',
+        // 'API_PAYMENT_CLIENT_SECRET',
+        // 'API_PAYMENT_CLIENT_USERNAME',
+        // 'API_PAYMENT_CLIENT_PASSWORD',
+        // 'API_PAYMENT_ENDPOINT_AUTH',
         'PAYONE_MODE',
         'PAYONE_MID',
         'PAYONE_AID',
@@ -135,7 +140,7 @@ export const defaultRouterPrefetchLinksConfig = false;
 export const defaultServerMiddleware = function (srcDir) {
     const middlewares = [
         'api/hubble-logger',
-        'api/server-side-api-auth-call'
+        'api/client-auth'
     ];
 
     let result = [];

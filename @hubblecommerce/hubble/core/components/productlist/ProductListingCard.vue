@@ -144,9 +144,26 @@ export default {
                 return this.itemData.image;
             }
 
+            let image;
+
+            // if no image, try to take 1st media gallery item
+            if (! _.has(this.itemData, 'image') || this.itemData.image === '') {
+              if (_.has(this.itemData, 'media_gallery') && ! _.isEmpty(this.itemData.media_gallery)) {
+                image = this.itemData.media_gallery[0]['value'];
+              }
+            }
+
+            if (image) {
+              let urlPattern = /^((http|https|ftp):\/\/)/;
+
+              if (urlPattern.test(image)) {
+                return image;
+              }
+            }
+
             // If customer domain isset get live images
             if (!_.isEmpty(process.env.CUSTOMER_DOMAIN)) {
-                let image = this.itemData.image;
+                image = this.itemData.image;
                 return _.join([process.env.CUSTOMER_DOMAIN, 'images/catalog/thumbnails/cache/200', image], '/');
             }
 
@@ -239,6 +256,10 @@ export default {
             setProductId: 'modApiProduct/setProductId',
         }),
         getPriceAndCurrency: function (key, addVat) {
+            if(! _.has(this.itemData.final_price_item, key)) {
+              key = 'price';
+            }
+
             return this.getPriceAndCurrencyDecFmt(this.itemData.final_price_item[key], addVat, this.itemTaxClass);
         },
         getTierPriceMinAndCurrency: function (addVat) {

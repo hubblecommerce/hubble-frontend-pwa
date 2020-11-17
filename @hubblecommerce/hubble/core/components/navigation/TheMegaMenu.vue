@@ -3,7 +3,7 @@
         <div class="level-0-wrp">
             <template v-for="item in dataItems">
                 <div
-                    v-if="!item.url_path"
+                    v-if="!item.request_path"
                     :key="item.id"
                     class="menu-item"
                     :class="{ active: isActive === item.id }"
@@ -22,16 +22,16 @@
         </div>
 
         <transition name="slide-top-bottom">
-            <div v-if="showMenu && activeCategory.children" :class="'fixed-container ' + activeCategory.url_path" @mouseleave="hideChildren">
+            <div v-if="showMenu && activeCategory.children" :class="'fixed-container ' + activeCategory.request_path" @mouseleave="hideChildren">
                 <div class="max-width-container">
                     <template>
                         <div class="children-wrp">
                             <div v-for="child in activeCategory.children" v-if="showChild(child)" :key="child.id" class="child-wrp">
-                                <div v-if="!child.url_path" class="child-item" v-text="child.name" />
+                                <div v-if="!child.request_path" class="child-item" v-text="child.name" />
                                 <nuxt-link v-else :to="itemUrlPath(child)" class="child-item" v-text="child.name" />
 
                                 <template v-for="subchild in child.children">
-                                    <div v-if="!subchild.url_path" :key="subchild.id" class="subchild-item" v-text="subchild.name" />
+                                    <div v-if="!subchild.request_path" :key="subchild.id" class="subchild-item" v-text="subchild.name" />
                                     <nuxt-link v-else :key="subchild.id" class="subchild-item" :to="itemUrlPath(subchild)" v-text="subchild.name" />
                                 </template>
                             </div>
@@ -107,10 +107,10 @@ export default {
             let locale = this.getApiLocale;
 
             if (locale !== 'de') {
-                return '/' + locale + '/' + item.url_path;
+                return '/' + locale + '/' + item.request_path;
             }
 
-            return '/' + item.url_path;
+            return '/' + item.request_path;
         },
         showChildren: function (item) {
             // Blur background on hover over category with children

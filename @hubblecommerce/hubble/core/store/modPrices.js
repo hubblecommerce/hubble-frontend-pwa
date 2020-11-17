@@ -33,6 +33,10 @@ export const getters = {
                 return price;
             },
             productIsSpecial: () => item => {
+                if(! _.has(item.final_price_item, 'special_price')) {
+                  return false;
+                }
+
                 if (item.final_price_item.special_price === null) {
                     return false;
                 }

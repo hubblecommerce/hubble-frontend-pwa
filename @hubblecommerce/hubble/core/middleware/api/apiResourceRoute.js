@@ -27,7 +27,10 @@ export default async function ({ store, route, error }) {
                         action: 'get',
                         tokenType: 'api',
                         apiType: 'data',
-                        endpoint: _.join(['/api/json/urls/', path], ''),
+                        endpoint: _.join([
+                          _.trim('/urls', '/'),
+                          _.trim(path, '/')
+                        ], '/'),
                     },
                     { root: true }
                 )
