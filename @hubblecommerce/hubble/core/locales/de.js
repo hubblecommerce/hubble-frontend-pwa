@@ -443,6 +443,10 @@ export default context => {
             'You successfully signed up to our newsletter.': 'Die Newsletter Anmeldung war erfolgreich.',
 
             'Subscription was not successful': 'Anmeldung war nicht erfolgreich',
+
+            'A new password has been sent to your e-mail adress.': 'Ihnen wurde ein neues Passwort an Ihre E-Mail Adresse gesendet.',
+
+            'Requesting a new password has failed': 'Neues Password anfordern fehlgeschlagen'
         });
     });
 };

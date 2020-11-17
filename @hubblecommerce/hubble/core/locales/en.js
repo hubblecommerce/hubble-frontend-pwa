@@ -404,6 +404,10 @@ export default context => {
             'We are sorry there is no such product. Please try another one.': 'We are sorry there is no such product. Please try another one.',
 
             'No search results for:': 'No search results for:',
+
+            'A new password has been sent to your e-mail adress.': 'A new password has been sent to your e-mail adress.',
+
+            'Requesting a new password has failed': 'Requesting a new password has failed'
         });
     });
 };
