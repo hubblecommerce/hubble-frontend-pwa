@@ -30,8 +30,8 @@
                 <div class="content-wrp">
                     <a href="#" class="logos">
                         <span class="hidden-link-name">{{ $t('Shipping methods') }}</span>
-                        <img alt="DHL" src="~/assets/images/shipping/dhl_200x120.png" />
-                        <img alt="GLS" src="~/assets/images/shipping/gls_200x120.png" />
+                        <img-lazy :alt-info="'DHL'" :title-info="'DHL'" :src="require('~/assets/images/shipping/dhl_200x120.png')" :widht="200" :height="120" :backgroundColor="'rgba(255, 255, 255, 0)'" />
+                        <img-lazy :alt-info="'GLS'" :title-info="'GLS'" :src="require('~/assets/images/shipping/gls_200x120.png')" :widht="200" :height="120" :backgroundColor="'rgba(255, 255, 255, 0)'" />
                     </a>
                 </div>
             </collapsible>
@@ -39,14 +39,14 @@
                 <div class="content-wrp">
                     <a href="https://www.hubblecommerce.io/" class="logos">
                         <span class="hidden-link-name">{{ $t('Payment methods') }}</span>
-                        <img alt="Rechnung" src="~/assets/images/payment/rechnung_200x120.png" />
-                        <img alt="Visa" src="~/assets/images/payment/visa_200x120.png" />
-                        <img alt="Mastercard" src="~/assets/images/payment/mastercard_200x120.png" />
-                        <img alt="American Express" src="~/assets/images/payment/aa_200x120.png" />
-                        <img alt="Giropay" src="~/assets/images/payment/giropay_200x120.png" />
-                        <img alt="Paypal" src="~/assets/images/payment/paypal_200x120.png" />
-                        <img alt="Klarna" src="~/assets/images/payment/klarna_200x120.png" />
-                        <img alt="Amazon Pay" src="~/assets/images/payment/amazon_pay_200x120.png" />
+                        <img-lazy :alt-info="'Rechnung'" :title-info="'Rechnung'" :src="require('~/assets/images/payment/rechnung_200x120.png')" :widht="200" :height="120" :backgroundColor="'rgba(255, 255, 255, 0)'" />
+                        <img-lazy :alt-info="'Visa'" :title-info="'Visa'" :src="require('~/assets/images/payment/visa_200x120.png')" :widht="200" :height="120" :backgroundColor="'rgba(255, 255, 255, 0)'" />
+                        <img-lazy :alt-info="'Mastercard'" :title-info="'Mastercard'" :src="require('~/assets/images/payment/mastercard_200x120.png')" :widht="200" :height="120" :backgroundColor="'rgba(255, 255, 255, 0)'" />
+                        <img-lazy :alt-info="'American Express'" :title-info="'American Express'" :src="require('~/assets/images/payment/aa_200x120.png')" :widht="200" :height="120" :backgroundColor="'rgba(255, 255, 255, 0)'" />
+                        <img-lazy :alt-info="'Giropay'" :title-info="'Giropay'" :src="require('~/assets/images/payment/giropay_200x120.png')" :widht="200" :height="120" :backgroundColor="'rgba(255, 255, 255, 0)'" />
+                        <img-lazy :alt-info="'Paypal'" :title-info="'Paypal'" :src="require('~/assets/images/payment/paypal_200x120.png')" :widht="200" :height="120" :backgroundColor="'rgba(255, 255, 255, 0)'" />
+                        <img-lazy :alt-info="'Klarna'" :title-info="'Klarna'" :src="require('~/assets/images/payment/klarna_200x120.png')" :widht="200" :height="120" :backgroundColor="'rgba(255, 255, 255, 0)'" />
+                        <img-lazy :alt-info="'Amazon Pay'" :title-info="'Amazon Pay'" :src="require('~/assets/images/payment/amazon_pay_200x120.png')" :widht="200" :height="120" :backgroundColor="'rgba(255, 255, 255, 0)'" />
                     </a>
                 </div>
             </collapsible>
@@ -55,12 +55,11 @@
 </template>
 
 <script>
-import Newsletter from "../../components/utils/Newsletter";
 export default {
     name: 'TheFooterMobile',
 
     components: {
-        Newsletter,
+        Newsletter: () => import('../../components/utils/Newsletter'),
         Collapsible: () => import('../utils/Collapsible'),
     },
 };
