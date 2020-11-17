@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button class="button-primary dashboard-section-button-edit" @click.prevent="editCustomerInfo">{{ $t('Edit Information') }}</button>
+        <button class="button-primary dashboard-section-button-edit" @click.prevent="editCustomerInfo" v-text="$t('Edit Information')" />
 
         <transition-expand-layer :direction="{ sm: 'bottomTop', md: 'rightLeft', lg: 'rightLeft' }">
             <div v-if="showAccountInformation" class="transition-expand-wrp">
@@ -11,7 +11,7 @@
                             <material-ripple />
                         </button>
 
-                        <div class="overlay-headline">{{ $t('Edit Customer Information') }}</div>
+                        <div class="overlay-headline" v-text="$t('Edit Customer Information')" />
                     </div>
 
                     <div>
@@ -96,7 +96,7 @@
                                         <div class="validation-msg" v-text="$t(errors[0])" />
                                     </validation-provider>
 
-                                    <div class="dashboard-section-title">{{ $t('Please enter your password to change your email address') }}</div>
+                                    <div class="dashboard-section-title" v-text="$t('Please enter your password to change your email address')" />
 
                                     <validation-provider vid="email" name="current-email" mode="passive" tag="div" class="hbl-input-group">
                                         <input
