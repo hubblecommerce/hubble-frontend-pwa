@@ -1,6 +1,6 @@
 <template>
     <div class="product-card">
-        <a :href="routeUrlPds" @click.ctrl.exact="gtmProductClick()" @click.exact.prevent="openDetailPage()">
+        <nuxt-link :to="routeUrlPds" @click.ctrl.exact="gtmProductClick()" @click.exact.prevent="openDetailPage()">
             <div class="card-media">
                 <div class="actions">
                     <div class="badge-wrp">
@@ -24,17 +24,17 @@
 
                     <div :class="classesExcl" class="price-box price-excluding-tax product-price">
                         <template v-if="itemIsSpecial">
-                            <span class="sale-price" v-html="getPriceAndCurrency('display_price_brutto_special', priceSwitcherIncludeVat)" />
-                            <span class="old-price" v-html="getPriceAndCurrency('display_price_brutto', priceSwitcherIncludeVat)" />
+                            <span class="sale-price" v-text="getPriceAndCurrency('display_price_brutto_special', priceSwitcherIncludeVat)" />
+                            <span class="old-price" v-text="getPriceAndCurrency('display_price_brutto', priceSwitcherIncludeVat)" />
                         </template>
 
                         <template v-else-if="itemHasCheapPrice">
                             <span class="minimal cheapest-label">{{ $t('cheap_price_label') }}</span>
-                            <span v-html="getCheapPriceAndCurrency(priceSwitcherIncludeVat)" />
+                            <span v-text="getCheapPriceAndCurrency(priceSwitcherIncludeVat)" />
                         </template>
 
                         <template v-else>
-                            <span v-html="getPriceAndCurrency('display_price_brutto', priceSwitcherIncludeVat)" />
+                            <span v-text="getPriceAndCurrency('display_price_brutto', priceSwitcherIncludeVat)" />
                         </template>
 
                         <div v-if="itemOrig.final_price_item.priceinfo !== null" class="unit-price-wrp">
@@ -44,7 +44,7 @@
                     </div>
                 </div>
             </div>
-        </a>
+        </nuxt-link>
     </div>
 </template>
 
@@ -105,11 +105,6 @@ export default {
 
                 return '/' + _.join([this.itemOrig.url_pds], '/');
             }
-
-            // with category level
-            //if(this.session.categorySelected) {
-            //    return '/' + _.join([this.session.categorySelected.url_path, this.itemOrig.url_pds], '/');
-            //}
 
             if (locale !== 'de') {
                 return '/' + locale + '/' + this.itemOrig.url_pds;
