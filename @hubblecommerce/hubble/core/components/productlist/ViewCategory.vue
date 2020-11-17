@@ -36,10 +36,7 @@
                         <div class="pagination-bottom">
                             <pagination />
                         </div>
-                        <div v-if="categoryTextLong" class="category-description">
-                            <div v-if="$mq === 'sm' || $mq === 'md'" v-html="categoryTextLong" />
-                            <div v-if="$mq === 'lg'" v-html="categoryTextLong" />
-                        </div>
+                        <div v-if="categoryTextLong" class="category-description" v-text="categoryTextLong" />
                     </div>
                 </div>
             </template>
@@ -171,9 +168,6 @@ export default {
             return this.categoryItem.path_urls.slice(-1)[0];
         },
         categoryImage() {
-            /*if(!_.isEmpty(this.categoryItem.image)) {
-                return 'background-image: url("' + this.categoryItem.image + '"); color: #FFFFFF;'
-            }*/
             return '';
         }
     },
