@@ -15,9 +15,9 @@
             </div>
 
             <div class="row">
-                <div v-if="qty === 1" class="col-12 qty-summary"> {{ qty }} {{ $t('shopping_cart_label_item') }} </div>
+                <div v-if="qty === 1" class="col-12 qty-summary" v-text="qty + ' ' + $t('shopping_cart_label_item')" />
 
-                <div v-if="qty > 1" class="col-12 qty-summary"> {{ qty }} {{ $t('shopping_cart_label_items') }} </div>
+                <div v-if="qty > 1" class="col-12 qty-summary" v-text="qty + ' ' + $t('shopping_cart_label_items')" />
 
                 <transition name="fade">
                     <div v-if="qty <= 0" class="empty-cart">
@@ -35,12 +35,10 @@
             <cart-items-list />
 
             <div v-if="qty > 0" class="row totals bg-light">
-                <div class="col-6">
-                    {{ $t('Subtotal') }}
-                </div>
+                <div class="col-6" v-text="$t('Subtotal')" />
 
                 <div class="col-6">
-                    <span class="float-right font-weight-bold" v-html="getSubTotal()" />
+                    <span class="float-right font-weight-bold" v-text="getSubTotal()" />
                 </div>
             </div>
 
@@ -59,12 +57,11 @@
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
-import CartItemsList from '../checkout/CartItemsList';
 export default {
     name: 'CartLayer',
 
     components: {
-        CartItemsList,
+        CartItemsList: () => import('../checkout/CartItemsList')
     },
 
     data() {
