@@ -26,9 +26,7 @@
             <span class="label" v-text="'/l'" />
         </div>
 
-        <div class="info"
-            ><span>{{ $t('incl_tax') }}</span>
-        </div>
+        <div class="info" v-text="$t('incl_tax')" />
     </div>
 </template>
 

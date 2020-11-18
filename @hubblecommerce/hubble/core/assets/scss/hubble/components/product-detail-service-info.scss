@@ -1,0 +1,35 @@
+.product-detail-service-info-wrp {
+    border: 1px solid $border-color;
+    margin-bottom: 20px;
+
+    .service-wrp {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+
+        width: 100%;
+        min-height: 65px;
+        padding: 12px;
+
+        border-bottom: 1px solid $border-color;
+
+        &:last-child {
+            border-bottom: 0;
+        }
+
+        i {
+            width: 40px;
+            font-size: 21px;
+            line-height: 22px;
+            text-align: center;
+            margin-right: 10px;
+        }
+
+        span {
+            display: block;
+            width: calc(100% - 50px);
+            font-size: 14px;
+            line-height: 20px;
+        }
+    }
+}

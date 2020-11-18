@@ -1,41 +1,42 @@
 /* Price box */
 .price-cart-wrp {
-  .sale-price {
-    font-size: 18px;
-    font-weight: 600;
-  }
-  .old-price {
-    @include font-size($text-font-sizes);
-    text-decoration: line-through;
-
-    & + .sale-price {
-      color: $error-accent;
-      font-weight: $font-weight-bold;
+    .sale-price {
+        font-size: 18px;
+        font-weight: 600;
     }
-  }
 
-  .info {
-    font-size: 10px;
-  }
+    .old-price {
+        @include font-size($text-font-sizes);
+        text-decoration: line-through;
+
+        & + .sale-price {
+            color: $error-accent;
+            font-weight: $font-weight-bold;
+        }
+    }
+
+    .info {
+        font-size: 10px;
+    }
 }
 
 /* Add to Cart button */
 .add-to-cart {
-  height: 50px;
-  padding: 0 30px;
-  color: #fff;
-  background: $accent;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  i {
-      position: absolute;
-      left: 10px;
-      top: 0;
-      bottom: 0;
-      margin: auto;
-  }
+    //height: 50px;
+    //padding: 0 30px;
+    //color: #fff;
+    //background: $accent;
+    //display: flex;
+    //justify-content: center;
+    //align-items: center;
+    //
+    //i {
+    //    position: absolute;
+    //    left: 10px;
+    //    top: 0;
+    //    bottom: 0;
+    //    margin: auto;
+    //}
 
     .loader {
         height: 50px;
@@ -48,52 +49,27 @@
 }
 
 .sku {
-  @include font-size($text-font-sizes);
-  margin-bottom: 0;
+    @include font-size($text-font-sizes);
+    margin-bottom: 0;
 }
 
 //------ Price-Cart-Delivery --------
 .product-row {
-  display: flex;
-  flex-direction: column-reverse;
-
-  .delivery-info {
-    padding-top: 45px;
-    text-align: left;
-    margin-bottom: 15px;
-
-    * {
-      font-size: 12px;
-      line-height: 15px;
-      margin-bottom: 5px;
-    }
-
-    .bold-text {
-      font-weight: $font-weight-bold;
-    }
-
-    .delivery-info-link {
-      text-decoration: underline;
-    }
-  }
+    display: flex;
+    flex-direction: column-reverse;
 }
 
 //------ Tablet --------
 @media(min-width: 768px) {
-  .product-row {
-    flex-direction: column;
+    .product-row {
+        flex-direction: column;
 
-    .price-wrp {
-      width: 100%;
+        .price-wrp {
+            width: 100%;
 
-      .info {
-        font-size: 12px;
-      }
+            .info {
+                font-size: 12px;
+            }
+        }
     }
-
-    .delivery-info {
-      width: 100%;
-      padding-top: 20px;
-    }
-  }
 }

@@ -1,5 +1,5 @@
 <template>
-    <button :disabled="loaderState" type="button" :title="$t('add_to_cart')" class="add-to-cart m-0 w-100" @click.prevent="addToCart">
+    <button :disabled="loaderState" type="button" :title="$t('add_to_cart')" class="add-to-cart button-primary" @click.prevent="addToCart">
         <i class="icon icon-shopping-bag" aria-hidden="true" />
         <span v-if="!loaderState" class="cart-button-label headline-4">{{ $t('add_to_cart') }}</span>
         <loader v-if="loaderState" appearance="ellipsis" />
@@ -22,6 +22,10 @@ export default {
             type: Object,
             required: true,
         },
+        qty: {
+            type: Number,
+            required: false
+        }
     },
 
     data() {
@@ -60,7 +64,9 @@ export default {
             this.item.variants = this.selectedVariants;
 
             // Add item and qty to cart store
-            this.addItem({ item: this.item, qty: this.selectedQty })
+            let qty = this.qty != null ? this.qty : this.selectedQty;
+
+            this.addItem({ item: this.item, qty: qty })
                 .then(() => {
                     if (process.env.API_TYPE === 'api') {
                         this.resetSelectedVariants();

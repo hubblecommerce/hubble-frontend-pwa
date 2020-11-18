@@ -40,7 +40,7 @@
 
 /* Navigation */
 .nav-wrp {
-    height: 56px;
+    height: $header-height-mobile;
     width: 100%;
     background-color: $background;
     border-bottom: 1px solid $border-color;
@@ -50,8 +50,11 @@
     align-items: center;
 
     .header-action-icon{
-      position: absolute;
-      right: 10px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 70;
+        width: 100%;
     }
 
     .button-icon {
@@ -75,6 +78,7 @@
         bottom: 0;
         left: 0;
         width: 100%;
+        z-index: 100;
 
         display: flex;
         justify-content: space-around;
