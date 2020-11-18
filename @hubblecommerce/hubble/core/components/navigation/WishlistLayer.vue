@@ -12,9 +12,9 @@
             </div>
 
             <div class="row">
-                <div v-if="qty === 1" class="col-12 qty-summary" v-text="qty + ' ' + $t('wishlist_label_item')" />
+                <div v-if="qty === 1" class="col-12 qty-summary" v-text="`${qty} ${$t('wishlist_label_item')}`" />
 
-                <div v-if="qty > 1" class="col-12 qty-summary" v-text="qty + ' ' + $t('wishlist_label_items')" />
+                <div v-if="qty > 1" class="col-12 qty-summary" v-text="`${qty} ${$t('wishlist_label_items')}`" />
 
                 <div v-if="qty <= 0" class="empty-cart">
                     <i class="icon icon-heart" />
