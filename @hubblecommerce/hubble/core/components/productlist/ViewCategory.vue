@@ -36,7 +36,7 @@
                         <div class="pagination-bottom">
                             <pagination />
                         </div>
-                        <div v-if="categoryTextLong" class="category-description" v-text="categoryTextLong" />
+                        <div v-if="categoryTextLong" class="category-description" v-html="categoryTextLong" />
                     </div>
                 </div>
             </template>

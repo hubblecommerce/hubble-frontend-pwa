@@ -181,6 +181,9 @@ export const actions = {
                         { root: true }
                     )
                         .then(response => {
+
+                            console.log(response)
+
                             dispatch('mappingCategory', response.data.data).then(res => {
                                 commit('setDataCategory', {
                                     data: {
@@ -256,7 +259,7 @@ export const actions = {
                         obj.image = payload.media.url;
                     }
 
-                    obj.description = null;
+                    obj.description = payload.description;
                     obj.teaser = payload.description;
                     obj.meta_title = payload.metaTitle;
                     obj.meta_keywords = payload.keywords;
