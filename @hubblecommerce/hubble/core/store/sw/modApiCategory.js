@@ -181,9 +181,6 @@ export const actions = {
                         { root: true }
                     )
                         .then(response => {
-
-                            console.log(response)
-
                             dispatch('mappingCategory', response.data.data).then(res => {
                                 commit('setDataCategory', {
                                     data: {
