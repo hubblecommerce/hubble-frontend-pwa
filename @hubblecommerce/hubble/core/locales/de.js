@@ -381,6 +381,8 @@ export default context => {
             Relevance: 'Relevanz',
             'to ': 'bis ',
             'from ': 'ab ',
+            'Previous Page': 'voherige Seite',
+            'Next Page': 'Nächste Seite',
 
             // Validation
             'The password is required.': 'Passwort ist ein Pflichtfeld',

@@ -2,7 +2,7 @@
     <div class="pagination">
         <button class="button-icon" :class="{ disabled: paginationPrevDisabled }" :disabled="paginationPrevDisabled" @click="loadPrevPage">
             <i class="icon icon-chevron-left" />
-            <span class="hidden-link-name">Previous</span>
+            <span class="hidden-link-name" v-text="$t('Previous')" />
             <material-ripple />
         </button>
         <div>
@@ -13,7 +13,7 @@
         </div>
         <button class="button-icon" :class="{ disabled: paginationNextDisabled }" :disabled="paginationNextDisabled" @click="loadNextPage">
             <i class="icon icon-chevron-right" />
-            <span class="hidden-link-name">Next Page</span>
+            <span class="hidden-link-name" v-text="$t('Next Page')" />
             <material-ripple />
         </button>
     </div>
