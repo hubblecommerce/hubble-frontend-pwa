@@ -14,7 +14,7 @@
                             </div>
 
                             <div v-for="variant in item.variants" :key="variant.id" class="row selected-variants">
-                                <span>{{ variant.label + ': ' + formatSize(variant.value_label) }}</span>
+                                <span v-text="`${variant.label}: ${formatSize(variant.value_label)}`" />
                             </div>
 
                             <div class="row">
