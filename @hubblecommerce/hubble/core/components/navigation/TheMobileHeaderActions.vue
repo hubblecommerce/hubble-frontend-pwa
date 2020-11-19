@@ -1,15 +1,15 @@
 <template>
-    <component :is="currentComponent" v-if="currentComponent !== ''" />
+    <component class="mobile-header-actions-wrp" :is="currentComponent" v-if="currentComponent !== ''" />
 </template>
 
 <script>
 import { mapState } from 'vuex'
 
 export default {
-    name: "TheActionHeaderIcon",
+    name: "TheMobileHeaderActions",
     components: {
         ProductListingFilter: () => import('../productlist/ProductListingFilter'),
-        ShareIcon: () => import('../utils/ShareIcon'),
+        ProductDetailHeaderActions: () => import('../productdetail/ProductDetailHeaderActions'),
     },
     data() {
         return {
@@ -26,12 +26,8 @@ export default {
             this.currentComponent = 'product-listing-filter';
         }
         if(this.pageType === 'product') {
-            this.currentComponent = 'share-icon';
+            this.currentComponent = 'product-detail-header-actions';
         }
     }
 }
 </script>
-
-<style scoped>
-
-</style>

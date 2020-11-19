@@ -1,94 +1,59 @@
 <template>
-    <div class="product-img-box">
-        <div class="badge-wrp">
-            <div v-if="itemIsSpecial" class="badge sale" v-text="itemDiscountPercent" />
-            <div v-if="itemIsNew" class="badge new" v-text="$t('New')" />
-            <add-to-wishlist v-if="$mq === 'sm' || $mq === 'md'" :item="productData" />
+    <div class="product-detail-gallery-wrp">
+        <div class="gallery-slider-wrp">
+            <client-only>
+                <slider
+                    v-if="productData.media_gallery != null && ($mq === 'sm' || $mq === 'md')"
+                    ref="productGallery"
+                    :mouse-drag="true"
+                    :loop="true"
+                    :controls="true"
+                    :controls-text="controls"
+                    :nav="true"
+                    items="1"
+                    gutter="0"
+                >
+                    <div v-for="(image, index) in allProductImages" :key="index" class="gallery-item">
+                        <img :src="routeUrlSmallGallery(image)"
+                             :alt="productData.name"
+                             :title="productData.name"
+                             @click="modalGalleryShow(index)"
+                        />
+                    </div>
+                </slider>
+            </client-only>
         </div>
 
-        <div class="product-img-container media">
-            <div class="media-content product-pics">
-                <client-only>
-                    <slider
-                        v-if="productData.media_gallery != null"
-                        ref="productGallery"
-                        :mouse-drag="true"
-                        :loop="true"
-                        :controls="true"
-                        :controls-text="controls"
-                        :nav="false"
-                        items="1"
-                        gutter="0"
-                    >
-                        <div v-for="(image, index) in allProductImages" :key="index" class="gallery-item">
-                            <a class="fancybox-trigger" onclick="return false;" @click="modalGalleryShow(index)">
-                                <img-lazy :src="routeUrlSmallGallery(image)" :alt="productData.name" :title="productData.name" />
-                            </a>
-                        </div>
-                    </slider>
-                </client-only>
-
-                <div v-if="($mq === 'md' || $mq === 'lg') && allProductImages.length > 1">
-                    <client-only>
-                        <slider
-                            v-if="productData.media_gallery != null"
-                            ref="thumbnailsGallery"
-                            class="d-flex pt-4 image-thumbnails-container"
-                            :mouse-drag="true"
-                            :loop="false"
-                            :controls="true"
-                            :controls-text="controls"
-                            :nav="false"
-                            gutter="0"
-                            :responsive="responsive"
-                        >
-                            <div v-for="(image, index) in allProductImages" :key="index">
-                                <div class="thumbnail-image-wrp d-flex" :class="{ selected: index === currentIndex }" @click="goToGallery(index)">
-                                    <img-lazy
-                                        class="thumbnail-img"
-                                        :src="routeUrlGalleryThumbnail(image)"
-                                        :alt="productData.name"
-                                        :title="productData.name"
-                                    />
-                                </div>
-                            </div>
-                        </slider>
-                    </client-only>
-                </div>
-
-                <div v-if="productData.media_gallery == null && productData.image">
-                    <div class="gallery-item">
-                        <a class="fancybox-trigger">
-                            <img-lazy :src="routeUrlSmallGallery(productData.image)" :alt="productData.name" :title="productData.name" />
-                        </a>
-                    </div>
-                </div>
-
-                <div v-if="productData.media_gallery == null && productData.image == null">
-                    <div class="gallery-item" />
-                </div>
+        <div v-if="this.$mq === 'lg'" class="gallery-scroll-wrp">
+            <div v-for="(image, index) in allProductImages" :key="index" class="gallery-item">
+                <img :src="routeUrlSmallGallery(image)"
+                     :alt="productData.name"
+                     :title="productData.name"
+                     @click="modalGalleryShow(index)"
+                />
             </div>
         </div>
 
         <client-only>
-            <vue-modal name="detail-image-gallery" @opened="goToModal(currentIndex)">
-                <div class="detail-gallery carousel-container">
+            <vue-modal name="gallery-modal" @opened="goToModal(currentIndex)">
+                <div class="gallery-modal-wrp">
                     <button class="button-icon close" @click="modalGalleryHide()">
-                        <div class="hidden-link-name">
-                            {{ $t('close') }}
-                        </div>
+                        <span class="hidden-link-name" v-text="$t('close')" />
                         <i class="icon icon-x" />
                         <material-ripple />
                     </button>
 
                     <slider ref="gallerySlider" :speed="200" :loop="true" :gutter="0" :mouse-drag="true" :controls-text="controls" items="1">
-                        <div v-for="(image, index) in allProductImages" :key="index" class="gallery-item">
+                        <div v-for="(image, index) in allProductImages" :key="index" class="gallery-modal-item">
                             <img-lazy :src="routeOriginalImage(image)" :alt="productData.name" :title="productData.name" />
                         </div>
                     </slider>
                 </div>
             </vue-modal>
         </client-only>
+
+        <!-- Placeholder if no image -->
+        <div v-if="productData.media_gallery == null && productData.image == null" class="gallery-item" />
     </div>
 </template>
 
@@ -142,7 +107,6 @@ export default {
         }),
         ...mapGetters({
             allProductImages: 'modApiProduct/getMediaGalleryArray',
-            productIsSpecial: 'modPrices/productIsSpecial',
         }),
         productData() {
             return this.dataProduct.result.item;
@@ -152,32 +116,6 @@ export default {
         },
         routeUrlProductImg() {
             return route('images.catalog.product', ['440x', this.productData.image]);
-        },
-        itemDiscountPercent() {
-            let oldPrice = this.productData.final_price_item['display_price_brutto'],
-                specialPrice = this.productData.final_price_item['display_price_brutto_special'],
-                decrease = oldPrice - specialPrice,
-                decreasePercentage = (decrease / oldPrice) * 100;
-
-            return '-' + _.round(decreasePercentage) + ' %';
-        },
-        itemIsSpecial() {
-            return this.productIsSpecial(this.productData);
-        },
-        itemIsNew() {
-            if (this.productData.status) {
-                let td = Date.parse(Date()),
-                    startDate = Date.parse(this.productData.status.is_new_from_date),
-                    endDate = Date.parse(this.productData.status.is_new_to_date);
-
-                if (startDate <= td && td <= endDate) {
-                    return true;
-                }
-
-                return false;
-            }
-
-            return false;
         },
     },
 
@@ -207,7 +145,7 @@ export default {
             if (this.$refs.productGallery) {
                 this.$refs.productGallery.slider.events.on('indexChanged', () => {
                     let info = this.$refs.productGallery.slider.getInfo();
-                    
+
                     if (info.cloneCount >= 2) {
                         // Add 1 to index to prevent division with 0
                         let index = info.index + 1;
@@ -315,13 +253,15 @@ export default {
             }
         },
         modalGalleryHide() {
-            this.$modal.hide('detail-image-gallery');
+            this.$modal.hide('gallery-modal');
         },
         modalGalleryShow(slideIndex) {
-            this.currentIndex = slideIndex;
-            this.$modal.show('detail-image-gallery', {
-                imageGallery: this.productData.media_gallery,
-            });
+            if(this.$mq === 'sm' || this.$mq === 'md') {
+                this.currentIndex = slideIndex;
+                this.$modal.show('gallery-modal', {
+                    imageGallery: this.productData.media_gallery,
+                });
+            }
         },
         goToGallery: function (slideIndex) {
             this.currentIndex = slideIndex;

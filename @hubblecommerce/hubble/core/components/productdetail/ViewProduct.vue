@@ -4,48 +4,39 @@
             <loader />
         </div>
 
-        <div v-if="!loading" class="container main-container">
-            <div class="back-btn-wrp">
-                <button v-if="$mq === 'sm'" class="detail-back-btn" @click="historyBack()">
-                    <i class="icon icon-chevron-left" />
-                    <span class="hidden-link-name">{{ $t('Back') }}</span>
-                    <material-ripple />
-                </button>
-            </div>
-
+        <div v-if="!loading" class="container p-0">
             <div class="detail-wrp">
-                <breadcrumbs :path="breadcrumbPath" />
-
-                <div class="gallery bg-white">
+                <div class="detail-top-wrp">
                     <product-detail-gallery />
+
+                    <div class="badge-wrp">
+                        <div v-if="itemIsSpecial" class="badge sale" v-text="itemDiscountPercent" />
+                        <div v-if="itemIsNew" class="badge new" v-text="$t('New')" />
+                    </div>
+
+                    <div class="detail-actions-wrp" v-if="$mq === 'sm' || $mq === 'md'">
+                        <add-to-wishlist :item="productData" />
+                        <product-detail-add-to-cart :item="productData" />
+                    </div>
                 </div>
 
-                <div class="buybox-wrp container border-top border-bottom">
+                <div class="buybox-wrp">
+                    <breadcrumbs class="container" :path="breadcrumbPath" />
+
                     <product-detail-buybox />
-                </div>
 
-                <div v-if="$mq === 'sm'" class="product-description-container">
-                    <div class="product-tabs md-elevation-2">
-                        <collapsible-description id="description-anchor" :is-collapsed="false" :toggle-text="$t('Description')">
+                    <product-detail-service-info />
+
+                    <tabs class="detail-tabs">
+                        <tab class="description-tab" :name="$t('Description')">
                             <div v-if="productData.description" class="tab-content">
-                                <div v-html="productData.description" />
+                                <div v-text="productData.description" />
                             </div>
-                        </collapsible-description>
-                    </div>
-                </div>
-
-                <div v-if="$mq === 'md' || $mq === 'lg'" class="product-description-container md-elevation-2">
-                    <div class="product-description-wrp">
-                        <div id="description-anchor" />
-
-                        <div class="description-title headline-4 pt-4">
-                            {{ $t('Description') }}
-                        </div>
-
-                        <div v-if="productData.description" class="description-content">
-                            <div v-html="productData.description" />
-                        </div>
-                    </div>
+                        </tab>
+                        <tab class="reqview-tab" :name="$t('Reviews')">
+                            No reviews yet
+                        </tab>
+                    </tabs>
                 </div>
 
                 <div class="product-recommendation-wrp">
@@ -70,7 +61,7 @@
 </template>
 
 <script>
-import { mapActions, mapMutations, mapState } from 'vuex';
+import {mapActions, mapGetters, mapMutations, mapState} from 'vuex';
 import ProductDetailBuybox from './ProductDetailBuybox';
 import ProductDetailGallery from './ProductDetailGallery';
 import CollapsibleDescription from './CollapsibleDescription';
@@ -78,11 +69,18 @@ import Breadcrumbs from '../utils/Breadcrumbs';
 import ProductDetailRecommendations from './ProductDetailRecommendations';
 import GTMDataLayer from '../utils/GTMDataLayer';
 import _ from 'lodash';
+import Tabs from "@/modules/hubble-frontend-pwa/@hubblecommerce/hubble/core/components/utils/Tabs";
+import Tab from "@/modules/hubble-frontend-pwa/@hubblecommerce/hubble/core/components/utils/Tab";
 
 export default {
     name: 'ViewProduct',
 
     components: {
+        Tab,
+        Tabs,
+        ProductDetailServiceInfo: () => import('./ProductDetailServiceInfo'),
+        ProductDetailAddToCart: () => import('./ProductDetailAddToCart'),
+        AddToWishlist: () => import('../../components/productutils/AddToWishlist'),
         ProductDetailCrossSellingSw: () => import('./ProductDetailCrossSellingSw'),
         Loader: () => import('../utils/Loader'),
         GTMDataLayer,
@@ -105,6 +103,9 @@ export default {
             dataProduct: state => state.modApiProduct.dataProduct,
             priceCurrency: state => state.modPrices.priceCurrency,
             clickPath: state => state.modClickPath.clickPath,
+        }),
+        ...mapGetters({
+            productIsSpecial: 'modPrices/productIsSpecial',
         }),
         productData: function () {
             if (_.isEmpty(this.dataProduct)) {
@@ -135,6 +136,32 @@ export default {
                 return _.round(price, 2);
             }
             return null;
+        },
+        itemIsSpecial() {
+            return this.productIsSpecial(this.productData);
+        },
+        itemDiscountPercent() {
+            let oldPrice = this.productData.final_price_item['display_price_brutto'],
+                specialPrice = this.productData.final_price_item['display_price_brutto_special'],
+                decrease = oldPrice - specialPrice,
+                decreasePercentage = (decrease / oldPrice) * 100;
+
+            return '-' + _.round(decreasePercentage) + ' %';
+        },
+        itemIsNew() {
+            if (this.productData.status) {
+                let td = Date.parse(Date()),
+                    startDate = Date.parse(this.productData.status.is_new_from_date),
+                    endDate = Date.parse(this.productData.status.is_new_to_date);
+
+                if (startDate <= td && td <= endDate) {
+                    return true;
+                }
+
+                return false;
+            }
+
+            return false;
         },
         structuredData: function () {
             if (_.isEmpty(this.productData)) return {};
@@ -237,9 +264,7 @@ export default {
         ...mapActions({
             getProductData: 'modApiProduct/getProductData',
         }),
-        historyBack: function () {
-            this.$router.go(-1);
-        },
+
         getPriceValidUntilDate: function () {
             // check if a special Price is active and has a valid Date
             if (this.productData.final_price_item.special_to_date != null) {

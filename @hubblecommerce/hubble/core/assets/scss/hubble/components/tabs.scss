@@ -20,10 +20,11 @@
 </tabs>
 */
 
+$tab-active-color: $secondary;
+
 /* Material Tab Styling */
 .tabs-component {
     width: 100%;
-    background: $background;
 
     .tabs-component-tabs {
         flex: 1;
@@ -35,6 +36,7 @@
         margin: 0;
 
         .tabs-component-tab {
+            font-weight: $font-weight-bold;
             text-align: center;
             text-transform: uppercase;
             display: flex;
@@ -50,7 +52,7 @@
 
             &.is-active {
                 a {
-                    color: $primary;
+                    color: $tab-active-color;
                 }
             }
 
@@ -61,7 +63,7 @@
 
         .tabs-component-tab-a {
             cursor: pointer;
-            font-size: 13px;
+            font-size: 14px;
             padding: 10px 15px;
         }
     }
@@ -73,7 +75,7 @@
 
         height: 2px;
         width: 50px;
-        background-color: $primary;
+        background-color: $tab-active-color;
 
         transition: all 0.2s ease-in-out;
 
@@ -105,6 +107,7 @@
 
             .tab-content {
                 width: 100%;
+                font-size: 14px;
             }
 
             .selected-filters {
@@ -138,6 +141,19 @@
 
                 .selected-filters {
                     margin-bottom: 0;
+                }
+            }
+        }
+    }
+}
+
+@media(min-width: 1024px) {
+    .tabs-component {
+        .tabs-component-panels {
+            .tabs-component-panel {
+                .tab-content {
+                    font-size: 16px;
+                    line-height: 26px;
                 }
             }
         }

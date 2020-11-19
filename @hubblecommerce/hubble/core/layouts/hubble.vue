@@ -20,7 +20,7 @@
                             <customer-menu />
                             <the-mini-cart />
                         </div>
-                        <the-header-action-icon class="header-action-icon" v-if="$mq === 'sm'"/>
+                        <the-mobile-header-actions v-if="$mq === 'sm'" />
                     </div>
                     <nav>
                         <the-mega-menu v-if="$mq === 'lg' && !isEmpty(menu)" :data-items="menu" />
@@ -79,7 +79,7 @@ export default {
     components: {
         Newsletter,
         SearchTrigger,
-        TheHeaderActionIcon: () => import('../components/navigation/TheHeaderActionIcon'),
+        TheMobileHeaderActions: () => import('../components/navigation/TheMobileHeaderActions'),
         TrustedShopsBadge: () => import('../components/utils/TrustedShopsBadge'),
         TheFooterMobile: () => import('../components/footer/TheFooterMobile'),
         ThePostFooter: () => import('../components/footer/ThePostFooter'),

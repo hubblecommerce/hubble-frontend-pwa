@@ -7,9 +7,7 @@
         flex-direction: column;
         justify-content: space-between;
         flex-wrap: wrap;
-        border-bottom: 1px solid $border-color;
-        margin-bottom: 15px;
-        padding-bottom: 10px;
+        margin-bottom: 10px;
 
         &:last-child {
             border-bottom: none;
@@ -20,6 +18,7 @@
         }
 
         .option-label {
+            font-size: 14px;
             text-transform: capitalize;
             margin-bottom: 10px;
             font-weight: $font-weight-bold;

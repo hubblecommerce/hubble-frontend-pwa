@@ -38,7 +38,7 @@ export default {
     props: {
         qty: {
             type: Number,
-            required: true,
+            required: false,
             default: 1,
         },
         maxQty: {

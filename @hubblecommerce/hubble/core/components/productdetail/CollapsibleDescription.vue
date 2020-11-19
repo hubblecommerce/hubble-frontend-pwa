@@ -6,18 +6,18 @@
             {{ toggleText }}
 
             <transition-rotate-x>
-                <i v-if="!collapsedState" class="icon icon-minus" />
+                <i v-if="!collapsed" class="icon icon-minus" />
             </transition-rotate-x>
 
             <transition-rotate-x>
-                <i v-if="collapsedState" class="icon icon-plus" />
+                <i v-if="collapsed" class="icon icon-plus" />
             </transition-rotate-x>
 
             <material-ripple />
         </button>
 
         <transition @before-enter="beforeEnter" @after-enter="afterEnter" @before-leave="beforeLeave">
-            <div v-if="!collapsedState" ref="collapseContent" class="collapse show collapse-item">
+            <div v-if="!collapsed" ref="collapseContent" class="collapse show collapse-item">
                 <slot />
             </div>
         </transition>
@@ -32,6 +32,12 @@ export default {
     name: 'Collapsible',
 
     components: { TransitionRotateX },
+
+    data() {
+        return {
+            collapsed: true
+        }
+    },
 
     props: {
         toggleTag: {
@@ -57,16 +63,10 @@ export default {
         },
     },
 
-    computed: {
-        ...mapState({
-            collapsedState: state => state.modCollapsibleState.collapsed,
-        }),
-    },
-
     methods: {
-        ...mapMutations({
-            collapseContent: 'modCollapsibleState/collapseContent',
-        }),
+        collapseContent: function() {
+            this.collapsed = !this.collapsed;
+        },
         beforeEnter: function (el) {
             el.style.maxHeight = 0;
         },
