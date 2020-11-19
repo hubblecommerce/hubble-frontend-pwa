@@ -98,19 +98,16 @@
 
 <script>
 import { mapActions, mapGetters, mapMutations, mapState } from 'vuex';
-
-import SelectableFacet from './toolbar/SelectableFacet.vue';
-import PriceSlider from './toolbar/PriceSlider';
 import _ from 'lodash';
 
 export default {
     name: 'ProductListingFilter',
 
     components: {
-        PriceSlider,
+        PriceSlider: () => import('./toolbar/PriceSlider'),
         CollapsibleFilter: () => import('./toolbar/CollapsibleFilter'),
         Collapsible: () => import('../utils/Collapsible'),
-        SelectableFacet,
+        SelectableFacet: () => import('./toolbar/SelectableFacet.vue'),
     },
 
     data() {
@@ -304,7 +301,6 @@ export default {
             this.hideOffcanvasAction();
 
             return new Promise((resolve, reject) => {
-                //this.showFilter = false;
                 resolve();
             });
         },
