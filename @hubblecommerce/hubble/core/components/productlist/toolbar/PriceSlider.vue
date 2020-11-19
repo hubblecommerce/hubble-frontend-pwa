@@ -2,12 +2,12 @@
     <div class="price-slider">
         <div class="price text-left" :class="priceMinSelected ? 'price-selected' : ''">
             <span v-text="curMinLabel" />
-            <span v-html="curCurrencySign" />
+            <span v-text="curCurrencySign" />
         </div>
 
         <div class="price text-right" :class="priceMaxSelected ? 'price-selected' : ''">
             <span v-text="curMaxLabel" />
-            <span v-html="curCurrencySign" />
+            <span v-text="curCurrencySign" />
         </div>
 
         <vue-slider
