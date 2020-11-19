@@ -5,9 +5,7 @@
                 <div class="customer-wishlist-wrp">
                     <div v-if="qty > 0" class="headline">
                         <div class="wishlist-headline">
-                            <h1 class="">
-                                {{ $t('Your wishlist') }}
-                            </h1>
+                            <h1 v-text="$t('Your wishlist')" />
                             <span v-text="wishlistItemsLabel()" />
                         </div>
                         <div class="reset-item" @click="resetWishlist()" v-text="$t('Reset wishlist')" />
@@ -40,14 +38,15 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import WishlistItemsList from '../../components/customer/WishlistItemsList';
-import NewsletterForm from '../../components/utils/NewsletterForm';
 import _ from 'lodash';
 
 export default {
     name: 'Wishlist',
 
-    components: { WishlistItemsList, NewsletterForm },
+    components: { 
+        WishlistItemsList: () => import('../../components/customer/WishlistItemsList'), 
+        NewsletterForm: () => import('../../components/utils/NewsletterForm') 
+    },
 
     layout: 'hubble',
 
@@ -69,7 +68,7 @@ export default {
 
     methods: {
         ...mapActions({
-            deleteUserWishlist: 'modApiPayment/deleteWishlist',
+            deleteUserWishlist: 'modWishlist/deleteWishlist',
             deleteLocalWishlist: 'modApiCustomer/deleteWishlist',
         }),
         resetWishlist: function () {
