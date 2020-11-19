@@ -63,7 +63,7 @@ $tab-active-color: $secondary;
 
         .tabs-component-tab-a {
             cursor: pointer;
-            font-size: 13px;
+            font-size: 14px;
             padding: 10px 15px;
         }
     }
@@ -107,6 +107,7 @@ $tab-active-color: $secondary;
 
             .tab-content {
                 width: 100%;
+                font-size: 14px;
             }
 
             .selected-filters {
@@ -140,6 +141,19 @@ $tab-active-color: $secondary;
 
                 .selected-filters {
                     margin-bottom: 0;
+                }
+            }
+        }
+    }
+}
+
+@media(min-width: 1024px) {
+    .tabs-component {
+        .tabs-component-panels {
+            .tabs-component-panel {
+                .tab-content {
+                    font-size: 16px;
+                    line-height: 26px;
                 }
             }
         }

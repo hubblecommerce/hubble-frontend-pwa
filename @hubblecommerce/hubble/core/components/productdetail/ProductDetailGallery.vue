@@ -3,7 +3,7 @@
         <div class="gallery-slider-wrp">
             <client-only>
                 <slider
-                    v-if="productData.media_gallery != null"
+                    v-if="productData.media_gallery != null && ($mq === 'sm' || $mq === 'md')"
                     ref="productGallery"
                     :mouse-drag="true"
                     :loop="true"
@@ -22,6 +22,16 @@
                     </div>
                 </slider>
             </client-only>
+        </div>
+
+        <div v-if="this.$mq === 'lg'" class="gallery-scroll-wrp">
+            <div v-for="(image, index) in allProductImages" :key="index" class="gallery-item">
+                <img :src="routeUrlSmallGallery(image)"
+                     :alt="productData.name"
+                     :title="productData.name"
+                     @click="modalGalleryShow(index)"
+                />
+            </div>
         </div>
 
         <client-only>
@@ -246,10 +256,12 @@ export default {
             this.$modal.hide('gallery-modal');
         },
         modalGalleryShow(slideIndex) {
-            this.currentIndex = slideIndex;
-            this.$modal.show('gallery-modal', {
-                imageGallery: this.productData.media_gallery,
-            });
+            if(this.$mq === 'sm' || this.$mq === 'md') {
+                this.currentIndex = slideIndex;
+                this.$modal.show('gallery-modal', {
+                    imageGallery: this.productData.media_gallery,
+                });
+            }
         },
         goToGallery: function (slideIndex) {
             this.currentIndex = slideIndex;

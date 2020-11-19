@@ -16,6 +16,7 @@
     margin-bottom: 30px;
 
     .breadcrumbs {
+        display: none;
         width: 100%;
         padding-top: 10px;
         padding-bottom: 10px;
@@ -76,12 +77,6 @@
             }
         }
     }
-
-    .price-box {
-        display: flex;
-        flex-direction: column;
-        margin-bottom: 20px;
-    }
 }
 
 .quantity-selector {
@@ -89,6 +84,10 @@
 }
 
 .price-box {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+
     .calculated-prices {
         width: 100%;
         margin-bottom: 20px;
@@ -120,12 +119,12 @@
     }
 
     .sale-price {
-        @include font-size($h2-font-sizes);
+        font-size: 18px;
         font-weight: $font-weight-bold;
     }
 
     .old-price {
-        @include font-size($text-font-sizes);
+        font-size: 18px;
         text-decoration: line-through;
 
         & + .sale-price {
@@ -140,7 +139,7 @@
     }
 
     .info {
-        @include font-size($text-font-sizes);
+        font-size: 12px;
     }
 }
 
@@ -260,36 +259,47 @@
 
 @media(min-width: 1024px) {
     .detail-wrp {
-        padding-top: 0;
+        display: flex;
+        justify-content: space-between;
+        padding-top: 40px;
 
         .breadcrumbs {
-            float: left;
-            width: 60%;
+            display: block;
+            padding-right: 15px;
+            padding-left: 15px;
+            padding-bottom: 0;
+            margin-bottom: 30px;
+        }
+
+        .detail-top-wrp {
+            width: 50%;
         }
 
         .buybox-wrp {
-            float: right;
-            width: 40%;
-            margin-top: -81px;
+            width: 45%;
+            padding: 20px 0 0;
         }
 
-        .product-description-container {
-            width: 100%;
-            border-top: 1px solid $border-color;
-            padding-left: 0;
-            padding-right: 0;
+        .product-recommendation-wrp {
+        }
+    }
 
+    .price-box {
+        margin-bottom: 15px;
 
-            .product-description-wrp {
-                width: 60%;
-                padding: 0 100px 0 0;
-            }
+        .sale-price {
+            font-size: 26px;
+            line-height: 31px;
+        }
 
-            .care-products-wrp {
-                float: right;
-                width: 40%;
-                padding: 0 40px;
-            }
+        .old-price {
+            font-size: 26px;
+            line-height: 31px;
+        }
+
+        .info {
+            font-size: 14px;
+            color: $dark-gray;
         }
     }
 }

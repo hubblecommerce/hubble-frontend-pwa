@@ -21,7 +21,7 @@
         margin-top: 5px;
         margin-bottom: 3px;
         max-width: 100% !important;
-        @include font-size($h4-font-sizes);
+        font-size: 18px;
     }
 
     .options-wrp {
@@ -173,14 +173,22 @@
 
 @media(min-width: 1024px) {
     .product-info-wrp {
-        padding-top: 81px;
+        .product-name {
+            font-size: 31px;
+            line-height: 36px;
+        }
 
         .product-headline {
+            margin-bottom: 30px;
 
-            .add-to-wishlist-wrp {
-                right: 35px;
-                top: 70px;
+            .sku {
+                font-size: 14px;
+                color: $dark-gray;
             }
+        }
+
+        .add-to-cart-wrp {
+            margin-bottom: 40px;
         }
 
         .cart-button-wrp {

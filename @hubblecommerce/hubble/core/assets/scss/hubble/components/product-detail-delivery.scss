@@ -2,3 +2,13 @@
     margin-bottom: 20px;
     color: $success-accent;
 }
+
+@media(min-width: 1024px) {
+    .delivery-info {
+        margin-bottom: 25px;
+
+        * {
+            font-size: 14px;
+        }
+    }
+}

@@ -6,8 +6,6 @@
 
         <div v-if="!loading" class="container p-0">
             <div class="detail-wrp">
-                <breadcrumbs class="container" :path="breadcrumbPath" />
-
                 <div class="detail-top-wrp">
                     <product-detail-gallery />
 
@@ -23,6 +21,8 @@
                 </div>
 
                 <div class="buybox-wrp">
+                    <breadcrumbs class="container" :path="breadcrumbPath" />
+
                     <product-detail-buybox />
 
                     <product-detail-service-info />
