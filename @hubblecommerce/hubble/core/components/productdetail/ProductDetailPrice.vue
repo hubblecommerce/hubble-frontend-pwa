@@ -2,8 +2,8 @@
     <div class="price-box price-wrp">
         <div v-if="item.calculatedPrices" class="calculated-prices table">
             <div class="table-head">
-                <div class="table-data">Quantity</div>
-                <div class="table-data">Unit price</div>
+                <div class="table-data" v-text="'Quantity'" />
+                <div class="table-data" v-text="'Unit price'" />
             </div>
 
             <div v-for="(price, key) in item.calculatedPrices" class="table-row">
@@ -13,12 +13,12 @@
         </div>
 
         <template v-else-if="itemIsSpecial">
-            <span class="old-price" v-html="getPriceAndCurrency('display_price_brutto', priceSwitcherIncludeVat)" />
-            <span class="sale-price" v-html="getPriceAndCurrency('display_price_brutto_special', priceSwitcherIncludeVat)" />
+            <span class="old-price" v-text="getPriceAndCurrency('display_price_brutto', priceSwitcherIncludeVat)" />
+            <span class="sale-price" v-text="getPriceAndCurrency('display_price_brutto_special', priceSwitcherIncludeVat)" />
         </template>
 
         <template v-else>
-            <span class="sale-price" v-html="getPriceAndCurrency('display_price_brutto', priceSwitcherIncludeVat)" />
+            <span class="sale-price" v-text="getPriceAndCurrency('display_price_brutto', priceSwitcherIncludeVat)" />
         </template>
 
         <div v-if="item.final_price_item.priceinfo !== null" class="unit-price-wrp">
