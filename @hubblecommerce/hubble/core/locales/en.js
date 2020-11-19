@@ -409,7 +409,10 @@ export default context => {
 
             'A new password has been sent to your e-mail adress.': 'A new password has been sent to your e-mail adress.',
 
-            'Requesting a new password has failed': 'Requesting a new password has failed'
+            'Requesting a new password has failed': 'Requesting a new password has failed',
+            'Available immediately, delivery time 2-5 working days': 'Available immediately, delivery time 2-5 working days',
+            'Free shipping & returns': 'Free shipping & returns',
+            '100 days right to return': '100 days right to return'
         });
     });
 };

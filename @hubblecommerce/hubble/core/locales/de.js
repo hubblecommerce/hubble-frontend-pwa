@@ -448,7 +448,10 @@ export default context => {
 
             'A new password has been sent to your e-mail adress.': 'Ihnen wurde ein neues Passwort an Ihre E-Mail Adresse gesendet.',
 
-            'Requesting a new password has failed': 'Neues Password anfordern fehlgeschlagen'
+            'Requesting a new password has failed': 'Neues Password anfordern fehlgeschlagen',
+            'Available immediately, delivery time 2-5 working days': 'Sofort verfügbar, Lieferzeit 2-5 Werktage',
+            'Free shipping & returns': 'Kostenloser Versand & Rückversand',
+            '100 days right to return': '100 Tage Rückgaberecht'
         });
     });
 };
