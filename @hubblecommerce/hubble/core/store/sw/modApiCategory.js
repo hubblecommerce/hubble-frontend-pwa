@@ -256,7 +256,7 @@ export const actions = {
                         obj.image = payload.media.url;
                     }
 
-                    obj.description = null;
+                    obj.description = payload.description;
                     obj.teaser = payload.description;
                     obj.meta_title = payload.metaTitle;
                     obj.meta_keywords = payload.keywords;
