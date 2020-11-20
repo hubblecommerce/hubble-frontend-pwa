@@ -7,14 +7,13 @@
                 </div>
 
                 <div class="text">
-                    Diese Website verwendet Cookies, um die Interaktion mit anderen Websites und sozialen Netzwerken zu ermöglichen sowie den Komfort
-                    bei der Benutzung dieser Website zu erhöhen. Details entnehmt Ihr bitte unseren Hinweisen zum
-                    <nuxt-link class="link-primary" :to="'/Datenschutz'">Datenschutz.</nuxt-link>
+                   {{$t('cookieText')}}
+                    <nuxt-link class="link-primary" :to="'/Datenschutz'">{{$t('privacy')}}.</nuxt-link>
                 </div>
             </div>
             <div class="col-3 cookie-notice-button-wrp">
                 <button class="float-right button button-primary" @click="deactivateCookieNotice">
-                    Verstanden
+                    {{$t('accept')}}
                 </button>
             </div>
         </template>
@@ -22,14 +21,13 @@
             <div class="row cookie-notice-wrp">
                 <div class="row col-12 cookie-text-wrp">
                     <div class="text">
-                        Diese Website verwendet Cookies, um die Interaktion mit anderen Websites und sozialen Netzwerken zu ermöglichen sowie den
-                        Komfort bei der Benutzung dieser Website zu erhöhen. Details entnehmt Ihr bitte unseren Hinweisen zum
-                        <nuxt-link class="link-primary cookie-link" :to="'/Datenschutz'">Datenschutz.</nuxt-link>
+                        {{$t('cookieText')}}
+                        <nuxt-link class="link-primary cookie-link" :to="'/Datenschutz'">{{$t('privacy')}}.</nuxt-link>
                     </div>
                 </div>
                 <div class="row col-12 cookie-notice-button-wrp">
                     <button class="button button-primary cookie-notice-button" @click="deactivateCookieNotice">
-                        Verstanden
+                        {{$t('accept')}}
                     </button>
                 </div>
             </div>
@@ -43,12 +41,25 @@ import { mapActions } from 'vuex';
 export default {
     name: 'CookieNotice',
 
-    methods: {
+     methods: {
         ...mapActions({
             acceptCookieNotice: 'modCookieNotice/acceptCookieNotice',
+            flashMessage: 'modFlash/flashMessage',
         }),
         deactivateCookieNotice: function () {
-            this.acceptCookieNotice();
+            this.acceptCookieNotice().catch(data => {
+                if (data.success) {
+                    this.flashMessage({
+                        flashType: 'success',
+                        flashMessage: this.$t('cookieSuccess'),
+                    });
+                } else {
+                    this.flashMessage({
+                        flashType: 'error',
+                        flashMessage: this.$t('cookieError'),
+                    });
+                }
+            });
         },
     },
 };

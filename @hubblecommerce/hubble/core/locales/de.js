@@ -378,6 +378,12 @@ export default context => {
             Relevance: 'Relevanz',
             'to ': 'bis ',
             'from ': 'ab ',
+            cookieText: 'Diese Website verwendet Cookies, um die Interaktion mit anderen Websites und sozialen Netzwerken zu ermöglichen sowie den Komfort bei der Benutzung dieser Website zu erhöhen. Details entnehmt Ihr bitte unseren Hinweisen zum',
+            'privacy': 'Privatsphäre',
+            'accept': 'Verstanden',
+            cookieError: 'Ihre Bestätigung konnte nicht gespeichert werden, prüfen Sie Ihre Internetverbindung.',
+            cookieSuccess: 'Ihre Wahl wurde gespeichert!',
+
 
             // Validation
             'The password is required.': 'Passwort ist ein Pflichtfeld',

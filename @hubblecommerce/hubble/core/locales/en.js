@@ -338,6 +338,12 @@ export default context => {
             Relevance: 'Relevance',
             'to ': 'to ',
             'from ': 'from ',
+            cookieText: 'This website uses cookies, to enable the interaction to other websites and social networks, as well as offering you the most comfortable user experience as possible. For details please visit our hints to',
+            'privacy': 'privacy',
+            'accept': 'accept',
+            cookieError: 'Your choice could not be saved, please check your internet connection.',
+            cookieSuccess: 'Your choice were saved!',
+
 
             // Validation
             'The password is required.': 'Password is required',

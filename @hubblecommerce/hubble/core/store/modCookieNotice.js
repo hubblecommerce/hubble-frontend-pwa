@@ -37,7 +37,14 @@ export const actions = {
                 expires: getters.getCookieExpires,
             });
 
-            resolve();
+            resolve({
+                success: true,
+            },
+
+            reject({
+                success: false,
+            })
+            );
         });
     },
     setByCookie({ commit, state, getters }) {
