@@ -1,5 +1,5 @@
 <template>
-    <div class="price-box price-wrp">
+    <div class="price-box">
         <div v-if="item.calculatedPrices" class="calculated-prices table">
             <div class="table-head">
                 <div class="table-data" v-text="'Quantity'" />
