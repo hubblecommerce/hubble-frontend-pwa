@@ -383,6 +383,12 @@ export default context => {
             'from ': 'ab ',
             'Previous Page': 'voherige Seite',
             'Next Page': 'Nächste Seite',
+            'We regularly send you carefully selected offers from our range of products by email. All personal data requested in the context of the newsletter registration will not be passed on to third parties. You can object to the use of your e-mail address for advertising purposes at any time online or by sending an e-mail.': 'Wir senden Ihnen regelmäßig sorgfältig ausgesuchte Angebote aus unserem Sortiment per E-Mail zu. Alle im Rahmen der Newsletter-Anmeldung abgefragten personenbezogenen Daten werden nicht an Dritte weiter gegeben. Sie können der Nutzung Ihrer E-Mail-Adresse für Werbezwecke jederzeit online oder durch eine formlose E-Mail widersprechen.',
+            'Your e-mail address*': 'Ihre E-Mail Adresse*',
+            'Your date of birth**': 'Ihr Geburtsdatum**',
+            '* Mandataroy fields are marked with an asterisk *.': '* Pflichtangaben sind mit einem Sternchen * gekennzeichnet.',
+            '** Please enter your date of birth in this field, if you want to receive your personal birthday newsletter including a personal coupon': '** Bitte tragen Sie Ihr Geburtsdatum in dieses Feld ein, wenn Sie zusätzlich den Geburtstagsnewsletter inkl. persönlichem Gutschein erhalten möchten.',
+            'Subscribe to Newsletter': 'Newsletter Abonnieren',
 
             // Validation
             'The password is required.': 'Passwort ist ein Pflichtfeld',

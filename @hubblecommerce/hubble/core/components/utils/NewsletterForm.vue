@@ -4,17 +4,11 @@ Usage with:  v-if="$mq === 'md' || $mq === 'lg'"
 <template>
     <div class="newsletter-wrp">
         <div class="newsletter-headline">
-            <div class="headline-1 newsletter-title">{{ title }}</div>
+            <div class="headline-1 newsletter-title" v-text="$t('Newsletter registration')" />
         </div>
         <div class="newsletter-box">
-            <h2>{{ slogan }}</h2>
-            <div class="newsletter-info text-small">
-                Wir senden Ihnen regelmäßig sorgfältig ausgesuchte Angebote aus unserem Sortiment per E-Mail zu. Alle im Rahmen der
-                Newsletter-Anmeldung abgefragten personenbezogenen Daten werden nicht an Dritte weiter gegeben. Sie können der Nutzung Ihrer
-                E-Mail-Adresse für Werbezwecke jederzeit online oder durch eine formlose E-Mail widersprechen.
-            </div>
-
-            <div class="form-title"> {{ formTitle }}</div>
+            <div class="newsletter-info text-small" v-text="$t('We regularly send you carefully selected offers from our range of products by email. All personal data requested in the context of the newsletter registration will not be passed on to third parties. You can object to the use of your e-mail address for advertising purposes at any time online or by sending an e-mail.')" />
+            <div class="form-title" v-text="$t('Subscribe to Newsletter')" />
 
             <!-- Begin Mailchimp Signup Form
                 This Form is for a test Audience!
@@ -33,10 +27,10 @@ Usage with:  v-if="$mq === 'md' || $mq === 'lg'"
                 >
                     <div class="hbl-input-group">
                         <input id="mce-EMAIL" type="email" value="" name="EMAIL" placeholder=" " required />
-                        <label for="mce-EMAIL">Ihre E-Mail Adresse*</label>
+                        <label for="mce-EMAIL" v-text="$t('Your e-mail address*')" />
                     </div>
                     <div>
-                        <label for="mce-MMERGE1-month">Ihr Geburtsdatum**</label>
+                        <label for="mce-MMERGE1-month" v-text="$t('Your date of birth**')" />
                         <div class="datefield hbl-input-group">
                             <span class="subfield dayfield">
                                 <input
@@ -105,13 +99,8 @@ Usage with:  v-if="$mq === 'md' || $mq === 'lg'"
                 </form>
 
                 <div class="indicates-required">
-                    <div class="text">
-                        * Pflichtangaben sind mit einem Sternchen * gekennzeichnet.
-                    </div>
-                    <div class="text">
-                        ** Bitte tragen Sie Ihr Geburtsdatum in dieses Feld ein, wenn Sie zusätzlich den Geburtstagsnewsletter inkl. persönlichem
-                        Gutschein erhalten möchten.
-                    </div>
+                    <div class="text" v-text="$t('* Mandataroy fields are marked with an asterisk *.')" />
+                    <div class="text" v-text="$t('** Please enter your date of birth in this field, if you want to receive your personal birthday newsletter including a personal coupon')" />
                 </div>
             </div>
 
@@ -119,25 +108,9 @@ Usage with:  v-if="$mq === 'md' || $mq === 'lg'"
         </div>
     </div>
 </template>
+
 <script>
 export default {
-    name: 'Newsletter',
-
-    props: {
-        title: {
-            type: String,
-            required: true,
-        },
-        slogan: {
-            type: String,
-            required: false,
-            default: '',
-        },
-        formTitle: {
-            type: String,
-            required: false,
-            default: '',
-        },
-    },
+    name: 'NewsletterForm',
 };
 </script>
