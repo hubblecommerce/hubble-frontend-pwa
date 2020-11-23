@@ -30,9 +30,9 @@ function mapEntriesRecursive(navigationEntries) {
         obj.id = category.name;
 
         if (category.route.path === '/') {
-            obj.url_path = false;
+            obj.request_path = false;
         } else {
-            obj.url_path = category.route.path;
+            obj.request_path = category.route.path;
         }
 
         if (!_.isEmpty(category.children)) {

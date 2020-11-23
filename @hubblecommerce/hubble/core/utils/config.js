@@ -85,7 +85,7 @@ export const defaultDotEnv = {
         'APP_BASE_URL',
         'IMG_BASE_URL',
         'API_TYPE',
-        // 'API_SW_ACCESS_KEY',
+        'API_SW_ACCESS_KEY',
         'API_BASE_PFX',
         'API_BASE_URL',
         // 'API_CLIENT_ID',
