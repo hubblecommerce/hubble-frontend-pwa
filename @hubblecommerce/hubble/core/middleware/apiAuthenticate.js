@@ -2,53 +2,88 @@ import { datetimeUnixNow } from '@hubblecommerce/hubble/core/utils/datetime';
 import _ from 'lodash';
 
 export default function ({ isHMR, store, error }) {
-    // ignore if called from hot module replacement
-    if (isHMR) {
-        return;
+
+  // ignore if called from hot module replacement
+  if (isHMR) {
+    return;
+  }
+
+  if (process.env.API_TYPE === 'sw') {
+    return;
+  }
+
+  let _authPaymentOK = false;
+  let _authResourcesOK = false;
+
+  //
+  // check payment api auth ...
+  let _apiAuthPayment = store.getters['modApi/getApiPaymentAuthResponse'];
+
+  // check vuex store object first
+  if(! _.isEmpty(_apiAuthPayment)) {
+
+    // check expiry of cachable object
+    if(_apiAuthPayment.expires_at_unixtime >= datetimeUnixNow()) {
+      _authPaymentOK = true;
     }
+  }
 
-    if (process.env.API_TYPE === 'sw') {
-        return;
+  //
+  // check resouces api auth ...
+  let _apiAuthResources = store.getters['modApi/getApiResourcesAuthResponse'];
+
+  // check vuex store object first
+  if(! _.isEmpty(_apiAuthResources)) {
+
+    // check expiry of cachable object
+    if(_apiAuthResources.expires_at_unixtime >= datetimeUnixNow()) {
+      _authResourcesOK = true;
     }
+  }
 
-    let apiAuth = store.getters['modApi/getApiResourcesAuthResponse'];
+  // all ok? - fine :)
+  if(_authPaymentOK && _authResourcesOK) {
+    return;
+  }
 
-    // check vuex store object first
-    if (!_.isEmpty(apiAuth)) {
-        // check expiry of cachable object
-        if (apiAuth.expires_at_unixtime >= datetimeUnixNow()) {
-            return;
-        }
-    }
-
+  //
+  // perform payment api auth
+  function _getPaymentAuth() {
     return new Promise((resolve, reject) => {
-        if (process.client && process.env.NO_CORS === 'true') {
-            store
-                .dispatch('modApi/getServerSideApiAuth', {
-                    baseUrl: process.env.API_BASE_URL,
-                    endpoint: process.env.API_ENDPOINT_AUTH,
-                    clientId: process.env.API_CLIENT_ID,
-                    clientSecret: process.env.API_CLIENT_SECRET,
-                })
-                .then(response => {
-                    resolve(response);
-                })
-                .catch(response => {
-                    error({ statusCode: 401, message: 'API authentication failed' });
-                    resolve(response);
-                });
-        }
-
-        if (process.server || process.env.NO_CORS !== 'true') {
-            store
-                .dispatch('modApi/apiResourcesGetAuth')
-                .then(response => {
-                    resolve(response);
-                })
-                .catch(response => {
-                    error({ statusCode: 401, message: 'API authentication failed' });
-                    resolve(response);
-                });
-        }
+      store.dispatch('modApi/apiPaymentGetAuth')
+      .then(() => {
+        resolve('OK');
+      })
+      .catch(response => {
+        reject(response);
+      });
     });
+  }
+
+  //
+  // perform resources api auth
+  function _getResourcesAuth() {
+    return new Promise((resolve, reject) => {
+      store.dispatch('modApi/apiResourcesGetAuth')
+      .then(() => {
+        resolve('OK');
+      })
+      .catch(response => {
+        console.log("_getResourcesAuth error response: %o", response)
+        reject(response);
+      });
+    });
+  }
+
+  // dispatch to vuex store by promise
+  return new Promise((resolve) => {
+    Promise.all([_getPaymentAuth(), _getResourcesAuth()])
+    .then(() => {
+      resolve('OK')
+    })
+    .catch(() => {
+      error({ statusCode: 401, message: 'API authentication failed' });
+      resolve('Fail');
+    });
+  });
 };

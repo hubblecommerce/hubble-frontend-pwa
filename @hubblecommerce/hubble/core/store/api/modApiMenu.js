@@ -97,7 +97,7 @@ export const actions = {
                             action: 'get',
                             tokenType: 'api',
                             apiType: 'data',
-                            endpoint: '/api/json/menu/children',
+                            endpoint: '/menu/children',
                             params: {
                                 _size: 30,
                             },

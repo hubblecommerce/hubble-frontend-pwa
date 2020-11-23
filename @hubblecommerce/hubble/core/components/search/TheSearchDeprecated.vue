@@ -256,7 +256,7 @@ export default {
             this.$router.push(route);
         },
         doSearch: _.debounce(function () {
-            let endpoint = '/api/json/search/autocomplete';
+            let endpoint = '/search/autocomplete';
 
             // stop typing ...
             this.queryIsTyping = false;

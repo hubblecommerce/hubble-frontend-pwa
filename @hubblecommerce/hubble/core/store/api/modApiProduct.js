@@ -88,7 +88,10 @@ export const getters = {
 export const actions = {
             async getProductData({ commit, state, dispatch }) {
                 return new Promise(function (resolve, reject) {
-                    let endpoint = _.join(['/api/json/products/', state.productId], '');
+                    let endpoint = _.join([
+                      _.trim('/products', '/'),
+                      _.trim(state.productId, '/')
+                      ], '/');
 
                     dispatch(
                         'apiCall',
@@ -116,7 +119,11 @@ export const actions = {
             },
             async getRelatedProducts({ commit, dispatch }, payload) {
                 return new Promise(function (resolve, reject) {
-                    let endpoint = _.join(['/api/json/products/', payload.data, '/relations'], '');
+                    let endpoint = _.join([
+                      _.trim('/products', '/'),
+                      _.trim(payload.data, '/'),
+                      _.trim('/relations', '/')
+                      ], '/');
 
                     dispatch(
                         'apiCall',
@@ -142,7 +149,11 @@ export const actions = {
             },
             async getProductsCrossBuybox({ commit, dispatch }, payload) {
                 return new Promise((resolve, reject) => {
-                    let endpoint = _.join(['/api/json/products/', payload.data, '/buybox'], '');
+                    let endpoint = _.join([
+                      _.trim('/products', '/'),
+                      _.trim(payload.data, '/'),
+                      _.trim('/buybox', '/')
+                      ], '/');
 
                     dispatch(
                         'apiCall',
@@ -169,7 +180,11 @@ export const actions = {
             },
             async getProductsCrossByOrder({ commit, dispatch }, payload) {
                 return new Promise((resolve, reject) => {
-                    let endpoint = _.join(['/api/json/products/', payload.data, '/byorder'], '');
+                    let endpoint = _.join([
+                      _.trim('/products', '/'),
+                      _.trim(payload.data, '/'),
+                      _.trim('/byorder', '/')
+                      ], '/');
 
                     dispatch(
                         'apiCall',
@@ -196,7 +211,11 @@ export const actions = {
             },
             async getProductsCrossSimilar({ commit, dispatch }, payload) {
                 return new Promise((resolve, reject) => {
-                    let endpoint = _.join(['/api/json/products/', payload.data, '/similar'], '');
+                    let endpoint = _.join([
+                      _.trim('/products', '/'),
+                      _.trim(payload.data, '/'),
+                      _.trim('/similar', '/')
+                      ], '/');
 
                     dispatch(
                         'apiCall',
