@@ -384,7 +384,7 @@ export default context => {
             'Previous Page': 'voherige Seite',
             'Next Page': 'Nächste Seite',
             'Data protection': 'Datenschutz',
-            'Cookie text': 'Diese Website verwendet Cookies, um die Interaktion mit anderen Websites und sozialen Netzwerken zu ermöglichen sowie den Komfort bei der Benutzung dieser Website zu erhöhen. Details entnehmt Ihr bitte unseren Hinweisen zum ',
+            'This website uses cookies to enable interaction with other websites and social networks and to increase convenience of using this website. For details, please refer to our information on ': 'Diese Website verwendet Cookies, um die Interaktion mit anderen Websites und sozialen Netzwerken zu ermöglichen sowie den Komfort bei der Benutzung dieser Website zu erhöhen. Details entnehmt Ihr bitte unseren Hinweisen zum ',
             'Understood': 'Verstanden',
 
             // Validation

@@ -345,7 +345,7 @@ export default context => {
             'Previous Page': 'Previous Page',
             'Next Page': 'Next Page',
             'Data protection': 'data protection',
-            'Cookie text': 'This website uses cookies to enable interaction with other websites and social networks and to increase convenience of using this website. For details, please refer to our information on ',
+            'This website uses cookies to enable interaction with other websites and social networks and to increase convenience of using this website. For details, please refer to our information on ': 'This website uses cookies to enable interaction with other websites and social networks and to increase convenience of using this website. For details, please refer to our information on ',
             'Understood': 'Understood',
 
             // Validation

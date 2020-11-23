@@ -7,7 +7,7 @@
                 </div>
 
                 <div class="text cookie-text">
-                    {{ $t('Cookie text') }}
+                    {{ $t('This website uses cookies to enable interaction with other websites and social networks and to increase convenience of using this website. For details, please refer to our information on ') }}
                     <nuxt-link class="link-primary cookie-link" :to="'/Datenschutz'" v-text="$t('Data protection')" />
                 </div>
             </div>
