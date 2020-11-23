@@ -14,7 +14,7 @@
                         <div v-if="itemIsNew" class="badge new" v-text="$t('New')" />
                     </div>
 
-                    <div class="detail-actions-wrp" v-if="$mq === 'sm' || $mq === 'md'">
+                    <div class="detail-actions-wrp" >
                         <add-to-wishlist :item="productData" />
                         <product-detail-add-to-cart :item="productData" />
                     </div>
@@ -62,11 +62,7 @@
 
 <script>
 import {mapActions, mapGetters, mapMutations, mapState} from 'vuex';
-import ProductDetailBuybox from './ProductDetailBuybox';
-import ProductDetailGallery from './ProductDetailGallery';
-import CollapsibleDescription from './CollapsibleDescription';
 import Breadcrumbs from '../utils/Breadcrumbs';
-import ProductDetailRecommendations from './ProductDetailRecommendations';
 import GTMDataLayer from '../utils/GTMDataLayer';
 import _ from 'lodash';
 import Tabs from "@/modules/hubble-frontend-pwa/@hubblecommerce/hubble/core/components/utils/Tabs";
@@ -78,17 +74,17 @@ export default {
     components: {
         Tab,
         Tabs,
+        GTMDataLayer,
+        Breadcrumbs,
         ProductDetailServiceInfo: () => import('./ProductDetailServiceInfo'),
         ProductDetailAddToCart: () => import('./ProductDetailAddToCart'),
         AddToWishlist: () => import('../../components/productutils/AddToWishlist'),
         ProductDetailCrossSellingSw: () => import('./ProductDetailCrossSellingSw'),
         Loader: () => import('../utils/Loader'),
-        GTMDataLayer,
-        Breadcrumbs,
-        ProductDetailBuybox,
-        ProductDetailGallery,
-        CollapsibleDescription,
-        ProductDetailRecommendations,
+        ProductDetailBuybox: () => import('./ProductDetailBuybox'),
+        ProductDetailGallery: () => import('./ProductDetailGallery'),
+        CollapsibleDescription: () => import('./CollapsibleDescription'),
+        ProductDetailRecommendations: () => import('./ProductDetailRecommendations')
     },
 
     data() {
