@@ -14,7 +14,7 @@
                         <div v-if="itemIsNew" class="badge new" v-text="$t('New')" />
                     </div>
 
-                    <div class="detail-actions-wrp" >
+                    <div class="detail-actions-wrp" v-if="$mq === 'sm' || $mq === 'md'">
                         <add-to-wishlist :item="productData" />
                         <product-detail-add-to-cart :item="productData" />
                     </div>
