@@ -3,8 +3,8 @@
     min-height: 48px;
 
     .remove-from-wishlist {
-          color: $error-accent;
-      }
+        color: $primary;
+    }
 }
 
 
@@ -14,14 +14,10 @@
             &:hover {
                 i {
                     &:before {
-                        content: '\ea29';
+                        content: '\e901';
                     }
                 }
             }
-        }
-
-        .remove-from-wishlist {
-            color: $error-accent;
         }
     }
 }
