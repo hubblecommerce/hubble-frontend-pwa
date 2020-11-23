@@ -13,7 +13,7 @@
                 <button v-if="isOnWishlist" class="button-icon remove-from-wishlist" @click="removeFromWishlist()">
                     <span class="hidden-link-name" v-text="$t('Remove from wishlist')" />
 
-                    <i class="icon icon-heart-full" />
+                    <i class="icon icon-heart-filled" />
 
                     <material-ripple />
                 </button>

@@ -25,6 +25,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+
+.icon-heart-filled:before {
+    content: "\e901";
+}
 .icon-search-menu:before {
     content: "\e900";
 }
@@ -524,7 +528,7 @@
     content: "\e9b5";
 }
 .icon-more-vertical:before {
-    content: "\e9b6";
+content: "\e9b6";
 }
 .icon-mouse-pointer:before {
     content: "\e9b7";
@@ -854,10 +858,10 @@
     content: "\ea23";
 }
 .icon-youtube:before {
-    content: "\ea24";
+content: "\ea24";
 }
 .icon-zap-off:before {
-    content: "\ea25";
+        content: "\ea25";
 }
 .icon-zap:before {
     content: "\ea26";
