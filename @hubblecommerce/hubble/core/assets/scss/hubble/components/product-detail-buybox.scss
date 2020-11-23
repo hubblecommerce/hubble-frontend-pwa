@@ -90,10 +90,6 @@
         }
     }
 
-    .price-cart-delivery-wrp {
-        padding: 0 10px;
-    }
-
     .filtered-products-link-wrp {
         padding: 0 10px 5px 10px;
         display: flex;
@@ -109,15 +105,6 @@
         align-items: center;
         justify-content: space-between;
         margin-bottom: 20px;
-
-        .quantity-selector {
-            width: 90px;
-            margin: 0;
-
-            .hbl-select {
-                margin: 0;
-            }
-        }
 
         .add-to-cart {
             width: calc(100% - 90px - 10px);
@@ -144,10 +131,6 @@
 
         .description-link {
             padding: 0 0 20px;
-        }
-
-        .price-cart-delivery-wrp {
-            padding: 0;
         }
 
         .filtered-products-link-wrp {
@@ -184,17 +167,6 @@
 
         .add-to-cart-wrp {
             margin-bottom: 40px;
-        }
-
-        .cart-button-wrp {
-            .add-to-wishlist-button {
-                margin-left: 10px;
-
-                .add-to-wishlist,
-                .remove-from-wishlist {
-                    background: none !important;
-                }
-            }
         }
     }
 }

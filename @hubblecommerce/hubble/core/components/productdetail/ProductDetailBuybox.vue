@@ -5,7 +5,7 @@
             <product-detail-manufacturer :data-product="dataProduct" />
             <div class="product-headline-info">
                 <h1 class="product-name headline-4" v-text="dataProduct.name" />
-                <div v-if="dataProduct.sku" class="sku"> {{ $t('sku_label') }}: {{ dataProduct.sku }} </div>
+                <div v-if="dataProduct.sku" class="sku" v-text="`${$t('sku_label')}: ${dataProduct.sku} `" />
             </div>
         </div>
 
@@ -29,26 +29,22 @@
             <qty-selector :max-qty="dataProduct.stock_item.qty" @changeQty="onChangeQty($event)" />
             <product-detail-add-to-cart :qty="qty" :item="dataProduct" />
         </div>
+
     </div>
 </template>
 
 <script>
 import { mapState, mapMutations } from 'vuex';
-import ProductDetailManufacturer from './ProductDetailManufacturer';
-import ProductDetailDelivery from './ProductDetailDelivery';
-import ProductDetailPrice from './ProductDetailPrice';
-import ProductDetailAddToCart from './ProductDetailAddToCart';
-import QtySelector from "../../components/utils/QtySelector";
 
 export default {
     components: {
-        QtySelector,
-        ProductDetailAddToCart,
-        ProductDetailPrice,
-        ProductDetailDelivery,
-        ProductDetailManufacturer,
+        QtySelector: () => import('../../components/utils/QtySelector'),
+        ProductDetailAddToCart: () => import('./ProductDetailAddToCart'),
+        ProductDetailPrice:() => import('./ProductDetailPrice'),
+        ProductDetailDelivery:() => import('./ProductDetailDelivery'),
+        ProductDetailManufacturer:() => import('./ProductDetailManufacturer'),
         ProductDetailBuyboxOptions: () => import('./ProductDetailBuyboxOptions'),
-        ProductDetailBuyboxOptionsSw: () => import('./ProductDetailBuyboxOptionsSw'),
+        ProductDetailBuyboxOptionsSw: () => import('./ProductDetailBuyboxOptionsSw')
     },
 
     data() {
