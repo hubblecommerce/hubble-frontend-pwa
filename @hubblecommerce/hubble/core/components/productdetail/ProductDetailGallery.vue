@@ -59,7 +59,6 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex';
-import AddToWishlist from '../productutils/AddToWishlist';
 import Vue from 'vue';
 import VModal from 'vue-js-modal/dist/ssr.index';
 import 'vue-js-modal/dist/styles.css';
@@ -67,7 +66,6 @@ import _ from 'lodash';
 
 export default {
     components: {
-        AddToWishlist,
         Slider: () => {
             if (process.client) {
                 return import('vue-tiny-slider');
