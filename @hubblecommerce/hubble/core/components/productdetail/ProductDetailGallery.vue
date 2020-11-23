@@ -256,6 +256,12 @@ export default {
                 return image;
             }
 
+            let urlPattern = /^((http|https|ftp):\/\/)/;
+
+            if (urlPattern.test(image)) {
+              return image;
+            }
+
             // If customer domain isset get live images
             if (!_.isEmpty(process.env.CUSTOMER_DOMAIN)) {
                 return _.join([process.env.CUSTOMER_DOMAIN, 'images/catalog/thumbnails/cache/400', image], '/');
@@ -269,6 +275,12 @@ export default {
                 return image;
             }
 
+            let urlPattern = /^((http|https|ftp):\/\/)/;
+
+            if (urlPattern.test(image)) {
+              return image;
+            }
+
             // If customer domain isset get live images
             if (!_.isEmpty(process.env.CUSTOMER_DOMAIN)) {
                 return _.join([process.env.CUSTOMER_DOMAIN, 'images/catalog/thumbnails/cache/400', image], '/');
@@ -278,6 +290,12 @@ export default {
             return path + '/images/catalog/product/295x/' + image;
         },
         routeUrlGallery(image) {
+            let urlPattern = /^((http|https|ftp):\/\/)/;
+
+            if (urlPattern.test(image)) {
+              return image;
+            }
+
             // If customer domain isset get live images
             if (!_.isEmpty(process.env.CUSTOMER_DOMAIN)) {
                 return _.join([process.env.CUSTOMER_DOMAIN, 'images/catalog/thumbnails/cache/400', image], '/');
@@ -291,6 +309,12 @@ export default {
                 return image;
             }
 
+            let urlPattern = /^((http|https|ftp):\/\/)/;
+
+            if (urlPattern.test(image)) {
+              return image;
+            }
+
             // If customer domain isset get live images
             if (!_.isEmpty(process.env.CUSTOMER_DOMAIN)) {
                 return _.join([process.env.CUSTOMER_DOMAIN, 'images/product_images/original_images', image], '/');
@@ -302,6 +326,25 @@ export default {
         setDefaultProductImage() {
             if (process.env.API_TYPE === 'sw') {
                 this.currentImage = this.productData.image;
+            }
+
+            let image;
+
+            // if no image, try to take 1st media gallery item
+            if (! _.has(this.productData, 'image') || this.productData.image === '') {
+              if (_.has(this.productData, 'media_gallery') && ! _.isEmpty(this.productData.media_gallery)) {
+                image = this.productData.media_gallery[0]['value'];
+              }
+            } else {
+              image = this.productData.image;
+            }
+
+            if (image) {
+              let urlPattern = /^((http|https|ftp):\/\/)/;
+
+              if (urlPattern.test(image)) {
+                return image;
+              }
             }
 
             // If customer domain isset get live images

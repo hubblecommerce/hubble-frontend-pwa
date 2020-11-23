@@ -151,6 +151,8 @@ export default {
               if (_.has(this.itemData, 'media_gallery') && ! _.isEmpty(this.itemData.media_gallery)) {
                 image = this.itemData.media_gallery[0]['value'];
               }
+            } else {
+              image = this.itemData.image;
             }
 
             if (image) {

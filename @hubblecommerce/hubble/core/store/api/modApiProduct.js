@@ -69,7 +69,10 @@ export const getters = {
                         mediaGallery = state.dataProduct.result.item.media_gallery;
                     let allProductImages = [];
 
-                    allProductImages.push(image);
+                    if(! _.isNull(image) && image !== '') {
+                      allProductImages.push(image);
+                    }
+
                     mediaGallery.forEach(item => {
                         allProductImages.push(item.value);
                     });

@@ -100,7 +100,6 @@ export const actions = {
                 'media_gallery',
                 'related_product_ids',
                 'search_result_data_children',
-                'final_price_item',
                 'status'
                 ], ','),
             },
@@ -138,7 +137,6 @@ export const actions = {
                 'facets',
                 'media_gallery',
                 'search_result_data_children',
-                'final_price_item',
                 'status'
                 ], ','),
             }),

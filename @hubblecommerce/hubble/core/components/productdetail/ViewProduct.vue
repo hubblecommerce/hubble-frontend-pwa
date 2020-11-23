@@ -48,6 +48,7 @@
                     </div>
                 </div>
 
+                <!--
                 <div class="product-recommendation-wrp">
                     <product-detail-cross-selling-sw
                         v-if="productData.crossSellings !== null"
@@ -56,6 +57,7 @@
                     />
                     <product-detail-recommendations v-if="hasProductsCrossByOrder" :product-id="productData.id" />
                 </div>
+                -->
             </div>
 
             <g-t-m-data-layer

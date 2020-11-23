@@ -169,7 +169,6 @@ export const actions = {
             'facets',
             'media_gallery',
             'search_result_data_children',
-            'final_price_item',
             'status'
             ], ','),
         }),
