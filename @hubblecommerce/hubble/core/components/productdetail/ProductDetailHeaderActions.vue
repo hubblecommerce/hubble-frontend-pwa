@@ -3,7 +3,7 @@
         <div class="back-btn-wrp">
             <button class="button-icon" @click="historyBack()">
                 <i class="icon icon-arrow-left" />
-                <span class="hidden-link-name">{{ $t('Back') }}</span>
+                <span class="hidden-link-name" v-text="$t('Back')"/>
                 <material-ripple />
             </button>
         </div>
@@ -11,7 +11,7 @@
         <div class="share-icon-wrp">
             <button class="button-icon">
                 <i class="icon icon-share-2" />
-                <span class="hidden-link-name">Share Site</span>
+                <span class="hidden-link-name" v-text="'Share Site'" />
                 <material-ripple />
             </button>
         </div>
