@@ -4,18 +4,12 @@
             <div class="card-media">
                 <div class="actions">
                     <div class="badge-wrp">
-                        <div v-if="itemIsSpecial" class="badge sale">
-                             {{ $t('Sale') }}
-                        </div>
-
-                        <div v-if="itemIsNew" class="badge new">
-                            {{ $t('New') }}
-                        </div>
+                        <div v-if="itemIsSpecial" class="badge sale" v-text="$t('Sale')" />
+                        <div v-if="itemIsNew" class="badge new" v-text="$t('New')" />
                     </div>
                 </div>
 
-                <img-lazy v-if="!isSlider" class="img-listing" :src="routeUrlProductImg" :alt-info="itemData.name" :title-info="itemData.name" />
-                <img v-if="isSlider" :src="routeUrlProductImg" :alt="itemData.name" :title="itemData.name" />
+                <img-lazy :class="!isSlider && 'img-listing'" :src="routeUrlProductImg" :alt-info="itemData.name" :title-info="itemData.name" />
             </div>
 
             <div class="product-card-info-wrp-link">
@@ -29,7 +23,7 @@
                         </template>
 
                         <template v-else-if="itemHasCheapPrice">
-                            <span class="minimal cheapest-label">{{ $t('cheap_price_label') }}</span>
+                            <span class="minimal cheapest-label" v-text="$t('cheap_price_label')" />
                             <span v-text="getCheapPriceAndCurrency(priceSwitcherIncludeVat)" />
                         </template>
 
