@@ -32,17 +32,6 @@
     &.active {
       color: $accent;
       border-radius: 0;
-
-      &:before {
-        content: '';
-        width: 100%;
-        height: 2px;
-        background: $accent;
-        position: absolute;
-        bottom: -23px;
-        left: 0;
-        border-radius: 0;
-      }
     }
 
     /* Item count */
