@@ -32,6 +32,7 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex';
+import _ from 'lodash';
 
 export default {
     name: 'ProductDetailPrice',
@@ -62,6 +63,10 @@ export default {
 
     methods: {
         getPriceAndCurrency: function (key, addVat) {
+            if(! _.has(this.item.final_price_item, key)) {
+              key = 'price';
+            }
+
             return this.getPriceAndCurrencyDecFmt(this.item.final_price_item[key], addVat, this.itemTaxClass);
         },
     },
