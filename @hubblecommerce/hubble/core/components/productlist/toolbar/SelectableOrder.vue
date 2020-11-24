@@ -3,9 +3,7 @@
         <select id="selectable-order" v-model="modelSelected" class="select-text" required>
             <option value="" disabled />
 
-            <option v-for="(dataOption, index) in dataOptions" :key="index" :value="dataOption.option_id">
-                {{ $t(dataOption.label) }}
-            </option>
+            <option v-for="(dataOption, index) in dataOptions" :key="index" :value="dataOption.option_id" v-text="$t(dataOption.label)" />
         </select>
 
         <span class="select-highlight" />
