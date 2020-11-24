@@ -124,11 +124,6 @@
             padding-right: 0;
             align-items: flex-start;
 
-            .add-to-wishlist-wrp {
-                right: 35px;
-                top: 20px;
-            }
-
             .sku {
                 font-size: 12px;
             }
@@ -163,6 +158,12 @@
 
         .product-headline {
             margin-bottom: 30px;
+
+            .add-to-wishlist-wrp {
+                position: absolute;
+                right: 0;
+                top: 0;
+            }
 
             .sku {
                 font-size: 14px;

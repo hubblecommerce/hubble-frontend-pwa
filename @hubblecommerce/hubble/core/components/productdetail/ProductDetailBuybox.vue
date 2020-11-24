@@ -7,6 +7,7 @@
                 <h1 class="product-name headline-4" v-text="dataProduct.name" />
                 <div v-if="dataProduct.sku" class="sku" v-text="`${$t('sku_label')}: ${dataProduct.sku} `" />
             </div>
+            <add-to-wishlist :item="dataProduct" v-if="$mq === 'lg'" />
         </div>
 
         <!-- Price info -->
@@ -44,7 +45,8 @@ export default {
         ProductDetailDelivery:() => import('./ProductDetailDelivery'),
         ProductDetailManufacturer:() => import('./ProductDetailManufacturer'),
         ProductDetailBuyboxOptions: () => import('./ProductDetailBuyboxOptions'),
-        ProductDetailBuyboxOptionsSw: () => import('./ProductDetailBuyboxOptionsSw')
+        ProductDetailBuyboxOptionsSw: () => import('./ProductDetailBuyboxOptionsSw'),
+        AddToWishlist: () => import('../../components/productutils/AddToWishlist'),
     },
 
     data() {
