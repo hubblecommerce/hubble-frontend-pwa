@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { mapMutations, mapActions } from 'vuex';
+import { mapMutations, mapActions, mapState } from 'vuex'
 export default {
     name: 'SelectableOrder',
 
@@ -21,6 +21,11 @@ export default {
         dataOptions: {
             type: Array,
             required: true,
+        },
+        instantChange: {
+            type: Boolean,
+            required: false,
+            default: true,
         },
     },
 
@@ -31,13 +36,22 @@ export default {
         };
     },
 
+    computed: {
+        ...mapState({
+            parsedQuery: state => state.modApiRequests.parsedQuery,
+        }),
+    },
+
     watch: {
         modelSelected: function (newValue) {
             this.setSelectedQueryParam({
                 name: 'sort',
                 data: newValue,
             });
-            this.applyFilter();
+
+            if(this.$route.query.sort !== newValue && this.instantChange) {
+                this.applyFilter();
+            }
         },
     },
 

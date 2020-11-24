@@ -1,33 +1,38 @@
 <template>
-    <div v-if="hasFacetsSelected && $mq === 'lg'" class="selected-filters">
+    <div v-if="hasFacetsSelected" class="selected-filters-wrp">
         <div class="selected-label" v-text="$t('Your choice:')" />
-        <div v-if="hasCategoryFacetsSelected && isSearchPage()" class="filter">
-            <div v-for="(facet, facetIndex) in requestCategoryFacets" v-if="facet.selected" :key="facetIndex" class="filter">
+        <div class="selected-filters">
+            <div v-if="hasCategoryFacetsSelected && isSearchPage()" class="filter">
+                <div v-for="(facet, facetIndex) in requestCategoryFacets" v-if="facet.selected" :key="facetIndex" class="filter">
+                    <button class="button" @click="routeOnPropertyRemove(facet.key)">
+                        <span class="facet-label" v-text="facet.label" />
+                        <span class="facet-options" v-text="'(' + getSelectedFacetOptionsLabel(facet) + ')'" />
+                        <material-ripple />
+                    </button>
+                </div>
+            </div>
+
+            <div v-for="(facet, facetIndex) in requestStringFacets" v-if="facet.selected" :key="facetIndex" class="filter">
                 <button class="button" @click="routeOnPropertyRemove(facet.key)">
-                    {{ getSelectedFacetOptionsLabel(facet) }}
-                    <i class="icon icon-x" />
+                    <span class="facet-label" v-text="facet.label" />
+                    <span class="facet-options" v-text="'(' + getSelectedFacetOptionsLabel(facet) + ')'" />
+                    <material-ripple />
+                </button>
+            </div>
+
+            <div v-if="hasPriceFacetsSelected" class="filter">
+                <button class="button" @click="routeOnPropertyRemove('price')">
+                    {{ $t('Price') }} ({{ formatPrice(requestPriceFacets[0].filtered.from) }} - {{ formatPrice(requestPriceFacets[0].filtered.to) }})
                     <material-ripple />
                 </button>
             </div>
         </div>
 
-        <div v-for="(facet, facetIndex) in requestStringFacets" v-if="facet.selected" :key="facetIndex" class="filter">
-            <button class="button button-secondary" @click="routeOnPropertyRemove(facet.key)">
-                {{ getSelectedFacetOptionsLabel(facet) }}
-                <i class="icon icon-x" />
-                <material-ripple />
-            </button>
-        </div>
-
-        <div v-if="hasPriceFacetsSelected" class="filter">
-            <button class="button button-secondary" @click="routeOnPropertyRemove('price')">
-                {{ $t('price') }}: {{ formatPrice(requestPriceFacets[0].filtered.from) }} - {{ formatPrice(requestPriceFacets[0].filtered.to) }}
-                <i class="icon icon-x" />
-                <material-ripple />
-            </button>
-        </div>
-
         <div class="reset-label" @click="routeOnPropertyRemoveAll()" v-text="$t('Reset all')" />
+        <button class="button button-secondary reset-button w-100" @click="routeOnPropertyRemoveAll()">
+            <span v-text="$t('Reset all')" />
+            <material-ripple />
+        </button>
     </div>
 </template>
 

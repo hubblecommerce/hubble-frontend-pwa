@@ -110,11 +110,6 @@ $tab-active-color: $secondary;
                 font-size: 14px;
             }
 
-            .selected-filters {
-                order: -1;
-                margin-bottom: 20px;
-            }
-
             .row {
                 flex-grow: 1;
             }
@@ -139,7 +134,7 @@ $tab-active-color: $secondary;
                 display: block;
                 overflow: visible;
 
-                .selected-filters {
+                .selected-filters-wrp {
                     margin-bottom: 0;
                 }
             }

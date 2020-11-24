@@ -210,6 +210,8 @@ export default context => {
             'Show more': 'Zeige mehr',
             'Continue reading': 'Weiterlesen',
             Filter: 'Filter',
+            'filter': 'filtern',
+            'sort': 'sortieren',
             'Reset Filter': 'Zurücksetzen',
             'Reset wishlist': 'Zurücksetzen',
             ' selected': ' ausgewählt',

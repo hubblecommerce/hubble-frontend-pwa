@@ -182,6 +182,8 @@ export default context => {
             'Show more': 'Show more',
             'Continue reading': 'Continue reading',
             Filter: 'Filter',
+            'filter': 'filter',
+            'sort': 'sort',
             'Reset Filter': 'Reset Filter',
             'Reset wishlist': 'Reset wishlist',
             ' selected': ' selected',
