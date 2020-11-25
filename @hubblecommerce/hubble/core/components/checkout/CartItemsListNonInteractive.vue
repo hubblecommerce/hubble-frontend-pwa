@@ -3,30 +3,30 @@
         <template v-if="cart.items.length > 0">
             <div v-for="item in cart.items" :key="item.id" class="cart-items-list non-interactive item align-items-center">
                 <nuxt-link :to="'/' + hasLink(item)">
-                    <img v-if="hasImage(item)" :src="itemImgPath(item)" class="product-img img-minicart" alt="Product Image" :title="item.name" />
+                    <img-lazy v-if="hasImage(item)" :src="itemImgPath(item)" class="product-img img-minicart" :alt-info="'Product Image'" :title-info="item.name" />
                     <div class="product-info">
                         <div>
-                            <span class="product-name">{{ item.name_orig }}</span>
+                            <span class="product-name" v-text="item.name_orig" />
                             <div v-for="variant in item.variants" :key="variant.id">
-                                <span class="selected-variants">{{ variant.label + ': ' + formatSize(variant.value_label) }}</span>
+                                <span class="selected-variants" v-text="`${variant.label}: ${formatSize(variant.value_label)}`" />
                             </div>
                         </div>
                         <div class="price-wrp">
-                            <span class="qty">{{ item.qty }} x </span>
+                            <span class="qty" v-text="`${item.qty} x`" />
                             <template v-if="itemIsSpecial(item)">
                                 <span
                                     class="product-price old-price"
-                                    v-html="getPriceAndCurrency(item, 'display_price_brutto', priceSwitcherIncludeVat)"
+                                    v-text="getPriceAndCurrency(item, 'display_price_brutto', priceSwitcherIncludeVat)"
                                 />
                                 <span
                                     class="product-price sale-price"
-                                    v-html="getPriceAndCurrency(item, 'display_price_brutto_special', priceSwitcherIncludeVat)"
+                                    v-text="getPriceAndCurrency(item, 'display_price_brutto_special', priceSwitcherIncludeVat)"
                                 />
                             </template>
                             <template v-else>
                                 <span
                                     class="product-price sale-price"
-                                    v-html="getPriceAndCurrency(item, 'display_price_brutto', priceSwitcherIncludeVat)"
+                                    v-text="getPriceAndCurrency(item, 'display_price_brutto', priceSwitcherIncludeVat)"
                                 />
                             </template>
                         </div>
