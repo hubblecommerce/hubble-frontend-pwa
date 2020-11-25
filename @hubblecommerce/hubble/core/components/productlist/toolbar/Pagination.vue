@@ -2,7 +2,7 @@
     <div class="pagination">
         <button class="button-icon" :class="{ disabled: paginationPrevDisabled }" :disabled="paginationPrevDisabled" @click="loadPrevPage">
             <i class="icon icon-chevron-left" />
-            <span class="hidden-link-name" v-text="$t('Previous')" />
+            <span class="hidden-link-name" v-text="$t('Previous Page')" />
             <material-ripple />
         </button>
         <div>
