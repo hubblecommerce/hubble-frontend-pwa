@@ -9,7 +9,8 @@
                     </div>
                 </div>
 
-                <img-lazy :class="!isSlider && 'img-listing'" :src="routeUrlProductImg" :alt-info="itemData.name" :title-info="itemData.name" />
+                <img-lazy v-if="!isSlider" class="img-listing" :src="routeUrlProductImg" :alt-info="itemData.name" :title-info="itemData.name" />
+                <img v-if="isSlider" :src="routeUrlProductImg" :alt="itemData.name" :title="itemData.name" />
             </div>
 
             <div class="product-card-info-wrp-link">
