@@ -100,6 +100,8 @@ export const defaultDotEnv = {
         // 'API_PAYMENT_CLIENT_USERNAME',
         // 'API_PAYMENT_CLIENT_PASSWORD',
         // 'API_PAYMENT_ENDPOINT_AUTH',
+        'API_WORKHORSE_BASE_URL',
+        'API_WORKHORSE_BASE_PFX',
         'PAYONE_MODE',
         'PAYONE_MID',
         'PAYONE_AID',

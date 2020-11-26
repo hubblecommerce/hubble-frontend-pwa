@@ -45,11 +45,33 @@ const payloadResources = () => {
     }
 }
 
+const payloadWorkhorse = () => {
+
+    let _baseUrl = process.env.API_WORKHORSE_BASE_URL.replace(/^\/|\/$/g, '');
+    let _endpoint = process.env.API_WORKHORSE_ENDPOINT_AUTH.replace(/^\/|\/$/g, '');
+
+    let _authUrl = _baseUrl + '/' + _endpoint;
+
+    let _payload = {
+        'scope' : '*',
+        'grant_type' : 'password',
+        'client_id' : process.env.API_WORKHORSE_CLIENT_ID,
+        'client_secret' : process.env.API_WORKHORSE_CLIENT_SECRET,
+        'username' : process.env.API_WORKHORSE_CLIENT_USERNAME,
+        'password' : process.env.API_WORKHORSE_CLIENT_PASSWORD
+    };
+
+    return {
+        baseUrl: _authUrl,
+        payload: _payload
+    }
+}
+
 const response = function(req, res, next) {
 
     let _facility = 'server-side-api-auth';
 
-    let _apiTypes = ['payment', 'resources'];
+    let _apiTypes = ['payment', 'resources', 'workhorse'];
 
     let body = '';
     let data = [];
@@ -94,6 +116,9 @@ const response = function(req, res, next) {
             }
             if(data.apiType === 'resources') {
                 _params = payloadResources();
+            }
+            if(data.apiType === 'workhorse') {
+                _params = payloadWorkhorse();
             }
 
             //

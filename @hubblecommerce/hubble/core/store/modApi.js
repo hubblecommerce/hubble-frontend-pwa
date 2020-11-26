@@ -3,6 +3,13 @@ import axios from 'axios';
 import _ from 'lodash';
 
 export const state = () => ({
+
+    // API
+    apiAuthToken: null,
+    apiAuthResponse: {},
+    apiCacheTTL: 600, // secs
+    apiLocale: null,
+
     // Data API
     apiResourcesAuthToken: null,
     apiResourcesAuthResponse: {},
@@ -16,6 +23,9 @@ export const state = () => ({
 })
 
 export const getters = {
+    getApiAuthResponse: state => {
+        return state.apiAuthResponse;
+    },
     getApiPaymentAuthResponse: state => {
         return state.apiPaymentAuthResponse;
     },
@@ -25,6 +35,17 @@ export const getters = {
 }
 
 export const mutations = {
+    setApiAuthResponse: (state, payload) => {
+        state.apiAuthResponse = payload.data;
+        state.apiAuthToken = payload.data.access_token;
+
+        if (payload.cacheable) {
+            let _ttl = payload.cacheTTL || state.apiCacheTTL;
+
+            state.apiAuthResponse.created_at_unixtime = datetimeUnixNow();
+            state.apiAuthResponse.expires_at_unixtime = datetimeUnixNowAddSecs(_ttl);
+        }
+    },
     setApiPaymentAuthResponse: (state, payload) => {
         state.apiPaymentAuthResponse = payload.data;
         state.apiPaymentAuthToken = payload.data.access_token;
@@ -50,6 +71,30 @@ export const mutations = {
 }
 
 export const actions = {
+    async apiGetAuth({commit})
+    {
+      return new Promise(function(resolve, reject) {
+        axios({
+          method: 'POST',
+          url: _.trim(process.env.APP_BASE_URL, '/') + '/api/client-auth',
+          data: {
+            apiType: 'workhorse'
+          }
+        })
+        .then((response) => {
+          commit('setApiAuthResponse', {
+            data: response.data,
+            cacheable: !!response.data.expires_in || false,
+            cacheTTL: response.data.expires_in || null
+          });
+
+          resolve(response.data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+      });
+    },
     async apiPaymentGetAuth({commit})
     {
         return new Promise(function(resolve, reject) {
@@ -117,6 +162,10 @@ export const actions = {
             }
         }
 
+        if (payload.apiType === 'workhorse') {
+            _authResponse = state.apiAuthResponse;
+        }
+
         // use customer oauth, if requested
         if (payload.tokenType === 'customer') {
             _authResponse = rootState.modApiPayment.customer.customerAuth.token;
@@ -135,6 +184,10 @@ export const actions = {
 
             if (payload.apiType === 'payment') {
                 _authResponse = await dispatch('apiPaymentGetAuth');
+            }
+
+            if (payload.apiType === 'workhorse') {
+                _authResponse = await dispatch('apiGetAuth');
             }
 
             // xxx: renew possibly expired customer auth!!!
@@ -205,6 +258,13 @@ export const actions = {
                         _.trim(process.env.API_PAYMENT_BASE_PFX, '/')
                     ], '/');
                 }
+            }
+
+            if (process.env.API_TYPE === 'workhorse') {
+                baseUrl = _.join([
+                    _.trim(process.env.API_WORKHORSE_BASE_URL, '/'),
+                    _.trim(process.env.API_WORKHORSE_BASE_PFX, '/')
+                ], '/');
             }
 
             if (process.env.API_TYPE === 'sw') {
