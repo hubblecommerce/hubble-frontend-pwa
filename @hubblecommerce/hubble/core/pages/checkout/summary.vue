@@ -3,11 +3,8 @@
         <div class="checkout-summary-wrp">
             <div class="headline headline-1" v-text="$t('Confirm and order')" />
 
-            <div class="terms-and-conditions text">
-                {{ $t('By submitting your order, you confirm that you have read and accepted our') }}
-                <nuxt-link :to="$t('link-terms-and-conditions')">
-                    {{ $t('terms and conditions.') }}
-                </nuxt-link>
+            <div class="terms-and-conditions text" v-text="$t('By submitting your order, you confirm that you have read and accepted our')">
+                <nuxt-link :to="$t('link-terms-and-conditions')" v-text="$t('terms and conditions.')" />
             </div>
 
             <div class="edit-data-info text">
@@ -26,16 +23,12 @@
                 <div class="chosen-payment-method-wrp">
                     <div class="headline headline-3" v-text="$t('Payment')" />
                     <div class="method" v-text="chosenPaymentMethod.label" />
-                    <nuxt-link class="edit-method" :to="localePath('checkout-payment')">
-                        {{ $t('Edit payment method') }}
-                    </nuxt-link>
+                    <nuxt-link class="edit-method" :to="localePath('checkout-payment')" v-text="$t('Edit payment method')" />
                 </div>
                 <div class="chosen-shipping-method-wrp">
                     <div class="headline headline-3" v-text="$t('Shipping methods')" />
                     <div class="method" v-text="chosenShippingMethod.label" />
-                    <nuxt-link class="edit-method" :to="localePath('checkout-payment')">
-                        {{ $t('Edit shipping method') }}
-                    </nuxt-link>
+                    <nuxt-link class="edit-method" :to="localePath('checkout-payment')"  v-text="$t('Edit shipping method')" />
                 </div>
             </div>
 
@@ -49,9 +42,7 @@
                 </p>
                 <div class="hbl-checkbox">
                     <input id="order-info-check" v-model="acceptedInfo" type="checkbox" />
-                    <label for="order-info-check" class="method-label">
-                        {{ $t('I have read the notice and accept it.') }}
-                    </label>
+                    <label for="order-info-check" class="method-label" v-text="$t('I have read the notice and accept it.')" />
                 </div>
                 <div v-if="acceptedInfoError" class="validation-msg" v-text="$t('Please confirm that you have read this information.')" />
             </div>
@@ -59,12 +50,10 @@
             <div class="summary-container">
                 <div class="summary-wrp">
                     <totals />
-                    <div v-for="(msg, key) in checkoutError" :key="key" class="errors">
-                        {{ msg }}
-                    </div>
+                    <div v-for="(msg, key) in checkoutError" :key="key" class="errors" v-text="msg" />
                     <payone-channel />
                     <button class="button-primary checkout-btn" :disabled="processingCheckout || !isEmpty(checkoutError)" @click="placeOrder()">
-                        <span v-if="!processingCheckout">{{ $t('Place Order') }}</span>
+                        <span v-if="!processingCheckout" v-text="$t('Place Order')" />
                         <div v-if="processingCheckout" class="loader lds-ellipsis">
                             <div />
                             <div />

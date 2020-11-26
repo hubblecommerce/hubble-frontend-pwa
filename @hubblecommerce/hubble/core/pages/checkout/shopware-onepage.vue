@@ -1,5 +1,5 @@
 <template>
-    <div class="container checkout-payment">
+    <div class="container checkout-summary">
         <div class="checkout-payment-wrp checkout-summary-wrp">
             <div class="headline headline-1" v-text="'Checkout'" />
 
@@ -14,14 +14,14 @@
                     <div class="summary-wrp">
                         <totals />
 
-                        <div v-for="(msg, key) in checkoutError" :key="key" class="errors">
+                        <div v-for="(msg, key) in checkoutError" :key="key" class="errors" >
                             {{ msg }}
                         </div>
 
                         <payone-channel />
 
                         <button class="button-primary checkout-btn" :disabled="processingCheckout || !isEmpty(checkoutError)" @click="placeOrder()">
-                            <span v-if="!processingCheckout">{{ $t('Place Order') }}</span>
+                            <span v-if="!processingCheckout" v-text="$t('Place Order')" />
 
                             <div v-if="processingCheckout" class="loader lds-ellipsis">
                                 <div />
@@ -191,9 +191,6 @@ export default {
 };
 </script>
 
-<style scoped>
-.summary-container {
-    width: 45%;
-    margin-left: auto;
-}
+<style>
+
 </style>

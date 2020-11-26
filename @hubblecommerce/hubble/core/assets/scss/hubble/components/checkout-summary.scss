@@ -55,6 +55,7 @@
 
     .summary-container {
         margin-bottom: 10px;
+        width: 100%;
 
         .summary-wrp {
             border: 1px solid $border-color;
@@ -121,48 +122,51 @@
 @media(min-width: 768px) {
     .checkout-summary {
 
-        .checkout-summary-wrp .edit-data-info {
-            margin-bottom: 30px;
-        }
-
-        .customer-addresses-wrp {
-            margin-bottom: 30px;
-        }
-
-        .chosen-methods-wrp {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-
-            .chosen-payment-method-wrp {
-                width: 50%;
-                padding-right: 15px;
-                margin-bottom: 0;
-            }
-
-            .chosen-shipping-method-wrp {
-                width: 50%;
-                padding-left: 15px;
+        .checkout-summary-wrp {
+            .edit-data-info {
                 margin-bottom: 30px;
             }
-        }
 
-        .order-info-wrp {
-            margin-bottom: 20px;
-            padding: 30px;
-
-            p {
-                margin-bottom: 20px;
+            .customer-addresses-wrp {
+                margin-bottom: 30px;
             }
-        }
 
-        .summary-container {
-            margin-bottom: 20px;
-            max-width: 540px;
-            margin-left: auto;
+            .chosen-methods-wrp {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
 
-            .summary-wrp {
-                padding: 40px;
+                .chosen-payment-method-wrp {
+                    width: 50%;
+                    padding-right: 15px;
+                    margin-bottom: 0;
+                }
+
+                .chosen-shipping-method-wrp {
+                    width: 50%;
+                    padding-left: 15px;
+                    margin-bottom: 30px;
+                }
+            }
+
+            .order-info-wrp {
+                margin-bottom: 20px;
+                padding: 30px;
+
+                p {
+                    margin-bottom: 20px;
+                }
+            }
+
+            .summary-container {
+                margin-bottom: 20px;
+                max-width: 540px;
+                width: 45%;
+                margin-left: auto;
+
+                .summary-wrp {
+                    padding: 40px;
+                }
             }
         }
     }
