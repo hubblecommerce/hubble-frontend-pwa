@@ -13,7 +13,7 @@ export default {
     },
 
     created() {
-        if (process.env.TRUSTED_SHOPS_ID) {
+        if (process.env.TRUSTED_SHOPS_ID !== '') {
             // Append Config Script to DOM
             var s = document.createElement('script');
             s.type = 'text/javascript';

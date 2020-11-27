@@ -3,7 +3,7 @@
         <button :class="toggleClass" class="toggle m-0 align-left headline-4" @mousedown="collapseContent()">
             {{ toggleText }}
 
-            <span class="item-amount" v-if="toggleAmount > 0" v-text="toggleAmount" />
+            <span class="item-amount" v-if="toggleAmount > 0 && $mq === 'lg'" v-text="toggleAmount" />
 
             <transition-rotate-x>
                 <i v-if="collapse" :class="openIconClass" class="icon" />

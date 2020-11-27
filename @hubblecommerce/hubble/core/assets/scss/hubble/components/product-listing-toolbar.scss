@@ -1,116 +1,123 @@
-.toolbar-wrp{
-  margin-bottom: 10px;
-  position: relative;
-
-  .item-count-wrp {
+.toolbar-wrp {
+    margin-bottom: 10px;
     position: relative;
-    margin: 10px;
-  }
 
-  .bottom-toolbar {
-    display: none;
-  }
+    .item-count-wrp {
+        position: relative;
+        margin: 10px;
+    }
+
+    .bottom-toolbar {
+        display: none;
+    }
 }
 
 @media(min-width: 768px) {
-  .toolbar-wrp {
-    display: flex;
-    justify-content: space-between;
+    .toolbar-wrp {
+        display: flex;
+        justify-content: space-between;
 
-    .bottom-toolbar {
-      display: block;
-      .pagination {
-        align-items: center;
-      }
 
-      .hbl-select {
-        width: 180px;
-      }
-    }
-
-    .item-count-wrp {
-      position: absolute;
-      margin: 0;
-      left: 0;
-      top: 60px;
-    }
-  }
-}
-
-@media(min-width: 1024px) {
-  .toolbar-wrp{
-    display: block;
-    .top-toolbar {
-      display: flex;
-      justify-content: flex-end;
-      flex-wrap: wrap;
-
-      .filter-wrp {
-        flex: 2;
-
-        .open-filter {
-          width: 180px;
-          margin-right: auto;
-          padding-left: 50px;
-        }
-      }
-
-      &.fixed {
-        position: fixed;
-        width: 100%;
-        left: 0;
-        right: 0;
-        top: $header-height-desktop + 48px; //todo: 48px change to variable
-        z-index: 10;
-        background: $background;
-        padding: 15px;
-        margin-bottom: 0;
-
-        &:before {
-          content: '';
-          width: 100vw;
-          height: 100%;
-          position: absolute;
-          top: 0;
-          left: 0;
-          margin-left: calc(-50vw + 50%);
-          background-color: $background;
-          border-bottom: 1px solid $border-color;
+        .offcanvas-filter-wrp {
+            .button-icon {
+                min-width: 0;
+                padding: 0;
+            }
         }
 
-        .facets-wrp .facet-wrp .toggle .icon {
-          z-index: 0;
-        }
+        .bottom-toolbar {
+            display: block;
 
-        .selected-filters .selected-label {
-          z-index: 1;
+            .pagination {
+                align-items: center;
+            }
+
+            .selectable-order {
+                display: none;
+            }
+
+            .hbl-select {
+                width: 180px;
+            }
         }
 
         .item-count-wrp {
-          top: 50px;
-          right: 15px;
+            position: absolute;
+            margin: 0;
+            left: 0;
+            top: 60px;
         }
-      }
     }
+}
 
-    .bottom-toolbar {
-      padding-top: 15px;
-      width: 100%;
-      position: relative;
-      display: flex;
+@media(min-width: 1024px) {
+    .toolbar-wrp {
+        display: block;
 
-      .pagination {
-        position: absolute;
-        left: 0;
-        right: 0;
-      }
+        .top-toolbar {
+            display: flex;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+
+            .filter-wrp {
+                flex: 2;
+
+                .open-filter {
+                    width: 180px;
+                    margin-right: auto;
+                    padding-left: 50px;
+                }
+            }
+
+            &.fixed {
+                position: fixed;
+                width: 100%;
+                left: 0;
+                right: 0;
+                top: $header-height-desktop + 48px; //todo: 48px change to variable
+                z-index: 10;
+                background: $background;
+                padding: 15px;
+                margin-bottom: 0;
+
+                &:before {
+                    content: '';
+                    width: 100vw;
+                    height: 100%;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    margin-left: calc(-50vw + 50%);
+                    background-color: $background;
+                    border-bottom: 1px solid $border-color;
+                }
+
+                .bottom-toolbar {
+                    padding-top: 15px;
+                    width: 100%;
+                    position: relative;
+                    display: flex;
+
+                    .pagination {
+                        position: absolute;
+                        left: 0;
+                        right: 0;
+                    }
+
+                    .selectable-order {
+                        display: block;
+                        margin-bottom: 0;
+                        margin-left: auto;
+                    }
+                }
+
+                .item-count-wrp {
+                    position: absolute;
+                    top: 45px;
+                    right: 8px;
+                    left: initial;
+                }
+            }
+        }
     }
-
-    .item-count-wrp {
-      position: absolute;
-      top: 45px;
-      right: 8px;
-      left: initial;
-    }
-  }
 }

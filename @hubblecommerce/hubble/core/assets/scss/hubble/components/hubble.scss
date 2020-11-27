@@ -11,6 +11,13 @@
 
         .nav-wrp {
             border: none;
+
+            button {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                margin: auto;
+            }
         }
 
         .footer {
@@ -116,6 +123,19 @@
 
         &.hubble-light {
             padding-bottom: 160px;
+
+            .nav-wrp {
+                justify-content: space-between;
+
+                .action-wrp {
+                    width: auto;
+                    margin-left: auto;
+
+                    button {
+                        position: relative;
+                    }
+                }
+            }
         }
     }
 
@@ -156,6 +176,14 @@
 
         &.hubble-light {
             padding-bottom: 125px;
+
+            .nav-wrp {
+                justify-content: space-between;
+
+                .action-wrp {
+                    width: auto;
+                }
+            }
         }
     }
 }

@@ -16,10 +16,10 @@
     justify-content: center;
     min-height: 200px;
 
-    .img-listing {
+    .img-listing img{
+      padding: 6px 6px 0 6px;
       max-width: 150px;
       max-height: 150px;
-      width: 100%;
     }
 
     img {
@@ -168,7 +168,7 @@
 @media(min-width: 1200px) {
   .product-card {
     .card-media {
-      .img-listing {
+      .img-listing img{
         max-width: 200px;
         max-height: 200px;
       }
@@ -180,7 +180,7 @@
   .product-card {
     .card-media {
       min-height: 230px;
-      .img-listing {
+      .img-listing img {
         max-width: 250px;
         max-height: 200px;
       }

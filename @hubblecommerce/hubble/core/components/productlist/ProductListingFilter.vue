@@ -1,68 +1,39 @@
 <template>
     <div class="filter-wrp">
-        <button v-if="$mq === 'sm' || $mq === 'md'" class="button-icon open-filter" @click="toggle()">
-            <i class="icon icon-sliders left" />
-            <material-ripple />
-        </button>
-
-        <transition-expand-layer v-if="$mq === 'sm' || $mq === 'md'" :direction="{ sm: 'bottomTop', md: 'rightLeft', lg: 'rightLeft' }">
-            <div v-if="showFilters" class="transition-expand-wrp">
-                <div class="container position-static">
-                    <div class="row overlay-header">
-                        <button class="button-icon button-close-menu" @click="toggle()">
-                            <i class="icon icon-x" aria-hidden="true" />
-
-                            <material-ripple />
-                        </button>
-
-                        <div class="overlay-headline" v-text="$t('Filter')" />
+        <div v-if="$mq === 'sm' || $mq === 'md'">
+            <div class="facets-wrp">
+                <template v-if="isSearchPage()">
+                    <div v-for="facet in requestCategoryFacets" :key="facet.key" class="facet-wrp">
+                        <div class="facet-title" v-text="facet.label" />
+                        <selectable-facet :data-facet="facet" :type-checkbox="true" />
                     </div>
+                </template>
 
-                    <div class="facets-wrp">
-                        <template v-if="isSearchPage()">
-                            <div v-for="facet in requestCategoryFacets" :key="facet.key" class="facet-wrp">
-                                <selectable-facet :data-facet="facet" :type-checkbox="true" />
-                            </div>
-                        </template>
+                <div v-for="(facet, facetIndex) in requestStringFacets" :key="facetIndex" class="facet-wrp">
+                    <div class="facet-title" v-text="facet.label" />
+                    <selectable-facet :data-facet="facet" :type-checkbox="true" />
+                </div>
 
-                        <div v-for="(facet, facetIndex) in requestStringFacets" :key="facetIndex" class="facet-wrp">
-                            <selectable-facet :data-facet="facet" :type-checkbox="true" />
-                        </div>
-
-                        <div class="facet-wrp">
-                            <collapsible
-                                :display-via-if="true"
-                                :toggle-text="$t('Price')"
-                                :max-height="100"
-                                open-icon-class="icon-chevron-down"
-                                close-icon-class="icon-chevron-up"
-                            >
-                                <price-slider
-                                    :data-min-value="minPriceSelectable"
-                                    :data-max-value="maxPriceSelectable"
-                                    :data-min-selected="minPriceSelected"
-                                    :data-max-selected="maxPriceSelected"
-                                />
-                            </collapsible>
-                        </div>
-                    </div>
-
-                    <div class="apply-filter-wrp">
-                        <button v-if="hasFacetsSelected" class="button-secondary reset-filter" @click="routeOnPropertyRemoveAll()">
-                            <span v-text="$t('Reset all')" />
-
-                            <material-ripple />
-                        </button>
-
-                        <button class="button button-primary apply-filter" @click="applyFilter()">
-                            <span v-text="$t('Apply & Close')" />
-
-                            <material-ripple />
-                        </button>
-                    </div>
+                <div class="facet-wrp">
+                    <div class="facet-title" v-text="$t('Price')" />
+                    <collapsible
+                        :display-via-if="true"
+                        :toggle-text="$t('Price')"
+                        :max-height="100"
+                        open-icon-class="icon-chevron-down"
+                        close-icon-class="icon-chevron-up"
+                    >
+                        <price-slider
+                            :data-min-value="minPriceSelectable"
+                            :data-max-value="maxPriceSelectable"
+                            :data-min-selected="minPriceSelected"
+                            :data-max-selected="maxPriceSelected"
+                        />
+                    </collapsible>
                 </div>
             </div>
-        </transition-expand-layer>
+        </div>
+
 
         <div v-if="$mq === 'lg'" class="facets-wrp desktop">
             <template v-if="isSearchPage()">

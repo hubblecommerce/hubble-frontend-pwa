@@ -1,9 +1,9 @@
 <template>
     <div class="toolbar-wrp">
         <div class="top-toolbar" :class="extraClass">
-            <product-listing-filter />
-
-            <selected-facets />
+            <product-listing-filter v-if="$mq === 'lg'"/>
+            <off-canvas-filter v-if="$mq === 'md'"/>
+            <selected-facets v-if="$mq === 'lg'"/>
         </div>
 
         <div class="bottom-toolbar">
@@ -19,11 +19,13 @@ import SelectedFacets from './toolbar/SelectedFacets';
 import Pagination from './toolbar/Pagination';
 import SelectableOrder from './toolbar/SelectableOrder';
 import { mapState } from 'vuex'
+import OffCanvasFilter from './OffcanvasFilter'
 
 export default {
     name: 'ProductListingToolbar',
 
     components: {
+        OffCanvasFilter,
         ProductListingFilter,
         SelectedFacets,
         Pagination,

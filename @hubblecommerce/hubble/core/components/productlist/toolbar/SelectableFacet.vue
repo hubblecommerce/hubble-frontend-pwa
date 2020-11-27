@@ -24,16 +24,16 @@ Component usage:
         </div>
 
         <div v-if="typeSelect" class="select">
-            <select v-model="modelSelected" :name="dataFacet.key" class="select-text" required>
-                <option value="" disabled selected />
-                <option v-for="(option, optionIndex) in dataFacet.options" :key="optionIndex" :value="option['key']">
-                    {{ option.label }} <span class="count">({{ option.doc_count }})</span>
-                </option>
-            </select>
-
-            <span class="select-highlight" />
-            <span class="select-bar" />
-            <label :for="dataFacet.key" class="select-label" v-text="dataFacet.label" />
+            <div class="hbl-select">
+                <select class="select-text" required>
+                    <option v-for="(option, optionIndex) in dataFacet.options" :key="optionIndex" :value="option['key']">
+                        {{ option.label }} <span class="count">({{ option.doc_count }})</span>
+                    </option>
+                </select>
+                <span class="select-highlight"></span>
+                <span class="select-bar"></span>
+                <label :for="dataFacet.key" class="select-label" v-text="dataFacet.label" />
+            </div>
         </div>
     </collapsible-filter>
 </template>
@@ -47,7 +47,7 @@ export default {
     components: {
         CollapsibleFilter: () => import('./CollapsibleFilter'),
     },
-
+//ellapsed property
     props: {
         dataFacet: {
             type: Object,
@@ -66,6 +66,11 @@ export default {
             required: false,
             default: false,
         },
+        collapsible: {
+            type: Boolean,
+            required: false,
+            default: false,
+        }
     },
 
     data() {

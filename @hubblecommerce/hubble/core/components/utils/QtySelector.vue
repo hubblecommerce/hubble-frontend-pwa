@@ -1,8 +1,9 @@
 <template>
     <div class="quantity-selector">
         <div v-show="!showInput" class="hbl-select">
-            <select v-model="qtySelected" class="select-text" required>
+            <select v-model="qtySelected" class="select-text" required :disabled="qtyOptions.length < 1">
                 <option value="" disabled selected />
+                <option v-if="qtyOptions.length < 1" value="1">1</option>
                 <option v-for="(item, index) in qtyOptions" :key="index" :value="item.value">{{ item.text }}</option>
             </select>
             <span class="select-highlight" />

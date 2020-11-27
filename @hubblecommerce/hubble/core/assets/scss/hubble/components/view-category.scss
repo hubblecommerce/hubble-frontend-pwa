@@ -7,15 +7,26 @@
         text-align: center;
         position: relative;
         margin-bottom: 20px;
-        background: $light-gray;
         min-height: 70px;
 
-        .breadcrumbs {
-          .row {
-            justify-content: center;
-          }
-
+        &:before {
+            content: '';
+            background: $light-gray;
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100vw;
+            margin-left: calc(-50vw + 50%);
+            z-index: -1;
         }
+
+        .breadcrumbs {
+            .row {
+                justify-content: center;
+            }
+        }
+
         .title {
             margin-top: 5px;
             margin-bottom: 10px;
@@ -35,6 +46,7 @@
             margin-bottom: 20px;
             margin-right: 10px;
         }
+
         .nuxt-link-exact-active {
             button {
                 background: $primary;
@@ -83,7 +95,7 @@
             min-height: 170px;
 
             .title {
-              margin-top: 12px;
+                margin-top: 12px;
             }
         }
 
@@ -111,7 +123,6 @@
             }
 
             .category-products-wrp, .search-products-wrp {
-                padding: 0 0 0 $base-padding-md;
                 flex: 1;
 
                 .pagination-bottom {

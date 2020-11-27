@@ -9,7 +9,11 @@
         "access": "public"
     },
     "scripts": {
-        "postinstall": "node ./scripts/post-install.js"
+        "postinstall": "node ./scripts/post-install.js",
+        "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
+        "lint:fix": "eslint --fix --ext .js,.vue --ignore-path .gitignore .",
+        "prettier": "prettier --check '**/*.scss'",
+        "prettier:fix": "prettier --write '**/*.scss'"
     },
     "dependencies": {
         "@hubblecommerce/amazon-pay": "^1.0.0",
@@ -50,6 +54,15 @@
         "nodemon": "^1.19.4",
         "sass-loader": "^7.3.1",
         "nuxt-purgecss": "^1.0.0"
+    },
+    "devDependencies": {
+        "babel-eslint": "^10.1.0",
+        "eslint": "^7.14.0",
+        "eslint-config-prettier": "^6.15.0",
+        "eslint-plugin-nuxt": "^2.0.0",
+        "eslint-plugin-prettier": "^3.1.4",
+        "eslint-plugin-vue": "^7.1.0",
+        "prettier": "^2.2.0"
     },
     "repository": {
         "type": "git",

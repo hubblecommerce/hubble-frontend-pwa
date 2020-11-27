@@ -6,7 +6,7 @@
             <div class="mobile-layout hubble-light">
                 <background-blur />
                 <div class="header-wrp">
-                    <div class="nav-wrp">
+                    <div class="nav-wrp container">
                         <button v-if="$mq === 'sm'" class="button button-icon" @click="historyBack()">
                             <i class="icon icon-arrow-left" />
                             <div class="hidden-link-name">{{ $t('Back to shop') }}</div>
@@ -41,7 +41,7 @@
             <div class="desktop-layout hubble-light">
                 <background-blur />
                 <div class="header-wrp">
-                    <div class="nav-wrp">
+                    <div class="nav-wrp container">
                         <the-logo />
                         <div class="action-wrp d-flex align-items-center ml-auto">
                             <nuxt-link :to="localePath('index')">

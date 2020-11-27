@@ -18,6 +18,11 @@ export default {
             type: Array,
             required: true,
         },
+        instantChange: {
+            type: Boolean,
+            required: false,
+            default: true,
+        },
     },
 
     data() {
@@ -34,7 +39,9 @@ export default {
                 data: newValue,
             });
 
-            this.applyFilter();
+            if (this.$route.query.limit !== newValue && this.instantChange) {
+                this.applyFilter();
+            }
         },
     },
 
