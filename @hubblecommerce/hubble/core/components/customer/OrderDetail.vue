@@ -51,26 +51,26 @@
         <div class="summary-container">
             <div class="summary-wrp">
                 <div class="summary-row sub-totals bg-light">
-                    <div>{{ $t('Subtotal') }}</div>
+                    <div v-text="$t('Subtotal')" />
 
                     <div>
-                        <span v-if="orderData.cart" class="float-right" v-html="getSubTotal()" />
+                        <span v-if="orderData.cart" class="float-right" v-text="getSubTotal()" />
                     </div>
                 </div>
 
                 <div class="summary-row shipping-costs bg-light">
-                    <div>{{ $t('Shipping Costs') }}</div>
+                    <div v-text="$t('Shipping Costs')" />
 
                     <div>
-                        <span v-if="orderData.cart" class="float-right" v-html="getShippingCost()" />
+                        <span v-if="orderData.cart" class="float-right" v-text="getShippingCost()" />
                     </div>
                 </div>
 
                 <div class="summary-row totals bg-light">
-                    <div>{{ $t('Totals') }}</div>
+                    <div v-text="$t('Totals')" />
 
                     <div>
-                        <span v-if="orderData.cart" class="float-right" v-html="getTotal()" />
+                        <span v-if="orderData.cart" class="float-right" v-text="getTotal()" />
                     </div>
                 </div>
 
@@ -84,14 +84,15 @@
 
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex';
-import CartItemsListNonInteractive from '../checkout/CartItemsListNonInteractive';
 import { mapKeyToValue, mapIsoToCountry, salutations } from '@hubblecommerce/hubble/core/utils/formMixins';
 import _ from 'lodash';
 
 export default {
     name: 'OrderDetail',
 
-    components: { CartItemsListNonInteractive },
+    components: { 
+        CartItemsListNonInteractive: () => import('../checkout/CartItemsListNonInteractive')
+    },
 
     mixins: [mapKeyToValue, mapIsoToCountry, salutations],
 
