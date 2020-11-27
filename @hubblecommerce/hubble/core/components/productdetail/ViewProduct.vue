@@ -22,7 +22,7 @@
 
                 <div class="buybox-wrp">
                     <breadcrumbs class="container" :path="breadcrumbPath" />
-                    
+
                     <product-detail-buybox />
 
                     <product-detail-service-info />

@@ -1,9 +1,8 @@
 <template>
     <div class="product-detail-gallery-wrp">
-        <div class="gallery-slider-wrp">
+        <div v-if="productData.media_gallery != null && ($mq === 'sm' || $mq === 'md')" class="gallery-slider-wrp">
             <client-only>
                 <slider
-                    v-if="productData.media_gallery != null && ($mq === 'sm' || $mq === 'md')"
                     ref="productGallery"
                     :mouse-drag="true"
                     :loop="true"

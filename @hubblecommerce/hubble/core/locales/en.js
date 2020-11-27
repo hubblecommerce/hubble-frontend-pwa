@@ -352,6 +352,7 @@ export default context => {
             'We regularly send you carefully selected offers from our range of products by email. All personal data requested in the context of the newsletter registration will not be passed on to third parties. You can object to the use of your e-mail address for advertising purposes at any time online or by sending an e-mail.': 'We regularly send you carefully selected offers from our range of products by email. All personal data requested in the context of the newsletter registration will not be passed on to third parties. You can object to the use of your e-mail address for advertising purposes at any time online or by sending an e-mail.',
             'Your e-mail address*': 'Your e-mail address*',
             'Your date of birth**': 'Your date of birth**',
+            'E-mail address': 'E-mail address',
             '* Mandataroy fields are marked with an asterisk *.': '* Mandataroy fields are marked with an asterisk *.',
             '** Please enter your date of birth in this field, if you want to receive your personal birthday newsletter including a personal coupon': '** Please enter your date of birth in this field, if you want to receive your personal birthday newsletter including a personal coupon',
             'Subscribe to Newsletter': 'Subscribe to Newsletter',

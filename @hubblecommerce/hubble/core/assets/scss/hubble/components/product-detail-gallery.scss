@@ -1,5 +1,6 @@
 $hbl-detail-gallery-slider-height: 380px;
 $hbl-detail-gallery-slider-height-desktop: 650px;
+$hbl-detail-gallery-image-height: 550px;
 
 .product-detail-gallery-wrp {
     position: relative;
@@ -47,9 +48,12 @@ $hbl-detail-gallery-slider-height-desktop: 650px;
         overflow-y: scroll;
 
         .gallery-item {
+            text-align: center;
+            padding: 50px;
+
             img {
-                width: 100%;
-                margin-bottom: 20px;
+                max-width: 100%;
+                max-height: $hbl-detail-gallery-image-height;
             }
 
             &:last-child {
