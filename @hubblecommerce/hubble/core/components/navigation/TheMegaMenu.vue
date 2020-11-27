@@ -133,6 +133,10 @@ export default {
             }
         },
         setLayerPosition: function(triggerElement) {
+            if(this.$refs.megaMenuLayer == null) {
+                return;
+            }
+            
             const triggerPosition = triggerElement.$el.offsetLeft;
             const parentPosition = triggerElement.$parent.$el.getBoundingClientRect();
             const layerPosition = this.$refs.megaMenuLayer.getBoundingClientRect();
