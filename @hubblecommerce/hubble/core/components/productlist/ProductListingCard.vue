@@ -4,13 +4,8 @@
             <div class="card-media">
                 <div class="actions">
                     <div class="badge-wrp">
-                        <div v-if="itemIsSpecial" class="badge sale">
-                             {{ $t('Sale') }}
-                        </div>
-
-                        <div v-if="itemIsNew" class="badge new">
-                            {{ $t('New') }}
-                        </div>
+                        <div v-if="itemIsSpecial" class="badge sale" v-text="$t('Sale')" />
+                        <div v-if="itemIsNew" class="badge new" v-text="$t('New')" />
                     </div>
                 </div>
 
@@ -29,7 +24,7 @@
                         </template>
 
                         <template v-else-if="itemHasCheapPrice">
-                            <span class="minimal cheapest-label">{{ $t('cheap_price_label') }}</span>
+                            <span class="minimal cheapest-label" v-text="$t('cheap_price_label')" />
                             <span v-text="getCheapPriceAndCurrency(priceSwitcherIncludeVat)" />
                         </template>
 
