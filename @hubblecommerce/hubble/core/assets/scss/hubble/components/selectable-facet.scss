@@ -1,0 +1,17 @@
+.action-bar {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid $border-color;
+    @include font-size($text-font-sizes);
+    padding: 10px 15px;
+
+    .selected-facets {
+        text-align: left;
+    }
+    .reset-facet {
+        text-align: right;
+        text-decoration: underline;
+        cursor: pointer;
+        color: $secondary;
+    }
+}

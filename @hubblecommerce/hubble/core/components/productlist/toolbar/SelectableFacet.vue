@@ -19,7 +19,7 @@ Component usage:
         <div v-if="typeCheckbox" class="input-wrp">
             <div v-for="(option, optionIndex) in dataFacet.options" :key="optionIndex" class="hbl-checkbox">
                 <input :id="dataFacet.key + option['key']" v-model="modelSelected" type="checkbox" :value="option['key']" @change="changeFilter()" />
-                <label :for="dataFacet.key + option['key']">{{ option.label }}</label>
+                <label :for="dataFacet.key + option['key']" v-text="option.label" />
             </div>
         </div>
 
