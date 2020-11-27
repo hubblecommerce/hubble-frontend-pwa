@@ -1,11 +1,8 @@
 .quantity-selector {
     margin: 0;
     width: 90px;
+    
     .hbl-select {
         margin: 0;
-
-        &:after{
-            width: 50%;
-        }
     }
 }
