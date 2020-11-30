@@ -2,7 +2,7 @@
     <button :disabled="loaderState" type="button" :title="$t('add_to_cart')" class="add-to-cart button-primary" @click.prevent="addToCart">
         <i class="icon icon-shopping-bag" aria-hidden="true" />
         <span v-if="!loaderState" class="cart-button-label headline-4" v-text="$t('add_to_cart')" />
-        <loader v-if="loaderState" appearance="ellipsis" />
+        <loader v-if="loaderState" appearance="ellipsis" class="hidden-loader" />
         <material-ripple />
     </button>
 </template>
