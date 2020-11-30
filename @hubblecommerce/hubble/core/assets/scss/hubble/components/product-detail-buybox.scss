@@ -100,8 +100,21 @@
         .add-to-cart {
             width: calc(100% - 90px - 10px);
 
+            &:disabled{
+                opacity: 1;
+            }
+            
             i {
                 display: none;
+            }
+
+            .lds-ellipsis {
+                height: 100%;
+                div{
+                    background: $secondary;
+                    top: unset;
+                    bottom: 0;
+                }
             }
         }
     }

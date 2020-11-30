@@ -12,6 +12,10 @@
         position: relative;
         width: 100%;
 
+        .lds-ring div{
+            border-color: $secondary transparent transparent transparent;
+        }
+
         .detail-actions-wrp {
             position: absolute;
             bottom: -20px;
@@ -48,9 +52,14 @@
                     display: block;
                 }
 
-                .hidden-loader{
-                    display: none;
+                .lds-ring {
+                    height: 25px;
+
+                    div{
+                        border-color: $secondary transparent transparent transparent;
+                    }
                 }
+
             }
         }
     }
