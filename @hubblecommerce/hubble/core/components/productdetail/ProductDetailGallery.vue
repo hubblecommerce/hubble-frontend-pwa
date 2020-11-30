@@ -1,6 +1,6 @@
 <template>
     <div class="product-detail-gallery-wrp">
-        <div v-if="productData.media_gallery != null && ($mq === 'sm' || $mq === 'md')" class="gallery-slider-wrp">
+        <div v-show="productData.media_gallery != null && ($mq === 'sm' || $mq === 'md')" class="gallery-slider-wrp">
             <client-only>
                 <slider
                     ref="productGallery"
@@ -23,7 +23,7 @@
             </client-only>
         </div>
 
-        <div v-if="this.$mq === 'lg'" class="gallery-scroll-wrp">
+        <div v-show="this.$mq === 'lg'" class="gallery-scroll-wrp">
             <div v-for="(image, index) in allProductImages" :key="index" class="gallery-item">
                 <img :src="routeUrlSmallGallery(image)"
                      :alt="productData.name"
