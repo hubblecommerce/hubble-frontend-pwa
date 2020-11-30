@@ -12,13 +12,17 @@
         .actions-wrp {
             margin-bottom: auto;
 
-            .hbl-select ,.hbl-input-group{
-                width: 65px;
-                margin-bottom: 40px;
-                margin-left: auto;
+            .quantity-selector{
+                width: 100%;
 
-                .select-label {
-                    display: none;
+                .hbl-select ,.hbl-input-group{
+                    width: 65px;
+                    margin-top: 40px;
+                    margin-left: auto;
+
+                    .select-label {
+                        display: none;
+                    }
                 }
             }
         }
