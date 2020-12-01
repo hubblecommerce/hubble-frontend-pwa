@@ -99,7 +99,7 @@
 
         .add-to-cart {
             width: calc(100% - 90px - 10px);
-            min-height: 45px;
+            height: 45px;
 
             &:disabled{
                 opacity: 1;
