@@ -87,7 +87,7 @@ export default {
     name: 'CartItemsList',
 
     components: {
-        QtySelector: () => import('../utils/QtySelector')
+        QtySelector: () => import('../utils/QtySelectorNew')
     },
 
     data() {
