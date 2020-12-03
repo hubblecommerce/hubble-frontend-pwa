@@ -33,8 +33,10 @@ export default {
     padding-right: 15px;
 }
 
-.disable-scroll .header-wrp {
+@media(min-width: 1024px) {
+    .disable-scroll .header-wrp {
     width: 100vw;
     padding-right: 15px;
+    }
 }
 </style>
