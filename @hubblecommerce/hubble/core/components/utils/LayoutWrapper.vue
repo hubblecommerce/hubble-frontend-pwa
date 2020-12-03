@@ -32,4 +32,9 @@ export default {
     width: 100vw;
     padding-right: 15px;
 }
+
+.disable-scroll .header-wrp {
+    width: 100vw;
+    padding-right: 15px;
+}
 </style>
