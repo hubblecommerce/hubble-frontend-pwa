@@ -28,7 +28,7 @@
         <!-- Add to cart -->
         <div class="add-to-cart-wrp">
             <qty-selector :max-qty="dataProduct.stock_item.qty" @changeQty="onChangeQty($event)" />
-            <product-detail-add-to-cart :qty="qty" :item="dataProduct" />
+            <product-detail-add-to-cart :qty="qty" :item="dataProduct" :loaderDisplay="'ellipsis'" />
         </div>
 
     </div>

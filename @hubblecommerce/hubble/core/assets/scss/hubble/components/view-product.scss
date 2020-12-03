@@ -12,6 +12,10 @@
         position: relative;
         width: 100%;
 
+        .lds-ring div{
+            border-color: $secondary transparent transparent transparent;
+        }
+
         .detail-actions-wrp {
             position: absolute;
             bottom: -20px;
@@ -29,6 +33,7 @@
                 border-radius: 25px;
                 padding: 0;
                 margin: 0;
+                opacity: 1;
 
                 @include elevation-2;
 
@@ -46,6 +51,15 @@
                     overflow: hidden;
                     display: block;
                 }
+
+                .lds-ring {
+                    height: 25px;
+
+                    div{
+                        border-color: $secondary transparent transparent transparent;
+                    }
+                }
+
             }
         }
     }
