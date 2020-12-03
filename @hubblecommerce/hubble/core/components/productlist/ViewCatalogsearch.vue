@@ -9,7 +9,8 @@
         <template v-if="hasCategoryProductItems">
             <div class="container search-content-wrp">
                 <div class="search-products-wrp">
-                    <product-listing-toolbar v-if="!isApiType('sw')" />
+                    <h1 class="title headline-1" v-text="curSearchResultLabel" />
+                    <product-listing-toolbar />
                     <product-listing :data-items="categoryProductItems" list="Search Result" />
                     <div class="pagination-bottom">
                         <pagination />

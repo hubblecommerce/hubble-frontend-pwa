@@ -19,10 +19,6 @@ import {mapActions, mapMutations} from "vuex";
 
 export default {
     name: "SearchTrigger",
-    data() {
-        return {
-        }
-    },
     methods: {
         ...mapMutations({
             hideOffcanvas: 'modNavigation/hideOffcanvas'
