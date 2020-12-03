@@ -1,26 +1,14 @@
-// .quantity-selector {
-//     margin: 0;
-//     width: 90px;
-    
-//     .hbl-select {
-//         margin: 0;
-//     }
-
-//     .select-label {
-//         display: none;
-//     }
-// }
+$btn-icon-width: 36px;
+$btn-icon-height: 36px;
+$btn-background-color: $light-gray;
 
 .quantity-selector {
-    width: 20%;
-    margin-right: 10px;
-    
+
     .qty-wrp{
         display: flex;
         height: 100%;
         
         .quantity{
-            width: 60%;
             max-width: 45px;
             border: 1px solid #E7E8E9;
             border-right: none;
@@ -35,10 +23,14 @@
                 justify-content: center;
                 align-items: center;
                 background: transparent;
-                height: 25px;
-                width: 25px;
+                height: $btn-icon-height;
+                width: $btn-icon-width;
                 border: 1px solid #E7E8E9;
                 border-radius: unset;
+
+                &:active{
+                    background: $btn-background-color;
+                }
             }
         }
     }

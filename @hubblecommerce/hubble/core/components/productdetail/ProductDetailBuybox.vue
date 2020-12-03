@@ -39,7 +39,7 @@ import { mapState, mapMutations } from 'vuex';
 
 export default {
     components: {
-        QtySelector: () => import('../../components/utils/QtySelectorNew'),
+        QtySelector: () => import('../../components/utils/QtySelector'),
         ProductDetailAddToCart: () => import('./ProductDetailAddToCart'),
         ProductDetailPrice:() => import('./ProductDetailPrice'),
         ProductDetailDelivery:() => import('./ProductDetailDelivery'),

@@ -1,21 +1,10 @@
 <template>
     <div class="quantity-selector">
-        <div v-show="!showInput" class="hbl-select">
-            <select v-model="qtySelected" class="select-text" required :disabled="qtyOptions.length < 1">
-                <option value="" disabled selected />
-                <option v-if="qtyOptions.length < 1" value="1">1</option>
-                <option v-for="(item, index) in qtyOptions" :key="index" :value="item.value">{{ item.text }}</option>
-            </select>
-            <span class="select-highlight" />
-            <span class="select-bar" />
-            <label class="select-label" v-text="$t('Quantity')" />
-        </div>
-        <div v-show="showInput" class="hbl-input-group">
-            <input
-                id="quantity"
+        <div v-show="!qtyCartDisplay" class="qty-wrp">
+            <input class="quantity"
+                type="number"
                 v-model="qtySelected"
                 aria-label="Menge"
-                type="number"
                 name="qty"
                 step="1"
                 min="1"
@@ -23,9 +12,43 @@
                 required
                 @blur="qtyOnBlur()"
             />
-            <span class="highlight" />
-            <span class="bar" />
-            <label for="quantity" v-text="$t('Quantity')" />
+            <div class="btn-wrp">
+                <button class="qty-button" @click="increaseQty()">
+                    <i class="icon icon-plus"/>
+                </button>
+                <button class="qty-button" @click="decreaseQty()">
+                    <i class="icon icon-minus"/>
+                </button>
+            </div>
+        </div>
+        <div v-show="qtyCartDisplay">
+            <div v-show="!showInput" class="hbl-select">
+                <select v-model="qtySelected" class="select-text" required :disabled="qtyOptions.length < 1">
+                    <option value="" disabled selected />
+                    <option v-if="qtyOptions.length < 1" value="1">1</option>
+                    <option v-for="(item, index) in qtyOptions" :key="index" :value="item.value">{{ item.text }}</option>
+                </select>
+                <span class="select-highlight" />
+                <span class="select-bar" />
+                <label class="select-label" v-text="$t('Quantity')" />
+            </div>
+            <div v-show="showInput" class="hbl-input-group">
+                <input
+                    id="quantity"
+                    v-model="qtySelected"
+                    aria-label="Menge"
+                    type="number"
+                    name="qty"
+                    step="1"
+                    min="1"
+                    max="maxQty"
+                    required
+                    @blur="qtyOnBlur()"
+                />
+                <span class="highlight" />
+                <span class="bar" />
+                <label for="quantity" v-text="$t('Quantity')" />
+            </div>
         </div>
     </div>
 </template>
@@ -51,6 +74,11 @@ export default {
             type: Boolean,
             required: false,
         },
+        qtyCartDisplay: {
+            type: Boolean,
+            required: false,
+            default: false
+        }
     },
 
     data() {
@@ -59,6 +87,7 @@ export default {
             qtyOptions: [],
             qtySelected: this.qty,
             showInput: this.qty > 10,
+            qtyCartDisplay: this.qtyCart
         };
     },
 
@@ -98,6 +127,15 @@ export default {
                 this.qtySelected = 1;
             }
         },
+        increaseQty: function () {
+            this.qtySelected += 1;
+        },
+        decreaseQty: function () {
+            this.qtySelected -= 1;
+            if (this.qtySelected < 1) {
+                this.qtySelected = 1;
+            }
+        }
     },
 };
 </script>
