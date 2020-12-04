@@ -50,7 +50,7 @@
                     <div class="col-3 actions-wrp text-right">
                         <div v-if="!showLoader" aria-hidden="true" class="remove-item" @click="confirmRemoveItem(item)" v-text="$t('Remove')" />
 
-                        <qty-selector :qty="item.qty" :max-qty="getStockQtyOfVariant(item)" @changeQty="onChangeQty(item.id, $event)" />
+                        <qty-selector :type="true" :qty="item.qty" :max-qty="getStockQtyOfVariant(item)" @changeQty="onChangeQty(item.id, $event)" />
 
                         <div v-if="showLoader" class="lds-ring">
                             <div />

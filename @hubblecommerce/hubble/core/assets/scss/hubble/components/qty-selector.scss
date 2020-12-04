@@ -1,12 +1,41 @@
-.quantity-selector {
-    margin: 0;
-    width: 90px;
-    
-    .hbl-select {
-        margin: 0;
-    }
+$btn-icon-width: 36px;
+$btn-icon-height: 36px;
+$btn-background-color: $light-gray;
+$btn-icon-color: $dark-gray;
+$qty-selector-width: $btn-icon-width * 2.5;
 
-    .select-label {
-        display: none;
+.quantity-selector {
+    max-width: $qty-selector-width;
+
+    .qty-wrp{
+        display: flex;
+        height: 100%;
+        
+        .quantity{
+            width: 100%;
+            border: 1px solid $border-color;
+            border-right: none;
+            text-align: center;
+        }
+
+        .btn-wrp{
+            .qty-button{
+                color: $btn-icon-color;
+                padding: 10px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background: transparent;
+                height: $btn-icon-height;
+                width: $btn-icon-width;
+                border: 1px solid $border-color;
+                border-radius: unset;
+
+                &:active{
+                    background: $btn-background-color;
+                }
+            }
+        }
     }
 }
+

@@ -95,16 +95,19 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+        width: 100%;
+        height: 72px;
         margin-bottom: 20px;
 
         .add-to-cart {
-            width: calc(100% - 90px - 10px);
-            height: 45px;
-
+            width: 90%;
+            height: 100%;
+            margin-left: 10px;
+            
             &:disabled{
                 opacity: 1;
             }
-            
+
             i {
                 display: none;
             }
@@ -113,8 +116,7 @@
                 height: 100%;
                 div{
                     background: $secondary;
-                    top: unset;
-                    bottom: 0;
+                    top: 50%;
                 }
             }
         }
@@ -149,6 +151,12 @@
                 &:last-child {
                     margin: 0;
                 }
+            }
+        }
+
+        .add-to-cart-wrp{
+            .add-to-cart{
+                width: 90%;
             }
         }
     }
