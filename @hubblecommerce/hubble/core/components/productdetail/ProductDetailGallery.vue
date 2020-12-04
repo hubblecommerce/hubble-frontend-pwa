@@ -23,7 +23,7 @@
             </client-only>
         </div>
 
-        <div v-show="this.$mq === 'lg'" class="gallery-scroll-wrp">
+        <div v-show="this.$mq === 'lg'" class="gallery-scroll-wrp disable-scrollbars">
             <div v-for="(image, index) in allProductImages" :key="index" class="gallery-item">
                 <img :src="routeUrlSmallGallery(image)"
                      :alt="productData.name"

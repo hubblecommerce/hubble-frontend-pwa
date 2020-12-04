@@ -88,7 +88,7 @@ export default {
 
             loaded: false,
 
-            isShopware: process.env.API_TYPE === 'sw',
+            isShopware: false, // process.env.API_TYPE === 'sw',
             cmsSections: {},
         };
     },

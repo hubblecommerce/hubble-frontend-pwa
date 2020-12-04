@@ -19,10 +19,10 @@
                 <div v-if="qty <= 0" class="empty-cart">
                     <i class="icon icon-heart" />
 
-                    <div class="headline-1" v-text="$t('Your shopping wishlist is empty')" />
+                    <div class="text" v-text="$t('Your shopping wishlist is empty')" />
 
                     <nuxt-link :to="localePath('index')">
-                        <button class="button-primary">
+                        <button class="button-secondary">
                             {{ $t('Discover our products') }}
                             <material-ripple />
                         </button>
@@ -53,7 +53,7 @@
 import { mapState, mapActions } from 'vuex';
 export default {
     name: 'WishlistLayer',
-    components: { 
+    components: {
         WishlistItemsList: () => import('../customer/WishlistItemsList')
     },
 
