@@ -74,7 +74,7 @@ export default {
             type: Boolean,
             required: false,
         },
-        qtyCart: {
+        type: {
             type: Boolean,
             required: false,
             default: false
@@ -87,7 +87,7 @@ export default {
             qtyOptions: [],
             qtySelected: this.qty,
             showInput: this.qty > 10,
-            qtyCartDisplay: this.qtyCart
+            qtyCartDisplay: this.type
         };
     },
 
@@ -131,10 +131,11 @@ export default {
             this.qtySelected += 1;
         },
         decreaseQty: function () {
-            this.qtySelected -= 1;
-            if (this.qtySelected < 1) {
-                this.qtySelected = 1;
+
+            if(this.qtySelected - 1 < 1) {
+                return;
             }
+            this.qtySelected -= 1;
         }
     },
 };

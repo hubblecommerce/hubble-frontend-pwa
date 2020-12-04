@@ -1,23 +1,26 @@
 $btn-icon-width: 36px;
 $btn-icon-height: 36px;
 $btn-background-color: $light-gray;
+$btn-icon-color: $dark-gray;
+$qty-selector-width: $btn-icon-width * 2.5;
 
 .quantity-selector {
+    max-width: $qty-selector-width;
 
     .qty-wrp{
         display: flex;
         height: 100%;
         
         .quantity{
-            max-width: 45px;
-            border: 1px solid #E7E8E9;
+            width: 100%;
+            border: 1px solid $border-color;
             border-right: none;
             text-align: center;
         }
 
         .btn-wrp{
             .qty-button{
-                color: $dark-gray;
+                color: $btn-icon-color;
                 padding: 10px;
                 display: flex;
                 justify-content: center;
@@ -25,7 +28,7 @@ $btn-background-color: $light-gray;
                 background: transparent;
                 height: $btn-icon-height;
                 width: $btn-icon-width;
-                border: 1px solid #E7E8E9;
+                border: 1px solid $border-color;
                 border-radius: unset;
 
                 &:active{
