@@ -23,13 +23,15 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
+$scrollbar-width: 15px;
+
 .disable-scroll {
     overflow: hidden;
-}
 
-.disable-scroll .desktop-layout {
-    width: 100vw;
-    padding-right: 15px;
+    .desktop-layout {
+        width: 100vw;
+        padding-right: $scrollbar-width;
+    }
 }
 </style>
