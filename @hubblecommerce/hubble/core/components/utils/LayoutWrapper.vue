@@ -34,19 +34,4 @@ $scrollbar-width: 15px;
         padding-right: $scrollbar-width;
     }
 }
-
-@media(min-width: 1024px) {
-    .disable-scroll {
-        .header-wrp {
-            width: 100vw;
-            padding-right: $scrollbar-width;
-
-            .nav-wrp {
-                &::before{
-                    width: calc(100vw + 15px)
-                }
-            }
-        }
-    }
-}
 </style>
