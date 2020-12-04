@@ -18,7 +18,6 @@
   font-weight: normal;
   font-variant: normal;
   text-transform: none;
-  line-height: 1;
 
   /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased;
@@ -26,6 +25,12 @@
 }
 
 
+.icon-circle-filled:before {
+    content: "\e902";
+}
+.icon-shopping-bag-empty:before {
+    content: "\e903";
+}
 .icon-heart-filled:before {
     content: "\e901";
 }
@@ -528,7 +533,7 @@
     content: "\e9b5";
 }
 .icon-more-vertical:before {
-content: "\e9b6";
+    content: "\e9b6";
 }
 .icon-mouse-pointer:before {
     content: "\e9b7";
@@ -858,10 +863,10 @@ content: "\e9b6";
     content: "\ea23";
 }
 .icon-youtube:before {
-content: "\ea24";
+    content: "\ea24";
 }
 .icon-zap-off:before {
-        content: "\ea25";
+    content: "\ea25";
 }
 .icon-zap:before {
     content: "\ea26";

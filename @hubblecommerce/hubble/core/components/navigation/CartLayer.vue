@@ -16,17 +16,17 @@
 
             <div class="row">
                 <div v-if="qty === 1" class="col-12 qty-summary" v-text="`${qty} ${$t('shopping_cart_label_item')}`" />
-                
+
                 <div v-if="qty > 1" class="col-12 qty-summary" v-text="`${qty} ${$t('shopping_cart_label_items')}`" />
 
                 <transition name="fade">
                     <div v-if="qty <= 0" class="empty-cart">
-                        <i class="icon icon-shopping-bag" />
+                        <i class="icon icon-shopping-bag-empty" />
 
-                        <div class="headline-1" v-text="$t('Your shopping cart is empty')" />
+                        <div class="text" v-text="$t('Your shopping cart is empty')" />
 
                         <nuxt-link :to="localePath('index')">
-                            <button class="button-primary" @click="hideMenu()" v-text="$t('Discover our products')" />
+                            <button class="button-secondary" @click="hideMenu()" v-text="$t('Discover our products')" />
                         </nuxt-link>
                     </div>
                 </transition>

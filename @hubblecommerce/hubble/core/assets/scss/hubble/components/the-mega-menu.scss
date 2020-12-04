@@ -1,11 +1,11 @@
 $megamenu-height: $header-navigation-height-desktop;
 $megamenu-background: $darkest-gray;
 
-$megamenu-item-text-transform: uppercase;
+$megamenu-item-text-transform: none;
 $megamenu-item-font-size: 16px;
 $megamenu-item-color: $white;
-$megamenu-item-line-height: 17px;
-$megamenu-item-highlight-size: 2px;
+$megamenu-item-line-height: 19px;
+$megamenu-item-highlight-size: 0;
 $megamenu-item-highlight-color: $primary;
 
 nav {
@@ -27,7 +27,7 @@ nav {
             text-transform: $megamenu-item-text-transform;
             font-size: $megamenu-item-font-size;
             line-height: $megamenu-item-line-height;
-            margin: 0 25px 0 0;
+            margin: 0 45px 0 0;
             border: $megamenu-item-highlight-size solid transparent;
             color: $megamenu-item-color;
 
@@ -70,7 +70,7 @@ nav {
 
     .fixed-container {
         position: absolute;
-        top: $megamenu-height + 2;
+        top: $megamenu-height + $megamenu-item-highlight-size;
         border: 1px solid $border-color;
         background-color: $background;
         z-index: -1;

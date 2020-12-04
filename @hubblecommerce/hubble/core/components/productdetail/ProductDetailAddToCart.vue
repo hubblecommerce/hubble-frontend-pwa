@@ -1,7 +1,7 @@
 <template>
     <button :disabled="loaderState" type="button" :title="$t('add_to_cart')" class="add-to-cart button-primary" @click.prevent="addToCart">
         <i v-if="!loaderState" class="icon icon-shopping-bag" aria-hidden="true" />
-        <span v-if="!loaderState" class="cart-button-label headline-5" v-text="$t('add_to_cart')" />
+        <span v-if="!loaderState" class="cart-button-label" v-text="$t('add_to_cart')" />
         <loader v-if="loaderState" :appearance="loaderDisplay"/>
         <material-ripple />
     </button>
@@ -14,7 +14,7 @@ import { clearDataLayer } from '@hubblecommerce/hubble/core/utils/gtmHelper';
 export default {
     name: 'ProductDetailAddToCart',
 
-    components: { 
+    components: {
         Loader: () => import('../utils/Loader'),
     },
 

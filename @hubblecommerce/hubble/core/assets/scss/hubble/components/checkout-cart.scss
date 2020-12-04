@@ -69,7 +69,6 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: $background-light;
     padding: 40px;
     width: 100%;
 
@@ -80,17 +79,20 @@
     }
 
     i {
-        width: 65px;
-        height: 65px;
-        line-height: 65px;
+        width: 130px;
+        height: 130px;
+        line-height: 130px;
         text-align: center;
         color: $border-color;
-        font-size: 60px;
+        font-size: 45px;
         margin-bottom: 20px;
+        border: 3px dotted $border-color;
+        border-radius: 150px;
     }
 
-    .headline-1 {
-        margin-bottom: 20px;
+    .text {
+        font-size: 16px;
+        margin-bottom: 40px;
         text-align: center;
     }
 }
