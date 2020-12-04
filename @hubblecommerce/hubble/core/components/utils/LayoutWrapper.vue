@@ -23,20 +23,30 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
+$scrollbar-width: 15px;
+
 .disable-scroll {
     overflow: hidden;
-}
 
-.disable-scroll .desktop-layout {
-    width: 100vw;
-    padding-right: 15px;
+    .desktop-layout {
+        width: 100vw;
+        padding-right: $scrollbar-width;
+    }
 }
 
 @media(min-width: 1024px) {
-    .disable-scroll .header-wrp {
-    width: 100vw;
-    padding-right: 15px;
+    .disable-scroll {
+        .header-wrp {
+            width: 100vw;
+            padding-right: $scrollbar-width;
+
+            .nav-wrp {
+                &::before{
+                    width: calc(100vw + 15px)
+                }
+            }
+        }
     }
 }
 </style>
