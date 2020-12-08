@@ -2,33 +2,35 @@ $hbl-pagination-line-height: 17px;
 $hbl-pagination-font-size: 14px;
 
 .pagination {
-  display: flex;
-  justify-content: center;
-  line-height: $hbl-pagination-line-height;
-  font-size: $hbl-pagination-font-size;
+    display: flex;
+    justify-content: center;
+    line-height: $hbl-pagination-line-height;
+    font-size: $hbl-pagination-font-size;
+    align-items: center;
 
-  button {
-    padding: 0;
-    i {
-      width: 100%;
-      height: 100%;
-      font-weight: $font-weight-bold;
-      cursor: pointer;
+
+    button {
+        padding: 0;
+        i {
+            width: 100%;
+            height: 100%;
+            font-weight: $font-weight-bold;
+            cursor: pointer;
+        }
+
+        &.disabled {
+            i {
+                color: $dark-gray;
+            }
+        }
     }
 
-    &.disabled {
-      i {
-        color: $dark-gray;
-      }
+    .page-number {
+        font-weight: $font-weight-bold;
     }
-  }
 
-  .page-number {
-    font-weight: $font-weight-bold;
-  }
-
-  .last-page {
-    cursor: pointer;
-  }
+    .last-page {
+        cursor: pointer;
+    }
 }
 
