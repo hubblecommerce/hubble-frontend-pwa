@@ -7,17 +7,20 @@
             class="level1-category-item"
             :class="{ current: childCategory.id === categoryId }"
         >
-            <i v-if="childCategory.children.length > 0" class="icon icon-chevron-right" />
+
             <nuxt-link :to="itemUrlPath(childCategory)" v-text="childCategory.name" />
-            <div
-                v-for="grandChildCategory in childCategory.children"
-                v-if="childCategory.id === categoryId || isInPath(grandChildCategory.parent_id)"
-                :key="grandChildCategory.id"
-                class="level2-category-item"
-                :class="{ current: grandChildCategory.id === categoryId }"
-            >
-                <nuxt-link :to="itemUrlPath(grandChildCategory)" v-text="grandChildCategory.name" />
-            </div>
+            <template v-if="childCategory.children">
+                <i v-if="childCategory.children.length > 0" class="icon icon-chevron-right" />
+                <div
+                    v-for="grandChildCategory in childCategory.children"
+                    v-if="childCategory.id === categoryId || isInPath(grandChildCategory.parent_id)"
+                    :key="grandChildCategory.id"
+                    class="level2-category-item"
+                    :class="{ current: grandChildCategory.id === categoryId }"
+                >
+                    <nuxt-link :to="itemUrlPath(grandChildCategory)" v-text="grandChildCategory.name" />
+                </div>
+            </template>
         </div>
     </div>
 </template>
@@ -67,11 +70,13 @@ export default {
         itemUrlPath(item) {
             let locale = this.getApiLocale;
 
+            let path = item.url_path || item.request_path;
+
             if (locale !== 'de') {
-                return '/' + locale + '/' + item.url_path;
+                return '/' + locale + '/' + path;
             }
 
-            return '/' + item.url_path;
+            return '/' + path;
         },
         isInPath: function (parent) {
             return this.pathIds.includes(parent);

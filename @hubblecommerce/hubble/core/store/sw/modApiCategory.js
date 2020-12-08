@@ -267,11 +267,12 @@ export const actions = {
             obj.path_names = [];
             obj.path_urls = [];
             if (payload.path != null) {
-                obj.path_ids = payload.path.split('|').filter(s => s);
-                obj.path_ids.push(payload.id);
-                obj.path_names = payload.breadcrumb;
+                let breadcrumbs = _.cloneDeep(payload.breadcrumb);
+                breadcrumbs.shift();
+                obj.path_names = breadcrumbs;
+                obj.path_ids = breadcrumbs;
                 obj.path_urls = [];
-                _.each(payload.breadcrumb, (crumb, index) => {
+                _.each(obj.path_names, (crumb, index) => {
                     let slugifiedCrumb = slugify(crumb) + '/';
                     if (index > 1) {
                         slugifiedCrumb = obj.path_urls[index - 1] + slugifiedCrumb;
