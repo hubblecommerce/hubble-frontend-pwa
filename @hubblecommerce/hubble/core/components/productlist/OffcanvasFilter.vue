@@ -1,6 +1,6 @@
 <template>
     <div class="offcanvas-filter-wrp">
-        <button class="button-icon open-filter" @click="toggle()">
+        <button class="open-filter" :class="buttonClass" @click="toggle()">
             <i class="icon icon-sliders left" />
             <material-ripple />
         </button>
@@ -43,15 +43,14 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapMutations, mapState } from 'vuex';
+import { mapActions, mapMutations, mapState } from 'vuex';
 
 import Tabs from '../../components/utils/Tabs';
 import Tab from '../../components/utils/Tab';
 import SelectableOrder from './toolbar/SelectableOrder';
 import ProductListingFilter from './ProductListingFilter';
 import SelectedFacets from './toolbar/SelectedFacets';
-import SelectableLimit
-    from '@@/modules/hubble-frontend-pwa/@hubblecommerce/hubble/core/components/productlist/toolbar/SelectableLimit'
+import SelectableLimit from './toolbar/SelectableLimit';
 
 export default {
     name: 'OffCanvasFilter',
@@ -63,6 +62,14 @@ export default {
         Tabs,
         Tab,
         SelectableOrder
+    },
+
+    props: {
+        buttonClass: {
+            type: String,
+            default: 'button-icon',
+            required: false,
+        },
     },
 
     data() {
