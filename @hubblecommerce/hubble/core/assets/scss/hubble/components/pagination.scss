@@ -8,19 +8,18 @@ $hbl-pagination-font-size: 14px;
     font-size: $hbl-pagination-font-size;
     align-items: center;
 
-
     button {
         padding: 0;
         i {
             width: 100%;
             height: 100%;
-            font-weight: $font-weight-bold;
+            font-weight: $font-weight-regular;
             cursor: pointer;
         }
 
         &.disabled {
             i {
-                color: $dark-gray;
+                color: $gray;
             }
         }
     }
@@ -33,4 +32,3 @@ $hbl-pagination-font-size: 14px;
         cursor: pointer;
     }
 }
-
