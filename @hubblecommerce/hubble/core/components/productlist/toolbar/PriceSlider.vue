@@ -1,13 +1,15 @@
 <template>
     <div class="price-slider">
-        <div class="price text-left" :class="priceMinSelected ? 'price-selected' : ''">
-            <span v-text="curMinLabel" />
-            <span v-text="curCurrencySign" />
-        </div>
-
-        <div class="price text-right" :class="priceMaxSelected ? 'price-selected' : ''">
-            <span v-text="curMaxLabel" />
-            <span v-text="curCurrencySign" />
+        <div class="price-text">
+            <div class="price text-left" :class="priceMinSelected ? 'price-selected' : ''">
+                <span v-text="curMinLabel" />
+                <span v-text="curCurrencySign" />
+            </div>
+            <span v-text="' - '" />
+            <div class="price text-right" :class="priceMaxSelected ? 'price-selected' : ''">
+                <span v-text="curMaxLabel" />
+                <span v-text="curCurrencySign" />
+            </div>
         </div>
 
         <vue-slider

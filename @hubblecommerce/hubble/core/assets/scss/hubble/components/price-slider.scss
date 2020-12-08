@@ -1,25 +1,32 @@
 .price-slider {
-    display: block;
-    position: relative;
+  display: block;
+  position: relative;
 
-  .price.text-left, .price.text-right {
-    &.price-selected {
-      font-weight: $font-weight-bold;
+  .price-text {
+    margin: 0 15%;
+    display: flex;
+    justify-content: space-evenly;
+    font-weight: $font-weight-bold;
+
+    .price.text-left {
+      float: left;
     }
-  }
-
-  .price.text-left {
-    float: left;
-  }
-  .price.text-right {
-    float: right;
+    .price.text-right {
+      float: right;
+    }
   }
 }
 
 .vue-slider-component {
-    margin-top: 30px;
+    margin-top: 15px;
 
     .vue-slider-process {
         background-color: $primary !important;
     }
+}
+
+@media(min-width: 1024px) {
+  .vue-slider-component {
+    margin-top: 30px;
+  }
 }

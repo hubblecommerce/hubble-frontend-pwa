@@ -16,8 +16,6 @@
   padding-bottom: 80px;
   width: 100%;
 
-
-
   &.desktop {
     margin-right: auto;
     display: flex;
@@ -32,10 +30,10 @@
 
       .toggle {
         border-radius: 2px;
-        border: 1px solid $border-color;
         height: 33px;
         font-weight: $font-weight-regular;
         font-size: 16px;
+        border: none;
       }
 
       .collapse-item {
@@ -105,8 +103,6 @@
   }
 
   .facet-wrp {
-    //margin-left: -15px;
-    //margin-right: -15px;
 
     .filter {
         position: relative;
