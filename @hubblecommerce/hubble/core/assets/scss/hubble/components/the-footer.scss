@@ -1,6 +1,7 @@
 .footer {
     background-color: $white;
     padding: 0;
+    width: 100vw;
 
     .newsletter-box {
         .newsletter-headline {
@@ -110,8 +111,6 @@
 
 @media(min-width: 768px) {
     .footer {
-        width: 100%;
-
         .newsletter-footer-wrp {
             display: flex;
             align-items: center;
