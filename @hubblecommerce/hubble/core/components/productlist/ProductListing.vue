@@ -13,7 +13,7 @@
         </template>
 
         <template v-if="!isSlider">
-            <div v-for="(item, index) in dataItems" :key="index" class="listing-item col-6 col-sm-6 col-md-4 col-lg-3">
+            <div v-for="(item, index) in dataItems" :key="index" class="listing-item" :class="listingClass">
                 <product-listing-card :key="item.id" :item-orig="item" />
             </div>
         </template>
@@ -100,6 +100,11 @@ export default {
             required: false,
             default: () => {},
         },
+        listingClass: {
+            type: String,
+            required: false,
+            default: 'col-6 col-sm-6 col-md-4 col-lg-3',
+        }
     },
 
     data() {

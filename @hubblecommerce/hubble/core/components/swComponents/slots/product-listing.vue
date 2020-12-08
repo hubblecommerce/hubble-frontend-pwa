@@ -3,14 +3,10 @@
         <div v-if="errorNoProducts" class="container">
             <div class="error-message" v-text="$t('There are no products available in this category or for this filter.')" />
         </div>
-        <div v-else class="d-flex justify-content-between product-listing-toolbar__wrapper">
+        <div v-else>
             <pagination />
-            <div class="d-flex product-listing-toolbar__selectables">
-                <selectable-limit :data-options="optionsLimit" />
-                <selectable-order :data-options="optionsSorter" />
-            </div>
         </div>
-        <product-listing :data-items="categoryProductItems" list="Category" :extra-class="{ 'offset-top': isSticky }" :category="categoryItem.name" />
+        <product-listing :data-items="categoryProductItems" list="Category" :extra-class="{ 'offset-top': isSticky }" :category="categoryItem.name" :listing-class="'col-12 col-sm-12 col-md-4 col-lg-3'"/>
     </div>
 </template>
 
@@ -18,13 +14,11 @@
 import { mapState } from 'vuex';
 import ProductListing from '../../productlist/ProductListing';
 import Pagination from '../../productlist/toolbar/Pagination';
-import SelectableLimit from '../../productlist/toolbar/SelectableLimit';
-import SelectableOrder from '../../productlist/toolbar/SelectableOrder';
 import _ from 'lodash';
 
 export default {
     name: 'ProductListingSlot',
-    components: { ProductListing, Pagination, SelectableLimit, SelectableOrder },
+    components: { ProductListing, Pagination },
 
     data() {
         return {
