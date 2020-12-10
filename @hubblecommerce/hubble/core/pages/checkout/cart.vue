@@ -5,52 +5,42 @@
                 <div class="items-wrp">
                     <client-only>
                         <div class="headline">
-                            <h1>
-                                {{ $t('Your Cart') }}
-                            </h1>
-                            <span v-text="cartItemsLabel(qty)" />
+                            <div class="headline-2" v-text="$t('Your Cart')" />
+                            <span class="text" v-text="`(${cartItemsLabel(qty)})`" />
                         </div>
                         <cart-items-list />
                     </client-only>
                 </div>
-                <div class="summary-container">
-                    <div v-if="$mq === 'lg'" class="headline">
-                        <h1>
-                            {{ $t('Summary') }}
-                        </h1>
-                    </div>
-                    <div class="summary-wrp">
-                        <totals />
-                        <div v-if="$mq === 'sm'" class="voucher bg-light">
-                            <collapsible :toggle-text="$t('I\'ve got a voucher')">
-                                <div class="voucher-content">
-                                    <coupons v-if="!isApiType('sw')" />
-                                </div>
-                            </collapsible>
-                        </div>
-                        <div v-if="$mq === 'md' || $mq === 'lg'" class="voucher bg-light">
-                            <div class="voucher-content">
-                                <coupons v-if="!isApiType('sw')" />
-                            </div>
-                        </div>
 
-                        <!--                        <amazon-pay-button />-->
-
-                        <nuxt-link :to="checkoutPath()">
-                            <button class="button-primary checkout-btn">
-                                {{ $t('Go to checkout') }}
-                                <material-ripple />
-                            </button>
-                        </nuxt-link>
-                        <nuxt-link :to="localePath('index')">
-                            <button class="button-secondary shopping-button">
-                                {{ $t('Keep shopping') }}
-                                <material-ripple />
-                            </button>
-                        </nuxt-link>
+                <div class="summary-wrp">
+                    <div v-if="!isApiType('sw')" class="voucher">
+                        <div class="voucher-content">
+                            <coupons />
+                        </div>
                     </div>
+
+                    <totals />
+                </div>
+
+                <div class="actions-wrp">
+                    <nuxt-link v-if="$mq === 'md' || $mq === 'lg'" :to="localePath('index')">
+                        <button class="button-secondary shopping-button">
+                            <i class="icon icon-arrow-left" />
+                            {{ $t('Keep shopping') }}
+                            <material-ripple />
+                        </button>
+                    </nuxt-link>
+
+                    <nuxt-link :to="checkoutPath()">
+                        <button class="button-primary checkout-btn">
+                            {{ $t('Go to checkout') }}
+                            <i class="icon icon-arrow-right" />
+                            <material-ripple />
+                        </button>
+                    </nuxt-link>
                 </div>
             </div>
+
             <div v-else class="cart-wrp empty-cart">
                 <i class="icon icon-shopping-bag" />
                 <div class="headline-1" v-text="$t('Your shopping cart is empty')" />

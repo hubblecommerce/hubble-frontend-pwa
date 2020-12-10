@@ -1,37 +1,41 @@
 .cart-wrp {
     width: 100%;
-    padding: 15px 0;
+    padding: 20px 0;
     display: inline-block;
 
     .headline {
-        h1 {
+        margin-bottom: 15px;
+
+        .headline-2 {
             display: inline;
-            text-transform: uppercase;
-            margin-right: 15px;
+            margin-right: 5px;
         }
-    }
 
-    .item {
-        border-bottom: 1px solid $border-color;
-
-        .separator {
-            margin: 0 5px;
+        .text {
+            color: $dark-gray;
         }
     }
 
     .summary-wrp {
         .summary-row {
-            margin-left: -15px;
-            margin-right: -15px;
-            padding: 10px 15px;
+            font-size: 14px;
+            padding: 5px 15px;
             display: flex;
             justify-content: space-between;
+
+            &:first-child {
+                padding-top: 20px;
+            }
+
+            &:last-child {
+                padding-bottom: 20px;
+            }
         }
 
         .totals {
+            font-size: 16px;
+            padding-top: 10px;
             font-weight: $font-weight-bold;
-            border-top: 1px solid $border-color;
-            border-bottom: 1px solid $border-color;
         }
 
         .voucher {
@@ -60,6 +64,12 @@
             margin-left: 0;
             display: block;
             margin-right: 0;
+        }
+    }
+
+    .actions-wrp {
+        button {
+            margin: 10px 0 0;
         }
     }
 }
@@ -100,7 +110,10 @@
 /* Tablet */
 @media(min-width: 768px) {
     .cart-wrp {
-        padding: 20px 0;
+        display: block;
+        max-width: 560px;
+        margin: 0 auto;
+        padding: 40px 0;
 
         .headline {
             margin: 5px 0 20px;
@@ -112,15 +125,8 @@
         }
 
         .summary-wrp {
-            border: 1px solid $border-color;
             background-color: $background-light;
-            padding: 40px;
-
-            .summary-row {
-                margin-left: 0;
-                margin-right: 0;
-                padding: 10px 0;
-            }
+            padding: 0 40px;
 
             .voucher {
                 .voucher-content {
@@ -139,8 +145,6 @@
                         font-size: 16px;
                         text-transform: uppercase;
                     }
-
-
                 }
             }
         }
@@ -159,7 +163,9 @@
 /* Desktop */
 @media(min-width: 1024px) {
     .cart-wrp {
-        padding: 60px 0;
+        display: inline-block;
+        max-width: none;
+        margin: 0;
 
         .items-wrp {
             max-width: 880px;
@@ -167,10 +173,18 @@
             float: left;
         }
 
-        .summary-container {
+        .summary-wrp {
             max-width: 540px;
             width: 45%;
             float: right;
+            padding: 0 20px;
+            margin-top: 30px;
+        }
+
+        > .actions-wrp {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
         }
 
         .empty-cart {
