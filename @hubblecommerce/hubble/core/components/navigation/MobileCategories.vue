@@ -9,7 +9,7 @@
                 </button>
             </div>
 
-            <nuxt-link v-if="firstItem && $parent.dataItem.url_path" :to="parentUrlPath">
+            <nuxt-link v-if="firstItem && $parent.dataItem.request_path" :to="parentUrlPath">
                 <button class="button-primary parent-link m-0 w-100">
                     <span v-if="$mq === 'sm'">{{ $t('Show parent', { parent: parentName }) }} </span>
                     <span v-if="$mq === 'md'">{{ $t('Show all parent', { parent: parentName }) }}</span>
@@ -96,7 +96,7 @@ export default {
             return !_.isEmpty(this.dataItem.children) || !_.isEmpty(this.dataItem.menu_items);
         },
         itemUrlPath: function () {
-            return '/' + this.dataItem.url_path;
+            return '/' + this.dataItem.request_path;
         },
         manufacturerUrlPath: function () {
             return '/' + this.dataItem.manufacturer_info_url;
@@ -106,7 +106,7 @@ export default {
             return this.$parent.dataItem.name;
         },
         parentUrlPath: function () {
-            return '/' + this.$parent.dataItem.url_path;
+            return '/' + this.$parent.dataItem.request_path;
         },
     },
 

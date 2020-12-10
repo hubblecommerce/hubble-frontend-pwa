@@ -1,10 +1,10 @@
 <template>
-    <div>
+    <div class="cart-items-list-wrp">
         <transition-group name="list">
             <template v-if="qty > 0">
-                <div v-for="item in items" :key="item.id" class="cart-items-list row item align-items-center">
-                    <nuxt-link :to="'/' + item.url_pds" class="col-9">
-                        <div class="row align-items-center">
+                <div v-for="item in items" :key="item.id" class="row cart-item">
+                    <nuxt-link :to="'/' + item.url_pds" class="col-8">
+                        <div class="row">
                             <div class="col-4">
                                 <img :src="itemImgPath(item)" class="product-img img-minicart" alt="Product Image" :title="item.name_orig" />
                             </div>
@@ -47,7 +47,7 @@
                         </div>
                     </nuxt-link>
 
-                    <div class="col-3 actions-wrp text-right">
+                    <div class="col-4 actions-wrp text-right">
                         <div v-if="!showLoader" aria-hidden="true" class="remove-item" @click="confirmRemoveItem(item)" v-text="$t('Remove')" />
 
                         <qty-selector :type="true" :qty="item.qty" :max-qty="getStockQtyOfVariant(item)" @changeQty="onChangeQty(item.id, $event)" />
