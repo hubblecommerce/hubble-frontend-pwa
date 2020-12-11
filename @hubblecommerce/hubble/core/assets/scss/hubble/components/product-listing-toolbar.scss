@@ -74,7 +74,7 @@
                 width: 100%;
                 left: 0;
                 right: 0;
-                top: $header-height-desktop + 48px; //todo: 48px change to variable
+                top: $header-height-desktop + $megamenu-height;
                 z-index: 10;
                 background: $background;
                 padding: 15px;

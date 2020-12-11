@@ -1,3 +1,6 @@
+$checkbox-color: $white;
+$toggle-icon-color: $darkest-gray;
+
 .filter-wrp {
     position: relative;
   .container.position-static {
@@ -48,11 +51,17 @@
         .hbl-checkbox {
             margin-bottom: 0;
         }
+
+        .apply-filter-wrp {
+          border-top: none;
+          padding: 10px;
+        }
       }
 
       .input-wrp {
         max-height: 400px;
         overflow-y: scroll;
+        border-bottom: 1px solid $border-color;
       }
     }
 
@@ -83,6 +92,7 @@
       }
 
       &.filter {
+
         .collapse-item {
           transition: all .2s ease-out;
         }
@@ -115,6 +125,7 @@
       position: relative;
 
       .icon {
+        color: $toggle-icon-color;
         font-size: 24px;
         line-height: 21px;
         top: 10px;
@@ -129,6 +140,10 @@
         padding-bottom: 0;
       }
     }
+
+    .filter-content-wrp{
+      padding: 20px;
+    }
   }
 }
 
@@ -136,9 +151,8 @@
   position: fixed;
   bottom: 0;
   right: 0;
-  padding: 15px;
+  padding: 10px;
   width: 100vw;
-  border-top: 1px solid $border-color;
   background-color: #fff;
 
   .reset-filter, .apply-filter {
@@ -202,7 +216,6 @@
   .filter-wrp {
       .facets-wrp .facet-wrp .toggle .icon {
           top: inherit;
-          z-index: -1;
       }
 
   }

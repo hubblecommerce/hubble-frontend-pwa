@@ -1,6 +1,17 @@
+$slider-background-color: $gray;
+$slider-active-color: $primary;
+$slider-handle-color: $primary;
+
 .price-slider {
   display: block;
   position: relative;
+
+  .action-bar{
+    padding: 0;
+    margin-bottom: 10px;
+    border-bottom: none;
+    justify-content: flex-end;
+  }
 
   .price-text {
     margin: 0 15%;
@@ -17,16 +28,32 @@
   }
 }
 
-.vue-slider-component {
-    margin-top: 15px;
+.vue-slider-component{
+    margin: 10px 5px 30px 5px;
+
+    .vue-slider {
+      background-color: $slider-background-color !important;
+    }
+
+    .vue-slider-dot {
+      width: 24px !important;
+      height: 24px !important;
+      top: -10px !important;
+      left: -5px !important;
+
+      .vue-slider-dot-handle {
+        background-color: $slider-handle-color !important;
+        box-shadow: none !important;
+      }
+    }
 
     .vue-slider-process {
-        background-color: $primary !important;
+        background-color: $slider-active-color !important;
     }
 }
 
 @media(min-width: 1024px) {
   .vue-slider-component {
-    margin-top: 30px;
+    margin-bottom: 10px;
   }
 }

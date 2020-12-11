@@ -16,24 +16,17 @@
 
                 <div class="facet-wrp">
                     <div class="facet-title" v-text="$t('Price')" />
-                    <collapsible
-                        :display-via-if="true"
-                        :toggle-text="$t('Price')"
-                        :max-height="100"
-                        open-icon-class="icon-chevron-down"
-                        close-icon-class="icon-chevron-up"
-                    >
+                    <div class="filter-content-wrp">
                         <price-slider
                             :data-min-value="minPriceSelectable"
                             :data-max-value="maxPriceSelectable"
                             :data-min-selected="minPriceSelected"
                             :data-max-selected="maxPriceSelected"
                         />
-                    </collapsible>
+                    </div>
                 </div>
             </div>
         </div>
-
 
         <div v-if="$mq === 'lg'" class="facets-wrp desktop">
             <template v-if="isSearchPage()">

@@ -1,6 +1,6 @@
 <template>
     <div v-click-outside="hideContent" class="collapse-wrp">
-        <button class="toggle m-0 align-left headline-4" :class="toggleClasses" @mousedown.prevent="collapseContent()" v-show="!displayViaIf">
+        <button class="toggle m-0 align-left headline-4" :class="toggleClasses" @mousedown.prevent="collapseContent()">
             {{ toggleText }}
 
             <transition-rotate-x>
