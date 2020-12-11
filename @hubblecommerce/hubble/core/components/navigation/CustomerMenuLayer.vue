@@ -19,14 +19,16 @@
                 <div v-if="!isLoggedIn" :key="'loggedOut'">
                     <login-form />
 
-                    <div class="headline" v-text="$t('I am not having an account yet')" />
+                    <div class="register-form">
+                        <div class="headline" v-text="$t('I am not having an account yet')" />
 
-                    <div class="subline">{{ $t('Simply create a customer account with us.') }}</div>
+                        <div class="subline">{{ $t('Simply create a customer account with us.') }}</div>
 
-                    <button class="button-primary" @click.prevent="showFormRegister">
-                        {{ $t('Register') }}
-                        <material-ripple />
-                    </button>
+                        <button class="button-primary" @click.prevent="showFormRegister">
+                            {{ $t('Register') }}
+                            <material-ripple />
+                        </button>
+                    </div>
                 </div>
             </transition>
         </div>

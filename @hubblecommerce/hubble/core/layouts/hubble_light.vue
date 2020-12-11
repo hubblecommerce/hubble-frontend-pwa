@@ -5,14 +5,17 @@
         <layout-wrapper v-if="$mq === 'sm' || $mq === 'md'">
             <div class="mobile-layout hubble-light">
                 <background-blur />
+
                 <div class="header-wrp">
                     <div class="nav-wrp container">
                         <button v-if="$mq === 'sm'" class="button button-icon" @click="historyBack()">
                             <i class="icon icon-arrow-left" />
-                            <div class="hidden-link-name">{{ $t('Back to shop') }}</div>
+                            <span class="hidden-link-name" v-text="$t('Back to shop')" />
                             <material-ripple />
                         </button>
+
                         <the-logo />
+
                         <div v-if="$mq === 'md'" class="action-wrp d-flex align-items-center">
                             <nuxt-link :to="localePath('index')">
                                 <button class="button-secondary">
@@ -22,6 +25,7 @@
                             </nuxt-link>
                         </div>
                     </div>
+
                     <flash-messages v-if="!activeOffCanvas" />
                 </div>
 
@@ -40,23 +44,15 @@
         <layout-wrapper v-if="$mq === 'lg'">
             <div class="desktop-layout hubble-light">
                 <background-blur />
+
                 <div class="header-wrp">
                     <div class="nav-wrp container">
                         <the-logo />
-                        <div class="action-wrp d-flex align-items-center ml-auto">
-                            <nuxt-link :to="localePath('index')">
-                                <button class="button-secondary">
-                                    {{ $t('Back to shop') }}
-                                    <material-ripple />
-                                </button>
-                            </nuxt-link>
-                        </div>
                         <flash-messages v-if="!activeOffCanvas" />
                     </div>
                 </div>
 
                 <main>
-                    <checkout-progress-bar />
                     <nuxt />
                 </main>
 
@@ -65,6 +61,7 @@
                 </div>
             </div>
         </layout-wrapper>
+
         <client-only>
             <div v-if="showCookieNotice" class="cookie-notice">
                 <cookie-notice />

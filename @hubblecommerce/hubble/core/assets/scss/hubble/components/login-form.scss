@@ -1,0 +1,32 @@
+.login-form, .password-forgot-form {
+    background-color: #fff;
+    margin: 0 auto;
+    padding: 0;
+    max-width: $form-max-width;
+
+    .headline {
+        margin-bottom: 15px;
+    }
+
+    .title {
+        font-size: 28px;
+        line-height: 30px;
+        margin-bottom: 25px;
+    }
+
+    .pw-reset {
+        color: $secondary;
+        text-decoration: underline;
+        text-align: right;
+        margin: 0;
+        margin-bottom: 13px;
+        text-transform: none;
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+    button {
+        width: 100%;
+        margin: 10px 0;
+    }
+}

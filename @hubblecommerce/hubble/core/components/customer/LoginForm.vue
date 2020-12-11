@@ -1,5 +1,5 @@
 <template>
-    <validation-observer v-if="showLoginForm" ref="observer" v-slot="{ passes }" tag="form" @submit.prevent="passes(submitLoginForm)">
+    <validation-observer v-if="showLoginForm" ref="observer" v-slot="{ passes }" tag="form" :class="'login-form'" @submit.prevent="passes(submitLoginForm)">
         <div class="headline headline-3" v-text="$t('I already have an account')" />
 
         <validation-provider v-slot="{ errors }" name="email" rules="required|email" mode="eager" tag="div" class="hbl-input-group input-icon">
@@ -110,7 +110,7 @@ import _ from 'lodash';
 
 export default {
     name: 'LoginForm',
-    
+
     mixins: [addBackendErrors],
 
     data() {

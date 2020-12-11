@@ -160,24 +160,6 @@
     }
 }
 
-.login-wrp, .register-wrp {
-    background-color: #fff;
-    margin: 20px auto;
-    padding: 20px;
-    max-width: 450px;
-
-    .title {
-        font-size: 28px;
-        line-height: 30px;
-        margin-bottom: 25px;
-    }
-
-    button {
-        width: 100%;
-        margin: 10px 0;
-    }
-}
-
 @media(min-width: 768px) {
     .customer-dashboard {
         .sidebar-wrp {

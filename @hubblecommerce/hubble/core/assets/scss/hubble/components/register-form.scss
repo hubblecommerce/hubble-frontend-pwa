@@ -1,33 +1,66 @@
 .register-form {
-  .register-loader {
-    height: 18px;
+    background-color: #fff;
+    margin: 20px auto;
+    padding: 0;
+    max-width: $form-max-width;
 
-    > div {
-      top: 7px;
-    }
-  }
-
-}
-.form-row {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-
-    &.street-nr {
-        .hbl-input-group:nth-child(1) {
-            width: calc(100% - 90px);
-        }
-        .hbl-input-group:nth-child(2) {
-            width: 80px;
-        }
+    .headline {
+        margin-bottom: 15px;
     }
 
-    &.zip-city {
-        .hbl-input-group:nth-child(1) {
-            width: 80px;
+    button {
+        width: 100%;
+    }
+
+    .base-data-wrp {
+        margin-bottom: 20px;
+    }
+
+    .billing-addresses-wrp {
+        margin-bottom: 20px;
+    }
+
+    .shipping-addresses-wrp {
+        margin-bottom: 20px;
+    }
+
+    .key-info {
+        margin-top: 20px;
+        color: $text-light;
+        margin-bottom: 40px;
+    }
+
+    .register-loader {
+        height: 18px;
+
+        > div {
+            top: 7px;
         }
-        .hbl-input-group:nth-child(2) {
-            width: calc(100% - 90px);
+    }
+
+    .form-row {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+
+        &.street-nr {
+            .hbl-input-group:nth-child(1) {
+                width: calc(100% - 90px);
+            }
+
+            .hbl-input-group:nth-child(2) {
+                width: 80px;
+            }
+        }
+
+        &.zip-city {
+            .hbl-input-group:nth-child(1) {
+                width: 80px;
+            }
+
+            .hbl-input-group:nth-child(2) {
+                width: calc(100% - 90px);
+            }
         }
     }
 }
