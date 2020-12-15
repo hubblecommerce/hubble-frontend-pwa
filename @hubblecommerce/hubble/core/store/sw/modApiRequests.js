@@ -258,7 +258,9 @@ export const actions = {
             }
         });
     },
-    async mapFilterToFacets({commit}, filters) {
+    async mapFilterToFacets({ commit }, payload) {
+        let filters = payload.filters;
+        let query = payload.query;
         return new Promise((resolve, reject) => {
             let facets = {
                 all: {
@@ -271,20 +273,21 @@ export const actions = {
             };
 
             try {
-                Object.keys(filters).forEach(function(filter) {
+                Object.keys(filters).forEach(function (filter) {
                     // Map string facets
                     if (filters[filter].type === 'entity') {
                         facets.string_facets[filter] = {
                             key: filters[filter].name,
                             label: filters[filter].name,
-                            selected: false,
+                            selected: _.has(query, filters[filter].name),
                             options: [],
                         };
 
-                        Object.keys(filters[filter].values).forEach(function(value) {
+                        Object.keys(filters[filter].values).forEach(function (value) {
                             facets.string_facets[filter].options.push({
                                 key: value,
                                 label: filters[filter].values[value].name,
+                                selected: _.includes(_.split(query[filters[filter].name], ','), value),
                             });
                         });
                     }

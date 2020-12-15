@@ -28,9 +28,14 @@ export default async function ({ store, route, error }) {
 
         if (pageResponse.data.resourceType === 'frontend.navigation.page') {
             return new Promise((resolve, reject) => {
-                store.dispatch('modApiRequests/mapFilterToFacets', pageResponse.data.listingConfiguration.availableFilters).then(facets => {
-                    store.commit('modApiRequests/setRequestFacets', facets);
-                });
+                store
+                    .dispatch('modApiRequests/mapFilterToFacets', {
+                        filters: pageResponse.data.listingConfiguration.availableFilters,
+                        query: route.query,
+                    })
+                    .then(facets => {
+                        store.commit('modApiRequests/setRequestFacets', facets);
+                    });
 
                 // Get and store category
                 store
@@ -114,4 +119,4 @@ export default async function ({ store, route, error }) {
         console.log(err);
         error({ statusCode: 404, message: 'Unknown URL' });
     }
-};
+}
