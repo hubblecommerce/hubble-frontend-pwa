@@ -43,25 +43,18 @@
 </template>
 
 <script>
-import { mapActions, mapMutations, mapState } from 'vuex';
-
-import Tabs from '../../components/utils/Tabs';
-import Tab from '../../components/utils/Tab';
-import SelectableOrder from './toolbar/SelectableOrder';
-import ProductListingFilter from './ProductListingFilter';
-import SelectedFacets from './toolbar/SelectedFacets';
-import SelectableLimit from './toolbar/SelectableLimit';
+import { mapActions, mapState } from 'vuex';
 
 export default {
     name: 'OffCanvasFilter',
 
     components: {
-        SelectableLimit,
-        SelectedFacets,
-        ProductListingFilter,
-        Tabs,
-        Tab,
-        SelectableOrder
+        SelectableLimit: () => import('./toolbar/SelectableLimit'),
+        SelectedFacets: () => import('./toolbar/SelectedFacets'),
+        ProductListingFilter: () => import('./ProductListingFilter'),
+        Tabs: () => import('../../components/utils/Tabs'),
+        Tab: () => import('../../components/utils/Tab'),
+        SelectableOrder: () => import('./toolbar/SelectableOrder')
     },
 
     props: {
@@ -90,11 +83,6 @@ export default {
     },
 
     methods: {
-        ...mapMutations({
-            setPaginationPage: 'modApiRequests/setPaginationPage',
-            setSelectedFacetsParam: 'modApiRequests/setSelectedFacetsParam',
-            resetSelectedFacetsParam: 'modApiRequests/resetSelectedFacetsParam',
-        }),
         ...mapActions({
             toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction',
             hideOffcanvasAction: 'modNavigation/hideOffcanvasAction',
@@ -111,7 +99,6 @@ export default {
             this.hideOffcanvasAction();
 
             return new Promise((resolve, reject) => {
-                //this.showFilter = false;
                 resolve();
             });
         },
