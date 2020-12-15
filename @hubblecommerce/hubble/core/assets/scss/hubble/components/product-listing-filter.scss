@@ -123,13 +123,15 @@ $toggle-icon-color: $darkest-gray;
       @include font-size($text-font-sizes);
       background-color: rgba(228, 228, 228, .3);
       position: relative;
+      padding-left: 10px;
+      padding-right: 35px;
 
       .icon {
         color: $toggle-icon-color;
         font-size: 24px;
         line-height: 21px;
-        top: 10px;
-        right: 15px;
+        top: 15px;
+        right: 5px;
       }
     }
 
