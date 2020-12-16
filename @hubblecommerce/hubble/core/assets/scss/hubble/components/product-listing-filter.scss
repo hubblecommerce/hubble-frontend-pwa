@@ -59,6 +59,10 @@
     }
 
     .collapse-wrp {
+        button {
+            text-transform: capitalize;
+        }
+        
       .item-amount {
         color: $green;
         border-radius: 100%;
