@@ -1,22 +1,8 @@
-.toolbar-wrp {
-    margin-bottom: 10px;
-    position: relative;
-
-    .item-count-wrp {
-        position: relative;
-        margin: 10px;
-    }
-
-    .bottom-toolbar {
-        display: none;
-    }
-}
-
 @media(min-width: 768px) {
     .toolbar-wrp {
         display: flex;
         justify-content: space-between;
-
+        align-items: center;
 
         .offcanvas-filter-wrp {
             .button-icon {
@@ -29,23 +15,33 @@
             display: block;
 
             .pagination {
-                align-items: center;
-            }
-
-            .selectable-order {
-                display: none;
+                position: absolute;
+                left: 0;
+                right: 0;
             }
 
             .hbl-select {
                 width: 180px;
-            }
-        }
+                border-color: $border-color;
 
-        .item-count-wrp {
-            position: absolute;
-            margin: 0;
-            left: 0;
-            top: 60px;
+                &:hover .select-text {
+                    border-color: $border-color;
+                }
+
+                .select-label{
+                    color: $dark-gray;
+                }
+
+                &:after {
+                    border-left: 1px solid $border-color;
+                }
+            }
+
+            .selectable-order {
+                display: block;
+                margin-bottom: 0;
+                margin-left: auto;
+            }
         }
     }
 }
@@ -91,33 +87,15 @@
                     background-color: $background;
                     border-bottom: 1px solid $border-color;
                 }
-
-                .bottom-toolbar {
-                    padding-top: 15px;
-                    width: 100%;
-                    position: relative;
-                    display: flex;
-
-                    .pagination {
-                        position: absolute;
-                        left: 0;
-                        right: 0;
-                    }
-
-                    .selectable-order {
-                        display: block;
-                        margin-bottom: 0;
-                        margin-left: auto;
-                    }
-                }
-
-                .item-count-wrp {
-                    position: absolute;
-                    top: 45px;
-                    right: 8px;
-                    left: initial;
-                }
             }
+        }
+
+        .bottom-toolbar {
+            padding-top: 15px;
+            width: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
         }
     }
 }
