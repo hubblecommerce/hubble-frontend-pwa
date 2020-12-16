@@ -4,7 +4,7 @@ export default function ({ store, route }) {
     // Set page type to cms if route is known (CMS Page) or dynamic and keep record from api (Category, Product, ...)
     if (route.path === route.matched[0].path || route.path === '/') {
         // Set page type to cms
-        store.commit('modApiResources/setPageType', null);
+        // store.commit('modApiResources/setPageType', null);
     }
 
     // Get page type and init clickPath
