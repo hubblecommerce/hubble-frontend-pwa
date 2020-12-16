@@ -14,22 +14,17 @@
 </template>
 
 <script>
-import ProductListingFilter from './ProductListingFilter';
-import SelectedFacets from './toolbar/SelectedFacets';
-import Pagination from './toolbar/Pagination';
-import SelectableOrder from './toolbar/SelectableOrder';
-import { mapState } from 'vuex'
-import OffCanvasFilter from './OffcanvasFilter'
+import { mapState } from 'vuex';
 
 export default {
     name: 'ProductListingToolbar',
 
     components: {
-        OffCanvasFilter,
-        ProductListingFilter,
-        SelectedFacets,
-        Pagination,
-        SelectableOrder,
+        OffCanvasFilter: () => ('./OffcanvasFilter'),
+        ProductListingFilter: () => ('./ProductListingFilter'),
+        SelectedFacets: () => ('./toolbar/SelectedFacets'),
+        Pagination: () => ('./toolbar/Pagination'),
+        SelectableOrder: () => ('./toolbar/SelectableOrder'),
     },
 
     props: {
