@@ -1,6 +1,6 @@
 <template>
     <div class="price-slider">
-        <div class="action-bar" v-if="$mq === 'lg'">
+        <div class="action-bar">
             <div class="reset-facet" v-text="$t('Reset')" @click="resetPrice()" />
         </div>
         <div class="price-text">
@@ -139,10 +139,10 @@ export default {
         },
         resetPrice: function () {
             if(this.filterOnChange) {
-                this.sliderValues[0] = this.dataMinValue;
+                this.$set(this.sliderValues, 0,this.dataMinValue);
                 this.setSelectedPriceMin(this.sliderValues[0]);
 
-                this.sliderValues[1] = this.dataMaxValue;
+                this.$set(this.sliderValues, 1,this.dataMaxValue);
                 this.setSelectedPriceMax(this.sliderValues[1]);
 
                 this.applyFilter();
