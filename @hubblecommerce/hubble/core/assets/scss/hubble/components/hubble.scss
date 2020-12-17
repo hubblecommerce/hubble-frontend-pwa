@@ -7,7 +7,7 @@
     padding-bottom: 60px;
 
     &.hubble-light {
-        padding-bottom: 175px;
+        padding-bottom: 125px;
 
         .nav-wrp {
             button {
@@ -156,6 +156,10 @@
         &.hubble-light {
             .logo-wrp {
                 width: inherit;
+            }
+
+            main {
+                padding-top: $header-height-desktop;
             }
         }
 

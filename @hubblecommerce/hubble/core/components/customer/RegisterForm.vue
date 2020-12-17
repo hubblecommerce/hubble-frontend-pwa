@@ -18,31 +18,6 @@
                 <div class="validation-msg" v-text="$t(errors[0])" />
             </validation-provider>
 
-            <validation-provider
-                v-slot="{ errors }"
-                name="email-repeat"
-                rules="required|email|confirmed:email"
-                mode="eager"
-                tag="div"
-                class="hbl-input-group"
-            >
-                <input
-                    id="email-repeat"
-                    v-model="form.baseData.emailRepeat"
-                    type="text"
-                    name="email"
-                    value=""
-                    :class="{ invalid: errors.length > 0 }"
-                    placeholder=" "
-                    required
-                    @paste="onPaste($event)"
-                />
-
-                <label for="email-repeat" v-text="$t('Repeat Email Address') + '*'" />
-
-                <div class="validation-msg" v-text="$t(errors[0])" />
-            </validation-provider>
-
             <div class="hbl-input-group">
                 <input id="phone" v-model="form.baseData.phone" type="text" name="phone" value="" placeholder=" " />
 
@@ -65,7 +40,7 @@
                 <div class="validation-msg" v-text="$t(errors[0])" />
             </validation-provider>
 
-            <template v-if="!guest">
+            <template v-if="!form.baseData.isGuest">
                 <validation-provider
                     v-slot="{ errors }"
                     vid="password"
@@ -117,6 +92,11 @@
                     <div class="validation-msg" v-text="$t(errors[0])" />
                 </validation-provider>
             </template>
+
+            <div class="hbl-checkbox">
+                <input v-model="form.baseData.isGuest" id="isGuest" type="checkbox">
+                <label for="isGuest" v-text="$t('I would like to checkout as a guest')" />
+            </div>
         </div>
 
         <div class="billing-addresses-wrp">
@@ -446,7 +426,7 @@
             <div class="error-message" v-text="error" />
         </template>
 
-        <button v-if="guest" class="button-primary" :disabled="processingRegister" @click.prevent="passes(submitRegisterGuestForm)">
+        <button v-if="form.baseData.isGuest" class="button-primary" :disabled="processingRegister" @click.prevent="passes(submitRegisterGuestForm)">
             <span v-if="!processingRegister">{{ $t('Guest order') }}</span>
 
             <div v-if="processingRegister" class="loader register-loader lds-ellipsis">
@@ -473,11 +453,6 @@
 
         <div class="key-info">
             <div class="text-small">{{ $t('* Required information is marked with an asterisk.') }}</div>
-            <div class="text-small">{{
-                $t(
-                    '** We regularly send you carefully selected offers from our range by e-mail. All personal data requested during the newsletter registration will not be passed on to third parties. You may object to the use of your e-mail address for promotional purposes at any time online or through an informal e-mail.'
-                )
-            }}</div>
         </div>
     </validation-observer>
 </template>
@@ -492,14 +467,6 @@ export default {
     name: 'RegisterForm',
 
     mixins: [addBackendErrors, salutations],
-
-    props: {
-        guest: {
-            type: Boolean,
-            required: false,
-            default: false,
-        },
-    },
 
     data() {
         return {
@@ -521,6 +488,7 @@ export default {
                     phone: '',
                     email: '',
                     password: '',
+                    isGuest: false
                 },
                 addresses: [
                     {
@@ -793,10 +761,7 @@ export default {
                     }
                 );
             }
-        },
-        onPaste: function (e) {
-            e.preventDefault();
-        },
+        }
     },
 };
 </script>

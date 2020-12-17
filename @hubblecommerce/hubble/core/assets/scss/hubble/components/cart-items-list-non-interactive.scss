@@ -1,0 +1,8 @@
+.cart-items-list-wrp.non-interactive {
+    .cart-item {
+        .qty {
+            @include font-size($text-font-sizes);
+            margin-right: 5px;
+        }
+    }
+}

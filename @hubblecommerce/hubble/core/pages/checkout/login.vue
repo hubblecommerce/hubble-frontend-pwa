@@ -8,10 +8,12 @@
             <div class="col-12 ">
                 <div class="register-form">
                     <div class="headline headline-3" v-text="$t('I am not having an account yet')" />
-                    <button class="button-primary">
-                        {{ $t('Register') }}
-                        <material-ripple />
-                    </button>
+                    <nuxt-link :to="localePath('checkout-register')">
+                        <button class="button-primary">
+                            {{ $t('Register') }}
+                            <material-ripple />
+                        </button>
+                    </nuxt-link>
                 </div>
             </div>
         </div>
@@ -23,7 +25,7 @@ import LoginForm from '../../components/customer/LoginForm';
 import apiPaymentAuthenticate from '~/anonymous-middleware/apiPaymentAuthenticate';
 
 export default {
-    name: 'Login',
+    name: 'CheckoutLogin',
 
     components: {
         LoginForm
