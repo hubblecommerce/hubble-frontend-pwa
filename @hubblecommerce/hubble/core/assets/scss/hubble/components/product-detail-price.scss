@@ -63,25 +63,3 @@
         display: block;
     }
 }
-
-@media(min-width: 1024px) {
-
-    .price-box {
-        margin-bottom: 15px;
-
-        .sale-price {
-            font-size: 26px;
-            line-height: 31px;
-        }
-
-        .old-price {
-            font-size: 26px;
-            line-height: 31px;
-        }
-
-        .info {
-            font-size: 14px;
-            color: $dark-gray;
-        }
-    }
-}
