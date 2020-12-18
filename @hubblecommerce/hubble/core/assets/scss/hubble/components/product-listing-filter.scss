@@ -1,3 +1,6 @@
+$checkbox-color: $white;
+$toggle-icon-color: $darkest-gray;
+
 .filter-wrp {
     position: relative;
   .container.position-static {
@@ -16,8 +19,6 @@
   padding-bottom: 80px;
   width: 100%;
 
-
-
   &.desktop {
     margin-right: auto;
     display: flex;
@@ -32,10 +33,10 @@
 
       .toggle {
         border-radius: 2px;
-        border: 1px solid $border-color;
         height: 33px;
         font-weight: $font-weight-regular;
         font-size: 16px;
+        border: none;
       }
 
       .collapse-item {
@@ -50,11 +51,17 @@
         .hbl-checkbox {
             margin-bottom: 0;
         }
+
+        .apply-filter-wrp {
+          border-top: none;
+          padding: 10px;
+        }
       }
 
       .input-wrp {
         max-height: 400px;
         overflow-y: scroll;
+        border-bottom: 1px solid $border-color;
       }
     }
 
@@ -89,6 +96,7 @@
       }
 
       &.filter {
+
         .collapse-item {
           transition: all .2s ease-out;
         }
@@ -109,8 +117,6 @@
   }
 
   .facet-wrp {
-    //margin-left: -15px;
-    //margin-right: -15px;
 
     .filter {
         position: relative;
@@ -121,12 +127,15 @@
       @include font-size($text-font-sizes);
       background-color: rgba(228, 228, 228, .3);
       position: relative;
+      padding-left: 10px;
+      padding-right: 35px;
 
       .icon {
+        color: $toggle-icon-color;
         font-size: 24px;
         line-height: 21px;
-        top: 10px;
-        right: 15px;
+        top: 15px;
+        right: 5px;
       }
     }
 
@@ -137,6 +146,10 @@
         padding-bottom: 0;
       }
     }
+
+    .filter-content-wrp{
+      padding: 20px;
+    }
   }
 }
 
@@ -144,9 +157,8 @@
   position: fixed;
   bottom: 0;
   right: 0;
-  padding: 15px;
+  padding: 10px;
   width: 100vw;
-  border-top: 1px solid $border-color;
   background-color: #fff;
 
   .reset-filter, .apply-filter {
@@ -210,7 +222,6 @@
   .filter-wrp {
       .facets-wrp .facet-wrp .toggle .icon {
           top: inherit;
-          z-index: -1;
       }
 
   }

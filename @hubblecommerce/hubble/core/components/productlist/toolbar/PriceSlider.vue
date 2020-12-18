@@ -1,13 +1,18 @@
 <template>
     <div class="price-slider">
-        <div class="price text-left" :class="priceMinSelected ? 'price-selected' : ''">
-            <span v-text="curMinLabel" />
-            <span v-text="curCurrencySign" />
+        <div class="action-bar">
+            <div class="reset-facet" v-text="$t('Reset')" @click="resetPrice()" />
         </div>
-
-        <div class="price text-right" :class="priceMaxSelected ? 'price-selected' : ''">
-            <span v-text="curMaxLabel" />
-            <span v-text="curCurrencySign" />
+        <div class="price-text">
+            <div class="price text-left" :class="priceMinSelected ? 'price-selected' : ''">
+                <span v-text="curMinLabel" />
+                <span v-text="curCurrencySign" />
+            </div>
+            <span v-text="' - '" />
+            <div class="price text-right" :class="priceMaxSelected ? 'price-selected' : ''">
+                <span v-text="curMaxLabel" />
+                <span v-text="curCurrencySign" />
+            </div>
         </div>
 
         <vue-slider
@@ -132,6 +137,17 @@ export default {
                 this.setSelectedPriceMax(this.sliderValues[1]);
             }
         },
+        resetPrice: function () {
+            if(this.filterOnChange) {
+                this.$set(this.sliderValues, 0,this.dataMinValue);
+                this.setSelectedPriceMin(this.sliderValues[0]);
+
+                this.$set(this.sliderValues, 1,this.dataMaxValue);
+                this.setSelectedPriceMax(this.sliderValues[1]);
+
+                this.applyFilter();
+            }
+        }
     },
 };
 </script>

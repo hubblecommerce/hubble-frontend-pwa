@@ -16,7 +16,7 @@
 
         <template v-if="displayViaIf">
             <transition @before-enter="beforeEnter" @after-enter="afterEnter" @before-leave="beforeLeave">
-                <div v-if="collapse" ref="collapseContent" class="collapse show collapse-item">
+                <div v-if="!collapse" ref="collapseContent" class="collapse show collapse-item">
                     <slot />
                 </div>
             </transition>

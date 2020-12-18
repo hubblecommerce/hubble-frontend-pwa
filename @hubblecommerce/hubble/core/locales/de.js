@@ -212,6 +212,7 @@ export default context => {
             Filter: 'Filter',
             'filter': 'filtern',
             'sort': 'sortieren',
+            'Reset': 'Zurücksetzen',
             'Reset Filter': 'Zurücksetzen',
             'Reset wishlist': 'Zurücksetzen',
             ' selected': ' ausgewählt',

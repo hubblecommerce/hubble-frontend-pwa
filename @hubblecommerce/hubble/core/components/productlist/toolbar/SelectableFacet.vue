@@ -11,7 +11,7 @@ Component usage:
         open-icon-class="icon-chevron-down"
         close-icon-class="icon-chevron-up"
     >
-        <div class="action-bar">
+        <div class="action-bar" v-if="$mq === 'lg'">
             <div class="selected-facets" v-text="modelSelected.length + $t(' selected')" />
             <div class="reset-facet" @click="resetAll()" v-text="$t('Reset Filter')" />
         </div>

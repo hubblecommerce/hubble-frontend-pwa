@@ -184,6 +184,7 @@ export default context => {
             Filter: 'Filter',
             'filter': 'filter',
             'sort': 'sort',
+            'Reset': 'Reset',
             'Reset Filter': 'Reset Filter',
             'Reset wishlist': 'Reset wishlist',
             ' selected': ' selected',
