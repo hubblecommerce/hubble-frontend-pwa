@@ -30,7 +30,6 @@
                         <product-listing
                             :data-items="categoryProductItems"
                             list="Category"
-                            :extra-class="{ 'offset-top': isSticky }"
                             :category="categoryItem.name"
                         />
                         <div class="pagination-bottom">
@@ -57,6 +56,7 @@
 <script>
 import { mapState, mapGetters } from 'vuex';
 import _ from 'lodash';
+import ProductListingToolbarVue from './ProductListingToolbar.vue';
 
 export default {
     name: 'CategoryListing',
@@ -200,12 +200,12 @@ export default {
 
         this.$nextTick(() => {
             // Set position data for sticky elements
-            if (document.getElementsByClassName('listing-wrp')) {
+            if (document.getElementsByClassName('category-header')) {
                 if (this.$mq === 'lg') {
-                    if (document.getElementsByClassName('listing-wrp')[0]) {
-                        let bodyRect = document.body.getBoundingClientRect(),
-                            elemRect = document.getElementsByClassName('listing-wrp')[0].getBoundingClientRect();
-                        this.position = elemRect.top - bodyRect.top;
+                    if (document.getElementsByClassName('category-header')[0]) {
+                        let bodyRect = document.getElementsByClassName('header-wrp')[0].getBoundingClientRect(),
+                            elemRect = document.getElementsByClassName('category-header')[0].getBoundingClientRect();
+                        this.position = elemRect.bottom - bodyRect.bottom;
                     }
                 }
             }
