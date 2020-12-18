@@ -3,6 +3,7 @@ $product-listing-gutter: 10px;
 .listing-wrp {
   position: relative;
   margin-bottom: 15px;
+  padding-top: 15px;
 
   &.row {
     display: flex;
@@ -38,13 +39,4 @@ $product-listing-gutter: 10px;
 
 .product-carousel {
   margin-bottom: 20px;
-}
-
-/* Desktop */
-@media(min-width: 1024px) {
-  .listing-wrp {
-    &.offset-top {
-      padding-top: 91px;
-    }
-  }
 }

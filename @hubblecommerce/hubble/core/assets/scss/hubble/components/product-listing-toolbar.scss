@@ -3,6 +3,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        margin-top: 20px;
 
         .offcanvas-filter-wrp {
             .button-icon {
@@ -71,9 +72,9 @@
                 left: 0;
                 right: 0;
                 top: $header-height-desktop + $megamenu-height;
-                z-index: 10;
+                z-index: 20;
                 background: $background;
-                padding: 15px;
+                padding: 15px 20px;
                 margin-bottom: 0;
 
                 &:before {
