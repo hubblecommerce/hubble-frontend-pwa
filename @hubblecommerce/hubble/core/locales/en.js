@@ -428,6 +428,7 @@ export default context => {
             'I would like to checkout as a guest': 'I would like to checkout as a guest',
             'Show Cart': 'Show Cart',
             'Hide Cart': 'Hide Cart',
+            'Addresses could not be loaded': 'Addresses could not be loaded'
         });
     });
 };

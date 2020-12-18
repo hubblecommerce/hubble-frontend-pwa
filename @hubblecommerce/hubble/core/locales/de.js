@@ -469,6 +469,7 @@ export default context => {
             'I would like to checkout as a guest': 'Ich möchte als Gast bestellen',
             'Show Cart': 'Warenkorb anzeigen',
             'Hide Cart': 'Warenkorb verstecken',
+            'Addresses could not be loaded': 'Adressen konnten nicht geladen werden.'
         });
     });
 };

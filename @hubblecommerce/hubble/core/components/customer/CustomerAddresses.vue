@@ -656,8 +656,6 @@ export default {
                     .catch(res => {
                         this.loading = false;
 
-                        console.log('getCustomerAddresses failed');
-
                         this.errors.push(this.$t('Addresses could not be loaded'));
 
                         if (!this.errors.includes('No network connection')) {
