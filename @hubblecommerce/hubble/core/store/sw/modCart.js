@@ -129,7 +129,7 @@ export const actions = {
                     tokenType: 'sw',
                     apiType: 'data',
                     swContext: state.swtc,
-                    endpoint: '/sales-channel-api/v3/checkout/cart',
+                    endpoint: '/store-api/v3/checkout/cart',
                 },
                 {root: true}
             )
@@ -166,7 +166,7 @@ export const actions = {
                     action: 'post',
                     tokenType: 'sw',
                     apiType: 'data',
-                    endpoint: '/sales-channel-api/v3/checkout/cart',
+                    endpoint: '/store-api/v3/checkout/cart',
                 },
                 {root: true}
             )
@@ -208,7 +208,7 @@ export const actions = {
     saveCartToStorage({commit, state, dispatch, getters}, payload) {
         return new Promise((resolve, reject) => {
             // Map products from calculated cart response from sw to hubble data structure
-            dispatch('mappingCartProducts', {products: payload.response.data.data.lineItems}).then(response => {
+            dispatch('mappingCartProducts', {products: payload.response.data.lineItems}).then(response => {
                 commit('setCartItemsObj', response.mappedProducts);
                 commit('setCartItemsCount', response.cartItemsQuantity);
             });
@@ -236,8 +236,15 @@ export const actions = {
         });
     },
     swAddtToCart({state, dispatch}, payload) {
-        const _endpoint = `/sales-channel-api/v3/checkout/cart/product/${payload.item.id}`;
+        const endpoint = '/store-api/v3/checkout/cart/line-item';
 
+        let items = [
+            {
+                type: 'product',
+                referencedId: payload.item.id,
+                quantity: payload.qty,
+            }
+        ]
         return new Promise((resolve, reject) => {
             dispatch(
                 'apiCall',
@@ -246,9 +253,9 @@ export const actions = {
                     tokenType: 'sw',
                     apiType: 'data',
                     swContext: state.swtc,
-                    endpoint: _endpoint,
+                    endpoint: endpoint,
                     data: {
-                        quantity: payload.qty,
+                        items
                     },
                 },
                 {root: true}
@@ -333,12 +340,12 @@ export const actions = {
     },
     setTotals({commit}, payload) {
         return new Promise((resolve, reject) => {
-            commit('setSubtotals', payload.data.data.price.positionPrice);
+            commit('setSubtotals', payload.data.price.positionPrice);
 
-            commit('setTotals', payload.data.data.price.totalPrice);
+            commit('setTotals', payload.data.price.totalPrice);
 
-            if (!_.isEmpty(payload.data.data.deliveries)) {
-                commit('setShippingCosts', payload.data.data.deliveries[0].shippingCosts.totalPrice);
+            if (!_.isEmpty(payload.data.deliveries)) {
+                commit('setShippingCosts', payload.data.deliveries[0].shippingCosts.totalPrice);
             } else {
                 commit('setShippingCosts', 0);
             }
@@ -378,7 +385,15 @@ export const actions = {
         });
     },
     swUpdateLineItem({state, dispatch}, payload) {
-        const _endpoint = `/sales-channel-api/v3/checkout/cart/line-item/${payload.id}`;
+        const endpoint = '/store-api/v3/checkout/cart/line-item';
+
+        let items = [
+            {
+                id: payload.id,
+                quantity: payload.qty,
+                referencedId: payload.referencedId,
+            }
+        ];
 
         return new Promise((resolve, reject) => {
             dispatch(
@@ -388,9 +403,9 @@ export const actions = {
                     tokenType: 'sw',
                     apiType: 'data',
                     swContext: state.swtc,
-                    endpoint: _endpoint,
+                    endpoint: endpoint,
                     data: {
-                        quantity: payload.qty,
+                        items
                     },
                 },
                 {root: true}
@@ -424,7 +439,7 @@ export const actions = {
         });
     },
     swRemoveLineItem({state, dispatch}, payload) {
-        const _endpoint = `/sales-channel-api/v3/checkout/cart/line-item/${payload.id}`;
+        const endpoint = '/store-api/v3/checkout/cart/line-item';
 
         return new Promise((resolve, reject) => {
             dispatch(
@@ -434,7 +449,10 @@ export const actions = {
                     tokenType: 'sw',
                     apiType: 'data',
                     swContext: state.swtc,
-                    endpoint: _endpoint,
+                    endpoint: endpoint,
+                    data: {
+                        id: [payload.id],
+                    }
                 },
                 {root: true}
             )
@@ -528,7 +546,6 @@ export const actions = {
     },
     setByForage({commit, state}) {
         return new Promise(resolve => {
-            // console.log("this has val: ", this);
             this.$localForage.getItem(state.cookieName).then(response => {
                 // Remove local storage if its invalid (end of lifetime)
                 if (!localStorageHelper.lifeTimeIsValid(response, state.localStorageLifetime)) {
@@ -571,6 +588,7 @@ export const actions = {
             resolve({
                 name_orig: product.label,
                 id: product.id,
+                referenceId: product.referencedId,
                 qty: product.quantity,
                 final_price_item: {
                     special_price: null,
