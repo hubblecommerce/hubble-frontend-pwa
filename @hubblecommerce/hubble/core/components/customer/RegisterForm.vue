@@ -426,7 +426,7 @@
             <div class="error-message" v-text="error" />
         </template>
 
-        <button v-if="form.baseData.isGuest" class="button-primary" :disabled="processingRegister" @click.prevent="passes(submitRegisterGuestForm)">
+        <button v-if="form.baseData.isGuest" class="button-primary" :disabled="processingRegister" @click.prevent="passes(submitRegisterForm)">
             <span v-if="!processingRegister">{{ $t('Guest order') }}</span>
 
             <div v-if="processingRegister" class="loader register-loader lds-ellipsis">
@@ -584,6 +584,7 @@ export default {
             }
 
             // Api requires name property, so create name from billing first and last name
+            let guest = this.form.baseData.isGuest;
             let name = this.form.addresses[0].payload.firstName + ' ' + this.form.addresses[0].payload.lastName;
             let email = this.form.baseData.email;
             let password = this.form.baseData.password;
@@ -607,13 +608,14 @@ export default {
                 birthday: birthday,
                 phoneNumber: phoneNumber,
                 shippingAddress: shippingAddress,
+                guest: guest,
             };
 
             // Register new customer
             this.register(userData)
                 .then(() => {
                     // Save wishlist
-                    this.postWishlist({
+                    /*this.postWishlist({
                         user_id: this.customer.customerData.id,
                         wishlist: {
                             qty: this.wishlistQty,
@@ -628,7 +630,7 @@ export default {
                         })
                         .catch(response => {
                             console.log('postWishlist error: ', response);
-                        });
+                        });*/
 
                     // if double addressbook mode is true store address separately
                     // but not for SW API because the billing address is already set in register action

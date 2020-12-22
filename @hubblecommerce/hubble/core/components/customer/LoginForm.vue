@@ -212,9 +212,9 @@ export default {
 
                     this.errors.push(this.$t('Login failed'));
 
-                    _.forEach(this.addBackendErrors(error), error => {
+                    /*_.forEach(this.addBackendErrors(error), error => {
                         this.errors.push(error);
-                    });
+                    });*/
                 });
         },
         // TODO: only show pw reset if not sw

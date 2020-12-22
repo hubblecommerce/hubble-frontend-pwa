@@ -31,8 +31,7 @@
                 <div>
                     <span v-text="mapIsoToCountry(address.payload.country, countries)" />
                 </div>
-                <!-- TODO: Implement edit address when SW provides it -->
-                <div v-if="!isShopware" class="link text-small edit-address" @click="updateAddress(address)" v-text="$t('Edit address')" />
+                <div class="link text-small edit-address" @click="updateAddress(address)" v-text="$t('Edit address')" />
             </div>
             <div class="button-wrapper">
                 <button
@@ -67,7 +66,6 @@
                 </div>
                 <!-- TODO: Implement edit address when SW provides it -->
                 <div
-                    v-if="!isShopware"
                     class="link text-small edit-address"
                     @click="updateAddress(defaultShippingAddress)"
                     v-text="$t('Edit address')"
@@ -477,7 +475,6 @@ export default {
 
             streetIncludesHouseNo: process.env.STREETINFO_INCLUDES_HOUSENO === 'true',
             alternativeShippingAddress: process.env.ALTERNATIVE_SHIPPING_ADDRESS === 'true',
-            isShopware: process.env.API_TYPE === 'sw',
 
             addresses: {
                 billing: [],

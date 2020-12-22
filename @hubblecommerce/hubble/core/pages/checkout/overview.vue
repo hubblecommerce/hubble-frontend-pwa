@@ -149,7 +149,7 @@ export default {
             try {
                 order = await this.placeOrderAction();
 
-                paymentResponse = await this.swStartPayment(order.data.data.id);
+                paymentResponse = await this.swStartPayment(order.data.id);
 
                 if (paymentResponse.data.paymentUrl) {
                     this.resetProcessingCheckout();

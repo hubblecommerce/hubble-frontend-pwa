@@ -73,6 +73,7 @@ export const actions = {
         return new Promise((resolve, reject) => {
             // Map customer data to fit SW6 headless API
             let customer = {
+                guest: payload.guest,
                 salutationId: payload.address.gender,
                 email: payload.email,
                 firstName: payload.address.firstName,
@@ -84,6 +85,7 @@ export const actions = {
                     countryId: payload.address.country,
                 },
                 password: payload.password,
+                storefrontUrl: process.env.API_BASE_URL + '/',
             };
 
             if (payload.shippingAddress !== null) {
@@ -104,7 +106,7 @@ export const actions = {
                     action: 'post',
                     tokenType: 'sw',
                     apiType: 'data',
-                    endpoint: '/sales-channel-api/v3/customer',
+                    endpoint: '/store-api/v3/account/register',
                     data: customer,
                 },
                 {root: true}
@@ -113,13 +115,15 @@ export const actions = {
                     // Clear customer data
                     commit('clearCustomerData');
 
-                    commit('setCustomerData', {
-                        id: response.data.data,
-                    });
+                    commit('setCustomerData', response.data);
 
-                    dispatch('logIn', payload).then(() => {
+                    if(!customer.guest) {
+                        dispatch('logIn', payload).then(() => {
+                            resolve(response);
+                        });
+                    } else {
                         resolve(response);
-                    });
+                    }
                 })
                 .catch(response => {
                     console.log('register - API post request failed: %o', response);
@@ -142,7 +146,7 @@ export const actions = {
                     tokenType: 'sw',
                     apiType: 'data',
                     swContext: rootState.modCart.swtc,
-                    endpoint: '/sales-channel-api/v3/customer/login',
+                    endpoint: '/store-api/v3/account/login',
                     data: loginCreds,
                 },
                 {root: true}
@@ -161,7 +165,7 @@ export const actions = {
                         created_at: new Date(),
                         expires_at: getters.getCookieExpires,
                         expires_in: 86400,
-                        token: response.data['sw-context-token'],
+                        token: response.data['contextToken'],
                         token_name: 'swtc',
                         token_type: 'context',
                         updated_at: '',
@@ -172,7 +176,7 @@ export const actions = {
                     // Override / Set Cart Context Token
                     // because otherwise there would be two different context tokens (one for cart, one for customer) without
                     // any relation to each other
-                    dispatch('modCart/saveSwtc', response.data['sw-context-token'], {root: true}).then(() => {
+                    dispatch('modCart/saveSwtc', response.data['contextToken'], {root: true}).then(() => {
                         // Clear current cart
                         // Get cart of logged in user
                         // save cart to forage
@@ -223,7 +227,7 @@ export const actions = {
                     tokenType: 'sw',
                     apiType: 'data',
                     swContext: state.customer.customerAuth.token,
-                    endpoint: '/sales-channel-api/v3/customer/logout',
+                    endpoint: '/store-api/v3/account/logout',
                 },
                 {root: true}
             )
@@ -365,34 +369,40 @@ export const actions = {
                     tokenType: 'sw',
                     apiType: 'data',
                     swContext: state.customer.customerAuth.token,
-                    endpoint: '/sales-channel-api/v3/customer',
+                    endpoint: '/store-api/v3/account/customer',
                 },
                 {root: true}
             )
                 .then(response => {
+                    console.log(response)
                     const customerData = {
-                        name: `${response.data.data.firstName} ${response.data.data.lastName}`,
-                        firstName: response.data.data.firstName,
-                        lastName: response.data.data.lastName,
-                        salutationId: response.data.data.salutationId,
-                        title: response.data.data.title,
-                        birthDay: response.data.data.birthday,
-                        email: response.data.data.email,
-                        defaultBillingAddressId: response.data.data.defaultBillingAddressId,
-                        defaultShippingAddressId: response.data.data.defaultShippingAddressId,
+                        name: `${response.data.firstName} ${response.data.lastName}`,
+                        firstName: response.data.firstName,
+                        lastName: response.data.lastName,
+                        salutationId: response.data.salutationId,
+                        title: response.data.title,
+                        birthDay: response.data.birthday,
+                        email: response.data.email,
+                        defaultBillingAddressId: response.data.defaultBillingAddressId,
+                        defaultShippingAddressId: response.data.defaultShippingAddressId,
                     };
 
                     commit('setCustomerData', customerData);
 
                     const addresses = {
-                        billingDefault: response.data.data.defaultBillingAddress,
-                        shippingDefault: response.data.data.defaultShippingAddress,
+                        billingDefault: response.data.defaultBillingAddress,
+                        shippingDefault: response.data.defaultShippingAddress,
                     };
 
-                    dispatch('mapDefaultAddresses', addresses).then(mappedAddresses => {
-                        commit('setCustomerAddresses', mappedAddresses);
-                        resolve('OK');
-                    });
+                    // todo: find out why store api endpoint sends default addresses as null
+                    if(addresses.billingDefault !== null || addresses.shippingDefault !== null ) {
+                        dispatch('mapDefaultAddresses', addresses).then(mappedAddresses => {
+                            commit('setCustomerAddresses', mappedAddresses);
+                            resolve('OK');
+                        });
+                    } else {
+                        resolve('Ok');
+                    }
                 })
                 .catch(response => {
                     console.log('getCustomerInfo failed: %o', response);
@@ -410,7 +420,7 @@ export const actions = {
                     tokenType: 'sw',
                     apiType: 'data',
                     swContext: state.customer.customerAuth.token,
-                    endpoint: '/sales-channel-api/v3/customer/address',
+                    endpoint: '/store-api/v3/account/list-address',
                 },
                 {root: true}
             )
@@ -418,7 +428,7 @@ export const actions = {
                     // Get customerinfo to know which addresses are set as default
                     dispatch('getCustomerInfo')
                         .then(() => {
-                            dispatch('mapAddresses', response.data.data).then(mappedAddresses => {
+                            dispatch('mapAddresses', response.data.elements).then(mappedAddresses => {
                                 commit('setCustomerAddresses', mappedAddresses);
                                 resolve('OK');
                             });
@@ -451,7 +461,7 @@ export const actions = {
                     tokenType: 'sw',
                     apiType: 'data',
                     swContext: state.customer.customerAuth.token,
-                    endpoint: '/sales-channel-api/v3/customer/address',
+                    endpoint: '/store-api/v3/account/address',
                     data: requestBody,
                 },
                 {root: true}
@@ -474,33 +484,36 @@ export const actions = {
                 });
         });
     },
-    async editAddress({dispatch}, payload) {
+    async editAddress({ state, dispatch }, address) {
+        let requestBody = {
+            salutationId: address.payload.gender,
+            firstName: address.payload.firstName,
+            lastName: address.payload.lastName,
+            street: address.payload.street,
+            zipcode: address.payload.postal,
+            city: address.payload.city,
+            countryId: address.payload.country,
+        };
         return new Promise((resolve, reject) => {
-            // TODO: Edit Address not implemented in SW6 headless API yet
-
-            if (payload.is_billing_default) {
-                dispatch('setDefaultBillingAddress', payload.id)
-                    .then(response => {
-                        resolve(response);
-                    })
-                    .catch(err => {
-                        console.log('setDefaultBillingAddress failed: ', err);
-
-                        reject(err);
-                    });
-            }
-
-            if (payload.is_shipping_default) {
-                dispatch('setDefaultShippingAddress', payload.id)
-                    .then(response => {
-                        resolve(response);
-                    })
-                    .catch(err => {
-                        console.log('setDefaultShippingAddress failed: ', err);
-
-                        reject(err);
-                    });
-            }
+            dispatch(
+                'apiCall',
+                {
+                    action: 'patch',
+                    tokenType: 'sw',
+                    apiType: 'data',
+                    swContext: state.customer.customerAuth.token,
+                    endpoint: `/store-api/v3/account/address/${address.id}`,
+                    data: requestBody,
+                },
+                {root: true}
+            )
+            .then(response => {
+                resolve(response);
+            })
+            .catch(err => {
+                console.log('edit address failed: %o', err);
+                reject(err);
+            });
         });
     },
     async deleteCustomerAddress({state, dispatch}, payload) {
@@ -515,7 +528,7 @@ export const actions = {
                         tokenType: 'sw',
                         apiType: 'data',
                         swContext: state.customer.customerAuth.token,
-                        endpoint: `/sales-channel-api/v3/customer/address/${payload.id}`,
+                        endpoint: `/store-api/v3/account/address/${payload.id}`,
                     },
                     {root: true}
                 )
@@ -556,7 +569,7 @@ export const actions = {
                     tokenType: 'sw',
                     apiType: 'data',
                     swContext: state.customer.customerAuth.token,
-                    endpoint: `/sales-channel-api/v3/customer/address/${payload}/default-billing`,
+                    endpoint: `/store-api/v3/account/address/default-billing/${payload}`,
                 },
                 {root: true}
             )
@@ -579,7 +592,7 @@ export const actions = {
                     tokenType: 'sw',
                     apiType: 'data',
                     swContext: state.customer.customerAuth.token,
-                    endpoint: `/sales-channel-api/v3/customer/address/${payload}/default-shipping`,
+                    endpoint: `/store-api/v3/account/address/default-shipping/${payload}`,
                 },
                 {root: true}
             )
@@ -602,7 +615,7 @@ export const actions = {
                     tokenType: 'sw',
                     apiType: 'data',
                     swContext: state.customer.customerAuth.token,
-                    endpoint: '/sales-channel-api/v3/customer/order',
+                    endpoint: '/store-api/v3/order',
                     params: {
                         limit: 500,
                     },
@@ -630,7 +643,7 @@ export const actions = {
                     tokenType: 'sw',
                     apiType: 'data',
                     swContext: state.customer.customerAuth.token,
-                    endpoint: '/sales-channel-api/v3/customer/password',
+                    endpoint: '/store-api/v3/account/change-password',
                     data: {
                         password: payload.password_old,
                         newPassword: payload.password,
@@ -764,7 +777,7 @@ export const actions = {
                     tokenType: 'sw',
                     swContext: state.customer.customerAuth.token,
                     apiType: 'data',
-                    endpoint: '/sales-channel-api/v3/customer',
+                    endpoint: '/store-api/v3/account/change-profile',
                     data: editedCustomerData,
                 },
                 {root: true}
@@ -792,7 +805,7 @@ export const actions = {
                     tokenType: 'sw',
                     swContext: state.customer.customerAuth.token,
                     apiType: 'data',
-                    endpoint: '/sales-channel-api/v3/customer/email',
+                    endpoint: '/store-api/v3/account/change-email',
                     data: {
                         email: payload.email,
                         emailConfirmation: payload.emailRepeat,
