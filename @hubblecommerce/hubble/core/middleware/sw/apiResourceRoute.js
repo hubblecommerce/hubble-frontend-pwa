@@ -28,15 +28,6 @@ export default async function ({ store, route, error }) {
 
         if (pageResponse.data.resourceType === 'frontend.navigation.page') {
             return new Promise((resolve, reject) => {
-                store
-                    .dispatch('modApiRequests/mapFilterToFacets', {
-                        filters: pageResponse.data.listingConfiguration.availableFilters,
-                        query: route.query,
-                    })
-                    .then(facets => {
-                        store.commit('modApiRequests/setRequestFacets', facets);
-                    });
-
                 // Get and store category
                 store
                     .dispatch('modApiCategory/swGetCategory', matchingCategoryId)

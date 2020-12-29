@@ -273,40 +273,57 @@ export const actions = {
             };
 
             try {
-                Object.keys(filters).forEach(function (filter) {
-                    // Map string facets
-                    if (filters[filter].type === 'entity') {
-                        facets.string_facets[filter] = {
-                            key: filters[filter].name,
-                            label: filters[filter].name,
-                            selected: _.has(query, filters[filter].name),
+                if(filters.manufacturer) {
+                    facets.string_facets['manufacturer'] = {
+                        key: 'manufacturer',
+                        label: 'Manufacturer',
+                        selected: _.has(query, 'manufacturer'),
+                        options: [],
+                    };
+                    _.forEach(filters.manufacturer.entities, option => {
+                        facets.string_facets['manufacturer'].options.push({
+                            key: option.id,
+                            label: option.translated.name,
+                            selected: facets.string_facets['manufacturer'] ? _.includes(_.split(query['manufacturer'], ','), option.id) : false,
+                        });
+                    });
+                }
+
+                _.forEach(filters.properties.entities, filter => {
+                    if(filter.filterable) {
+                        facets.string_facets[filter.name] = {
+                            key: filter.name,
+                            label: filter.translated.name,
+                            selected: _.has(query, filter.name),
                             options: [],
                         };
-
-                        Object.keys(filters[filter].values).forEach(function (value) {
-                            facets.string_facets[filter].options.push({
-                                key: value,
-                                label: filters[filter].values[value].name,
-                                selected: _.includes(_.split(query[filters[filter].name], ','), value),
+                        _.forEach(filter.options, option => {
+                            facets.string_facets[filter.name].options.push({
+                                key: option.id,
+                                label: option.translated.name,
+                                selected: facets.string_facets[filter.name] ? _.includes(_.split(query[filter.name], ','), option.id) : false,
                             });
                         });
                     }
-
-                    // Map price facet
-                    if (filter === 'price') {
-                        facets.price_facets[filter] = {
-                            key: filter,
-                            label: filter,
-                            selected: false,
-                            'facet-stats': {
-                                min: filters[filter].values.min,
-                                max: filters[filter].values.max,
-                            },
-                        };
-                    }
                 });
 
-                resolve(facets);
+
+                if(filters.price) {
+                    facets.price_facets['price'] = {
+                        key: 'price',
+                        label: 'price',
+                        selected: false,
+                        'facet-stats': {
+                            min: filters.price.min,
+                            max: filters.price.max,
+                        },
+                    };
+                }
+
+                //todo: ratings and shipping free needs to be mapped too (when filters for them are implemented)
+
+                commit('setRequestFacets', facets);
+                resolve();
             } catch {
                 reject('Error: could not map filter to facets');
             }

@@ -243,6 +243,16 @@ export const actions = {
                 });
         });
     },
+    async mappingListingData({commit, dispatch}, payload) {
+        return new Promise(function(resolve, reject) {
+            dispatch('modApiRequests/mapFilterToFacets', {
+                filters: payload.listingData.aggregations,
+                query: payload.query,
+            }, {root: true}).then(res => {
+                resolve();
+            });
+        });
+    },
     async mappingCategory({commit}, payload) {
         return new Promise(function(resolve, reject) {
             // MAPPING

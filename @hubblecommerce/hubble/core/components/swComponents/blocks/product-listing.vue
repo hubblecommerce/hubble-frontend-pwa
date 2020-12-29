@@ -8,6 +8,8 @@
 
 <script>
 import { blockMixins } from '../helper';
+import _ from 'lodash'
+import { mapActions } from 'vuex'
 
 export default {
     name: 'ProductListingBlock',
@@ -25,6 +27,22 @@ export default {
             return this.getSlotByPosition(this.content.slots, 'content');
         },
     },
+    created() {
+        let listingData = {};
+        _.forEach(this.content.slots, slot => {
+            if (slot.data && slot.data.apiAlias === 'cms_product_listing') {
+                listingData = slot.data.listing;
+            }
+        });
+
+        this.mapListingData({ listingData: listingData, query: this.$route.query });
+    },
+
+    methods: {
+        ...mapActions({
+            mapListingData: 'modApiCategory/mappingListingData',
+        }),
+    }
 };
 </script>
 
