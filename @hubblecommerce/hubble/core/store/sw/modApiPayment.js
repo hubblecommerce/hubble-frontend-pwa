@@ -97,7 +97,7 @@ export const getters = {
 }
 
 export const actions = {
-            /*async swGuestOrder({ dispatch }, payload) {
+            async swGuestOrder({ dispatch }, payload) {
                 return new Promise((resolve, reject) => {
                     dispatch(
                         'apiCall',
@@ -121,14 +121,46 @@ export const actions = {
                         });
                 });
             },
-            async placeGuestOrder({ dispatch, commit }, payload) {
-                let order = payload.order;
+            async placeGuestOrder({ dispatch, commit, rootState }) {
+                const customerData = rootState.modApiCustomer.customer.customerData;
+                let order = {
+                    guest: customerData.guest,
+                    salutationId: customerData.salutationId,
+                    email: customerData.email,
+                    firstName: customerData.firstName,
+                    lastName: customerData.lastName,
+                    password: customerData.password,
+                    storefrontUrl: process.env.API_BASE_URL + '/',
+                };
 
-                // Set salutation uuid
-                order.billingAddress.salutationId = order.salutationId;
+                _.forEach(rootState.modApiCustomer.customer.customerAddresses, address => {
+                    if(address.is_billing_default) {
+                        order.billingAddress = {
+                            salutationId: address.payload.gender,
+                            firstName: address.payload.firstName,
+                            lastName: address.payload.lastName,
+                            street: address.payload.street,
+                            zipcode: address.payload.postal,
+                            city: address.payload.city,
+                            countryId: address.payload.country,
+                        };
+                    }
+                    if(address.is_shipping_default) {
+                        order.shippingAddress = {
+                            salutationId: address.payload.gender,
+                            firstName: address.payload.firstName,
+                            lastName: address.payload.lastName,
+                            street: address.payload.street,
+                            zipcode: address.payload.postal,
+                            city: address.payload.city,
+                            countryId: address.payload.country,
+                        };
+                    }
+                })
+                console.log(order)
 
                 return new Promise((resolve, reject) => {
-                    dispatch('swGuestOrder', { order: order, swtc: payload.swtc })
+                    dispatch('swGuestOrder', { order: order, swtc: rootState.modCart.swtc })
                         .then(res => {
                             dispatch('modCart/clearAll', {}, { root: true })
                                 .then(() => {
@@ -137,7 +169,7 @@ export const actions = {
 
                                         commit('modApiCustomer/setCustomerAuth', { token: res.data['sw-context-token'] }, { root: true });
 
-                                        resolve(res);
+                                        resolve(res.data);
                                     });
                                 })
                                 .catch(err => {
@@ -152,7 +184,7 @@ export const actions = {
                             reject(error);
                         });
                 });
-            },*/
+            },
             async swPlaceOrder({ dispatch, rootState }) {
                 return new Promise((resolve, reject) => {
                     dispatch(

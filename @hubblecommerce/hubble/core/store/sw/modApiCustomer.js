@@ -69,7 +69,82 @@ export const getters = {
 }
 
 export const actions = {
-    async register({dispatch, commit}, payload) {
+    async registerGuest({dispatch, commit, state, getters}, payload) {
+        return new Promise((resolve, reject) => {
+            // Map customer data to fit SW6 headless API
+            let customer = {
+                guest: payload.guest,
+                salutationId: payload.address.gender,
+                email: payload.email,
+                firstName: payload.address.firstName,
+                lastName: payload.address.lastName,
+                defaultBillingAddressId: 0,
+                defaultShippingAddressId: 0,
+            };
+
+            let customerAddresses = [];
+            customerAddresses.push({
+                id: 0,
+                salutationId: payload.address.gender,
+                firstName: payload.address.firstName,
+                lastName: payload.address.lastName,
+                street: payload.address.street,
+                zipcode: payload.address.postal,
+                city: payload.address.city,
+                countryId: payload.address.country,
+            });
+
+            if (payload.shippingAddress !== null) {
+                customer.shippingAddress = {
+                    id: 1,
+                    salutationId: payload.shippingAddress.gender,
+                    firstName: payload.shippingAddress.firstName,
+                    lastName: payload.shippingAddress.lastName,
+                    street: payload.shippingAddress.street,
+                    zipcode: payload.shippingAddress.postal,
+                    city: payload.shippingAddress.city,
+                    countryId: payload.shippingAddress.country,
+                };
+                customer.defaultShippingAddressId = 1;
+                customerAddresses.push(customer.shippingAddress);
+            }
+            // Remove cookies
+            this.$cookies.remove(state.cookieName);
+            this.$cookies.remove(state.cookieNameOrder);
+            this.$cookies.remove(state.cookieNameAddress);
+
+            let authData = {
+                created_at: new Date(),
+                expires_at: getters.getCookieExpires,
+                expires_in: 86400,
+                token: 'guest',
+                token_name: 'swtc',
+                token_type: 'context',
+                updated_at: '',
+            };
+
+            // Clear order Data
+            commit('modApiPayment/setChosenPaymentMethod', {}, {root: true});
+            commit('modApiPayment/setChosenShippingMethod', {}, {root: true});
+
+            commit('setCustomerData', customer);
+            commit('setCustomerAuth', authData);
+            dispatch('mapAddresses', customerAddresses).then(mappedAddresses => {
+                commit('setCustomerAddresses', mappedAddresses);
+                this.$cookies.set(
+                    state.cookieName,
+                    state.customer,
+                    {
+                        path: state.cookiePath,
+                        expires: getters.getCookieExpires,
+                    }
+                );
+
+                resolve();
+            });
+        });
+    },
+    async register({dispatch, commit, state, getters}, payload) {
         return new Promise((resolve, reject) => {
             // Map customer data to fit SW6 headless API
             let customer = {
@@ -117,12 +192,62 @@ export const actions = {
 
                     commit('setCustomerData', response.data);
 
-                    if(!customer.guest) {
+
+                    if(!response.data.guest) {
                         dispatch('logIn', payload).then(() => {
                             resolve(response);
                         });
                     } else {
-                        resolve(response);
+                        // preperation for store-api v4
+                        // Remove cookies
+                        this.$cookies.remove(state.cookieName);
+                        this.$cookies.remove(state.cookieNameOrder);
+                        this.$cookies.remove(state.cookieNameAddress);
+
+                        // save customer auth as guest and their addresses in store and cookie
+                        let authData = {
+                            created_at: new Date(),
+                            expires_at: getters.getCookieExpires,
+                            expires_in: 86400,
+                            token: response.data['contextToken'],
+                            token_name: 'swtc',
+                            token_type: 'context',
+                            updated_at: '',
+                        };
+
+
+                        const customerData = {
+                            guest: response.data.guest,
+                            name: `${response.data.firstName} ${response.data.lastName}`,
+                            firstName: response.data.firstName,
+                            lastName: response.data.lastName,
+                            salutationId: response.data.salutationId,
+                            title: response.data.title,
+                            birthDay: response.data.birthday,
+                            email: response.data.email,
+                            defaultBillingAddressId: response.data.defaultBillingAddressId,
+                            defaultShippingAddressId: response.data.defaultShippingAddressId,
+                        };
+
+                        // Clear order Data
+                        commit('modApiPayment/setChosenPaymentMethod', {}, {root: true});
+                        commit('modApiPayment/setChosenShippingMethod', {}, {root: true});
+
+                        commit('setCustomerData', customerData);
+                        commit('setCustomerAuth', authData);
+                        dispatch('mapAddresses', response.data.addresses).then(mappedAddresses => {
+                            commit('setCustomerAddresses', mappedAddresses);
+                            this.$cookies.set(
+                                state.cookieName,
+                                state.customer,
+                                {
+                                    path: state.cookiePath,
+                                    expires: getters.getCookieExpires,
+                                }
+                            );
+
+                            resolve(response);
+                        });
                     }
                 })
                 .catch(response => {
@@ -374,8 +499,8 @@ export const actions = {
                 {root: true}
             )
                 .then(response => {
-                    console.log(response)
                     const customerData = {
+                        guest: false,
                         name: `${response.data.firstName} ${response.data.lastName}`,
                         firstName: response.data.firstName,
                         lastName: response.data.lastName,

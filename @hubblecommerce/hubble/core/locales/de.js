@@ -191,6 +191,7 @@ export default context => {
             'Please select': 'Bitte auswählen',
             'Customer Account': 'Kundenkonto',
             'I already have an account': 'Ich habe bereits ein Konto',
+            'You already have an account?': 'Sie haben bereits ein Konto?',
             'Reset your Password': 'Passwort vergessen',
             'Change your Password': 'Passwort ändern',
             'Current Password': 'Aktuelles Passwort',

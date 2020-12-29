@@ -9,6 +9,21 @@
     .register-options-wrp {
         padding: 20px 0;
     }
+
+    .checkout-btn {
+        &:disabled,
+        &[disabled] {
+            color: $button-primary-color;
+        }
+
+        .loader {
+            height: $button-line-height;
+
+            > div {
+                top: 7px;
+            }
+        }
+    }
 }
 
 @media(min-width: 1024px) {

@@ -43,6 +43,8 @@ export default {
             offcanvas: state => state.modNavigation.offcanvas,
             swtc: state => state.modCart.swtc,
             currentOrder: state => state.modApiPayment.currentOrder,
+            customer: state => state.modApiCustomer.customer,
+            cookieName: state => state.modApiCustomer.cookieName,
         }),
     },
 
@@ -50,6 +52,11 @@ export default {
         setTimeout(() => {
             this.loading = false;
         }, 500);
+
+        // remove auth cookie for succesfull guest order
+        if (this.customer.customerData.guest) {
+            this.$cookies.remove(this.cookieName);
+        }
     },
 
     methods: {

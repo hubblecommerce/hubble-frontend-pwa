@@ -74,6 +74,7 @@ import CustomerAddresses from '../../components/customer/CustomerAddresses';
 import {mapActions, mapMutations, mapState} from "vuex";
 import { addBackendErrors } from '../../utils/formMixins';
 import _ from "lodash";
+import apiCustomerAuthenticate from '~/anonymous-middleware/apiCustomerAuthenticate';
 
 export default {
     name: "CheckoutOverview",
@@ -87,7 +88,7 @@ export default {
         ShippingMethods: () => import('../../components/checkout/ShippingMethods')
     },
 
-    middleware: [cartValidate, 'apiLocalization', 'trackClickPath'],
+    middleware: [apiCustomerAuthenticate, cartValidate, 'apiLocalization', 'trackClickPath'],
 
     layout: 'hubble_light',
 
@@ -105,6 +106,7 @@ export default {
             cart: state => state.modCart.cart,
             qty: state => state.modCart.cart.items_qty,
             processingCheckout: state => state.modApiPayment.processingCheckout,
+            customer: state => state.modApiCustomer.customer
         }),
     },
     methods: {
@@ -115,6 +117,7 @@ export default {
         ...mapActions({
             validateOrder: 'modApiPayment/validateOrder',
             placeOrderAction: 'modApiPayment/placeOrder',
+            placeGuestOrder: 'modApiPayment/placeGuestOrder',
             swStartPayment: 'modApiPayment/swStartPayment',
         }),
         isEmpty: function (val) {
@@ -147,7 +150,11 @@ export default {
             let paymentResponse;
 
             try {
-                order = await this.placeOrderAction();
+                if (this.customer.customerData.guest) {
+                    order = await this.placeGuestOrder();
+                } else {
+                    order = await this.placeOrderAction();
+                }
 
                 paymentResponse = await this.swStartPayment(order.data.id);
 

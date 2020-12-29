@@ -26,13 +26,18 @@ export default function ({ isHMR, store, redirect, app, route }) {
 
         // check expiry of cachable object
         if (expires_at >= datetimeUnixNow()) {
-            return;
+            // only registered users can enter customer sites
+            if (_.includes(route.path, '/customer' && !store.state.modApiCustomer.customer.customerData.guest)) {
+                return;
+            } else {
+                return;
+            }
         }
     }
 
     // Checks where to redirect depending on which route someone is trying to access
     if (_.includes(route.path, '/checkout')) {
-        return redirect('/checkout/login');
+        return redirect('/checkout/register');
     }
     return redirect('/customer/login');
 }

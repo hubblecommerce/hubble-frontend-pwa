@@ -188,7 +188,7 @@ export default {
                         if (this.$router.history.current.path.includes('/checkout')) {
                             if (process.env.API_TYPE === 'sw') {
                                 this.$router.push({
-                                    path: this.localePath('checkout-shopware-onepage'),
+                                    path: this.localePath('checkout-overview'),
                                 });
 
                                 return;

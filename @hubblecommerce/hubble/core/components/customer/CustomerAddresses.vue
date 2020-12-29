@@ -101,14 +101,6 @@
                     <div v-if="!formIsActiveAddressSelectDefault">
                         <div class="row content-wrp">
                             <div class="col-12">
-                                <div v-if="formIsActiveAddressUpdate" class="hbl-checkbox save-address-checkbox">
-                                    <input id="save-address" v-model="saveAsNewAddress" type="checkbox" />
-
-                                    <label for="save-address">
-                                        <span class="name" v-text="$t('Store as new address')" />
-                                    </label>
-                                </div>
-
                                 <validation-observer
                                     ref="observer"
                                     v-slot="{ passes }"
@@ -336,7 +328,7 @@
                                     </template>
 
                                     <button
-                                        v-if="formIsActiveAddressUpdate && !saveAsNewAddress"
+                                        v-if="formIsActiveAddressUpdate"
                                         class="button-primary"
                                         @click.prevent="passes(submitUpdateForm)"
                                     >
@@ -345,7 +337,7 @@
                                     </button>
 
                                     <button
-                                        v-if="formIsActiveAddressCreate || saveAsNewAddress"
+                                        v-if="formIsActiveAddressCreate"
                                         class="button-primary"
                                         @click.prevent="passes(submitCreateForm)"
                                     >
@@ -489,8 +481,6 @@ export default {
             selectedDefault: null,
             selectedDelete: [],
 
-            saveAsNewAddress: false,
-
             errors: [],
 
             addressTemplate: new Form({
@@ -526,7 +516,7 @@ export default {
             return this.offcanvas.component === this.name;
         },
         isGuest: function () {
-            return this.customer.customerAuth.token === 'guest';
+            return this.customer.customerData.guest;
         },
         currentDefaultAddress: function () {
             if (this.address.is_billing) {
@@ -620,8 +610,6 @@ export default {
                         this.formIsActiveAddressCreate = false;
                         this.formIsActiveAddressUpdate = false;
                         this.formIsActiveAddressSelectDefault = false;
-
-                        this.saveAsNewAddress = false;
 
                         this.address = new Form();
                     }

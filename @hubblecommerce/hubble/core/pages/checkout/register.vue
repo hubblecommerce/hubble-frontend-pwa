@@ -37,7 +37,7 @@
             <div class="customer-register-wrp">
                 <div class="headline headline-2" v-text="$t('Contact Information')" />
                 <div class="text">
-                    {{$t('I am not having an account yet')}}
+                    {{$t('You already have an account?')}}
                     <nuxt-link :to="localePath('checkout-login')" v-text="$t('Login')" />
                 </div>
                 <register-form />
