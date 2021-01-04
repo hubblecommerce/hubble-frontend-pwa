@@ -11,12 +11,8 @@ module.exports = {
         'eslint:recommended',
         'plugin:vue/recommended',
         'plugin:nuxt/recommended',
-        // we could consider switching to https://github.com/prettier/prettier-eslint
-        'plugin:prettier/recommended',
+        'prettier',
         'prettier/vue',
-    ],
-    plugins: [
-        'vue',
     ],
     rules: {
         'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
