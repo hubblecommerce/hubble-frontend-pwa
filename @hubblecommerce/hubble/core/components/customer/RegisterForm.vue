@@ -18,31 +18,6 @@
                 <div class="validation-msg" v-text="$t(errors[0])" />
             </validation-provider>
 
-            <validation-provider
-                v-slot="{ errors }"
-                name="email-repeat"
-                rules="required|email|confirmed:email"
-                mode="eager"
-                tag="div"
-                class="hbl-input-group"
-            >
-                <input
-                    id="email-repeat"
-                    v-model="form.baseData.emailRepeat"
-                    type="text"
-                    name="email"
-                    value=""
-                    :class="{ invalid: errors.length > 0 }"
-                    placeholder=" "
-                    required
-                    @paste="onPaste($event)"
-                />
-
-                <label for="email-repeat" v-text="$t('Repeat Email Address') + '*'" />
-
-                <div class="validation-msg" v-text="$t(errors[0])" />
-            </validation-provider>
-
             <div class="hbl-input-group">
                 <input id="phone" v-model="form.baseData.phone" type="text" name="phone" value="" placeholder=" " />
 
@@ -65,7 +40,7 @@
                 <div class="validation-msg" v-text="$t(errors[0])" />
             </validation-provider>
 
-            <template v-if="!guest">
+            <template v-if="!form.baseData.isGuest">
                 <validation-provider
                     v-slot="{ errors }"
                     vid="password"
@@ -117,6 +92,11 @@
                     <div class="validation-msg" v-text="$t(errors[0])" />
                 </validation-provider>
             </template>
+
+            <div v-if="checkoutRegister" class="hbl-checkbox">
+                <input v-model="form.baseData.isGuest" id="isGuest" type="checkbox">
+                <label for="isGuest" v-text="$t('I would like to checkout as a guest')" />
+            </div>
         </div>
 
         <div class="billing-addresses-wrp">
@@ -446,7 +426,7 @@
             <div class="error-message" v-text="error" />
         </template>
 
-        <button v-if="guest" class="button-primary" :disabled="processingRegister" @click.prevent="passes(submitRegisterGuestForm)">
+        <button v-if="form.baseData.isGuest" class="button-primary" :disabled="processingRegister" @click.prevent="passes(submitRegisterForm)">
             <span v-if="!processingRegister">{{ $t('Guest order') }}</span>
 
             <div v-if="processingRegister" class="loader register-loader lds-ellipsis">
@@ -473,11 +453,6 @@
 
         <div class="key-info">
             <div class="text-small">{{ $t('* Required information is marked with an asterisk.') }}</div>
-            <div class="text-small">{{
-                $t(
-                    '** We regularly send you carefully selected offers from our range by e-mail. All personal data requested during the newsletter registration will not be passed on to third parties. You may object to the use of your e-mail address for promotional purposes at any time online or through an informal e-mail.'
-                )
-            }}</div>
         </div>
     </validation-observer>
 </template>
@@ -492,14 +467,6 @@ export default {
     name: 'RegisterForm',
 
     mixins: [addBackendErrors, salutations],
-
-    props: {
-        guest: {
-            type: Boolean,
-            required: false,
-            default: false,
-        },
-    },
 
     data() {
         return {
@@ -521,6 +488,7 @@ export default {
                     phone: '',
                     email: '',
                     password: '',
+                    isGuest: false
                 },
                 addresses: [
                     {
@@ -573,6 +541,9 @@ export default {
             customer: state => state.modApiCustomer.customer,
             countries: state => state.modApiCustomer.availableCountries,
         }),
+        checkoutRegister: function() {
+            return _.includes(this.$route.path, 'checkout');
+        },
     },
 
     mounted() {
@@ -599,7 +570,7 @@ export default {
         ...mapMutations({
             setWishlistId: 'modWishlist/setWishlistId',
         }),
-        submitRegisterForm: function () {
+        submitRegisterForm: async function () {
             this.errors = [];
 
             this.processingRegister = true;
@@ -616,6 +587,7 @@ export default {
             }
 
             // Api requires name property, so create name from billing first and last name
+            let guest = this.form.baseData.isGuest;
             let name = this.form.addresses[0].payload.firstName + ' ' + this.form.addresses[0].payload.lastName;
             let email = this.form.baseData.email;
             let password = this.form.baseData.password;
@@ -623,6 +595,7 @@ export default {
             let address = this.form.addresses[0].payload;
             let birthday = this.form.baseData.birthday;
             let phoneNumber = this.form.baseData.phone;
+            let isGuest = this.form.baseData.isGuest;
 
             let shippingAddress = null;
             if (process.env.API_TYPE === 'sw' && this.differentShippingAddress) {
@@ -632,6 +605,7 @@ export default {
             // Extract data for api to handle
             let userData = {
                 name: name,
+                isGuest: isGuest,
                 email: email,
                 password: password,
                 password_confirm: passwordConfirm,
@@ -639,116 +613,27 @@ export default {
                 birthday: birthday,
                 phoneNumber: phoneNumber,
                 shippingAddress: shippingAddress,
+                guest: guest,
             };
 
-            // Register new customer
-            this.register(userData)
-                .then(() => {
-                    // Save wishlist
-                    this.postWishlist({
-                        user_id: this.customer.customerData.id,
-                        wishlist: {
-                            qty: this.wishlistQty,
-                            items: this.wishlistState,
-                        },
-                    })
-                        .then(response => {
-                            // Get newly created wishlist id and save to store
-                            this.setWishlistId(response.data.item.id);
+            try {
+                if (userData.isGuest) {
+                    await this.registerGuest(userData);
+                } else {
+                    await this.register(userData);
+                }
 
-                            this.saveToStore();
-                        })
-                        .catch(response => {
-                            console.log('postWishlist error: ', response);
-                        });
+                this.redirectTo();
+            } catch (e) {
+                // Show api request error
+                console.log('Api request error: ', e);
 
-                    // if double addressbook mode is true store address separately
-                    // but not for SW API because the billing address is already set in register action
-                    if (this.alternativeShippingAddress && process.env.API_TYPE !== 'sw') {
-                        // Store Address
-                        this.storeCustomerAddress(this.form.addresses[0])
-                            .then(() => {
-                                // Store different shipping address
-                                if (this.differentShippingAddress) {
-                                    this.storeCustomerAddress(this.form.addresses[1])
-                                        .then(() => {
-                                            this.redirectToCheckout();
-                                        })
-                                        .catch(error => {
-                                            _.forEach(this.addBackendErrors(error), error => {
-                                                this.errors.push(error);
-                                            });
-
-                                            this.processingRegister = false;
-                                        });
-                                } else {
-                                    this.redirectToCheckout();
-                                }
-                            })
-                            .catch(err => {
-                                // Show api request error
-                                console.log('Api request error: ', err);
-
-                                _.forEach(this.addBackendErrors(err), error => {
-                                    this.errors.push(error);
-                                });
-
-                                this.processingRegister = false;
-                            });
-                    } else {
-                        this.redirectToCheckout();
-                    }
-                })
-                .catch(err => {
-                    console.log('Api request error: ', err);
-
-                    // Show api request error
-                    _.forEach(this.addBackendErrors(err), error => {
-                        this.errors.push(error);
-                    });
-
-                    this.processingRegister = false;
+                _.forEach(this.addBackendErrors(e), error => {
+                    this.errors.push(error);
                 });
-        },
-        submitRegisterGuestForm: function () {
-            this.processingRegister = true;
 
-            // Set first address to shipping address to false
-            if (this.differentShippingAddress) {
-                this.form.addresses[0].is_shipping = false;
+                this.processingRegister = false;
             }
-
-            // If billing the same as shipping set billing as shipping and edit types
-            if (!this.differentShippingAddress) {
-                this.setShippingAsBilling();
-            }
-
-            // Clear error messages
-            this.errors = [];
-
-            this.form.baseData.firstname = this.form.addresses[0].payload.firstName;
-            this.form.baseData.lastname = this.form.addresses[0].payload.lastName;
-
-            // Post request with login credentials
-            this.registerGuest(this.form)
-                .then(() => {
-                    // If current route is checkout, then do redirect to checkout
-                    if (this.$router.history.current.path.includes('/checkout')) {
-                        this.$router.push(
-                            {
-                                path: this.localePath('checkout-payment'),
-                            },
-                            () => {
-                                this.processingRegister = false;
-                            }
-                        );
-                    }
-                })
-                .catch(() => {
-                    this.errors.push(this.$t('Register failed'));
-
-                    this.processingRegister = false;
-                });
         },
         setShippingAsBilling: function () {
             this.form.addresses[1] = _.cloneDeep(this.form.addresses[0]);
@@ -759,31 +644,20 @@ export default {
             this.form.addresses[0].is_shipping = false;
             this.form.addresses[0].is_shipping_default = false;
         },
-        redirectToCheckout: function () {
+        redirectTo: function () {
             // If current route is checkout, then do redirect to checkout
-            if (this.$router.history.current.path.includes('/checkout')) {
-                if (process.env.API_TYPE === 'sw') {
-                    this.$router.push(
-                        {
-                            path: this.localePath('checkout-shopware-onepage'),
-                        },
-                        () => {
-                            this.processingRegister = false;
-                        }
-                    );
-                } else {
-                    this.$router.push(
-                        {
-                            path: this.localePath('checkout-payment'),
-                        },
-                        () => {
-                            this.processingRegister = false;
-                        }
-                    );
-                }
+            if (this.$route.path.includes('/checkout')) {
+                this.$router.push(
+                    {
+                        path: this.localePath('checkout-overview'),
+                    },
+                    () => {
+                        this.processingRegister = false;
+                    }
+                );
             }
 
-            if (this.$router.history.current.path.includes('/customer')) {
+            if (this.$route.path.includes('/customer')) {
                 this.$router.push(
                     {
                         path: this.localePath('customer-dashboard'),
@@ -793,10 +667,7 @@ export default {
                     }
                 );
             }
-        },
-        onPaste: function (e) {
-            e.preventDefault();
-        },
+        }
     },
 };
 </script>

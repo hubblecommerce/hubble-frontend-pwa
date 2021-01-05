@@ -121,14 +121,46 @@ export const actions = {
                         });
                 });
             },
-            async placeGuestOrder({ dispatch, commit }, payload) {
-                let order = payload.order;
+            async placeGuestOrder({ dispatch, commit, rootState }) {
+                const customerData = rootState.modApiCustomer.customer.customerData;
+                let order = {
+                    guest: customerData.guest,
+                    salutationId: customerData.salutationId,
+                    email: customerData.email,
+                    firstName: customerData.firstName,
+                    lastName: customerData.lastName,
+                    password: customerData.password,
+                    storefrontUrl: process.env.API_BASE_URL + '/',
+                };
 
-                // Set salutation uuid
-                order.billingAddress.salutationId = order.salutationId;
+                _.forEach(rootState.modApiCustomer.customer.customerAddresses, address => {
+                    if(address.is_billing_default) {
+                        order.billingAddress = {
+                            salutationId: address.payload.gender,
+                            firstName: address.payload.firstName,
+                            lastName: address.payload.lastName,
+                            street: address.payload.street,
+                            zipcode: address.payload.postal,
+                            city: address.payload.city,
+                            countryId: address.payload.country,
+                        };
+                    }
+                    if(address.is_shipping_default) {
+                        order.shippingAddress = {
+                            salutationId: address.payload.gender,
+                            firstName: address.payload.firstName,
+                            lastName: address.payload.lastName,
+                            street: address.payload.street,
+                            zipcode: address.payload.postal,
+                            city: address.payload.city,
+                            countryId: address.payload.country,
+                        };
+                    }
+                })
+                console.log(order)
 
                 return new Promise((resolve, reject) => {
-                    dispatch('swGuestOrder', { order: order, swtc: payload.swtc })
+                    dispatch('swGuestOrder', { order: order, swtc: rootState.modCart.swtc })
                         .then(res => {
                             dispatch('modCart/clearAll', {}, { root: true })
                                 .then(() => {
@@ -137,7 +169,7 @@ export const actions = {
 
                                         commit('modApiCustomer/setCustomerAuth', { token: res.data['sw-context-token'] }, { root: true });
 
-                                        resolve(res);
+                                        resolve(res.data);
                                     });
                                 })
                                 .catch(err => {
@@ -162,7 +194,7 @@ export const actions = {
                             tokenType: 'sw',
                             apiType: 'data',
                             swContext: rootState.modApiCustomer.customer.customerAuth.token,
-                            endpoint: '/sales-channel-api/v3/checkout/order',
+                            endpoint: '/store-api/v3/checkout/order',
                         },
                         { root: true }
                     )
@@ -229,7 +261,7 @@ export const actions = {
                             dispatch('modCart/clearAll', {}, { root: true })
                                 .then(() => {
                                     dispatch('clearOrder').then(() => {
-                                        commit('setCurrentOrder', response.data.data);
+                                        commit('setCurrentOrder', response.data);
 
                                         resolve(response);
                                     });
@@ -282,7 +314,7 @@ export const actions = {
                             action: 'get',
                             tokenType: 'sw',
                             apiType: 'data',
-                            endpoint: '/sales-channel-api/v3/payment-method',
+                            endpoint: '/store-api/v3/payment-method',
                             params: {
                                 limit: 500,
                             },
@@ -291,7 +323,7 @@ export const actions = {
                     )
                         .then(response => {
                             // Save payment methods to store
-                            commit('setPaymentMethods', response.data.data);
+                            commit('setPaymentMethods', response.data);
 
                             resolve('OK');
                         })
@@ -310,13 +342,13 @@ export const actions = {
                             action: 'get',
                             tokenType: 'sw',
                             apiType: 'data',
-                            endpoint: '/sales-channel-api/v3/shipping-method',
+                            endpoint: '/store-api/v3/shipping-method',
                         },
                         { root: true }
                     )
                         .then(response => {
                             // Save payment methods to store
-                            commit('setShippingMethods', response.data.data);
+                            commit('setShippingMethods', response.data);
 
                             resolve('OK');
                         })
@@ -336,7 +368,7 @@ export const actions = {
                             tokenType: 'sw',
                             apiType: 'data',
                             swContext: rootState.modApiCustomer.customer.customerAuth.token,
-                            endpoint: '/sales-channel-api/v3/context',
+                            endpoint: '/store-api/v3/context',
                             data: {
                                 paymentMethodId: payload.id,
                             },
@@ -386,7 +418,7 @@ export const actions = {
                             tokenType: 'sw',
                             apiType: 'data',
                             swContext: rootState.modApiCustomer.customer.customerAuth.token,
-                            endpoint: '/sales-channel-api/v3/context',
+                            endpoint: '/store-api/v3/context',
                             data: {
                                 shippingMethodId: payload.id,
                             },

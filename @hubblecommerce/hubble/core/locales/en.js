@@ -166,6 +166,7 @@ export default context => {
             'Please select': 'Please select',
             'Customer Account': 'Customer Account',
             'I already have an account': 'I already have an account',
+            'You already have an account?': 'You already have an account?',
             'Reset your Password': 'Reset your Password',
             'Change your Password': 'Change your Password',
             'Current Password': 'Current Password',
@@ -248,8 +249,6 @@ export default context => {
             'privacy policy.': 'privacy policy.',
             'I would like to get the newsletter.': 'I would like to get the newsletter.',
             '* Required information is marked with an asterisk.': '* Required information is marked with an asterisk.',
-            '** We regularly send you carefully selected offers from our range by e-mail. All personal data requested during the newsletter registration will not be passed on to third parties. You may object to the use of your e-mail address for promotional purposes at any time online or through an informal e-mail.':
-                '** We regularly send you carefully selected offers from our range by e-mail. All personal data requested during the newsletter registration will not be passed on to third parties. You may object to the use of your e-mail address for promotional purposes at any time online or through an informal e-mail.',
             Confirm: 'Confirm',
             'If you want us to send your parcel to a packing station, enter the word packing station at street, at no. The packing station no. and if the address is added, the postal number.':
                 'If you want us to send your parcel to a packing station, enter the word "packing station" at street, at no. The packing station no. and if the address is added, the postal number.',
@@ -425,7 +424,12 @@ export default context => {
             'Requesting a new password has failed': 'Requesting a new password has failed',
             'Available immediately, delivery time 2-5 working days': 'Available immediately, delivery time 2-5 working days',
             'Free shipping & returns': 'Free shipping & returns',
-            '100 days right to return': '100 days right to return'
+            '100 days right to return': '100 days right to return',
+            'Contact Information': 'Contact Information',
+            'I would like to checkout as a guest': 'I would like to checkout as a guest',
+            'Show Cart': 'Show Cart',
+            'Hide Cart': 'Hide Cart',
+            'Addresses could not be loaded': 'Addresses could not be loaded'
         });
     });
 };

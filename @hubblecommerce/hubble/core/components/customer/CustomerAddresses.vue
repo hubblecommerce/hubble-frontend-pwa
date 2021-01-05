@@ -31,8 +31,7 @@
                 <div>
                     <span v-text="mapIsoToCountry(address.payload.country, countries)" />
                 </div>
-                <!-- TODO: Implement edit address when SW provides it -->
-                <div v-if="!isShopware" class="link text-small edit-address" @click="updateAddress(address)" v-text="$t('Edit address')" />
+                <div class="link text-small edit-address" @click="updateAddress(address)" v-text="$t('Edit address')" />
             </div>
             <div class="button-wrapper">
                 <button
@@ -67,7 +66,6 @@
                 </div>
                 <!-- TODO: Implement edit address when SW provides it -->
                 <div
-                    v-if="!isShopware"
                     class="link text-small edit-address"
                     @click="updateAddress(defaultShippingAddress)"
                     v-text="$t('Edit address')"
@@ -103,14 +101,6 @@
                     <div v-if="!formIsActiveAddressSelectDefault">
                         <div class="row content-wrp">
                             <div class="col-12">
-                                <div v-if="formIsActiveAddressUpdate" class="hbl-checkbox save-address-checkbox">
-                                    <input id="save-address" v-model="saveAsNewAddress" type="checkbox" />
-
-                                    <label for="save-address">
-                                        <span class="name" v-text="$t('Store as new address')" />
-                                    </label>
-                                </div>
-
                                 <validation-observer
                                     ref="observer"
                                     v-slot="{ passes }"
@@ -338,7 +328,7 @@
                                     </template>
 
                                     <button
-                                        v-if="formIsActiveAddressUpdate && !saveAsNewAddress"
+                                        v-if="formIsActiveAddressUpdate"
                                         class="button-primary"
                                         @click.prevent="passes(submitUpdateForm)"
                                     >
@@ -347,7 +337,7 @@
                                     </button>
 
                                     <button
-                                        v-if="formIsActiveAddressCreate || saveAsNewAddress"
+                                        v-if="formIsActiveAddressCreate"
                                         class="button-primary"
                                         @click.prevent="passes(submitCreateForm)"
                                     >
@@ -477,7 +467,6 @@ export default {
 
             streetIncludesHouseNo: process.env.STREETINFO_INCLUDES_HOUSENO === 'true',
             alternativeShippingAddress: process.env.ALTERNATIVE_SHIPPING_ADDRESS === 'true',
-            isShopware: process.env.API_TYPE === 'sw',
 
             addresses: {
                 billing: [],
@@ -491,8 +480,6 @@ export default {
 
             selectedDefault: null,
             selectedDelete: [],
-
-            saveAsNewAddress: false,
 
             errors: [],
 
@@ -529,7 +516,7 @@ export default {
             return this.offcanvas.component === this.name;
         },
         isGuest: function () {
-            return this.customer.customerAuth.token === 'guest';
+            return this.customer.customerData.guest;
         },
         currentDefaultAddress: function () {
             if (this.address.is_billing) {
@@ -624,8 +611,6 @@ export default {
                         this.formIsActiveAddressUpdate = false;
                         this.formIsActiveAddressSelectDefault = false;
 
-                        this.saveAsNewAddress = false;
-
                         this.address = new Form();
                     }
 
@@ -655,8 +640,6 @@ export default {
                     })
                     .catch(res => {
                         this.loading = false;
-
-                        console.log('getCustomerAddresses failed');
 
                         this.errors.push(this.$t('Addresses could not be loaded'));
 

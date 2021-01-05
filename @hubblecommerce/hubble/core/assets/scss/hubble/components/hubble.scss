@@ -7,11 +7,9 @@
     padding-bottom: 60px;
 
     &.hubble-light {
-        padding-bottom: 175px;
+        padding-bottom: 125px;
 
         .nav-wrp {
-            border: none;
-
             button {
                 position: absolute;
                 top: 0;
@@ -25,6 +23,11 @@
             position: absolute;
             bottom: 0;
             width: 100%;
+
+            .copyright, .footer-hint {
+                text-align: center;
+                margin-bottom: 20px;
+            }
         }
     }
 }
@@ -124,8 +127,16 @@
         &.hubble-light {
             padding-bottom: 160px;
 
+            .logo-wrp {
+                width: inherit;
+            }
+
             .nav-wrp {
                 justify-content: space-between;
+
+                button {
+                    display: none;
+                }
 
                 .action-wrp {
                     width: auto;
@@ -141,6 +152,16 @@
 
     .desktop-layout {
         padding-bottom: 445px;
+
+        &.hubble-light {
+            .logo-wrp {
+                width: inherit;
+            }
+
+            main {
+                padding-top: $header-height-desktop;
+            }
+        }
 
         .main-container {
             margin-bottom: 15px;

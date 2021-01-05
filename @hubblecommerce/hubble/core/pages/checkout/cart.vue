@@ -67,6 +67,7 @@ import { mapState, mapActions } from 'vuex';
 import CartItemsList from '../../components/checkout/CartItemsList';
 import Totals from '../../components/checkout/Totals';
 import GTMDataLayer from '../../components/utils/GTMDataLayer';
+import _ from 'lodash'
 
 export default {
     name: 'CheckoutCart',
@@ -95,7 +96,15 @@ export default {
             cart: state => state.modCart.cart,
             items: state => state.modCart.cart.items,
             qty: state => state.modCart.cart.items_qty,
+            customer: state => state.modApiCustomer.customer,
         }),
+        isLoggedIn: function () {
+            if (!_.isEmpty(this.customer.customerAuth)) {
+                return this.customer.customerAuth.token;
+            }
+
+            return false;
+        },
     },
 
     mounted() {
@@ -123,11 +132,11 @@ export default {
             this.precalculateShippingCostAction(order);
         },
         checkoutPath: function () {
-            if (this.isApiType('sw')) {
-                return this.localePath('checkout-shopware-onepage');
+            if(this.isLoggedIn) {
+                return this.localePath('checkout-overview');
             }
 
-            return this.localePath('checkout-payment');
+            return this.localePath('checkout-register');
         },
         isApiType: function (apiType) {
             return process.env.API_TYPE === apiType;

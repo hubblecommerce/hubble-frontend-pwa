@@ -32,7 +32,7 @@ $hbl-cart-item-image-size-md: 100px;
             .hbl-select ,.hbl-input-group{
                 width: 75px;
                 margin-bottom: 0;
-                
+
                 .hbl-select ,.hbl-input-group{
                     width: 65px;
                     margin-top: 40px;
@@ -84,46 +84,10 @@ $hbl-cart-item-image-size-md: 100px;
         }
     }
 
-    &.non-interactive {
-        border: 1px solid $border-color;
-        padding: 15px;
-
-        > a {
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            flex-wrap: wrap;
-
-            .product-img {
-                margin: 0 20px 0 0;
-                width: calc(20% - 20px);
-
-            }
-
-            .product-info {
-                width: 80%;
-
-                .product-name {
-                    display: inline-block;
-                    margin-bottom: 15px;
-                }
-            }
-
-            .price-wrp {
-                margin-left: auto;
-                width: 100%;
-            }
-        }
-    }
-
     &.coupon {
         display: flex;
         justify-content: space-between;
         border-bottom: none;
-
-        &.non-interactive {
-            border: 1px solid $border-color;
-        }
 
         .coupon-val {
             min-width: 100px;
@@ -137,33 +101,6 @@ $hbl-cart-item-image-size-md: 100px;
     .cart-item {
         padding: 25px 0;
 
-        &.non-interactive {
-            > a {
-                .product-img {
-                    width: inherit;
-                    margin-right: 40px;
-                    max-width: $hbl-cart-item-image-size-md !important;
-                    max-height: $hbl-cart-item-image-size-md !important;
-                }
-
-                .product-info {
-                    display: flex;
-                    justify-content: space-between;
-                    flex: 1;
-
-                    .product-name {
-                        width: 350px;
-                        display: inline-block;
-                        margin-bottom: 15px;
-                    }
-                }
-
-                .price-wrp {
-                    margin-left: auto;
-                    width: auto;
-                }
-            }
-        }
         &.coupon {
             padding: 15px;
         }

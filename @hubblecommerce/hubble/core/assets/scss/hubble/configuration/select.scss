@@ -29,7 +29,7 @@ $hbl-select-hover-border: 1px solid $darker-gray;
     display: inline-block;
     width: 100%;
     height: $hbl-select-height;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     background: $hbl-select-background-color;
 
     &:after {
@@ -68,7 +68,7 @@ $hbl-select-hover-border: 1px solid $darker-gray;
         line-height: $hbl-select-label-height;
 
         &.invalid {
-            border-bottom: 1px solid red;
+            border: 1px solid $error-accent;
         }
     }
 
@@ -151,6 +151,15 @@ $hbl-select-hover-border: 1px solid $darker-gray;
         left: 0;
         pointer-events: none;
         opacity: 0.5;
+    }
+
+    .validation-msg {
+        position: absolute;
+        margin: 5px;
+        width: 100%;
+        font-size: 12px;
+        color: $error-accent;
+        line-height: 12px;
     }
 }
 

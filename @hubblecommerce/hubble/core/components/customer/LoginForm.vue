@@ -1,5 +1,5 @@
 <template>
-    <validation-observer v-if="showLoginForm" ref="observer" v-slot="{ passes }" tag="form" @submit.prevent="passes(submitLoginForm)">
+    <validation-observer v-if="showLoginForm" ref="observer" v-slot="{ passes }" tag="form" :class="'login-form'" @submit.prevent="passes(submitLoginForm)">
         <div class="headline headline-3" v-text="$t('I already have an account')" />
 
         <validation-provider v-slot="{ errors }" name="email" rules="required|email" mode="eager" tag="div" class="hbl-input-group input-icon">
@@ -110,7 +110,7 @@ import _ from 'lodash';
 
 export default {
     name: 'LoginForm',
-    
+
     mixins: [addBackendErrors],
 
     data() {
@@ -188,7 +188,7 @@ export default {
                         if (this.$router.history.current.path.includes('/checkout')) {
                             if (process.env.API_TYPE === 'sw') {
                                 this.$router.push({
-                                    path: this.localePath('checkout-shopware-onepage'),
+                                    path: this.localePath('checkout-overview'),
                                 });
 
                                 return;
@@ -212,9 +212,9 @@ export default {
 
                     this.errors.push(this.$t('Login failed'));
 
-                    _.forEach(this.addBackendErrors(error), error => {
+                    /*_.forEach(this.addBackendErrors(error), error => {
                         this.errors.push(error);
-                    });
+                    });*/
                 });
         },
         // TODO: only show pw reset if not sw

@@ -1,0 +1,71 @@
+.checkout-overview-wrp {
+    margin: 0 auto;
+    max-width: $form-max-width;
+
+    .cart-toggle-wrp {
+        width: 100%;
+    }
+
+    .register-options-wrp {
+        padding: 20px 0;
+    }
+
+    .checkout-btn {
+        &:disabled,
+        &[disabled] {
+            color: $button-primary-color;
+        }
+
+        .loader {
+            height: $button-line-height;
+
+            > div {
+                top: 7px;
+            }
+        }
+    }
+}
+
+@media(min-width: 1024px) {
+    .checkout-overview-wrp {
+        @include make-container-max-widths();
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+
+        .cart-toggle-wrp {
+            display: none;
+        }
+
+        .cart-wrp {
+            order: 20;
+            width: calc(50% - 10px);
+            padding: 40px 0 0 10px;
+
+            display: flex;
+            flex-direction: column;
+            max-width: 480px;
+
+            .items-wrp, .summary-wrp {
+                width: 100%;
+                overflow: hidden;
+            }
+        }
+
+        .register-options-wrp {
+            order: 10;
+            width: 560px;
+            padding: 40px 10px 0 0;
+
+            .customer-register-wrp {
+                max-width: 560px;
+                margin: 0;
+
+                .register-form {
+                    max-width: none;
+                    margin: 20px 0;
+                }
+            }
+        }
+    }
+}

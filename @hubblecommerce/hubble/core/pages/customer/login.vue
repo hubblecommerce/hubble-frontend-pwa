@@ -1,13 +1,13 @@
 <template>
-    <div class="container checkout-login customer-login">
+    <div class="container customer-login-wrp">
         <tabs v-if="$mq === 'sm' || $mq === 'md'" class="checkout-login-tabs" :default-tab="defaultTab">
             <tab class="login-tab" :name="$t('Login')">
-                <div class="checkout-login-wrp">
+                <div class="customer-login-wrp">
                     <login-form />
                 </div>
             </tab>
             <tab class="register-tab" :name="$t('Register')">
-                <div class="checkout-register-wrp">
+                <div class="customer-register-wrp">
                     <div class="headline headline-3" v-text="$t('I am not having an account yet')" />
                     <register-form />
                 </div>
@@ -15,12 +15,14 @@
         </tabs>
 
         <div v-if="$mq === 'lg'" class="checkout-login-desktop-wrp">
-            <div v-if="showLoginForm" class="login-desktop-wrp">
-                <div class="checkout-login-wrp">
+
+            <div v-if="showLoginForm" class="row">
+                <div class="col-12">
                     <login-form />
                 </div>
-                <div>
-                    <div class="checkout-register-wrp">
+
+                <div class="col-12 ">
+                    <div class="register-form">
                         <div class="headline headline-3" v-text="$t('I am not having an account yet')" />
                         <button v-if="!showRegisterForm" class="button-primary" @click="toggleRegisterForm()">
                             {{ $t('Register') }}
@@ -31,18 +33,19 @@
             </div>
 
             <div v-else>
-                <div class="checkout-login-wrp w-50 ml-auto mr-auto back-button">
-                    <button class="button-secondary" @click="toggleLoginForm()">
+                <div class="customer-register-wrp">
+                    <button class="button-secondary button-back button-secondary button-back w-100 mb-3" @click="toggleLoginForm()">
                         {{ $t('Back') }}
                         <material-ripple />
                     </button>
-                </div>
-                <div class="checkout-register-wrp w-50 ml-auto mr-auto">
+
                     <div class="headline headline-3" v-text="$t('I am not having an account yet')" />
+
                     <button v-if="!showRegisterForm" class="button-primary" @click="toggleRegisterForm()">
                         {{ $t('Register') }}
                         <material-ripple />
                     </button>
+
                     <register-form v-if="showRegisterForm" />
                 </div>
             </div>

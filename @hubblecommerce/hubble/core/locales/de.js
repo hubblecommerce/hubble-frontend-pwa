@@ -191,6 +191,7 @@ export default context => {
             'Please select': 'Bitte auswählen',
             'Customer Account': 'Kundenkonto',
             'I already have an account': 'Ich habe bereits ein Konto',
+            'You already have an account?': 'Sie haben bereits ein Konto?',
             'Reset your Password': 'Passwort vergessen',
             'Change your Password': 'Passwort ändern',
             'Current Password': 'Aktuelles Passwort',
@@ -278,8 +279,6 @@ export default context => {
             'privacy policy.': 'Datenschutzbestimmungen',
             'I would like to get the newsletter.': 'Ja, ich möchte in Zukunft den Newsletter erhalten.',
             '* Required information is marked with an asterisk.': '* Pflichtangaben sind mit einem Sternchen gekennzeichnet.',
-            '** We regularly send you carefully selected offers from our range by e-mail. All personal data requested during the newsletter registration will not be passed on to third parties. You may object to the use of your e-mail address for promotional purposes at any time online or through an informal e-mail.':
-                '** Wir senden Ihnen regelmäßig sorgfältig ausgesuchte Angebote aus unserem Sortiment per E-Mail zu. Alle im Rahmen der Newsletter-Anmeldung abgefragten personenbezogenen Daten werden nicht an Dritte weiter gegeben. Sie können der Nutzung Ihrer E-Mail-Adresse für Werbezwecke jederzeit online oder durch eine formlose E-Mail widersprechen.',
             Confirm: 'Bestätigen',
             'Similar Products': 'Ähnliche Artikel',
             'Customers also bought': 'Kunden kauften auch',
@@ -464,7 +463,14 @@ export default context => {
             'Requesting a new password has failed': 'Neues Password anfordern fehlgeschlagen',
             'Available immediately, delivery time 2-5 working days': 'Sofort verfügbar, Lieferzeit 2-5 Werktage',
             'Free shipping & returns': 'Kostenloser Versand & Rückversand',
-            '100 days right to return': '100 Tage Rückgaberecht'
+            '100 days right to return': '100 Tage Rückgaberecht',
+
+            'Contact Information': 'Ihre Kontaktinformationen',
+
+            'I would like to checkout as a guest': 'Ich möchte als Gast bestellen',
+            'Show Cart': 'Warenkorb anzeigen',
+            'Hide Cart': 'Warenkorb verstecken',
+            'Addresses could not be loaded': 'Adressen konnten nicht geladen werden.'
         });
     });
 };
