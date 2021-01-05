@@ -9,9 +9,17 @@
                                 <div class="headline-4 description-headline" v-text="descriptionHeadline" />
                             </nuxt-link>
                             <nuxt-link :to="redirectLink">
-                                <div v-if="$mq === 'md' || $mq === 'lg'" class="text-small teaser-description-text" v-text="description" />
+                                <div
+                                    v-if="$mq === 'md' || $mq === 'lg'"
+                                    class="text-small teaser-description-text"
+                                    v-text="description"
+                                />
                             </nuxt-link>
-                            <nuxt-link :to="redirectLink" class="active-link text-small" v-text="$t(descriptionLinkText)" />
+                            <nuxt-link
+                                :to="redirectLink"
+                                class="active-link text-small"
+                                v-text="$t(descriptionLinkText)"
+                            />
                         </div>
                     </div>
                     <div v-if="showArrows" class="arrow-down" />
@@ -20,7 +28,12 @@
             <nuxt-link :to="redirectLink">
                 <picture>
                     <source :srcset="picturePathWebp" type="image/webp" />
-                    <img class="teaser-picture teaser-picture-top" :src="picturePath" alt="'Teaser Image'" :title="descriptionHeadline" />
+                    <img
+                        class="teaser-picture teaser-picture-top"
+                        :src="picturePath"
+                        alt="'Teaser Image'"
+                        :title="descriptionHeadline"
+                    />
                 </picture>
                 <!-- <img-lazy :src="picturePath" :class="'teaser-picture teaser-picture-bottom'" :alt-info="'Teaser Image'" :title-info="descriptionHeadline" />-->
             </nuxt-link>
@@ -29,7 +42,12 @@
             <nuxt-link :to="redirectLink">
                 <picture>
                     <source :srcset="picturePathWebp" type="image/webp" />
-                    <img class="teaser-picture teaser-picture-top" :src="picturePath" alt="'Teaser Image'" :title="descriptionHeadline" />
+                    <img
+                        class="teaser-picture teaser-picture-top"
+                        :src="picturePath"
+                        alt="'Teaser Image'"
+                        :title="descriptionHeadline"
+                    />
                 </picture>
                 <!--<img-lazy :src="picturePath" :class="'teaser-picture teaser-picture-top'" :alt-info="'Teaser Image'" :title-info="descriptionHeadline" />-->
             </nuxt-link>
@@ -42,9 +60,17 @@
                                 <div class="headline-4 description-headline" v-text="descriptionHeadline" />
                             </nuxt-link>
                             <nuxt-link :to="redirectLink">
-                                <div v-if="$mq === 'md' || $mq === 'lg'" class="text-small teaser-description-text" v-text="description" />
+                                <div
+                                    v-if="$mq === 'md' || $mq === 'lg'"
+                                    class="text-small teaser-description-text"
+                                    v-text="description"
+                                />
                             </nuxt-link>
-                            <nuxt-link :to="redirectLink" class="active-link text-small" v-text="$t(descriptionLinkText)" />
+                            <nuxt-link
+                                :to="redirectLink"
+                                class="active-link text-small"
+                                v-text="$t(descriptionLinkText)"
+                            />
                         </div>
                     </div>
                 </div>

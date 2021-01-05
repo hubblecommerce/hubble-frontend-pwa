@@ -10,12 +10,11 @@
     }
 }
 
-@media(min-width: 768px) {
+@media (min-width: 768px) {
     .image-gallery__grid {
         max-width: 70%;
     }
 }
-
 
 .image-gallery__preview {
     max-width: 30%;
@@ -57,5 +56,5 @@
 }
 
 .imageWithBorder {
-    border: #880E4F 4px solid;
+    border: #880e4f 4px solid;
 }

@@ -4,13 +4,12 @@ CMS elements
 General styling for cms elements
 */
 
-
 // copy pasted spacer classes from _custom variables
-$spacer-xs: ( $spacer * 0.25 ) !default;
-$spacer-sm: ( $spacer * 0.5 ) !default;
+$spacer-xs: ($spacer * 0.25) !default;
+$spacer-sm: ($spacer * 0.5) !default;
 $spacer-md: $spacer !default;
-$spacer-lg: ( $spacer * 1.5 ) !default;
-$spacer-xl: ( $spacer * 3 ) !default;
+$spacer-lg: ($spacer * 1.5) !default;
+$spacer-xl: ($spacer * 3) !default;
 
 .cms-element-image {
     position: relative;
@@ -110,7 +109,6 @@ $spacer-xl: ( $spacer * 3 ) !default;
     }
 }
 
-
 .cms-element-product-listing {
     .cms-listing-col {
         margin-bottom: $spacer-lg;
@@ -173,7 +171,7 @@ $spacer-xl: ( $spacer * 3 ) !default;
     }
 }
 
-@media(min-width: 768px) {
+@media (min-width: 768px) {
     .cms-block-image-two-column,
     .cms-block-image-three-column,
     .cms-block-image-four-column,
@@ -194,7 +192,7 @@ $spacer-xl: ( $spacer * 3 ) !default;
     }
 }
 
-@media(min-width: 1024px) {
+@media (min-width: 1024px) {
     .cms-block-image-two-column,
     .cms-block-image-three-column,
     .cms-block-image-four-column,

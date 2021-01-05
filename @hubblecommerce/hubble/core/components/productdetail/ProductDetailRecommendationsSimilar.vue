@@ -41,7 +41,7 @@ export default {
 
     computed: {
         ...mapState({
-            dataProductsCrossSimilar: state => state.modApiProduct.dataProductsCrossSimilar,
+            dataProductsCrossSimilar: (state) => state.modApiProduct.dataProductsCrossSimilar,
         }),
     },
 
@@ -54,16 +54,16 @@ export default {
             getProductsCrossSimilarApiCall: 'modApiProduct/getProductsCrossSimilar',
         }),
         getProductsCrossSimilar: function () {
-            return new Promise(resolve => {
+            return new Promise((resolve) => {
                 // Get cross-selling products from api
                 this.getProductsCrossSimilarApiCall({
                     data: this.productId,
                 })
-                    .then(response => {
+                    .then((response) => {
                         this.showProducts = !_.isEmpty(response.result.items);
                         resolve('ok');
                     })
-                    .catch(error => {
+                    .catch((error) => {
                         console.log('Failed to fetch: ', error);
                     });
             });

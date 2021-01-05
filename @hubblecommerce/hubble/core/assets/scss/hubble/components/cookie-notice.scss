@@ -1,98 +1,100 @@
 .cookie-notice-outer-wrp {
-  width: 100%;
-  margin: 0 auto;
-  padding: 10px 5px 10px 5px;
-
-  .cookie-notice-wrp {
-    background-color: $background;
     width: 100%;
     margin: 0 auto;
     padding: 10px 5px 10px 5px;
-    box-shadow: 0 6px 10px 0 rgba(62,62,77,0.05), 0 1px 18px 0 rgba(62,62,77,0.02), 0 3px 5px -1px rgba(62,62,77,0.1);
 
-    .cookie-icon, .cookie-notice-button-wrp, .cookie-text-wrp {
-      margin: auto;
-    }
+    .cookie-notice-wrp {
+        background-color: $background;
+        width: 100%;
+        margin: 0 auto;
+        padding: 10px 5px 10px 5px;
+        box-shadow: 0 6px 10px 0 rgba(62, 62, 77, 0.05), 0 1px 18px 0 rgba(62, 62, 77, 0.02),
+            0 3px 5px -1px rgba(62, 62, 77, 0.1);
 
-    .cookie-text-wrp {
-      margin-bottom: 20px;
-      display: flex;
-    }
+        .cookie-icon,
+        .cookie-notice-button-wrp,
+        .cookie-text-wrp {
+            margin: auto;
+        }
 
-    .cookie-icon {
-      display: none;
-      font-size: 30px;
-      margin-right: 20px;
-    }
+        .cookie-text-wrp {
+            margin-bottom: 20px;
+            display: flex;
+        }
 
-    .cookie-notice-button {
-      width: 100%;
+        .cookie-icon {
+            display: none;
+            font-size: 30px;
+            margin-right: 20px;
+        }
+
+        .cookie-notice-button {
+            width: 100%;
+        }
     }
-  }
 }
 
 // Tablet
-@media(min-width: 768px) {
-  .cookie-notice-outer-wrp {
-    background-color: none;
-    width: 90%;
-    margin: none;
-    padding: 0px 0px 0px 0px;
-    box-shadow: none;
-    
-    .cookie-notice-wrp {
-      padding: 20px 30px 20px 30px;
+@media (min-width: 768px) {
+    .cookie-notice-outer-wrp {
+        background-color: none;
+        width: 90%;
+        margin: none;
+        padding: 0px 0px 0px 0px;
+        box-shadow: none;
 
-      display: flex;
+        .cookie-notice-wrp {
+            padding: 20px 30px 20px 30px;
 
-      .cookie-text-wrp {
-        width: 75%;
-        margin-bottom: 0;
+            display: flex;
 
-        .cookie-icon {
-          display: block;
+            .cookie-text-wrp {
+                width: 75%;
+                margin-bottom: 0;
+
+                .cookie-icon {
+                    display: block;
+                }
+
+                .cookie-text {
+                    padding-right: 10px;
+                }
+            }
+
+            .cookie-notice-button-wrp {
+                width: 25%;
+                padding-right: 10px;
+                padding-left: 10px;
+                float: right;
+                text-align: right;
+            }
+
+            .cookie-notice-button {
+                width: auto;
+            }
         }
-
-        .cookie-text {
-          padding-right: 10px;
-        }
-      }
-
-      .cookie-notice-button-wrp {
-        width: 25%;
-        padding-right: 10px;
-        padding-left: 10px;
-        float: right;
-        text-align: right;
-      }
-
-      .cookie-notice-button {
-        width: auto;
-      }
     }
-  }
 }
 
 // Desktop
-@media(min-width: 1200px) {
-  .cookie-notice-outer-wrp {
-    width: 80%;
-    
-    .cookie-notice-wrp {
-
-      .cookie-text-wrp {
+@media (min-width: 1200px) {
+    .cookie-notice-outer-wrp {
         width: 80%;
-        max-width: 815px;
-        margin-left: 0px;
-      }
 
-      .cookie-notice-button-wrp {
-        width: 20%;
-        padding-right: 0px;
-        padding-left: 0px;
-        margin-right: 0px;
-        text-align: right;
-      }
+        .cookie-notice-wrp {
+            .cookie-text-wrp {
+                width: 80%;
+                max-width: 815px;
+                margin-left: 0px;
+            }
+
+            .cookie-notice-button-wrp {
+                width: 20%;
+                padding-right: 0px;
+                padding-left: 0px;
+                margin-right: 0px;
+                text-align: right;
+            }
+        }
     }
-  }
 }

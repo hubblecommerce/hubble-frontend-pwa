@@ -15,13 +15,12 @@
         </tabs>
 
         <div v-if="$mq === 'lg'" class="checkout-login-desktop-wrp">
-
             <div v-if="showLoginForm" class="row">
                 <div class="col-12">
                     <login-form />
                 </div>
 
-                <div class="col-12 ">
+                <div class="col-12">
                     <div class="register-form">
                         <div class="headline headline-3" v-text="$t('I am not having an account yet')" />
                         <button v-if="!showRegisterForm" class="button-primary" @click="toggleRegisterForm()">
@@ -34,7 +33,10 @@
 
             <div v-else>
                 <div class="customer-register-wrp">
-                    <button class="button-secondary button-back button-secondary button-back w-100 mb-3" @click="toggleLoginForm()">
+                    <button
+                        class="button-secondary button-back button-secondary button-back w-100 mb-3"
+                        @click="toggleLoginForm()"
+                    >
                         {{ $t('Back') }}
                         <material-ripple />
                     </button>
@@ -81,6 +83,12 @@ export default {
         };
     },
 
+    head() {
+        return {
+            meta: [{ hid: 'robots', name: 'robots', content: 'NOINDEX, FOLLOW' }],
+        };
+    },
+
     created() {
         if (this.$route.query.tab !== undefined) {
             this.defaultTab = parseInt(this.$route.query.tab, 10);
@@ -96,12 +104,6 @@ export default {
             this.showRegisterForm = !this.showRegisterForm;
             this.showLoginForm = false;
         },
-    },
-
-    head() {
-        return {
-            meta: [{ hid: 'robots', name: 'robots', content: 'NOINDEX, FOLLOW' }],
-        };
     },
 };
 </script>

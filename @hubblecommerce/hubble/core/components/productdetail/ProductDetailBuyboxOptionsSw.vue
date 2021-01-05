@@ -43,7 +43,7 @@ export default {
 
     computed: {
         ...mapState({
-            dataProduct: state => state.modApiProduct.dataProduct,
+            dataProduct: (state) => state.modApiProduct.dataProduct,
         }),
         groups: function () {
             return !_.isEmpty(this.itemLoaded.groups) ? this.itemLoaded.groups : null;
@@ -88,7 +88,7 @@ export default {
             setDataProductItem: 'modApiProduct/setDataProductItem',
         }),
         setInitialOptions: function () {
-            _.forEach(this.groups, group => {
+            _.forEach(this.groups, (group) => {
                 // Set first option of each group as initial options
                 this.selectedOptions.push(group.options[0].id);
             });
@@ -96,9 +96,9 @@ export default {
         aggregateSelectedVariants: function (selectedOptions) {
             this.variants = [];
 
-            _.forEach(selectedOptions, optionId => {
-                _.forEach(this.groups, group => {
-                    _.find(group.options, o => {
+            _.forEach(selectedOptions, (optionId) => {
+                _.forEach(this.groups, (group) => {
+                    _.find(group.options, (o) => {
                         if (o.id === optionId) {
                             this.variants.push({
                                 label: group.name,
@@ -110,7 +110,7 @@ export default {
             });
         },
         setMatchingChildBySelectedOptions: function (selectedOptions) {
-            _.forEach(this.itemLoaded.children, child => {
+            _.forEach(this.itemLoaded.children, (child) => {
                 if (this.arraysMatch(child.optionIds, selectedOptions)) {
                     this.matchingChild = child;
                 }

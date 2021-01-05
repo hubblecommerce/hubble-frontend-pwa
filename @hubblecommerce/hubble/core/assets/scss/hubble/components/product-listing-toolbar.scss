@@ -1,4 +1,4 @@
-@media(min-width: 768px) {
+@media (min-width: 768px) {
     .toolbar-wrp {
         display: flex;
         justify-content: space-between;
@@ -28,7 +28,7 @@
                     border-color: $border-color;
                 }
 
-                .select-label{
+                .select-label {
                     color: $dark-gray;
                 }
 
@@ -46,7 +46,7 @@
     }
 }
 
-@media(min-width: 1024px) {
+@media (min-width: 1024px) {
     .toolbar-wrp {
         display: block;
 

@@ -1,6 +1,6 @@
 <template>
     <div class="container checkout-summary amazon-pay">
-        <div class="checkout-summary-wrp" style="max-width: 525px; margin: auto;">
+        <div class="checkout-summary-wrp" style="max-width: 525px; margin: auto">
             <div class="headline headline-1 mt-4" v-text="'Checkout'" />
 
             <div class="checkout-login-desktop-wrp">
@@ -17,17 +17,32 @@
                         tag="form"
                         class="form-edit register-form"
                         @submit.prevent="
-                            validate().then(e => {
+                            validate().then((e) => {
                                 submitForm(e);
                             })
                         "
                     >
                         <div class="base-data-wrp">
-                            <validation-provider v-slot="{ errors }" name="salutation" rules="required" mode="eager" tag="div" class="hbl-select">
-                                <select v-model="orderObj.salutationId" class="select-text" :class="{ invalid: errors.length > 0 }" required>
-                                    <option v-for="salutation in salutations" :key="salutation.id" :value="salutation.id">{{
-                                        salutation.displayName
-                                    }}</option>
+                            <validation-provider
+                                v-slot="{ errors }"
+                                name="salutation"
+                                rules="required"
+                                mode="eager"
+                                tag="div"
+                                class="hbl-select"
+                            >
+                                <select
+                                    v-model="orderObj.salutationId"
+                                    class="select-text"
+                                    :class="{ invalid: errors.length > 0 }"
+                                    required
+                                >
+                                    <option
+                                        v-for="salutation in salutations"
+                                        :key="salutation.id"
+                                        :value="salutation.id"
+                                        >{{ salutation.displayName }}</option
+                                    >
                                 </select>
                                 <label class="select-label" v-text="$t('Salutation') + '*'" />
                                 <div class="validation-msg" v-text="$t(errors[0])" />
@@ -170,7 +185,14 @@
                                     <div class="validation-msg" v-text="$t(errors[0])" />
                                 </validation-provider>
 
-                                <validation-provider v-slot="{ errors }" name="country" rules="required" mode="eager" tag="div" class="hbl-select">
+                                <validation-provider
+                                    v-slot="{ errors }"
+                                    name="country"
+                                    rules="required"
+                                    mode="eager"
+                                    tag="div"
+                                    class="hbl-select"
+                                >
                                     <select
                                         v-model="orderObj.billingAddress.countryId"
                                         class="select-text"
@@ -232,7 +254,7 @@
                                     class="button-primary checkout-btn"
                                     :disabled="processingCheckout || !isEmpty(checkoutError)"
                                     @click.prevent="
-                                        validate().then(e => {
+                                        validate().then((e) => {
                                             submitForm(e);
                                         })
                                     "
@@ -273,11 +295,11 @@ export default {
 
     components: { ShippingMethods, PaymentMethods, Totals },
 
-    middleware: [cartValidate, 'apiLocalization', 'trackClickPath'],
-
     mixins: [addBackendErrors],
 
     layout: 'hubble_express',
+
+    middleware: [cartValidate, 'apiLocalization', 'trackClickPath'],
 
     data() {
         return {
@@ -303,12 +325,12 @@ export default {
 
     computed: {
         ...mapState({
-            swtc: state => state.modCart.swtc,
-            countries: state => state.modApiCustomer.countries,
-            salutations: state => state.modApiCustomer.salutations,
-            processingCheckout: state => state.modApiPayment.processingCheckout,
-            cart: state => state.modCart.cart,
-            customerAuth: state => state.modApiCustomer.customer.customerAuth,
+            swtc: (state) => state.modCart.swtc,
+            countries: (state) => state.modApiCustomer.countries,
+            salutations: (state) => state.modApiCustomer.salutations,
+            processingCheckout: (state) => state.modApiPayment.processingCheckout,
+            cart: (state) => state.modCart.cart,
+            customerAuth: (state) => state.modApiCustomer.customer.customerAuth,
         }),
     },
 
@@ -321,28 +343,28 @@ export default {
         }
 
         this.swGetSalutations()
-            .then(salutationResponse => {
+            .then((salutationResponse) => {
                 this.setSalutations(salutationResponse.data.data);
             })
-            .catch(err => {
+            .catch((err) => {
                 console.log('swGetSalutations error: ', err);
 
                 if (!this.errors.includes('No network connection')) {
-                    _.forEach(this.addBackendErrors(err), error => {
+                    _.forEach(this.addBackendErrors(err), (error) => {
                         this.errors.push(error);
                     });
                 }
             });
 
         this.swGetCountries()
-            .then(countryResponse => {
+            .then((countryResponse) => {
                 this.setCountries(countryResponse.data.data);
             })
-            .catch(err => {
+            .catch((err) => {
                 console.log('swGetCountries error: ', err);
 
                 if (!this.errors.includes('No network connection')) {
-                    _.forEach(this.addBackendErrors(err), error => {
+                    _.forEach(this.addBackendErrors(err), (error) => {
                         this.errors.push(error);
                     });
                 }
@@ -374,10 +396,10 @@ export default {
             // on success: clear cart and order and
             // set response context token as new customer auth token (needed for payment)
             this.placeGuestOrder({ order: this.orderObj, swtc: this.swtc })
-                .then(order => {
+                .then((order) => {
                     // Init payment
                     this.swStartPayment(order.data.data.id)
-                        .then(paymentResponse => {
+                        .then((paymentResponse) => {
                             // Reset cart context token as new customer auth token
                             // because order context token is not needed anymore
                             this.setCustomerAuth({});
@@ -398,16 +420,16 @@ export default {
                                 );
                             }
                         })
-                        .catch(err => {
+                        .catch((err) => {
                             console.log('swStartPayment error: ', err);
                         });
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.log('placeGuestOrder error: ', err);
 
                     this.errors.push(this.$t('Order could not be placed successfully'));
 
-                    _.forEach(this.addBackendErrors(err), error => {
+                    _.forEach(this.addBackendErrors(err), (error) => {
                         this.errors.push(error);
                     });
                 });

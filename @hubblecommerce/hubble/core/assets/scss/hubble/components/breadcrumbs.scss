@@ -37,7 +37,7 @@
     }
 
     .breadcrumb-item + .breadcrumb-item::before {
-        content: " / ";
+        content: ' / ';
         width: 15px;
         display: inline-block;
         margin-right: 5px;
@@ -46,7 +46,7 @@
     }
 }
 
-@media(min-width: 768px) {
+@media (min-width: 768px) {
     .breadcrumbs-wrp {
         padding: 0 20px;
     }

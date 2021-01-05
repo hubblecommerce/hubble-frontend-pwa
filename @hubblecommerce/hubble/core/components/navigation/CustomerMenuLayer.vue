@@ -53,7 +53,7 @@ export default {
 
     computed: {
         ...mapState({
-            customer: state => state.modApiCustomer.customer,
+            customer: (state) => state.modApiCustomer.customer,
         }),
         isLoggedIn: function () {
             if (!_.isEmpty(this.customer.customerAuth) && this.customer.customerAuth.token !== 'guest') {

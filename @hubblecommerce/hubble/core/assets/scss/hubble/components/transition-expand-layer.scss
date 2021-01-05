@@ -28,8 +28,8 @@ $overlay-header-height-desktop: 50px;
 .overlay-header {
     position: relative;
     opacity: 1;
-    transition: all .2s ease;
-    transition-delay: .2s;
+    transition: all 0.2s ease;
+    transition-delay: 0.2s;
     border-bottom: 1px solid $border-color;
     height: 56px;
     background-color: $background;
@@ -44,7 +44,7 @@ $overlay-header-height-desktop: 50px;
 }
 
 /* Tablet */
-@media(min-width: 768px) {
+@media (min-width: 768px) {
     .transition-expand-wrp {
         width: $expand-layer-width-tablet;
     }
@@ -62,7 +62,7 @@ $overlay-header-height-desktop: 50px;
 }
 
 /* Desktop */
-@media(min-width: 1024px) {
+@media (min-width: 1024px) {
     .transition-expand-wrp {
         width: $expand-layer-width-desktop;
         top: $header-height-desktop;

@@ -25,22 +25,39 @@
         </div>
 
         <transition name="fade">
-            <div v-if="showMenu && activeCategory.children"
-                 :class="'fixed-container ' + activeCategory.url_path"
-                 ref="megaMenuLayer"
-                 @mouseleave="hideChildren"
-                 :style="`left: ${layerLeft}px;`"
+            <div
+                v-if="showMenu && activeCategory.children"
+                ref="megaMenuLayer"
+                :class="'fixed-container ' + activeCategory.url_path"
+                :style="`left: ${layerLeft}px;`"
+                @mouseleave="hideChildren"
             >
                 <div class="max-width-container">
                     <template>
                         <div class="children-wrp">
-                            <div v-for="child in activeCategory.children" v-if="showChild(child)" :key="child.id" class="child-wrp">
+                            <div
+                                v-for="child in activeCategory.children"
+                                v-if="showChild(child)"
+                                :key="child.id"
+                                class="child-wrp"
+                            >
                                 <div v-if="!child.request_path" class="child-item" v-text="child.name" />
                                 <nuxt-link v-else :to="itemUrlPath(child)" class="child-item" v-text="child.name" />
 
                                 <template v-for="subchild in child.children">
-                                    <div v-if="!subchild.request_path" :key="subchild.id" class="subchild-item" v-text="subchild.name" />
-                                    <nuxt-link v-else :key="subchild.id" class="subchild-item" :to="itemUrlPath(subchild)" v-text="subchild.name" />
+                                    <div
+                                        v-if="!subchild.request_path"
+                                        :key="subchild.id"
+                                        class="subchild-item"
+                                        v-text="subchild.name"
+                                    />
+                                    <nuxt-link
+                                        v-else
+                                        :key="subchild.id"
+                                        class="subchild-item"
+                                        :to="itemUrlPath(subchild)"
+                                        v-text="subchild.name"
+                                    />
                                 </template>
                             </div>
                         </div>
@@ -72,7 +89,7 @@ export default {
             isActive: null,
             activeCategory: {},
             limit: 12,
-            layerLeft: 0
+            layerLeft: 0,
         };
     },
 
@@ -132,16 +149,16 @@ export default {
                 this.hideOffcanvasAction();
             }
         },
-        setLayerPosition: function(triggerElement) {
-            if(this.$refs.megaMenuLayer == null) {
+        setLayerPosition: function (triggerElement) {
+            if (this.$refs.megaMenuLayer == null) {
                 return;
             }
-            
+
             const triggerPosition = triggerElement.$el.offsetLeft;
             const parentPosition = triggerElement.$parent.$el.getBoundingClientRect();
             const layerPosition = this.$refs.megaMenuLayer.getBoundingClientRect();
 
-            if((triggerPosition + layerPosition.width) > parentPosition.width) {
+            if (triggerPosition + layerPosition.width > parentPosition.width) {
                 this.layerLeft = parentPosition.width - layerPosition.width;
             } else {
                 this.layerLeft = triggerPosition;
@@ -163,7 +180,7 @@ export default {
             this.showMenu = false;
 
             this.isActive = null;
-        }
+        },
     },
 };
 </script>

@@ -12,8 +12,8 @@ export const state = () => ({
     showAutoCompleteResults: false,
 
     selectedItemPosition: -1,
-    selectedItemId: null
-})
+    selectedItemId: null,
+});
 
 export const getters = {
     getAutoCompleteResults(state) {
@@ -24,8 +24,8 @@ export const getters = {
     },
     getAutoCompleteResultsLength(state) {
         return state.autoCompleteResults.categoryItems.length + state.autoCompleteResults.productItems.length;
-    }
-}
+    },
+};
 
 export const mutations = {
     setAutoCompleteResults(state, value) {
@@ -49,13 +49,13 @@ export const mutations = {
     },
     setShowAutoCompleteResults(state, value) {
         state.showAutoCompleteResults = value;
-    }
-}
+    },
+};
 
 export const actions = {
     // Api call to search/autocomplete
-    async getAutocompleteResults({commit, state, dispatch}, payload) {
-        return new Promise(function(resolve, reject) {
+    async getAutocompleteResults({ commit, state, dispatch }, payload) {
+        return new Promise(function (resolve, reject) {
             dispatch(
                 'apiCall',
                 {
@@ -82,9 +82,9 @@ export const actions = {
                         ],
                     },
                 },
-                {root: true}
+                { root: true }
             )
-                .then(response => {
+                .then((response) => {
                     if (response.data.total === 0) {
                         commit('setProductItems', []);
                         commit('setShowAutoCompleteResults', true);
@@ -92,20 +92,22 @@ export const actions = {
                         resolve('No products found');
                     } else {
                         // map product data
-                        dispatch('modApiCategory/mappingCategoryProducts', response.data, {root: true}).then(res => {
-                            commit('setProductItems', res.items);
+                        dispatch('modApiCategory/mappingCategoryProducts', response.data, { root: true }).then(
+                            (res) => {
+                                commit('setProductItems', res.items);
 
-                            // Set all items also in one array to handle key events
-                            commit('setAutoCompleteResultsArray', state.autoCompleteResults.productItems);
-                            commit('setSelectedItemPosition', -1);
-                            commit('setSelectedItemId', null);
-                            commit('setShowAutoCompleteResults', true);
+                                // Set all items also in one array to handle key events
+                                commit('setAutoCompleteResultsArray', state.autoCompleteResults.productItems);
+                                commit('setSelectedItemPosition', -1);
+                                commit('setSelectedItemId', null);
+                                commit('setShowAutoCompleteResults', true);
 
-                            resolve('OK');
-                        });
+                                resolve('OK');
+                            }
+                        );
                     }
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.log('getAutocompleteResults error: ', error);
 
                     reject(error);
@@ -113,7 +115,7 @@ export const actions = {
         });
     },
     // Reset data in store to initial state
-    resetAutoCompleteResults({commit}) {
+    resetAutoCompleteResults({ commit }) {
         commit('setAutoCompleteResults', {
             categoryItems: [],
             productItems: [],
@@ -128,7 +130,7 @@ export const actions = {
         commit('setShowAutoCompleteResults', false);
     },
     // Change the selected item depending on key event
-    changeSelectedItem({state, commit}, payload) {
+    changeSelectedItem({ state, commit }, payload) {
         if (_.isEmpty(state.autoCompleteResultsArray)) {
             return;
         }
@@ -150,7 +152,7 @@ export const actions = {
         commit('setSelectedItemId', state.autoCompleteResultsArray[currentItemPosition].id);
     },
     // Redirect to product or category if an item is selected via keyevent
-    redirectToItem({state}) {
+    redirectToItem({ state }) {
         if (state.selectedItemPosition === -1) {
             return;
         }
@@ -167,8 +169,8 @@ export const actions = {
 
         this.$router.push('/' + url);
     },
-    async apiCatalogsearch({commit, rootState, dispatch}) {
-        return new Promise(function(resolve, reject) {
+    async apiCatalogsearch({ commit, rootState, dispatch }) {
+        return new Promise(function (resolve, reject) {
             dispatch(
                 'apiCall',
                 {
@@ -178,14 +180,14 @@ export const actions = {
                     endpoint: '/store-api/v3/search',
                     data: rootState.modApiCategory.apiRequestBody,
                 },
-                {root: true}
+                { root: true }
             )
-                .then(response => {
+                .then((response) => {
                     resolve(response);
                 })
                 .catch(() => {
                     reject('API request failed: /store-api/v3/search');
                 });
         });
-    }
-}
+    },
+};

@@ -5,7 +5,7 @@
                 <login-form />
             </div>
 
-            <div class="col-12 ">
+            <div class="col-12">
                 <div class="register-form">
                     <div class="headline headline-3" v-text="$t('I am not having an account yet')" />
                     <nuxt-link :to="localePath('checkout-register')">
@@ -28,19 +28,15 @@ export default {
     name: 'CheckoutLogin',
 
     components: {
-        LoginForm
+        LoginForm,
     },
-
-    middleware: ['apiAuthenticate', apiPaymentAuthenticate, 'apiLocalization', 'trackClickPath'],
 
     layout: 'hubble_light',
 
-    data() {
-        return {
-        };
-    },
+    middleware: ['apiAuthenticate', apiPaymentAuthenticate, 'apiLocalization', 'trackClickPath'],
 
-    methods: {
+    data() {
+        return {};
     },
 
     head() {
@@ -48,5 +44,7 @@ export default {
             meta: [{ hid: 'robots', name: 'robots', content: 'NOINDEX, FOLLOW' }],
         };
     },
+
+    methods: {},
 };
 </script>

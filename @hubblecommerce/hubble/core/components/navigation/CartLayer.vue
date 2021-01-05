@@ -61,7 +61,7 @@ export default {
     name: 'CartLayer',
 
     components: {
-        CartItemsList: () => import('../checkout/CartItemsList')
+        CartItemsList: () => import('../checkout/CartItemsList'),
     },
 
     data() {
@@ -72,7 +72,7 @@ export default {
 
     computed: {
         ...mapState({
-            qty: state => state.modCart.cart.items_qty,
+            qty: (state) => state.modCart.cart.items_qty,
         }),
         ...mapGetters({
             getSubtotals: 'modCart/getSubtotals',

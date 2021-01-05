@@ -76,7 +76,7 @@
 }
 
 /* Desktop */
-@media(min-width: 768px) {
+@media (min-width: 768px) {
     .checkout-wrp {
         margin-top: 0;
 
@@ -85,7 +85,8 @@
         }
 
         .col-wrp {
-            box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12);
+            box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14),
+                0 1px 10px 0 rgba(0, 0, 0, 0.12);
         }
 
         .col-sm-12 {
@@ -95,8 +96,6 @@
         .mb-4 {
             margin-bottom: 50px !important;
         }
-
-
 
         .customer-tabs {
             .tabs-component-tabs {

@@ -1,7 +1,7 @@
 <template>
     <div class="price-slider">
         <div class="action-bar">
-            <div class="reset-facet" v-text="$t('Reset')" @click="resetPrice()" />
+            <div class="reset-facet" @click="resetPrice()" v-text="$t('Reset')" />
         </div>
         <div class="price-text">
             <div class="price text-left" :class="priceMinSelected ? 'price-selected' : ''">
@@ -79,8 +79,8 @@ export default {
 
     computed: {
         ...mapState({
-            priceCurrency: state => state.modPrices.priceCurrency,
-            priceCurrencySymbol: state => state.modPrices.priceCurrencySymbol,
+            priceCurrency: (state) => state.modPrices.priceCurrency,
+            priceCurrencySymbol: (state) => state.modPrices.priceCurrencySymbol,
         }),
         curMinLabel: function () {
             return this.sliderValues[0];
@@ -96,7 +96,7 @@ export default {
         },
         priceMaxSelected() {
             return this.initialMax !== this.dataMaxSelected;
-        }
+        },
     },
 
     created() {
@@ -138,16 +138,16 @@ export default {
             }
         },
         resetPrice: function () {
-            if(this.filterOnChange) {
-                this.$set(this.sliderValues, 0,this.dataMinValue);
+            if (this.filterOnChange) {
+                this.$set(this.sliderValues, 0, this.dataMinValue);
                 this.setSelectedPriceMin(this.sliderValues[0]);
 
-                this.$set(this.sliderValues, 1,this.dataMaxValue);
+                this.$set(this.sliderValues, 1, this.dataMaxValue);
                 this.setSelectedPriceMax(this.sliderValues[1]);
 
                 this.applyFilter();
             }
-        }
+        },
     },
 };
 </script>

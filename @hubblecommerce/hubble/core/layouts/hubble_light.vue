@@ -94,8 +94,8 @@ export default {
     },
     computed: {
         ...mapState({
-            showCookieNotice: state => state.modCookieNotice.showCookieNotice,
-            activeOffCanvas: state => state.modNavigation.offcanvas.isActive,
+            showCookieNotice: (state) => state.modCookieNotice.showCookieNotice,
+            activeOffCanvas: (state) => state.modNavigation.offcanvas.isActive,
         }),
     },
     methods: {

@@ -74,7 +74,14 @@ export default {
 
     layout: 'hubble',
 
-    middleware: ['apiAuthenticate', 'apiLocalization', apiPaymentAuthenticate, apiCustomerAuthenticate, 'apiResourceMenu', 'trackClickPath'],
+    middleware: [
+        'apiAuthenticate',
+        'apiLocalization',
+        apiPaymentAuthenticate,
+        apiCustomerAuthenticate,
+        'apiResourceMenu',
+        'trackClickPath',
+    ],
 
     data() {
         return {
@@ -84,7 +91,7 @@ export default {
 
     computed: {
         ...mapState({
-            customer: state => state.modApiCustomer.customer,
+            customer: (state) => state.modApiCustomer.customer,
         }),
         customerData: function () {
             if (this.customer.customerData != null && !_.isEmpty(this.customer.customerData)) {

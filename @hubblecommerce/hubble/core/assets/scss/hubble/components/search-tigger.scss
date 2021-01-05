@@ -16,7 +16,7 @@ $hbl-search-trigger-tablet-background: $white;
 }
 
 /* Tablet */
-@media(min-width: 768px) {
+@media (min-width: 768px) {
     .search-trigger-wrp {
         width: $hbl-search-trigger-tablet-width;
         max-height: $header-height-desktop - 1px;

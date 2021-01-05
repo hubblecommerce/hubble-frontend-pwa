@@ -74,7 +74,9 @@ export default {
         minHeight() {
             if (this.content.config.displayMode.value === 'cover') {
                 return {
-                    minHeight: `${this.content.config.minHeight.value}${this.content.config.minHeight.value.includes('px') ? '' : 'px'}`,
+                    minHeight: `${this.content.config.minHeight.value}${
+                        this.content.config.minHeight.value.includes('px') ? '' : 'px'
+                    }`,
                 };
             }
 

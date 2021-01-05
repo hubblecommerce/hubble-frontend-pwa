@@ -58,8 +58,8 @@ export default {
     },
     computed: {
         ...mapState({
-            flashVisible: state => state.modFlash.flashVisible,
-            activeOffCanvas: state => state.modNavigation.offcanvas.isActive,
+            flashVisible: (state) => state.modFlash.flashVisible,
+            activeOffCanvas: (state) => state.modNavigation.offcanvas.isActive,
         }),
         showFlashMessage: function () {
             // if off canvas is active only show the flash message if it is inside the offcanvas
@@ -70,7 +70,7 @@ export default {
         },
     },
     watch: {
-        flashVisible: {
+        'flashVisible': {
             handler(object) {
                 if (this.showFlashMessage === true && this.showFlashMessage === true) {
                     this.showMessage = true;
@@ -87,7 +87,7 @@ export default {
                 }
             },
         },
-        activeOffCanvas: {
+        'activeOffCanvas': {
             handler(object) {
                 if (object === false && this.showFlashMessage === true) {
                     this.hideMessage();

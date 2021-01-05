@@ -1,6 +1,6 @@
 <template>
     <div :class="elementClass">
-        <div :class="getGalleryPositionClass" class="is-cover" :style="getVerticalAlignStyle" style="min-height: 270px;">
+        <div :class="getGalleryPositionClass" class="is-cover" :style="getVerticalAlignStyle" style="min-height: 270px">
             <div class="image-gallery__grid">
                 <slider
                     ref="tinySlider"
@@ -155,15 +155,17 @@ export default {
         this.$nextTick(() => {
             this.activeImageIndex = 0;
 
-            this.$refs.tinySlider.slider.events.on('indexChanged', info => {
+            this.$refs.tinySlider.slider.events.on('indexChanged', (info) => {
                 this.activeImageIndex = info.index - 2;
 
                 if (this.$refs.tinySliderPreview) {
-                    this.$refs.tinySliderPreview.slider.goTo(this.activeImageIndex === undefined ? 0 : this.activeImageIndex);
+                    this.$refs.tinySliderPreview.slider.goTo(
+                        this.activeImageIndex === undefined ? 0 : this.activeImageIndex
+                    );
                 }
             });
 
-            this.activeImageIndex = this.$refs.tinySlider.slider.events.on('indexChanged', info => info.index - 2);
+            this.activeImageIndex = this.$refs.tinySlider.slider.events.on('indexChanged', (info) => info.index - 2);
         });
     },
 

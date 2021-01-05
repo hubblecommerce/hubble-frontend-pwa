@@ -44,8 +44,8 @@ export default {
     },
     computed: {
         ...mapState({
-            listOfFlashMessages: state => state.modFlash.listOfFlashMessages,
-            activeOffCanvas: state => state.modNavigation.offcanvas.isActive,
+            listOfFlashMessages: (state) => state.modFlash.listOfFlashMessages,
+            activeOffCanvas: (state) => state.modNavigation.offcanvas.isActive,
         }),
     },
     watch: {

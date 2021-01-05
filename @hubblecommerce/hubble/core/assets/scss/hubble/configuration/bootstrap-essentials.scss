@@ -7,7 +7,7 @@ $sizes: map-merge(
         50: 50%,
         75: 75%,
         100: 100%,
-        auto: auto
+        auto: auto,
     ),
     $sizes
 );
@@ -24,11 +24,19 @@ $spacers: () !default;
 $spacers: map-merge(
     (
         0: 0,
-        1: ($spacer * .25),
-        2: ($spacer * .5),
+        1: (
+            $spacer * 0.25,
+        ),
+        2: (
+            $spacer * 0.5,
+        ),
         3: $spacer,
-        4: ($spacer * 1.5),
-        5: ($spacer * 3)
+        4: (
+            $spacer * 1.5,
+        ),
+        5: (
+            $spacer * 3,
+        ),
     ),
     $spacers
 );
@@ -40,7 +48,7 @@ $spacers: map-merge(
 }
 
 @function breakpoint-infix($name, $breakpoints: $grid-breakpoints) {
-    @return if(breakpoint-min($name, $breakpoints) == null, "", "-#{$name}");
+    @return if(breakpoint-min($name, $breakpoints) == null, '', '-#{$name}');
 }
 
 /* Mixins */
@@ -145,17 +153,24 @@ $spacers: map-merge(
                 }
             }
 
-            .order#{$infix}-first { order: -1; }
+            .order#{$infix}-first {
+                order: -1;
+            }
 
-            .order#{$infix}-last { order: $columns + 1; }
+            .order#{$infix}-last {
+                order: $columns + 1;
+            }
 
             @for $i from 0 through $columns {
-                .order#{$infix}-#{$i} { order: $i; }
+                .order#{$infix}-#{$i} {
+                    order: $i;
+                }
             }
 
             // `$columns - 1` because offsetting by the width of an entire row isn't possible
             @for $i from 0 through ($columns - 1) {
-                @if not ($infix == "" and $i == 0) { // Avoid emitting useless .offset-0
+                @if not($infix == '' and $i == 0) {
+                    // Avoid emitting useless .offset-0
                     .offset#{$infix}-#{$i} {
                         @include make-col-offset($i, $columns);
                     }
@@ -176,7 +191,7 @@ $spacers: map-merge(
 }
 
 .align-items-center {
-    align-items: center!important;
+    align-items: center !important;
 }
 
 .align-self-start {
@@ -199,11 +214,11 @@ $spacers: map-merge(
 }
 
 .text-right {
-    text-align: right!important;
+    text-align: right !important;
 }
 
 .text-center {
-    text-align: center!important;
+    text-align: center !important;
 }
 
 .font-weight-bold {
@@ -249,20 +264,34 @@ $spacers: map-merge(
 
 @each $prop, $abbrev in (width: w, height: h) {
     @each $size, $length in $sizes {
-        .#{$abbrev}-#{$size} { #{$prop}: $length !important; }
+        .#{$abbrev}-#{$size} {
+            #{$prop}: $length !important;
+        }
     }
 }
 
-.mw-100 { max-width: 100% !important; }
-.mh-100 { max-height: 100% !important; }
+.mw-100 {
+    max-width: 100% !important;
+}
+.mh-100 {
+    max-height: 100% !important;
+}
 
 // Viewport additional helpers
 
-.min-vw-100 { min-width: 100vw !important; }
-.min-vh-100 { min-height: 100vh !important; }
+.min-vw-100 {
+    min-width: 100vw !important;
+}
+.min-vh-100 {
+    min-height: 100vh !important;
+}
 
-.vw-100 { width: 100vw !important; }
-.vh-100 { height: 100vh !important; }
+.vw-100 {
+    width: 100vw !important;
+}
+.vh-100 {
+    height: 100vh !important;
+}
 
 // stylelint-disable declaration-no-important
 
@@ -274,7 +303,9 @@ $spacers: map-merge(
 
         @each $prop, $abbrev in (margin: m, padding: p) {
             @each $size, $length in $spacers {
-                .#{$abbrev}#{$infix}-#{$size} { #{$prop}: $length !important; }
+                .#{$abbrev}#{$infix}-#{$size} {
+                    #{$prop}: $length !important;
+                }
                 .#{$abbrev}t#{$infix}-#{$size},
                 .#{$abbrev}y#{$infix}-#{$size} {
                     #{$prop}-top: $length !important;
@@ -297,7 +328,9 @@ $spacers: map-merge(
         // Negative margins (e.g., where `.mb-n1` is negative version of `.mb-1`)
         @each $size, $length in $spacers {
             @if $size != 0 {
-                .m#{$infix}-n#{$size} { margin: -$length !important; }
+                .m#{$infix}-n#{$size} {
+                    margin: -$length !important;
+                }
                 .mt#{$infix}-n#{$size},
                 .my#{$infix}-n#{$size} {
                     margin-top: -$length !important;
@@ -318,7 +351,9 @@ $spacers: map-merge(
         }
 
         // Some special margin utils
-        .m#{$infix}-auto { margin: auto !important; }
+        .m#{$infix}-auto {
+            margin: auto !important;
+        }
         .mt#{$infix}-auto,
         .my#{$infix}-auto {
             margin-top: auto !important;

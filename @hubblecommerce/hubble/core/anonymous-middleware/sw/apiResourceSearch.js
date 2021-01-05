@@ -42,18 +42,21 @@ export default async function ({ store, route, error }) {
         store.commit('modApiCategory/setDataCategoryProducts', {
             data: {
                 result: mappedProducts,
-            }
+            },
         });
 
         // Map resulting aggregations (filter, facets)
-        const mappedFacets = await store.dispatch('modApiRequests/mapAggregationsToFacets', searchResponse.data.aggregations);
+        const mappedFacets = await store.dispatch(
+            'modApiRequests/mapAggregationsToFacets',
+            searchResponse.data.aggregations
+        );
 
         // Save mapped aggregations to store
         store.commit('modApiRequests/setRequestFacets', mappedFacets);
 
         // Set page type (Search = Category List)
         store.commit('modApiResources/setPageType', 'category');
-    } catch(e) {
+    } catch (e) {
         error({ statusCode: 404, message: e });
     }
 }

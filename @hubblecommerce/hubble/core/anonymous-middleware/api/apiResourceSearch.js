@@ -4,10 +4,10 @@ export default function ({ store, route }) {
             .dispatch('modSearch/apiCatalogsearch', {
                 query: route.query,
             })
-            .then(response => {
+            .then((response) => {
                 resolve(response);
             })
-            .catch(error => {
+            .catch((error) => {
                 reject(error);
             });
     });

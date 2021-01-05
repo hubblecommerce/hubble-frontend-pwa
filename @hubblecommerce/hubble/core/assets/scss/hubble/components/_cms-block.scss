@@ -31,7 +31,7 @@ specific styling for elements dependent on their parent block
         margin: 0;
     }
 
-    [class^=col-] {
+    [class^='col-'] {
         padding: 0;
     }
 }
@@ -95,7 +95,7 @@ specific styling for elements dependent on their parent block
     }
 }
 
-@media(min-width: 1024px) {
+@media (min-width: 1024px) {
     .cms-block-container {
         .cms-block-container-row.has--sidebar {
             flex-direction: column;
@@ -109,7 +109,7 @@ specific styling for elements dependent on their parent block
     }
 }
 
-@media(max-width: 768px) {
+@media (max-width: 768px) {
     .cms-block-image-text-gallery,
     .cms-block-image-two-column,
     .cms-block-image-three-column,

@@ -12,8 +12,8 @@
         "postinstall": "node ./scripts/post-install.js",
         "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
         "lint:fix": "eslint --fix --ext .js,.vue --ignore-path .gitignore .",
-        "prettier": "prettier --check '**/*.scss'",
-        "prettier:fix": "prettier --write '**/*.scss'"
+        "prettier": "prettier --check '**/*.{scss,js,vue}'",
+        "prettier:fix": "prettier --write '**/*.{scss,js,vue}'"
     },
     "dependencies": {
         "@hubblecommerce/amazon-pay": "^1.0.0",
@@ -57,12 +57,13 @@
     },
     "devDependencies": {
         "babel-eslint": "^10.1.0",
-        "eslint": "^7.14.0",
-        "eslint-config-prettier": "^6.15.0",
+        "eslint": "^7.17.0",
+        "eslint-config-prettier": "^7.1.0",
         "eslint-plugin-nuxt": "^2.0.0",
-        "eslint-plugin-prettier": "^3.1.4",
-        "eslint-plugin-vue": "^7.1.0",
-        "prettier": "^2.2.0"
+        "eslint-plugin-vue": "^7.4.0",
+        "husky": "^4.3.6",
+        "lint-staged": "^10.5.3",
+        "prettier": "^2.2.1"
     },
     "repository": {
         "type": "git",
@@ -79,5 +80,13 @@
         "xtc",
         "frontend",
         "interface"
-    ]
+    ],
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
+    },
+    "lint-staged": {
+        "*.{js,scss,vue}": "prettier --write"
+    }
 }

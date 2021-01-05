@@ -1,5 +1,4 @@
 .product-info-wrp {
-
     .color-select-wrp {
         padding: 0 10px;
 
@@ -13,7 +12,6 @@
         }
 
         .colors-wrp {
-
             .color-list {
                 display: flex;
                 flex-wrap: wrap;
@@ -34,14 +32,12 @@
                     border: 1px solid $accent;
                 }
             }
-
         }
     }
 }
 
-@media(min-width: 768px) {
+@media (min-width: 768px) {
     .product-info-wrp {
-
         .color-select-wrp {
             padding: 0;
         }

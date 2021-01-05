@@ -10,7 +10,7 @@ export default {
     name: 'BackgroundBlur',
     computed: {
         ...mapState({
-            offcanvas: state => state.modNavigation.offcanvas,
+            offcanvas: (state) => state.modNavigation.offcanvas,
         }),
         layerIsExpanded: function () {
             return this.offcanvas.component !== '';

@@ -30,10 +30,10 @@ export default function ({ isHMR, store, error }) {
                     clientId: process.env.API_PAYMENT_CLIENT_ID,
                     clientSecret: process.env.API_PAYMENT_CLIENT_SECRET,
                 })
-                .then(response => {
+                .then((response) => {
                     resolve(response);
                 })
-                .catch(response => {
+                .catch((response) => {
                     error({ statusCode: 401, message: 'API authentication failed' });
                     resolve(response);
                 });
@@ -42,10 +42,10 @@ export default function ({ isHMR, store, error }) {
         if (process.server || process.env.NO_CORS !== 'true') {
             store
                 .dispatch('modApi/apiPaymentGetAuth', {})
-                .then(response => {
+                .then((response) => {
                     resolve(response);
                 })
-                .catch(response => {
+                .catch((response) => {
                     error({ statusCode: 401, message: 'API authentication failed apiPaymentAuthenticate' });
                     resolve(response);
                 });

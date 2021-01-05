@@ -1,21 +1,21 @@
 <template>
     <div class="toolbar-wrp">
         <div class="top-toolbar" :class="extraClass">
-            <product-listing-filter v-if="$mq === 'lg'"/>
-            <off-canvas-filter v-if="$mq === 'md'"/>
-            <selected-facets v-if="$mq === 'lg'"/>
+            <product-listing-filter v-if="$mq === 'lg'" />
+            <off-canvas-filter v-if="$mq === 'md'" />
+            <selected-facets v-if="$mq === 'lg'" />
         </div>
 
         <div class="bottom-toolbar">
-            <pagination/>
+            <pagination />
             <selectable-order class="selectable-order" :data-options="optionsSorter" />
         </div>
     </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import OffCanvasFilter from './OffcanvasFilter'
+import { mapState } from 'vuex';
+import OffCanvasFilter from './OffcanvasFilter';
 
 export default {
     name: 'ProductListingToolbar',
@@ -25,7 +25,7 @@ export default {
         ProductListingFilter: () => import('./ProductListingFilter'),
         SelectedFacets: () => import('./toolbar/SelectedFacets'),
         Pagination: () => import('./toolbar/Pagination'),
-        SelectableOrder: () => import('./toolbar/SelectableOrder')
+        SelectableOrder: () => import('./toolbar/SelectableOrder'),
     },
 
     props: {
@@ -38,8 +38,8 @@ export default {
 
     computed: {
         ...mapState({
-            optionsSorter: state => state.modApiRequests.optionsSorter,
+            optionsSorter: (state) => state.modApiRequests.optionsSorter,
         }),
-    }
+    },
 };
 </script>

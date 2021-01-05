@@ -11,7 +11,7 @@
     }
 }
 
-@media(min-width: 1024px) {
+@media (min-width: 1024px) {
     .checkout-register-wrp {
         @include make-container-max-widths();
         display: flex;
@@ -31,7 +31,8 @@
             flex-direction: column;
             max-width: 480px;
 
-            .items-wrp, .summary-wrp {
+            .items-wrp,
+            .summary-wrp {
                 width: 100%;
                 overflow: hidden;
             }

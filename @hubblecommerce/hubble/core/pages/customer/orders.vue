@@ -30,7 +30,14 @@ export default {
 
     layout: 'hubble',
 
-    middleware: ['apiAuthenticate', apiPaymentAuthenticate, apiCustomerAuthenticate, 'apiLocalization', 'apiResourceMenu', 'trackClickPath'],
+    middleware: [
+        'apiAuthenticate',
+        apiPaymentAuthenticate,
+        apiCustomerAuthenticate,
+        'apiLocalization',
+        'apiResourceMenu',
+        'trackClickPath',
+    ],
 
     head() {
         return {

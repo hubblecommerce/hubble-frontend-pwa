@@ -11,14 +11,20 @@ Component usage:
         open-icon-class="icon-chevron-down"
         close-icon-class="icon-chevron-up"
     >
-        <div class="action-bar" v-if="$mq === 'lg'">
+        <div v-if="$mq === 'lg'" class="action-bar">
             <div class="selected-facets" v-text="modelSelected.length + $t(' selected')" />
             <div class="reset-facet" @click="resetAll()" v-text="$t('Reset Filter')" />
         </div>
 
         <div v-if="typeCheckbox" class="input-wrp">
             <div v-for="(option, optionIndex) in dataFacet.options" :key="optionIndex" class="hbl-checkbox">
-                <input :id="dataFacet.key + option['key']" v-model="modelSelected" type="checkbox" :value="option['key']" @change="changeFilter()" />
+                <input
+                    :id="dataFacet.key + option['key']"
+                    v-model="modelSelected"
+                    type="checkbox"
+                    :value="option['key']"
+                    @change="changeFilter()"
+                />
                 <label :for="dataFacet.key + option['key']" v-text="option.label" />
             </div>
         </div>
@@ -26,7 +32,11 @@ Component usage:
         <div v-if="typeSelect" class="select">
             <div class="hbl-select">
                 <select class="select-text" required>
-                    <option v-for="(option, optionIndex) in dataFacet.options" :key="optionIndex" :value="option['key']">
+                    <option
+                        v-for="(option, optionIndex) in dataFacet.options"
+                        :key="optionIndex"
+                        :value="option['key']"
+                    >
                         {{ option.label }} <span class="count">({{ option.doc_count }})</span>
                     </option>
                 </select>
@@ -47,7 +57,7 @@ export default {
     components: {
         CollapsibleFilter: () => import('./CollapsibleFilter'),
     },
-//ellapsed property
+    //ellapsed property
     props: {
         dataFacet: {
             type: Object,
@@ -70,7 +80,7 @@ export default {
             type: Boolean,
             required: false,
             default: false,
-        }
+        },
     },
 
     data() {
@@ -82,7 +92,7 @@ export default {
 
     computed: {
         ...mapState({
-            selectedFacets: state => state.modApiRequests.selectedFacets,
+            selectedFacets: (state) => state.modApiRequests.selectedFacets,
         }),
         maxHeight: function () {
             if (this.$mq === 'lg') {

@@ -40,11 +40,19 @@
                     @click="selectDefaultAddress('billing')"
                     v-text="$t('Select new default address')"
                 />
-                <button v-if="!isGuest" class="button-secondary w-100" @click="createAddress('billing')" v-text="$t('Create new address')" />
+                <button
+                    v-if="!isGuest"
+                    class="button-secondary w-100"
+                    @click="createAddress('billing')"
+                    v-text="$t('Create new address')"
+                />
             </div>
         </div>
 
-        <div v-if="alternativeShippingAddress && !loading && shippingAddresses.length > 0" class="shipping-addresses-wrp">
+        <div
+            v-if="alternativeShippingAddress && !loading && shippingAddresses.length > 0"
+            class="shipping-addresses-wrp"
+        >
             <div class="headline headline-3" v-text="$t('Shipping Address')" />
 
             <div v-for="address in shippingAddresses" :key="address.id" class="shipping-address-wrp">
@@ -78,7 +86,12 @@
                     @click="selectDefaultAddress('shipping')"
                     v-text="$t('Select new default address')"
                 />
-                <button v-if="!isGuest" class="button-secondary w-100" @click="createAddress('shipping')" v-text="$t('Create new address')" />
+                <button
+                    v-if="!isGuest"
+                    class="button-secondary w-100"
+                    @click="createAddress('shipping')"
+                    v-text="$t('Create new address')"
+                />
             </div>
         </div>
 
@@ -95,8 +108,16 @@
                             <material-ripple />
                         </button>
                         <div v-if="formIsActiveAddressUpdate" class="overlay-headline" v-text="$t('Edit address')" />
-                        <div v-if="formIsActiveAddressCreate" class="overlay-headline" v-text="$t('Create new address')" />
-                        <div v-if="formIsActiveAddressSelectDefault" class="overlay-headline" v-text="$t('Select new default address')" />
+                        <div
+                            v-if="formIsActiveAddressCreate"
+                            class="overlay-headline"
+                            v-text="$t('Create new address')"
+                        />
+                        <div
+                            v-if="formIsActiveAddressSelectDefault"
+                            class="overlay-headline"
+                            v-text="$t('Select new default address')"
+                        />
                     </div>
                     <div v-if="!formIsActiveAddressSelectDefault">
                         <div class="row content-wrp">
@@ -108,7 +129,14 @@
                                     class="form-edit"
                                     @submit.prevent="passes(submitUpdateForm)"
                                 >
-                                    <validation-provider v-slot="{ errors }" name="gender" rules="required" mode="eager" tag="div" class="hbl-select">
+                                    <validation-provider
+                                        v-slot="{ errors }"
+                                        name="gender"
+                                        rules="required"
+                                        mode="eager"
+                                        tag="div"
+                                        class="hbl-select"
+                                    >
                                         <select v-model="address.payload.gender" class="select-text" required>
                                             <option
                                                 v-for="salutation in salutations"
@@ -313,9 +341,12 @@
                                             :class="{ invalid: errors.length > 0 }"
                                             required
                                         >
-                                            <option v-for="country in countries" :key="country.iso_code_2" :value="country.iso_code_2">{{
-                                                country.name
-                                            }}</option>
+                                            <option
+                                                v-for="country in countries"
+                                                :key="country.iso_code_2"
+                                                :value="country.iso_code_2"
+                                                >{{ country.name }}</option
+                                            >
                                         </select>
 
                                         <label class="select-label" v-text="$t('Country') + '*'" />
@@ -358,7 +389,11 @@
                                         @click.prevent="selectDefault(currentDefaultAddress)"
                                     >
                                         <div>
-                                            <span v-text="mapKeyToValue(currentDefaultAddress.payload.gender, salutations)" />
+                                            <span
+                                                v-text="
+                                                    mapKeyToValue(currentDefaultAddress.payload.gender, salutations)
+                                                "
+                                            />
                                             <span v-text="currentDefaultAddress.payload.firstName" />
                                             <span v-text="currentDefaultAddress.payload.lastName" />
                                         </div>
@@ -374,7 +409,11 @@
                                         </div>
 
                                         <div>
-                                            <span v-text="mapIsoToCountry(currentDefaultAddress.payload.country, countries)" />
+                                            <span
+                                                v-text="
+                                                    mapIsoToCountry(currentDefaultAddress.payload.country, countries)
+                                                "
+                                            />
                                         </div>
                                     </div>
                                     <div
@@ -404,9 +443,17 @@
                                                 <span v-text="mapIsoToCountry(address.payload.country, countries)" />
                                             </div>
                                         </div>
-                                        <div v-if="showDeleteIcon(address)" class="delete-icon-wrp" @click.prevent="selectDelete(address)">
+                                        <div
+                                            v-if="showDeleteIcon(address)"
+                                            class="delete-icon-wrp"
+                                            @click.prevent="selectDelete(address)"
+                                        >
                                             <button class="button-icon">
-                                                <i class="icon" :class="isSelectedForDeletion(address)" aria-hidden="true" />
+                                                <i
+                                                    class="icon"
+                                                    :class="isSelectedForDeletion(address)"
+                                                    aria-hidden="true"
+                                                />
 
                                                 <span class="hidden-link-name">Delete</span>
                                             </button>
@@ -428,7 +475,11 @@
                                         <material-ripple />
                                     </button>
 
-                                    <button v-else class="button-primary delete-address-button" @click.prevent="submitDeleteAddress()">
+                                    <button
+                                        v-else
+                                        class="button-primary delete-address-button"
+                                        @click.prevent="submitDeleteAddress()"
+                                    >
                                         {{ $t('Delete selected addresses') }}
                                         <material-ripple />
                                     </button>
@@ -445,7 +496,12 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import Form from '@hubblecommerce/hubble/core/utils/form';
-import { mapKeyToValue, mapIsoToCountry, addBackendErrors, salutations } from '@hubblecommerce/hubble/core/utils/formMixins';
+import {
+    mapKeyToValue,
+    mapIsoToCountry,
+    addBackendErrors,
+    salutations,
+} from '@hubblecommerce/hubble/core/utils/formMixins';
 import _ from 'lodash';
 
 export default {
@@ -508,9 +564,9 @@ export default {
 
     computed: {
         ...mapState({
-            customer: state => state.modApiCustomer.customer,
-            countries: state => state.modApiCustomer.availableCountries,
-            offcanvas: state => state.modNavigation.offcanvas,
+            customer: (state) => state.modApiCustomer.customer,
+            countries: (state) => state.modApiCustomer.availableCountries,
+            offcanvas: (state) => state.modNavigation.offcanvas,
         }),
         showLayer: function () {
             return this.offcanvas.component === this.name;
@@ -600,7 +656,7 @@ export default {
             flashMessage: 'modFlash/flashMessage',
         }),
         toggle: function () {
-            return new Promise(resolve => {
+            return new Promise((resolve) => {
                 this.toggleOffcanvasAction({
                     component: this.name,
                     direction: 'rightLeft',
@@ -638,13 +694,13 @@ export default {
 
                         this.loading = false;
                     })
-                    .catch(res => {
+                    .catch((res) => {
                         this.loading = false;
 
                         this.errors.push(this.$t('Addresses could not be loaded'));
 
                         if (!this.errors.includes('No network connection')) {
-                            _.forEach(this.addBackendErrors(res), error => {
+                            _.forEach(this.addBackendErrors(res), (error) => {
                                 this.errors.push(error);
                             });
                         }
@@ -656,7 +712,7 @@ export default {
                 billing: [],
                 shipping: [],
             };
-            _.forEach(this.customer.customerAddresses, val => {
+            _.forEach(this.customer.customerAddresses, (val) => {
                 if (val.is_billing) {
                     if (val.is_billing_default) {
                         this.defaultBillingAddress = val;
@@ -756,13 +812,13 @@ export default {
 
                     this.toggle();
                 })
-                .catch(err => {
+                .catch((err) => {
                     // Show api request error
                     console.log('storeCustomerAddress error: ', err);
 
                     this.errors.push(this.$t('Address could not be saved'));
 
-                    _.forEach(this.addBackendErrors(err), error => {
+                    _.forEach(this.addBackendErrors(err), (error) => {
                         this.errors.push(error);
                     });
                 });
@@ -785,11 +841,11 @@ export default {
 
                         this.toggle();
                     })
-                    .catch(err => {
+                    .catch((err) => {
                         console.log('editAddress error: ', err);
 
                         // Show api request error
-                        _.forEach(this.addBackendErrors(err), error => {
+                        _.forEach(this.addBackendErrors(err), (error) => {
                             this.errors.push(error);
                         });
                     });
@@ -827,13 +883,13 @@ export default {
 
                             this.toggle();
                         })
-                        .catch(err => {
+                        .catch((err) => {
                             console.log('editAddress error: ', err);
 
                             // Show api request error
                             this.errors.push(this.$t('Selecting new billing address failed'));
 
-                            _.forEach(this.addBackendErrors(err), error => {
+                            _.forEach(this.addBackendErrors(err), (error) => {
                                 this.errors.push(error);
                             });
                         });
@@ -856,13 +912,13 @@ export default {
                             this.getAddresses();
                             this.toggle();
                         })
-                        .catch(err => {
+                        .catch((err) => {
                             console.log('editAddress error: ', err);
 
                             // Show api request error
                             this.errors.push(this.$t('Selecting new shipping address failed'));
 
-                            _.forEach(this.addBackendErrors(err), error => {
+                            _.forEach(this.addBackendErrors(err), (error) => {
                                 this.errors.push(error);
                             });
                         });
@@ -871,16 +927,16 @@ export default {
         },
         submitDeleteAddress: function () {
             // dispatch delete calls to api..
-            _.forEach(this.selectedDelete, address => {
+            _.forEach(this.selectedDelete, (address) => {
                 this.deleteCustomerAddress(address)
                     .then(() => {
                         this.getAddresses();
                     })
-                    .catch(err => {
+                    .catch((err) => {
                         // Show api request error
                         this.errors.push(this.$t('Deleting new shipping address failed'));
 
-                        _.forEach(this.addBackendErrors(err), error => {
+                        _.forEach(this.addBackendErrors(err), (error) => {
                             this.errors.push(error);
                         });
                     });

@@ -119,9 +119,7 @@
 
         <div class="validation-msg" v-text="$t(paymentError)" />
     </div>
-    <div v-else-if="apiError" class="payment-methods-api-error-wrp">
-        No payment methods found
-    </div>
+    <div v-else-if="apiError" class="payment-methods-api-error-wrp"> No payment methods found </div>
     <div v-else class="payment-methods-placeholder">
         <div class="loader lds-ellipsis">
             <div />
@@ -157,12 +155,12 @@ export default {
 
     computed: {
         ...mapState({
-            paymentMethods: state => state.modApiPayment.paymentMethods,
-            chosenPaymentMethod: state => state.modApiPayment.order.chosenPaymentMethod,
-            paymentError: state => state.modApiPayment.paymentError,
-            ibanError: state => state.modApiPayment.ibanError,
-            bicError: state => state.modApiPayment.bicError,
-            customerAddresses: state => state.modApiCustomer.customer.customerAddresses,
+            paymentMethods: (state) => state.modApiPayment.paymentMethods,
+            chosenPaymentMethod: (state) => state.modApiPayment.order.chosenPaymentMethod,
+            paymentError: (state) => state.modApiPayment.paymentError,
+            ibanError: (state) => state.modApiPayment.ibanError,
+            bicError: (state) => state.modApiPayment.bicError,
+            customerAddresses: (state) => state.modApiCustomer.customer.customerAddresses,
         }),
         ...mapGetters({
             getChosenPaymentMethod: 'modApiPayment/getChosenPaymentMethod',
@@ -248,7 +246,7 @@ export default {
                             this.resetProcessingCheckout();
                         });
                     })
-                    .catch(err => {
+                    .catch((err) => {
                         this.flashMessage({
                             flashType: 'error',
                             flashMessage: err === 'No network connection' ? this.$t(err) : this.$t('An error occurred'),
@@ -325,7 +323,7 @@ export default {
                     .then(() => {
                         resolve();
                     })
-                    .catch(error => {
+                    .catch((error) => {
                         this.loading = false;
                         reject(error);
                     });
@@ -343,7 +341,7 @@ export default {
             }
         },
         setMethodById: function (key) {
-            _.forEach(this.paymentMethods, val => {
+            _.forEach(this.paymentMethods, (val) => {
                 if (val.id === key) {
                     this.chosenMethodObj = val;
                 }

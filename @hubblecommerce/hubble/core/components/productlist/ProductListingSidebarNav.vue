@@ -7,7 +7,6 @@
             class="level1-category-item"
             :class="{ current: childCategory.id === categoryId }"
         >
-
             <nuxt-link :to="itemUrlPath(childCategory)" v-text="childCategory.name" />
             <template v-if="childCategory.children">
                 <i v-if="childCategory.children.length > 0" class="icon icon-chevron-right" />
@@ -47,7 +46,7 @@ export default {
     },
     computed: {
         ...mapState({
-            dataMenu: state => state.modApiMenu.dataMenu,
+            dataMenu: (state) => state.modApiMenu.dataMenu,
         }),
         ...mapGetters({
             getApiLocale: 'modApiResources/getApiLocale',
@@ -61,7 +60,7 @@ export default {
     },
     methods: {
         setParentCategory: function () {
-            this.dataMenu.result.items.forEach(item => {
+            this.dataMenu.result.items.forEach((item) => {
                 if (item.id === this.parentCategoryId) {
                     this.parentCategory = item;
                 }

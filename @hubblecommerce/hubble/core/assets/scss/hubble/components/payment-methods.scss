@@ -38,7 +38,7 @@
             margin: auto 0;
             width: 105px;
             height: 24px;
-            background-image: url("~assets/images/payment/cc.png");
+            background-image: url('~assets/images/payment/cc.png');
             background-size: cover;
         }
 
@@ -50,7 +50,7 @@
             margin: auto 0;
             width: 49px;
             height: 12px;
-            background-image: url("~assets/images/payment/paypal.png");
+            background-image: url('~assets/images/payment/paypal.png');
             background-size: cover;
         }
 
@@ -62,7 +62,7 @@
             margin: auto 0;
             width: 35px;
             height: 20px;
-            background-image: url("~assets/images/payment/nachnahme.png");
+            background-image: url('~assets/images/payment/nachnahme.png');
             background-size: cover;
         }
 
@@ -74,7 +74,7 @@
             margin: auto 0;
             width: 126px;
             height: 26px;
-            background-image: url("~assets/images/payment/online-bank-transfer.png");
+            background-image: url('~assets/images/payment/online-bank-transfer.png');
             background-size: cover;
         }
 
@@ -108,7 +108,7 @@
 }
 
 /* Tablet */
-@media(min-width: 768px) {
+@media (min-width: 768px) {
     .payment-methods-wrp {
         .method-wrp {
             .description {

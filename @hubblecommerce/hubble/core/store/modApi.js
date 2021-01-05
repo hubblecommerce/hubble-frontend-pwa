@@ -1,4 +1,4 @@
-import {datetimeUnixNow, datetimeUnixNowAddSecs} from '@hubblecommerce/hubble/core/utils/datetime';
+import { datetimeUnixNow, datetimeUnixNowAddSecs } from '@hubblecommerce/hubble/core/utils/datetime';
 import axios from 'axios';
 import _ from 'lodash';
 
@@ -13,16 +13,16 @@ export const state = () => ({
     apiPaymentAuthToken: null,
     apiPaymentAuthResponse: {},
     apiPaymentCacheTTL: 120, // secs
-})
+});
 
 export const getters = {
-    getApiPaymentAuthResponse: state => {
+    getApiPaymentAuthResponse: (state) => {
         return state.apiPaymentAuthResponse;
     },
-    getApiResourcesAuthResponse: state => {
+    getApiResourcesAuthResponse: (state) => {
         return state.apiResourcesAuthResponse;
-    }
-}
+    },
+};
 
 export const mutations = {
     setApiPaymentAuthResponse: (state, payload) => {
@@ -46,60 +46,57 @@ export const mutations = {
             state.apiResourcesAuthResponse.created_at_unixtime = datetimeUnixNow();
             state.apiResourcesAuthResponse.expires_at_unixtime = datetimeUnixNowAddSecs(_ttl);
         }
-    }
-}
+    },
+};
 
 export const actions = {
-    async apiPaymentGetAuth({commit})
-    {
-        return new Promise(function(resolve, reject) {
+    async apiPaymentGetAuth({ commit }) {
+        return new Promise(function (resolve, reject) {
             axios({
                 method: 'POST',
                 url: _.trim(process.env.APP_BASE_URL, '/') + '/api/client-auth',
                 data: {
-                    apiType: 'payment'
-                }
+                    apiType: 'payment',
+                },
             })
                 .then((response) => {
                     commit('setApiPaymentAuthResponse', {
                         data: response.data,
                         cacheable: !!response.data.expires_in || false,
-                        cacheTTL: response.data.expires_in || null
+                        cacheTTL: response.data.expires_in || null,
                     });
 
                     resolve(response.data);
                 })
-                .catch(error => {
+                .catch((error) => {
                     reject(error);
                 });
         });
     },
-    async apiResourcesGetAuth({commit})
-    {
-        return new Promise(function(resolve, reject) {
+    async apiResourcesGetAuth({ commit }) {
+        return new Promise(function (resolve, reject) {
             axios({
                 method: 'POST',
                 url: _.trim(process.env.APP_BASE_URL, '/') + '/api/client-auth',
                 data: {
-                    apiType: 'resources'
-                }
+                    apiType: 'resources',
+                },
             })
                 .then((response) => {
                     commit('setApiResourcesAuthResponse', {
                         data: response.data,
                         cacheable: !!response.data.expires_in || false,
-                        cacheTTL: response.data.expires_in || null
+                        cacheTTL: response.data.expires_in || null,
                     });
 
                     resolve(response.data);
                 })
-                .catch(error => {
+                .catch((error) => {
                     reject(error);
                 });
         });
     },
-    async apiCheckAuth({dispatch, state, rootState}, payload)
-    {
+    async apiCheckAuth({ dispatch, state, rootState }, payload) {
         // console.log("apiCheckAuth - payload: %o", payload);
 
         let _authResponse = null;
@@ -112,8 +109,11 @@ export const actions = {
             _authResponse = state.apiPaymentAuthResponse;
 
             // use customer oauth, if present but is no guest
-            if (!_.isEmpty(rootState.modApiPayment.customer.customerAuth) && !rootState.modApiPayment.customer.isGuest) {
-                _authResponse = rootState.modApiPayment.customer.customerAuth.token
+            if (
+                !_.isEmpty(rootState.modApiPayment.customer.customerAuth) &&
+                !rootState.modApiPayment.customer.isGuest
+            ) {
+                _authResponse = rootState.modApiPayment.customer.customerAuth.token;
             }
         }
 
@@ -128,7 +128,6 @@ export const actions = {
 
         // fetch new auth token, if not valid ...
         if (_.has(_authResponse, 'expires_at_unixtime') && _authResponse.expires_at_unixtime < datetimeUnixNow()) {
-
             if (payload.apiType === 'data') {
                 _authResponse = await dispatch('apiResourcesGetAuth');
             }
@@ -159,8 +158,7 @@ export const actions = {
      */
     apiCall: {
         root: true,
-        async handler({dispatch, state, rootState}, payload)
-        {
+        async handler({ dispatch, state, rootState }, payload) {
             // console.log("apiCall - payload: %o", payload);
 
             // Set data if data isset
@@ -171,7 +169,7 @@ export const actions = {
 
             // Set Store ID to request data
             if (!_.isEmpty(process.env.STORE_ID) && payloadData !== null) {
-                _.assign(payloadData, {storeId: process.env.STORE_ID});
+                _.assign(payloadData, { storeId: process.env.STORE_ID });
             }
 
             // Set data if data isset
@@ -182,7 +180,7 @@ export const actions = {
 
             // Set Store ID to request data
             if (!_.isEmpty(process.env.STORE_ID) && payloadParams !== null) {
-                _.assign(payloadParams, {storeId: process.env.STORE_ID});
+                _.assign(payloadParams, { storeId: process.env.STORE_ID });
             }
 
             // Reset params if action is post
@@ -194,16 +192,16 @@ export const actions = {
             let baseUrl;
             if (process.env.API_TYPE === 'api') {
                 if (payload.apiType === 'data') {
-                    baseUrl = _.join([
-                        _.trim(process.env.API_BASE_URL, '/'),
-                        _.trim(process.env.API_BASE_PFX, '/')
-                    ], '/');
+                    baseUrl = _.join(
+                        [_.trim(process.env.API_BASE_URL, '/'), _.trim(process.env.API_BASE_PFX, '/')],
+                        '/'
+                    );
                 }
                 if (payload.apiType === 'payment') {
-                    baseUrl = _.join([
-                        _.trim(process.env.API_PAYMENT_BASE_URL, '/'),
-                        _.trim(process.env.API_PAYMENT_BASE_PFX, '/')
-                    ], '/');
+                    baseUrl = _.join(
+                        [_.trim(process.env.API_PAYMENT_BASE_URL, '/'), _.trim(process.env.API_PAYMENT_BASE_PFX, '/')],
+                        '/'
+                    );
                 }
             }
 
@@ -211,13 +209,12 @@ export const actions = {
                 baseUrl = process.env.API_BASE_URL;
             }
 
-            return new Promise(function(resolve, reject) {
+            return new Promise(function (resolve, reject) {
                 dispatch('apiCheckAuth', {
                     apiType: payload.apiType,
-                    tokenType: payload.tokenType
+                    tokenType: payload.tokenType,
                 })
                     .then((response) => {
-
                         let _authToken = null;
 
                         // set by 'apiCheckAuth' response
@@ -230,17 +227,17 @@ export const actions = {
                         // Set custom headers depending on api type including authToken
                         let _headers = {
                             'Accept': 'application/json',
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
                         };
 
                         if (process.env.API_TYPE === 'sw') {
-                            _.assign(_headers, {'sw-access-key': process.env.API_SW_ACCESS_KEY});
+                            _.assign(_headers, { 'sw-access-key': process.env.API_SW_ACCESS_KEY });
 
                             if (payload.swContext != null) {
-                                _.assign(_headers, {'sw-context-token': payload.swContext});
+                                _.assign(_headers, { 'sw-context-token': payload.swContext });
                             }
                         } else {
-                            _.assign(_headers, {'Authorization': 'Bearer ' + _authToken});
+                            _.assign(_headers, { Authorization: 'Bearer ' + _authToken });
                         }
 
                         // call
@@ -249,7 +246,7 @@ export const actions = {
                             url: _.join([baseUrl, _.trim(payload.endpoint, '/')], '/'),
                             headers: _headers,
                             params: payloadParams, // GET params
-                            data: payloadData // POST data
+                            data: payloadData, // POST data
                         })
                             .then((response) => {
                                 //console.log("API request  %o to %o finished: %o", payload.action, payload.endpoint, response);
@@ -257,7 +254,7 @@ export const actions = {
                                 // Check if 200 response data has error the flag true
                                 // And if true, reject the errors
                                 if (response.status === 200 && response.data.error) {
-                                    reject(response.data)
+                                    reject(response.data);
                                 }
 
                                 resolve(response);
@@ -286,14 +283,14 @@ export const actions = {
                                     rejection = error.message;
                                 }
                                 //console.log("API request %o to %o failed: %o", payload.action, payload.endpoint, response);
-                                reject(rejection)
+                                reject(rejection);
                             });
                     })
-                    .catch(error => {
+                    .catch((error) => {
                         // console.log("apiCall - apiCheckAuth error: %o", error);
                         reject(error);
                     });
             });
-        }
-    }
-}
+        },
+    },
+};

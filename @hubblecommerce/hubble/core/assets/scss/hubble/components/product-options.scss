@@ -62,7 +62,7 @@
 
             &:after {
                 font-family: 'icons' !important;
-                content: "\e901";
+                content: '\e901';
                 position: absolute;
                 top: 0;
                 bottom: 0;
@@ -161,7 +161,8 @@
                     &.no-color {
                         position: relative;
 
-                        &:after, &:before {
+                        &:after,
+                        &:before {
                             position: absolute;
                             left: 13px;
                             top: -1px;
@@ -194,7 +195,7 @@
                             top: 100%;
                             left: 10px;
                             border: solid transparent;
-                            content: " ";
+                            content: ' ';
                             height: 0;
                             width: 0;
                             position: absolute;
@@ -223,7 +224,8 @@
                         .no-swatch {
                             position: relative;
 
-                            &:after, &:before {
+                            &:after,
+                            &:before {
                                 position: absolute;
                                 left: 11px;
                                 top: -2px;
@@ -261,8 +263,7 @@
     }
 }
 
-
-@media(min-width: 768px) {
+@media (min-width: 768px) {
     .options-wrp {
         margin-bottom: 0;
 
@@ -294,7 +295,6 @@
                     }
                 }
             }
-
         }
     }
 }

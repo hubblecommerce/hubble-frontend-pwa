@@ -1,6 +1,11 @@
 <template>
     <div class="pagination">
-        <button class="button-icon" :class="{ disabled: paginationPrevDisabled }" :disabled="paginationPrevDisabled" @click="loadPrevPage">
+        <button
+            class="button-icon"
+            :class="{ disabled: paginationPrevDisabled }"
+            :disabled="paginationPrevDisabled"
+            @click="loadPrevPage"
+        >
             <i class="icon icon-chevron-left" />
             <span class="hidden-link-name" v-text="$t('Previous Page')" />
             <material-ripple />
@@ -9,9 +14,19 @@
             <span v-text="$t('Page')" />
             <span class="page-number" v-text="curPage" />
             <span v-text="$t('pagination_from')" />
-            <span v-text="lastPage" class="page-number last-page" :class="{ disabled: paginationNextDisabled }" @click="loadLastPage" />
+            <span
+                class="page-number last-page"
+                :class="{ disabled: paginationNextDisabled }"
+                @click="loadLastPage"
+                v-text="lastPage"
+            />
         </div>
-        <button class="button-icon" :class="{ disabled: paginationNextDisabled }" :disabled="paginationNextDisabled" @click="loadNextPage">
+        <button
+            class="button-icon"
+            :class="{ disabled: paginationNextDisabled }"
+            :disabled="paginationNextDisabled"
+            @click="loadNextPage"
+        >
             <i class="icon icon-chevron-right" />
             <span class="hidden-link-name" v-text="$t('Next Page')" />
             <material-ripple />
@@ -26,6 +41,8 @@ import _ from 'lodash';
 export default {
     name: 'Pagination',
 
+    scrollToTop: true,
+
     data() {
         return {
             paginateMax: 3,
@@ -33,12 +50,10 @@ export default {
         };
     },
 
-    scrollToTop: true,
-
     computed: {
         ...mapState({
-            dataCategoryProducts: state => state.modApiCategory.dataCategoryProducts,
-            paginationPerPage: state => state.modApiRequests.paginationPerPage,
+            dataCategoryProducts: (state) => state.modApiCategory.dataCategoryProducts,
+            paginationPerPage: (state) => state.modApiRequests.paginationPerPage,
         }),
         categoryProductItems: function () {
             return this.dataCategoryProducts.result.items;

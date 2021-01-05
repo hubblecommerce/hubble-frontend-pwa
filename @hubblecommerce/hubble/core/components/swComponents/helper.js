@@ -28,7 +28,7 @@ export const blockMixins = {
     methods: {
         getSlotByPosition(slots, position) {
             let typeName = '';
-            _.forEach(slots, slot => {
+            _.forEach(slots, (slot) => {
                 if (slot.slot === position) {
                     typeName = slot.type;
                 }
@@ -37,7 +37,7 @@ export const blockMixins = {
         },
         getContentByPosition(slots, position) {
             let slotContent = {};
-            _.forEach(slots, slot => {
+            _.forEach(slots, (slot) => {
                 if (slot.slot === position) {
                     slotContent = slot;
                 }

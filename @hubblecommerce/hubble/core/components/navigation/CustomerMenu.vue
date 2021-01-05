@@ -33,7 +33,7 @@ export default {
 
     computed: {
         ...mapState({
-            offcanvas: state => state.modNavigation.offcanvas,
+            offcanvas: (state) => state.modNavigation.offcanvas,
         }),
         setButtonStates: function () {
             return {

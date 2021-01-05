@@ -40,7 +40,7 @@ export default {
 
     computed: {
         ...mapState({
-            customer: state => state.modApiCustomer.customer,
+            customer: (state) => state.modApiCustomer.customer,
         }),
     },
 

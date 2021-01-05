@@ -31,9 +31,6 @@
         }
     }
 
-
-
-
     .filter-tabs {
         margin-left: -15px;
         margin-right: -15px;
@@ -66,7 +63,8 @@
                     margin-right: 5px;
                     background-color: $white;
                     border: 0;
-                    box-shadow: 0 2px 2px 0 rgba(62,62,77,0.1), 0 3px 1px -2px rgba(62,62,77,0.07), 0 1px 5px 0 rgba(62,62,77,0.15);
+                    box-shadow: 0 2px 2px 0 rgba(62, 62, 77, 0.1), 0 3px 1px -2px rgba(62, 62, 77, 0.07),
+                        0 1px 5px 0 rgba(62, 62, 77, 0.15);
 
                     &:before {
                         font-family: 'icons';
@@ -93,7 +91,7 @@
             }
         }
 
-        .facets-wrp .facet-wrp .toggle{
+        .facets-wrp .facet-wrp .toggle {
             background-color: $white;
             border: none;
         }
@@ -108,7 +106,7 @@
     }
 }
 
-@media(min-width: 768px) {
+@media (min-width: 768px) {
     .offcanvas-filter-wrp {
         .tabs-component {
             width: auto;

@@ -12,7 +12,7 @@ import { required, email, numeric, min, confirmed, max } from 'vee-validate/dist
 // :rules="{ required: { allowFalse: false } }
 extend('required', {
     ...required,
-    message: field => {
+    message: (field) => {
         if (field === 'privacyPolicy') {
             return 'Please accept that you have read our privacy policy.';
         }
@@ -22,21 +22,21 @@ extend('required', {
 
 extend('email', {
     ...email,
-    message: field => {
+    message: (field) => {
         return 'The ' + field + ' must be a valid email address.';
     },
 });
 
 extend('numeric', {
     ...numeric,
-    message: field => {
+    message: (field) => {
         return 'The ' + field + ' must be a number.';
     },
 });
 
 extend('confirmed', {
     ...confirmed,
-    message: field => {
+    message: (field) => {
         if (field === 'password confirmation' || field === 'new password confirmation') {
             return 'The password confirmation does not match.';
         }
@@ -59,8 +59,10 @@ extend('max', {
 });
 
 extend('birthday', {
-    validate: value => {
-        return /^\s*(3[01]|[12][0-9]|0?[1-9])\.(1[012]|0?[1-9])\.((?:19|20)\d{2})\s*$/.test(String(value).toLowerCase());
+    validate: (value) => {
+        return /^\s*(3[01]|[12][0-9]|0?[1-9])\.(1[012]|0?[1-9])\.((?:19|20)\d{2})\s*$/.test(
+            String(value).toLowerCase()
+        );
     },
     message: () => {
         return 'Birthday structure is not valid.';

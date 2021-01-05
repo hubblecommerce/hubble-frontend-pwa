@@ -33,7 +33,7 @@
             margin: auto 0;
             width: 51px;
             height: 31px;
-            background-image: url("~assets/images/shipping/dhl_200x120.png");
+            background-image: url('~assets/images/shipping/dhl_200x120.png');
             background-size: cover;
         }
     }
@@ -53,7 +53,7 @@
 }
 
 /* Tablet */
-@media(min-width: 768px) {
+@media (min-width: 768px) {
     .shipping-methods-wrp {
         .method-wrp {
             .description {

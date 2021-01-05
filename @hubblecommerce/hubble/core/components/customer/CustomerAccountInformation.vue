@@ -1,6 +1,10 @@
 <template>
     <div>
-        <button class="button-primary dashboard-section-button-edit" @click.prevent="editCustomerInfo" v-text="$t('Edit Information')" />
+        <button
+            class="button-primary dashboard-section-button-edit"
+            @click.prevent="editCustomerInfo"
+            v-text="$t('Edit Information')"
+        />
 
         <transition-expand-layer :direction="{ sm: 'bottomTop', md: 'rightLeft', lg: 'rightLeft' }">
             <div v-if="showAccountInformation" class="transition-expand-wrp">
@@ -38,9 +42,12 @@
                                             :class="{ invalid: errors.length > 0 }"
                                             required
                                         >
-                                            <option v-for="salutation in salutations" :key="salutation.key" :value="salutation.key">{{
-                                                salutation.value
-                                            }}</option>
+                                            <option
+                                                v-for="salutation in salutations"
+                                                :key="salutation.key"
+                                                :value="salutation.key"
+                                                >{{ salutation.value }}</option
+                                            >
                                         </select>
 
                                         <label class="select-label" v-text="$t('Salutation') + '*'" />
@@ -96,9 +103,18 @@
                                         <div class="validation-msg" v-text="$t(errors[0])" />
                                     </validation-provider>
 
-                                    <div class="dashboard-section-title" v-text="$t('Please enter your password to change your email address')" />
+                                    <div
+                                        class="dashboard-section-title"
+                                        v-text="$t('Please enter your password to change your email address')"
+                                    />
 
-                                    <validation-provider vid="email" name="current-email" mode="passive" tag="div" class="hbl-input-group">
+                                    <validation-provider
+                                        vid="email"
+                                        name="current-email"
+                                        mode="passive"
+                                        tag="div"
+                                        class="hbl-input-group"
+                                    >
                                         <input
                                             id="current-email"
                                             v-model="customerInfo.currentEmail"
@@ -242,8 +258,8 @@ export default {
 
     computed: {
         ...mapState({
-            customer: state => state.modApiCustomer.customer,
-            offcanvas: state => state.modNavigation.offcanvas,
+            customer: (state) => state.modApiCustomer.customer,
+            offcanvas: (state) => state.modNavigation.offcanvas,
         }),
         customerData: function () {
             return this.customer.customerData;
@@ -348,13 +364,13 @@ export default {
 
                                         this.errors = [];
                                     })
-                                    .catch(err => {
+                                    .catch((err) => {
                                         console.log(err);
                                     });
                             })
-                            .catch(err => {
+                            .catch((err) => {
                                 this.errors.push(this.$t('Email could not be changed.'));
-                                _.forEach(this.addBackendErrors(err), error => {
+                                _.forEach(this.addBackendErrors(err), (error) => {
                                     this.errors.push(error);
                                 });
 

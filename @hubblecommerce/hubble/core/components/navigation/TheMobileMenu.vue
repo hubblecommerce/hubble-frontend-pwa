@@ -19,7 +19,7 @@
                     </div>
 
                     <div class="row tree-wrp">
-                        <search-trigger v-if="($mq === 'sm')"/>
+                        <search-trigger v-if="$mq === 'sm'" />
 
                         <mobile-categories :data-item="rootItem" :depth="0" />
                     </div>
@@ -36,26 +36,26 @@ export default {
 
     components: {
         SearchTrigger: () => import('../search/SearchTrigger'),
-        MobileCategories: () => import('./MobileCategories')
+        MobileCategories: () => import('./MobileCategories'),
     },
 
     props: {
         dataItems: {
             type: Array,
-            required: true
+            required: true,
         },
     },
 
     data() {
         return {
             name: 'TheMobileMenu',
-            menuTitle: 'Navigation'
+            menuTitle: 'Navigation',
         };
     },
 
     computed: {
         ...mapState({
-            offcanvas: state => state.modNavigation.offcanvas,
+            offcanvas: (state) => state.modNavigation.offcanvas,
         }),
         rootItem: function () {
             return {
@@ -65,24 +65,24 @@ export default {
         },
         showMenu: function () {
             return this.offcanvas.component === this.name;
-        }
+        },
     },
 
     watch: {
         '$route.path': function () {
             // Close menu layer if route changes
             this.hideOffcanvasAction();
-        }
+        },
     },
 
     methods: {
         ...mapActions({
             toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction',
-            hideOffcanvasAction: 'modNavigation/hideOffcanvasAction'
+            hideOffcanvasAction: 'modNavigation/hideOffcanvasAction',
         }),
         toggle: function () {
             this.toggleOffcanvasAction({ component: this.name });
-        }
-    }
+        },
+    },
 };
 </script>

@@ -6,7 +6,7 @@ $slider-handle-color: $primary;
     display: block;
     position: relative;
 
-    .action-bar{
+    .action-bar {
         padding: 0;
         margin-bottom: 10px;
         border-bottom: none;
@@ -21,16 +21,16 @@ $slider-handle-color: $primary;
         justify-content: space-evenly;
         font-weight: $font-weight-bold;
 
-      .price.text-left {
-          float: left;
-      }
-      .price.text-right {
-          float: right;
-      }
+        .price.text-left {
+            float: left;
+        }
+        .price.text-right {
+            float: right;
+        }
     }
 }
 
-.vue-slider-component{
+.vue-slider-component {
     margin: 10px 5px 30px 5px;
 
     .vue-slider {
@@ -46,7 +46,7 @@ $slider-handle-color: $primary;
         .vue-slider-dot-handle {
             background-color: $slider-handle-color !important;
             box-shadow: none !important;
-      }
+        }
     }
 
     .vue-slider-process {
@@ -54,7 +54,7 @@ $slider-handle-color: $primary;
     }
 }
 
-@media(min-width: 1024px) {
+@media (min-width: 1024px) {
     .price-slider {
         .vue-slider-component {
             margin-bottom: 10px;

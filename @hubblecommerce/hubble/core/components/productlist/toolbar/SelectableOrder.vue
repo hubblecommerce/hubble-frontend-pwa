@@ -3,7 +3,12 @@
         <select id="selectable-order" v-model="modelSelected" class="select-text" required>
             <option value="" disabled />
 
-            <option v-for="(dataOption, index) in dataOptions" :key="index" :value="dataOption.option_id" v-text="$t(dataOption.label)" />
+            <option
+                v-for="(dataOption, index) in dataOptions"
+                :key="index"
+                :value="dataOption.option_id"
+                v-text="$t(dataOption.label)"
+            />
         </select>
 
         <span class="select-highlight" />
@@ -13,7 +18,7 @@
 </template>
 
 <script>
-import { mapMutations, mapActions, mapState } from 'vuex'
+import { mapMutations, mapActions, mapState } from 'vuex';
 export default {
     name: 'SelectableOrder',
 
@@ -38,7 +43,7 @@ export default {
 
     computed: {
         ...mapState({
-            parsedQuery: state => state.modApiRequests.parsedQuery,
+            parsedQuery: (state) => state.modApiRequests.parsedQuery,
         }),
     },
 
@@ -49,7 +54,7 @@ export default {
                 data: newValue,
             });
 
-            if(this.$route.query.sort !== newValue && this.instantChange) {
+            if (this.$route.query.sort !== newValue && this.instantChange) {
                 this.applyFilter();
             }
         },

@@ -6,7 +6,11 @@
         </button>
 
         <transition-pop-up>
-            <div v-if="displaySwitch && (vp === 'md' || vp === 'lg')" v-click-outside="hideSwitch" class="customer-account-wrp">
+            <div
+                v-if="displaySwitch && (vp === 'md' || vp === 'lg')"
+                v-click-outside="hideSwitch"
+                class="customer-account-wrp"
+            >
                 <div class="link-wrp">
                     <nuxt-link :to="localePath('index', 'de')">
                         <button :class="{ 'button-primary': isLocale('de'), 'button-secondary': !isLocale('de') }">

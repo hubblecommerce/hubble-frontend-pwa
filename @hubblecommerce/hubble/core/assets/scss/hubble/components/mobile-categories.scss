@@ -24,7 +24,7 @@
     font-size: 14px;
     font-weight: $font-weight-bold;
     text-transform: uppercase;
-    letter-spacing: .4px;
+    letter-spacing: 0.4px;
     padding: 16px 16px;
     border-bottom: 1px solid $border-color;
 
@@ -79,8 +79,9 @@
     }
 }
 
-.slide-in-enter-active, .slide-in-leave-active {
-    transition: all .2s ease;
+.slide-in-enter-active,
+.slide-in-leave-active {
+    transition: all 0.2s ease;
 }
 
 .slide-in-enter {
@@ -99,7 +100,7 @@
     left: 100%;
 }
 
-@media(min-width: 768px) {
+@media (min-width: 768px) {
     .tree-menu {
         position: static;
 
@@ -130,15 +131,13 @@
         width: 100%;
         height: calc(100vh - 81px);
     }
-
 }
 
-@media(min-width: 1024px) {
+@media (min-width: 1024px) {
     .tree-wrp {
-
         /* First Level Menu */
-        >.tree-menu {
-            >.sub-categories {
+        > .tree-menu {
+            > .sub-categories {
                 display: flex;
                 flex-direction: row;
                 flex-wrap: nowrap;
@@ -153,12 +152,12 @@
                 box-shadow: none;
                 border: none;
 
-                >.tree-menu {
+                > .tree-menu {
                     width: auto;
                     flex: 1;
                     // min-width: 150px;
 
-                    >.trigger {
+                    > .trigger {
                         border: none;
                         text-transform: uppercase;
                         background-color: #fff !important;
@@ -206,19 +205,19 @@
 
         background-color: #f5f5f5;
         border: 1px solid $border-color;
-        box-shadow: 1px 6px 17px -5px rgba(0,0,0,0.38);
+        box-shadow: 1px 6px 17px -5px rgba(0, 0, 0, 0.38);
 
         &:before {
             display: none;
         }
 
-        >.tree-menu {
+        > .tree-menu {
             width: auto;
             flex: 1;
             flex-wrap: wrap;
             // min-width: 250px;
 
-            >.trigger {
+            > .trigger {
                 background-color: #f5f5f5 !important;
                 padding: 20px 12px !important;
                 transition: all 0.2s ease-in-out;
@@ -245,12 +244,14 @@
         }
     }
 
-    .slide-in-enter, .slide-in-leave-to {
+    .slide-in-enter,
+    .slide-in-leave-to {
         margin-left: 0;
         opacity: 0;
     }
 
-    .slide-in-enter-to, .slide-in-leave {
+    .slide-in-enter-to,
+    .slide-in-leave {
         margin-left: 0;
         opacity: 1;
     }

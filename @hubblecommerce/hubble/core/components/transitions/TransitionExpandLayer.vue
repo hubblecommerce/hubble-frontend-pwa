@@ -73,8 +73,8 @@ export default {
         },
         direction: {
             type: Object,
-            required: false
-        }
+            required: false,
+        },
     },
 
     data() {
@@ -85,13 +85,13 @@ export default {
 
     computed: {
         ...mapState({
-            offcanvas: state => state.modNavigation.offcanvas,
+            offcanvas: (state) => state.modNavigation.offcanvas,
         }),
         transMode: function () {
             let transitionMode = '';
 
             try {
-                if(this.direction[this.$mq] != null) {
+                if (this.direction[this.$mq] != null) {
                     transitionMode = this.direction[this.$mq];
                 }
             } catch {
@@ -114,8 +114,8 @@ export default {
             }
 
             return 'expand-' + transitionMode;
-        }
-    }
+        },
+    },
 };
 </script>
 

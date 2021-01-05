@@ -1,35 +1,35 @@
 .collapse-wrp {
-  width: 100%;
-
-  button {
-    display: flex;
-    text-align: center;
-    text-transform: none;
-
-    &.align-left {
-      justify-content: flex-start;
-      align-items: center;
-      padding-right: 50px;
-    }
-  }
-
-  .icon {
-    position: absolute;
-    right: 20px;
-  }
-
-  .collapse-item {
-    overflow: hidden;
-    transition: max-height .3s;
-    display: flex;
-    flex-direction: column;
+    width: 100%;
 
     button {
-      justify-content: center;
+        display: flex;
+        text-align: center;
+        text-transform: none;
+
+        &.align-left {
+            justify-content: flex-start;
+            align-items: center;
+            padding-right: 50px;
+        }
     }
 
-    >* {
-      padding: 15px;
+    .icon {
+        position: absolute;
+        right: 20px;
     }
-  }
+
+    .collapse-item {
+        overflow: hidden;
+        transition: max-height 0.3s;
+        display: flex;
+        flex-direction: column;
+
+        button {
+            justify-content: center;
+        }
+
+        > * {
+            padding: 15px;
+        }
+    }
 }

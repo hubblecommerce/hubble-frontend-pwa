@@ -14,10 +14,10 @@ export default function ({ isHMR, store, route, error }) {
             .dispatch('modApiRequests/parseRequest', {
                 query: route.query,
             })
-            .then(response => {
+            .then((response) => {
                 resolve(response);
             })
-            .catch(response => {
+            .catch((response) => {
                 error({ statusCode: 401, message: 'API authentication failed' });
                 resolve(response);
             });

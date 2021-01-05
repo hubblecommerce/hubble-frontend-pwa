@@ -6,7 +6,12 @@
                     <nuxt-link :to="'/' + item.url_pds" class="col-8">
                         <div class="row">
                             <div class="col-4">
-                                <img :src="itemImgPath(item)" class="product-img img-minicart" alt="Product Image" :title="item.name_orig" />
+                                <img
+                                    :src="itemImgPath(item)"
+                                    class="product-img img-minicart"
+                                    alt="Product Image"
+                                    :title="item.name_orig"
+                                />
                             </div>
 
                             <div class="col-8">
@@ -17,7 +22,11 @@
 
                                     <div class="row">
                                         <ul class="selected-variants-wrp">
-                                            <li v-for="(variant, key) in item.variants" :key="key" class="selected-variants">
+                                            <li
+                                                v-for="(variant, key) in item.variants"
+                                                :key="key"
+                                                class="selected-variants"
+                                            >
                                                 {{ variant.label }}: {{ formatSize(variant.value_label) }}
                                             </li>
                                         </ul>
@@ -27,18 +36,36 @@
                                         <template v-if="itemIsSpecial(item)">
                                             <span
                                                 class="product-price old-price"
-                                                v-text="getPriceAndCurrency(item, 'display_price_brutto', priceSwitcherIncludeVat)"
+                                                v-text="
+                                                    getPriceAndCurrency(
+                                                        item,
+                                                        'display_price_brutto',
+                                                        priceSwitcherIncludeVat
+                                                    )
+                                                "
                                             />
                                             <span
                                                 class="product-price sale-price"
-                                                v-text="getPriceAndCurrency(item, 'display_price_brutto_special', priceSwitcherIncludeVat)"
+                                                v-text="
+                                                    getPriceAndCurrency(
+                                                        item,
+                                                        'display_price_brutto_special',
+                                                        priceSwitcherIncludeVat
+                                                    )
+                                                "
                                             />
                                         </template>
 
                                         <template v-else>
                                             <span
                                                 class="product-price sale-price"
-                                                v-text="getPriceAndCurrency(item, 'display_price_brutto', priceSwitcherIncludeVat)"
+                                                v-text="
+                                                    getPriceAndCurrency(
+                                                        item,
+                                                        'display_price_brutto',
+                                                        priceSwitcherIncludeVat
+                                                    )
+                                                "
                                             />
                                         </template>
                                     </div>
@@ -48,9 +75,20 @@
                     </nuxt-link>
 
                     <div class="col-4 actions-wrp text-right">
-                        <div v-if="!showLoader" aria-hidden="true" class="remove-item" @click="confirmRemoveItem(item)" v-text="$t('Remove')" />
+                        <div
+                            v-if="!showLoader"
+                            aria-hidden="true"
+                            class="remove-item"
+                            @click="confirmRemoveItem(item)"
+                            v-text="$t('Remove')"
+                        />
 
-                        <qty-selector :type="true" :qty="item.qty" :max-qty="getStockQtyOfVariant(item)" @changeQty="onChangeQty(item.id, $event)" />
+                        <qty-selector
+                            :type="true"
+                            :qty="item.qty"
+                            :max-qty="getStockQtyOfVariant(item)"
+                            @changeQty="onChangeQty(item.id, $event)"
+                        />
 
                         <div v-if="showLoader" class="lds-ring">
                             <div />
@@ -87,7 +125,7 @@ export default {
     name: 'CartItemsList',
 
     components: {
-        QtySelector: () => import('../utils/QtySelector')
+        QtySelector: () => import('../utils/QtySelector'),
     },
 
     data() {
@@ -102,11 +140,11 @@ export default {
 
     computed: {
         ...mapState({
-            cart: state => state.modCart.cart,
-            items: state => state.modCart.cart.items,
-            qty: state => state.modCart.cart.items_qty,
-            priceSwitcherIncludeVat: state => state.modPrices.priceSwitcherIncludeVat,
-            offcanvas: state => state.modNavigation.offcanvas,
+            cart: (state) => state.modCart.cart,
+            items: (state) => state.modCart.cart.items,
+            qty: (state) => state.modCart.cart.items_qty,
+            priceSwitcherIncludeVat: (state) => state.modPrices.priceSwitcherIncludeVat,
+            offcanvas: (state) => state.modNavigation.offcanvas,
         }),
         ...mapGetters({
             productIsSpecial: 'modPrices/productIsSpecial',
@@ -162,7 +200,7 @@ export default {
             return this.getTaxClassByLabel(item.final_price_item.tax_class_id);
         },
         onChangeQty: function (id, e) {
-            let storeItem = _.find(this.items, o => {
+            let storeItem = _.find(this.items, (o) => {
                 return o.id === id;
             });
 
@@ -182,7 +220,7 @@ export default {
                         country: 'DE',
                     });
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.log('updateItem error: ', err);
 
                     this.setCartItemsObjQty({
@@ -226,7 +264,7 @@ export default {
 
                     this.gtmRemoveFromCart(item);
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.log('delItem error: ', err);
 
                     if (this.offcanvas.isActive) {
@@ -252,7 +290,11 @@ export default {
                     let price = this.getPriceAndCurrency(item, 'display_price_brutto', this.priceSwitcherIncludeVat);
 
                     if (this.itemIsSpecial(item)) {
-                        price = this.getPriceAndCurrency(item, 'display_price_brutto_special', this.priceSwitcherIncludeVat);
+                        price = this.getPriceAndCurrency(
+                            item,
+                            'display_price_brutto_special',
+                            this.priceSwitcherIncludeVat
+                        );
                     }
 
                     this.$gtm.pushEvent({
@@ -304,7 +346,7 @@ export default {
             // Check stock qty of selected variant and build qty select depending on stock qty
             // stop after qty of 10 to prevent building to many option nodes
             let highestQty = 0;
-            _.forEach(item.variants, variant => {
+            _.forEach(item.variants, (variant) => {
                 if (variant.stock_qty > 10) {
                     highestQty = 10;
                     return 10;

@@ -18,7 +18,8 @@
         margin-bottom: 20px;
     }
 
-    .chosen-payment-method-wrp, .chosen-shipping-method-wrp {
+    .chosen-payment-method-wrp,
+    .chosen-shipping-method-wrp {
         margin-bottom: 20px;
         padding-bottom: 20px;
         border-bottom: 1px solid $border-color;
@@ -91,9 +92,8 @@
 }
 
 /* Tablet */
-@media(min-width: 768px) {
+@media (min-width: 768px) {
     .checkout-summary {
-
         .checkout-summary-wrp .edit-data-info {
             margin-bottom: 30px;
         }
@@ -142,7 +142,7 @@
 }
 
 /* Desktop */
-@media(min-width: 1024px) {
+@media (min-width: 1024px) {
     .checkout-summary {
         max-width: 1080px;
     }

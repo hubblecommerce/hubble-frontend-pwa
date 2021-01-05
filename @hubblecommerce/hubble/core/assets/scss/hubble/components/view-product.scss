@@ -12,7 +12,7 @@
         position: relative;
         width: 100%;
 
-        .lds-ring div{
+        .lds-ring div {
             border-color: $secondary transparent transparent transparent;
         }
 
@@ -24,7 +24,6 @@
             .add-to-wishlist-wrp {
                 min-width: 0;
                 min-height: 0;
-
             }
 
             .add-to-cart {
@@ -56,11 +55,10 @@
                 .lds-ring {
                     height: 25px;
 
-                    div{
+                    div {
                         border-color: $secondary transparent transparent transparent;
                     }
                 }
-
             }
         }
     }
@@ -81,16 +79,19 @@
     }
 }
 
-.product-actions-animation-enter-active, .product-actions-animation-leave-active {
-    transition: all .5s ease;
+.product-actions-animation-enter-active,
+.product-actions-animation-leave-active {
+    transition: all 0.5s ease;
 }
 
-.product-actions-animation-enter, .product-actions-animation-leave-to {
+.product-actions-animation-enter,
+.product-actions-animation-leave-to {
     bottom: -300px !important;
     opacity: 0;
 }
 
-.product-actions-animation-enter-to, .product-actions-animation-leave {
+.product-actions-animation-enter-to,
+.product-actions-animation-leave {
     bottom: 0 !important;
     opacity: 1;
 }
@@ -117,7 +118,7 @@
     }
 }
 
-@media(min-width: 768px) {
+@media (min-width: 768px) {
     .detail-wrp {
         @include make-container();
         @include make-container-max-widths($max-widths: $container-max-widths, $breakpoints: $grid-breakpoints);
@@ -163,7 +164,6 @@
         .description-title {
             margin-bottom: 15px;
         }
-
     }
 
     .detail-container {
@@ -177,7 +177,7 @@
     }
 }
 
-@media(min-width: 1024px) {
+@media (min-width: 1024px) {
     .detail-wrp {
         display: flex;
         justify-content: space-between;

@@ -1,7 +1,12 @@
 <template>
     <div class="hbl-select limit">
         <select id="show" v-model="modelSelected" class="select-text" required>
-            <option v-for="(option, index) in dataOptions" :key="index" :value="option.limit" v-text="$t(option.label)" />
+            <option
+                v-for="(option, index) in dataOptions"
+                :key="index"
+                :value="option.limit"
+                v-text="$t(option.label)"
+            />
         </select>
         <span class="select-highlight" />
         <label for="show" class="select-label" v-text="$t('Show')" />

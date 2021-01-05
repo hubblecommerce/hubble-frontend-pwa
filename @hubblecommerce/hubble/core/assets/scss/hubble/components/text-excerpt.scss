@@ -1,5 +1,6 @@
 .text-excerpt {
-    .collapsed, p {
+    .collapsed,
+    p {
         display: inline;
     }
 
@@ -12,7 +13,7 @@
     }
 }
 
-@media(min-width: 768px) {
+@media (min-width: 768px) {
     .text-excerpt {
         .show-more {
             font-size: 16px;

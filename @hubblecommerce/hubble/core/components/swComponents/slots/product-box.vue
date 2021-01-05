@@ -46,7 +46,7 @@ export default {
     },
 
     created() {
-        this.mappingProduct(this.content.data).then(response => {
+        this.mappingProduct(this.content.data).then((response) => {
             this.itemOrig = response;
             this.loaded = true;
         });

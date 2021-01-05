@@ -31,13 +31,15 @@
         &.nuxt-link-exact-active {
             color: $primary !important;
 
-            .no, .icon {
+            .no,
+            .icon {
                 background-color: $primary;
                 color: #fff;
             }
         }
 
-        .no, .icon {
+        .no,
+        .icon {
             color: $text-primary;
             background-color: #f5f5f5;
             border: 1px solid $border-color;
@@ -53,7 +55,7 @@
 }
 
 /* Desktop */
-@media(min-width: 1024px) {
+@media (min-width: 1024px) {
     .progress-bar-wrp {
         max-width: 1080px;
     }

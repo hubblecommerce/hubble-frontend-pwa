@@ -67,7 +67,7 @@ import { mapState, mapActions } from 'vuex';
 import CartItemsList from '../../components/checkout/CartItemsList';
 import Totals from '../../components/checkout/Totals';
 import GTMDataLayer from '../../components/utils/GTMDataLayer';
-import _ from 'lodash'
+import _ from 'lodash';
 
 export default {
     name: 'CheckoutCart',
@@ -80,9 +80,9 @@ export default {
         CartItemsList,
     },
 
-    middleware: ['apiAuthenticate', 'apiLocalization', 'apiResourceMenu', 'trackClickPath'],
-
     layout: 'hubble',
+
+    middleware: ['apiAuthenticate', 'apiLocalization', 'apiResourceMenu', 'trackClickPath'],
 
     data() {
         return {
@@ -93,10 +93,10 @@ export default {
 
     computed: {
         ...mapState({
-            cart: state => state.modCart.cart,
-            items: state => state.modCart.cart.items,
-            qty: state => state.modCart.cart.items_qty,
-            customer: state => state.modApiCustomer.customer,
+            cart: (state) => state.modCart.cart,
+            items: (state) => state.modCart.cart.items,
+            qty: (state) => state.modCart.cart.items_qty,
+            customer: (state) => state.modApiCustomer.customer,
         }),
         isLoggedIn: function () {
             if (!_.isEmpty(this.customer.customerAuth)) {
@@ -119,7 +119,9 @@ export default {
             precalculateShippingCostAction: 'modCart/precalculateShippingCost',
         }),
         cartItemsLabel(qty) {
-            return this.qty > 1 ? qty + ' ' + this.$t('shopping_cart_label_items') : qty + ' ' + this.$t('shopping_cart_label_item');
+            return this.qty > 1
+                ? qty + ' ' + this.$t('shopping_cart_label_items')
+                : qty + ' ' + this.$t('shopping_cart_label_item');
         },
         getItemsInCart() {
             this.cartItemsQty = this.qty;
@@ -132,7 +134,7 @@ export default {
             this.precalculateShippingCostAction(order);
         },
         checkoutPath: function () {
-            if(this.isLoggedIn) {
+            if (this.isLoggedIn) {
                 return this.localePath('checkout-overview');
             }
 

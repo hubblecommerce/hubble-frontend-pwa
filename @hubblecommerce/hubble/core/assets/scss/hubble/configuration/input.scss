@@ -51,7 +51,8 @@ $hbl-input-highlight-color: $primary;
     position: relative;
     margin-bottom: 20px;
 
-    input, textarea {
+    input,
+    textarea {
         background: $hbl-input-background;
         font-size: $hbl-input-font-size;
         padding: $hbl-input-padding;
@@ -66,7 +67,8 @@ $hbl-input-highlight-color: $primary;
         }
     }
 
-    input:focus, textarea:focus {
+    input:focus,
+    textarea:focus {
         outline: none;
         border: $hbl-input-focus-border;
     }
@@ -118,7 +120,8 @@ $hbl-input-highlight-color: $primary;
     }
 
     /* active state */
-    input:focus ~ label, input:not(:placeholder-shown) ~ label {
+    input:focus ~ label,
+    input:not(:placeholder-shown) ~ label {
         width: auto;
         top: -($hbl-input-label-focus-height / 2);
         height: $hbl-input-label-focus-height;
@@ -137,7 +140,8 @@ $hbl-input-highlight-color: $primary;
         display: block;
         width: 100%;
     }
-    .bar:before, .bar:after {
+    .bar:before,
+    .bar:after {
         content: '';
         height: 2px;
         width: 0;
@@ -149,47 +153,63 @@ $hbl-input-highlight-color: $primary;
         -webkit-transition: 0.2s ease all;
     }
     .bar:before {
-        left:50%;
+        left: 50%;
     }
     .bar:after {
-        right:50%;
+        right: 50%;
     }
 
     /* active state */
-    input:focus ~ .bar:before, input:focus ~ .bar:after {
-        width:50%;
+    input:focus ~ .bar:before,
+    input:focus ~ .bar:after {
+        width: 50%;
     }
 
     /* HIGHLIGHTER ================================== */
     .highlight {
-        position:absolute;
-        height:60%;
-        width:100px;
-        top:25%;
-        left:0;
-        pointer-events:none;
-        opacity:0.5;
+        position: absolute;
+        height: 60%;
+        width: 100px;
+        top: 25%;
+        left: 0;
+        pointer-events: none;
+        opacity: 0.5;
     }
 
     /* active state */
     input:focus ~ .highlight {
-        -webkit-animation:inputHighlighter 0.3s ease;
-        -moz-animation:inputHighlighter 0.3s ease;
-        animation:inputHighlighter 0.3s ease;
+        -webkit-animation: inputHighlighter 0.3s ease;
+        -moz-animation: inputHighlighter 0.3s ease;
+        animation: inputHighlighter 0.3s ease;
     }
 
     /* ANIMATIONS ================ */
     @-webkit-keyframes inputHighlighter {
-        from { background:$hbl-input-highlight-color; }
-        to 	{ width:0; background:transparent; }
+        from {
+            background: $hbl-input-highlight-color;
+        }
+        to {
+            width: 0;
+            background: transparent;
+        }
     }
     @-moz-keyframes inputHighlighter {
-        from { background:$hbl-input-highlight-color; }
-        to 	{ width:0; background:transparent; }
+        from {
+            background: $hbl-input-highlight-color;
+        }
+        to {
+            width: 0;
+            background: transparent;
+        }
     }
     @keyframes inputHighlighter {
-        from { background:$hbl-input-highlight-color; }
-        to 	{ width:0; background:transparent; }
+        from {
+            background: $hbl-input-highlight-color;
+        }
+        to {
+            width: 0;
+            background: transparent;
+        }
     }
 
     .validation-msg {

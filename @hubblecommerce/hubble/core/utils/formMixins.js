@@ -9,7 +9,7 @@ const mapKeyToValue = {
         mapKeyToValue: function (key, selectField) {
             // Return name of select field by key
             let selectFieldName;
-            _.forEach(selectField, field => {
+            _.forEach(selectField, (field) => {
                 if (field.key === key) {
                     selectFieldName = field.value;
                     return selectFieldName;
@@ -24,7 +24,7 @@ const mapIsoToCountry = {
     methods: {
         mapIsoToCountry: function (key, selectField) {
             let selectFieldName;
-            _.forEach(selectField, field => {
+            _.forEach(selectField, (field) => {
                 if (field.iso_code_2 === key) {
                     selectFieldName = field.name;
                     return selectFieldName;
@@ -41,7 +41,7 @@ const addBackendErrors = {
             // SW
             if (process.env.API_TYPE === 'sw') {
                 if (!(error.errors === undefined)) {
-                    return error.errors.map(val => val.detail);
+                    return error.errors.map((val) => val.detail);
                 } else {
                     const errors = [];
 
@@ -65,10 +65,10 @@ const salutations = {
         if (process.env.API_TYPE === 'sw') {
             this.$store
                 .dispatch('modApiCustomer/swGetSalutations')
-                .then(response => {
+                .then((response) => {
                     let mappedSalutations = [];
 
-                    _.forEach(response.data.data, salutation => {
+                    _.forEach(response.data.data, (salutation) => {
                         mappedSalutations.push({
                             key: salutation.id,
                             value: this.$t(salutation.displayName),
@@ -77,10 +77,10 @@ const salutations = {
 
                     this.salutations = mappedSalutations;
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.log('swGetSalutations error: ', err);
 
-                    _.forEach(this.addBackendErrors(err), error => {
+                    _.forEach(this.addBackendErrors(err), (error) => {
                         this.errors.push(error);
                     });
                 });

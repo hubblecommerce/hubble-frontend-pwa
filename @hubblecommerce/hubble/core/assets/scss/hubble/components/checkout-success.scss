@@ -9,7 +9,7 @@
             margin: 10px 0 20px;
             padding: 20px;
             border: 1px solid rgba(61, 238, 142, 1);
-            background: rgba(61, 238, 142, .1);
+            background: rgba(61, 238, 142, 0.1);
 
             i {
                 width: 45px;
@@ -42,7 +42,7 @@
 }
 
 /* Tablet */
-@media(min-width: 768px) {
+@media (min-width: 768px) {
     .checkout-success {
         .checkout-success-wrp {
             .success-msg-wrp {
@@ -59,7 +59,7 @@
 }
 
 /* Desktop */
-@media(min-width: 1024px) {
+@media (min-width: 1024px) {
     .checkout-success {
         max-width: 1080px;
     }

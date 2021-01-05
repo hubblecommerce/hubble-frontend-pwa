@@ -7,7 +7,7 @@
                 <h1 class="product-name headline-4" v-text="dataProduct.name" />
                 <div v-if="dataProduct.sku" class="sku" v-text="`${$t('sku_label')}: ${dataProduct.sku} `" />
             </div>
-            <add-to-wishlist :item="dataProduct" v-if="$mq === 'lg'" />
+            <add-to-wishlist v-if="$mq === 'lg'" :item="dataProduct" />
         </div>
 
         <!-- Price info -->
@@ -28,9 +28,8 @@
         <!-- Add to cart -->
         <div class="add-to-cart-wrp">
             <qty-selector :max-qty="dataProduct.stock_item.qty" @changeQty="onChangeQty($event)" />
-            <product-detail-add-to-cart :qty="qty" :item="dataProduct" :loaderDisplay="'ellipsis'" />
+            <product-detail-add-to-cart :qty="qty" :item="dataProduct" :loader-display="'ellipsis'" />
         </div>
-
     </div>
 </template>
 
@@ -41,9 +40,9 @@ export default {
     components: {
         QtySelector: () => import('../../components/utils/QtySelector'),
         ProductDetailAddToCart: () => import('./ProductDetailAddToCart'),
-        ProductDetailPrice:() => import('./ProductDetailPrice'),
-        ProductDetailDelivery:() => import('./ProductDetailDelivery'),
-        ProductDetailManufacturer:() => import('./ProductDetailManufacturer'),
+        ProductDetailPrice: () => import('./ProductDetailPrice'),
+        ProductDetailDelivery: () => import('./ProductDetailDelivery'),
+        ProductDetailManufacturer: () => import('./ProductDetailManufacturer'),
         ProductDetailBuyboxOptions: () => import('./ProductDetailBuyboxOptions'),
         ProductDetailBuyboxOptionsSw: () => import('./ProductDetailBuyboxOptionsSw'),
         AddToWishlist: () => import('../../components/productutils/AddToWishlist'),
@@ -52,14 +51,14 @@ export default {
     data() {
         return {
             name: 'ProductDetailBuybox',
-            qty: 1
+            qty: 1,
         };
     },
 
     computed: {
         ...mapState({
-            dataProduct: state => state.modApiProduct.dataProduct.result.item,
-            optionNotSelectedError: state => state.modApiProduct.optionNotSelectedError,
+            dataProduct: (state) => state.modApiProduct.dataProduct.result.item,
+            optionNotSelectedError: (state) => state.modApiProduct.optionNotSelectedError,
         }),
         attributeName: function () {
             if (this.dataProduct.facets.string_facets[0]) {
@@ -86,9 +85,9 @@ export default {
         isApiType: function (type) {
             return process.env.API_TYPE === type;
         },
-        onChangeQty: function(e) {
+        onChangeQty: function (e) {
             this.qty = e;
-        }
+        },
     },
 };
 </script>

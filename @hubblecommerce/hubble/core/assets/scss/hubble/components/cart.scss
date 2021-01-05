@@ -60,7 +60,8 @@
             }
         }
 
-        > button, > a {
+        > button,
+        > a {
             margin-left: 0;
             display: block;
             margin-right: 0;
@@ -108,7 +109,7 @@
 }
 
 /* Tablet */
-@media(min-width: 768px) {
+@media (min-width: 768px) {
     .cart-wrp {
         display: block;
         max-width: 560px;
@@ -161,7 +162,7 @@
 }
 
 /* Desktop */
-@media(min-width: 1024px) {
+@media (min-width: 1024px) {
     .cart-wrp {
         display: inline-block;
         max-width: none;

@@ -33,12 +33,6 @@ export default {
 
     components: { TransitionRotateX },
 
-    data() {
-        return {
-            collapsed: true
-        }
-    },
-
     props: {
         toggleTag: {
             type: [String, Array],
@@ -63,8 +57,14 @@ export default {
         },
     },
 
+    data() {
+        return {
+            collapsed: true,
+        };
+    },
+
     methods: {
-        collapseContent: function() {
+        collapseContent: function () {
             this.collapsed = !this.collapsed;
         },
         beforeEnter: function (el) {

@@ -54,7 +54,7 @@ import { mapState, mapActions } from 'vuex';
 export default {
     name: 'WishlistLayer',
     components: {
-        WishlistItemsList: () => import('../customer/WishlistItemsList')
+        WishlistItemsList: () => import('../customer/WishlistItemsList'),
     },
 
     data() {
@@ -64,7 +64,7 @@ export default {
     },
     computed: {
         ...mapState({
-            qty: state => state.modWishlist.wishlistItemsCount,
+            qty: (state) => state.modWishlist.wishlistItemsCount,
         }),
     },
     methods: {

@@ -1,5 +1,4 @@
 .teaser-card-wrp {
-
     > a {
         display: block;
         position: relative;
@@ -15,7 +14,7 @@
         }
     }
 
-    .teaser-description-container{
+    .teaser-description-container {
         position: relative;
 
         .teaser-description-wrp {
@@ -65,7 +64,7 @@
             color: $accent;
         }
 
-        .description-top{
+        .description-top {
             top: 0;
         }
 
@@ -74,7 +73,7 @@
         }
     }
 
-    .teaser-picture{
+    .teaser-picture {
         margin: 0 auto;
         z-index: 1;
         vertical-align: middle;
@@ -97,7 +96,7 @@
     }
 }
 
-@media(min-width: 500px) {
+@media (min-width: 500px) {
     .teaser-description-container {
         .teaser-description-wrp {
             .teaser-box {
@@ -119,9 +118,8 @@
     }
 }
 
-
 // Tablet
-@media(min-width: 768px) {
+@media (min-width: 768px) {
     .teaser-card-wrp {
         .teaser-description-container {
             .teaser-description-wrp {
@@ -166,7 +164,7 @@
 }
 
 // Desktop
-@media(min-width: 1024px) {
+@media (min-width: 1024px) {
     .teaser-card-wrp {
         .teaser-description-container {
             img {
@@ -178,7 +176,7 @@
     }
 }
 
-@media(min-width: 1200px) {
+@media (min-width: 1200px) {
     .teaser-card-wrp {
         .teaser-description-container {
             .teaser-description-wrp {
@@ -195,7 +193,7 @@
         }
     }
 }
-@media(min-width: 1600px) {
+@media (min-width: 1600px) {
     .teaser-card-wrp {
         .teaser-description-container {
             .teaser-description-wrp {

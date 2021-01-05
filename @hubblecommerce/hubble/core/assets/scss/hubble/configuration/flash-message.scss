@@ -3,14 +3,14 @@ $hbl-alert-info-color: $info-accent;
 $hbl-alert-error-color: $error-accent;
 $hbl-alert-warning-color: $warning-accent;
 
-$hbl-alert-success-background-color: #DEF8EA;
-$hbl-alert-info-background-color: #D1ECF1;
-$hbl-alert-error-background-color: #F8D7DA;
-$hbl-alert-warning-background-color: #FFF3CD;
+$hbl-alert-success-background-color: #def8ea;
+$hbl-alert-info-background-color: #d1ecf1;
+$hbl-alert-error-background-color: #f8d7da;
+$hbl-alert-warning-background-color: #fff3cd;
 
-$hbl-alert-info-border-color: #BEE5EB;
-$hbl-alert-error-border-color: #F5C6CB;
-$hbl-alert-warning-border-color: #FFEEBA;
+$hbl-alert-info-border-color: #bee5eb;
+$hbl-alert-error-border-color: #f5c6cb;
+$hbl-alert-warning-border-color: #ffeeba;
 
 .flash-messages-wrp {
     position: fixed;
@@ -30,21 +30,17 @@ $hbl-alert-warning-border-color: #FFEEBA;
         margin-bottom: 10px;
     }
 
-
     .flash-move {
-        transition: transform .3s ease-in-out;
+        transition: transform 0.3s ease-in-out;
     }
-
 
     .flash-enter-active {
-        animation: fall-down .3s;
+        animation: fall-down 0.3s;
     }
-
 
     .flash-leave-active {
-        animation: fall-down .3s reverse;
+        animation: fall-down 0.3s reverse;
     }
-
 
     @keyframes fall-down {
         0% {
@@ -56,7 +52,6 @@ $hbl-alert-warning-border-color: #FFEEBA;
             opacity: 1;
         }
     }
-
 
     // experimental
     @keyframes fall-up {
@@ -70,7 +65,6 @@ $hbl-alert-warning-border-color: #FFEEBA;
         }
     }
 
-
     // experimental
     @keyframes slide-in {
         0% {
@@ -83,12 +77,11 @@ $hbl-alert-warning-border-color: #FFEEBA;
         }
     }
 
-
     .flash-box {
         width: 100%;
         padding: 20px 40px;
         opacity: 1;
-        box-shadow: 0 4px 10px 0 rgba(41, 40, 47, .1);
+        box-shadow: 0 4px 10px 0 rgba(41, 40, 47, 0.1);
         padding-left: 55px;
 
         .close-flash {
@@ -165,7 +158,6 @@ $hbl-alert-warning-border-color: #FFEEBA;
             color: $hbl-alert-warning-color;
             border: 1px solid $hbl-alert-warning-border-color;
 
-
             &:before {
                 content: '\e913';
                 color: $hbl-alert-warning-color;
@@ -177,7 +169,6 @@ $hbl-alert-warning-border-color: #FFEEBA;
         }
     }
 }
-
 
 .transition-expand-wrp {
     .flash-messages-wrp {
@@ -201,8 +192,7 @@ $hbl-alert-warning-border-color: #FFEEBA;
     }
 }
 
-
-@media(min-width: 768px) {
+@media (min-width: 768px) {
     .flash-messages-wrp {
         position: absolute;
         bottom: inherit;
@@ -216,9 +206,7 @@ $hbl-alert-warning-border-color: #FFEEBA;
     }
 }
 
-
-
-@media(min-width: 1024px) {
+@media (min-width: 1024px) {
     .transition-expand-wrp {
         .flash-box {
             &:before {

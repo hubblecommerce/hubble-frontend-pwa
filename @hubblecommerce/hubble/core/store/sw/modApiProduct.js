@@ -1,4 +1,4 @@
-import {slugify} from '@hubblecommerce/hubble/core/utils/menuHelper';
+import { slugify } from '@hubblecommerce/hubble/core/utils/menuHelper';
 import _ from 'lodash';
 
 export const state = () => ({
@@ -15,8 +15,8 @@ export const state = () => ({
 
     // Routing Information
     openDetail: false,
-    productId: null
-})
+    productId: null,
+});
 
 export const mutations = {
     setDataProduct(state, payload) {
@@ -61,8 +61,8 @@ export const mutations = {
     },
     setProductId(state, payload) {
         state.productId = payload;
-    }
-}
+    },
+};
 
 export const getters = {
     getMediaGalleryArray(state) {
@@ -70,7 +70,7 @@ export const getters = {
             let allProductImages = [],
                 mediaGallery = state.dataProduct.result.item.media_gallery;
 
-            mediaGallery.forEach(item => {
+            mediaGallery.forEach((item) => {
                 allProductImages.push(item.value);
             });
 
@@ -82,12 +82,12 @@ export const getters = {
     },
     getProductId(state) {
         return state.productId;
-    }
-}
+    },
+};
 
 export const actions = {
-    async getProductData({commit, state, dispatch}, payload) {
-        return new Promise(function(resolve, reject) {
+    async getProductData({ commit, state, dispatch }, payload) {
+        return new Promise(function (resolve, reject) {
             let endpoint = _.join(
                 [
                     '/store-api/v3/product/',
@@ -109,10 +109,10 @@ export const actions = {
                     apiType: 'data',
                     endpoint: endpoint,
                 },
-                {root: true}
+                { root: true }
             )
-                .then(response => {
-                    dispatch('mappingProduct', {product: response.data.data, path: payload.path}).then(res => {
+                .then((response) => {
+                    dispatch('mappingProduct', { product: response.data.data, path: payload.path }).then((res) => {
                         commit('setDataProduct', {
                             data: {
                                 result: {
@@ -124,15 +124,15 @@ export const actions = {
                         resolve('ok');
                     });
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.log('getProductData error: ', error);
 
                     reject(error);
                 });
         });
     },
-    async mappingProduct({dispatch}, payload) {
-        return new Promise(function(resolve, reject) {
+    async mappingProduct({ dispatch }, payload) {
+        return new Promise(function (resolve, reject) {
             let obj = {};
 
             let product = payload.product;
@@ -182,7 +182,8 @@ export const actions = {
             obj.final_price_item = {
                 special_to_date: null,
                 special_from_date: null,
-                display_price_netto: product.calculatedPrice.calculatedTaxes[0].price - product.calculatedPrice.calculatedTaxes[0].tax,
+                display_price_netto:
+                    product.calculatedPrice.calculatedTaxes[0].price - product.calculatedPrice.calculatedTaxes[0].tax,
                 display_price_netto_special: null,
                 display_price_brutto: product.calculatedPrice.calculatedTaxes[0].price,
                 display_price_brutto_special: null,
@@ -202,7 +203,7 @@ export const actions = {
 
             obj.media_gallery = [];
             if (product.media !== null) {
-                _.each(product.media, item => {
+                _.each(product.media, (item) => {
                     obj.media_gallery.push({
                         attribute_id: null,
                         value: item.media.url,
@@ -241,14 +242,14 @@ export const actions = {
 
                 let uniqueOptionsOfAllChildren = [];
 
-                _.forEach(product.children, child => {
-                    dispatch('mappingProduct', {product: child, path: ''}).then(res => {
+                _.forEach(product.children, (child) => {
+                    dispatch('mappingProduct', { product: child, path: '' }).then((res) => {
                         obj.children.push(res);
                     });
 
                     // Generate unique options
                     // Each option includes it's group
-                    _.forEach(child.options, option => {
+                    _.forEach(child.options, (option) => {
                         if (!_.some(uniqueOptionsOfAllChildren, option)) {
                             uniqueOptionsOfAllChildren.push(option);
                         }
@@ -257,16 +258,16 @@ export const actions = {
 
                 // Generate unique groups
                 let groups = [];
-                _.forEach(uniqueOptionsOfAllChildren, option => {
+                _.forEach(uniqueOptionsOfAllChildren, (option) => {
                     if (!_.some(groups, option.group)) {
                         groups.push(option.group);
                     }
                 });
 
                 // Assign each unique group it's unique options
-                _.forEach(groups, group => {
+                _.forEach(groups, (group) => {
                     group.options = [];
-                    _.forEach(uniqueOptionsOfAllChildren, option => {
+                    _.forEach(uniqueOptionsOfAllChildren, (option) => {
                         if (option.groupId === group.id) {
                             group.options.push(option);
                         }
@@ -278,5 +279,5 @@ export const actions = {
 
             resolve(obj);
         });
-    }
-}
+    },
+};

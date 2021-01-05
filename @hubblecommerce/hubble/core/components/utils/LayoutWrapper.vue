@@ -17,7 +17,7 @@ export default {
     },
     computed: {
         ...mapState({
-            activeOffCanvas: state => state.modNavigation.offcanvas.isActive,
+            activeOffCanvas: (state) => state.modNavigation.offcanvas.isActive,
         }),
     },
 };

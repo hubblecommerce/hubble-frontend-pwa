@@ -17,8 +17,8 @@ export const state = () => ({
     // Cookie
     cookieName: 'hubbleAuthUser',
     cookiePath: '/',
-    cookieTTL: 360 // minutes
-})
+    cookieTTL: 360, // minutes
+});
 
 export const mutations = {
     /*
@@ -56,8 +56,8 @@ export const mutations = {
     },
     setSalutations(state, payload) {
         state.salutations = payload;
-    }
-}
+    },
+};
 
 export const getters = {
     getCookieExpires(state) {
@@ -65,11 +65,11 @@ export const getters = {
     },
     getCustomerAuth(state) {
         return state.customer.customerAuth;
-    }
-}
+    },
+};
 
 export const actions = {
-    async registerGuest({dispatch, commit, state, getters}, payload) {
+    async registerGuest({ dispatch, commit, state, getters }, payload) {
         return new Promise((resolve, reject) => {
             // Map customer data to fit SW6 headless API
             let customer = {
@@ -124,27 +124,23 @@ export const actions = {
             };
 
             // Clear order Data
-            commit('modApiPayment/setChosenPaymentMethod', {}, {root: true});
-            commit('modApiPayment/setChosenShippingMethod', {}, {root: true});
+            commit('modApiPayment/setChosenPaymentMethod', {}, { root: true });
+            commit('modApiPayment/setChosenShippingMethod', {}, { root: true });
 
             commit('setCustomerData', customer);
             commit('setCustomerAuth', authData);
-            dispatch('mapAddresses', customerAddresses).then(mappedAddresses => {
+            dispatch('mapAddresses', customerAddresses).then((mappedAddresses) => {
                 commit('setCustomerAddresses', mappedAddresses);
-                this.$cookies.set(
-                    state.cookieName,
-                    state.customer,
-                    {
-                        path: state.cookiePath,
-                        expires: getters.getCookieExpires,
-                    }
-                );
+                this.$cookies.set(state.cookieName, state.customer, {
+                    path: state.cookiePath,
+                    expires: getters.getCookieExpires,
+                });
 
                 resolve();
             });
         });
     },
-    async register({dispatch, commit, state, getters}, payload) {
+    async register({ dispatch, commit, state, getters }, payload) {
         return new Promise((resolve, reject) => {
             // Map customer data to fit SW6 headless API
             let customer = {
@@ -184,16 +180,15 @@ export const actions = {
                     endpoint: '/store-api/v3/account/register',
                     data: customer,
                 },
-                {root: true}
+                { root: true }
             )
-                .then(response => {
+                .then((response) => {
                     // Clear customer data
                     commit('clearCustomerData');
 
                     commit('setCustomerData', response.data);
 
-
-                    if(!response.data.guest) {
+                    if (!response.data.guest) {
                         dispatch('logIn', payload).then(() => {
                             resolve(response);
                         });
@@ -215,7 +210,6 @@ export const actions = {
                             updated_at: '',
                         };
 
-
                         const customerData = {
                             guest: response.data.guest,
                             name: `${response.data.firstName} ${response.data.lastName}`,
@@ -230,34 +224,30 @@ export const actions = {
                         };
 
                         // Clear order Data
-                        commit('modApiPayment/setChosenPaymentMethod', {}, {root: true});
-                        commit('modApiPayment/setChosenShippingMethod', {}, {root: true});
+                        commit('modApiPayment/setChosenPaymentMethod', {}, { root: true });
+                        commit('modApiPayment/setChosenShippingMethod', {}, { root: true });
 
                         commit('setCustomerData', customerData);
                         commit('setCustomerAuth', authData);
-                        dispatch('mapAddresses', response.data.addresses).then(mappedAddresses => {
+                        dispatch('mapAddresses', response.data.addresses).then((mappedAddresses) => {
                             commit('setCustomerAddresses', mappedAddresses);
-                            this.$cookies.set(
-                                state.cookieName,
-                                state.customer,
-                                {
-                                    path: state.cookiePath,
-                                    expires: getters.getCookieExpires,
-                                }
-                            );
+                            this.$cookies.set(state.cookieName, state.customer, {
+                                path: state.cookiePath,
+                                expires: getters.getCookieExpires,
+                            });
 
                             resolve(response);
                         });
                     }
                 })
-                .catch(response => {
+                .catch((response) => {
                     console.log('register - API post request failed: %o', response);
 
                     reject(response);
                 });
         });
     },
-    async logIn({commit, state, dispatch, rootState, getters}, payload) {
+    async logIn({ commit, state, dispatch, rootState, getters }, payload) {
         const loginCreds = {
             username: payload.email,
             password: payload.password,
@@ -274,12 +264,12 @@ export const actions = {
                     endpoint: '/store-api/v3/account/login',
                     data: loginCreds,
                 },
-                {root: true}
+                { root: true }
             )
-                .then(response => {
+                .then((response) => {
                     // Clear order Data
-                    commit('modApiPayment/setChosenPaymentMethod', {}, {root: true});
-                    commit('modApiPayment/setChosenShippingMethod', {}, {root: true});
+                    commit('modApiPayment/setChosenPaymentMethod', {}, { root: true });
+                    commit('modApiPayment/setChosenShippingMethod', {}, { root: true });
 
                     // Remove cookies
                     this.$cookies.remove(state.cookieName);
@@ -301,12 +291,12 @@ export const actions = {
                     // Override / Set Cart Context Token
                     // because otherwise there would be two different context tokens (one for cart, one for customer) without
                     // any relation to each other
-                    dispatch('modCart/saveSwtc', response.data['contextToken'], {root: true}).then(() => {
+                    dispatch('modCart/saveSwtc', response.data['contextToken'], { root: true }).then(() => {
                         // Clear current cart
                         // Get cart of logged in user
                         // save cart to forage
                         // TODO: merge cart items instead of removing them
-                        dispatch('modCart/clearAll', {}, {root: true})
+                        dispatch('modCart/clearAll', {}, { root: true })
                             .then(() => {
                                 // Get customer info and save to cookie
                                 dispatch('getCustomerInfo')
@@ -329,21 +319,21 @@ export const actions = {
                                             }
                                         );
                                     })
-                                    .catch(err => {
+                                    .catch((err) => {
                                         reject(err);
                                     });
                             })
-                            .catch(err => {
+                            .catch((err) => {
                                 console.log('clearAll failed', err);
                             });
                     });
                 })
-                .catch(response => {
+                .catch((response) => {
                     reject(response);
                 });
         });
     },
-    async logOut({commit, state, dispatch}) {
+    async logOut({ commit, state, dispatch }) {
         return new Promise((resolve, reject) => {
             dispatch(
                 'apiCall',
@@ -354,15 +344,15 @@ export const actions = {
                     swContext: state.customer.customerAuth.token,
                     endpoint: '/store-api/v3/account/logout',
                 },
-                {root: true}
+                { root: true }
             )
                 .then(() => {
                     // Clear customer data
                     commit('clearCustomerData');
 
                     // Clear order data
-                    commit('modApiPayment/setChosenPaymentMethod', {}, {root: true});
-                    commit('modApiPayment/setChosenShippingMethod', {}, {root: true});
+                    commit('modApiPayment/setChosenPaymentMethod', {}, { root: true });
+                    commit('modApiPayment/setChosenShippingMethod', {}, { root: true });
 
                     // Remove cookies
                     this.$cookies.remove(state.cookieName);
@@ -371,14 +361,14 @@ export const actions = {
 
                     resolve('OK');
                 })
-                .catch(response => {
+                .catch((response) => {
                     console.log('logOut failed: %o', response);
                     reject('logOut failed');
                 });
         });
     },
-    async setByCookie({commit, state}) {
-        return new Promise(resolve => {
+    async setByCookie({ commit, state }) {
+        return new Promise((resolve) => {
             // try to retrieve auth user by cookie
             let _cookie = this.$cookies.get(state.cookieName);
 
@@ -400,11 +390,11 @@ export const actions = {
             }
         });
     },
-    async mapAddresses({state}, addresses) {
+    async mapAddresses({ state }, addresses) {
         return new Promise((resolve, reject) => {
             let mappedAddresses = [];
 
-            _.forEach(addresses, address => {
+            _.forEach(addresses, (address) => {
                 let addressMap = {
                     id: address.id,
                     is_billing: true,
@@ -438,7 +428,7 @@ export const actions = {
             resolve(mappedAddresses);
         });
     },
-    async mapDefaultAddresses({dispatch}, addresses) {
+    async mapDefaultAddresses({ dispatch }, addresses) {
         return new Promise((resolve, reject) => {
             let mappedAddresses = [],
                 billingDefault = addresses.billingDefault,
@@ -485,7 +475,7 @@ export const actions = {
             resolve(mappedAddresses);
         });
     },
-    async getCustomerInfo({commit, state, dispatch}) {
+    async getCustomerInfo({ commit, state, dispatch }) {
         return new Promise((resolve, reject) => {
             dispatch(
                 'apiCall',
@@ -496,9 +486,9 @@ export const actions = {
                     swContext: state.customer.customerAuth.token,
                     endpoint: '/store-api/v3/account/customer',
                 },
-                {root: true}
+                { root: true }
             )
-                .then(response => {
+                .then((response) => {
                     const customerData = {
                         guest: false,
                         name: `${response.data.firstName} ${response.data.lastName}`,
@@ -520,8 +510,8 @@ export const actions = {
                     };
 
                     // todo: find out why store api endpoint sends default addresses as null
-                    if(addresses.billingDefault !== null || addresses.shippingDefault !== null ) {
-                        dispatch('mapDefaultAddresses', addresses).then(mappedAddresses => {
+                    if (addresses.billingDefault !== null || addresses.shippingDefault !== null) {
+                        dispatch('mapDefaultAddresses', addresses).then((mappedAddresses) => {
                             commit('setCustomerAddresses', mappedAddresses);
                             resolve('OK');
                         });
@@ -529,14 +519,14 @@ export const actions = {
                         resolve('Ok');
                     }
                 })
-                .catch(response => {
+                .catch((response) => {
                     console.log('getCustomerInfo failed: %o', response);
 
                     reject(response);
                 });
         });
     },
-    async getCustomerAddresses({commit, state, dispatch}) {
+    async getCustomerAddresses({ commit, state, dispatch }) {
         return new Promise((resolve, reject) => {
             dispatch(
                 'apiCall',
@@ -547,27 +537,27 @@ export const actions = {
                     swContext: state.customer.customerAuth.token,
                     endpoint: '/store-api/v3/account/list-address',
                 },
-                {root: true}
+                { root: true }
             )
-                .then(response => {
+                .then((response) => {
                     // Get customerinfo to know which addresses are set as default
                     dispatch('getCustomerInfo')
                         .then(() => {
-                            dispatch('mapAddresses', response.data.elements).then(mappedAddresses => {
+                            dispatch('mapAddresses', response.data.elements).then((mappedAddresses) => {
                                 commit('setCustomerAddresses', mappedAddresses);
                                 resolve('OK');
                             });
                         })
-                        .catch(err => {
+                        .catch((err) => {
                             reject(err);
                         });
                 })
-                .catch(response => {
+                .catch((response) => {
                     reject(response);
                 });
         });
     },
-    async storeCustomerAddress({state, dispatch}, address) {
+    async storeCustomerAddress({ state, dispatch }, address) {
         return new Promise((resolve, reject) => {
             let requestBody = {
                 salutationId: address.payload.gender,
@@ -589,9 +579,9 @@ export const actions = {
                     endpoint: '/store-api/v3/account/address',
                     data: requestBody,
                 },
-                {root: true}
+                { root: true }
             )
-                .then(response => {
+                .then((response) => {
                     if (address.is_billing_default) {
                         dispatch('setDefaultBillingAddress', response.data.data);
                     }
@@ -602,7 +592,7 @@ export const actions = {
 
                     resolve(response);
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.log('storeCustomerAddress failed: %o', err);
 
                     reject(err);
@@ -630,18 +620,18 @@ export const actions = {
                     endpoint: `/store-api/v3/account/address/${address.id}`,
                     data: requestBody,
                 },
-                {root: true}
+                { root: true }
             )
-            .then(response => {
-                resolve(response);
-            })
-            .catch(err => {
-                console.log('edit address failed: %o', err);
-                reject(err);
-            });
+                .then((response) => {
+                    resolve(response);
+                })
+                .catch((err) => {
+                    console.log('edit address failed: %o', err);
+                    reject(err);
+                });
         });
     },
-    async deleteCustomerAddress({state, dispatch}, payload) {
+    async deleteCustomerAddress({ state, dispatch }, payload) {
         return new Promise((resolve, reject) => {
             if (payload.is_billing_default || payload.is_shipping_default) {
                 reject('You cant delete any default address');
@@ -655,12 +645,12 @@ export const actions = {
                         swContext: state.customer.customerAuth.token,
                         endpoint: `/store-api/v3/account/address/${payload.id}`,
                     },
-                    {root: true}
+                    { root: true }
                 )
                     .then(() => {
                         resolve('OK');
                     })
-                    .catch(err => {
+                    .catch((err) => {
                         console.log('deleteCustomerAddress failed: %o', err);
 
                         reject(err);
@@ -668,11 +658,11 @@ export const actions = {
             }
         });
     },
-    async mapOrders({dispatch}, orders) {
+    async mapOrders({ dispatch }, orders) {
         return new Promise((resolve, reject) => {
             let mappedOrders = [];
 
-            _.forEach(orders, order => {
+            _.forEach(orders, (order) => {
                 mappedOrders.push({
                     orderNumber: order.orderNumber,
                     id: order.id,
@@ -685,7 +675,7 @@ export const actions = {
             resolve(mappedOrders);
         });
     },
-    async setDefaultBillingAddress({dispatch, state}, payload) {
+    async setDefaultBillingAddress({ dispatch, state }, payload) {
         return new Promise((resolve, reject) => {
             dispatch(
                 'apiCall',
@@ -696,19 +686,19 @@ export const actions = {
                     swContext: state.customer.customerAuth.token,
                     endpoint: `/store-api/v3/account/address/default-billing/${payload}`,
                 },
-                {root: true}
+                { root: true }
             )
-                .then(response => {
+                .then((response) => {
                     resolve(response);
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.log('setDefaultBillingAddress failed: %o', err);
 
                     reject(err);
                 });
         });
     },
-    async setDefaultShippingAddress({dispatch, state}, payload) {
+    async setDefaultShippingAddress({ dispatch, state }, payload) {
         return new Promise((resolve, reject) => {
             dispatch(
                 'apiCall',
@@ -719,19 +709,19 @@ export const actions = {
                     swContext: state.customer.customerAuth.token,
                     endpoint: `/store-api/v3/account/address/default-shipping/${payload}`,
                 },
-                {root: true}
+                { root: true }
             )
-                .then(response => {
+                .then((response) => {
                     resolve(response);
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.log('setDefaultBillingAddress failed: %o', err);
 
                     reject(err);
                 });
         });
     },
-    async getOrders({dispatch, state}, payload) {
+    async getOrders({ dispatch, state }, payload) {
         return new Promise((resolve, reject) => {
             dispatch(
                 'apiCall',
@@ -745,21 +735,21 @@ export const actions = {
                         limit: 500,
                     },
                 },
-                {root: true}
+                { root: true }
             )
-                .then(response => {
-                    dispatch('mapOrders', response.data.data).then(mappedOrders => {
+                .then((response) => {
+                    dispatch('mapOrders', response.data.data).then((mappedOrders) => {
                         resolve(mappedOrders);
                     });
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.log('getOrders failed: %o', err);
 
                     reject(err);
                 });
         });
     },
-    async passwordUpdate({dispatch, state}, payload) {
+    async passwordUpdate({ dispatch, state }, payload) {
         return new Promise((resolve, reject) => {
             dispatch(
                 'apiCall',
@@ -775,19 +765,19 @@ export const actions = {
                         newPasswordConfirm: payload.password_confirm,
                     },
                 },
-                {root: true}
+                { root: true }
             )
-                .then(response => {
+                .then((response) => {
                     resolve(response);
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.log('passwordUpdate failed: %o', error);
 
                     reject(error);
                 });
         });
     },
-    async swGetSalutations({dispatch}, payload) {
+    async swGetSalutations({ dispatch }, payload) {
         return new Promise((resolve, reject) => {
             dispatch(
                 'apiCall',
@@ -797,19 +787,19 @@ export const actions = {
                     apiType: 'data',
                     endpoint: '/sales-channel-api/v3/salutation',
                 },
-                {root: true}
+                { root: true }
             )
-                .then(response => {
+                .then((response) => {
                     resolve(response);
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.log('swGetSalutations failed: %o', error);
 
                     reject(error);
                 });
         });
     },
-    async swGetCountries({dispatch}, payload) {
+    async swGetCountries({ dispatch }, payload) {
         return new Promise((resolve, reject) => {
             dispatch(
                 'apiCall',
@@ -822,25 +812,25 @@ export const actions = {
                         limit: 500,
                     },
                 },
-                {root: true}
+                { root: true }
             )
-                .then(response => {
+                .then((response) => {
                     resolve(response);
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.log('swGetCountries failed: %o', error);
 
                     reject(error);
                 });
         });
     },
-    async getAvailableCountries({commit, dispatch}) {
-        return new Promise(function(resolve, reject) {
+    async getAvailableCountries({ commit, dispatch }) {
+        return new Promise(function (resolve, reject) {
             dispatch('swGetCountries')
-                .then(response => {
+                .then((response) => {
                     let mappedCountries = [];
 
-                    _.forEach(response.data.data, country => {
+                    _.forEach(response.data.data, (country) => {
                         mappedCountries.push({
                             name: country.name,
                             iso_code_2: country.id,
@@ -851,19 +841,19 @@ export const actions = {
 
                     resolve('OK');
                 })
-                .catch(res => {
+                .catch((res) => {
                     reject(res);
                 });
         });
     },
-    async postWishlist({dispatch}, payload) {
+    async postWishlist({ dispatch }, payload) {
         return new Promise((resolve, reject) => {
             // Saving wishlist to customeraccount is currently not implemented in SW6 headless API
             reject();
             resolve();
         });
     },
-    async getWishlist({dispatch}, payload) {
+    async getWishlist({ dispatch }, payload) {
         return new Promise((resolve, reject) => {
             // Getting wishlist from customer is currently not implemented in SW6 headless API
             resolve({
@@ -873,19 +863,19 @@ export const actions = {
             });
         });
     },
-    async updateWishlist({dispatch}, payload) {
+    async updateWishlist({ dispatch }, payload) {
         return new Promise((resolve, reject) => {
             // Updating wishlist from customer is currently not implemented in SW6 headless API
             resolve();
         });
     },
-    async deleteWishlist({dispatch}, payload) {
+    async deleteWishlist({ dispatch }, payload) {
         return new Promise((resolve, reject) => {
             // Removing wishlist from customer is currently not implemented in SW6 headless API
             resolve();
         });
     },
-    async updateCustomerInfo({dispatch, state}, payload) {
+    async updateCustomerInfo({ dispatch, state }, payload) {
         return new Promise((resolve, reject) => {
             // Map customer data to fit SW6 headless API
 
@@ -905,21 +895,21 @@ export const actions = {
                     endpoint: '/store-api/v3/account/change-profile',
                     data: editedCustomerData,
                 },
-                {root: true}
+                { root: true }
             )
                 .then(() => {
                     dispatch('getCustomerInfo').then(() => {
                         resolve();
                     });
                 })
-                .catch(response => {
+                .catch((response) => {
                     console.log('API patch request to update user profile information failed: %o', response);
 
                     reject(response);
                 });
         });
     },
-    async updateCustomerEmail({dispatch, state}, payload) {
+    async updateCustomerEmail({ dispatch, state }, payload) {
         return new Promise((resolve, reject) => {
             // Map email customer data to fit SW6 headless API
 
@@ -937,24 +927,24 @@ export const actions = {
                         password: payload.password,
                     },
                 },
-                {root: true}
+                { root: true }
             )
                 .then(() => {
                     dispatch('getCustomerInfo')
-                        .then(response => {
+                        .then((response) => {
                             resolve(response);
                         })
-                        .catch(err => {
+                        .catch((err) => {
                             console.log('getCustomerInfo failed : %o', err);
 
                             reject(err);
                         });
                 })
-                .catch(response => {
+                .catch((response) => {
                     console.log('API patch request to update user email information failed: %o', response);
 
                     reject(response);
                 });
         });
-    }
-}
+    },
+};

@@ -1,14 +1,14 @@
-import {slugify} from '@hubblecommerce/hubble/core/utils/menuHelper';
+import { slugify } from '@hubblecommerce/hubble/core/utils/menuHelper';
 import _ from 'lodash';
 
 export const state = () => ({
     dataCategory: {},
     dataCategoryProducts: {},
     apiRequestBody: {
-        limit: process.env.limiter_default,
+        'limit': process.env.limiter_default,
         'total-count-mode': true,
-        page: 1,
-        filter: [
+        'page': 1,
+        'filter': [
             {
                 type: 'equals',
                 field: 'active',
@@ -22,20 +22,20 @@ export const state = () => ({
                 },
             },
         ],
-        sort: [
+        'sort': [
             {
                 field: 'price',
                 direction: 'asc',
             },
         ],
-        associations: {
+        'associations': {
             manufacturer: {},
             media: {},
             seoUrls: {},
             cover: {},
-        }
-    }
-})
+        },
+    },
+});
 
 export const mutations = {
     setDataCategory(state, payload) {
@@ -45,7 +45,7 @@ export const mutations = {
         state.dataCategoryProducts = payload.data;
     },
     setFilter(state, payload) {
-        _.remove(state.apiRequestBody.filter, function(o) {
+        _.remove(state.apiRequestBody.filter, function (o) {
             // remove by field
             return o.field === payload.field;
         });
@@ -141,7 +141,7 @@ export const mutations = {
         }
     },
     setSorting(state, payload) {
-        let sort = _.find(process.env.sorter, {option_id: parseInt(payload)});
+        let sort = _.find(process.env.sorter, { option_id: parseInt(payload) });
         let direction;
 
         if (sort.direction === 'asc') {
@@ -153,8 +153,8 @@ export const mutations = {
         }
 
         state.apiRequestBody.sort = direction + sort.order;
-    }
-}
+    },
+};
 
 export const getters = {
     getDataCategory(state) {
@@ -162,12 +162,12 @@ export const getters = {
     },
     getDataCategoryProducts(state) {
         return state.dataCategoryProducts;
-    }
-}
+    },
+};
 
 export const actions = {
-    async swGetCategory({commit, dispatch}, payload) {
-        return new Promise(function(resolve, reject) {
+    async swGetCategory({ commit, dispatch }, payload) {
+        return new Promise(function (resolve, reject) {
             let _endpoint = '/store-api/v3/category/' + payload + '?associations[media][]';
 
             dispatch(
@@ -178,10 +178,10 @@ export const actions = {
                     apiType: 'data',
                     endpoint: _endpoint,
                 },
-                {root: true}
+                { root: true }
             )
-                .then(response => {
-                    dispatch('mappingCategory', response.data).then(res => {
+                .then((response) => {
+                    dispatch('mappingCategory', response.data).then((res) => {
                         commit('setDataCategory', {
                             data: {
                                 result: {
@@ -193,15 +193,15 @@ export const actions = {
 
                     resolve('OK');
                 })
-                .catch(response => {
+                .catch((response) => {
                     console.log('API get request failed: %o', response);
 
                     reject('API request failed!');
                 });
         });
     },
-    async swGetProducts({commit, state, dispatch}, categoryId) {
-        return new Promise(function(resolve, reject) {
+    async swGetProducts({ commit, state, dispatch }, categoryId) {
+        return new Promise(function (resolve, reject) {
             let _endpoint = `/store-api/v3/product-listing/${categoryId}`;
 
             dispatch(
@@ -213,9 +213,9 @@ export const actions = {
                     endpoint: _endpoint,
                     data: state.apiRequestBody,
                 },
-                {root: true}
+                { root: true }
             )
-                .then(response => {
+                .then((response) => {
                     // If no products for this category set empty array as category products
                     if (response.data.total === 0) {
                         commit('setDataCategoryProducts', {
@@ -227,7 +227,7 @@ export const actions = {
                         resolve();
                     }
 
-                    dispatch('mappingCategoryProducts', response.data).then(res => {
+                    dispatch('mappingCategoryProducts', response.data).then((res) => {
                         commit('setDataCategoryProducts', {
                             data: {
                                 result: res,
@@ -237,24 +237,28 @@ export const actions = {
                         resolve();
                     });
                 })
-                .catch(response => {
+                .catch((response) => {
                     console.log('API get request failed: %o', response);
                     reject('API request failed!');
                 });
         });
     },
-    async mappingListingData({commit, dispatch}, payload) {
-        return new Promise(function(resolve, reject) {
-            dispatch('modApiRequests/mapFilterToFacets', {
-                filters: payload.listingData.aggregations,
-                query: payload.query,
-            }, {root: true}).then(res => {
+    async mappingListingData({ commit, dispatch }, payload) {
+        return new Promise(function (resolve, reject) {
+            dispatch(
+                'modApiRequests/mapFilterToFacets',
+                {
+                    filters: payload.listingData.aggregations,
+                    query: payload.query,
+                },
+                { root: true }
+            ).then((res) => {
                 resolve();
             });
         });
     },
-    async mappingCategory({commit}, payload) {
-        return new Promise(function(resolve, reject) {
+    async mappingCategory({ commit }, payload) {
+        return new Promise(function (resolve, reject) {
             // MAPPING
             let obj = {};
 
@@ -294,13 +298,13 @@ export const actions = {
             resolve(obj);
         });
     },
-    async mappingCategoryProducts({commit}, payload) {
-        return new Promise(function(resolve, reject) {
+    async mappingCategoryProducts({ commit }, payload) {
+        return new Promise(function (resolve, reject) {
             // MAPPING
             let mapped = [];
             let products = payload.data != null ? payload.data : payload.elements;
 
-            _.forEach(products, product => {
+            _.forEach(products, (product) => {
                 let obj = {};
 
                 obj.id = product.id;
@@ -324,7 +328,7 @@ export const actions = {
                     obj.manufacturer_name = product.manufacturer.name;
                 }
                 if (!_.isEmpty(product.seoUrls)) {
-                    _.forEach(product.seoUrls, seoUrl => {
+                    _.forEach(product.seoUrls, (seoUrl) => {
                         if (seoUrl.isCanonical) {
                             obj.url_pds = seoUrl.seoPathInfo;
                         }
@@ -339,7 +343,9 @@ export const actions = {
                 obj.final_price_item = {
                     special_to_date: null,
                     special_from_date: null,
-                    display_price_netto: product.calculatedPrice.calculatedTaxes[0].price - product.calculatedPrice.calculatedTaxes[0].tax,
+                    display_price_netto:
+                        product.calculatedPrice.calculatedTaxes[0].price -
+                        product.calculatedPrice.calculatedTaxes[0].tax,
                     display_price_netto_special: null,
                     display_price_brutto: product.calculatedPrice.calculatedTaxes[0].price,
                     display_price_brutto_special: null,
@@ -364,8 +370,8 @@ export const actions = {
             resolve(obj);
         });
     },
-    async swGetCategoryProductsById({dispatch}, payload) {
-        return new Promise(function(resolve, reject) {
+    async swGetCategoryProductsById({ dispatch }, payload) {
+        return new Promise(function (resolve, reject) {
             let _endpoint =
                 '/store-api/v3/category/' +
                 payload.id +
@@ -383,10 +389,10 @@ export const actions = {
                     apiType: 'data',
                     endpoint: _endpoint,
                 },
-                {root: true}
+                { root: true }
             )
-                .then(response => {
-                    dispatch('mappingCategoryProducts', {data: response.data.data.products}).then(res => {
+                .then((response) => {
+                    dispatch('mappingCategoryProducts', { data: response.data.data.products }).then((res) => {
                         resolve({
                             data: {
                                 result: res,
@@ -394,22 +400,23 @@ export const actions = {
                         });
                     });
                 })
-                .catch(response => {
+                .catch((response) => {
                     console.log('API get request failed: %o', response);
 
                     reject(response);
                 });
         });
     },
-    async setApiRequestFilter({commit}, payload) {
-        return new Promise(function(resolve, reject) {
+    async setApiRequestFilter({ commit }, payload) {
+        return new Promise(function (resolve, reject) {
             commit('setFilter', payload);
             resolve();
         });
     },
-    async swGetCrossSellingsByProductId({dispatch}, id) {
-        return new Promise(function(resolve, reject) {
-            let _endpoint = `/store-api/v3/product/${id}/cross-selling` + '?associations[products][associations][seoUrls][]';
+    async swGetCrossSellingsByProductId({ dispatch }, id) {
+        return new Promise(function (resolve, reject) {
+            let _endpoint =
+                `/store-api/v3/product/${id}/cross-selling` + '?associations[products][associations][seoUrls][]';
 
             dispatch(
                 'apiCall',
@@ -419,13 +426,13 @@ export const actions = {
                     apiType: 'data',
                     endpoint: _endpoint,
                 },
-                {root: true}
+                { root: true }
             )
-                .then(response => {
+                .then((response) => {
                     let mappedEntities = [];
 
-                    _.forEach(response.data.data, crossSelling => {
-                        dispatch('mappingCategoryProducts', {data: crossSelling.products}).then(res => {
+                    _.forEach(response.data.data, (crossSelling) => {
+                        dispatch('mappingCategoryProducts', { data: crossSelling.products }).then((res) => {
                             crossSelling.products = res;
                             mappedEntities.push(crossSelling);
                         });
@@ -433,11 +440,11 @@ export const actions = {
 
                     resolve(mappedEntities);
                 })
-                .catch(response => {
+                .catch((response) => {
                     console.log('API get request failed: %o', response);
 
                     reject(response);
                 });
         });
-    }
-}
+    },
+};

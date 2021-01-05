@@ -27,14 +27,11 @@ export default async function ({ store, route, error }) {
                         action: 'get',
                         tokenType: 'api',
                         apiType: 'data',
-                        endpoint: _.join([
-                          _.trim('/urls', '/'),
-                          _.trim(path, '/')
-                        ], '/'),
+                        endpoint: _.join([_.trim('/urls', '/'), _.trim(path, '/')], '/'),
                     },
                     { root: true }
                 )
-                .then(response => {
+                .then((response) => {
                     // Throw 404 page if url is not known
                     if (_.isEmpty(response.data.result.item)) {
                         error({ statusCode: 404, message: 'Unknown URL' });
@@ -60,4 +57,4 @@ export default async function ({ store, route, error }) {
                 });
         });
     }
-};
+}

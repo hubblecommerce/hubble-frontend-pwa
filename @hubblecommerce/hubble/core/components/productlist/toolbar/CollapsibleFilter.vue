@@ -3,7 +3,7 @@
         <button :class="toggleClass" class="toggle m-0 align-left headline-4" @mousedown="collapseContent()">
             {{ toggleText }}
 
-            <span class="item-amount" v-if="toggleAmount > 0 && $mq === 'lg'" v-text="toggleAmount" />
+            <span v-if="toggleAmount > 0 && $mq === 'lg'" class="item-amount" v-text="toggleAmount" />
 
             <transition-rotate-x>
                 <i v-if="collapse" :class="openIconClass" class="icon" />
@@ -85,17 +85,17 @@ export default {
         };
     },
 
-    created() {
-        Vue.use(vClickOutside);
-    },
-
     computed: {
         collapsibleOpenClass: function () {
-            if(!this.collapse) {
+            if (!this.collapse) {
                 return 'open';
             }
             return '';
-        }
+        },
+    },
+
+    created() {
+        Vue.use(vClickOutside);
     },
 
     methods: {

@@ -31,7 +31,7 @@ export default {
     },
     computed: {
         ...mapState({
-            dataCategory: state => state.modApiCategory.dataCategory,
+            dataCategory: (state) => state.modApiCategory.dataCategory,
         }),
         pathIds() {
             if (!_.isEmpty(this.categoryItem)) {

@@ -7,19 +7,19 @@ $qty-selector-width: $btn-icon-width * 2.5;
 .quantity-selector {
     max-width: $qty-selector-width;
 
-    .qty-wrp{
+    .qty-wrp {
         display: flex;
         height: 100%;
-        
-        .quantity{
+
+        .quantity {
             width: 100%;
             border: 1px solid $border-color;
             border-right: none;
             text-align: center;
         }
 
-        .btn-wrp{
-            .qty-button{
+        .btn-wrp {
+            .qty-button {
                 color: $btn-icon-color;
                 padding: 10px;
                 display: flex;
@@ -31,11 +31,10 @@ $qty-selector-width: $btn-icon-width * 2.5;
                 border: 1px solid $border-color;
                 border-radius: unset;
 
-                &:active{
+                &:active {
                     background: $btn-background-color;
                 }
             }
         }
     }
 }
-

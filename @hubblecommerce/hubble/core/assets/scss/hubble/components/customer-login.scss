@@ -13,7 +13,8 @@
         }
     }
 
-    .headline, .back-button {
+    .headline,
+    .back-button {
         margin-left: auto;
         margin-right: auto;
         max-width: $form-max-width;
@@ -43,14 +44,14 @@
 }
 
 /* Tablet */
-@media(min-width: 768px) {
+@media (min-width: 768px) {
     .customer-login-wrp {
         padding: 0 15px;
     }
 }
 
 /* Desktop */
-@media(min-width: 1024px) {
+@media (min-width: 1024px) {
     .customer-login-wrp {
         max-width: 1080px;
         padding: 60px 0;

@@ -38,118 +38,122 @@
         font-weight: $font-weight-bold;
     }
 
-    .edit-address, .selectable-address-wrp, .button-wrapper {
+    .edit-address,
+    .selectable-address-wrp,
+    .button-wrapper {
         margin-top: 10px;
     }
 
     .selectable-address {
-	  position: relative;
-	  width: 100%;
-	  margin-bottom: 10px;
-	  border: 1px solid $border-color;
-	  background: $background;
-	  cursor: pointer;
+        position: relative;
+        width: 100%;
+        margin-bottom: 10px;
+        border: 1px solid $border-color;
+        background: $background;
+        cursor: pointer;
 
-	  span {
-		word-break: break-word;
-	  }
+        span {
+            word-break: break-word;
+        }
     }
 
     .selectable-default-address {
-	  padding: 15px 0 15px 15px;
+        padding: 15px 0 15px 15px;
     }
 
     .selected-address {
-	  border: 1px solid $success-accent;
-	  background: $background-light;
+        border: 1px solid $success-accent;
+        background: $background-light;
     }
 
     .delete-icon-wrp {
-	  position: absolute;
-	  top: 0;
-	  right: 0;
-     }
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
 
-  	.delete-address-button, .select-address-button, .select-address-button-success {
-	  width: 100%;
-	  margin-top: 15px;
-	}
+    .delete-address-button,
+    .select-address-button,
+    .select-address-button-success {
+        width: 100%;
+        margin-top: 15px;
+    }
 
     .delete-address-button {
-	  border-color: $error-accent;
-	  background-color: $error-accent;
-      color: $text-primary;
+        border-color: $error-accent;
+        background-color: $error-accent;
+        color: $text-primary;
     }
 
     .select-address-button-success {
-	  border-color: $success-accent;
-	  background-color: $success-accent;
+        border-color: $success-accent;
+        background-color: $success-accent;
     }
 
-  	.actions {
-	  position: sticky;
-	  bottom: 0;
-	  left: 0;
-	  padding: 0 15px 15px;
-	  background: $background;
-	  margin-left: -15px;
-	  margin-right: -15px;
-	  border-top: 1px solid $border-color;
-	}
+    .actions {
+        position: sticky;
+        bottom: 0;
+        left: 0;
+        padding: 0 15px 15px;
+        background: $background;
+        margin-left: -15px;
+        margin-right: -15px;
+        border-top: 1px solid $border-color;
+    }
 
     .content-wrp {
-      margin-top: 20px;
+        margin-top: 20px;
     }
 
     .save-address-checkbox {
-      margin-bottom: 20px;
+        margin-bottom: 20px;
     }
 }
 
 /* Tablet */
-@media(min-width: 768px) {
+@media (min-width: 768px) {
     .customer-addresses-wrp {
         display: flex;
         justify-content: space-between;
 
-        .shipping-addresses-wrp, .billing-addresses-wrp {
-		  width: 50%;
+        .shipping-addresses-wrp,
+        .billing-addresses-wrp {
+            width: 50%;
         }
 
         .billing-addresses-wrp {
-		  padding-right: 15px;
-		  margin-bottom: 0;
+            padding-right: 15px;
+            margin-bottom: 0;
         }
 
         .shipping-addresses-wrp {
-		  padding-left: 15px;
+            padding-left: 15px;
         }
 
-		.select-address-button-success {
-		  &:hover {
-			background-color: lighten($success-accent, 5%);
-		  }
-		}
+        .select-address-button-success {
+            &:hover {
+                background-color: lighten($success-accent, 5%);
+            }
+        }
 
-		.delete-address-button {
-		  &:hover {
-			background-color: lighten($error-accent, 5%);
-		  }
-		}
+        .delete-address-button {
+            &:hover {
+                background-color: lighten($error-accent, 5%);
+            }
+        }
 
-		.actions {
-		  position: relative;
-		  padding: 0;
-		  margin: 0;
-		  margin-bottom: 15px;
-		  background: $background;
-		  border-top: 1px solid $border-color;
-		  width: 100%;
-		}
+        .actions {
+            position: relative;
+            padding: 0;
+            margin: 0;
+            margin-bottom: 15px;
+            background: $background;
+            border-top: 1px solid $border-color;
+            width: 100%;
+        }
 
         .content-wrp {
-          margin-bottom: 50px;
+            margin-bottom: 50px;
         }
-
     }
 }

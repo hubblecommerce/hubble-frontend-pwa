@@ -1,17 +1,17 @@
-$error-accent: #D0021B;
+$error-accent: #d0021b;
 $success-accent: #2db96c;
 $info-accent: #0b5460;
 $warning-accent: #856404;
 
-$green: #5CDB95;
-$blue: #05386B;
-$gold: #D4A76F;
-$darkest-gray: #1B1B24;
-$darker-gray: #3E3E4D;
-$dark-gray: #94949E;
-$gray: #E7E8E9;
-$light-gray: #F7F7FA;
-$white: #FFFFFF;
+$green: #5cdb95;
+$blue: #05386b;
+$gold: #d4a76f;
+$darkest-gray: #1b1b24;
+$darker-gray: #3e3e4d;
+$dark-gray: #94949e;
+$gray: #e7e8e9;
+$light-gray: #f7f7fa;
+$white: #ffffff;
 
 $primary: $green !default;
 $secondary: $blue !default;
@@ -39,7 +39,7 @@ $container-max-widths: (
     sm: 540px,
     md: 768px,
     lg: 1200px,
-    xl: 1200px
+    xl: 1200px,
 );
 
 $grid-breakpoints: (
@@ -47,7 +47,7 @@ $grid-breakpoints: (
     sm: 576px,
     md: 768px,
     lg: 1024px,
-    xl: 1200px
+    xl: 1200px,
 ) !default;
 
 $enable-grid-classes: true !default;

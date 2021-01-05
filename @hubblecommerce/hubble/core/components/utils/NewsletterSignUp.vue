@@ -2,8 +2,24 @@
     <validation-observer ref="observer" v-slot="{ passes }" tag="form" @submit.prevent="passes(submitSignUpForm)">
         <div class="headline headline-3 newsletter__headline">{{ title }}</div>
 
-        <validation-provider v-slot="{ errors }" name="email" rules="required" mode="passive" tag="div" class="hbl-input-group input-icon">
-            <input id="email" v-model="email" type="text" name="email" value="" :class="{ invalid: errors.length > 0 }" placeholder=" " required />
+        <validation-provider
+            v-slot="{ errors }"
+            name="email"
+            rules="required"
+            mode="passive"
+            tag="div"
+            class="hbl-input-group input-icon"
+        >
+            <input
+                id="email"
+                v-model="email"
+                type="text"
+                name="email"
+                value=""
+                :class="{ invalid: errors.length > 0 }"
+                placeholder=" "
+                required
+            />
 
             <label for="email" v-text="$t('Email Address')" />
 

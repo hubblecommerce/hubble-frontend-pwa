@@ -12,17 +12,17 @@ export const state = () => ({
             topBottom: false,
         },
         sameLayerOpened: false,
-    }
-})
+    },
+});
 
 export const mutations = {
-    showMenu (state) {
+    showMenu(state) {
         state.showMenu = true;
     },
-    hideMenu (state) {
+    hideMenu(state) {
         state.showMenu = false;
     },
-    toggleOffcanvas (state, payload) {
+    toggleOffcanvas(state, payload) {
         // Set component name to identify current active layer
         if (state.offcanvas.component === payload.component) {
             state.offcanvas.component = '';
@@ -51,7 +51,7 @@ export const mutations = {
             });
         }
     },
-    showOffcanvas (state, payload) {
+    showOffcanvas(state, payload) {
         // Set component name to identify current active layer
         state.offcanvas.component = payload.component;
 
@@ -67,7 +67,7 @@ export const mutations = {
             }
         });
     },
-    hideOffcanvas (state) {
+    hideOffcanvas(state) {
         // Set component name to identify current active layer
         state.offcanvas.component = '';
 
@@ -79,7 +79,7 @@ export const mutations = {
             state.offcanvas.direction[key] = false;
         });
     },
-    setSameLayerOpened (state, payload) {
+    setSameLayerOpened(state, payload) {
         // If isActive currently true
         // and direction current is same as target
         // but current component is not target component for example in case of toggle
@@ -95,14 +95,14 @@ export const mutations = {
             state.offcanvas.sameLayerOpened = false;
         }
     },
-    resetSameLayerOpened: state => {
+    resetSameLayerOpened: (state) => {
         state.offcanvas.sameLayerOpened = false;
-    }
-}
+    },
+};
 
 export const actions = {
     async toggleOffcanvasAction({ commit, dispatch }, payload) {
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
             dispatch('setSameLayerOpenedAction', {
                 component: payload.component,
                 direction: payload.direction,
@@ -117,7 +117,7 @@ export const actions = {
         });
     },
     async showOffcanvasAction({ commit }, payload) {
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
             commit('showOffcanvas', {
                 component: payload.component,
                 direction: payload.direction,
@@ -127,7 +127,7 @@ export const actions = {
         });
     },
     async hideOffcanvasAction({ commit, dispatch }) {
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
             dispatch('resetSameLayerOpenedAction').then(() => {
                 commit('hideOffcanvas');
             });
@@ -136,7 +136,7 @@ export const actions = {
         });
     },
     async setSameLayerOpenedAction({ commit }, payload) {
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
             commit('setSameLayerOpened', {
                 component: payload.component,
                 direction: payload.direction,
@@ -146,10 +146,10 @@ export const actions = {
         });
     },
     async resetSameLayerOpenedAction({ commit }) {
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
             commit('resetSameLayerOpened');
 
             resolve('resolved');
         });
-    }
-}
+    },
+};

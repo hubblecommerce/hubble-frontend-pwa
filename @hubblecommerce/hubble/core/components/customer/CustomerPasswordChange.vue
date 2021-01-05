@@ -138,7 +138,7 @@ export default {
 
     computed: {
         ...mapState({
-            offcanvas: state => state.modNavigation.offcanvas,
+            offcanvas: (state) => state.modNavigation.offcanvas,
         }),
         showMenu: function () {
             return this.offcanvas.component === this.name;
@@ -172,10 +172,10 @@ export default {
                         });
                     });
                 })
-                .catch(err => {
+                .catch((err) => {
                     this.errors.push(this.$t('Password could not be changed'));
 
-                    _.forEach(this.addBackendErrors(err), error => {
+                    _.forEach(this.addBackendErrors(err), (error) => {
                         this.errors.push(error);
                     });
                 });

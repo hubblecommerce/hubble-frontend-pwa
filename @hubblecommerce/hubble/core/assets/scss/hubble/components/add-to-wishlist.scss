@@ -11,7 +11,7 @@
         margin: 0 auto 10px;
         @include elevation-2;
 
-        &:hover{
+        &:hover {
             background: $white;
         }
 
@@ -25,7 +25,7 @@
     }
 }
 
-@media(min-width: 768px) {
+@media (min-width: 768px) {
     .add-to-wishlist-wrp {
         .add-to-wishlist {
             &:hover {

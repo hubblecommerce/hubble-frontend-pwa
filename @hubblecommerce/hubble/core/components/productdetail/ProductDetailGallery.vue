@@ -13,10 +13,11 @@
                     gutter="0"
                 >
                     <div v-for="(image, index) in allProductImages" :key="index" class="gallery-item">
-                        <img :src="routeUrlSmallGallery(image)"
-                             :alt="productData.name"
-                             :title="productData.name"
-                             @click="modalGalleryShow(index)"
+                        <img
+                            :src="routeUrlSmallGallery(image)"
+                            :alt="productData.name"
+                            :title="productData.name"
+                            @click="modalGalleryShow(index)"
                         />
                     </div>
                 </slider>
@@ -25,10 +26,11 @@
 
         <div v-show="this.$mq === 'lg'" class="gallery-scroll-wrp disable-scrollbars">
             <div v-for="(image, index) in allProductImages" :key="index" class="gallery-item">
-                <img :src="routeUrlSmallGallery(image)"
-                     :alt="productData.name"
-                     :title="productData.name"
-                     @click="modalGalleryShow(index)"
+                <img
+                    :src="routeUrlSmallGallery(image)"
+                    :alt="productData.name"
+                    :title="productData.name"
+                    @click="modalGalleryShow(index)"
                 />
             </div>
         </div>
@@ -42,9 +44,21 @@
                         <material-ripple />
                     </button>
 
-                    <slider ref="gallerySlider" :speed="200" :loop="true" :gutter="0" :mouse-drag="true" :controls-text="controls" items="1">
+                    <slider
+                        ref="gallerySlider"
+                        :speed="200"
+                        :loop="true"
+                        :gutter="0"
+                        :mouse-drag="true"
+                        :controls-text="controls"
+                        items="1"
+                    >
                         <div v-for="(image, index) in allProductImages" :key="index" class="gallery-modal-item">
-                            <img-lazy :src="routeOriginalImage(image)" :alt="productData.name" :title="productData.name" />
+                            <img-lazy
+                                :src="routeOriginalImage(image)"
+                                :alt="productData.name"
+                                :title="productData.name"
+                            />
                         </div>
                     </slider>
                 </div>
@@ -100,7 +114,7 @@ export default {
 
     computed: {
         ...mapState({
-            dataProduct: state => state.modApiProduct.dataProduct,
+            dataProduct: (state) => state.modApiProduct.dataProduct,
         }),
         ...mapGetters({
             allProductImages: 'modApiProduct/getMediaGalleryArray',
@@ -194,7 +208,7 @@ export default {
             let urlPattern = /^((http|https|ftp):\/\/)/;
 
             if (urlPattern.test(image)) {
-              return image;
+                return image;
             }
 
             // If customer domain isset get live images
@@ -213,7 +227,7 @@ export default {
             let urlPattern = /^((http|https|ftp):\/\/)/;
 
             if (urlPattern.test(image)) {
-              return image;
+                return image;
             }
 
             // If customer domain isset get live images
@@ -228,7 +242,7 @@ export default {
             let urlPattern = /^((http|https|ftp):\/\/)/;
 
             if (urlPattern.test(image)) {
-              return image;
+                return image;
             }
 
             // If customer domain isset get live images
@@ -247,7 +261,7 @@ export default {
             let urlPattern = /^((http|https|ftp):\/\/)/;
 
             if (urlPattern.test(image)) {
-              return image;
+                return image;
             }
 
             // If customer domain isset get live images
@@ -266,27 +280,30 @@ export default {
             let image;
 
             // if no image, try to take 1st media gallery item
-            if (! _.has(this.productData, 'image') || this.productData.image === '') {
-              if (_.has(this.productData, 'media_gallery') && ! _.isEmpty(this.productData.media_gallery)) {
-                image = this.productData.media_gallery[0]['value'];
-              }
+            if (!_.has(this.productData, 'image') || this.productData.image === '') {
+                if (_.has(this.productData, 'media_gallery') && !_.isEmpty(this.productData.media_gallery)) {
+                    image = this.productData.media_gallery[0]['value'];
+                }
             } else {
-              image = this.productData.image;
+                image = this.productData.image;
             }
 
             if (image) {
-              let urlPattern = /^((http|https|ftp):\/\/)/;
+                let urlPattern = /^((http|https|ftp):\/\/)/;
 
-              if (urlPattern.test(image)) {
-                return image;
-              }
+                if (urlPattern.test(image)) {
+                    return image;
+                }
             }
 
             // If customer domain isset get live images
             if (!_.isEmpty(process.env.CUSTOMER_DOMAIN)) {
                 let image = this.productData.image;
 
-                this.currentImage = _.join([process.env.CUSTOMER_DOMAIN, 'images/catalog/thumbnails/cache/400', image], '/');
+                this.currentImage = _.join(
+                    [process.env.CUSTOMER_DOMAIN, 'images/catalog/thumbnails/cache/400', image],
+                    '/'
+                );
             } else {
                 let path = _.trim(process.env.config.IMG_BASE_URL, '/');
                 this.currentImage = path + '/images/catalog/product/440x/' + this.productData.image;
@@ -296,7 +313,7 @@ export default {
             this.$modal.hide('gallery-modal');
         },
         modalGalleryShow(slideIndex) {
-            if(this.$mq === 'sm' || this.$mq === 'md') {
+            if (this.$mq === 'sm' || this.$mq === 'md') {
                 this.currentIndex = slideIndex;
                 this.$modal.show('gallery-modal', {
                     imageGallery: this.productData.media_gallery,

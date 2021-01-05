@@ -20,7 +20,11 @@
 
                         <payone-channel />
 
-                        <button class="button-primary checkout-btn" :disabled="processingCheckout || !isEmpty(checkoutError)" @click="placeOrder()">
+                        <button
+                            class="button-primary checkout-btn"
+                            :disabled="processingCheckout || !isEmpty(checkoutError)"
+                            @click="placeOrder()"
+                        >
                             <span v-if="!processingCheckout">{{ $t('Place Order') }}</span>
 
                             <div v-if="processingCheckout" class="loader lds-ellipsis">
@@ -62,11 +66,11 @@ export default {
         Totals,
     },
 
-    middleware: [apiCustomerAuthenticate, cartValidate, 'apiLocalization', 'trackClickPath'],
+    mixins: [addBackendErrors],
 
     layout: 'hubble_express',
 
-    mixins: [addBackendErrors],
+    middleware: [apiCustomerAuthenticate, cartValidate, 'apiLocalization', 'trackClickPath'],
 
     data() {
         return {
@@ -93,12 +97,12 @@ export default {
 
     computed: {
         ...mapState({
-            swtc: state => state.modCart.swtc,
-            order: state => state.modApiPayment.order,
-            hostedIFrame: state => state.modApiPayment.hostedIFrame,
-            customerAddresses: state => state.modApiCustomer.customer.customerAddresses,
-            customer: state => state.modApiCustomer.customer,
-            processingCheckout: state => state.modApiPayment.processingCheckout,
+            swtc: (state) => state.modCart.swtc,
+            order: (state) => state.modApiPayment.order,
+            hostedIFrame: (state) => state.modApiPayment.hostedIFrame,
+            customerAddresses: (state) => state.modApiCustomer.customer.customerAddresses,
+            customer: (state) => state.modApiCustomer.customer,
+            processingCheckout: (state) => state.modApiPayment.processingCheckout,
         }),
     },
 
@@ -161,7 +165,7 @@ export default {
 
                 this.errors.push(this.$t('Order could not be placed successfully'));
 
-                _.forEach(this.addBackendErrors(err), error => {
+                _.forEach(this.addBackendErrors(err), (error) => {
                     this.errors.push(error);
                 });
             }
