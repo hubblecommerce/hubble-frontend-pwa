@@ -168,7 +168,7 @@ export const getters = {
 export const actions = {
     async swGetCategory({commit, dispatch}, payload) {
         return new Promise(function(resolve, reject) {
-            let _endpoint = '/sales-channel-api/v3/category/' + payload + '?associations[media][]';
+            let _endpoint = '/store-api/v3/category/' + payload + '?associations[media][]';
 
             dispatch(
                 'apiCall',
@@ -181,7 +181,7 @@ export const actions = {
                 {root: true}
             )
                 .then(response => {
-                    dispatch('mappingCategory', response.data.data).then(res => {
+                    dispatch('mappingCategory', response.data).then(res => {
                         commit('setDataCategory', {
                             data: {
                                 result: {
@@ -241,6 +241,16 @@ export const actions = {
                     console.log('API get request failed: %o', response);
                     reject('API request failed!');
                 });
+        });
+    },
+    async mappingListingData({commit, dispatch}, payload) {
+        return new Promise(function(resolve, reject) {
+            dispatch('modApiRequests/mapFilterToFacets', {
+                filters: payload.listingData.aggregations,
+                query: payload.query,
+            }, {root: true}).then(res => {
+                resolve();
+            });
         });
     },
     async mappingCategory({commit}, payload) {
@@ -357,7 +367,7 @@ export const actions = {
     async swGetCategoryProductsById({dispatch}, payload) {
         return new Promise(function(resolve, reject) {
             let _endpoint =
-                '/sales-channel-api/v3/category/' +
+                '/store-api/v3/category/' +
                 payload.id +
                 '?associations[products][associations][seoUrls][]' +
                 '&associations[products][associations][manufacturer][]' +
@@ -399,7 +409,7 @@ export const actions = {
     },
     async swGetCrossSellingsByProductId({dispatch}, id) {
         return new Promise(function(resolve, reject) {
-            let _endpoint = `/sales-channel-api/v3/product/${id}/cross-selling` + '?associations[products][associations][seoUrls][]';
+            let _endpoint = `/store-api/v3/product/${id}/cross-selling` + '?associations[products][associations][seoUrls][]';
 
             dispatch(
                 'apiCall',

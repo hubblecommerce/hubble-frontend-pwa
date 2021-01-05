@@ -90,7 +90,7 @@ export const actions = {
         return new Promise(function(resolve, reject) {
             let endpoint = _.join(
                 [
-                    '/sales-channel-api/v3/product/',
+                    '/store-api/v3/product/',
                     state.productId,
                     '?associations[manufacturer][associations][media][]',
                     '&associations[seoUrls][]',
