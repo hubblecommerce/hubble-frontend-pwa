@@ -30,7 +30,7 @@ export default {
 
     computed: {
         ...mapState({
-            dataProductUrls: state => state.modApiResources.dataProductUrls,
+            dataProductUrls: (state) => state.modApiResources.dataProductUrls,
         }),
         verticalAlign() {
             if (this.content.config && this.content.config.verticalAlign) {
@@ -51,7 +51,7 @@ export default {
     created() {
         this.mappingCategoryProducts({
             data: this.content.data.products,
-        }).then(res => {
+        }).then((res) => {
             this.dataItems = res.items;
             this.loaded = true;
         });

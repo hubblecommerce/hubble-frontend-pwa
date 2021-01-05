@@ -46,9 +46,9 @@ export default {
         CustomerAddresses,
     },
 
-    middleware: [apiPaymentAuthenticate, apiCustomerAuthenticate, cartValidate, 'apiLocalization', 'trackClickPath'],
-
     layout: 'hubble_light',
+
+    middleware: [apiPaymentAuthenticate, apiCustomerAuthenticate, cartValidate, 'apiLocalization', 'trackClickPath'],
 
     data() {
         return {
@@ -58,10 +58,10 @@ export default {
 
     computed: {
         ...mapState({
-            order: state => state.modApiPayment.order,
-            hostedIFrame: state => state.modApiPayment.hostedIFrame,
-            customerAddresses: state => state.modApiCustomer.customer.customerAddresses,
-            customer: state => state.modApiCustomer.customer,
+            order: (state) => state.modApiPayment.order,
+            hostedIFrame: (state) => state.modApiPayment.hostedIFrame,
+            customerAddresses: (state) => state.modApiCustomer.customer.customerAddresses,
+            customer: (state) => state.modApiCustomer.customer,
         }),
         addressesLoaded: function () {
             // Dynamically load payment methods when addresses are set, because getAllowedPayments request requires address information
@@ -134,7 +134,7 @@ export default {
             }
 
             // Get uuid from api
-            this.getUuid().then(response => {
+            this.getUuid().then((response) => {
                 // Store uuid as orderId to order in store
                 this.setOrderId(response.data.substring(0, 20));
 
@@ -145,7 +145,7 @@ export default {
                             path: this.localePath('checkout-summary'),
                         });
                     })
-                    .catch(error => {
+                    .catch((error) => {
                         this.flashMessage({
                             flashType: 'error',
                             flashMessage: this.$t(error),

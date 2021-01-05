@@ -5,7 +5,8 @@
             text-transform: uppercase;
         }
 
-        .additional-info-wrp, .checkout-toolbar {
+        .additional-info-wrp,
+        .checkout-toolbar {
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
@@ -23,7 +24,7 @@
 }
 
 /* Tablet */
-@media(min-width: 768px) {
+@media (min-width: 768px) {
     .checkout-payment {
         .checkout-payment-wrp {
             .checkout-toolbar {

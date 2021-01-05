@@ -3,7 +3,12 @@
         <div class="selected-label" v-text="$t('Your choice:')" />
         <div class="selected-filters">
             <div v-if="hasCategoryFacetsSelected && isSearchPage()" class="filter">
-                <div v-for="(facet, facetIndex) in requestCategoryFacets" v-if="facet.selected" :key="facetIndex" class="filter">
+                <div
+                    v-for="(facet, facetIndex) in requestCategoryFacets"
+                    v-if="facet.selected"
+                    :key="facetIndex"
+                    class="filter"
+                >
                     <button class="button" @click="routeOnPropertyRemove(facet.key)">
                         <span class="facet-label" v-text="facet.label" />
                         <span class="facet-options" v-text="'(' + getSelectedFacetOptionsLabel(facet) + ')'" />
@@ -12,7 +17,12 @@
                 </div>
             </div>
 
-            <div v-for="(facet, facetIndex) in requestStringFacets" v-if="facet.selected" :key="facetIndex" class="filter">
+            <div
+                v-for="(facet, facetIndex) in requestStringFacets"
+                v-if="facet.selected"
+                :key="facetIndex"
+                class="filter"
+            >
                 <button class="button" @click="routeOnPropertyRemove(facet.key)">
                     <span class="facet-label" v-text="facet.label" />
                     <span class="facet-options" v-text="'(' + getSelectedFacetOptionsLabel(facet) + ')'" />
@@ -22,7 +32,8 @@
 
             <div v-if="hasPriceFacetsSelected" class="filter">
                 <button class="button" @click="routeOnPropertyRemove('price')">
-                    {{ $t('Price') }} ({{ formatPrice(requestPriceFacets[0].filtered.from) }} - {{ formatPrice(requestPriceFacets[0].filtered.to) }})
+                    {{ $t('Price') }} ({{ formatPrice(requestPriceFacets[0].filtered.from) }} -
+                    {{ formatPrice(requestPriceFacets[0].filtered.to) }})
                     <material-ripple />
                 </button>
             </div>
@@ -54,9 +65,9 @@ export default {
 
     computed: {
         ...mapState({
-            selectedFacets: state => state.modApiRequests.selectedFacets,
-            offcanvas: state => state.modNavigation.offcanvas,
-            priceCurrencySymbol: state => state.modPrices.priceCurrencySymbol,
+            selectedFacets: (state) => state.modApiRequests.selectedFacets,
+            offcanvas: (state) => state.modNavigation.offcanvas,
+            priceCurrencySymbol: (state) => state.modPrices.priceCurrencySymbol,
         }),
         ...mapGetters({
             requestNumberFacets: 'modApiRequests/getRequestNumberFacets',
@@ -76,7 +87,7 @@ export default {
         hasNumberFacetsSelected() {
             let selected = false;
 
-            _.forEach(this.requestNumberFacets, facet => {
+            _.forEach(this.requestNumberFacets, (facet) => {
                 if (facet.selected) {
                     selected = true;
                 }
@@ -87,7 +98,7 @@ export default {
         hasStringFacetsSelected() {
             let selected = false;
 
-            _.forEach(this.requestStringFacets, facet => {
+            _.forEach(this.requestStringFacets, (facet) => {
                 if (facet.selected) {
                     selected = true;
                 }
@@ -98,7 +109,7 @@ export default {
         hasPriceFacetsSelected() {
             let selected = false;
 
-            _.forEach(this.requestPriceFacets, facet => {
+            _.forEach(this.requestPriceFacets, (facet) => {
                 if (facet.selected) {
                     selected = true;
                 }
@@ -109,7 +120,7 @@ export default {
         hasCategoryFacetsSelected() {
             let selected = false;
 
-            _.forEach(this.requestCategoryFacets, facet => {
+            _.forEach(this.requestCategoryFacets, (facet) => {
                 if (facet.selected) {
                     selected = true;
                 }
@@ -133,10 +144,10 @@ export default {
             this.setPaginationPage(1);
         },
         getSelectedFacetOptionsLabel(facet) {
-            let selectedIds = facet.options.filter(item => item.selected);
+            let selectedIds = facet.options.filter((item) => item.selected);
 
             let selectedLabels = _.join(
-                selectedIds.map(item => item.label),
+                selectedIds.map((item) => item.label),
                 ', '
             );
 
@@ -164,7 +175,7 @@ export default {
                 query: query,
             };
 
-            this.hideFilters().then(response => {
+            this.hideFilters().then((response) => {
                 this.$router.push(route);
             });
         },
@@ -191,7 +202,7 @@ export default {
                 };
             }
 
-            this.hideFilters().then(response => {
+            this.hideFilters().then((response) => {
                 this.$router.push(route);
             });
         },

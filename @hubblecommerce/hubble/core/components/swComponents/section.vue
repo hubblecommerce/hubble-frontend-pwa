@@ -40,7 +40,7 @@ export default {
         },
         elementsSlots() {
             let elementsSlots = [];
-            _.forEach(this.cmsSlots, slot => {
+            _.forEach(this.cmsSlots, (slot) => {
                 if (slot.sectionPosition && slot.sectionPosition === 'main') {
                     elementsSlots.push(slot);
                 } else if (!slot.sectionPosition) {
@@ -51,7 +51,7 @@ export default {
         },
         sidebarSlots() {
             let sidebarSlots = [];
-            _.forEach(this.cmsSlots, slot => {
+            _.forEach(this.cmsSlots, (slot) => {
                 if (slot.sectionPosition && slot.sectionPosition === 'sidebar') {
                     sidebarSlots.push(slot);
                 }
@@ -101,7 +101,7 @@ export default {
         },
         sizingMode() {
             return {
-                boxed: this.getSizingMode === 'boxed',
+                'boxed': this.getSizingMode === 'boxed',
                 'full-width': this.getSizingMode === 'full_width',
             };
         },
@@ -127,7 +127,7 @@ export default {
                 'sw-blocks': this.isBlock,
                 'sw-slots': !this.isBlock,
 
-                row: this.hasSidebar,
+                'row': this.hasSidebar,
             };
         },
 

@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 class localStorageHelper {
     static setCreatedAt(entity) {
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
             _.assign(entity, { createdAt: new Date().getTime() });
             resolve(entity);
         });
@@ -23,7 +23,7 @@ class localStorageHelper {
     }
 
     static updateCreatedAt(entity) {
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
             entity.createdAt = new Date().getTime();
             resolve(entity);
         });

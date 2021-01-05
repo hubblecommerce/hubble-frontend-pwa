@@ -44,11 +44,11 @@ export default {
 
     computed: {
         ...mapState({
-            wishlistState: state => state.modWishlist.wishlistItemsObj,
-            wishlistId: state => state.modWishlist.wishlistId,
-            wishlistQty: state => state.modWishlist.wishlistItemsCount,
-            selectedVariants: state => state.modApiResources.selectedVariants,
-            customer: state => state.modApiCustomer.customer,
+            wishlistState: (state) => state.modWishlist.wishlistItemsObj,
+            wishlistId: (state) => state.modWishlist.wishlistId,
+            wishlistQty: (state) => state.modWishlist.wishlistItemsCount,
+            selectedVariants: (state) => state.modApiResources.selectedVariants,
+            customer: (state) => state.modApiCustomer.customer,
         }),
     },
 
@@ -94,7 +94,7 @@ export default {
                                 qty: this.wishlistQty,
                                 items: this.wishlistState,
                             },
-                        }).then(response => {
+                        }).then((response) => {
                             // If no wishlist exists get newly created wishlist id and save to store
                             if (!this.wishlistId) {
                                 this.setWishlistId(response.data.item.id);

@@ -14,7 +14,10 @@
 
         <template v-else-if="itemIsSpecial">
             <span class="old-price" v-text="getPriceAndCurrency('display_price_brutto', priceSwitcherIncludeVat)" />
-            <span class="sale-price" v-text="getPriceAndCurrency('display_price_brutto_special', priceSwitcherIncludeVat)" />
+            <span
+                class="sale-price"
+                v-text="getPriceAndCurrency('display_price_brutto_special', priceSwitcherIncludeVat)"
+            />
         </template>
 
         <template v-else>
@@ -46,7 +49,7 @@ export default {
 
     computed: {
         ...mapState({
-            priceSwitcherIncludeVat: state => state.modPrices.priceSwitcherIncludeVat,
+            priceSwitcherIncludeVat: (state) => state.modPrices.priceSwitcherIncludeVat,
         }),
         ...mapGetters({
             productIsSpecial: 'modPrices/productIsSpecial',
@@ -63,8 +66,8 @@ export default {
 
     methods: {
         getPriceAndCurrency: function (key, addVat) {
-            if(! _.has(this.item.final_price_item, key)) {
-              key = 'price';
+            if (!_.has(this.item.final_price_item, key)) {
+                key = 'price';
             }
 
             return this.getPriceAndCurrencyDecFmt(this.item.final_price_item[key], addVat, this.itemTaxClass);

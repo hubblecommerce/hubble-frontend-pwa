@@ -1,6 +1,10 @@
 <template>
     <transition name="fade">
-        <div v-if="loading" class="loader-layer" style="width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center;">
+        <div
+            v-if="loading"
+            class="loader-layer"
+            style="width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center"
+        >
             <loader />
         </div>
 
@@ -14,7 +18,7 @@
                         <div v-if="itemIsNew" class="badge new" v-text="$t('New')" />
                     </div>
 
-                    <div class="detail-actions-wrp" v-if="$mq === 'sm' || $mq === 'md'">
+                    <div v-if="$mq === 'sm' || $mq === 'md'" class="detail-actions-wrp">
                         <add-to-wishlist :item="productData" />
                         <product-detail-add-to-cart :item="productData" />
                     </div>
@@ -33,9 +37,7 @@
                                 <div v-text="productData.description" />
                             </div>
                         </tab>
-                        <tab class="reqview-tab" :name="$t('Reviews')">
-                            No reviews yet
-                        </tab>
+                        <tab class="reqview-tab" :name="$t('Reviews')"> No reviews yet </tab>
                     </tabs>
                 </div>
 
@@ -63,12 +65,12 @@
 </template>
 
 <script>
-import {mapActions, mapGetters, mapMutations, mapState} from 'vuex';
+import { mapActions, mapGetters, mapMutations, mapState } from 'vuex';
 import Breadcrumbs from '../utils/Breadcrumbs';
 import GTMDataLayer from '../utils/GTMDataLayer';
 import _ from 'lodash';
-import Tabs from "@/modules/hubble-frontend-pwa/@hubblecommerce/hubble/core/components/utils/Tabs";
-import Tab from "@/modules/hubble-frontend-pwa/@hubblecommerce/hubble/core/components/utils/Tab";
+import Tabs from '@/modules/hubble-frontend-pwa/@hubblecommerce/hubble/core/components/utils/Tabs';
+import Tab from '@/modules/hubble-frontend-pwa/@hubblecommerce/hubble/core/components/utils/Tab';
 
 export default {
     name: 'ViewProduct',
@@ -86,7 +88,7 @@ export default {
         ProductDetailBuybox: () => import('./ProductDetailBuybox'),
         ProductDetailGallery: () => import('./ProductDetailGallery'),
         CollapsibleDescription: () => import('./CollapsibleDescription'),
-        ProductDetailRecommendations: () => import('./ProductDetailRecommendations')
+        ProductDetailRecommendations: () => import('./ProductDetailRecommendations'),
     },
 
     data() {
@@ -97,10 +99,10 @@ export default {
 
     computed: {
         ...mapState({
-            openDetail: state => state.modApiProduct.openDetail,
-            dataProduct: state => state.modApiProduct.dataProduct,
-            priceCurrency: state => state.modPrices.priceCurrency,
-            clickPath: state => state.modClickPath.clickPath,
+            openDetail: (state) => state.modApiProduct.openDetail,
+            dataProduct: (state) => state.modApiProduct.dataProduct,
+            priceCurrency: (state) => state.modPrices.priceCurrency,
+            clickPath: (state) => state.modClickPath.clickPath,
         }),
         ...mapGetters({
             productIsSpecial: 'modPrices/productIsSpecial',
@@ -167,23 +169,25 @@ export default {
             return {
                 '@context': 'http://schema.org',
                 '@type': 'Product',
-                name: this.productData.name,
-                image: [this.routeUrlProductImg],
-                description: this.productData.description,
-                sku: this.productData.sku,
-                brand: {
+                'name': this.productData.name,
+                'image': [this.routeUrlProductImg],
+                'description': this.productData.description,
+                'sku': this.productData.sku,
+                'brand': {
                     '@type': 'Thing',
-                    name: this.productData.manufacturer_name,
+                    'name': this.productData.manufacturer_name,
                 },
-                mpn: this.productData.sku,
-                offers: {
+                'mpn': this.productData.sku,
+                'offers': {
                     '@type': 'Offer',
-                    url: this.routeUrlPds,
-                    priceCurrency: this.priceCurrency,
-                    price: this.itemMinPriceBrutto,
-                    priceValidUntil: this.getPriceValidUntilDate(),
-                    itemCondition: 'https://schema.org/NewCondition',
-                    availability: this.productData.stock_item.is_in_stock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+                    'url': this.routeUrlPds,
+                    'priceCurrency': this.priceCurrency,
+                    'price': this.itemMinPriceBrutto,
+                    'priceValidUntil': this.getPriceValidUntilDate(),
+                    'itemCondition': 'https://schema.org/NewCondition',
+                    'availability': this.productData.stock_item.is_in_stock
+                        ? 'https://schema.org/InStock'
+                        : 'https://schema.org/OutOfStock',
                 },
                 // More structured data...
             };
@@ -194,14 +198,14 @@ export default {
 
             // If last visited page was a category then push category path of this category to breadcrumbs
             if (lastPathElement.pageType === 'category') {
-                _.forEach(lastPathElement.categoryPath, val => {
+                _.forEach(lastPathElement.categoryPath, (val) => {
                     path.push(val);
                 });
             }
 
             // If last visited page was search result, aggregate data for display link to search result set
             if (lastPathElement.pageType === 'search') {
-                _.forEach(lastPathElement.categoryPath, val => {
+                _.forEach(lastPathElement.categoryPath, (val) => {
                     path.push({
                         id: val.id,
                         name: this.$t('Search for: ') + val.name,
@@ -247,7 +251,7 @@ export default {
                     this.loading = false;
                     this.setOpenDetail(false);
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.log('getProductData error: ', err);
                 });
         } else {

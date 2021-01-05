@@ -39,8 +39,8 @@ export default {
 
     computed: {
         ...mapState({
-            qty: state => state.modWishlist.wishlistItemsCount,
-            offcanvas: state => state.modNavigation.offcanvas,
+            qty: (state) => state.modWishlist.wishlistItemsCount,
+            offcanvas: (state) => state.modNavigation.offcanvas,
         }),
         hasItemsInWishlist: function () {
             return {

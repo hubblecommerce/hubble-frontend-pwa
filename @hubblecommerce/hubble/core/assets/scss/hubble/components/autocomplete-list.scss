@@ -21,11 +21,10 @@
 }
 
 // Tablet
-@media(min-width: 768px) {
+@media (min-width: 768px) {
     .autocomplete-list-wrp {
         margin: 0 auto;
         border-bottom: 1px solid $border-color;
         @include make-container-max-widths($max-widths: $container-max-widths, $breakpoints: $grid-breakpoints);
     }
 }
-

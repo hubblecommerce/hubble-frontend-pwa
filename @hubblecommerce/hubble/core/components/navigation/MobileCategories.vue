@@ -18,13 +18,19 @@
             </nuxt-link>
 
             <nuxt-link v-if="!hasChildren && dataItem.name" :to="itemUrlPath">
-                <div v-if="depth !== 0" class="trigger bg-white m-0 w-100 d-flex justify-content-between align-items-center border-bottom">
+                <div
+                    v-if="depth !== 0"
+                    class="trigger bg-white m-0 w-100 d-flex justify-content-between align-items-center border-bottom"
+                >
                     {{ dataItem.name }}
                 </div>
             </nuxt-link>
 
             <nuxt-link v-if="!hasChildren && dataItem.manufacturer_name" :to="manufacturerUrlPath">
-                <div v-if="depth !== 0" class="trigger bg-white m-0 w-100 d-flex justify-content-between align-items-center border-bottom">
+                <div
+                    v-if="depth !== 0"
+                    class="trigger bg-white m-0 w-100 d-flex justify-content-between align-items-center border-bottom"
+                >
                     {{ dataItem.manufacturer_name }}
                 </div>
             </nuxt-link>
@@ -90,7 +96,7 @@ export default {
 
     computed: {
         ...mapState({
-            clickPath: state => state.modClickPath.clickPath,
+            clickPath: (state) => state.modClickPath.clickPath,
         }),
         hasChildren: function () {
             return !_.isEmpty(this.dataItem.children) || !_.isEmpty(this.dataItem.menu_items);
@@ -120,7 +126,7 @@ export default {
             // If current data item is set
             // and current data item id is included in category path
             // and current category has children
-            _.forEach(currentPathElement.categoryPath, val => {
+            _.forEach(currentPathElement.categoryPath, (val) => {
                 if (val.id === this.dataItem.id && typeof this.dataItem.id !== 'undefined' && this.hasChildren) {
                     // Open current navigation layer
                     this.isInCurrentCategoryPath = true;
@@ -147,6 +153,5 @@ export default {
             this.$children.showChildren = true;
         },
     },
-
 };
 </script>

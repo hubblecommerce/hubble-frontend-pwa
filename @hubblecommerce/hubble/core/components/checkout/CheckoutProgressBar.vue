@@ -16,7 +16,11 @@
             {{ $t('Payment') }}
         </nuxt-link>
 
-        <div class="step" :class="{ 'nuxt-link-exact-active': isCurrentPath('checkout-summary') }" @click="createOrder()">
+        <div
+            class="step"
+            :class="{ 'nuxt-link-exact-active': isCurrentPath('checkout-summary') }"
+            @click="createOrder()"
+        >
             <div v-if="!isOrderSuccess" class="no" v-text="'3'" />
 
             <div v-if="isOrderSuccess" class="icon icon-check" />
@@ -47,9 +51,9 @@ export default {
 
     computed: {
         ...mapState({
-            customer: state => state.modApiCustomer.customer,
-            order: state => state.modApiPayment.order,
-            hostedIFrame: state => state.modApiPayment.hostedIFrame,
+            customer: (state) => state.modApiCustomer.customer,
+            order: (state) => state.modApiPayment.order,
+            hostedIFrame: (state) => state.modApiPayment.hostedIFrame,
         }),
         isLoggedIn: function () {
             if (!_.isEmpty(this.customer.customerAuth)) {
@@ -136,7 +140,7 @@ export default {
             }
             // Get uuid from api
             this.getUuid()
-                .then(uuid => {
+                .then((uuid) => {
                     // Store uuid as orderId to order in store
                     this.setOrderId(uuid);
 
@@ -147,7 +151,7 @@ export default {
                                 path: this.localePath('checkout-summary'),
                             });
                         })
-                        .catch(error => {
+                        .catch((error) => {
                             this.flashMessage({
                                 flashType: 'error',
                                 flashMessage: this.$t(error),
@@ -155,7 +159,7 @@ export default {
                             console.log(error);
                         });
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.log('getUuid error: ', err);
                 });
         },

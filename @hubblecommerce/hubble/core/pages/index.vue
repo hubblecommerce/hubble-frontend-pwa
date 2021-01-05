@@ -1,6 +1,11 @@
 <template>
     <div class="index-container">
-        <g-t-m-data-layer event="homepageLoaded" page-type="home" page-title="Hubble demo" :breadcrumbs="[{ '0': 'home' }]" />
+        <g-t-m-data-layer
+            event="homepageLoaded"
+            page-type="home"
+            page-title="Hubble demo"
+            :breadcrumbs="[{ '0': 'home' }]"
+        />
 
         <component :is="currentComponent" />
     </div>
@@ -22,13 +27,7 @@ export default {
 
     layout: 'hubble',
 
-    middleware: [
-        apiIndexRoute,
-        'apiAuthenticate',
-        'apiLocalization',
-        'apiResourceMenu',
-        'trackClickPath'
-    ],
+    middleware: [apiIndexRoute, 'apiAuthenticate', 'apiLocalization', 'apiResourceMenu', 'trackClickPath'],
 
     data() {
         return {
@@ -50,8 +49,8 @@ export default {
         let structuredDataLogo = {
             '@context': 'https://schema.org',
             '@type': 'Organization',
-            url: process.env.APP_BASE_URL,
-            logo: process.env.APP_BASE_URL + '/logo.png',
+            'url': process.env.APP_BASE_URL,
+            'logo': process.env.APP_BASE_URL + '/logo.png',
         };
         return {
             title: 'hubble Demo Store',

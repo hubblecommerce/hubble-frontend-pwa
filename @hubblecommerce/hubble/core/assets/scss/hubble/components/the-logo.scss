@@ -30,7 +30,7 @@ $hbl-logo-width-desktop: 115px;
 }
 
 /* Tablet */
-@media(min-width: 768px) {
+@media (min-width: 768px) {
     .logo-wrp {
         margin-right: 0;
         width: auto;
@@ -38,7 +38,7 @@ $hbl-logo-width-desktop: 115px;
 }
 
 /* Desktop */
-@media(min-width: 1024px) {
+@media (min-width: 1024px) {
     .logo {
         img {
             width: $hbl-logo-width-desktop;

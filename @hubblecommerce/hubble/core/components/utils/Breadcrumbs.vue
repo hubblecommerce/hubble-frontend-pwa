@@ -33,16 +33,16 @@ export default {
             _.forEach(this.path, (pathItem, key) => {
                 currentPath.push({
                     '@type': 'ListItem',
-                    position: key + 1,
-                    name: pathItem.name,
-                    item: process.env.APP_BASE_URL + pathItem.url,
+                    'position': key + 1,
+                    'name': pathItem.name,
+                    'item': process.env.APP_BASE_URL + pathItem.url,
                 });
             });
 
             let structuredDataBreadcrumbs = {
                 '@context': 'https://schema.org',
                 '@type': 'BreadcrumbList',
-                itemListElement: currentPath,
+                'itemListElement': currentPath,
             };
 
             return {

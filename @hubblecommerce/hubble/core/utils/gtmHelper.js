@@ -4,7 +4,7 @@
  * @returns Promise
  */
 function clearDataLayer() {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
         // Run loop backwards to slice array (index stability)
         // Remove all array items which are not gtm.js or hubbleRoute events
         for (let i = window['dataLayer'].length - 1; i >= 0; i--) {

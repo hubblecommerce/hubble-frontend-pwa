@@ -1,152 +1,150 @@
-.wishlist-wrp{
-  width: 100%;
-  padding: 15px 0;
-  display: inline-block;
+.wishlist-wrp {
+    width: 100%;
+    padding: 15px 0;
+    display: inline-block;
 
-  .customer-wishlist-wrp{
-    .headline{
-
-      .wishlist-headline{
-        h1 {
-          display: inline;
-          text-transform: uppercase;
-          margin-right: 15px;
+    .customer-wishlist-wrp {
+        .headline {
+            .wishlist-headline {
+                h1 {
+                    display: inline;
+                    text-transform: uppercase;
+                    margin-right: 15px;
+                }
+            }
         }
-      }
-    }
 
-    .shopping-button{
-      margin-top: 5px;
-    }
+        .shopping-button {
+            margin-top: 5px;
+        }
 
-    .empty-cart {
-      border: 1px solid $border-color;
+        .empty-cart {
+            border: 1px solid $border-color;
+        }
     }
-  }
 }
 
 /* Tablet */
-@media(min-width: 768px) {
-  .wishlist-wrp {
-    padding: 20px 0;
+@media (min-width: 768px) {
+    .wishlist-wrp {
+        padding: 20px 0;
 
-    .customer-wishlist-wrp {
-      .headline {
-        margin: 5px 0 20px;
-        position: relative;
-      }
-
-      .reset-item {
-        position: absolute;
-        bottom: 0;
-        right: 0;
-      }
-
-      .item {
-        margin: 0 0 10px;
-        border: 1px solid $border-color;
-      }
-
-      .empty-cart {
-        padding: 60px;
-      }
-
-      .img-wishlist {
-        max-width: 100px !important;
-        max-height: 100px !important;
-      }
-
-      .shopping-button {
-        width: 100%;
-      }
-    }
-
-    .newsletter-wrp{
-
-      .newsletter-headline{
-        text-transform: uppercase;
-        margin: 5px 0 20px;
-      }
-
-      .newsletter-box{
-        border: 1px solid $border-color;
-        background-color: $background-light;
-        padding: 40px;
-
-        .newsletter-info{
-          margin-bottom: 20px;
-          text-align: justify;
-        }
-
-        .newsletter-input{
-          border-top: 1px solid $border-color;
-          padding-top: 20px;
-
-          .input-title{
-            text-transform: uppercase;
-            margin-bottom: 10px;
-          }
-
-          .hbl-input-group {
-            input {
-              background: $background;
+        .customer-wishlist-wrp {
+            .headline {
+                margin: 5px 0 20px;
+                position: relative;
             }
-          }
 
-          .newsletter-button{
-            width: 100%;
-          }
+            .reset-item {
+                position: absolute;
+                bottom: 0;
+                right: 0;
+            }
+
+            .item {
+                margin: 0 0 10px;
+                border: 1px solid $border-color;
+            }
+
+            .empty-cart {
+                padding: 60px;
+            }
+
+            .img-wishlist {
+                max-width: 100px !important;
+                max-height: 100px !important;
+            }
+
+            .shopping-button {
+                width: 100%;
+            }
         }
-      }
+
+        .newsletter-wrp {
+            .newsletter-headline {
+                text-transform: uppercase;
+                margin: 5px 0 20px;
+            }
+
+            .newsletter-box {
+                border: 1px solid $border-color;
+                background-color: $background-light;
+                padding: 40px;
+
+                .newsletter-info {
+                    margin-bottom: 20px;
+                    text-align: justify;
+                }
+
+                .newsletter-input {
+                    border-top: 1px solid $border-color;
+                    padding-top: 20px;
+
+                    .input-title {
+                        text-transform: uppercase;
+                        margin-bottom: 10px;
+                    }
+
+                    .hbl-input-group {
+                        input {
+                            background: $background;
+                        }
+                    }
+
+                    .newsletter-button {
+                        width: 100%;
+                    }
+                }
+            }
+        }
     }
-  }
 }
 
 /* Desktop */
-@media(min-width: 1024px) {
-  .wishlist-wrp {
-    padding: 60px 0;
+@media (min-width: 1024px) {
+    .wishlist-wrp {
+        padding: 60px 0;
 
-    .customer-wishlist-wrp {
-      max-width: 880px;
-      width: 50%;
-      float: left;
+        .customer-wishlist-wrp {
+            max-width: 880px;
+            width: 50%;
+            float: left;
 
-      .shopping-button {
-        width: 35%;
-      }
+            .shopping-button {
+                width: 35%;
+            }
+        }
+
+        .newsletter-container {
+            max-width: 540px;
+            width: 45%;
+            float: right;
+
+            .newsletter-wrp {
+                .newsletter-headline {
+                    border: none;
+                }
+
+                .newsletter-box {
+                    padding-top: 0;
+                    width: 100%;
+
+                    .form-title {
+                        padding: 15px 0 10px;
+                        text-transform: uppercase;
+                        border-top: 1px solid $border-color;
+                        font-weight: $font-weight-bold;
+                    }
+                }
+
+                form {
+                    width: 100%;
+                }
+
+                input {
+                    background: #fff;
+                }
+            }
+        }
     }
-
-    .newsletter-container {
-      max-width: 540px;
-      width: 45%;
-      float: right;
-
-      .newsletter-wrp {
-        .newsletter-headline {
-          border: none;
-        }
-
-        .newsletter-box {
-          padding-top: 0;
-          width: 100%;
-
-          .form-title {
-            padding: 15px 0 10px;
-            text-transform: uppercase;
-            border-top: 1px solid $border-color;
-            font-weight: $font-weight-bold;
-          }
-        }
-
-        form {
-            width: 100%;
-        }
-
-        input {
-          background: #fff;
-        }
-      }
-    }
-  }
 }

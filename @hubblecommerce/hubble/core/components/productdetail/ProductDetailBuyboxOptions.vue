@@ -1,6 +1,12 @@
 <template>
     <div class="options-wrp">
-        <div v-for="(facet, index) in facetsAvail" :key="index" class="option-wrp" :class="facet" :updating="isUpdating">
+        <div
+            v-for="(facet, index) in facetsAvail"
+            :key="index"
+            class="option-wrp"
+            :class="facet"
+            :updating="isUpdating"
+        >
             <div class="option-label option-label-top" v-text="facet['facet-name']" />
 
             <div v-if="!hasALotOfOptions(facet)" class="option-val-wrp">
@@ -53,7 +59,7 @@ export default {
 
     computed: {
         ...mapState({
-            dataProduct: state => state.modApiProduct.dataProduct,
+            dataProduct: (state) => state.modApiProduct.dataProduct,
         }),
         ...mapGetters({
             getSwatchesByOptionId: 'modSwatches/getSwatchesByOptionId',
@@ -72,13 +78,13 @@ export default {
                 return null;
             }
 
-            return this.itemFacets.filter(item => item['type'] === 'super_attribute');
+            return this.itemFacets.filter((item) => item['type'] === 'super_attribute');
         },
         itemFacetsSuperAllSelected: function () {
             let _allSelected = true;
 
             // loop through available facets
-            _.forEach(this.facetsAvail, facet => {
+            _.forEach(this.facetsAvail, (facet) => {
                 // inform upper
                 if (!facet.selected) {
                     _allSelected = false;
@@ -101,10 +107,10 @@ export default {
         this.facetsAvail = this.itemFacetsSuper;
 
         // assign 'selected' (false) as default
-        _.forEach(this.facetsAvail, facet => {
+        _.forEach(this.facetsAvail, (facet) => {
             facet.selected = false;
 
-            _.forEach(facet['facet-values'], facetValue => {
+            _.forEach(facet['facet-values'], (facetValue) => {
                 facetValue.selected = false;
             });
         });
@@ -120,9 +126,9 @@ export default {
             setDataProductItem: 'modApiProduct/setDataProductItem',
         }),
         assignFacetOptionValues: function (facetCode) {
-            let _facet = _.head(this.itemFacetsSuper.filter(item => item['code'] === facetCode));
+            let _facet = _.head(this.itemFacetsSuper.filter((item) => item['code'] === facetCode));
 
-            _.forEach(_facet['facet-values'], facetValue => {
+            _.forEach(_facet['facet-values'], (facetValue) => {
                 let _option = this.getSwatchesByOptionId(facetCode, facetValue.id);
 
                 if (_.isEmpty(_option)) {
@@ -151,7 +157,7 @@ export default {
         },
         selectFacetOption: function (facet, value) {
             // reset 'selected' of given facet values
-            _.forEach(facet['facet-values'], facetValue => {
+            _.forEach(facet['facet-values'], (facetValue) => {
                 facetValue.selected = false;
             });
 
@@ -166,11 +172,17 @@ export default {
             this.facetsAvail.pop();
 
             if (this.itemFacetsSuperAllSelected) {
-                let _item = _.head(this.itemLoaded.search_result_data_children.filter(child => child.id === value.product_id));
+                let _item = _.head(
+                    this.itemLoaded.search_result_data_children.filter((child) => child.id === value.product_id)
+                );
 
                 // merge itemSelected onto loadedItem
                 // note: omit 'media_gallery' to ensure array
-                this.itemSelected = _.merge({}, this.itemLoaded, _.omit(_item, ['type', 'model', 'description', 'media_gallery']));
+                this.itemSelected = _.merge(
+                    {},
+                    this.itemLoaded,
+                    _.omit(_item, ['type', 'model', 'description', 'media_gallery'])
+                );
 
                 if (this.itemSelected.url_pds === null) {
                     this.itemSelected.url_pds = this.itemLoaded.url_pds;

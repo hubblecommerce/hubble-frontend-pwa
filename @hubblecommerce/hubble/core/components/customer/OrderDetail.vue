@@ -1,6 +1,8 @@
 <template>
     <div class="order-detail-wrp">
-        <div class="order-id"> <span class="label" v-text="$t('Your Order Id: ')" /><span v-if="order" v-text="order.id" /> </div>
+        <div class="order-id">
+            <span class="label" v-text="$t('Your Order Id: ')" /><span v-if="order" v-text="order.id" />
+        </div>
 
         <div class="order-row">
             <div v-for="(address, key) in orderData.addresses" :key="key" class="order-col billing-addresses-wrp">
@@ -90,8 +92,8 @@ import _ from 'lodash';
 export default {
     name: 'OrderDetail',
 
-    components: { 
-        CartItemsListNonInteractive: () => import('../checkout/CartItemsListNonInteractive')
+    components: {
+        CartItemsListNonInteractive: () => import('../checkout/CartItemsListNonInteractive'),
     },
 
     mixins: [mapKeyToValue, mapIsoToCountry, salutations],
@@ -111,7 +113,7 @@ export default {
 
     computed: {
         ...mapState({
-            countries: state => state.modApiCustomer.availableCountries,
+            countries: (state) => state.modApiCustomer.availableCountries,
         }),
         ...mapGetters({
             priceDecFmt: 'modPrices/priceDecFmt',

@@ -2,7 +2,15 @@
     <div class="listing-wrp row" :class="extraClass">
         <template v-if="isSlider">
             <client-only>
-                <slider :responsive="responsive" :controls-text="controls" :loop="loop" :gutter="10" :edge-padding="10" :nav="false" :lazyload="true">
+                <slider
+                    :responsive="responsive"
+                    :controls-text="controls"
+                    :loop="loop"
+                    :gutter="10"
+                    :edge-padding="10"
+                    :nav="false"
+                    :lazyload="true"
+                >
                     <template v-for="(item, index) in dataItems">
                         <div :key="index" class="slider-item">
                             <product-listing-card :key="item.id" :item-orig="item" :is-slider="isSlider" />
@@ -104,7 +112,7 @@ export default {
             type: String,
             required: false,
             default: 'col-6 col-sm-6 col-md-4 col-lg-3',
-        }
+        },
     },
 
     data() {
@@ -118,8 +126,8 @@ export default {
 
     computed: {
         ...mapState({
-            dataCategoryProducts: state => state.modApiCategory.dataCategoryProducts,
-            paginationPerPage: state => state.modApiRequests.paginationPerPage,
+            dataCategoryProducts: (state) => state.modApiCategory.dataCategoryProducts,
+            paginationPerPage: (state) => state.modApiRequests.paginationPerPage,
         }),
         classes() {
             return [!this.isSlider ? 'columns is-flex is-multiline' : ''];

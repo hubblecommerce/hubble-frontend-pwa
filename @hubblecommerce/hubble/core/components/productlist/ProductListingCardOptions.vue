@@ -14,7 +14,11 @@
                         @mouseleave="activeIndex = null"
                     >
                         <div class="swatchable" v-html="getSwatchable(facetValue)" />
-                        <div v-if="activeIndex === vIndex" class="option-tooltip" v-text="getFacetOptionLabel(facet, facetValue)" />
+                        <div
+                            v-if="activeIndex === vIndex"
+                            class="option-tooltip"
+                            v-text="getFacetOptionLabel(facet, facetValue)"
+                        />
                     </div>
                 </div>
             </div>
@@ -81,11 +85,11 @@ export default {
                 return null;
             }
 
-            let _facets = this.itemFacets.filter(item => item['type'] === 'super_attribute');
+            let _facets = this.itemFacets.filter((item) => item['type'] === 'super_attribute');
 
             // filter for wanted swatches
             if (!_.isEmpty(this.facetsFilter)) {
-                _facets = _facets.filter(item => {
+                _facets = _facets.filter((item) => {
                     return _.includes(this.facetsFilter, item['code']);
                 });
             }
@@ -96,7 +100,7 @@ export default {
             let _allSelected = true;
 
             // loop through available facets
-            _.forEach(this.facetsAvail, facet => {
+            _.forEach(this.facetsAvail, (facet) => {
                 // inform upper
                 if (!facet.selected) {
                     _allSelected = false;
@@ -119,17 +123,17 @@ export default {
         this.facetsAvail = this.itemFacetsSuper;
 
         // assign 'selected' (false) as default
-        _.forEach(this.facetsAvail, facet => {
+        _.forEach(this.facetsAvail, (facet) => {
             facet.selected = false;
 
-            _.forEach(facet['facet-values'], facetValue => {
+            _.forEach(facet['facet-values'], (facetValue) => {
                 facetValue.selected = false;
             });
         });
 
         // assign color and/or image properties in case of 'color_manufacturer'
         if (!_.isEmpty(this.itemFacetsSuper)) {
-            if (!_.isEmpty(this.itemFacetsSuper.filter(item => item['code'] === 'color_manufacturer'))) {
+            if (!_.isEmpty(this.itemFacetsSuper.filter((item) => item['code'] === 'color_manufacturer'))) {
                 this.assignFacetOptionValues('color_manufacturer');
             }
         }
@@ -152,9 +156,9 @@ export default {
             }
         },
         assignFacetOptionValues(facetCode) {
-            let _facet = _.head(this.itemFacetsSuper.filter(item => item['code'] === facetCode));
+            let _facet = _.head(this.itemFacetsSuper.filter((item) => item['code'] === facetCode));
 
-            _.forEach(_facet['facet-values'], facetValue => {
+            _.forEach(_facet['facet-values'], (facetValue) => {
                 let _option = this.getSwatchesByOptionId(facetCode, facetValue.id);
 
                 if (_.isEmpty(_option)) {
@@ -177,7 +181,12 @@ export default {
         getFacetOptionImage(facetOptionImgName, facetOptionImgSize, facetCodeAttrId) {
             if (facetOptionImgName !== '') {
                 return _.join(
-                    ['https://www.design-bestseller.de/media/designbestseller_swatch', facetCodeAttrId, facetOptionImgSize, facetOptionImgName],
+                    [
+                        'https://www.design-bestseller.de/media/designbestseller_swatch',
+                        facetCodeAttrId,
+                        facetOptionImgSize,
+                        facetOptionImgName,
+                    ],
                     '/'
                 );
             }
@@ -186,7 +195,7 @@ export default {
         },
         selectFacetOption(facet, value) {
             // reset 'selected' of given facet values
-            _.forEach(facet['facet-values'], facetValue => {
+            _.forEach(facet['facet-values'], (facetValue) => {
                 facetValue.selected = false;
             });
 
@@ -201,7 +210,9 @@ export default {
             this.facetsAvail.pop();
 
             if (this.itemFacetsSuperAllSelected) {
-                let _item = _.head(this.itemLoaded.search_result_data_children.filter(child => child.id === value.product_id));
+                let _item = _.head(
+                    this.itemLoaded.search_result_data_children.filter((child) => child.id === value.product_id)
+                );
 
                 // merge itemSelected onto loadedItem
                 // note: omit 'media_gallery' to ensure array

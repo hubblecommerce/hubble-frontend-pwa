@@ -77,7 +77,7 @@ export const defaultEnv = {
 export const defaultCss = [
     '~/assets/css/main.css',
     '~/assets/css/vue-tiny-slider.css',
-    '~/assets/scss/' + process.env.THEME + '/all.scss'
+    '~/assets/scss/' + process.env.THEME + '/all.scss',
 ];
 
 export const defaultDotEnv = {
@@ -125,7 +125,7 @@ export const defaultDotEnv = {
         'STREETINFO_INCLUDES_HOUSENO',
         'ALTERNATIVE_SHIPPING_ADDRESS',
     ],
-    path: '~/..'
+    path: '~/..',
 };
 
 export const defaultBuildBabelConfig = {
@@ -138,15 +138,12 @@ export const defaultBuildExtractCSSConfig = true;
 export const defaultRouterPrefetchLinksConfig = false;
 
 export const defaultServerMiddleware = function (srcDir) {
-    const middlewares = [
-        'api/hubble-logger',
-        'api/client-auth'
-    ];
+    const middlewares = ['api/hubble-logger', 'api/client-auth'];
 
     let result = [];
 
-    middlewares.forEach(middleware => {
-        result.push(path.join(srcDir, middleware),)
+    middlewares.forEach((middleware) => {
+        result.push(path.join(srcDir, middleware));
     });
 
     return result;
@@ -154,13 +151,13 @@ export const defaultServerMiddleware = function (srcDir) {
 
 export const defaultModules = [
     {
-        name: '@hubblecommerce/payone'
+        name: '@hubblecommerce/payone',
     },
     {
-        name: '@hubblecommerce/amazon-pay'
+        name: '@hubblecommerce/amazon-pay',
     },
     {
-        name: '@nuxtjs/axios'
+        name: '@nuxtjs/axios',
     },
     {
         name: 'nuxt-mq',
@@ -171,7 +168,7 @@ export const defaultModules = [
                 lg: Infinity,
             },
             defaultBreakpoint: 'md', // Default breakpoint for SSR
-        }
+        },
     },
     {
         name: '@nuxtjs/recaptcha',
@@ -181,7 +178,7 @@ export const defaultModules = [
             siteKey: process.env.GOOGLE_RECAPTCHA_SITEKEY,
             language: 'de',
             hideBadge: true,
-        }
+        },
     },
     {
         name: 'nuxt-i18n',
@@ -202,8 +199,8 @@ export const defaultModules = [
             ],
             langDir: `locales/`,
             lazy: true,
-            seo: false
-        }
+            seo: false,
+        },
     },
     {
         name: '@nuxtjs/pwa',
@@ -221,13 +218,13 @@ export const defaultModules = [
                 theme_color: '#880E4F',
                 gcm_sender_id: '482941778795',
                 gcm_sender_id_comment: 'Do not change the GCM Sender ID',
-            }
-        }
+            },
+        },
     },
     {
-        name: 'localforage-nuxt'
+        name: 'localforage-nuxt',
     },
     {
-        name: 'cookie-universal-nuxt'
-    }
+        name: 'cookie-universal-nuxt',
+    },
 ];

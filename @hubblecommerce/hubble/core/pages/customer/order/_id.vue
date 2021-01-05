@@ -25,7 +25,14 @@ export default {
 
     layout: 'hubble',
 
-    middleware: ['apiLocalization', 'apiAuthenticate', apiPaymentAuthenticate, apiCustomerAuthenticate, 'apiResourceMenu', 'trackClickPath'],
+    middleware: [
+        'apiLocalization',
+        'apiAuthenticate',
+        apiPaymentAuthenticate,
+        apiCustomerAuthenticate,
+        'apiResourceMenu',
+        'trackClickPath',
+    ],
 
     data() {
         return {
@@ -44,7 +51,7 @@ export default {
         }),
         getCurrentOrder() {
             // Get order from customer by id from url /orders/:id
-            this.getOrderById({ id: this.id }).then(res => {
+            this.getOrderById({ id: this.id }).then((res) => {
                 this.order = res.data.item;
             });
         },

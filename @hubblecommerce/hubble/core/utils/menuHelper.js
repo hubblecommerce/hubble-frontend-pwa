@@ -8,8 +8,8 @@ import _ from 'lodash';
  */
 function sortMenuEntries(children) {
     let currentEntries = children;
-    currentEntries = _.sortBy(currentEntries, [item => item.name.toLowerCase()]);
-    _.forEach(currentEntries, category => {
+    currentEntries = _.sortBy(currentEntries, [(item) => item.name.toLowerCase()]);
+    _.forEach(currentEntries, (category) => {
         if (!_.isEmpty(category.children)) {
             category.children = sortMenuEntries(category.children);
         }
@@ -32,7 +32,7 @@ function slugify(string) {
         .toString()
         .toLowerCase()
         .replace(/\s+/g, '-') // Replace spaces with -
-        .replace(p, c => b.charAt(a.indexOf(c))) // Replace special characters
+        .replace(p, (c) => b.charAt(a.indexOf(c))) // Replace special characters
         .replace(/&/g, '-') // Replace & with '-'
         .replace(/[^\w\-]+/g, '') // Remove all non-word characters
         .replace(/\-\-+/g, '-') // Replace multiple - with single -
@@ -72,7 +72,7 @@ function unflatten(array, parent, tree) {
 function findCategoryByUrl(tree, path) {
     let matchingCategory = false;
 
-    _.each(tree, category => {
+    _.each(tree, (category) => {
         if (category.url_path === path) {
             matchingCategory = category;
         }
@@ -90,7 +90,7 @@ function findCategoryByUrl(tree, path) {
 function findProductByUrl(tree, path) {
     let matchingUrl = false;
 
-    _.each(tree, url => {
+    _.each(tree, (url) => {
         if (url.seoPathInfo === path) {
             matchingUrl = url;
         }

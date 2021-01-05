@@ -2,9 +2,22 @@
     <div :class="elementClass" class="sw-image-slider">
         <div class="cms-element-alignment" :class="verticalAlign">
             <client-only>
-                <slider :controls="true" :gutter="15" :controls-text="controls" :edge-padding="10" :nav="false" :lazyload="true" :items="1">
+                <slider
+                    :controls="true"
+                    :gutter="15"
+                    :controls-text="controls"
+                    :edge-padding="10"
+                    :nav="false"
+                    :lazyload="true"
+                    :items="1"
+                >
                     <template v-for="item in imageItems">
-                        <img-lazy :key="item.media.url" :src="item.media.url" :alt-info="item.media.alt" :title-info="item.media.title" />
+                        <img-lazy
+                            :key="item.media.url"
+                            :src="item.media.url"
+                            :alt-info="item.media.alt"
+                            :title-info="item.media.title"
+                        />
                     </template>
                 </slider>
             </client-only>

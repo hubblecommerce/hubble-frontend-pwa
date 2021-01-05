@@ -13,7 +13,11 @@
                         <span>{{ $t('We have sent you an order confirmation by e-mail') }}</span>
                         <span v-if="!isEmpty(currentOrder)">{{ 'at ' + currentOrder.orderCustomer.email }}</span>
                     </div>
-                    <div v-if="!isEmpty(currentOrder)" class="email-info text-center" v-text="$t('Your order number: ' + currentOrder.orderNumber)" />
+                    <div
+                        v-if="!isEmpty(currentOrder)"
+                        class="email-info text-center"
+                        v-text="$t('Your order number: ' + currentOrder.orderNumber)"
+                    />
                 </div>
             </transition>
         </div>
@@ -27,9 +31,9 @@ import _ from 'lodash';
 export default {
     name: 'Success',
 
-    middleware: ['apiLocalization', 'trackClickPath'],
-
     layout: 'hubble_express',
+
+    middleware: ['apiLocalization', 'trackClickPath'],
 
     data() {
         return {
@@ -40,11 +44,11 @@ export default {
 
     computed: {
         ...mapState({
-            offcanvas: state => state.modNavigation.offcanvas,
-            swtc: state => state.modCart.swtc,
-            currentOrder: state => state.modApiPayment.currentOrder,
-            customer: state => state.modApiCustomer.customer,
-            cookieName: state => state.modApiCustomer.cookieName,
+            offcanvas: (state) => state.modNavigation.offcanvas,
+            swtc: (state) => state.modCart.swtc,
+            currentOrder: (state) => state.modApiPayment.currentOrder,
+            customer: (state) => state.modApiCustomer.customer,
+            cookieName: (state) => state.modApiCustomer.cookieName,
         }),
     },
 

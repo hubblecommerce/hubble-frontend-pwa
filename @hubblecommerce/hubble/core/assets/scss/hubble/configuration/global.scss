@@ -21,11 +21,14 @@ a {
     color: $text-primary;
 }
 
-a:hover, a:focus {
+a:hover,
+a:focus {
     color: $primary;
 }
 
-a, a:hover, a:focus {
+a,
+a:hover,
+a:focus {
     text-decoration: none;
 }
 
@@ -56,7 +59,7 @@ a, a:hover, a:focus {
 
 .disable-scrollbars {
     scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none;  /* IE 10+ */
+    -ms-overflow-style: none; /* IE 10+ */
     &::-webkit-scrollbar {
         width: 0;
         background: transparent; /* Chrome/Safari/Webkit */
@@ -74,7 +77,7 @@ a, a:hover, a:focus {
     }
 }
 
-@media(min-width: 768px) {
+@media (min-width: 768px) {
     body {
         padding-bottom: 0;
     }
@@ -88,19 +91,19 @@ a, a:hover, a:focus {
     }
 }
 
-@media(min-width: 992px) {
+@media (min-width: 992px) {
     .container {
         max-width: 1200px;
     }
 }
 
-@media(min-width: 1024px) {
+@media (min-width: 1024px) {
     main {
         padding-top: $header-height-desktop + $header-navigation-height-desktop;
     }
 }
 
-@media(min-width: 1200px) {
+@media (min-width: 1200px) {
     .container {
         max-width: map-get($container-max-widths, xl);
     }

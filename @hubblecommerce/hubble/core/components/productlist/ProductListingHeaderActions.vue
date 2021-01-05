@@ -15,12 +15,12 @@
 <script>
 import OffCanvasFilter from './OffcanvasFilter';
 export default {
-    name: "ProductListingHeaderActions.vue",
+    name: 'ProductListingHeaderActions.vue',
     components: { OffCanvasFilter },
     methods: {
         historyBack: function () {
             this.$router.go(-1);
-        }
-    }
-}
+        },
+    },
+};
 </script>

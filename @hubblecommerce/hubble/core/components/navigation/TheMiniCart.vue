@@ -36,9 +36,9 @@ export default {
 
     computed: {
         ...mapState({
-            initiated: state => state.modCart.layerInitiated,
-            qty: state => state.modCart.cart.items_qty,
-            offcanvas: state => state.modNavigation.offcanvas,
+            initiated: (state) => state.modCart.layerInitiated,
+            qty: (state) => state.modCart.cart.items_qty,
+            offcanvas: (state) => state.modNavigation.offcanvas,
         }),
         hasItemsInCart: function () {
             return {

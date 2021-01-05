@@ -31,7 +31,7 @@
     }
 }
 
-@media(min-width: 768px) {
+@media (min-width: 768px) {
     .product-recommendation-wrp {
         width: 100%;
 
@@ -46,10 +46,9 @@
     }
 }
 
-@media(min-width: 1024px) {
+@media (min-width: 1024px) {
     .product-recommendation-wrp {
         .tns-outer {
-
             .tns-controls {
                 button:last-child {
                     right: -20px;

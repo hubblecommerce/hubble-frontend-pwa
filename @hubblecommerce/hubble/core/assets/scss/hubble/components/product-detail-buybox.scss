@@ -103,8 +103,8 @@
             width: 90%;
             height: 100%;
             margin-left: 10px;
-            
-            &:disabled{
+
+            &:disabled {
                 opacity: 1;
             }
 
@@ -114,7 +114,7 @@
 
             .lds-ellipsis {
                 height: 100%;
-                div{
+                div {
                     background: $secondary;
                     top: 50%;
                 }
@@ -123,7 +123,7 @@
     }
 }
 
-@media(min-width: 768px) {
+@media (min-width: 768px) {
     .product-info-wrp {
         .product-headline {
             padding-top: 0;
@@ -154,15 +154,15 @@
             }
         }
 
-        .add-to-cart-wrp{
-            .add-to-cart{
+        .add-to-cart-wrp {
+            .add-to-cart {
                 width: 90%;
             }
         }
     }
 }
 
-@media(min-width: 1024px) {
+@media (min-width: 1024px) {
     .product-info-wrp {
         .product-name {
             font-size: 31px;

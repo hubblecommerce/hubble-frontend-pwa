@@ -14,8 +14,8 @@ export const state = () => ({
     },
     requestFacets: null,
 
-    queryWellKnown: ['term', 'page', 'sort', 'limit']
-})
+    queryWellKnown: ['term', 'page', 'sort', 'limit'],
+});
 
 export const mutations = {
     setPaginationPage(state, value) {
@@ -55,17 +55,17 @@ export const mutations = {
     },
     setParsedQuery(state, items) {
         state.parsedQuery = items;
-    }
-}
+    },
+};
 
 export const getters = {
-    isNumeric: state => value => {
+    isNumeric: (state) => (value) => {
         return !isNaN(parseFloat(value)) && isFinite(value);
     },
-    areNumeric: state => values => {
+    areNumeric: (state) => (values) => {
         let _ok = true;
 
-        _.forEach(values, value => {
+        _.forEach(values, (value) => {
             let _status = !isNaN(parseFloat(value)) && isFinite(value);
 
             if (!_status) {
@@ -80,36 +80,36 @@ export const getters = {
     },
     getRequestNumberFacets(state) {
         if (_.has(state.requestFacets, 'number_facets')) {
-            return _.map(state.requestFacets.number_facets, item => item);
+            return _.map(state.requestFacets.number_facets, (item) => item);
         }
 
         return null;
     },
     getRequestStringFacets(state) {
         if (_.has(state.requestFacets, 'string_facets')) {
-            return _.map(state.requestFacets.string_facets, item => item);
+            return _.map(state.requestFacets.string_facets, (item) => item);
         }
 
         return null;
     },
     getRequestPriceFacets(state) {
         if (_.has(state.requestFacets, 'price_facets')) {
-            return _.map(state.requestFacets.price_facets, item => item);
+            return _.map(state.requestFacets.price_facets, (item) => item);
         }
 
         return null;
     },
     getRequestCategoryFacets(state) {
         if (_.has(state.requestFacets, 'category_facets')) {
-            return _.map(state.requestFacets.category_facets, item => item);
+            return _.map(state.requestFacets.category_facets, (item) => item);
         }
 
         return null;
-    }
-}
+    },
+};
 
 export const actions = {
-    parseRequest({commit, dispatch}, payload) {
+    parseRequest({ commit, dispatch }, payload) {
         let _query = payload.query;
 
         // If page is set in url set pagination page to query otherwise set to page 1
@@ -127,15 +127,15 @@ export const actions = {
             dispatch('parseRequestQuery', {
                 query: _query,
             })
-                .then(response => {
+                .then((response) => {
                     resolve(response);
                 })
-                .catch(response => {
+                .catch((response) => {
                     reject(response);
                 });
         });
     },
-    parseRequestFacets({commit}, payload) {
+    parseRequestFacets({ commit }, payload) {
         let _query = payload.query;
 
         let _propertyFacets = _.cloneDeep(payload.propertyFacets);
@@ -145,7 +145,7 @@ export const actions = {
             let _parsed = {};
 
             // loop for string facets only ...
-            _.forEach(_propertyFacets.string_facets, facet => {
+            _.forEach(_propertyFacets.string_facets, (facet) => {
                 _parsed[facet.key] = _query[facet.key] ? _query[facet.key] : null;
             });
 
@@ -158,7 +158,7 @@ export const actions = {
             }
 
             // loop for string facets only ...
-            _.forEach(_propertyFacets.category_facets, facet => {
+            _.forEach(_propertyFacets.category_facets, (facet) => {
                 _parsed[facet.key] = _query[facet.key] ? _query[facet.key] : null;
             });
 
@@ -169,14 +169,14 @@ export const actions = {
             resolve('parseRequestFacets OK!');
         });
     },
-    parseRequestQuery({commit, state}, payload) {
+    parseRequestQuery({ commit, state }, payload) {
         let _query = payload.query;
 
         return new Promise((resolve, reject) => {
             // start with empty object
             let _parsed = {};
 
-            _.forEach(state.queryWellKnown, paramName => {
+            _.forEach(state.queryWellKnown, (paramName) => {
                 // set nested property to either query parameter or null
                 _parsed[paramName] = _query[paramName] ? _query[paramName] : null;
             });
@@ -194,7 +194,7 @@ export const actions = {
 
             // Set selected filter from query
             let selectedFilters = {};
-            Object.keys(_query).forEach(param => {
+            Object.keys(_query).forEach((param) => {
                 if (!state.queryWellKnown.includes(param)) {
                     selectedFilters[param] = _query[param];
                 }
@@ -205,7 +205,7 @@ export const actions = {
             resolve('parseRequestQuery OK!');
         });
     },
-    async mapAggregationsToFacets({commit}, filters) {
+    async mapAggregationsToFacets({ commit }, filters) {
         return new Promise((resolve, reject) => {
             let facets = {
                 all: {
@@ -218,13 +218,13 @@ export const actions = {
             };
 
             try {
-                Object.keys(filters).forEach(function(filter) {
+                Object.keys(filters).forEach(function (filter) {
                     // Map price facet
                     if (filter === 'price') {
                         facets.price_facets[filter] = {
-                            key: filter,
-                            label: filter,
-                            selected: false,
+                            'key': filter,
+                            'label': filter,
+                            'selected': false,
                             'facet-stats': {
                                 min: filters[filter].min,
                                 max: filters[filter].max,
@@ -239,13 +239,13 @@ export const actions = {
                                 key: entity.name,
                                 label: entity.name,
                                 selected: false,
-                                options: []
+                                options: [],
                             };
 
                             entity.options.forEach((option) => {
                                 facets.string_facets[entity.id].options.push({
                                     key: option.id,
-                                    label: option.name
+                                    label: option.name,
                                 });
                             });
                         });
@@ -273,46 +273,49 @@ export const actions = {
             };
 
             try {
-                if(filters.manufacturer) {
+                if (filters.manufacturer) {
                     facets.string_facets['manufacturer'] = {
                         key: 'manufacturer',
                         label: 'Manufacturer',
                         selected: _.has(query, 'manufacturer'),
                         options: [],
                     };
-                    _.forEach(filters.manufacturer.entities, option => {
+                    _.forEach(filters.manufacturer.entities, (option) => {
                         facets.string_facets['manufacturer'].options.push({
                             key: option.id,
                             label: option.translated.name,
-                            selected: facets.string_facets['manufacturer'] ? _.includes(_.split(query['manufacturer'], ','), option.id) : false,
+                            selected: facets.string_facets['manufacturer']
+                                ? _.includes(_.split(query['manufacturer'], ','), option.id)
+                                : false,
                         });
                     });
                 }
 
-                _.forEach(filters.properties.entities, filter => {
-                    if(filter.filterable) {
+                _.forEach(filters.properties.entities, (filter) => {
+                    if (filter.filterable) {
                         facets.string_facets[filter.name] = {
                             key: filter.name,
                             label: filter.translated.name,
                             selected: _.has(query, filter.name),
                             options: [],
                         };
-                        _.forEach(filter.options, option => {
+                        _.forEach(filter.options, (option) => {
                             facets.string_facets[filter.name].options.push({
                                 key: option.id,
                                 label: option.translated.name,
-                                selected: facets.string_facets[filter.name] ? _.includes(_.split(query[filter.name], ','), option.id) : false,
+                                selected: facets.string_facets[filter.name]
+                                    ? _.includes(_.split(query[filter.name], ','), option.id)
+                                    : false,
                             });
                         });
                     }
                 });
 
-
-                if(filters.price) {
+                if (filters.price) {
                     facets.price_facets['price'] = {
-                        key: 'price',
-                        label: 'price',
-                        selected: false,
+                        'key': 'price',
+                        'label': 'price',
+                        'selected': false,
                         'facet-stats': {
                             min: filters.price.min,
                             max: filters.price.max,
@@ -330,7 +333,7 @@ export const actions = {
         });
     },
     // applys set filters and set new url
-    applyFilter({commit, state, dispatch, getters}) {
+    applyFilter({ commit, state, dispatch, getters }) {
         //reset pagination
         commit('setPaginationPage', 1);
         //take all filters and change path to new path with new filters
@@ -340,7 +343,7 @@ export const actions = {
 
         let selected = [];
 
-        _.forEach(queryWellKnown, property => {
+        _.forEach(queryWellKnown, (property) => {
             // Parse query option value to int because only int are allowed as param filter values
             let val = parseInt(state.parsedQuery[property], 10);
 
@@ -363,7 +366,7 @@ export const actions = {
 
         // Put selected string facets to array
         let facets = getters.getRequestStringFacets;
-        _.forEach(facets, facet => {
+        _.forEach(facets, (facet) => {
             if (state.selectedFacets[facet.key]) {
                 selected.push([facet.key, state.selectedFacets[facet.key]]);
             }
@@ -371,7 +374,7 @@ export const actions = {
 
         // Put selected category facets to array
         facets = getters.getRequestCategoryFacets;
-        _.forEach(facets, facet => {
+        _.forEach(facets, (facet) => {
             if (state.selectedFacets[facet.key]) {
                 selected.push([facet.key, state.selectedFacets[facet.key]]);
             }
@@ -382,8 +385,8 @@ export const actions = {
             query: _.fromPairs(selected),
         };
 
-        dispatch('modNavigation/hideOffcanvasAction', {}, {root: true}).then(() => {
+        dispatch('modNavigation/hideOffcanvasAction', {}, { root: true }).then(() => {
             this.$router.push(filterRoute);
         });
-    }
-}
+    },
+};

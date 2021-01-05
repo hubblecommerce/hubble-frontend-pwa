@@ -60,7 +60,7 @@ export default {
 
     computed: {
         activeSellings: function () {
-            return this.crossSellings.filter(crossSelling => crossSelling.active);
+            return this.crossSellings.filter((crossSelling) => crossSelling.active);
         },
     },
 
@@ -77,7 +77,7 @@ export default {
         }),
         fetchCrossSellings: function (id) {
             this.swGetCrossSellingsByProductId(id)
-                .then(response => {
+                .then((response) => {
                     this.loading = false;
                     this.mappedCrossSellings = response;
                 })

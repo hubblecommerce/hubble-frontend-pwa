@@ -1,56 +1,54 @@
-
 .care-products {
-
-  .listing-wrp {
-    margin-left: 0;
-    margin-right: 0;
-  }
-
-  .tns-outer {
-    width: 100%;
-  }
-
-  .slider-item {
-    max-height: 80px;
-    padding: 0;
-  }
-
-  .product-card {
-    padding: 0;
-    border: 1px solid $border-color;
-
-    a {
-      height: 100%;
+    .listing-wrp {
+        margin-left: 0;
+        margin-right: 0;
     }
 
-    &:hover {
-      box-shadow: none;
+    .tns-outer {
+        width: 100%;
     }
-  }
 
-  .card-media {
-    min-height: 75px;
-    height: 100%;
-    padding: 10px;
-    margin: 0;
-
-    img {
-      max-height: 100%;
+    .slider-item {
+        max-height: 80px;
+        padding: 0;
     }
-  }
 
-  .product-card-info-wrp-link {
-    display: none;
-  }
+    .product-card {
+        padding: 0;
+        border: 1px solid $border-color;
+
+        a {
+            height: 100%;
+        }
+
+        &:hover {
+            box-shadow: none;
+        }
+    }
+
+    .card-media {
+        min-height: 75px;
+        height: 100%;
+        padding: 10px;
+        margin: 0;
+
+        img {
+            max-height: 100%;
+        }
+    }
+
+    .product-card-info-wrp-link {
+        display: none;
+    }
 }
 
 //------ Desktop --------
-@media(min-width: 1024px) {
-  .product-description-wrp {
-    &.care-products-wrp {
-      float: right;
-      width: 40%;
-      padding: 0 40px;
+@media (min-width: 1024px) {
+    .product-description-wrp {
+        &.care-products-wrp {
+            float: right;
+            width: 40%;
+            padding: 0 40px;
+        }
     }
-  }
 }

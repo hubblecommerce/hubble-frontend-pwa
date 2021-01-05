@@ -1,4 +1,5 @@
-.view-category, .view-catalogsearch {
+.view-category,
+.view-catalogsearch {
     .category-header {
         display: flex;
         justify-content: center;
@@ -57,10 +58,12 @@
         }
     }
 
-    .category-content-wrp, .search-content-wrp {
+    .category-content-wrp,
+    .search-content-wrp {
         padding: 0 $base-padding;
 
-        .category-products-wrp, .search-products-wrp {
+        .category-products-wrp,
+        .search-products-wrp {
             padding: 0;
 
             .pagination-top {
@@ -79,7 +82,9 @@
                     margin-bottom: 20px;
                 }
 
-                h3, h4, h5 {
+                h3,
+                h4,
+                h5 {
                     margin-top: 20px;
                     margin-bottom: 20px;
                     font-weight: $font-weight-bold;
@@ -89,8 +94,9 @@
     }
 }
 
-@media(min-width: 768px) {
-    .view-category, .view-catalogsearch {
+@media (min-width: 768px) {
+    .view-category,
+    .view-catalogsearch {
         .category-header {
             margin-bottom: 20px;
             min-height: 170px;
@@ -100,7 +106,8 @@
             }
         }
 
-        .category-content-wrp, .search-content-wrp {
+        .category-content-wrp,
+        .search-content-wrp {
             padding: 0 $base-padding-md;
 
             .pagination-bottom {
@@ -111,9 +118,11 @@
     }
 }
 
-@media(min-width: 1024px) {
-    .view-category, .view-catalogsearch {
-        .category-content-wrp, .search-content-wrp {
+@media (min-width: 1024px) {
+    .view-category,
+    .view-catalogsearch {
+        .category-content-wrp,
+        .search-content-wrp {
             display: flex;
             padding-left: $base-padding-md;
             padding-right: $base-padding-md;
@@ -123,7 +132,8 @@
                 padding: 0 $base-padding-md 0 0;
             }
 
-            .category-products-wrp, .search-products-wrp {
+            .category-products-wrp,
+            .search-products-wrp {
                 flex: 1;
 
                 .pagination-bottom {

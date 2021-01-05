@@ -75,24 +75,24 @@ export default {
         },
     },
 
+    data() {
+        return {
+            collapse: false,
+        };
+    },
+
     computed: {
-        toggleClasses: function() {
+        toggleClasses: function () {
             let classes = '';
 
-            if(this.collapse) {
+            if (this.collapse) {
                 classes = 'active';
             }
 
             classes += this.toggleClass;
 
             return classes;
-        }
-    },
-
-    data() {
-        return {
-            collapse: false,
-        };
+        },
     },
 
     created() {
@@ -114,7 +114,7 @@ export default {
         },
         hideContent: function () {
             this.collapse = false;
-        }
+        },
     },
 };
 </script>

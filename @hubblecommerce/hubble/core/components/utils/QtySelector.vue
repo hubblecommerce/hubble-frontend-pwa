@@ -1,9 +1,10 @@
 <template>
     <div class="quantity-selector">
         <div v-show="!qtyCartDisplay" class="qty-wrp">
-            <input class="quantity"
-                type="number"
+            <input
                 v-model="qtySelected"
+                class="quantity"
+                type="number"
                 aria-label="Menge"
                 name="qty"
                 step="1"
@@ -14,10 +15,10 @@
             />
             <div class="btn-wrp">
                 <button class="qty-button" @click="increaseQty()">
-                    <i class="icon icon-plus"/>
+                    <i class="icon icon-plus" />
                 </button>
                 <button class="qty-button" @click="decreaseQty()">
-                    <i class="icon icon-minus"/>
+                    <i class="icon icon-minus" />
                 </button>
             </div>
         </div>
@@ -26,7 +27,9 @@
                 <select v-model="qtySelected" class="select-text" required :disabled="qtyOptions.length < 1">
                     <option value="" disabled selected />
                     <option v-if="qtyOptions.length < 1" value="1">1</option>
-                    <option v-for="(item, index) in qtyOptions" :key="index" :value="item.value">{{ item.text }}</option>
+                    <option v-for="(item, index) in qtyOptions" :key="index" :value="item.value">{{
+                        item.text
+                    }}</option>
                 </select>
                 <span class="select-highlight" />
                 <span class="select-bar" />
@@ -77,8 +80,8 @@ export default {
         type: {
             type: Boolean,
             required: false,
-            default: false
-        }
+            default: false,
+        },
     },
 
     data() {
@@ -87,7 +90,7 @@ export default {
             qtyOptions: [],
             qtySelected: this.qty,
             showInput: this.qty > 10,
-            qtyCartDisplay: this.type
+            qtyCartDisplay: this.type,
         };
     },
 
@@ -131,12 +134,11 @@ export default {
             this.qtySelected += 1;
         },
         decreaseQty: function () {
-
-            if(this.qtySelected - 1 < 1) {
+            if (this.qtySelected - 1 < 1) {
                 return;
             }
             this.qtySelected -= 1;
-        }
+        },
     },
 };
 </script>

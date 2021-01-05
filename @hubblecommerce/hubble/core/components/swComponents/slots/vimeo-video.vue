@@ -33,7 +33,9 @@ export default {
             return this.content.config.byLine.value ? '' : `byline=false&`;
         },
         getColor() {
-            return !this.content.config.color.value ? '' : _.replace(`color=${this.content.config.color.value}&`, '#', '');
+            return !this.content.config.color.value
+                ? ''
+                : _.replace(`color=${this.content.config.color.value}&`, '#', '');
         },
         getControls() {
             return this.content.config.controls.value ? '' : `controls=false`;

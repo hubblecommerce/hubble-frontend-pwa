@@ -3,4 +3,4 @@ export default function ({ app, store }) {
     if (store.getters['modApiResources/getApiLocale'] !== app.i18n.locale) {
         store.commit('modApiResources/setApiLocale', app.i18n.locale);
     }
-};
+}

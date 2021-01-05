@@ -8,7 +8,7 @@ Checkbox example:
 
 $hbl-checkbox-checked-color: $darker-gray;
 $hbl-checkbox-checked-border-color: $darker-gray;
-$hbl-checkbox-unchecked-border-color: #E2E2E2;
+$hbl-checkbox-unchecked-border-color: #e2e2e2;
 $hbl-checkbox-border-color-disabled: $gray;
 $hbl-checkbox-checked-color-disabled: $gray;
 $hbl-checkbox-background-color: $white;
@@ -28,7 +28,6 @@ $hbl-radiobox-gap-size: 3px;
 
 $hbl-radiobox-inner-position-left: $hbl-radiobox-gap-size + $hbl-checkbox-border-width;
 $hbl-radiobox-inner-width: $hbl-checkbox-size - ($hbl-checkbox-border-width * 2) - ($hbl-radiobox-gap-size * 2);
-
 
 .hbl-checkbox {
     position: relative;
@@ -54,8 +53,9 @@ $hbl-radiobox-inner-width: $hbl-checkbox-size - ($hbl-checkbox-border-width * 2)
             padding-left: $hbl-checkbox-size + $hbl-checkbox-label-padding;
         }
 
-        &:before, &:after {
-            content: "";
+        &:before,
+        &:after {
+            content: '';
             position: absolute;
             left: 0;
             top: 0;
@@ -72,7 +72,7 @@ $hbl-radiobox-inner-width: $hbl-checkbox-size - ($hbl-checkbox-border-width * 2)
             box-sizing: border-box;
             border-radius: $hbl-checkbox-border-radius;
             cursor: pointer;
-            transition: background .3s;
+            transition: background 0.3s;
         }
 
         &:after {
@@ -80,7 +80,8 @@ $hbl-radiobox-inner-width: $hbl-checkbox-size - ($hbl-checkbox-border-width * 2)
         }
     }
 
-    input[type="radio"], input[type="checkbox"] {
+    input[type='radio'],
+    input[type='checkbox'] {
         outline: 0;
         visibility: hidden;
         width: 0;
@@ -90,9 +91,9 @@ $hbl-radiobox-inner-width: $hbl-checkbox-size - ($hbl-checkbox-border-width * 2)
         font-size: inherit;
     }
 
-    input[type="checkbox"] {
+    input[type='checkbox'] {
         &:checked {
-            + label:before{
+            + label:before {
                 background: $hbl-checkbox-checked-color;
                 border: $hbl-checkbox-border-width solid $hbl-checkbox-checked-border-color;
             }
@@ -110,25 +111,27 @@ $hbl-radiobox-inner-width: $hbl-checkbox-size - ($hbl-checkbox-border-width * 2)
         }
 
         &:disabled {
-            + label:before{
+            + label:before {
                 border-color: $hbl-checkbox-border-color-disabled;
             }
             &:checked {
-                + label:before{
+                + label:before {
                     background: $hbl-checkbox-checked-color-disabled;
                 }
             }
         }
     }
 
-    input[type="radio"] {
-        &:checked, &:not(:checked) {
+    input[type='radio'] {
+        &:checked,
+        &:not(:checked) {
             + label:before {
                 border-radius: 100%;
             }
         }
 
-        &:checked, &:not(:checked) {
+        &:checked,
+        &:not(:checked) {
             + label:after {
                 content: '';
                 background: $hbl-checkbox-checked-color;
@@ -144,7 +147,7 @@ $hbl-radiobox-inner-width: $hbl-checkbox-size - ($hbl-checkbox-border-width * 2)
         }
 
         &:checked {
-            + label:before{
+            + label:before {
                 border: $hbl-checkbox-border-width solid $hbl-checkbox-checked-border-color;
                 border-radius: 100%;
             }
@@ -155,10 +158,11 @@ $hbl-radiobox-inner-width: $hbl-checkbox-size - ($hbl-checkbox-border-width * 2)
         }
 
         &:disabled {
-            + label:before{
+            + label:before {
                 border-color: $hbl-checkbox-border-color-disabled;
             }
-            &:checked, &:not(:checked) {
+            &:checked,
+            &:not(:checked) {
                 + label:after {
                     background: $hbl-checkbox-checked-color-disabled;
                 }

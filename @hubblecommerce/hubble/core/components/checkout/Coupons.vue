@@ -36,8 +36,8 @@ export default {
 
     computed: {
         ...mapState({
-            cart: state => state.modCart.cart,
-            qty: state => state.modCart.cart.items_qty,
+            cart: (state) => state.modCart.cart,
+            qty: (state) => state.modCart.cart.items_qty,
         }),
     },
 
@@ -58,7 +58,7 @@ export default {
                         cart: JSON.stringify(this.cart),
                         coupon: this.couponCode,
                     })
-                        .then(response => {
+                        .then((response) => {
                             // End loading
                             this.loading = false;
 
@@ -69,7 +69,7 @@ export default {
                                 });
                             });
                         })
-                        .catch(errorMessage => {
+                        .catch((errorMessage) => {
                             // End loading
                             this.loading = false;
 
@@ -79,7 +79,7 @@ export default {
                             });
                         });
                 })
-                .catch(error => {
+                .catch((error) => {
                     this.flashMessage({
                         flashType: 'error',
                         flashMessage: this.$t(error),

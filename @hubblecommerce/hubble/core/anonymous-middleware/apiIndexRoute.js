@@ -87,11 +87,11 @@ export default async function ({ store, route, error }) {
                                 .then(() => {
                                     resolve();
                                 })
-                                .catch(err => {
+                                .catch((err) => {
                                     console.log('swGetProducts error: ', err);
                                 });
                         })
-                        .catch(err => {
+                        .catch((err) => {
                             console.log('setApiRequestFilter error: ', err);
                         });
                 })

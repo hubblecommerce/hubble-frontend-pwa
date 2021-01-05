@@ -34,7 +34,12 @@
                                     />
                                     <label class="hidden-link-name" for="autocomplete-search">{{ $t('Search') }}</label>
 
-                                    <button class="button-icon" type="submit" title="Search" @click.prevent="clearQuery">
+                                    <button
+                                        class="button-icon"
+                                        type="submit"
+                                        title="Search"
+                                        @click.prevent="clearQuery"
+                                    >
                                         <span class="hidden-link-name">Search</span>
 
                                         <transition name="fade">
@@ -55,7 +60,11 @@
                         </form>
 
                         <transition name="fade">
-                            <autocomplete-list v-if="showAutoCompleteResults" v-click-outside="resetAutoComplete" class="autocomplete-list" />
+                            <autocomplete-list
+                                v-if="showAutoCompleteResults"
+                                v-click-outside="resetAutoComplete"
+                                class="autocomplete-list"
+                            />
                         </transition>
                     </div>
                 </div>
@@ -94,10 +103,10 @@ export default {
 
     computed: {
         ...mapState({
-            locale: state => state.modApiResources.apiLocale,
-            selectedItemId: state => state.modSearch.selectedItemId,
-            showAutoCompleteResults: state => state.modSearch.showAutoCompleteResults,
-            offcanvas: state => state.modNavigation.offcanvas
+            locale: (state) => state.modApiResources.apiLocale,
+            selectedItemId: (state) => state.modSearch.selectedItemId,
+            showAutoCompleteResults: (state) => state.modSearch.showAutoCompleteResults,
+            offcanvas: (state) => state.modNavigation.offcanvas,
         }),
         inputIsSelected: function () {
             return _.isNull(this.selectedItemId);
@@ -117,7 +126,7 @@ export default {
     },
 
     watch: {
-        query: function () {
+        'query': function () {
             this.queryIsTyping = true;
             this.queryIsSearching = false;
 
@@ -133,14 +142,14 @@ export default {
                 this.resetAutoComplete();
             }
         },
-        showSearch: function(newVal) {
-            if(newVal) {
+        'showSearch': function (newVal) {
+            if (newVal) {
                 // Need to set timeout to wait until transition of layer is done
                 setTimeout(() => {
                     this.$refs.search.focus();
                 }, 200);
             }
-        }
+        },
     },
 
     created() {
@@ -234,7 +243,7 @@ export default {
                     .then(() => {
                         this.loading = false;
                     })
-                    .catch(err => {
+                    .catch((err) => {
                         console.log('getAutocompleteResults error: ', err);
 
                         this.loading = false;

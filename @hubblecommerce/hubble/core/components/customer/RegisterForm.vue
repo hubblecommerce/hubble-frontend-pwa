@@ -1,7 +1,21 @@
 <template>
-    <validation-observer ref="observer" v-slot="{ passes }" tag="form" class="form-edit register-form" @submit.prevent="passes(submitRegisterForm)">
+    <validation-observer
+        ref="observer"
+        v-slot="{ passes }"
+        tag="form"
+        class="form-edit register-form"
+        @submit.prevent="passes(submitRegisterForm)"
+    >
         <div class="base-data-wrp">
-            <validation-provider v-slot="{ errors }" vid="email" name="email" rules="required|email" mode="eager" tag="div" class="hbl-input-group">
+            <validation-provider
+                v-slot="{ errors }"
+                vid="email"
+                name="email"
+                rules="required|email"
+                mode="eager"
+                tag="div"
+                class="hbl-input-group"
+            >
                 <input
                     id="email"
                     v-model="form.baseData.email"
@@ -24,7 +38,14 @@
                 <label for="phone" v-text="$t('Phone')" />
             </div>
 
-            <validation-provider v-slot="{ errors }" name="birthday" rules="birthday" mode="passive" tag="div" class="hbl-input-group input-icon">
+            <validation-provider
+                v-slot="{ errors }"
+                name="birthday"
+                rules="birthday"
+                mode="passive"
+                tag="div"
+                class="hbl-input-group input-icon"
+            >
                 <input
                     id="birthday"
                     v-model="form.baseData.birthday"
@@ -94,7 +115,7 @@
             </template>
 
             <div v-if="checkoutRegister" class="hbl-checkbox">
-                <input v-model="form.baseData.isGuest" id="isGuest" type="checkbox">
+                <input id="isGuest" v-model="form.baseData.isGuest" type="checkbox" />
                 <label for="isGuest" v-text="$t('I would like to checkout as a guest')" />
             </div>
         </div>
@@ -110,9 +131,23 @@
                 </div>
             </div>
 
-            <validation-provider v-slot="{ errors }" name="gender" rules="required" mode="eager" tag="div" class="hbl-select">
-                <select v-model="form.addresses[0].payload.gender" class="select-text" :class="{ invalid: errors.length > 0 }" required>
-                    <option v-for="salutation in salutations" :key="salutation.key" :value="salutation.key">{{ salutation.value }}</option>
+            <validation-provider
+                v-slot="{ errors }"
+                name="gender"
+                rules="required"
+                mode="eager"
+                tag="div"
+                class="hbl-select"
+            >
+                <select
+                    v-model="form.addresses[0].payload.gender"
+                    class="select-text"
+                    :class="{ invalid: errors.length > 0 }"
+                    required
+                >
+                    <option v-for="salutation in salutations" :key="salutation.key" :value="salutation.key">{{
+                        salutation.value
+                    }}</option>
                 </select>
 
                 <label class="select-label" v-text="$t('Salutation') + '*'" />
@@ -120,7 +155,14 @@
                 <div class="validation-msg" v-text="$t(errors[0])" />
             </validation-provider>
 
-            <validation-provider v-slot="{ errors }" name="firstName" rules="required|max:30" mode="eager" tag="div" class="hbl-input-group">
+            <validation-provider
+                v-slot="{ errors }"
+                name="firstName"
+                rules="required|max:30"
+                mode="eager"
+                tag="div"
+                class="hbl-input-group"
+            >
                 <input
                     id="billingFirstName"
                     v-model="form.addresses[0].payload.firstName"
@@ -137,7 +179,14 @@
                 <div class="validation-msg" v-text="$t(errors[0])" />
             </validation-provider>
 
-            <validation-provider v-slot="{ errors }" name="lastName" rules="required|max:30" mode="eager" tag="div" class="hbl-input-group">
+            <validation-provider
+                v-slot="{ errors }"
+                name="lastName"
+                rules="required|max:30"
+                mode="eager"
+                tag="div"
+                class="hbl-input-group"
+            >
                 <input
                     id="billingLastName"
                     v-model="form.addresses[0].payload.lastName"
@@ -155,7 +204,14 @@
             </validation-provider>
 
             <template v-if="streetIncludesHouseNo">
-                <validation-provider v-slot="{ errors }" name="street" rules="required|max:60" mode="eager" tag="div" class="hbl-input-group">
+                <validation-provider
+                    v-slot="{ errors }"
+                    name="street"
+                    rules="required|max:60"
+                    mode="eager"
+                    tag="div"
+                    class="hbl-input-group"
+                >
                     <input
                         id="billingStreet"
                         v-model="form.addresses[0].payload.street"
@@ -174,7 +230,14 @@
             </template>
 
             <div v-else class="form-row street-nr">
-                <validation-provider v-slot="{ errors }" name="street" rules="required|max:60" mode="eager" tag="div" class="hbl-input-group">
+                <validation-provider
+                    v-slot="{ errors }"
+                    name="street"
+                    rules="required|max:60"
+                    mode="eager"
+                    tag="div"
+                    class="hbl-input-group"
+                >
                     <input
                         id="billingStreet"
                         v-model="form.addresses[0].payload.street"
@@ -191,7 +254,14 @@
                     <div class="validation-msg" v-text="$t(errors[0])" />
                 </validation-provider>
 
-                <validation-provider v-slot="{ errors }" name="houseNo" rules="required|max:5" mode="eager" tag="div" class="hbl-input-group">
+                <validation-provider
+                    v-slot="{ errors }"
+                    name="houseNo"
+                    rules="required|max:5"
+                    mode="eager"
+                    tag="div"
+                    class="hbl-input-group"
+                >
                     <input
                         id="billingHouseNr"
                         v-model="form.addresses[0].payload.houseNo"
@@ -210,7 +280,14 @@
             </div>
 
             <div class="form-row zip-city">
-                <validation-provider v-slot="{ errors }" name="postal" rules="required|numeric|max:5" mode="eager" tag="div" class="hbl-input-group">
+                <validation-provider
+                    v-slot="{ errors }"
+                    name="postal"
+                    rules="required|numeric|max:5"
+                    mode="eager"
+                    tag="div"
+                    class="hbl-input-group"
+                >
                     <input
                         id="billingZipCode"
                         v-model="form.addresses[0].payload.postal"
@@ -227,7 +304,14 @@
                     <div class="validation-msg" v-text="$t(errors[0])" />
                 </validation-provider>
 
-                <validation-provider v-slot="{ errors }" name="city" rules="required|max:30" mode="eager" tag="div" class="hbl-input-group">
+                <validation-provider
+                    v-slot="{ errors }"
+                    name="city"
+                    rules="required|max:30"
+                    mode="eager"
+                    tag="div"
+                    class="hbl-input-group"
+                >
                     <input
                         id="billingCity"
                         v-model="form.addresses[0].payload.city"
@@ -245,9 +329,23 @@
                 </validation-provider>
             </div>
 
-            <validation-provider v-slot="{ errors }" name="country" rules="required" mode="eager" tag="div" class="hbl-select">
-                <select v-model="form.addresses[0].payload.country" class="select-text" :class="{ invalid: errors.length > 0 }" required>
-                    <option v-for="country in countries" :key="country.iso_code_2" :value="country.iso_code_2">{{ country.name }}</option>
+            <validation-provider
+                v-slot="{ errors }"
+                name="country"
+                rules="required"
+                mode="eager"
+                tag="div"
+                class="hbl-select"
+            >
+                <select
+                    v-model="form.addresses[0].payload.country"
+                    class="select-text"
+                    :class="{ invalid: errors.length > 0 }"
+                    required
+                >
+                    <option v-for="country in countries" :key="country.iso_code_2" :value="country.iso_code_2">{{
+                        country.name
+                    }}</option>
                 </select>
 
                 <label class="select-label" v-text="$t('Country') + '*'" />
@@ -256,12 +354,30 @@
             </validation-provider>
         </div>
 
-        <validation-observer v-if="differentShippingAddress && alternativeShippingAddress" class="shipping-addresses-wrp" tag="div">
+        <validation-observer
+            v-if="differentShippingAddress && alternativeShippingAddress"
+            class="shipping-addresses-wrp"
+            tag="div"
+        >
             <div class="headline headline-3" v-text="$t('My Shipping Address (not billing address)')" />
 
-            <validation-provider v-slot="{ errors }" name="gender" rules="required" mode="eager" tag="div" class="hbl-select">
-                <select v-model="form.addresses[1].payload.gender" class="select-text" :class="{ invalid: errors.length > 0 }" required>
-                    <option v-for="salutation in salutations" :key="salutation.key" :value="salutation.key">{{ salutation.value }}</option>
+            <validation-provider
+                v-slot="{ errors }"
+                name="gender"
+                rules="required"
+                mode="eager"
+                tag="div"
+                class="hbl-select"
+            >
+                <select
+                    v-model="form.addresses[1].payload.gender"
+                    class="select-text"
+                    :class="{ invalid: errors.length > 0 }"
+                    required
+                >
+                    <option v-for="salutation in salutations" :key="salutation.key" :value="salutation.key">{{
+                        salutation.value
+                    }}</option>
                 </select>
 
                 <label class="select-label" v-text="$t('Salutation') + '*'" />
@@ -269,7 +385,14 @@
                 <div class="validation-msg" v-text="$t(errors[0])" />
             </validation-provider>
 
-            <validation-provider v-slot="{ errors }" name="firstName" rules="required|max:30" mode="eager" tag="div" class="hbl-input-group">
+            <validation-provider
+                v-slot="{ errors }"
+                name="firstName"
+                rules="required|max:30"
+                mode="eager"
+                tag="div"
+                class="hbl-input-group"
+            >
                 <input
                     id="shippingFirstName"
                     v-model="form.addresses[1].payload.firstName"
@@ -286,7 +409,14 @@
                 <div class="validation-msg" v-text="$t(errors[0])" />
             </validation-provider>
 
-            <validation-provider v-slot="{ errors }" name="lastName" rules="required|max:30" mode="eager" tag="div" class="hbl-input-group">
+            <validation-provider
+                v-slot="{ errors }"
+                name="lastName"
+                rules="required|max:30"
+                mode="eager"
+                tag="div"
+                class="hbl-input-group"
+            >
                 <input
                     id="shippingLastName"
                     v-model="form.addresses[1].payload.lastName"
@@ -304,7 +434,14 @@
             </validation-provider>
 
             <template v-if="streetIncludesHouseNo">
-                <validation-provider v-slot="{ errors }" name="street" rules="required|max:60" mode="eager" tag="div" class="hbl-input-group">
+                <validation-provider
+                    v-slot="{ errors }"
+                    name="street"
+                    rules="required|max:60"
+                    mode="eager"
+                    tag="div"
+                    class="hbl-input-group"
+                >
                     <input
                         id="shippingStreet"
                         v-model="form.addresses[1].payload.street"
@@ -323,7 +460,14 @@
             </template>
 
             <div v-else class="form-row street-nr">
-                <validation-provider v-slot="{ errors }" name="street" rules="required|max:60" mode="eager" tag="div" class="hbl-input-group">
+                <validation-provider
+                    v-slot="{ errors }"
+                    name="street"
+                    rules="required|max:60"
+                    mode="eager"
+                    tag="div"
+                    class="hbl-input-group"
+                >
                     <input
                         id="shippingStreet"
                         v-model="form.addresses[1].payload.street"
@@ -340,7 +484,14 @@
                     <div class="validation-msg" v-text="$t(errors[0])" />
                 </validation-provider>
 
-                <validation-provider v-slot="{ errors }" name="houseNo" rules="required|max:5" mode="eager" tag="div" class="hbl-input-group">
+                <validation-provider
+                    v-slot="{ errors }"
+                    name="houseNo"
+                    rules="required|max:5"
+                    mode="eager"
+                    tag="div"
+                    class="hbl-input-group"
+                >
                     <input
                         id="shippingHouseNr"
                         v-model="form.addresses[1].payload.houseNo"
@@ -359,7 +510,14 @@
             </div>
 
             <div class="form-row zip-city">
-                <validation-provider v-slot="{ errors }" name="postal" rules="required|numeric|max:5" mode="eager" tag="div" class="hbl-input-group">
+                <validation-provider
+                    v-slot="{ errors }"
+                    name="postal"
+                    rules="required|numeric|max:5"
+                    mode="eager"
+                    tag="div"
+                    class="hbl-input-group"
+                >
                     <input
                         id="shippingZipCode"
                         v-model="form.addresses[1].payload.postal"
@@ -376,7 +534,14 @@
                     <div class="validation-msg" v-text="$t(errors[0])" />
                 </validation-provider>
 
-                <validation-provider v-slot="{ errors }" name="city" rules="required|max:30" mode="eager" tag="div" class="hbl-input-group">
+                <validation-provider
+                    v-slot="{ errors }"
+                    name="city"
+                    rules="required|max:30"
+                    mode="eager"
+                    tag="div"
+                    class="hbl-input-group"
+                >
                     <input
                         id="shippingCity"
                         v-model="form.addresses[1].payload.city"
@@ -394,9 +559,23 @@
                 </validation-provider>
             </div>
 
-            <validation-provider v-slot="{ errors }" name="country" rules="required" mode="eager" tag="div" class="hbl-select">
-                <select v-model="form.addresses[1].payload.country" class="select-text" :class="{ invalid: errors.length > 0 }" required>
-                    <option v-for="country in countries" :key="country.iso_code_2" :value="country.iso_code_2">{{ country.name }}</option>
+            <validation-provider
+                v-slot="{ errors }"
+                name="country"
+                rules="required"
+                mode="eager"
+                tag="div"
+                class="hbl-select"
+            >
+                <select
+                    v-model="form.addresses[1].payload.country"
+                    class="select-text"
+                    :class="{ invalid: errors.length > 0 }"
+                    required
+                >
+                    <option v-for="country in countries" :key="country.iso_code_2" :value="country.iso_code_2">{{
+                        country.name
+                    }}</option>
                 </select>
 
                 <label class="select-label" v-text="$t('Country') + '*'" />
@@ -416,7 +595,8 @@
             <input id="privacyPolicy" v-model="privacyPolicy" type="checkbox" :class="{ invalid: errors.length > 0 }" />
 
             <label for="privacyPolicy">
-                {{ $t('I have read the ') }}<nuxt-link :to="$t('link-privacy-policy')">{{ $t('privacy policy.') }}*</nuxt-link>
+                {{ $t('I have read the ')
+                }}<nuxt-link :to="$t('link-privacy-policy')">{{ $t('privacy policy.') }}*</nuxt-link>
             </label>
 
             <div class="validation-msg" v-text="$t(errors[0])" />
@@ -426,7 +606,12 @@
             <div class="error-message" v-text="error" />
         </template>
 
-        <button v-if="form.baseData.isGuest" class="button-primary" :disabled="processingRegister" @click.prevent="passes(submitRegisterForm)">
+        <button
+            v-if="form.baseData.isGuest"
+            class="button-primary"
+            :disabled="processingRegister"
+            @click.prevent="passes(submitRegisterForm)"
+        >
             <span v-if="!processingRegister">{{ $t('Guest order') }}</span>
 
             <div v-if="processingRegister" class="loader register-loader lds-ellipsis">
@@ -438,7 +623,12 @@
 
             <material-ripple />
         </button>
-        <button v-else class="button-primary" :disabled="processingRegister" @click.prevent="passes(submitRegisterForm)">
+        <button
+            v-else
+            class="button-primary"
+            :disabled="processingRegister"
+            @click.prevent="passes(submitRegisterForm)"
+        >
             <span v-if="!processingRegister">{{ $t('Register') }}</span>
 
             <div v-if="processingRegister" class="loader register-loader lds-ellipsis">
@@ -488,7 +678,7 @@ export default {
                     phone: '',
                     email: '',
                     password: '',
-                    isGuest: false
+                    isGuest: false,
                 },
                 addresses: [
                     {
@@ -536,21 +726,21 @@ export default {
 
     computed: {
         ...mapState({
-            wishlistState: state => state.modWishlist.wishlistItemsObj,
-            wishlistQty: state => state.modWishlist.wishlistItemsCount,
-            customer: state => state.modApiCustomer.customer,
-            countries: state => state.modApiCustomer.availableCountries,
+            wishlistState: (state) => state.modWishlist.wishlistItemsObj,
+            wishlistQty: (state) => state.modWishlist.wishlistItemsCount,
+            customer: (state) => state.modApiCustomer.customer,
+            countries: (state) => state.modApiCustomer.availableCountries,
         }),
-        checkoutRegister: function() {
+        checkoutRegister: function () {
             return _.includes(this.$route.path, 'checkout');
         },
     },
 
     mounted() {
         if (_.isEmpty(this.countries)) {
-            this.getAvailableCountries().catch(err => {
+            this.getAvailableCountries().catch((err) => {
                 if (!this.errors.includes('No network connection')) {
-                    _.forEach(this.addBackendErrors(err), error => {
+                    _.forEach(this.addBackendErrors(err), (error) => {
                         this.errors.push(error);
                     });
                 }
@@ -628,7 +818,7 @@ export default {
                 // Show api request error
                 console.log('Api request error: ', e);
 
-                _.forEach(this.addBackendErrors(e), error => {
+                _.forEach(this.addBackendErrors(e), (error) => {
                     this.errors.push(error);
                 });
 
@@ -667,7 +857,7 @@ export default {
                     }
                 );
             }
-        }
+        },
     },
 };
 </script>

@@ -6,29 +6,36 @@ import {
     defaultCss,
     defaultBuildBabelConfig,
     defaultBuildExtractCSSConfig,
-    defaultRouterPrefetchLinksConfig } from './core/utils/config';
+    defaultRouterPrefetchLinksConfig,
+} from './core/utils/config';
 import defu from 'defu';
 const path = require('path');
 const chokidar = require('chokidar');
 const fse = require('fs-extra');
 const globby = require('globby');
 
-const listAllDirs = dir => globby(`${dir}/*`, { onlyDirectories: true });
-const getLastSectionOfPath = thePath => thePath.substring(thePath.lastIndexOf('/') + 1);
+const listAllDirs = (dir) => globby(`${dir}/*`, { onlyDirectories: true });
+const getLastSectionOfPath = (thePath) => thePath.substring(thePath.lastIndexOf('/') + 1);
 const asyncCopyNewDirs = async (sourceDirs, targetDir) => {
-    await Promise.all(sourceDirs.map(async sourceDir => {
-        await fse.copy(sourceDir, path.join(targetDir, path.basename(sourceDir)));
-    }));
+    await Promise.all(
+        sourceDirs.map(async (sourceDir) => {
+            await fse.copy(sourceDir, path.join(targetDir, path.basename(sourceDir)));
+        })
+    );
 };
 const asyncCopyApiTypeDirs = async (sourceDirs, targetDir, apiType) => {
-    await Promise.all(sourceDirs.map(async sourceDir => {
-        await fse.copy(path.join(targetDir, sourceDir, apiType), path.join(targetDir, sourceDir));
+    await Promise.all(
+        sourceDirs.map(async (sourceDir) => {
+            await fse.copy(path.join(targetDir, sourceDir, apiType), path.join(targetDir, sourceDir));
 
-        const apiSpecificSubfolders = await listAllDirs(path.join(targetDir, sourceDir));
-        await Promise.all(apiSpecificSubfolders.map(async (__apiSpecificSubfolder) => await fse.remove(__apiSpecificSubfolder)));
-    }));
+            const apiSpecificSubfolders = await listAllDirs(path.join(targetDir, sourceDir));
+            await Promise.all(
+                apiSpecificSubfolders.map(async (__apiSpecificSubfolder) => await fse.remove(__apiSpecificSubfolder))
+            );
+        })
+    );
 };
-const getPlugins = dir => globby([`${dir}/*.js`]);
+const getPlugins = (dir) => globby([`${dir}/*.js`]);
 
 const dirBlacklist = ['cypress', 'node_modules', 'logs', '.hubble', '.nuxt', '.idea'];
 const apiTypeDirs = ['anonymous-middleware', 'middleware', 'plugins', 'store'];
@@ -50,8 +57,8 @@ export default async function (moduleOptions) {
     // Get filtered list of root dirs
     const rootDirs = await listAllDirs(rootDir);
     let newDirs = [];
-    rootDirs.forEach(dir => {
-        if(!dirBlacklist.includes(getLastSectionOfPath(dir))) {
+    rootDirs.forEach((dir) => {
+        if (!dirBlacklist.includes(getLastSectionOfPath(dir))) {
             newDirs.push(dir);
         }
     });
@@ -76,41 +83,54 @@ export default async function (moduleOptions) {
         '~': targetDir,
         '@': targetDir,
 
-        assets: path.join(targetDir, 'assets'),
-        static: path.join(targetDir, 'static'),
-    }
+        'assets': path.join(targetDir, 'assets'),
+        'static': path.join(targetDir, 'static'),
+    };
     this.options.alias = { ...this.options.aliases, ...baseAliases };
 
     /*
-    * Set default configs for nuxt from module
-    * Override default if isset in nuxt.config.js
-    * Override > Merging to let the user REMOVE things if necessary
-    */
+     * Set default configs for nuxt from module
+     * Override default if isset in nuxt.config.js
+     * Override > Merging to let the user REMOVE things if necessary
+     */
     // Merge objects
     this.options.env = defu(this.options.env, defaultEnv);
 
     // Use default serverMiddleware if nuxt.config.js serverMiddleware node is empty
-    this.options.serverMiddleware = this.options.serverMiddleware.length > 0 ? this.options.serverMiddleware : defaultServerMiddleware(targetDir);
+    this.options.serverMiddleware =
+        this.options.serverMiddleware.length > 0 ? this.options.serverMiddleware : defaultServerMiddleware(targetDir);
 
     // Use default css paths if nuxt.config.js css node is empty
     this.options.css = this.options.css.length > 0 ? this.options.css : defaultCss;
 
     this.options.router.prefetchLinks = defaultRouterPrefetchLinksConfig;
 
-    this.options.build.babel.plugins = this.options.build.babel.hasOwnProperty('plugins') ? this.options.build.babel.plugins : defaultBuildBabelConfig.plugins;
-    this.options.build.babel.presets = this.options.build.babel.hasOwnProperty('presets') ? this.options.build.babel.presets : defaultBuildBabelConfig.presets;
+    this.options.build.babel.plugins = this.options.build.babel.hasOwnProperty('plugins')
+        ? this.options.build.babel.plugins
+        : defaultBuildBabelConfig.plugins;
+    this.options.build.babel.presets = this.options.build.babel.hasOwnProperty('presets')
+        ? this.options.build.babel.presets
+        : defaultBuildBabelConfig.presets;
     this.options.build.extractCSS = defaultBuildExtractCSSConfig;
-    this.options.build.transpile = this.options.build.transpile.length > 0 ? this.options.build.transpile : ['@hubblecommerce/hubble', '@hubblecommerce/payone', '@hubblecommerce/amazon-pay', 'vee-validate/dist/rules'];
+    this.options.build.transpile =
+        this.options.build.transpile.length > 0
+            ? this.options.build.transpile
+            : [
+                  '@hubblecommerce/hubble',
+                  '@hubblecommerce/payone',
+                  '@hubblecommerce/amazon-pay',
+                  'vee-validate/dist/rules',
+              ];
 
     // Deactivate auto import function by nuxt because hubble components are already dynamic imported
     this.options.components = false;
 
     // Remove preload links to reduce time to first meaningful paint
     // https://cmty.app/nuxt/nuxt.js/issues/c6837
-    this.nuxt.hook("render:before", (ctx, options) => {
+    this.nuxt.hook('render:before', (ctx, options) => {
         ctx.nuxt.options.render.bundleRenderer.shouldPreload = () => {
             return false;
-        }
+        };
     });
 
     /*
@@ -127,36 +147,39 @@ export default async function (moduleOptions) {
         let options = defaultModule.hasOwnProperty('options') ? defaultModule.options : null;
 
         // Override options of module node in nuxt.config.js
-        this.options.modules.forEach(module => {
-            if(Array.isArray(module) && module[0] === name) {
+        this.options.modules.forEach((module) => {
+            if (Array.isArray(module) && module[0] === name) {
                 const moduleOptions = module[module.length - 1];
 
-                if(typeof moduleOptions === 'object' ) {
+                if (typeof moduleOptions === 'object') {
                     options = moduleOptions;
                 }
             }
         });
 
         // Override toplevel options of module in nuxt.config.js
-        if(this.options.hasOwnProperty(topLevelName)) {
+        if (this.options.hasOwnProperty(topLevelName)) {
             options = this.options[topLevelName];
         }
 
         // Register module
-        if(options === null) {
+        if (options === null) {
             this.requireModule([name]);
         } else {
             this.requireModule([name, options]);
         }
     });
 
-    if(options.gtmId !== null) {
-        this.addModule(['@nuxtjs/google-tag-manager', {
-            id: options.gtmId,
-            layer: 'dataLayer',
-            pageTracking: true,
-            pageViewEventName: 'hubbleRoute'
-        }]);
+    if (options.gtmId !== null) {
+        this.addModule([
+            '@nuxtjs/google-tag-manager',
+            {
+                id: options.gtmId,
+                layer: 'dataLayer',
+                pageTracking: true,
+                pageViewEventName: 'hubbleRoute',
+            },
+        ]);
     }
 
     /*
@@ -173,7 +196,7 @@ export default async function (moduleOptions) {
 
         this.options.plugins.push({
             src: modulePlugin,
-            ssr: serverRendering
+            ssr: serverRendering,
         });
     });
 
@@ -186,15 +209,16 @@ export default async function (moduleOptions) {
 
         const excludedDirectories = [...dirBlacklist.map((__blacklistedDir) => `${rootDir}/${__blacklistedDir}/**`)];
 
-        chokidar.watch(`${rootDir}`, { ignoreInitial: true, ignored: excludedDirectories })
+        chokidar
+            .watch(`${rootDir}`, { ignoreInitial: true, ignored: excludedDirectories })
             .on('all', async (event, filePath) => {
                 let newDestination = '';
 
                 // Build file destination for local modules mode (Contribution Setup)
-                if(filePath.includes('/modules/')) {
+                if (filePath.includes('/modules/')) {
                     let moduleCoreDir = filePath.match(/@hubblecommerce\/hubble\/core\//);
 
-                    if(moduleCoreDir != null) {
+                    if (moduleCoreDir != null) {
                         let relativePath = filePath.substr(moduleCoreDir[0].length + moduleCoreDir.index);
 
                         newDestination = path.join(targetDir, relativePath);
@@ -203,12 +227,14 @@ export default async function (moduleOptions) {
                     newDestination = toTargetPath(filePath);
                 }
 
-                if(newDestination === '') {
+                if (newDestination === '') {
                     return;
                 }
 
                 // Check for api specific dirs and resolve them
-                const hasApiSpecificSubfolders = apiTypeDirs.filter((__apiTypeDir) => newDestination.includes(__apiTypeDir));
+                const hasApiSpecificSubfolders = apiTypeDirs.filter((__apiTypeDir) =>
+                    newDestination.includes(__apiTypeDir)
+                );
                 if (hasApiSpecificSubfolders.length !== 0) {
                     if (newDestination.includes(`/${process.env.API_TYPE}/`)) {
                         newDestination = newDestination.replace(`/${process.env.API_TYPE}/`, '/');
@@ -232,7 +258,7 @@ export default async function (moduleOptions) {
                             // path does not exist in module just remove from srcDir
                             await fse.remove(newDestination);
                         } else if (err) {
-                            console.log("err occurred: ", err);
+                            console.log('err occurred: ', err);
                         }
                     });
                 }

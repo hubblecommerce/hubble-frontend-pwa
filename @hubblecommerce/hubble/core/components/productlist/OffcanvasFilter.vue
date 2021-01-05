@@ -5,7 +5,10 @@
             <material-ripple />
         </button>
 
-        <transition-expand-layer v-if="$mq === 'sm' || $mq === 'md'" :direction="{ sm: 'bottomTop', md: 'rightLeft', lg: 'rightLeft' }">
+        <transition-expand-layer
+            v-if="$mq === 'sm' || $mq === 'md'"
+            :direction="{ sm: 'bottomTop', md: 'rightLeft', lg: 'rightLeft' }"
+        >
             <div v-if="showFilters" class="transition-expand-wrp">
                 <div class="container position-static">
                     <div class="row overlay-header">
@@ -54,7 +57,7 @@ export default {
         ProductListingFilter: () => import('./ProductListingFilter'),
         Tabs: () => import('../../components/utils/Tabs'),
         Tab: () => import('../../components/utils/Tab'),
-        SelectableOrder: () => import('./toolbar/SelectableOrder')
+        SelectableOrder: () => import('./toolbar/SelectableOrder'),
     },
 
     props: {
@@ -67,15 +70,15 @@ export default {
 
     data() {
         return {
-            showFilter: false
+            showFilter: false,
         };
     },
 
     computed: {
         ...mapState({
-            offcanvas: state => state.modNavigation.offcanvas,
-            optionsSorter: state => state.modApiRequests.optionsSorter,
-            optionsLimit: state => state.modApiRequests.optionsLimit,
+            offcanvas: (state) => state.modNavigation.offcanvas,
+            optionsSorter: (state) => state.modApiRequests.optionsSorter,
+            optionsLimit: (state) => state.modApiRequests.optionsLimit,
         }),
         showFilters: function () {
             return this.offcanvas.component === this.name;

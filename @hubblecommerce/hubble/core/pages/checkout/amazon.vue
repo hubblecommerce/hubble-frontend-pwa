@@ -32,7 +32,11 @@
                         {{ $t('I have read the notice and accept it.') }}
                     </label>
                 </div>
-                <div v-if="acceptedInfoError" class="validation-msg" v-text="$t('Please confirm that you have read this information.')" />
+                <div
+                    v-if="acceptedInfoError"
+                    class="validation-msg"
+                    v-text="$t('Please confirm that you have read this information.')"
+                />
             </div>
 
             <div class="summary-container">
@@ -41,7 +45,11 @@
                     <div v-for="(msg, key) in Object.keys(amazonPayError)" :key="key" class="errors">
                         {{ amazonPayError[msg] }}
                     </div>
-                    <button class="button-primary checkout-btn" :disabled="processingCheckout || !isEmpty(amazonPayError)" @click="placeOrder()">
+                    <button
+                        class="button-primary checkout-btn"
+                        :disabled="processingCheckout || !isEmpty(amazonPayError)"
+                        @click="placeOrder()"
+                    >
                         <span v-if="!processingCheckout">{{ $t('Place Order') }}</span>
                         <div v-if="processingCheckout" class="loader lds-ellipsis">
                             <div />
@@ -71,9 +79,9 @@ export default {
 
     components: { Totals },
 
-    middleware: [apiPaymentAuthenticate, cartValidate, 'apiLocalization', 'trackClickPath'],
-
     layout: 'hubble_express',
+
+    middleware: [apiPaymentAuthenticate, cartValidate, 'apiLocalization', 'trackClickPath'],
 
     data() {
         return {
@@ -87,16 +95,16 @@ export default {
 
     computed: {
         ...mapState({
-            chosenPaymentMethod: state => state.modApiPayment.order.chosenPaymentMethod,
-            chosenShippingMethod: state => state.modApiPayment.order.chosenShippingMethod,
-            cart: state => state.modCart.cart,
-            shippingCosts: state => state.modCart.shippingCosts,
-            customer: state => state.modApiCustomer.customer,
-            order: state => state.modApiPayment.order,
-            finalOrder: state => state.modApiPayment.finalOrder,
-            processingCheckout: state => state.modApiPayment.processingCheckout,
-            expressOrderReferenceId: state => state.modApiPayment.expressOrderReferenceId,
-            amazonPayError: state => state.modApiPayment.amazonPayError,
+            chosenPaymentMethod: (state) => state.modApiPayment.order.chosenPaymentMethod,
+            chosenShippingMethod: (state) => state.modApiPayment.order.chosenShippingMethod,
+            cart: (state) => state.modCart.cart,
+            shippingCosts: (state) => state.modCart.shippingCosts,
+            customer: (state) => state.modApiCustomer.customer,
+            order: (state) => state.modApiPayment.order,
+            finalOrder: (state) => state.modApiPayment.finalOrder,
+            processingCheckout: (state) => state.modApiPayment.processingCheckout,
+            expressOrderReferenceId: (state) => state.modApiPayment.expressOrderReferenceId,
+            amazonPayError: (state) => state.modApiPayment.amazonPayError,
         }),
         ...mapGetters({
             productIsSpecial: 'modPrices/productIsSpecial',
@@ -194,7 +202,7 @@ export default {
                 };
 
                 // Call SetOrderReferenceDetails
-                this.setOrderReferenceDetails(args).then(data => {
+                this.setOrderReferenceDetails(args).then((data) => {
                     // Check if setOrderReferenceDetails was successful
                     if (_.isEmpty(data.SetOrderReferenceDetailsResponse)) {
                         console.log('setOrderReferenceDetails request failed');
@@ -203,7 +211,7 @@ export default {
                     }
 
                     // Call ConfirmOrderReference
-                    this.confirmOrderReference(this.expressOrderReferenceId).then(data => {
+                    this.confirmOrderReference(this.expressOrderReferenceId).then((data) => {
                         if (_.isEmpty(data.ConfirmOrderReferenceResponse)) {
                             console.log('confirmOrderReference request failed');
                             this.resetProcessingCheckout();
@@ -213,7 +221,7 @@ export default {
                         // Call Authorization (synchronous mode) (capture now mode)
                         this.authAndCapture(args).then(() => {
                             // Call GetOrderReferenceDetails
-                            this.getOrderReferenceDetails(this.expressOrderReferenceId).then(data => {
+                            this.getOrderReferenceDetails(this.expressOrderReferenceId).then((data) => {
                                 // Build order object for hubble api from amazon data
                                 // Place order to hubble api / shop system
                                 this.validateAndPlaceOrder(data);
@@ -230,11 +238,16 @@ export default {
                     url: '/api/amazon-get-order-reference-details',
                     params: { orderReferenceId: orderReferenceId },
                 })
-                    .then(response => {
+                    .then((response) => {
                         resolve(response.data);
                     })
-                    .catch(response => {
-                        console.log('API request %o to %o failed: %o', 'GET', '/api/amazon-get-order-reference-details', response);
+                    .catch((response) => {
+                        console.log(
+                            'API request %o to %o failed: %o',
+                            'GET',
+                            '/api/amazon-get-order-reference-details',
+                            response
+                        );
                         this.resetProcessingCheckout();
                         reject(response);
                     });
@@ -247,10 +260,10 @@ export default {
                     url: '/api/amazon-auth-and-capture',
                     params: args,
                 })
-                    .then(response => {
+                    .then((response) => {
                         resolve(response.data);
                     })
-                    .catch(response => {
+                    .catch((response) => {
                         console.log('API request %o to %o failed: %o', 'GET', '/api/amazon-auth-and-capture', response);
                         this.resetProcessingCheckout();
                         reject(response);
@@ -264,11 +277,16 @@ export default {
                     url: '/api/amazon-confirm-order-reference',
                     params: { orderReferenceId: orderReferenceId },
                 })
-                    .then(response => {
+                    .then((response) => {
                         resolve(response.data);
                     })
-                    .catch(response => {
-                        console.log('API request %o to %o failed: %o', 'GET', '/api/amazon-confirm-order-reference', response);
+                    .catch((response) => {
+                        console.log(
+                            'API request %o to %o failed: %o',
+                            'GET',
+                            '/api/amazon-confirm-order-reference',
+                            response
+                        );
                         this.resetProcessingCheckout();
                         reject(response);
                     });
@@ -281,11 +299,16 @@ export default {
                     url: '/api/amazon-set-order-reference-details',
                     params: args,
                 })
-                    .then(response => {
+                    .then((response) => {
                         resolve(response.data);
                     })
-                    .catch(response => {
-                        console.log('API request %o to %o failed: %o', 'GET', '/api/amazon-set-order-reference-details', response);
+                    .catch((response) => {
+                        console.log(
+                            'API request %o to %o failed: %o',
+                            'GET',
+                            '/api/amazon-set-order-reference-details',
+                            response
+                        );
                         this.resetProcessingCheckout();
                         reject(response);
                     });
@@ -294,7 +317,7 @@ export default {
         setOrderId: function () {
             return new Promise((resolve, reject) => {
                 // Get uuid from api
-                this.getUuid().then(response => {
+                this.getUuid().then((response) => {
                     // Store uuid as orderId to order in store
                     this.setOrderIdInStore(response.data.substring(0, 20));
                     resolve();
@@ -317,7 +340,7 @@ export default {
             this.setCustomerData(data).then(() => {
                 // Set address to order
                 _.assign(this.orderClone, { addresses: [] });
-                this.setCustomerAdresses(data).then(res => {
+                this.setCustomerAdresses(data).then((res) => {
                     this.orderClone.addresses.push(res);
 
                     // Set StoreId from .env to identify order
@@ -332,7 +355,7 @@ export default {
             });
         },
         setCustomerData: function (data) {
-            return new Promise(resolve => {
+            return new Promise((resolve) => {
                 // Add customer id, or generated uuid for guest user to order data
                 if (this.isLoggedIn) {
                     // Add customer to order
@@ -350,18 +373,24 @@ export default {
                     this.orderClone.customer = {
                         customerId: null,
                         customerType: 'GUEST',
-                        email: data.GetOrderReferenceDetailsResponse.GetOrderReferenceDetailsResult.OrderReferenceDetails.Buyer.Email._text,
-                        firstName: data.GetOrderReferenceDetailsResponse.GetOrderReferenceDetailsResult.OrderReferenceDetails.Buyer.Name._text,
-                        lastName: data.GetOrderReferenceDetailsResponse.GetOrderReferenceDetailsResult.OrderReferenceDetails.Buyer.Name._text,
+                        email:
+                            data.GetOrderReferenceDetailsResponse.GetOrderReferenceDetailsResult.OrderReferenceDetails
+                                .Buyer.Email._text,
+                        firstName:
+                            data.GetOrderReferenceDetailsResponse.GetOrderReferenceDetailsResult.OrderReferenceDetails
+                                .Buyer.Name._text,
+                        lastName:
+                            data.GetOrderReferenceDetailsResponse.GetOrderReferenceDetailsResult.OrderReferenceDetails
+                                .Buyer.Name._text,
                     };
 
-                    this.setCustomerAdresses(data).then(res => {
+                    this.setCustomerAdresses(data).then((res) => {
                         let payload = {
                             baseData: {},
                             addresses: [res],
                         };
 
-                        this.registerGuest(payload).then(response => {
+                        this.registerGuest(payload).then((response) => {
                             resolve();
                         });
                     });
@@ -370,7 +399,8 @@ export default {
         },
         setCustomerAdresses: function (data) {
             let amazonAddressData =
-                data.GetOrderReferenceDetailsResponse.GetOrderReferenceDetailsResult.OrderReferenceDetails.Destination.PhysicalDestination;
+                data.GetOrderReferenceDetailsResponse.GetOrderReferenceDetailsResult.OrderReferenceDetails.Destination
+                    .PhysicalDestination;
 
             let street = '';
 
@@ -386,7 +416,7 @@ export default {
                 street += amazonAddressData.AddressLine3._text;
             }
 
-            return new Promise(resolve => {
+            return new Promise((resolve) => {
                 let address = {
                     id: null,
                     is_billing: true,
@@ -414,7 +444,7 @@ export default {
             this.placeOrderAction({
                 order: JSON.stringify(this.orderClone),
             })
-                .then(response => {
+                .then((response) => {
                     // On request failure, throw error and keep order data
                     if (!response.data.success) {
                         axios({
@@ -444,7 +474,7 @@ export default {
                                 tax = this.orderClone.cart.tax_with_discount;
                             }
 
-                            _.forEach(this.orderClone.cart.items, item => {
+                            _.forEach(this.orderClone.cart.items, (item) => {
                                 if (!_.isEmpty(item.variants)) {
                                     variant = item.variants[0].value_id;
                                 }
@@ -497,7 +527,7 @@ export default {
                         });
                     });
                 })
-                .catch(error => {
+                .catch((error) => {
                     this.resetProcessingCheckout();
 
                     axios({
@@ -514,7 +544,7 @@ export default {
         checkForSaleItemInCart: function () {
             let hasSpecialItem = false;
 
-            _.forEach(this.cart.items, item => {
+            _.forEach(this.cart.items, (item) => {
                 hasSpecialItem = this.productIsSpecial(item);
             });
 

@@ -36,7 +36,7 @@ button {
     outline: none;
 
     text-decoration: none;
-    letter-spacing: .4px;
+    letter-spacing: 0.4px;
     font-size: $button-font-size;
     line-height: $button-line-height;
     text-transform: $button-text-transform;
@@ -45,7 +45,7 @@ button {
     color: $button-color;
     background: $button-background-color;
     cursor: pointer;
-    transition: all .2s ease-in-out;
+    transition: all 0.2s ease-in-out;
 
     &:focus {
         text-decoration: none;
@@ -55,7 +55,7 @@ button {
 
     &:disabled,
     &[disabled] {
-        opacity: .6;
+        opacity: 0.6;
 
         &:hover {
             box-shadow: none !important;
@@ -83,13 +83,12 @@ button {
                     position: absolute;
                     right: 0;
                     top: 3px;
-                    transition: all ease-in-out .2s;
+                    transition: all ease-in-out 0.2s;
 
                     &.collapsed {
                         transform: rotate(-180deg);
                     }
                 }
-
             }
         }
     }
@@ -165,7 +164,7 @@ button {
     }
 }
 
-@media(min-width: 768px) {
+@media (min-width: 768px) {
     button {
         &:hover {
             text-decoration: none;

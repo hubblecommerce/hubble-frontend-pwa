@@ -53,7 +53,11 @@
                         {{ $t('I have read the notice and accept it.') }}
                     </label>
                 </div>
-                <div v-if="acceptedInfoError" class="validation-msg" v-text="$t('Please confirm that you have read this information.')" />
+                <div
+                    v-if="acceptedInfoError"
+                    class="validation-msg"
+                    v-text="$t('Please confirm that you have read this information.')"
+                />
             </div>
 
             <div class="summary-container">
@@ -63,7 +67,11 @@
                         {{ msg }}
                     </div>
                     <payone-channel />
-                    <button class="button-primary checkout-btn" :disabled="processingCheckout || !isEmpty(checkoutError)" @click="placeOrder()">
+                    <button
+                        class="button-primary checkout-btn"
+                        :disabled="processingCheckout || !isEmpty(checkoutError)"
+                        @click="placeOrder()"
+                    >
                         <span v-if="!processingCheckout">{{ $t('Place Order') }}</span>
                         <div v-if="processingCheckout" class="loader lds-ellipsis">
                             <div />
@@ -100,9 +108,16 @@ export default {
         CartItemsListNonInteractive,
     },
 
-    middleware: [apiPaymentAuthenticate, apiCustomerAuthenticate, cartValidate, orderValidate, 'apiLocalization', 'trackClickPath'],
-
     layout: 'hubble_light',
+
+    middleware: [
+        apiPaymentAuthenticate,
+        apiCustomerAuthenticate,
+        cartValidate,
+        orderValidate,
+        'apiLocalization',
+        'trackClickPath',
+    ],
 
     data() {
         return {
@@ -115,18 +130,18 @@ export default {
 
     computed: {
         ...mapState({
-            paymentMethods: state => state.modApiPayment.paymentMethods,
-            chosenPaymentMethod: state => state.modApiPayment.order.chosenPaymentMethod,
-            chosenShippingMethod: state => state.modApiPayment.order.chosenShippingMethod,
-            cart: state => state.modCart.cart,
-            shippingCosts: state => state.modCart.shippingCosts,
-            customer: state => state.modApiCustomer.customer,
-            order: state => state.modApiPayment.order,
-            finalOrder: state => state.modApiPayment.finalOrder,
-            processingCheckout: state => state.modApiPayment.processingCheckout,
-            customerAddresses: state => state.modApiCustomer.customer.customerAddresses,
-            countries: state => state.modApiCustomer.availableCountries,
-            shippingAddress: state => state.modApiCustomer.customer.shippingAddress,
+            paymentMethods: (state) => state.modApiPayment.paymentMethods,
+            chosenPaymentMethod: (state) => state.modApiPayment.order.chosenPaymentMethod,
+            chosenShippingMethod: (state) => state.modApiPayment.order.chosenShippingMethod,
+            cart: (state) => state.modCart.cart,
+            shippingCosts: (state) => state.modCart.shippingCosts,
+            customer: (state) => state.modApiCustomer.customer,
+            order: (state) => state.modApiPayment.order,
+            finalOrder: (state) => state.modApiPayment.finalOrder,
+            processingCheckout: (state) => state.modApiPayment.processingCheckout,
+            customerAddresses: (state) => state.modApiCustomer.customer.customerAddresses,
+            countries: (state) => state.modApiCustomer.availableCountries,
+            shippingAddress: (state) => state.modApiCustomer.customer.shippingAddress,
         }),
         ...mapGetters({
             productIsSpecial: 'modPrices/productIsSpecial',
@@ -275,7 +290,7 @@ export default {
             this.placeOrderAction({
                 payload: JSON.stringify(this.finalOrder),
             })
-                .then(response => {
+                .then((response) => {
                     // On request failure, throw error, log error and keep order data
                     if (!response.data.success) {
                         axios({
@@ -301,7 +316,7 @@ export default {
                         });
                     });
                 })
-                .catch(error => {
+                .catch((error) => {
                     axios({
                         method: 'POST',
                         url: '/api/hubble-logger',
@@ -321,7 +336,7 @@ export default {
                     .then(() => {
                         resolve();
                     })
-                    .catch(error => {
+                    .catch((error) => {
                         console.log(error);
                         reject(error);
                     });
@@ -353,7 +368,7 @@ export default {
             };
 
             this.recalculateShippingCost(object)
-                .then(response => {
+                .then((response) => {
                     // Check if send country code matches received country code, otherwise country is not allowed
                     if (response.data.order.shippingAllowed) {
                         this.checkoutError = [];
@@ -372,7 +387,7 @@ export default {
         checkForSaleItemInCart: function () {
             let hasSpecialItem = false;
 
-            _.forEach(this.cart.items, item => {
+            _.forEach(this.cart.items, (item) => {
                 hasSpecialItem = this.productIsSpecial(item);
             });
 

@@ -5,9 +5,9 @@ import MaterialRipple from '~/components/utils/MaterialRipple';
 import FlashMessages from '~/components/utils/FlashMessages';
 
 import ImgLazy from '~/components/utils/ImgLazy.vue';
-Vue.component('img-lazy', ImgLazy);
+Vue.component('ImgLazy', ImgLazy);
 
-Vue.component('transition-pop-up', TransitionPopUp);
-Vue.component('transition-expand-layer', TransitionExpandLayer);
-Vue.component('material-ripple', MaterialRipple);
-Vue.component('flash-messages', FlashMessages);
+Vue.component('TransitionPopUp', TransitionPopUp);
+Vue.component('TransitionExpandLayer', TransitionExpandLayer);
+Vue.component('MaterialRipple', MaterialRipple);
+Vue.component('FlashMessages', FlashMessages);

@@ -86,13 +86,13 @@ export default {
 
     computed: {
         ...mapState({
-            dataMenu: state => state.modApiMenu.dataMenu,
-            dataCategory: state => state.modApiCategory.dataCategory,
-            dataCategoryProducts: state => state.modApiCategory.dataCategoryProducts,
-            parsedQuery: state => state.modApiRequests.parsedQuery,
-            selectedFacets: state => state.modApiRequests.selectedFacets,
-            offcanvas: state => state.modNavigation.offcanvas,
-            priceCurrencySymbol: state => state.modPrices.priceCurrencySymbol,
+            dataMenu: (state) => state.modApiMenu.dataMenu,
+            dataCategory: (state) => state.modApiCategory.dataCategory,
+            dataCategoryProducts: (state) => state.modApiCategory.dataCategoryProducts,
+            parsedQuery: (state) => state.modApiRequests.parsedQuery,
+            selectedFacets: (state) => state.modApiRequests.selectedFacets,
+            offcanvas: (state) => state.modNavigation.offcanvas,
+            priceCurrencySymbol: (state) => state.modPrices.priceCurrencySymbol,
         }),
         ...mapGetters({
             requestNumberFacets: 'modApiRequests/getRequestNumberFacets',
@@ -120,7 +120,7 @@ export default {
         hasNumberFacetsSelected() {
             let selected = false;
 
-            _.forEach(this.requestNumberFacets, facet => {
+            _.forEach(this.requestNumberFacets, (facet) => {
                 if (facet.selected) {
                     selected = true;
                 }
@@ -131,7 +131,7 @@ export default {
         hasStringFacetsSelected() {
             let selected = false;
 
-            _.forEach(this.requestStringFacets, facet => {
+            _.forEach(this.requestStringFacets, (facet) => {
                 if (facet.selected) {
                     selected = true;
                 }
@@ -142,7 +142,7 @@ export default {
         hasPriceFacetsSelected() {
             let selected = false;
 
-            _.forEach(this.requestPriceFacets, facet => {
+            _.forEach(this.requestPriceFacets, (facet) => {
                 if (facet.selected) {
                     selected = true;
                 }
@@ -153,7 +153,7 @@ export default {
         hasCategoryFacetsSelected() {
             let selected = false;
 
-            _.forEach(this.requestCategoryFacets, facet => {
+            _.forEach(this.requestCategoryFacets, (facet) => {
                 if (facet.selected) {
                     selected = true;
                 }
@@ -166,7 +166,7 @@ export default {
                 return 1;
             }
 
-            let facet = _.head(_.filter(this.requestPriceFacets, item => item.key === 'price'));
+            let facet = _.head(_.filter(this.requestPriceFacets, (item) => item.key === 'price'));
 
             return !_.isEmpty(facet) ? parseInt(facet['facet-stats'].max) + 1 : 0;
         },
@@ -175,7 +175,7 @@ export default {
                 return 0;
             }
 
-            let facet = _.head(_.filter(this.requestPriceFacets, item => item.key === 'price'));
+            let facet = _.head(_.filter(this.requestPriceFacets, (item) => item.key === 'price'));
 
             return !_.isEmpty(facet) ? parseInt(facet['facet-stats'].min) : 0;
         },
@@ -218,10 +218,10 @@ export default {
             this.setPaginationPage(1);
         },
         getSelectedFacetOptionsLabel(facet) {
-            let selectedIds = facet.options.filter(item => item.selected);
+            let selectedIds = facet.options.filter((item) => item.selected);
 
             let selectedLabels = _.join(
-                selectedIds.map(item => item.label),
+                selectedIds.map((item) => item.label),
                 ', '
             );
 

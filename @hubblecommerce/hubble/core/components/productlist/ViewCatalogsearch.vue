@@ -53,8 +53,8 @@ export default {
 
     computed: {
         ...mapState({
-            dataCategory: state => state.modApiCategory.dataCategory,
-            dataCategoryProducts: state => state.modApiCategory.dataCategoryProducts,
+            dataCategory: (state) => state.modApiCategory.dataCategory,
+            dataCategoryProducts: (state) => state.modApiCategory.dataCategoryProducts,
         }),
         categoryItem() {
             if (_.isEmpty(this.dataCategory)) {

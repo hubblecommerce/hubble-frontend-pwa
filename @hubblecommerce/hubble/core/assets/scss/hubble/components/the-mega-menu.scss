@@ -51,7 +51,7 @@ nav {
             &:after {
                 display: block;
                 content: attr(name);
-                font-weight:bold;
+                font-weight: bold;
                 visibility: hidden;
                 overflow: hidden;
                 height: 0;
@@ -114,16 +114,19 @@ nav {
         line-height: 15px;
     }
 
-    .slide-top-bottom-enter-active, .slide-top-bottom-leave-active {
-        transition: all .1s ease;
+    .slide-top-bottom-enter-active,
+    .slide-top-bottom-leave-active {
+        transition: all 0.1s ease;
     }
 
-    .slide-top-bottom-enter, .slide-top-bottom-leave-to {
+    .slide-top-bottom-enter,
+    .slide-top-bottom-leave-to {
         top: -500px;
         opacity: 0;
     }
 
-    .slide-top-bottom-enter-to, .slide-top-bottom-leave {
+    .slide-top-bottom-enter-to,
+    .slide-top-bottom-leave {
         top: $header-height-desktop + 1px;
         opacity: 1;
     }

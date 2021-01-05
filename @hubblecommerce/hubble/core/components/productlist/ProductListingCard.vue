@@ -9,7 +9,13 @@
                     </div>
                 </div>
 
-                <img-lazy v-if="!isSlider" class="img-listing" :src="routeUrlProductImg" :alt-info="itemData.name" :title-info="itemData.name" />
+                <img-lazy
+                    v-if="!isSlider"
+                    class="img-listing"
+                    :src="routeUrlProductImg"
+                    :alt-info="itemData.name"
+                    :title-info="itemData.name"
+                />
                 <img v-if="isSlider" :src="routeUrlProductImg" :alt="itemData.name" :title="itemData.name" />
             </div>
 
@@ -19,8 +25,14 @@
 
                     <div :class="classesExcl" class="price-box price-excluding-tax product-price">
                         <template v-if="itemIsSpecial">
-                            <span class="sale-price" v-text="getPriceAndCurrency('display_price_brutto_special', priceSwitcherIncludeVat)" />
-                            <span class="old-price" v-text="getPriceAndCurrency('display_price_brutto', priceSwitcherIncludeVat)" />
+                            <span
+                                class="sale-price"
+                                v-text="getPriceAndCurrency('display_price_brutto_special', priceSwitcherIncludeVat)"
+                            />
+                            <span
+                                class="old-price"
+                                v-text="getPriceAndCurrency('display_price_brutto', priceSwitcherIncludeVat)"
+                            />
                         </template>
 
                         <template v-else-if="itemHasCheapPrice">
@@ -76,7 +88,7 @@ export default {
 
     computed: {
         ...mapState({
-            priceSwitcherIncludeVat: state => state.modPrices.priceSwitcherIncludeVat,
+            priceSwitcherIncludeVat: (state) => state.modPrices.priceSwitcherIncludeVat,
         }),
         ...mapGetters({
             getApiLocale: 'modApiResources/getApiLocale',
@@ -115,20 +127,20 @@ export default {
             let image;
 
             // if no image, try to take 1st media gallery item
-            if (! _.has(this.itemData, 'image') || this.itemData.image === '') {
-              if (_.has(this.itemData, 'media_gallery') && ! _.isEmpty(this.itemData.media_gallery)) {
-                image = this.itemData.media_gallery[0]['value'];
-              }
+            if (!_.has(this.itemData, 'image') || this.itemData.image === '') {
+                if (_.has(this.itemData, 'media_gallery') && !_.isEmpty(this.itemData.media_gallery)) {
+                    image = this.itemData.media_gallery[0]['value'];
+                }
             } else {
-              image = this.itemData.image;
+                image = this.itemData.image;
             }
 
             if (image) {
-              let urlPattern = /^((http|https|ftp):\/\/)/;
+                let urlPattern = /^((http|https|ftp):\/\/)/;
 
-              if (urlPattern.test(image)) {
-                return image;
-              }
+                if (urlPattern.test(image)) {
+                    return image;
+                }
             }
 
             // If customer domain isset get live images
@@ -226,8 +238,8 @@ export default {
             setProductId: 'modApiProduct/setProductId',
         }),
         getPriceAndCurrency: function (key, addVat) {
-            if(! _.has(this.itemData.final_price_item, key)) {
-              key = 'price';
+            if (!_.has(this.itemData.final_price_item, key)) {
+                key = 'price';
             }
 
             return this.getPriceAndCurrencyDecFmt(this.itemData.final_price_item[key], addVat, this.itemTaxClass);

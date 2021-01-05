@@ -15,6 +15,6 @@
 
 <script>
 export default {
-    name: "Newsletter"
-}
+    name: 'Newsletter',
+};
 </script>

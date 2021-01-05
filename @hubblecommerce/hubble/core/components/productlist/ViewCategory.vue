@@ -26,7 +26,10 @@
             <template v-if="!errorNoProducts">
                 <div class="container category-content-wrp">
                     <div class="category-products-wrp">
-                        <product-listing-toolbar v-if="$mq === 'lg' || $mq === 'md'" :extra-class="{ 'fixed container': isSticky }" />
+                        <product-listing-toolbar
+                            v-if="$mq === 'lg' || $mq === 'md'"
+                            :extra-class="{ 'fixed container': isSticky }"
+                        />
                         <product-listing
                             :data-items="categoryProductItems"
                             list="Category"
@@ -95,10 +98,10 @@ export default {
 
     computed: {
         ...mapState({
-            dataCategory: state => state.modApiCategory.dataCategory,
-            dataCategoryProducts: state => state.modApiCategory.dataCategoryProducts,
-            dataMenu: state => state.modApiMenu.dataMenu,
-            cmsObject: state => state.modApiResources.cmsObject,
+            dataCategory: (state) => state.modApiCategory.dataCategory,
+            dataCategoryProducts: (state) => state.modApiCategory.dataCategoryProducts,
+            dataMenu: (state) => state.modApiMenu.dataMenu,
+            cmsObject: (state) => state.modApiResources.cmsObject,
         }),
         ...mapGetters({
             requestCategoryFacets: 'modApiRequests/getRequestCategoryFacets',
@@ -169,7 +172,7 @@ export default {
         },
         categoryImage() {
             return '';
-        }
+        },
     },
 
     created() {
@@ -183,7 +186,7 @@ export default {
         if (this.$mq === 'lg') {
             window.addEventListener(
                 'scroll',
-                event => {
+                (event) => {
                     // Clear our timeout throughout the scroll
                     window.clearTimeout(this.isScrolling);
                     // Set a timeout to run after scrolling ends
@@ -227,7 +230,7 @@ export default {
         },
         setParentCategory: function () {
             if (!_.isEmpty(this.categoryData)) {
-                this.categoryData.forEach(item => {
+                this.categoryData.forEach((item) => {
                     if (!_.isEmpty(this.categoryItem['path_ids'])) {
                         if (item.id === this.categoryItem['path_ids'][0]) {
                             this.parentCategory = item;

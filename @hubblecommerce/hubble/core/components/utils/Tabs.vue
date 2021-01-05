@@ -77,7 +77,7 @@ export default {
             let tabs = this.$refs.tabs;
 
             if (tabs) {
-                tabs.forEach(element => {
+                tabs.forEach((element) => {
                     if (element.classList[1] == 'is-active') {
                         this.activeWidth = element.offsetWidth;
                         this.activePosLeft = element.offsetLeft;
@@ -86,7 +86,7 @@ export default {
             }
         },
         findTab(hash) {
-            return this.tabs.find(tab => tab.hash === hash);
+            return this.tabs.find((tab) => tab.hash === hash);
         },
         selectTab(selectedTabHash, event) {
             // See if we should store the hash in the url fragment.
@@ -105,7 +105,7 @@ export default {
                 this.$emit('clicked', { tab: selectedTab });
                 return;
             }
-            this.tabs.forEach(tab => {
+            this.tabs.forEach((tab) => {
                 tab.isActive = tab.hash === selectedTab.hash;
             });
             this.$emit('changed', { tab: selectedTab });
@@ -142,7 +142,7 @@ export default {
             return this.tabs.indexOf(tab);
         },
         getTabHash(index) {
-            const tab = this.tabs.find(tab => this.tabs.indexOf(tab) === index);
+            const tab = this.tabs.find((tab) => this.tabs.indexOf(tab) === index);
 
             if (!tab) {
                 return;

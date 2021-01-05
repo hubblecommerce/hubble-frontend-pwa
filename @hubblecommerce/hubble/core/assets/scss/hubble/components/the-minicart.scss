@@ -42,7 +42,7 @@
 
 .minicart-cpt-wrp {
     position: relative;
-    transition: all .2s ease;
+    transition: all 0.2s ease;
     top: 0;
 
     &.inCart {
@@ -104,8 +104,9 @@
 }
 
 /* Animate Checkout Button fade in*/
-.expand-enter-active .checkout-btn, .expand-leave-active .checkout-btn {
-    transition: all .2s ease;
+.expand-enter-active .checkout-btn,
+.expand-leave-active .checkout-btn {
+    transition: all 0.2s ease;
     transition-delay: 0.5s;
 }
 
@@ -113,16 +114,18 @@
     transition-delay: 0s;
 }
 
-.expand-enter .checkout-btn, .expand-leave-to .checkout-btn {
+.expand-enter .checkout-btn,
+.expand-leave-to .checkout-btn {
     opacity: 0;
 }
 
-.expand-enter-to .checkout-btn, .expand-leave .checkout-btn {
+.expand-enter-to .checkout-btn,
+.expand-leave .checkout-btn {
     opacity: 1;
 }
 
 /* Tablet */
-@media(min-width: 768px) {
+@media (min-width: 768px) {
     .minicart-cpt-wrp {
         position: relative;
 
@@ -147,7 +150,7 @@
 }
 
 /* Desktop */
-@media(min-width: 1024px) {
+@media (min-width: 1024px) {
     .minicart-cpt-wrp {
         .qty-summary {
             padding-left: 40px;

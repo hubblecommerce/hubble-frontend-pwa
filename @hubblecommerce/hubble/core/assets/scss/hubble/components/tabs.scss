@@ -118,7 +118,7 @@ $tab-active-color: $secondary;
 }
 
 /* Desktop */
-@media(min-width: 768px) {
+@media (min-width: 768px) {
     .tabs-component {
         .tabs-component-tabs {
             .tabs-component-tab {
@@ -142,7 +142,7 @@ $tab-active-color: $secondary;
     }
 }
 
-@media(min-width: 1024px) {
+@media (min-width: 1024px) {
     .tabs-component {
         .tabs-component-panels {
             .tabs-component-panel {

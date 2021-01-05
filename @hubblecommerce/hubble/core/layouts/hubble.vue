@@ -14,8 +14,11 @@
                     <div class="nav-wrp container">
                         <the-logo />
                         <div class="action-wrp d-flex align-items-center">
-                            <search-trigger v-if="($mq === 'md' || $mq === 'lg')" />
-                            <the-mobile-menu v-if="($mq === 'sm' || $mq === 'md') && !isEmpty(menu)" :data-items="menu" />
+                            <search-trigger v-if="$mq === 'md' || $mq === 'lg'" />
+                            <the-mobile-menu
+                                v-if="($mq === 'sm' || $mq === 'md') && !isEmpty(menu)"
+                                :data-items="menu"
+                            />
                             <the-wishlist />
                             <customer-menu />
                             <the-mini-cart />
@@ -71,8 +74,8 @@ import TheWishlist from '../components/navigation/TheWishlist';
 import CookieNotice from '../components/utils/CookieNotice';
 import FlashMessages from '../components/utils/FlashMessages';
 import LayoutWrapper from '../components/utils/LayoutWrapper';
-import SearchTrigger from "../components/search/SearchTrigger";
-import Newsletter from "../components/utils/Newsletter";
+import SearchTrigger from '../components/search/SearchTrigger';
+import Newsletter from '../components/utils/Newsletter';
 import _ from 'lodash';
 
 export default {
@@ -106,9 +109,9 @@ export default {
     },
     computed: {
         ...mapState({
-            dataMenu: state => state.modApiMenu.dataMenu,
-            showCookieNotice: state => state.modCookieNotice.showCookieNotice,
-            activeOffCanvas: state => state.modNavigation.offcanvas.isActive,
+            dataMenu: (state) => state.modApiMenu.dataMenu,
+            showCookieNotice: (state) => state.modCookieNotice.showCookieNotice,
+            activeOffCanvas: (state) => state.modNavigation.offcanvas.isActive,
         }),
     },
     created() {

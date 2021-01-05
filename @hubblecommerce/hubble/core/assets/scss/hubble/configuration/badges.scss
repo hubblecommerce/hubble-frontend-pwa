@@ -1,29 +1,29 @@
 .badge-wrp {
-  display: flex;
-  flex-direction: row;
+    display: flex;
+    flex-direction: row;
 
-  .badge {
-    display: block !important;
-    text-transform: uppercase;
-    font-size: 12px;
-    line-height: 14px;
-    font-weight: $font-weight-bold;
-    padding: 5px 10px;
-    border-radius: 2px;
-    color: $white;
-    z-index: 1;
+    .badge {
+        display: block !important;
+        text-transform: uppercase;
+        font-size: 12px;
+        line-height: 14px;
+        font-weight: $font-weight-bold;
+        padding: 5px 10px;
+        border-radius: 2px;
+        color: $white;
+        z-index: 1;
 
-    // Sale
-    &.sale {
-      background-color: #CB2A4A;
+        // Sale
+        &.sale {
+            background-color: #cb2a4a;
+        }
+        // Tipp
+        &.tip {
+            background-color: $warning-accent;
+        }
+        // New
+        &.new {
+            background-color: $secondary;
+        }
     }
-    // Tipp
-    &.tip {
-      background-color: $warning-accent;
-    }
-    // New
-    &.new {
-      background-color: $secondary;
-    }
-  }
 }

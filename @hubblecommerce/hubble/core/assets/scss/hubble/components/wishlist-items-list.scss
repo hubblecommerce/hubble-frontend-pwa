@@ -37,7 +37,9 @@
         margin-bottom: 5px;
     }
 
-    .product-price, .product-qty, .separator {
+    .product-price,
+    .product-qty,
+    .separator {
         font-size: 14px;
         font-weight: $font-weight-bold;
     }
@@ -52,7 +54,9 @@
         }
     }
 
-    .remove-item, .details-item, .reset-item {
+    .remove-item,
+    .details-item,
+    .reset-item {
         font-size: 13px;
         line-height: 16px;
         font-weight: 600;
@@ -68,8 +72,7 @@
 }
 
 /* Tablet */
-@media(min-width: 768px) {
-
+@media (min-width: 768px) {
     .wishlist-item-list-wrapper {
         .product-name {
             font-size: 14px;
@@ -79,14 +82,16 @@
             font-size: 16px;
         }
 
-        .remove-item, .details-item, .reset-item {
+        .remove-item,
+        .details-item,
+        .reset-item {
             font-size: 16px;
         }
     }
 }
 
 /* Desktop */
-@media(min-width: 1024px) {
+@media (min-width: 1024px) {
     .wishlist-item-list-wrapper {
         .item {
             padding-left: 25px;

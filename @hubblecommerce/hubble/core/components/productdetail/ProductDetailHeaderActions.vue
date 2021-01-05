@@ -3,7 +3,7 @@
         <div class="back-btn-wrp">
             <button class="button-icon" @click="historyBack()">
                 <i class="icon icon-arrow-left" />
-                <span class="hidden-link-name" v-text="$t('Back')"/>
+                <span class="hidden-link-name" v-text="$t('Back')" />
                 <material-ripple />
             </button>
         </div>
@@ -20,11 +20,11 @@
 
 <script>
 export default {
-    name: "ProductDetailHeaderActions",
+    name: 'ProductDetailHeaderActions',
     methods: {
         historyBack: function () {
             this.$router.go(-1);
-        }
-    }
-}
+        },
+    },
+};
 </script>

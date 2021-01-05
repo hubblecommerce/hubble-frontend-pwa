@@ -20,10 +20,10 @@ export default function ({ isHMR, store, error }) {
     return new Promise((resolve, reject) => {
         store
             .dispatch('modApiMenu/getMenu')
-            .then(response => {
+            .then((response) => {
                 resolve(response);
             })
-            .catch(response => {
+            .catch((response) => {
                 if (response.statusCode != null) {
                     error(response);
                 } else {
@@ -32,4 +32,4 @@ export default function ({ isHMR, store, error }) {
                 resolve(response);
             });
     });
-};
+}

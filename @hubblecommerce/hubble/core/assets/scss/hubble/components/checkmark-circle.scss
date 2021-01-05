@@ -18,7 +18,7 @@ $check-color: $brand-success;
     margin-bottom: 20px;
     border: $check-border-thickness solid rgba(0, 0, 0, 0.2);
     border-left-color: $check-color;
-    animation: loader-spin .5s infinite linear;
+    animation: loader-spin 0.5s infinite linear;
     position: relative;
     display: inline-block;
     vertical-align: top;
@@ -35,7 +35,6 @@ $check-color: $brand-success;
 }
 
 .checkmark {
-
     &.draw:after {
         animation-duration: 400ms;
         animation-timing-function: ease;

@@ -14,9 +14,7 @@
         <div class="validation-msg" v-text="$t(shippingError)" />
     </div>
 
-    <div v-else-if="apiError" class="shipping-methods-api-error-wrp">
-        No shipping methods found
-    </div>
+    <div v-else-if="apiError" class="shipping-methods-api-error-wrp"> No shipping methods found </div>
 
     <div v-else class="shipping-methods-placeholder">
         <div class="loader lds-ellipsis">
@@ -46,12 +44,12 @@ export default {
 
     computed: {
         ...mapState({
-            shippingMethods: state => state.modApiPayment.shippingMethods,
-            chosenShippingMethod: state => state.modApiPayment.order.chosenShippingMethod,
-            shippingError: state => state.modApiPayment.shippingError,
-            shippingAddress: state => state.modApiCustomer.customer.shippingAddress,
-            countries: state => state.modApiCustomer.availableCountries,
-            customerAddresses: state => state.modApiCustomer.customer.customerAddresses,
+            shippingMethods: (state) => state.modApiPayment.shippingMethods,
+            chosenShippingMethod: (state) => state.modApiPayment.order.chosenShippingMethod,
+            shippingError: (state) => state.modApiPayment.shippingError,
+            shippingAddress: (state) => state.modApiCustomer.customer.shippingAddress,
+            countries: (state) => state.modApiCustomer.availableCountries,
+            customerAddresses: (state) => state.modApiCustomer.customer.customerAddresses,
         }),
         ...mapGetters({
             getChosenShippingMethod: 'modApiPayment/getChosenShippingMethod',
@@ -71,7 +69,7 @@ export default {
                         this.resetProcessingCheckout();
                     });
                 })
-                .catch(err => {
+                .catch((err) => {
                     this.flashMessage({
                         flashType: 'error',
                         flashMessage: err === 'No network connection' ? this.$t(err) : this.$t('An error occurred'),
@@ -115,7 +113,7 @@ export default {
                     .then(() => {
                         resolve();
                     })
-                    .catch(error => {
+                    .catch((error) => {
                         console.log('getShippingMethods error: ', error);
 
                         reject(error);
@@ -128,7 +126,7 @@ export default {
             }
         },
         setMethodById: function (key) {
-            _.forEach(this.shippingMethods, val => {
+            _.forEach(this.shippingMethods, (val) => {
                 if (val.id === key) {
                     this.chosenMethodObj = val;
                 }

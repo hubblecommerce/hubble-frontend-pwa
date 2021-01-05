@@ -91,7 +91,7 @@ export default async function ({ store, route, error }) {
             store.commit('modApiProduct/setProductId', pageResponse.data.product.id);
 
             return new Promise((resolve, reject) => {
-                store.dispatch('modApiProduct/mappingProduct', { product: matchingProduct }).then(res => {
+                store.dispatch('modApiProduct/mappingProduct', { product: matchingProduct }).then((res) => {
                     store.commit('modApiProduct/setDataProduct', {
                         data: {
                             result: {

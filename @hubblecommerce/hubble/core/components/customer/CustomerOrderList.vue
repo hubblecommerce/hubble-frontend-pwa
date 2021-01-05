@@ -74,8 +74,8 @@ export default {
 
     computed: {
         ...mapState({
-            priceCurrency: state => state.modPrices.priceCurrency,
-            priceCurrencySymbol: state => state.modPrices.priceCurrencySymbol,
+            priceCurrency: (state) => state.modPrices.priceCurrency,
+            priceCurrencySymbol: (state) => state.modPrices.priceCurrencySymbol,
         }),
         ...mapGetters({
             priceDecFmt: 'modPrices/priceDecFmt',
@@ -97,12 +97,12 @@ export default {
 
             //Get orders from store
             this.getOrdersFromStore()
-                .then(response => {
+                .then((response) => {
                     this.orders = response;
 
                     this.loading = false;
                 })
-                .catch(res => {
+                .catch((res) => {
                     console.log('getOrdersFromStore error: ', res);
 
                     this.flashMessage({

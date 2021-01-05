@@ -29,9 +29,9 @@ export default {
 
     components: { OrderDetail },
 
-    middleware: [apiPaymentAuthenticate, apiCustomerAuthenticate, successValidate, 'apiLocalization', 'trackClickPath'],
-
     layout: 'hubble_light',
+
+    middleware: [apiPaymentAuthenticate, apiCustomerAuthenticate, successValidate, 'apiLocalization', 'trackClickPath'],
 
     data() {
         return {
@@ -42,10 +42,10 @@ export default {
 
     computed: {
         ...mapState({
-            customer: state => state.modApiCustomer.customer,
-            offcanvas: state => state.modNavigation.offcanvas,
-            cookieName: state => state.modApiCustomer.cookieName,
-            cookieNameAddress: state => state.modApiPayment.cookieNameAddress,
+            customer: (state) => state.modApiCustomer.customer,
+            offcanvas: (state) => state.modNavigation.offcanvas,
+            cookieName: (state) => state.modApiCustomer.cookieName,
+            cookieNameAddress: (state) => state.modApiPayment.cookieNameAddress,
         }),
         isGuest: function () {
             return this.customer.customerAuth.token === 'guest';
@@ -82,9 +82,9 @@ export default {
             let latestOrder = {};
 
             // Get orders from customer
-            this.getOrders().then(res => {
+            this.getOrders().then((res) => {
                 if (res !== null) {
-                    _.forEach(res, val => {
+                    _.forEach(res, (val) => {
                         let date = new Date(val.createdAt);
                         if (date.getTime() > latestDate.getTime()) {
                             latestDate = date;

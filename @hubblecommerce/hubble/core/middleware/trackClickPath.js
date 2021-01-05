@@ -52,4 +52,4 @@ export default function ({ store, route }) {
     }
 
     store.commit('modClickPath/appendToClickPath', clickPath);
-};
+}

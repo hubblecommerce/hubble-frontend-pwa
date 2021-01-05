@@ -1,9 +1,7 @@
 <template>
     <div class="container">
         <breadcrumbs :path="breadcrumbPath" />
-        <div class="">
-            Sorry newsletter is currently deactivated.
-        </div>
+        <div class=""> Sorry newsletter is currently deactivated. </div>
     </div>
 </template>
 

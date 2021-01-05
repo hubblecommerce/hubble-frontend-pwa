@@ -1,8 +1,22 @@
 <template>
-    <validation-observer v-if="showLoginForm" ref="observer" v-slot="{ passes }" tag="form" :class="'login-form'" @submit.prevent="passes(submitLoginForm)">
+    <validation-observer
+        v-if="showLoginForm"
+        ref="observer"
+        v-slot="{ passes }"
+        tag="form"
+        :class="'login-form'"
+        @submit.prevent="passes(submitLoginForm)"
+    >
         <div class="headline headline-3" v-text="$t('I already have an account')" />
 
-        <validation-provider v-slot="{ errors }" name="email" rules="required|email" mode="eager" tag="div" class="hbl-input-group input-icon">
+        <validation-provider
+            v-slot="{ errors }"
+            name="email"
+            rules="required|email"
+            mode="eager"
+            tag="div"
+            class="hbl-input-group input-icon"
+        >
             <input
                 id="email"
                 v-model="form.email"
@@ -70,7 +84,14 @@
     >
         <div class="headline headline-3" v-text="$t('Reset your Password')" />
 
-        <validation-provider v-slot="{ errors }" name="email" rules="required|email" mode="passive" tag="div" class="hbl-input-group input-icon">
+        <validation-provider
+            v-slot="{ errors }"
+            name="email"
+            rules="required|email"
+            mode="passive"
+            tag="div"
+            class="hbl-input-group input-icon"
+        >
             <input
                 id="email"
                 v-model="form.email"
@@ -126,8 +147,8 @@ export default {
 
     computed: {
         ...mapState({
-            customer: state => state.modApiCustomer.customer,
-            wishlistState: state => state.modWishlist.wishlistItemsObj,
+            customer: (state) => state.modApiCustomer.customer,
+            wishlistState: (state) => state.modWishlist.wishlistItemsObj,
         }),
     },
 
@@ -159,7 +180,7 @@ export default {
             this.logIn(validCreds)
                 .then(() => {
                     // Get wishlist of current customer from api and save to store
-                    this.getWishlist().then(response => {
+                    this.getWishlist().then((response) => {
                         if (!_.isEmpty(response.data.item)) {
                             // Merge Wishlist of store with existing user wishlist from api
                             let state = _.clone(this.wishlistState);
@@ -207,7 +228,7 @@ export default {
                         }
                     });
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.log('logIn error: ', error);
 
                     this.errors.push(this.$t('Login failed'));

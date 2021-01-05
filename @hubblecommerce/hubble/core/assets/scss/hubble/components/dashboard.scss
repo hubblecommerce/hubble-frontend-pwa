@@ -34,7 +34,6 @@
     }
 
     .content-wrp {
-
         .headline-wrp {
             text-align: center;
             border-bottom: 1px solid $border-color;
@@ -107,7 +106,6 @@
 }
 
 .customer-dashboard.order-detail {
-
     .order-detail-wrp {
         padding: 30px 0;
     }
@@ -138,9 +136,7 @@
 }
 
 .customer-dashboard.customer-addresses {
-
     .customer-addresses-wrp {
-
         .billing-addresses-wrp,
         .shipping-addresses-wrp {
             border: none;
@@ -154,13 +150,13 @@
 
             &:nth-child(2) {
                 border: 1px solid $success-accent;
-                background: #F8F8F8;
+                background: #f8f8f8;
             }
         }
     }
 }
 
-@media(min-width: 768px) {
+@media (min-width: 768px) {
     .customer-dashboard {
         .sidebar-wrp {
             .logout-button {
@@ -186,13 +182,12 @@
         .t-wrapper {
             .t-row {
                 .t-col {
-                    width: calc( 100% / 5 );
+                    width: calc(100% / 5);
                 }
             }
         }
 
         .content-wrp {
-
             .box {
                 .box-utils {
                     button {

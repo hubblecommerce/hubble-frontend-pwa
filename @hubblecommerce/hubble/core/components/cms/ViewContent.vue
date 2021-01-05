@@ -31,7 +31,7 @@ export default {
 
     computed: {
         ...mapState({
-            stateContent: state => state.modApiCms.dataContent.item,
+            stateContent: (state) => state.modApiCms.dataContent.item,
         }),
     },
 

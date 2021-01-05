@@ -43,18 +43,18 @@ import _ from 'lodash';
 export default {
     name: 'Wishlist',
 
-    components: { 
-        WishlistItemsList: () => import('../../components/customer/WishlistItemsList'), 
-        NewsletterForm: () => import('../../components/utils/NewsletterForm') 
+    components: {
+        WishlistItemsList: () => import('../../components/customer/WishlistItemsList'),
+        NewsletterForm: () => import('../../components/utils/NewsletterForm'),
     },
 
     layout: 'hubble',
 
     computed: {
         ...mapState({
-            customer: state => state.modApiCustomer.customer,
-            qty: state => state.modWishlist.wishlistItemsCount,
-            wishlistId: state => state.modWishlist.wishlistId,
+            customer: (state) => state.modApiCustomer.customer,
+            qty: (state) => state.modWishlist.wishlistItemsCount,
+            wishlistId: (state) => state.modWishlist.wishlistId,
         }),
         customerData() {
             return this.customer.customerData;
@@ -91,7 +91,9 @@ export default {
             return false;
         },
         wishlistItemsLabel: function () {
-            return this.qty > 1 ? this.qty + ' ' + this.$t('wishlist_label_items') : this.qty + ' ' + this.$t('wishlist_label_items');
+            return this.qty > 1
+                ? this.qty + ' ' + this.$t('wishlist_label_items')
+                : this.qty + ' ' + this.$t('wishlist_label_items');
         },
         goToIndex: function () {
             this.$router.push({

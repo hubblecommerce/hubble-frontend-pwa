@@ -30,9 +30,9 @@
 </template>
 
 <script>
-import TheLogo from "../../components/navigation/TheLogo";
+import TheLogo from '../../components/navigation/TheLogo';
 export default {
     name: 'ThePostFooter',
-    components: {TheLogo},
+    components: { TheLogo },
 };
 </script>

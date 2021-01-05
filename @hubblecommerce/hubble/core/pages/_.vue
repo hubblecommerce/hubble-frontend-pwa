@@ -29,7 +29,7 @@ export default {
 
     computed: {
         ...mapState({
-            pageType: state => state.modApiResources.pageType,
+            pageType: (state) => state.modApiResources.pageType,
         }),
     },
 
@@ -37,7 +37,14 @@ export default {
         this.currentComponent = 'view-' + this.pageType;
     },
 
-    middleware: ['apiAuthenticate', 'apiLocalization', 'apiResourceMenu', 'apiResourceRoute', apiResourceRequest, 'trackClickPath'],
+    middleware: [
+        'apiAuthenticate',
+        'apiLocalization',
+        'apiResourceMenu',
+        'apiResourceRoute',
+        apiResourceRequest,
+        'trackClickPath',
+    ],
 
     transition: {
         name: 'page-transition',

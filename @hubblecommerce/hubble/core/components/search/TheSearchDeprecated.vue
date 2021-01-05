@@ -36,10 +36,18 @@
             <transition name="fade">
                 <div v-if="showResults" class="search-autocomplete" @mouseenter="blurInput">
                     <div v-for="(groupItem, groupItemIndex) in groups" :key="groupItemIndex" class="result-col">
-                        <div v-for="(group, groupIndex) in groupItem.items" id="livesearch-box-wrapper" :key="groupIndex" class="container">
+                        <div
+                            v-for="(group, groupIndex) in groupItem.items"
+                            id="livesearch-box-wrapper"
+                            :key="groupIndex"
+                            class="container"
+                        >
                             <div class="row">
                                 <div class="col-6 text-left">
-                                    <div class="group-headline" v-html="$t(group.meta.label) + ' (' + group.stats.total + ')'" />
+                                    <div
+                                        class="group-headline"
+                                        v-html="$t(group.meta.label) + ' (' + group.stats.total + ')'"
+                                    />
                                 </div>
 
                                 <div class="col-6 text-right">
@@ -240,9 +248,11 @@ export default {
             // If no customer domain isset get images from api
             let path = _.trim(process.env.config.IMG_BASE_URL, '/');
 
-            if (group.meta.name === 'catalog_product') path += '/images/catalog/product/' + this.imgFilter + '/' + item.image;
+            if (group.meta.name === 'catalog_product')
+                path += '/images/catalog/product/' + this.imgFilter + '/' + item.image;
 
-            if (group.meta.name === 'catalog_category') path += '/images/catalog/category/' + this.imgFilter + '/' + item.image;
+            if (group.meta.name === 'catalog_category')
+                path += '/images/catalog/category/' + this.imgFilter + '/' + item.image;
 
             return path;
         },
@@ -284,7 +294,7 @@ export default {
                     },
                     { root: true }
                 )
-                .then(response => {
+                .then((response) => {
                     this.queryIsSearching = false;
 
                     //let data = {}
@@ -336,7 +346,7 @@ export default {
             }
 
             // try javascript highlighning on query string
-            return item[field].replace(new RegExp(this.query, 'gi'), match => {
+            return item[field].replace(new RegExp(this.query, 'gi'), (match) => {
                 return '<span class="highlight">' + match + '</span>';
             });
         },
@@ -356,7 +366,7 @@ export default {
             let group_r = { name: 'right', items: [], count: 0 };
 
             // group categories
-            let groupCategories = this.items.filter(item => item.meta.name === 'catalog_category');
+            let groupCategories = this.items.filter((item) => item.meta.name === 'catalog_category');
 
             if (!_.isEmpty(groupCategories)) {
                 let _cnt_items_group = _.size(groupCategories[0].items);
@@ -366,7 +376,7 @@ export default {
             }
 
             // group pages
-            let groupPages = this.items.filter(item => item.meta.name === 'cms_page');
+            let groupPages = this.items.filter((item) => item.meta.name === 'cms_page');
 
             if (!_.isEmpty(groupPages)) {
                 let cnt_items_group = _.size(groupPages[0].items);
@@ -376,7 +386,7 @@ export default {
             }
 
             // group products
-            let groupProducts = this.items.filter(item => item.meta.name === 'catalog_product');
+            let groupProducts = this.items.filter((item) => item.meta.name === 'catalog_product');
 
             if (!_.isEmpty(groupProducts)) {
                 let cnt_items_group = _.size(groupProducts[0].items);

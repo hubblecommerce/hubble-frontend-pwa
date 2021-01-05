@@ -1,13 +1,13 @@
 <template>
     <div class="container checkout-register-wrp">
         <client-only>
-            <button @click="toggleCart()" class="button cart-toggle-wrp">
+            <button class="button cart-toggle-wrp" @click="toggleCart()">
                 <span v-text="!showCart ? $t('Show Cart') : $t('Hide Cart')" />
-                <i class="icon" :class="!showCart ? 'icon-chevron-down' : 'icon-chevron-up'"/>
+                <i class="icon" :class="!showCart ? 'icon-chevron-down' : 'icon-chevron-up'" />
             </button>
 
             <transition name="fade">
-                <div v-if="showCart || ($mq === 'lg')" class="cart-wrp">
+                <div v-if="showCart || $mq === 'lg'" class="cart-wrp">
                     <div class="items-wrp">
                         <client-only>
                             <div class="headline">
@@ -37,7 +37,7 @@
             <div class="customer-register-wrp">
                 <div class="headline headline-2" v-text="$t('Contact Information')" />
                 <div class="text">
-                    {{$t('You already have an account?')}}
+                    {{ $t('You already have an account?') }}
                     <nuxt-link :to="localePath('checkout-login')" v-text="$t('Login')" />
                 </div>
                 <register-form />
@@ -47,45 +47,47 @@
 </template>
 
 <script>
-import CartItemsListNonInteractive from "../../components/checkout/CartItemsListNonInteractive";
-import Coupons from "../../components/checkout/Coupons";
-import Totals from "../../components/checkout/Totals";
+import CartItemsListNonInteractive from '../../components/checkout/CartItemsListNonInteractive';
+import Coupons from '../../components/checkout/Coupons';
+import Totals from '../../components/checkout/Totals';
 import cartValidate from '~/anonymous-middleware/cartValidate';
-import RegisterForm from "../../components/customer/RegisterForm";
-import {mapState} from "vuex";
+import RegisterForm from '../../components/customer/RegisterForm';
+import { mapState } from 'vuex';
 
 export default {
-    name: "CheckoutRegister",
+    name: 'CheckoutRegister',
 
-    components: {RegisterForm, Totals, Coupons, CartItemsListNonInteractive},
-
-    middleware: [cartValidate, 'apiLocalization', 'trackClickPath'],
+    components: { RegisterForm, Totals, Coupons, CartItemsListNonInteractive },
 
     layout: 'hubble_light',
 
+    middleware: [cartValidate, 'apiLocalization', 'trackClickPath'],
+
     data() {
         return {
-            showCart: false
-        }
+            showCart: false,
+        };
     },
 
     computed: {
         ...mapState({
-            cart: state => state.modCart.cart,
-            qty: state => state.modCart.cart.items_qty,
+            cart: (state) => state.modCart.cart,
+            qty: (state) => state.modCart.cart.items_qty,
         }),
     },
 
     methods: {
         cartItemsLabel(qty) {
-            return this.qty > 1 ? qty + ' ' + this.$t('shopping_cart_label_items') : qty + ' ' + this.$t('shopping_cart_label_item');
+            return this.qty > 1
+                ? qty + ' ' + this.$t('shopping_cart_label_items')
+                : qty + ' ' + this.$t('shopping_cart_label_item');
         },
         isApiType: function (apiType) {
             return process.env.API_TYPE === apiType;
         },
-        toggleCart: function() {
-            return this.showCart = !this.showCart;
-        }
-    }
-}
+        toggleCart: function () {
+            return (this.showCart = !this.showCart);
+        },
+    },
+};
 </script>

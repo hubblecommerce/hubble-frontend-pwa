@@ -119,7 +119,8 @@ $hbl-select-hover-border: 1px solid $darker-gray;
         width: 100%;
     }
 
-    .select-bar:before, .select-bar:after {
+    .select-bar:before,
+    .select-bar:after {
         content: '';
         height: 2px;
         width: 0;
@@ -138,7 +139,8 @@ $hbl-select-hover-border: 1px solid $darker-gray;
     }
 
     /* active state */
-    .select-text:focus ~ .select-bar:before, .select-text:focus ~ .select-bar:after {
+    .select-text:focus ~ .select-bar:before,
+    .select-text:focus ~ .select-bar:after {
         width: 50%;
     }
 
@@ -163,7 +165,7 @@ $hbl-select-hover-border: 1px solid $darker-gray;
     }
 }
 
-@media(min-width: 768px) {
+@media (min-width: 768px) {
     .hbl-select {
         height: $hbl-select-height-md;
 

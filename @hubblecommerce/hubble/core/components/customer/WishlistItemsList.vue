@@ -4,7 +4,12 @@
             <nuxt-link :to="'/' + item.url_pds" class="col-9">
                 <div class="row align-items-center">
                     <div class="col-4">
-                        <img-lazy class="img-wishlist" :src="itemImgPath(item)" :alt-info="'Product Image'" :title-info="item.name"/>
+                        <img-lazy
+                            class="img-wishlist"
+                            :src="itemImgPath(item)"
+                            :alt-info="'Product Image'"
+                            :title-info="item.name"
+                        />
                     </div>
 
                     <div class="col-8">
@@ -21,18 +26,28 @@
                                 <template v-if="itemIsSpecial(item)">
                                     <span
                                         class="product-price old-price"
-                                        v-text="getPriceAndCurrency(item, 'display_price_brutto', priceSwitcherIncludeVat)"
+                                        v-text="
+                                            getPriceAndCurrency(item, 'display_price_brutto', priceSwitcherIncludeVat)
+                                        "
                                     />
                                     <span
                                         class="product-price sale-price"
-                                        v-text="getPriceAndCurrency(item, 'display_price_brutto_special', priceSwitcherIncludeVat)"
+                                        v-text="
+                                            getPriceAndCurrency(
+                                                item,
+                                                'display_price_brutto_special',
+                                                priceSwitcherIncludeVat
+                                            )
+                                        "
                                     />
                                 </template>
 
                                 <template v-else>
                                     <span
                                         class="product-price sale-price"
-                                        v-text="getPriceAndCurrency(item, 'display_price_brutto', priceSwitcherIncludeVat)"
+                                        v-text="
+                                            getPriceAndCurrency(item, 'display_price_brutto', priceSwitcherIncludeVat)
+                                        "
                                     />
                                 </template>
                             </div>
@@ -82,14 +97,14 @@ export default {
 
     computed: {
         ...mapState({
-            items: state => state.modWishlist.wishlistItemsObj,
-            qty: state => state.modWishlist.wishlistItemsCount,
-            priceSwitcherIncludeVat: state => state.modPrices.priceSwitcherIncludeVat,
-            offcanvas: state => state.modNavigation.offcanvas,
-            customer: state => state.modApiCustomer.customer,
-            wishlistState: state => state.modWishlist.wishlistItemsObj,
-            wishlistId: state => state.modWishlist.wishlistId,
-            wishlistQty: state => state.modWishlist.wishlistItemsCount,
+            items: (state) => state.modWishlist.wishlistItemsObj,
+            qty: (state) => state.modWishlist.wishlistItemsCount,
+            priceSwitcherIncludeVat: (state) => state.modPrices.priceSwitcherIncludeVat,
+            offcanvas: (state) => state.modNavigation.offcanvas,
+            customer: (state) => state.modApiCustomer.customer,
+            wishlistState: (state) => state.modWishlist.wishlistItemsObj,
+            wishlistId: (state) => state.modWishlist.wishlistId,
+            wishlistQty: (state) => state.modWishlist.wishlistItemsCount,
         }),
         ...mapGetters({
             productIsSpecial: 'modPrices/productIsSpecial',
@@ -167,8 +182,8 @@ export default {
             // let priceInclTax = this.$store.getters['modPrices/priceAddVat'](item.final_price_item[key], this.itemTaxClass(item).value);
             // this.subTotals[item.id] = _.round(priceInclTax, 2).toFixed(2) * item.qty;
 
-            if(! _.has(item.final_price_item, key)) {
-              key = 'price';
+            if (!_.has(item.final_price_item, key)) {
+                key = 'price';
             }
 
             let price = item.final_price_item[key];
@@ -200,21 +215,20 @@ export default {
             let image;
 
             // if no image, try to take 1st media gallery item
-            if (! _.has(item, 'image') || item.image === '') {
-              if (_.has(item, 'media_gallery') && ! _.isEmpty(item.media_gallery)) {
-                image = item.media_gallery[0]['value'];
-              }
-            }
-            else {
-              image = item.image;
+            if (!_.has(item, 'image') || item.image === '') {
+                if (_.has(item, 'media_gallery') && !_.isEmpty(item.media_gallery)) {
+                    image = item.media_gallery[0]['value'];
+                }
+            } else {
+                image = item.image;
             }
 
             if (image) {
-              let urlPattern = /^((http|https|ftp):\/\/)/;
+                let urlPattern = /^((http|https|ftp):\/\/)/;
 
-              if (urlPattern.test(image)) {
-                return image;
-              }
+                if (urlPattern.test(image)) {
+                    return image;
+                }
             }
 
             // If customer domain isset get live images
