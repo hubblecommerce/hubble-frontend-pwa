@@ -171,7 +171,7 @@ export const actions = {
                 { root: true }
             )
                 .then((response) => {
-                    const token = response.data['sw-context-token'];
+                    const token = response.data['token'];
 
                     // Set swtc to store
                     commit('setSwtc', token);
@@ -276,6 +276,7 @@ export const actions = {
             let cart = _.cloneDeep(state.cart);
 
             // Add item to cloned cart
+            // ID = Product Id (SW handles referenceId as product id)
             let item = _.pick(payload.item, [
                 'id',
                 'sku',
@@ -293,9 +294,10 @@ export const actions = {
             item = _.assign(item, { qty: qty });
 
             // Check if item is already in cart
+            // Compare cart referenceId with given item id (SW handles referenceId as product id)
             if (cart.items.length > 0) {
                 isInCart = _.find(cart.items, (o) => {
-                    return o.id === item.id;
+                    return o.referenceId === item.id;
                 });
             }
 
@@ -323,8 +325,8 @@ export const actions = {
                     }
                 });
 
-                // Add to cart sw call
-                dispatch('swAddtToCart', { item: item, qty: qty })
+                // Patch cart sw call
+                dispatch('swUpdateLineItem', { id: isInCart.id, qty: parseInt(isInCart.qty) + qty })
                     .then((res) => {
                         dispatch('saveCartToStorage', { cart: cart, qty: qty, response: res }).then(() => {
                             resolve();
@@ -451,7 +453,7 @@ export const actions = {
                     swContext: state.swtc,
                     endpoint: endpoint,
                     data: {
-                        id: [payload.id],
+                        ids: [payload.id],
                     },
                 },
                 { root: true }

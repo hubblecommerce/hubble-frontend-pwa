@@ -18,7 +18,7 @@
     "dependencies": {
         "@hubblecommerce/amazon-pay": "^1.0.0",
         "@hubblecommerce/payone": "^1.0.0",
-        "@nuxtjs/axios": "^5.8.0",
+        "@nuxtjs/axios": "^5.12.0",
         "@nuxtjs/recaptcha": "^0.6.1",
         "@nuxtjs/pwa": "^3.0.0-beta.19",
         "@nuxtjs/dotenv": "^1.4.1",
