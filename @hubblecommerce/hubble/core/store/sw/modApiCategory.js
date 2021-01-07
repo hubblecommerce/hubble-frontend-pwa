@@ -266,7 +266,7 @@ export const actions = {
             obj.id = payload.id;
             obj.name = payload.name;
 
-            if (payload.media !== null) {
+            if (payload.media != null) {
                 obj.image = payload.media.url;
             }
 

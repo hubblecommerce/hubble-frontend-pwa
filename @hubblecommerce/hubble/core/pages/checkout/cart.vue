@@ -105,6 +105,13 @@ export default {
 
             return false;
         },
+        isGuest: function() {
+            if (!_.isEmpty(this.customer.customerData)) {
+                return this.customer.customerData.guest;
+            }
+
+            return false;
+        }
     },
 
     mounted() {
@@ -134,7 +141,7 @@ export default {
             this.precalculateShippingCostAction(order);
         },
         checkoutPath: function () {
-            if (this.isLoggedIn) {
+            if (this.isLoggedIn || this.isGuest) {
                 return this.localePath('checkout-overview');
             }
 

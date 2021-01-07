@@ -175,7 +175,7 @@ export default {
             this.isOnWishlist = !!this.wishlistState[this.item.id];
         },
         isLoggedIn: function () {
-            if (!_.isEmpty(this.customer.customerAuth) && this.customer.customerAuth.token !== 'guest') {
+            if (!_.isEmpty(this.customer.customerAuth) && !this.customer.customerData.guest) {
                 return this.customer.customerAuth.token;
             }
 

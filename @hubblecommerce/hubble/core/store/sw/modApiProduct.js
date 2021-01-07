@@ -113,15 +113,17 @@ export const actions = {
             )
                 .then((response) => {
                     dispatch('mappingProduct', { product: response.data.data, path: payload.path }).then((res) => {
-                        commit('setDataProduct', {
+                        let responseObj = {
                             data: {
                                 result: {
-                                    item: res,
-                                },
-                            },
-                        });
+                                    item: res
+                                }
+                            }
+                        };
 
-                        resolve('ok');
+                        commit('setDataProduct', responseObj);
+
+                        resolve(responseObj);
                     });
                 })
                 .catch((error) => {
@@ -143,7 +145,7 @@ export const actions = {
             if (product.childCount > 0) {
                 obj.type = 'configurable';
             }
-            if (product.cover !== null) {
+            if (product.cover != null) {
                 obj.image = product.cover.media.url;
             }
             obj.name = product.name;
@@ -151,7 +153,7 @@ export const actions = {
             obj.meta_title = product.metaTitle;
             obj.meta_keywords = product.keywords;
             obj.meta_description = product.metaDescription;
-            if (product.manufacturer !== null) {
+            if (product.manufacturer != null) {
                 obj.manufacturer_id = product.manufacturer.id;
                 obj.manufacturer_name = product.manufacturer.name;
 

@@ -441,6 +441,7 @@ export default (context) => {
             'Show Cart': 'Show Cart',
             'Hide Cart': 'Hide Cart',
             'Addresses could not be loaded': 'Addresses could not be loaded',
+            'Edit': 'Edit',
         });
     });
 };

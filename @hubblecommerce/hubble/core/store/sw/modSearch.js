@@ -62,9 +62,9 @@ export const actions = {
                     action: 'post',
                     tokenType: 'sw',
                     apiType: 'data',
-                    endpoint: '/sales-channel-api/v3/product',
+                    endpoint: '/store-api/v3/search',
                     data: {
-                        term: payload.query,
+                        search: payload.query,
                         limit: state.maxProductItems,
                         associations: {
                             manufacturer: {},

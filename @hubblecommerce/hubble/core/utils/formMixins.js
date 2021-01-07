@@ -68,7 +68,7 @@ const salutations = {
                 .then((response) => {
                     let mappedSalutations = [];
 
-                    _.forEach(response.data.data, (salutation) => {
+                    _.forEach(response.data, (salutation) => {
                         mappedSalutations.push({
                             key: salutation.id,
                             value: this.$t(salutation.displayName),

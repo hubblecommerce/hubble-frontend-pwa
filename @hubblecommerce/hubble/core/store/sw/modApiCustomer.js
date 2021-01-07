@@ -57,6 +57,14 @@ export const mutations = {
     setSalutations(state, payload) {
         state.salutations = payload;
     },
+    addCustomerAddress: (state, payload) => {
+        state.customer.customerAddresses.push(payload);
+    },
+    removeCustomerAddress: (state, payload) => {
+        if (payload !== null) {
+            state.customer.customerAddresses.splice(payload, 1);
+        }
+    },
 };
 
 export const getters = {
@@ -108,6 +116,7 @@ export const actions = {
                 customer.defaultShippingAddressId = 1;
                 customerAddresses.push(customer.shippingAddress);
             }
+
             // Remove cookies
             this.$cookies.remove(state.cookieName);
             this.$cookies.remove(state.cookieNameOrder);
@@ -156,7 +165,7 @@ export const actions = {
                     countryId: payload.address.country,
                 },
                 password: payload.password,
-                storefrontUrl: process.env.API_BASE_URL + '/',
+                storefrontUrl: process.env.API_BASE_URL,
             };
 
             if (payload.shippingAddress !== null) {
@@ -583,11 +592,11 @@ export const actions = {
             )
                 .then((response) => {
                     if (address.is_billing_default) {
-                        dispatch('setDefaultBillingAddress', response.data.data);
+                        dispatch('setDefaultBillingAddress', response.data.id);
                     }
 
                     if (address.is_shipping_default) {
-                        dispatch('setDefaultShippingAddress', response.data.data);
+                        dispatch('setDefaultShippingAddress', response.data.id);
                     }
 
                     resolve(response);
@@ -629,6 +638,30 @@ export const actions = {
                     console.log('edit address failed: %o', err);
                     reject(err);
                 });
+        });
+    },
+    async editGuestAddress({ commit, state, getters }, payload) {
+        return new Promise((resolve) => {
+            let keyToRemove = null;
+            _.forEach(state.customer.customerAddresses, (val, key) => {
+                if (val.id === payload.id) {
+                    keyToRemove = key;
+                }
+            });
+
+            // remove old address by id
+            commit('removeCustomerAddress', keyToRemove);
+
+            // set new address from payload
+            commit('addCustomerAddress', payload);
+
+            // Save store to cookie
+            this.$cookies.set(state.cookieName, state.customer, {
+                path: state.cookiePath,
+                expires: getters.getCookieExpires,
+            });
+
+            resolve('OK');
         });
     },
     async deleteCustomerAddress({ state, dispatch }, payload) {
@@ -738,7 +771,7 @@ export const actions = {
                 { root: true }
             )
                 .then((response) => {
-                    dispatch('mapOrders', response.data.data).then((mappedOrders) => {
+                    dispatch('mapOrders', response.data.orders.elements).then((mappedOrders) => {
                         resolve(mappedOrders);
                     });
                 })
@@ -785,7 +818,7 @@ export const actions = {
                     action: 'get',
                     tokenType: 'sw',
                     apiType: 'data',
-                    endpoint: '/sales-channel-api/v3/salutation',
+                    endpoint: '/store-api/v3/salutation',
                 },
                 { root: true }
             )
@@ -804,12 +837,30 @@ export const actions = {
             dispatch(
                 'apiCall',
                 {
-                    action: 'get',
+                    action: 'post',
                     tokenType: 'sw',
                     apiType: 'data',
-                    endpoint: '/sales-channel-api/v3/country',
-                    params: {
+                    endpoint: '/store-api/v3/country',
+                    data: {
                         limit: 500,
+                        filter: [
+                            {
+                                type: "equals",
+                                field: "active",
+                                value: true
+                            },
+                            {
+                                type: "equals",
+                                field: "shippingAvailable",
+                                value: true
+                            }
+                        ],
+                        sort: [
+                            {
+                                field: "position",
+                                order: "ASC"
+                            }
+                        ]
                     },
                 },
                 { root: true }
@@ -830,7 +881,7 @@ export const actions = {
                 .then((response) => {
                     let mappedCountries = [];
 
-                    _.forEach(response.data.data, (country) => {
+                    _.forEach(response.data.elements, (country) => {
                         mappedCountries.push({
                             name: country.name,
                             iso_code_2: country.id,

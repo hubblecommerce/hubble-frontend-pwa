@@ -157,7 +157,6 @@ export const actions = {
                 };
             }
         });
-        console.log(order);
 
         return new Promise((resolve, reject) => {
             dispatch('swGuestOrder', { order: order, swtc: rootState.modCart.swtc })

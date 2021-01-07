@@ -79,6 +79,7 @@ import Newsletter from '../components/utils/Newsletter';
 import _ from 'lodash';
 
 export default {
+    name: 'Hubble',
     components: {
         Newsletter,
         SearchTrigger,

@@ -82,6 +82,7 @@ import FlashMessages from '../components/utils/FlashMessages';
 import LayoutWrapper from '../components/utils/LayoutWrapper';
 
 export default {
+    name: 'HubbleLight',
     components: {
         CheckoutProgressBar,
         TheFooterCopyrightLight,

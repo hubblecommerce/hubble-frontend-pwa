@@ -56,7 +56,10 @@ export default {
             customer: (state) => state.modApiCustomer.customer,
         }),
         isLoggedIn: function () {
-            if (!_.isEmpty(this.customer.customerAuth) && this.customer.customerAuth.token !== 'guest') {
+            console.log(this.customer)
+            console.log(this.customer.customerAuth.token)
+
+            if (!_.isEmpty(this.customer.customerAuth) && !this.customer.customerData.guest) {
                 return this.customer.customerAuth.token;
             }
 

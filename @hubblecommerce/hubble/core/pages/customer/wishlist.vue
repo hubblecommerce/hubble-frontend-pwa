@@ -84,7 +84,7 @@ export default {
             }
         },
         isLoggedIn: function () {
-            if (!_.isEmpty(this.customer.customerAuth) && this.customer.customerAuth.token !== 'guest') {
+            if (!_.isEmpty(this.customer.customerAuth) && !this.customer.customerData.guest) {
                 return this.customer.customerAuth.token;
             }
 
