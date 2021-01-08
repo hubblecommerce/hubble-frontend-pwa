@@ -1,5 +1,3 @@
-import { datetimeUnixNow, datetimeUnixNowAddSecs } from '@hubblecommerce/hubble/core/utils/datetime';
-
 export const state = () => ({
     cacheTTL: 300,
 
@@ -47,29 +45,7 @@ export const actions = {
                     tokenType: 'sw',
                     apiType: 'data',
                     endpoint: '/store-api/v3/pwa/page',
-                    data: {
-                        path: payload,
-                        associations: {
-                            categories: {},
-                            manufacturer: {
-                                associations: {
-                                    media: {},
-                                },
-                            },
-                            media: {},
-                            seoUrls: {},
-                            crossSellings: {},
-                            children: {
-                                associations: {
-                                    options: {
-                                        associations: {
-                                            group: {},
-                                        },
-                                    },
-                                },
-                            },
-                        },
-                    },
+                    data: payload,
                 },
                 { root: true }
             )

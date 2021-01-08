@@ -184,10 +184,9 @@ export const actions = {
             obj.final_price_item = {
                 special_to_date: null,
                 special_from_date: null,
-                display_price_netto:
-                    product.calculatedPrice.calculatedTaxes[0].price - product.calculatedPrice.calculatedTaxes[0].tax,
+                display_price_netto: product.calculatedPrice.unitPrice,
                 display_price_netto_special: null,
-                display_price_brutto: product.calculatedPrice.calculatedTaxes[0].price,
+                display_price_brutto: product.calculatedPrice.unitPrice,
                 display_price_brutto_special: null,
                 priceinfo: null,
                 tax_class_id: 1,
