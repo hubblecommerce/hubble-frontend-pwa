@@ -87,7 +87,7 @@ export const actions = {
                 firstName: payload.address.firstName,
                 lastName: payload.address.lastName,
                 defaultBillingAddressId: 0,
-                defaultShippingAddressId: 0,
+                defaultShippingAddressId: 1,
             };
 
             let customerAddresses = [];
@@ -102,8 +102,9 @@ export const actions = {
                 countryId: payload.address.country,
             });
 
+            let shippingAddress;
             if (payload.shippingAddress !== null) {
-                customer.shippingAddress = {
+                shippingAddress = {
                     id: 1,
                     salutationId: payload.shippingAddress.gender,
                     firstName: payload.shippingAddress.firstName,
@@ -113,9 +114,19 @@ export const actions = {
                     city: payload.shippingAddress.city,
                     countryId: payload.shippingAddress.country,
                 };
-                customer.defaultShippingAddressId = 1;
-                customerAddresses.push(customer.shippingAddress);
+            } else {
+                shippingAddress = {
+                    id: 1,
+                    salutationId: payload.address.gender,
+                    firstName: payload.address.firstName,
+                    lastName: payload.address.lastName,
+                    street: payload.address.street,
+                    zipcode: payload.address.postal,
+                    city: payload.address.city,
+                    countryId: payload.address.country,
+                };
             }
+            customerAddresses.push(shippingAddress);
 
             // Remove cookies
             this.$cookies.remove(state.cookieName);
@@ -782,12 +793,12 @@ export const actions = {
                 });
         });
     },
-    async passwordUpdate({ dispatch, state }, payload) {
+    async passwordUpdate({ dispatch, state, commit }, payload) {
         return new Promise((resolve, reject) => {
             dispatch(
                 'apiCall',
                 {
-                    action: 'patch',
+                    action: 'post',
                     tokenType: 'sw',
                     apiType: 'data',
                     swContext: state.customer.customerAuth.token,
@@ -845,22 +856,22 @@ export const actions = {
                         limit: 500,
                         filter: [
                             {
-                                type: "equals",
-                                field: "active",
-                                value: true
+                                type: 'equals',
+                                field: 'active',
+                                value: true,
                             },
                             {
-                                type: "equals",
-                                field: "shippingAvailable",
-                                value: true
-                            }
+                                type: 'equals',
+                                field: 'shippingAvailable',
+                                value: true,
+                            },
                         ],
                         sort: [
                             {
-                                field: "position",
-                                order: "ASC"
-                            }
-                        ]
+                                field: 'position',
+                                order: 'ASC',
+                            },
+                        ],
                     },
                 },
                 { root: true }
@@ -939,7 +950,7 @@ export const actions = {
             dispatch(
                 'apiCall',
                 {
-                    action: 'patch',
+                    action: 'post',
                     tokenType: 'sw',
                     swContext: state.customer.customerAuth.token,
                     apiType: 'data',
@@ -967,7 +978,7 @@ export const actions = {
             dispatch(
                 'apiCall',
                 {
-                    action: 'patch',
+                    action: 'post',
                     tokenType: 'sw',
                     swContext: state.customer.customerAuth.token,
                     apiType: 'data',
