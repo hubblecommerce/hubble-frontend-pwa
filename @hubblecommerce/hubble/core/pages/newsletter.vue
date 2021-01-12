@@ -1,17 +1,18 @@
 <template>
     <div class="container">
         <breadcrumbs :path="breadcrumbPath" />
-        <div class=""> Sorry newsletter is currently deactivated. </div>
+        <newsletter-form></newsletter-form>
     </div>
 </template>
 
 <script>
 import Breadcrumbs from '../components/utils/Breadcrumbs';
+import NewsletterForm from '../components/utils/NewsletterForm';
 
 export default {
     name: 'Newsletter',
 
-    components: { Breadcrumbs },
+    components: { NewsletterForm, Breadcrumbs },
 
     layout: 'hubble',
 

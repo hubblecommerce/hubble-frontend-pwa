@@ -362,6 +362,11 @@ export default (context) => {
             '** Please enter your date of birth in this field, if you want to receive your personal birthday newsletter including a personal coupon':
                 '** Please enter your date of birth in this field, if you want to receive your personal birthday newsletter including a personal coupon',
             'Subscribe to Newsletter': 'Subscribe to Newsletter',
+            'Unsubscribe from Newsletter': 'Unsubscribe from Newsletter',
+            'Subject': 'Subject',
+            'Submit': 'Submit',
+            'Subscribe': 'Subscribe',
+            'Unsubscribe': 'Unsubscribe',
 
             // Validation
             'The password is required.': 'Password is required',
@@ -416,6 +421,9 @@ export default (context) => {
             'No network connection.': 'No network connection.',
 
             'You successfully signed up to our newsletter.': 'You successfully signed up to our newsletter.',
+            'You successfully unsubscribed from our newsletter.': 'You successfully unsubscribed from our newsletter.',
+
+            'You successfully contacted us.': 'You successfully contacted us.',
 
             'Subscription was not successful': 'Subscription was not successful',
 

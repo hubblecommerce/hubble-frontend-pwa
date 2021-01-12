@@ -409,6 +409,11 @@ export default (context) => {
             '** Please enter your date of birth in this field, if you want to receive your personal birthday newsletter including a personal coupon':
                 '** Bitte tragen Sie Ihr Geburtsdatum in dieses Feld ein, wenn Sie zusätzlich den Geburtstagsnewsletter inkl. persönlichem Gutschein erhalten möchten.',
             'Subscribe to Newsletter': 'Newsletter Abonnieren',
+            'Unsubscribe from Newsletter': 'Vom Newsletter abmelden',
+            'Subject': 'Thema',
+            'Submit': 'Absenden',
+            'Subscribe': 'Abonnieren',
+            'Unsubscribe': 'Abmelden',
 
             // Validation
             'The password is required.': 'Passwort ist ein Pflichtfeld',
@@ -471,6 +476,10 @@ export default (context) => {
             'Resetting password is currently not available': 'Passwort zurücksetzen ist zur Zeit nicht möglich',
 
             'You successfully signed up to our newsletter.': 'Die Newsletter Anmeldung war erfolgreich.',
+            'You successfully unsubscribed from our newsletter.':
+                'Sie haben sich erfolgreich vom Newsletter abgemeldet.',
+
+            'You successfully contacted us.': 'Ihr Kontaktformular wurde erfolgreich übermittelt.',
 
             'Subscription was not successful': 'Anmeldung war nicht erfolgreich',
 

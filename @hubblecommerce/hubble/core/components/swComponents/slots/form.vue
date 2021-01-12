@@ -1,20 +1,21 @@
 <template>
     <div>
         <div v-if="getType === 'newsletter'">
-            <NewsletterSignUp :title="getTitle" />
+            <newsletter-form :title="getTitle" />
         </div>
         <div v-else>
-            <div>Contact Form</div>
+            <contact-form :title="getTitle" />
         </div>
     </div>
 </template>
 
 <script>
-import NewsletterSignUp from '../../utils/NewsletterSignUp';
+import NewsletterForm from '../../utils/NewsletterForm';
+import ContactForm from '../../utils/ContactForm';
 
 export default {
     name: 'FormSlot',
-    components: { NewsletterSignUp },
+    components: { ContactForm, NewsletterForm },
     props: {
         content: {
             type: Object,
