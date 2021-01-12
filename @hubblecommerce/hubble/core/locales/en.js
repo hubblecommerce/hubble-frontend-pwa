@@ -367,6 +367,8 @@ export default (context) => {
             'Submit': 'Submit',
             'Subscribe': 'Subscribe',
             'Unsubscribe': 'Unsubscribe',
+            'We send you an email with further instructions to reset your password.':
+                'We send you an email with further instructions to reset your password.',
 
             // Validation
             'The password is required.': 'Password is required',

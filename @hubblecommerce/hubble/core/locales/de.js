@@ -414,6 +414,8 @@ export default (context) => {
             'Submit': 'Absenden',
             'Subscribe': 'Abonnieren',
             'Unsubscribe': 'Abmelden',
+            'We send you an email with further instructions to reset your password.':
+                'Wir haben Ihnen eine E-Mail zum Zurücksetzen ihres Passworts gesendet.',
 
             // Validation
             'The password is required.': 'Passwort ist ein Pflichtfeld',

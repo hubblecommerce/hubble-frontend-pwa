@@ -793,7 +793,7 @@ export const actions = {
                 });
         });
     },
-    async passwordUpdate({ dispatch, state, commit }, payload) {
+    async passwordUpdate({ dispatch, state, commit, getters }, payload) {
         return new Promise((resolve, reject) => {
             dispatch(
                 'apiCall',
@@ -812,11 +812,39 @@ export const actions = {
                 { root: true }
             )
                 .then((response) => {
-                    resolve(response);
+                    // save new context token
+                    let authData = {
+                        created_at: new Date(),
+                        expires_at: getters.getCookieExpires,
+                        expires_in: 86400,
+                        token: response.data['contextToken'],
+                        token_name: 'swtc',
+                        token_type: 'context',
+                        updated_at: '',
+                    };
+                    commit('setCustomerAuth', authData);
+
+                    dispatch('modCart/saveSwtc', response.data['contextToken'], { root: true }).then(() => {
+                        this.$cookies.set(
+                            state.cookieName,
+                            {
+                                customerAuth: state.customer.customerAuth,
+                                customerData: {},
+                                customerAddresses: [],
+                                billingAddress: {},
+                                shippingAddress: {},
+                            },
+                            {
+                                path: state.cookiePath,
+                                expires: getters.getCookieExpires,
+                            }
+                        );
+                    });
+
+                    resolve();
                 })
                 .catch((error) => {
                     console.log('passwordUpdate failed: %o', error);
-
                     reject(error);
                 });
         });
@@ -1005,6 +1033,31 @@ export const actions = {
                 .catch((response) => {
                     console.log('API patch request to update user email information failed: %o', response);
 
+                    reject(response);
+                });
+        });
+    },
+    async passwordForgot({ dispatch }, payload) {
+        return new Promise((resolve, reject) => {
+            dispatch(
+                'apiCall',
+                {
+                    action: 'post',
+                    tokenType: 'sw',
+                    apiType: 'data',
+                    endpoint: '/store-api/v3/account/recovery-password',
+                    data: {
+                        email: payload.email,
+                        storefrontUrl: process.env.API_BASE_URL,
+                    },
+                },
+                { root: true }
+            )
+                .then((response) => {
+                    resolve(response);
+                })
+                .catch((response) => {
+                    console.log('API patch request to update user email information failed: %o', response);
                     reject(response);
                 });
         });

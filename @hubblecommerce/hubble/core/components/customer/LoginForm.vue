@@ -238,40 +238,35 @@ export default {
                     });*/
                 });
         },
-        // TODO: only show pw reset if not sw
         submitForgotPassword: function () {
-            if (process.env.API_TYPE === 'sw') {
-                if (!_.includes(this.errors, this.$t('Resetting password is currently not available'))) {
-                    this.errors.push(this.$t('Resetting password is currently not available'));
-                }
-            } else {
-                let payload = {
-                    email: this.form.email,
-                };
+            let payload = {
+                email: this.form.email,
+            };
 
-                this.passwordForgot(payload)
-                    .then(() => {
-                        // close off canvas if in offcanvas and show success message
-                        this.hideOffcanvasAction().then(() => {
-                            this.flashMessage({
-                                flashType: 'success',
-                                flashMessage: 'A new password has been sent to your e-mail adress.',
-                                keepOnRouteChange: true,
-                            });
-
-                            // Reset data
-                            this.form = new Form({
-                                email: '',
-                                password: '',
-                            });
-
-                            this.errors = [];
+            this.passwordForgot(payload)
+                .then(() => {
+                    // close off canvas if in offcanvas and show success message
+                    this.hideOffcanvasAction().then(() => {
+                        this.flashMessage({
+                            flashType: 'success',
+                            flashMessage: this.$t(
+                                'We send you an email with further instructions to reset your password.'
+                            ),
+                            keepOnRouteChange: true,
                         });
-                    })
-                    .catch(() => {
-                        this.errors.push(this.$t('Requesting a new password has failed.'));
+
+                        // Reset data
+                        this.form = new Form({
+                            email: '',
+                            password: '',
+                        });
+
+                        this.errors = [];
                     });
-            }
+                })
+                .catch(() => {
+                    this.errors.push(this.$t('Requesting a new password has failed.'));
+                });
         },
         toggleLoginForm: function () {
             this.errors = [];
