@@ -366,7 +366,7 @@ export const actions = {
                 },
                 { root: true }
             )
-                .then(() => {
+                .then((response) => {
                     // Clear customer data
                     commit('clearCustomerData');
 
@@ -379,7 +379,9 @@ export const actions = {
                     this.$cookies.remove(state.cookieNameOrder);
                     this.$cookies.remove(state.cookieNameAddress);
 
-                    resolve('OK');
+                    dispatch('modCart/saveSwtc', response.data['contextToken'], { root: true }).then(() => {
+                        resolve();
+                    });
                 })
                 .catch((response) => {
                     console.log('logOut failed: %o', response);
