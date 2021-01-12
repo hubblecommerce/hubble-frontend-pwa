@@ -280,20 +280,20 @@ export const actions = {
             obj.path_ids = [];
             obj.path_names = [];
             obj.path_urls = [];
-            if (payload.path != null) {
-                let breadcrumbs = _.cloneDeep(payload.breadcrumb);
-                breadcrumbs.shift();
-                obj.path_names = breadcrumbs;
-                obj.path_ids = breadcrumbs;
-                obj.path_urls = [];
-                _.each(obj.path_names, (crumb, index) => {
-                    let slugifiedCrumb = slugify(crumb) + '/';
-                    if (index > 1) {
-                        slugifiedCrumb = obj.path_urls[index - 1] + slugifiedCrumb;
-                    }
-                    obj.path_urls.push(slugifiedCrumb);
-                });
-            }
+            //if (payload.path != null) {
+            //    let breadcrumbs = _.cloneDeep(payload.breadcrumb);
+            //    breadcrumbs.shift();
+            //    obj.path_names = breadcrumbs;
+            //    obj.path_ids = breadcrumbs;
+            //    obj.path_urls = [];
+            //    _.each(obj.path_names, (crumb, index) => {
+            //        let slugifiedCrumb = slugify(crumb) + '/';
+            //        if (index > 1) {
+            //            slugifiedCrumb = obj.path_urls[index - 1] + slugifiedCrumb;
+            //        }
+            //        obj.path_urls.push(slugifiedCrumb);
+            //    });
+            //}
 
             resolve(obj);
         });
@@ -318,8 +318,8 @@ export const actions = {
                     // Todo: if not image isset insert placeholder image
                 }
 
-                obj.name = product.name;
-                obj.description = product.description;
+                obj.name = product.translated.name;
+                obj.description = product.translated.description;
                 obj.meta_title = product.metaTitle;
                 obj.meta_keywords = product.keywords;
                 obj.meta_description = product.metaDescription;
@@ -327,15 +327,15 @@ export const actions = {
                     obj.manufacturer_id = product.manufacturer.id;
                     obj.manufacturer_name = product.manufacturer.name;
                 }
-                if (!_.isEmpty(product.seoUrls)) {
-                    _.forEach(product.seoUrls, (seoUrl) => {
-                        if (seoUrl.isCanonical) {
-                            obj.url_pds = seoUrl.seoPathInfo;
-                        }
-                    });
-                } else {
-                    obj.url_pds = slugify(product.name) + '/' + product.productNumber;
-                }
+                //if (!_.isEmpty(product.seoUrls)) {
+                //    _.forEach(product.seoUrls, (seoUrl) => {
+                //        if (seoUrl.isCanonical) {
+                //            obj.url_pds = seoUrl.seoPathInfo;
+                //        }
+                //    });
+                //} else {
+                //    obj.url_pds = slugify(product.name) + '/' + product.productNumber;
+                //}
                 obj.stock_item = {
                     qty: product.stock,
                     is_in_stock: product.available,

@@ -86,6 +86,89 @@ export const getters = {
 };
 
 export const actions = {
+    async fetchProduct({ commit, state, dispatch }, payload) {
+        try {
+            const response = await dispatch(
+                'apiCall',
+                {
+                    action: 'post',
+                    tokenType: 'sw',
+                    apiType: 'data',
+                    endpoint: '/store-api/v3/product',
+                    data: {
+                        filter: payload.filter,
+                        associations: {
+                            "manufacturer": {
+                                "associations": {
+                                    "media": {},
+                                },
+                            },
+                            "properties": {
+                                "associations": {
+                                    "group": {}
+                                }
+                            },
+                            "media": {},
+                            "productReviews": {},
+                            "options": {
+                                "associations": {
+                                    "productOptions": {},
+                                    "group": {}
+                                }
+                            },
+                            "categories": {},
+                            "seoUrls": {},
+                            "crossSellings": {},
+                        },
+                        includes: {
+                            "product": [
+                                "media",
+                                "productReviews",
+                                "children",
+                                "name",
+                                "ratingAverage",
+                                "calculatedPrice",
+                                "calculatedPrices",
+                                "calculatedListingPrice",
+                                "cover",
+                                "parentId",
+                                "id",
+                                "translated",
+                                "options",
+                                "properties",
+                                "productNumber",
+                                "manufacturer",
+                                "seoUrls",
+                                "optionIds",
+                                "ean",
+                                "description",
+                                "stock",
+                                "available",
+                                "deliveryTime",
+                                "shippingFree",
+                                "crossSellings",
+                                "childCount"
+                            ],
+                            "product_media": [
+                                "media"
+                            ],
+                            "calculated_price": [
+                                "unitPrice",
+                                "quantity",
+                                "listPrice"
+                            ],
+                        }
+                    }
+                },
+                { root: true }
+            );
+
+            return response;
+        } catch(error) {
+            console.log('getProductData error: ', error);
+            return error;
+        }
+    },
     async getProductData({ commit, state, dispatch }, payload) {
         return new Promise(function (resolve, reject) {
             let endpoint = _.join(
@@ -142,14 +225,14 @@ export const actions = {
             obj.id = product.id;
             obj.sku = product.ean;
             obj.type = 'simple';
-            if (product.childCount > 0) {
+            if (product.optionIds !== null) {
                 obj.type = 'configurable';
             }
             if (product.cover != null) {
                 obj.image = product.cover.media.url;
             }
-            obj.name = product.name;
-            obj.description = product.description;
+            obj.name = product.translated.name;
+            obj.description = product.translated.description;
             obj.meta_title = product.metaTitle;
             obj.meta_keywords = product.keywords;
             obj.meta_description = product.metaDescription;
@@ -166,7 +249,7 @@ export const actions = {
                     obj.manufacturer_item.logo = product.manufacturer.media.url;
                 }
             }
-            obj.name_orig = product.name;
+            obj.name_orig = product.translated.name;
 
             if (!_.isEmpty(product.seoUrls)) {
                 obj.url_pds = product.seoUrls[product.seoUrls.length - 1].seoPathInfo;
@@ -236,46 +319,10 @@ export const actions = {
             obj.properties = product.properties;
             obj.optionIds = product.optionIds;
             obj.options = product.options;
+            obj.parentId = product.parentId;
 
-            // Generate Children
-            if (product.childCount > 0) {
-                obj.children = [];
-
-                let uniqueOptionsOfAllChildren = [];
-
-                _.forEach(product.children, (child) => {
-                    dispatch('mappingProduct', { product: child, path: '' }).then((res) => {
-                        obj.children.push(res);
-                    });
-
-                    // Generate unique options
-                    // Each option includes it's group
-                    _.forEach(child.options, (option) => {
-                        if (!_.some(uniqueOptionsOfAllChildren, option)) {
-                            uniqueOptionsOfAllChildren.push(option);
-                        }
-                    });
-                });
-
-                // Generate unique groups
-                let groups = [];
-                _.forEach(uniqueOptionsOfAllChildren, (option) => {
-                    if (!_.some(groups, option.group)) {
-                        groups.push(option.group);
-                    }
-                });
-
-                // Assign each unique group it's unique options
-                _.forEach(groups, (group) => {
-                    group.options = [];
-                    _.forEach(uniqueOptionsOfAllChildren, (option) => {
-                        if (option.groupId === group.id) {
-                            group.options.push(option);
-                        }
-                    });
-                });
-
-                obj.groups = groups;
+            if(payload.configurator != null) {
+                obj.groups = payload.configurator;
             }
 
             resolve(obj);

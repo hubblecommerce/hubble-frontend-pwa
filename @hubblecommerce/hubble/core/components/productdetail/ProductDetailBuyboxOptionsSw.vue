@@ -8,15 +8,15 @@
                     v-for="(option, optionIndex) in group.options"
                     :key="optionIndex"
                     class="option-val"
-                    :class="selectedOptions.includes(option.id) ? 'active' : ''"
+                    :class="showActiveClass(group.id, option.id) "
                 >
                     <input
                         :id="option.id"
-                        v-model="selectedOptions[index]"
+                        v-model="selectedOptions[group.id]"
                         type="radio"
                         :name="group.id"
                         :value="option.id"
-                        :checked="optionIndex === 0 ? 'checked' : ''"
+                        @change="onChange($event)"
                     />
                     <label :for="option.id" v-text="option.name" />
                 </div>
@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { mapMutations, mapState } from 'vuex';
+import { mapState } from 'vuex';
 import _ from 'lodash';
 
 export default {
@@ -34,10 +34,8 @@ export default {
 
     data() {
         return {
-            itemLoaded: {},
-            selectedOptions: [],
-            variants: [],
-            matchingChild: null,
+            selectedOptions: {},
+            updatedOptions: null
         };
     },
 
@@ -46,97 +44,84 @@ export default {
             dataProduct: (state) => state.modApiProduct.dataProduct,
         }),
         groups: function () {
-            return !_.isEmpty(this.itemLoaded.groups) ? this.itemLoaded.groups : null;
-        },
-    },
-
-    watch: {
-        selectedOptions: function (selectedOptions) {
-            // Set options is selected flag, used to validate before add to cart action
-            this.setOptionIsSelected();
-
-            // Aggregate variants, used for display variants in cart list items component
-            this.aggregateSelectedVariants(selectedOptions);
-            this.setSelectedVariants(this.variants);
-
-            // Find matching child by selected options
-            this.setMatchingChildBySelectedOptions(selectedOptions);
-
-            // Clone current product state to prevent mutation of state
-            let selectedChildProduct = _.clone(this.itemLoaded);
-
-            // Set id of children to current item data
-            // TODO: Set all properies that need to be updated e.g. price, image, description, ...
-            selectedChildProduct.id = this.matchingChild.id;
-
-            // Save updated product to store
-            this.setDataProductItem({
-                data: selectedChildProduct,
-            });
+            return !_.isEmpty(this.dataProduct.result.item.groups) ? this.dataProduct.result.item.groups : null;
         },
     },
 
     created() {
-        this.itemLoaded = this.dataProduct.result.item;
         this.setInitialOptions();
     },
 
     methods: {
-        ...mapMutations({
-            setOptionIsSelected: 'modApiProduct/setOptionIsSelected',
-            setSelectedVariants: 'modApiProduct/setSelectedVariants',
-            setDataProductItem: 'modApiProduct/setDataProductItem',
-        }),
         setInitialOptions: function () {
-            _.forEach(this.groups, (group) => {
-                // Set first option of each group as initial options
-                this.selectedOptions.push(group.options[0].id);
+            this.dataProduct.result.item.options.forEach((option) => {
+                _.assign(this.selectedOptions, { [option.group.id]: option.id });
             });
         },
-        aggregateSelectedVariants: function (selectedOptions) {
-            this.variants = [];
+        onChange: async function(e) {
+            // Clone and write options to make them reactive
+            this.updatedOptions = _.clone(this.selectedOptions);
 
-            _.forEach(selectedOptions, (optionId) => {
-                _.forEach(this.groups, (group) => {
-                    _.find(group.options, (o) => {
-                        if (o.id === optionId) {
-                            this.variants.push({
-                                label: group.name,
-                                value_label: o.name,
-                            });
-                        }
-                    });
-                });
+            let queries = [];
+            Object.entries(this.updatedOptions).forEach(([key, option]) => {
+                queries.push({
+                    "type": "contains",
+                    "field": "optionIds",
+                    "value": option
+                })
             });
-        },
-        setMatchingChildBySelectedOptions: function (selectedOptions) {
-            _.forEach(this.itemLoaded.children, (child) => {
-                if (this.arraysMatch(child.optionIds, selectedOptions)) {
-                    this.matchingChild = child;
+
+            let filter = [
+                {
+                    type: 'equals',
+                    field: 'parentId',
+                    value: this.dataProduct.result.item.parentId
+                },
+                {
+                    type: "multi",
+                    operator: "and",
+                    queries: queries
                 }
+            ];
+
+            // Fetch product by current options selected
+            let response = await this.$store.dispatch('modApiProduct/fetchProduct', {
+                filter: filter
             });
-        },
-        arraysMatch: function (arr1, arr2) {
-            let arr1Clone = _.clone(arr1);
-            let arr2Clone = _.clone(arr2);
 
-            // Check if the arrays are the same length
-            if (arr1Clone.length !== arr2Clone.length) {
+            // Return if no or more than one results
+            if(response.data.elements.length > 1 || response.data.elements.length === 0) {
                 return false;
             }
 
-            // Sort arrays
-            arr1Clone.sort();
-            arr2Clone.sort();
+            // Mapping response data (prepare to replace current product data)
+            let mappedProduct = await this.$store.dispatch('modApiProduct/mappingProduct', {
+                product: response.data.elements[0]
+            });
 
-            // Check if arrays are not equal
-            if (!_.isEqual(arr1Clone, arr2Clone)) {
-                return false;
+            // Clone to prevent direct store manipulation
+            let originData = _.cloneDeep(this.dataProduct.result.item);
+
+            // Merge Productdata of variant with current product, to update current variant data
+            let mergedProduct = _.merge(originData, mappedProduct);
+
+            let responseObj = {
+                data: {
+                    result: {
+                        item: mergedProduct
+                    }
+                }
+            };
+
+            this.$store.commit('modApiProduct/setDataProduct', responseObj);
+        },
+        showActiveClass: function(groupId, optionId) {
+            if(this.updatedOptions != null) {
+                return this.updatedOptions[groupId] === optionId ? 'active' : '';
             }
 
-            // Otherwise, return true
-            return true;
-        },
+            return this.selectedOptions[groupId] === optionId ? 'active' : ''
+        }
     },
 };
 </script>

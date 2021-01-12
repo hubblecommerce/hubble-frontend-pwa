@@ -1,6 +1,7 @@
 <template>
-    <div v-if="dataProduct.manufacturer_item.logo != null" class="brand-logo-wrp">
+    <div v-if="dataProduct.manufacturer_item != null" class="brand-logo-wrp">
         <img-lazy
+            v-if="dataProduct.manufacturer_item.logo != null"
             :src="dataProduct.manufacturer_item.logo"
             :alt-info="dataProduct.manufacturer_item.name"
             :title-info="dataProduct.manufacturer_item.name"

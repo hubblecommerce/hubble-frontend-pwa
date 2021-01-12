@@ -135,16 +135,16 @@ export default async function ({ store, route, error }) {
         "product_media": [
             "media"
         ],
+        "calculated_price": [
+            "unitPrice",
+            "quantity",
+            "listPrice"
+        ],
         "media": [
             "thumbnails",
             "width",
             "height",
             "url"
-        ],
-        "calculated_price": [
-            "unitPrice",
-            "quantity",
-            "listPrice"
         ],
         "product_group_option": [
             "name",
@@ -172,7 +172,9 @@ export default async function ({ store, route, error }) {
         "property_group": [
             "id",
             "translated",
-            "options"
+            "options",
+            "filterable",
+            "name"
         ],
         "property_group_option": [
             "name",
@@ -305,11 +307,9 @@ export default async function ({ store, route, error }) {
 
         // Detail
         if (pageResponse.data.resourceType === 'frontend.detail.page') {
-            let product = pageResponse.data.product;
+            store.commit('modApiProduct/setProductId', pageResponse.data.product.id);
 
-            store.commit('modApiProduct/setProductId', product.id);
-
-            let mappedProduct = await store.dispatch('modApiProduct/mappingProduct', { product: product });
+            let mappedProduct = await store.dispatch('modApiProduct/mappingProduct', pageResponse.data);
 
             store.commit('modApiProduct/setDataProduct', {
                 data: {
