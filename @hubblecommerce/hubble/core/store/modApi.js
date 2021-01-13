@@ -232,6 +232,7 @@ export const actions = {
 
                         if (process.env.API_TYPE === 'sw') {
                             _.assign(_headers, { 'sw-access-key': process.env.API_SW_ACCESS_KEY });
+                            _.assign(_headers, { 'sw-include-seo-urls': true });
 
                             if (payload.swContext != null) {
                                 _.assign(_headers, { 'sw-context-token': payload.swContext });
