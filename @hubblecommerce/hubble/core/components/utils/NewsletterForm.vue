@@ -282,8 +282,7 @@
 <script>
 import Form from '../../utils/form';
 import { addBackendErrors, salutations } from '@hubblecommerce/hubble/core/utils/formMixins';
-//import _ from 'lodash'
-import { mapActions, mapState } from 'vuex';
+import { mapActions } from 'vuex';
 
 export default {
     name: 'NewsletterForm',

@@ -232,10 +232,6 @@ export default {
                     console.log('logIn error: ', error);
 
                     this.errors.push(this.$t('Login failed'));
-
-                    /*_.forEach(this.addBackendErrors(error), error => {
-                        this.errors.push(error);
-                    });*/
                 });
         },
         submitForgotPassword: function () {
