@@ -327,15 +327,15 @@ export const actions = {
                     obj.manufacturer_id = product.manufacturer.id;
                     obj.manufacturer_name = product.manufacturer.name;
                 }
-                //if (!_.isEmpty(product.seoUrls)) {
-                //    _.forEach(product.seoUrls, (seoUrl) => {
-                //        if (seoUrl.isCanonical) {
-                //            obj.url_pds = seoUrl.seoPathInfo;
-                //        }
-                //    });
-                //} else {
-                //    obj.url_pds = slugify(product.name) + '/' + product.productNumber;
-                //}
+
+                if(product.seoUrls !== null) {
+                    _.forEach(product.seoUrls, (seoUrl) => {
+                        if (seoUrl.isCanonical) {
+                            obj.url_pds = seoUrl.seoPathInfo;
+                        }
+                    });
+                }
+
                 obj.stock_item = {
                     qty: product.stock,
                     is_in_stock: product.available,
