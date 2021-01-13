@@ -10,7 +10,6 @@ export const state = () => ({
     dataProductUpsellings: {},
     optionIsSelected: false,
     optionNotSelectedError: false,
-
     selectedVariants: [],
 
     // Routing Information

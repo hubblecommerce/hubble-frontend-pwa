@@ -31,6 +31,7 @@ export const state = () => ({
 
     productToUpdate: '',
     qtyToUpdate: null,
+    isLoading: false
 });
 
 export const getters = {
@@ -96,6 +97,9 @@ export const mutations = {
     },
     initiateLayer(state) {
         state.layerInitiated = true;
+    },
+    setIsLoading(state, payload) {
+        state.isLoading = payload;
     },
 };
 

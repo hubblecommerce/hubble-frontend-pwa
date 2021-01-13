@@ -114,13 +114,17 @@ export default {
 
     created() {
         // Build array of options based on maxQty parameter
-        let i;
-        for (i = 1; i <= this.maxQty; i++) {
-            this.qtyOptions.push({ text: i, value: i });
-        }
+        if(this.maxQty > 0) {
+            let i;
+            for (i = 1; i <= this.maxQty; i++) {
+                this.qtyOptions.push({ text: i, value: i });
+            }
 
-        if (this.showMore) {
-            this.qtyOptions.push({ text: 'mehr', value: 'more' });
+            if (this.showMore) {
+                this.qtyOptions.push({ text: 'mehr', value: 'more' });
+            }
+        } else {
+            this.qtySelected = 0;
         }
     },
 
