@@ -807,11 +807,7 @@ export default {
             };
 
             try {
-                if (userData.isGuest) {
-                    await this.registerGuest(userData);
-                } else {
-                    await this.register(userData);
-                }
+                await this.register(userData);
 
                 this.redirectTo();
             } catch (e) {
