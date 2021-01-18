@@ -36,8 +36,8 @@
 
                 <shipping-methods />
 
-                <payment-methods />
-<!--                <payment-methods-sw />-->
+                <payment-methods v-if="!isShopware" />
+                <payment-methods-sw v-if="isShopware" />
             </div>
 
             <div class="checkout-actions-wrp">
@@ -89,8 +89,8 @@ export default {
         Coupons,
         CartItemsListNonInteractive,
         CustomerAddresses,
+        PaymentMethodsSw: () => import('../../components/checkout/PaymentMethodsSw'),
         PaymentMethods: () => import('../../components/checkout/PaymentMethods'),
-        //PaymentMethodsSw: () => import('../../components/checkout/PaymentMethodsSw'),
         ShippingMethods: () => import('../../components/checkout/ShippingMethods'),
     },
 
@@ -104,6 +104,7 @@ export default {
         return {
             showCart: false,
             errors: [],
+            isShopware: process.env.API_TYPE === 'sw'
         };
     },
 
@@ -159,13 +160,11 @@ export default {
 
             try {
                 order = await this.placeOrderAction();
-
                 paymentResponse = await this.swStartPayment(order.data.id);
 
-                if (paymentResponse.data.paymentUrl) {
+                if (paymentResponse.data.redirectUrl) {
                     this.resetProcessingCheckout();
-
-                    window.open(paymentResponse.data.paymentUrl, '_self');
+                    window.open(paymentResponse.data.redirectUrl, '_self');
                 }
 
                 if (_.isEmpty(paymentResponse.data)) {

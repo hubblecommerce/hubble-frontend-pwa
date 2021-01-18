@@ -220,7 +220,12 @@ export const actions = {
                     tokenType: 'sw',
                     apiType: 'data',
                     swContext: rootState.modApiCustomer.customer.customerAuth.token,
-                    endpoint: `/sales-channel-api/v3/checkout/order/${payload}/pay`,
+                    endpoint: 'store-api/v3/handle-payment',
+                    data: {
+                        orderId: payload,
+                        finishUrl: process.env.SW_PAYMENT_FINISH_URL,
+                        errorUrl: process.env.SW_PAYMENT_ERROR_URL
+                    }
                 },
                 { root: true }
             )
