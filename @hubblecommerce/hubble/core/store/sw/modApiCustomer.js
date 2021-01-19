@@ -31,6 +31,12 @@ export const mutations = {
         state.customer.customerAuth = payload;
     },
     setCustomerData(state, payload) {
+        // To trigger reactivity
+        let temp = _.clone(state.customer);
+        state.customer = null;
+        state.customer = temp;
+
+        // set customer data
         state.customer.customerData = payload;
     },
     clearCustomerData(state) {
@@ -161,37 +167,37 @@ export const actions = {
         });
     },
     async register({ dispatch, commit, state, getters }, payload) {
-        return new Promise((resolve, reject) => {
-            // Map customer data to fit SW6 headless API
-            let customer = {
-                guest: payload.guest,
-                salutationId: payload.address.gender,
-                email: payload.email,
-                firstName: payload.address.firstName,
-                lastName: payload.address.lastName,
-                billingAddress: {
-                    street: payload.address.street,
-                    zipcode: payload.address.postal,
-                    city: payload.address.city,
-                    countryId: payload.address.country,
-                },
-                password: payload.password,
-                storefrontUrl: process.env.API_BASE_URL,
+        // Map customer data to fit SW6 headless API
+        let customer = {
+            guest: payload.guest,
+            salutationId: payload.address.gender,
+            email: payload.email,
+            firstName: payload.address.firstName,
+            lastName: payload.address.lastName,
+            billingAddress: {
+                street: payload.address.street,
+                zipcode: payload.address.postal,
+                city: payload.address.city,
+                countryId: payload.address.country,
+            },
+            password: payload.password,
+            storefrontUrl: process.env.API_BASE_URL,
+        };
+
+        if (payload.shippingAddress !== null) {
+            customer.shippingAddress = {
+                salutationId: payload.shippingAddress.gender,
+                firstName: payload.shippingAddress.firstName,
+                lastName: payload.shippingAddress.lastName,
+                street: payload.shippingAddress.street,
+                zipcode: payload.shippingAddress.postal,
+                city: payload.shippingAddress.city,
+                countryId: payload.shippingAddress.country,
             };
+        }
 
-            if (payload.shippingAddress !== null) {
-                customer.shippingAddress = {
-                    salutationId: payload.shippingAddress.gender,
-                    firstName: payload.shippingAddress.firstName,
-                    lastName: payload.shippingAddress.lastName,
-                    street: payload.shippingAddress.street,
-                    zipcode: payload.shippingAddress.postal,
-                    city: payload.shippingAddress.city,
-                    countryId: payload.shippingAddress.country,
-                };
-            }
-
-            dispatch(
+        try {
+            let response = await dispatch(
                 'apiCall',
                 {
                     action: 'post',
@@ -201,71 +207,78 @@ export const actions = {
                     data: customer,
                 },
                 { root: true }
-            )
-                .then((response) => {
-                    // Clear customer data
-                    commit('clearCustomerData');
+            );
 
-                    commit('setCustomerData', response.data);
+            // Clear customer data
+            commit('clearCustomerData');
+            commit('setCustomerData', response.data);
 
-                    if (!response.data.guest) {
-                        dispatch('logIn', payload).then(() => {
-                            resolve(response);
-                        });
-                    } else {
-                        // preperation for store-api v4
-                        // Remove cookies
-                        this.$cookies.remove(state.cookieName);
-                        this.$cookies.remove(state.cookieNameOrder);
-                        this.$cookies.remove(state.cookieNameAddress);
+            if (!response.data.guest) {
+                let login = await dispatch('logIn', payload);
 
-                        // save customer auth as guest and their addresses in store and cookie
-                        let authData = {
-                            created_at: new Date(),
-                            expires_at: getters.getCookieExpires,
-                            expires_in: 86400,
-                            token: response.data['contextToken'],
-                            token_name: 'swtc',
-                            token_type: 'context',
-                            updated_at: '',
-                        };
-
-                        const customerData = {
-                            guest: response.data.guest,
-                            name: `${response.data.firstName} ${response.data.lastName}`,
-                            firstName: response.data.firstName,
-                            lastName: response.data.lastName,
-                            salutationId: response.data.salutationId,
-                            title: response.data.title,
-                            birthDay: response.data.birthday,
-                            email: response.data.email,
-                            defaultBillingAddressId: response.data.defaultBillingAddressId,
-                            defaultShippingAddressId: response.data.defaultShippingAddressId,
-                        };
-
-                        // Clear order Data
-                        commit('modApiPayment/setChosenPaymentMethod', {}, { root: true });
-                        commit('modApiPayment/setChosenShippingMethod', {}, { root: true });
-
-                        commit('setCustomerData', customerData);
-                        commit('setCustomerAuth', authData);
-                        dispatch('mapAddresses', response.data.addresses).then((mappedAddresses) => {
-                            commit('setCustomerAddresses', mappedAddresses);
-                            this.$cookies.set(state.cookieName, state.customer, {
-                                path: state.cookiePath,
-                                expires: getters.getCookieExpires,
-                            });
-
-                            resolve(response);
-                        });
-                    }
-                })
-                .catch((response) => {
-                    console.log('register - API post request failed: %o', response);
-
-                    reject(response);
+                return new Promise((resolve) => {
+                    resolve(login);
                 });
-        });
+            } else {
+                // preperation for store-api v4
+                // Remove cookies
+                this.$cookies.remove(state.cookieName);
+                this.$cookies.remove(state.cookieNameOrder);
+                this.$cookies.remove(state.cookieNameAddress);
+
+                // save customer auth as guest and their addresses in store and cookie
+                let authData = {
+                    created_at: new Date(),
+                    expires_at: getters.getCookieExpires,
+                    expires_in: 86400,
+                    token: response.data.extensions.guest['sw-context-token'],
+                    token_name: 'swtc',
+                    token_type: 'context',
+                    updated_at: '',
+                };
+
+                const customerData = {
+                    guest: response.data.guest,
+                    name: `${response.data.firstName} ${response.data.lastName}`,
+                    firstName: response.data.firstName,
+                    lastName: response.data.lastName,
+                    salutationId: response.data.salutationId,
+                    title: response.data.title,
+                    birthDay: response.data.birthday,
+                    email: response.data.email,
+                    defaultBillingAddressId: response.data.defaultBillingAddressId,
+                    defaultShippingAddressId: response.data.defaultShippingAddressId,
+                };
+
+                // Clear order Data
+                commit('modApiPayment/setChosenPaymentMethod', {}, { root: true });
+                commit('modApiPayment/setChosenShippingMethod', {}, { root: true });
+
+                commit('setCustomerData', customerData);
+                commit('setCustomerAuth', authData);
+
+                let mappedAddresses = await dispatch('mapAddresses', response.data.addresses);
+                commit('setCustomerAddresses', mappedAddresses);
+
+                this.$cookies.set(state.cookieName, state.customer, {
+                    path: state.cookiePath,
+                    expires: getters.getCookieExpires,
+                });
+
+                // If you log in with cart context token, Shopware merges cart automatically.
+                // You only have to use the returned context token for all future requests (cart/customer/checkout)
+                await dispatch('modCart/saveSwtc', response.data.extensions.guest['sw-context-token'], { root: true });
+                await dispatch('modCart/refreshCart', {}, { root: true });
+
+                return new Promise((resolve) => {
+                    resolve(response);
+                });
+            }
+        } catch(e) {
+            return new Promise((reject) => {
+                reject(e);
+            });
+        }
     },
     async logIn({ commit, state, dispatch, rootState, getters }, payload) {
         const loginCreds = {
@@ -273,8 +286,8 @@ export const actions = {
             password: payload.password,
         };
 
-        return new Promise((resolve, reject) => {
-            dispatch(
+        try {
+            let loginResponse = await dispatch(
                 'apiCall',
                 {
                     action: 'post',
@@ -285,74 +298,62 @@ export const actions = {
                     data: loginCreds,
                 },
                 { root: true }
-            )
-                .then((response) => {
-                    // Clear order Data
-                    commit('modApiPayment/setChosenPaymentMethod', {}, { root: true });
-                    commit('modApiPayment/setChosenShippingMethod', {}, { root: true });
+            );
 
-                    // Remove cookies
-                    this.$cookies.remove(state.cookieName);
-                    this.$cookies.remove(state.cookieNameOrder);
-                    this.$cookies.remove(state.cookieNameAddress);
+            // Clear order Data
+            commit('modApiPayment/setChosenPaymentMethod', {}, { root: true });
+            commit('modApiPayment/setChosenShippingMethod', {}, { root: true });
 
-                    let authData = {
-                        created_at: new Date(),
-                        expires_at: getters.getCookieExpires,
-                        expires_in: 86400,
-                        token: response.data['contextToken'],
-                        token_name: 'swtc',
-                        token_type: 'context',
-                        updated_at: '',
-                    };
-                    // Save response to store
-                    commit('setCustomerAuth', authData);
+            // Remove cookies
+            this.$cookies.remove(state.cookieName);
+            this.$cookies.remove(state.cookieNameOrder);
+            this.$cookies.remove(state.cookieNameAddress);
 
-                    // Override / Set Cart Context Token
-                    // because otherwise there would be two different context tokens (one for cart, one for customer) without
-                    // any relation to each other
-                    dispatch('modCart/saveSwtc', response.data['contextToken'], { root: true }).then(() => {
-                        // Clear current cart
-                        // Get cart of logged in user
-                        // save cart to forage
-                        // TODO: merge cart items instead of removing them
-                        dispatch('modCart/clearAll', {}, { root: true })
-                            .then(() => {
-                                // Get customer info and save to cookie
-                                dispatch('getCustomerInfo')
-                                    .then(() => {
-                                        resolve(response);
+            let authData = {
+                created_at: new Date(),
+                expires_at: getters.getCookieExpires,
+                expires_in: 86400,
+                token: loginResponse.data['contextToken'],
+                token_name: 'swtc',
+                token_type: 'context',
+                updated_at: '',
+            };
 
-                                        // Save store to cookie
-                                        this.$cookies.set(
-                                            state.cookieName,
-                                            {
-                                                customerAuth: state.customer.customerAuth,
-                                                customerData: {},
-                                                customerAddresses: [],
-                                                billingAddress: {},
-                                                shippingAddress: {},
-                                            },
-                                            {
-                                                path: state.cookiePath,
-                                                expires: getters.getCookieExpires,
-                                            }
-                                        );
-                                    })
-                                    .catch((err) => {
-                                        reject(err);
-                                    });
-                            })
-                            .catch((err) => {
-                                console.log('clearAll failed', err);
-                            });
-                    });
-                })
-                .catch((response) => {
-                    reject(response);
-                });
-        });
+            // Save auth data to store
+            commit('setCustomerAuth', authData);
+
+            // Only save customer auth to cookie, fetch customer data if needed fresh from api
+            this.$cookies.set(
+                state.cookieName,
+                {
+                    customerAuth: state.customer.customerAuth,
+                    customerData: {},
+                    customerAddresses: [],
+                    billingAddress: {},
+                    shippingAddress: {},
+                },
+                {
+                    path: state.cookiePath,
+                    expires: getters.getCookieExpires,
+                }
+            );
+
+            // Get customer info and save to cookie
+            await dispatch('getCustomerInfo');
+
+            // If you log in with cart context token, Shopware merges cart automatically.
+            // You only have to use the returned context token for all future requests (cart/customer/checkout)
+            await dispatch('modCart/saveSwtc', loginResponse.data['contextToken'], { root: true });
+            await dispatch('modCart/refreshCart', {}, { root: true });
+
+            return new Promise((resolve) => {
+                resolve(loginResponse);
+            });
+        } catch(e) {
+            console.log(e);
+        }
     },
+
     async logOut({ commit, state, dispatch }) {
         return new Promise((resolve, reject) => {
             dispatch(
@@ -535,10 +536,10 @@ export const actions = {
                     if (addresses.billingDefault !== null || addresses.shippingDefault !== null) {
                         dispatch('mapDefaultAddresses', addresses).then((mappedAddresses) => {
                             commit('setCustomerAddresses', mappedAddresses);
-                            resolve('OK');
+                            resolve(customerData);
                         });
                     } else {
-                        resolve('Ok');
+                        resolve(customerData);
                     }
                 })
                 .catch((response) => {

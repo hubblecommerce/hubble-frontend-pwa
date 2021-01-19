@@ -162,12 +162,10 @@ export default {
                 order = await this.placeOrderAction();
                 paymentResponse = await this.swStartPayment(order.data.id);
 
-                if (paymentResponse.data.redirectUrl) {
+                if (paymentResponse.data.redirectUrl !== null) {
                     this.resetProcessingCheckout();
                     window.open(paymentResponse.data.redirectUrl, '_self');
-                }
-
-                if (_.isEmpty(paymentResponse.data)) {
+                } else {
                     this.$router.push(
                         {
                             path: this.localePath('checkout-shopware-success'),

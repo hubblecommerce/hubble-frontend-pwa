@@ -134,7 +134,7 @@ export default {
             getUuid: 'modApiPayment/getUuid',
             registerGuest: 'modApiCustomer/registerGuest',
             placeOrderAction: 'modApiPayment/placeOrder',
-            clearCart: 'modCart/clearAll',
+            clearCart: 'modCart/refreshCart',
             clearOrder: 'modApiPayment/clearOrder',
         }),
         isEmpty: function (val) {

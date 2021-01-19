@@ -104,7 +104,7 @@ export const mutations = {
 };
 
 export const actions = {
-    clearAll({ commit, dispatch }) {
+    refreshCart({ commit, dispatch }) {
         return new Promise((resolve, reject) => {
             // Reset cart object in store
             commit('setCartItemsObj', []);

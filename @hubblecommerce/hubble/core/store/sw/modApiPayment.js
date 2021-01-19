@@ -161,7 +161,7 @@ export const actions = {
         return new Promise((resolve, reject) => {
             dispatch('swGuestOrder', { order: order, swtc: rootState.modCart.swtc })
                 .then((res) => {
-                    dispatch('modCart/clearAll', {}, { root: true })
+                    dispatch('modCart/refreshCart', {}, { root: true })
                         .then(() => {
                             dispatch('clearOrder').then(() => {
                                 commit('setCurrentOrder', res.data.data);
@@ -266,7 +266,7 @@ export const actions = {
         return new Promise((resolve, reject) => {
             dispatch('swPlaceOrder')
                 .then((response) => {
-                    dispatch('modCart/clearAll', {}, { root: true })
+                    dispatch('modCart/refreshCart', {}, { root: true })
                         .then(() => {
                             dispatch('clearOrder').then(() => {
                                 commit('setCurrentOrder', response.data);

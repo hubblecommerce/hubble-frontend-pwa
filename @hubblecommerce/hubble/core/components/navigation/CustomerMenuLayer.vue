@@ -41,10 +41,12 @@ import _ from 'lodash';
 
 export default {
     name: 'CustomerMenuLayer',
+
     components: {
         CustomerAccountNavigation: () => import('../customer/CustomerAccountNavigation'),
         LoginForm: () => import('../customer/LoginForm'),
     },
+
     data() {
         return {
             name: 'CustomerMenu',
@@ -86,6 +88,6 @@ export default {
                 query: { tab: 1 },
             });
         },
-    },
+    }
 };
 </script>
