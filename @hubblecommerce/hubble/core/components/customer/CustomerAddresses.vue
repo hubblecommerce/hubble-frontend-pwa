@@ -649,6 +649,7 @@ export default {
             storeCustomerAddress: 'modApiCustomer/storeCustomerAddress',
             editAddress: 'modApiCustomer/editAddress',
             deleteCustomerAddress: 'modApiCustomer/deleteCustomerAddress',
+            register: 'modApiCustomer/register',
             toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction',
             hideOffcanvasAction: 'modNavigation/hideOffcanvasAction',
             editGuestAddress: 'modApiCustomer/editGuestAddress',
@@ -850,18 +851,40 @@ export default {
                         });
                     });
             } else {
-                // Edit cookie if is guest
-                // dispatch data to api ...
-                this.editGuestAddress(address)
-                    .then(() => {
-                        this.getAddresses();
+                // right now shopware doesnt provide correct logged in context token on registration
+                // so instead of patching address by id just register new user with changed address
+                let billingAddress = this.defaultBillingAddress.payload;
+                let shippingAddress = null;
+                if(this.customer.customerData.defaultBillingAddressId !== this.customer.customerData.defaultShippingAddressId) {
+                    shippingAddress = this.defaultShippingAddress.payload;
 
-                        this.toggle();
-                    })
-                    .catch(() => {
-                        // Show api request error
-                        this.errors.push(this.$t('Editing address failed'));
-                    });
+                    if(address.id === this.customer.customerData.defaultShippingAddressId) {
+                        shippingAddress = address.payload;
+                    }
+                }
+
+                if(address.id === this.customer.customerData.defaultBillingAddressId) {
+                    billingAddress = address.payload;
+                }
+
+                let userData = {
+                    email: this.customer.customerData.email,
+                    password: null,
+                    password_confirm: null,
+                    address: billingAddress,
+                    birthday: this.customer.customerData.birthday,
+                    shippingAddress: shippingAddress,
+                    guest: true,
+                };
+                this.register(userData).then(() => {
+                    this.getAddresses();
+
+                    this.toggle();
+                })
+                .catch(() => {
+                    // Show api request error
+                    this.errors.push(this.$t('Editing address failed'));
+                });
             }
         },
         submitNewDefault: function () {
