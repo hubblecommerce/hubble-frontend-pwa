@@ -239,6 +239,30 @@ export const actions = {
                 });
         });
     },
+    async swSetPaymentMethodSettings({ dispatch, rootState }, payload) {
+        return new Promise((resolve, reject) => {
+            dispatch(
+                'apiCall',
+                {
+                    action: 'patch',
+                    tokenType: 'sw',
+                    apiType: 'data',
+                    swContext: rootState.modApiCustomer.customer.customerAuth.token,
+                    endpoint: 'stripe-payment/payment-method-settings',
+                    data: payload
+                },
+                { root: true }
+            )
+                .then((response) => {
+                    resolve(response);
+                })
+                .catch((response) => {
+                    console.log('swSetPaymentMethodSettings - API post request failed: %o', response);
+
+                    reject(response);
+                });
+        });
+    },
     async validateOrder({ commit, state }) {
         return new Promise((resolve, reject) => {
             // Reset payment error

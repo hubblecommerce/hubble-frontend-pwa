@@ -28,7 +28,7 @@
         <!-- Error if no payment isset -->
         <div class="validation-msg" v-text="$t(paymentError)" />
 
-        <button @click="purchase()">purchase</button>
+        <button @click="purchase()">Create Payment Method (Stripe) and then set payment method settings (SW)</button>
     </div>
     <div v-else-if="apiError" class="payment-methods-api-error-wrp"> No payment methods found </div>
     <div v-else class="payment-methods-placeholder">
@@ -163,9 +163,23 @@ export default {
             return element;
         },
         purchase: function () {
-            this.stripe.createToken(this.card).then(function(result) {
-                // Access the token with result.token
-                console.log(result.token);
+            // TODO: Set full name from customer.billingaddress
+            let paymentMethodData = {type:"card", card: this.card, billing_details: { name: 'Test Name' }};
+
+            this.stripe.createPaymentMethod(paymentMethodData).then((result) => {
+                console.log(result.paymentMethod);
+
+                let payload = null;
+                if(result.paymentMethod.card != null) {
+                    payload = {
+                        card: result.paymentMethod.card,
+                        saveCardForFutureCheckouts: null
+                    }
+                    _.assign(payload.card, { id: result.paymentMethod.id });
+                    _.assign(payload.card, { name: result.paymentMethod.billing_details.name });
+                }
+
+                this.$store.dispatch('modApiPayment/swSetPaymentMethodSettings', payload);
             });
         },
         getPaymentMethods: function () {
