@@ -72,8 +72,25 @@
                 <div>
                     <span v-text="mapIsoToCountry(address.payload.country, countries)" />
                 </div>
-                <!-- TODO: Implement edit address when SW provides it -->
-                <div
+                <div v-if="isGuest && defaultBillingAddress.id === defaultShippingAddress.id"
+                    class="link text-small edit-address"
+                    @click="updateAddress({
+                    id: null,
+                    payload: {
+                    gender: '',
+                    firstName: '',
+                    lastName: '',
+                    street: '',
+                    houseNo: '',
+                    postal: '',
+                    city: '',
+                    country: '',
+                    company: '',
+                }
+                    })"
+                    v-text="$t('Set different address as shipping address')"
+                />
+                <div v-else
                     class="link text-small edit-address"
                     @click="updateAddress(defaultShippingAddress)"
                     v-text="$t('Edit address')"
@@ -859,6 +876,10 @@ export default {
                     shippingAddress = this.defaultShippingAddress.payload;
 
                     if(address.id === this.customer.customerData.defaultShippingAddressId) {
+                        shippingAddress = address.payload;
+                    }
+                } else {
+                    if(address.id === null) {
                         shippingAddress = address.payload;
                     }
                 }

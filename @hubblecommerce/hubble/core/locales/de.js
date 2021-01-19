@@ -305,6 +305,7 @@ export default (context) => {
             'Delete address failed': 'Addresse löschen fehlgeschlagen',
             'Store as new address': 'Als neue Adresse anlegen',
             'Use this address as default address': 'Diese Adresse als Standardadresse verwenden',
+            'Set different address as shipping address': 'Andere Adresse als Versandadresse anlegen',
             'Add': 'Hinzufügen',
             'Voucher / Coupon': 'Rabatt-Coupon / Gutschein',
             'Did you receive a discount coupon or coupon?':

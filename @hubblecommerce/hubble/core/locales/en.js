@@ -268,6 +268,7 @@ export default (context) => {
             'Delete address failed': 'Delete address failed',
             'Store as new address': 'Store as new address',
             'Use this address as default address': 'Use this address as default address',
+            'Set different address as shipping address.': 'Set different address as shipping address',
             'Add': 'Add',
             'Voucher / Coupon': 'Voucher / Coupon',
             'Did you receive a discount coupon or coupon?': 'Did you receive a discount coupon or coupon?',
