@@ -1,44 +1,16 @@
 import { sortMenuEntries } from '@hubblecommerce/hubble/core/utils/menuHelper';
 import { datetimeUnixNow, datetimeUnixNowAddSecs } from '@hubblecommerce/hubble/core/utils/datetime';
 import { swMapApiError } from '@hubblecommerce/hubble/core/utils/swHelper';
+import { menuEntriesMapping } from '@hubblecommerce/hubble/core/mapping/sw/menuEntries';
 import _ from 'lodash';
 
 function mapEntriesRecursive(navigationEntries) {
     return navigationEntries.map((category) => {
-        let obj = {};
-
-        // SW Shop API
-        //obj.parentId = category.parentId;
-        //obj.name = category.name;
-        //obj.level = category.level;
-        //obj.active = category.active;
-        //obj.id = category._uniqueIdentifier;
-        //
-        //// Set url
-        //obj.url_path = false;
-        //if(!_.isEmpty(category.seoUrls)) {
-        //    obj.url_path = category.seoUrls[0].seoPathInfo.toLowerCase();
-        //}
-        //if(category.type === 'folder') {
-        //    obj.url_path = false;
-        //}
-        //
-
-        // SW PWA
-        obj.name = category.name;
-        obj.level = category.level;
-        obj.id = category.name;
-
-        if (category.route.path === '/') {
-            obj.request_path = false;
-        } else {
-            obj.request_path = category.route.path;
-        }
+        let obj = menuEntriesMapping(category);
 
         if (!_.isEmpty(category.children)) {
             obj.children = mapEntriesRecursive(category.children);
         }
-
         return obj;
     });
 }

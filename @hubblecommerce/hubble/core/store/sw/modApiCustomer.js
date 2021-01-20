@@ -1,3 +1,5 @@
+import { orderMapping } from '@hubblecommerce/hubble/core/mapping/sw/customerOrder';
+import { addressMapping } from '@hubblecommerce/hubble/core/mapping/sw/customerAddress';
 import _ from 'lodash';
 
 export const state = () => ({
@@ -87,7 +89,7 @@ export const actions = {
                 firstName: payload.address.firstName,
                 lastName: payload.address.lastName,
                 defaultBillingAddressId: 0,
-                defaultShippingAddressId: 0,
+                defaultShippingAddressId: 1,
             };
 
             let customerAddresses = [];
@@ -102,8 +104,9 @@ export const actions = {
                 countryId: payload.address.country,
             });
 
+            let shippingAddress;
             if (payload.shippingAddress !== null) {
-                customer.shippingAddress = {
+                shippingAddress = {
                     id: 1,
                     salutationId: payload.shippingAddress.gender,
                     firstName: payload.shippingAddress.firstName,
@@ -113,9 +116,19 @@ export const actions = {
                     city: payload.shippingAddress.city,
                     countryId: payload.shippingAddress.country,
                 };
-                customer.defaultShippingAddressId = 1;
-                customerAddresses.push(customer.shippingAddress);
+            } else {
+                shippingAddress = {
+                    id: 1,
+                    salutationId: payload.address.gender,
+                    firstName: payload.address.firstName,
+                    lastName: payload.address.lastName,
+                    street: payload.address.street,
+                    zipcode: payload.address.postal,
+                    city: payload.address.city,
+                    countryId: payload.address.country,
+                };
             }
+            customerAddresses.push(shippingAddress);
 
             // Remove cookies
             this.$cookies.remove(state.cookieName);
@@ -355,7 +368,7 @@ export const actions = {
                 },
                 { root: true }
             )
-                .then(() => {
+                .then((response) => {
                     // Clear customer data
                     commit('clearCustomerData');
 
@@ -368,7 +381,9 @@ export const actions = {
                     this.$cookies.remove(state.cookieNameOrder);
                     this.$cookies.remove(state.cookieNameAddress);
 
-                    resolve('OK');
+                    dispatch('modCart/saveSwtc', response.data['contextToken'], { root: true }).then(() => {
+                        resolve();
+                    });
                 })
                 .catch((response) => {
                     console.log('logOut failed: %o', response);
@@ -402,26 +417,10 @@ export const actions = {
     async mapAddresses({ state }, addresses) {
         return new Promise((resolve, reject) => {
             let mappedAddresses = [];
+            let isDefault = false;
 
             _.forEach(addresses, (address) => {
-                let addressMap = {
-                    id: address.id,
-                    is_billing: true,
-                    is_billing_default: false,
-                    is_shipping: true,
-                    is_shipping_default: false,
-                    payload: {
-                        gender: address.salutationId,
-                        firstName: address.firstName,
-                        lastName: address.lastName,
-                        street: address.street,
-                        houseNo: '',
-                        postal: address.zipcode,
-                        city: address.city,
-                        country: address.countryId,
-                        company: address.company,
-                    },
-                };
+                let addressMap = addressMapping(address, isDefault);
 
                 if (address.id === state.customer.customerData.defaultBillingAddressId) {
                     addressMap.is_billing_default = true;
@@ -430,7 +429,7 @@ export const actions = {
                 if (address.id === state.customer.customerData.defaultShippingAddressId) {
                     addressMap.is_shipping_default = true;
                 }
-
+                
                 mappedAddresses.push(addressMap);
             });
 
@@ -441,45 +440,11 @@ export const actions = {
         return new Promise((resolve, reject) => {
             let mappedAddresses = [],
                 billingDefault = addresses.billingDefault,
-                shippingDefault = addresses.shippingDefault;
+                shippingDefault = addresses.shippingDefault,
+                isDefault = true;
 
-            mappedAddresses.push({
-                id: billingDefault.id,
-                is_billing: true,
-                is_billing_default: true,
-                is_shipping: false,
-                is_shipping_default: false,
-                payload: {
-                    gender: billingDefault.salutationId,
-                    firstName: billingDefault.firstName,
-                    lastName: billingDefault.lastName,
-                    street: billingDefault.street,
-                    houseNo: '',
-                    postal: billingDefault.zipcode,
-                    city: billingDefault.city,
-                    country: billingDefault.countryId,
-                    company: billingDefault.company,
-                },
-            });
-
-            mappedAddresses.push({
-                id: shippingDefault.id,
-                is_billing: false,
-                is_billing_default: false,
-                is_shipping: true,
-                is_shipping_default: true,
-                payload: {
-                    gender: shippingDefault.salutationId,
-                    firstName: shippingDefault.firstName,
-                    lastName: shippingDefault.lastName,
-                    street: shippingDefault.street,
-                    houseNo: '',
-                    postal: shippingDefault.zipcode,
-                    city: shippingDefault.city,
-                    country: shippingDefault.countryId,
-                    company: shippingDefault.company,
-                },
-            });
+            mappedAddresses.push(addressMapping(billingDefault, isDefault));
+            mappedAddresses.push(addressMapping(shippingDefault, isDefault));
 
             resolve(mappedAddresses);
         });
@@ -782,12 +747,12 @@ export const actions = {
                 });
         });
     },
-    async passwordUpdate({ dispatch, state }, payload) {
+    async passwordUpdate({ dispatch, state, commit, getters }, payload) {
         return new Promise((resolve, reject) => {
             dispatch(
                 'apiCall',
                 {
-                    action: 'patch',
+                    action: 'post',
                     tokenType: 'sw',
                     apiType: 'data',
                     swContext: state.customer.customerAuth.token,
@@ -801,11 +766,39 @@ export const actions = {
                 { root: true }
             )
                 .then((response) => {
-                    resolve(response);
+                    // save new context token
+                    let authData = {
+                        created_at: new Date(),
+                        expires_at: getters.getCookieExpires,
+                        expires_in: 86400,
+                        token: response.data['contextToken'],
+                        token_name: 'swtc',
+                        token_type: 'context',
+                        updated_at: '',
+                    };
+                    commit('setCustomerAuth', authData);
+
+                    dispatch('modCart/saveSwtc', response.data['contextToken'], { root: true }).then(() => {
+                        this.$cookies.set(
+                            state.cookieName,
+                            {
+                                customerAuth: state.customer.customerAuth,
+                                customerData: {},
+                                customerAddresses: [],
+                                billingAddress: {},
+                                shippingAddress: {},
+                            },
+                            {
+                                path: state.cookiePath,
+                                expires: getters.getCookieExpires,
+                            }
+                        );
+                    });
+
+                    resolve();
                 })
                 .catch((error) => {
                     console.log('passwordUpdate failed: %o', error);
-
                     reject(error);
                 });
         });
@@ -845,22 +838,22 @@ export const actions = {
                         limit: 500,
                         filter: [
                             {
-                                type: "equals",
-                                field: "active",
-                                value: true
+                                type: 'equals',
+                                field: 'active',
+                                value: true,
                             },
                             {
-                                type: "equals",
-                                field: "shippingAvailable",
-                                value: true
-                            }
+                                type: 'equals',
+                                field: 'shippingAvailable',
+                                value: true,
+                            },
                         ],
                         sort: [
                             {
-                                field: "position",
-                                order: "ASC"
-                            }
-                        ]
+                                field: 'position',
+                                order: 'ASC',
+                            },
+                        ],
                     },
                 },
                 { root: true }
@@ -939,7 +932,7 @@ export const actions = {
             dispatch(
                 'apiCall',
                 {
-                    action: 'patch',
+                    action: 'post',
                     tokenType: 'sw',
                     swContext: state.customer.customerAuth.token,
                     apiType: 'data',
@@ -967,7 +960,7 @@ export const actions = {
             dispatch(
                 'apiCall',
                 {
-                    action: 'patch',
+                    action: 'post',
                     tokenType: 'sw',
                     swContext: state.customer.customerAuth.token,
                     apiType: 'data',
@@ -994,6 +987,31 @@ export const actions = {
                 .catch((response) => {
                     console.log('API patch request to update user email information failed: %o', response);
 
+                    reject(response);
+                });
+        });
+    },
+    async passwordForgot({ dispatch }, payload) {
+        return new Promise((resolve, reject) => {
+            dispatch(
+                'apiCall',
+                {
+                    action: 'post',
+                    tokenType: 'sw',
+                    apiType: 'data',
+                    endpoint: '/store-api/v3/account/recovery-password',
+                    data: {
+                        email: payload.email,
+                        storefrontUrl: process.env.API_BASE_URL,
+                    },
+                },
+                { root: true }
+            )
+                .then((response) => {
+                    resolve(response);
+                })
+                .catch((response) => {
+                    console.log('API patch request to update user email information failed: %o', response);
                     reject(response);
                 });
         });

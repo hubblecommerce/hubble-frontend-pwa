@@ -1,14 +1,14 @@
 <template>
     <button
-        :disabled="loaderState"
+        :disabled="isLoading"
         type="button"
         :title="$t('add_to_cart')"
         class="add-to-cart button-primary"
         @click.prevent="addToCart"
     >
-        <i v-if="!loaderState" class="icon icon-shopping-bag" aria-hidden="true" />
-        <span v-if="!loaderState" class="cart-button-label" v-text="$t('add_to_cart')" />
-        <loader v-if="loaderState" :appearance="loaderDisplay" />
+        <i v-if="!isLoading" class="icon icon-shopping-bag" aria-hidden="true" />
+        <span v-if="!isLoading" class="cart-button-label" v-text="$t('add_to_cart')" />
+        <loader v-if="isLoading" :appearance="loaderDisplay" />
         <material-ripple />
     </button>
 </template>
@@ -40,7 +40,6 @@ export default {
 
     data() {
         return {
-            loaderState: false,
             selectedQty: 1,
         };
     },
@@ -51,6 +50,7 @@ export default {
             selectedVariants: (state) => state.modApiProduct.selectedVariants,
             dataProduct: (state) => state.modApiProduct.dataProduct,
             cart: (state) => state.modCart.cart,
+            isLoading: (state) => state.modCart.isLoading
         }),
         ...mapGetters({
             getPriceAndCurrencyDecFmt: 'modPrices/getPriceAndCurrencyDecFmt',
@@ -61,6 +61,7 @@ export default {
         ...mapMutations({
             resetSelectedVariants: 'modApiProduct/resetSelectedVariants',
             initiateCartLayer: 'modCart/initiateLayer',
+            setIsLoading: 'modCart/setIsLoading'
         }),
         ...mapActions({
             flashMessage: 'modFlash/flashMessage',
@@ -68,13 +69,26 @@ export default {
             toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction',
         }),
         addToCart() {
-            this.loaderState = true;
+            this.setIsLoading(true);
 
             // Add selected variant to item
             this.item.variants = this.selectedVariants;
 
             // Add item and qty to cart store
             let qty = this.qty != null ? this.qty : this.selectedQty;
+
+            // Return if qty is not in stock
+            if(qty > this.dataProduct.result.item.stock_item.qty) {
+                this.setIsLoading(false);
+
+                // Display Error Message (eg. Qty of item is at maxQty)
+                this.flashMessage({
+                    flashType: 'error',
+                    flashMessage: 'Not enough Products in stock.',
+                });
+
+                return false;
+            }
 
             this.addItem({ item: this.item, qty: qty })
                 .then(() => {
@@ -88,7 +102,7 @@ export default {
                         component: 'TheMiniCart',
                         direction: 'rightLeft',
                     }).then(() => {
-                        this.loaderState = false;
+                        this.setIsLoading(false);
 
                         // Display Success Message
                         this.flashMessage({
@@ -102,7 +116,7 @@ export default {
                 .catch((error) => {
                     console.log('addItem error: ', error);
 
-                    this.loaderState = false;
+                    this.setIsLoading(false);
 
                     // Display Error Message (eg. Qty of item is at maxQty)
                     this.flashMessage({

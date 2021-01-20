@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-if="errorNoProducts" class="container">
+        <div v-if="!categoryProductItems" class="container">
             <div
                 class="error-message"
                 v-text="$t('There are no products available in this category or for this filter.')"
@@ -10,10 +10,10 @@
             <pagination />
         </div>
         <product-listing
+            v-if="categoryProductItems"
             :data-items="categoryProductItems"
             list="Category"
             :extra-class="{ 'offset-top': isSticky }"
-            :category="categoryItem.name"
             :listing-class="'col-12 col-sm-12 col-md-4 col-lg-3'"
         />
     </div>
@@ -31,32 +31,21 @@ export default {
 
     data() {
         return {
-            categoryItem: {},
-            categoryData: {},
-            isSticky: false,
+            isSticky: false
         };
     },
 
     computed: {
         ...mapState({
-            dataCategory: (state) => state.modApiCategory.dataCategory,
-            dataCategoryProducts: (state) => state.modApiCategory.dataCategoryProducts,
-            dataMenu: (state) => state.modApiMenu.dataMenu,
-            cmsObject: (state) => state.modApiResources.cmsObject,
-            pathIds: (state) => state.modApiCategory.dataCategory.result.item.path_ids,
-            optionsLimit: (state) => state.modApiRequests.optionsLimit,
-            optionsSorter: (state) => state.modApiRequests.optionsSorter,
+            dataCategoryProducts: (state) => state.modApiCategory.dataCategoryProducts
         }),
         categoryProductItems() {
-            if (_.isEmpty(this.dataCategoryProducts)) {
-                return this.dataCategoryProducts;
+            if(_.isEmpty(this.dataCategoryProducts.result.items)) {
+                return false;
             }
 
             return this.dataCategoryProducts.result.items;
-        },
-        errorNoProducts() {
-            return _.isEmpty(this.categoryProductItems);
-        },
+        }
     },
 };
 </script>

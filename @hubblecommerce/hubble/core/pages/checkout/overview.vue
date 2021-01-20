@@ -37,6 +37,7 @@
                 <shipping-methods />
 
                 <payment-methods />
+<!--                <payment-methods-sw />-->
             </div>
 
             <div class="checkout-actions-wrp">
@@ -89,6 +90,7 @@ export default {
         CartItemsListNonInteractive,
         CustomerAddresses,
         PaymentMethods: () => import('../../components/checkout/PaymentMethods'),
+        //PaymentMethodsSw: () => import('../../components/checkout/PaymentMethodsSw'),
         ShippingMethods: () => import('../../components/checkout/ShippingMethods'),
     },
 
@@ -156,11 +158,7 @@ export default {
             let paymentResponse;
 
             try {
-                if (this.customer.customerData.guest) {
-                    order = await this.placeGuestOrder();
-                } else {
-                    order = await this.placeOrderAction();
-                }
+                order = await this.placeOrderAction();
 
                 paymentResponse = await this.swStartPayment(order.data.id);
 
