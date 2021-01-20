@@ -1,3 +1,5 @@
+import { orderMapping } from '@hubblecommerce/hubble/core/mapping/sw/customerOrder';
+import { addressMapping } from '@hubblecommerce/hubble/core/mapping/sw/customerAddress';
 import _ from 'lodash';
 
 export const state = () => ({
@@ -415,26 +417,10 @@ export const actions = {
     async mapAddresses({ state }, addresses) {
         return new Promise((resolve, reject) => {
             let mappedAddresses = [];
+            let isDefault = false;
 
             _.forEach(addresses, (address) => {
-                let addressMap = {
-                    id: address.id,
-                    is_billing: true,
-                    is_billing_default: false,
-                    is_shipping: true,
-                    is_shipping_default: false,
-                    payload: {
-                        gender: address.salutationId,
-                        firstName: address.firstName,
-                        lastName: address.lastName,
-                        street: address.street,
-                        houseNo: '',
-                        postal: address.zipcode,
-                        city: address.city,
-                        country: address.countryId,
-                        company: address.company,
-                    },
-                };
+                let addressMap = addressMapping(address, isDefault);
 
                 if (address.id === state.customer.customerData.defaultBillingAddressId) {
                     addressMap.is_billing_default = true;
@@ -443,7 +429,7 @@ export const actions = {
                 if (address.id === state.customer.customerData.defaultShippingAddressId) {
                     addressMap.is_shipping_default = true;
                 }
-
+                
                 mappedAddresses.push(addressMap);
             });
 
@@ -454,45 +440,11 @@ export const actions = {
         return new Promise((resolve, reject) => {
             let mappedAddresses = [],
                 billingDefault = addresses.billingDefault,
-                shippingDefault = addresses.shippingDefault;
+                shippingDefault = addresses.shippingDefault,
+                isDefault = true;
 
-            mappedAddresses.push({
-                id: billingDefault.id,
-                is_billing: true,
-                is_billing_default: true,
-                is_shipping: false,
-                is_shipping_default: false,
-                payload: {
-                    gender: billingDefault.salutationId,
-                    firstName: billingDefault.firstName,
-                    lastName: billingDefault.lastName,
-                    street: billingDefault.street,
-                    houseNo: '',
-                    postal: billingDefault.zipcode,
-                    city: billingDefault.city,
-                    country: billingDefault.countryId,
-                    company: billingDefault.company,
-                },
-            });
-
-            mappedAddresses.push({
-                id: shippingDefault.id,
-                is_billing: false,
-                is_billing_default: false,
-                is_shipping: true,
-                is_shipping_default: true,
-                payload: {
-                    gender: shippingDefault.salutationId,
-                    firstName: shippingDefault.firstName,
-                    lastName: shippingDefault.lastName,
-                    street: shippingDefault.street,
-                    houseNo: '',
-                    postal: shippingDefault.zipcode,
-                    city: shippingDefault.city,
-                    country: shippingDefault.countryId,
-                    company: shippingDefault.company,
-                },
-            });
+            mappedAddresses.push(addressMapping(billingDefault, isDefault));
+            mappedAddresses.push(addressMapping(shippingDefault, isDefault));
 
             resolve(mappedAddresses);
         });

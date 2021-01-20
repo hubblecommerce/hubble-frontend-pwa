@@ -1,4 +1,4 @@
-import { slugify } from '@hubblecommerce/hubble/core/utils/menuHelper';
+import { productMapping } from '@hubblecommerce/hubble/core/mapping/sw/product';
 import _ from 'lodash';
 
 export const state = () => ({
@@ -217,113 +217,9 @@ export const actions = {
     },
     async mappingProduct({ dispatch }, payload) {
         return new Promise(function (resolve, reject) {
-            let obj = {};
-
             let product = payload.product;
-
-            obj.id = product.id;
-            obj.sku = product.ean;
-            obj.type = 'simple';
-            if (product.optionIds !== null) {
-                obj.type = 'configurable';
-            }
-            if (product.cover != null) {
-                obj.image = product.cover.media.url;
-            }
-            obj.name = product.translated.name;
-            obj.description = product.translated.description;
-            obj.meta_title = product.metaTitle;
-            obj.meta_keywords = product.keywords;
-            obj.meta_description = product.metaDescription;
-            if (product.manufacturer != null) {
-                obj.manufacturer_id = product.manufacturer.id;
-                obj.manufacturer_name = product.manufacturer.name;
-
-                obj.manufacturer_item = {
-                    url: product.manufacturer.link,
-                    name: product.manufacturer.name,
-                };
-
-                if (product.manufacturer.media !== null) {
-                    obj.manufacturer_item.logo = product.manufacturer.media.url;
-                }
-            }
-            obj.name_orig = product.translated.name;
-
-            if (!_.isEmpty(product.seoUrls)) {
-                obj.url_pds = product.seoUrls[product.seoUrls.length - 1].seoPathInfo;
-            } else if (!_.isEmpty(payload.path)) {
-                obj.url_pds = payload.path;
-            } else if (!_.isEmpty(payload.product.name)) {
-                obj.url_pds = slugify(payload.product.name);
-            } else {
-                obj.url_pds = '';
-            }
-            obj.stock_item = {
-                qty: product.stock,
-                is_in_stock: product.available,
-            };
-            obj.final_price_item = {
-                special_to_date: null,
-                special_from_date: null,
-                display_price_netto: product.calculatedPrice.unitPrice,
-                display_price_netto_special: null,
-                display_price_brutto: product.calculatedPrice.unitPrice,
-                display_price_brutto_special: null,
-                priceinfo: null,
-                tax_class_id: 1,
-            };
-
-            if (!_.isEmpty(product.calculatedPrices)) {
-                obj.calculatedPrices = product.calculatedPrices;
-            }
-
-            if (product.deliveryTime !== null) {
-                obj.delivery_time = product.deliveryTime;
-            }
-
-            obj.shipping_free = product.shippingFree;
-
-            obj.media_gallery = [];
-            if (product.media !== null) {
-                _.each(product.media, (item) => {
-                    obj.media_gallery.push({
-                        attribute_id: null,
-                        value: item.media.url,
-                        label: item.media.alt,
-                        position: item.position,
-                        disabled: false,
-                    });
-                });
-            }
-
-            obj.related_product_ids = {
-                buybox: [],
-                byorder: [],
-            };
-
-            obj.crossSellings = product.crossSellings;
-
-            obj.status = {
-                is_new_from_date: '',
-                is_new_to_date: '',
-            };
-
-            obj.facets = {
-                number_facets: [],
-                string_facets: [],
-                category_facets: [],
-            };
-
-            obj.properties = product.properties;
-            obj.optionIds = product.optionIds;
-            obj.options = product.options;
-            obj.parentId = product.parentId;
-
-            if(payload.configurator != null) {
-                obj.groups = payload.configurator;
-            }
-
+            let obj = productMapping(product,payload);
+            
             resolve(obj);
         });
     },

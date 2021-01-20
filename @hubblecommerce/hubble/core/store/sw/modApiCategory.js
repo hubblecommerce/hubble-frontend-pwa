@@ -1,4 +1,5 @@
-import { slugify } from '@hubblecommerce/hubble/core/utils/menuHelper';
+import { categoryMapping } from '@hubblecommerce/hubble/core/mapping/sw/category';
+import { productMapping } from '@hubblecommerce/hubble/core/mapping/sw/product';
 import _ from 'lodash';
 
 export const state = () => ({
@@ -259,98 +260,17 @@ export const actions = {
     },
     async mappingCategory({ commit }, payload) {
         return new Promise(function (resolve, reject) {
-            // MAPPING
-            let obj = {};
-
-            // Map required properties from sw response to hubble requirements
-            obj.id = payload.id;
-            obj.name = payload.name;
-
-            if (payload.media != null) {
-                obj.image = payload.media.url;
-            }
-
-            obj.description = payload.description;
-            obj.teaser = payload.description;
-            obj.meta_title = payload.metaTitle;
-            obj.meta_keywords = payload.keywords;
-            obj.meta_description = payload.metaDescription;
-            obj.level = payload.level;
-
-            obj.path_ids = [];
-            obj.path_names = [];
-            obj.path_urls = [];
-            //if (payload.path != null) {
-            //    let breadcrumbs = _.cloneDeep(payload.breadcrumb);
-            //    breadcrumbs.shift();
-            //    obj.path_names = breadcrumbs;
-            //    obj.path_ids = breadcrumbs;
-            //    obj.path_urls = [];
-            //    _.each(obj.path_names, (crumb, index) => {
-            //        let slugifiedCrumb = slugify(crumb) + '/';
-            //        if (index > 1) {
-            //            slugifiedCrumb = obj.path_urls[index - 1] + slugifiedCrumb;
-            //        }
-            //        obj.path_urls.push(slugifiedCrumb);
-            //    });
-            //}
-
+            let obj = categoryMapping(payload);
             resolve(obj);
         });
     },
     async mappingCategoryProducts({ commit }, payload) {
         return new Promise(function (resolve, reject) {
-            // MAPPING
             let mapped = [];
             let products = payload.data != null ? payload.data : payload.elements;
 
             _.forEach(products, (product) => {
-                let obj = {};
-
-                obj.id = product.id;
-                obj.ean = product.ean;
-                obj.type = product.sw;
-
-                obj.image = '';
-                if (product.cover != null) {
-                    obj.image = product.cover.media.url;
-                } else {
-                    // Todo: if not image isset insert placeholder image
-                }
-
-                obj.name = product.translated.name;
-                obj.description = product.translated.description;
-                obj.meta_title = product.metaTitle;
-                obj.meta_keywords = product.keywords;
-                obj.meta_description = product.metaDescription;
-                if (product.manufacturer !== null) {
-                    obj.manufacturer_id = product.manufacturer.id;
-                    obj.manufacturer_name = product.manufacturer.name;
-                }
-
-                if(product.seoUrls !== null) {
-                    _.forEach(product.seoUrls, (seoUrl) => {
-                        if (seoUrl.isCanonical) {
-                            obj.url_pds = seoUrl.seoPathInfo;
-                        }
-                    });
-                }
-
-                obj.stock_item = {
-                    qty: product.stock,
-                    is_in_stock: product.available,
-                };
-                obj.final_price_item = {
-                    special_to_date: null,
-                    special_from_date: null,
-                    display_price_netto: product.calculatedPrice.unitPrice,
-                    display_price_netto_special: null,
-                    display_price_brutto: product.calculatedPrice.unitPrice,
-                    display_price_brutto_special: null,
-                    priceinfo: null,
-                    tax_class_id: 1,
-                };
-
+                let obj = productMapping(product);
                 mapped.push(obj);
             });
 
@@ -358,13 +278,13 @@ export const actions = {
             if (payload.total > 0) {
                 totalItems = payload.total;
             }
+
             let obj = {
                 items: mapped,
                 stats: {
                     total: totalItems,
                 },
             };
-
             resolve(obj);
         });
     },

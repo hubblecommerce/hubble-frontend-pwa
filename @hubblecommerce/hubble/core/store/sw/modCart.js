@@ -1,5 +1,6 @@
 import base64 from 'base-64';
 import localStorageHelper from '@hubblecommerce/hubble/core/utils/localStorageHelper';
+import { cartProductMapping } from '@hubblecommerce/hubble/core/mapping/sw/cart';
 import _ from 'lodash';
 
 export const state = () => ({
@@ -589,26 +590,8 @@ export const actions = {
     },
     mappingCartProduct({ dispatch }, payload) {
         return new Promise((resolve, reject) => {
-            let product = payload.product;
-
-            resolve({
-                name_orig: product.label,
-                id: product.id,
-                referenceId: product.referencedId,
-                qty: product.quantity,
-                final_price_item: {
-                    special_price: null,
-                    display_price_brutto: product.price.unitPrice,
-                },
-                image: product.cover.url,
-                url_pds: null,
-                variants: product.payload.options.map((option) => {
-                    return {
-                        label: option.group,
-                        value_label: option.option,
-                    };
-                }),
-            });
+            let cartProduct = cartProductMapping(payload);
+            resolve(cartProduct);
         });
     },
     mappingCartProducts({ dispatch }, payload) {
