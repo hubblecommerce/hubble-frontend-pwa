@@ -350,7 +350,9 @@ export const actions = {
                 resolve(loginResponse);
             });
         } catch(e) {
-            console.log(e);
+            return new Promise((resolve, reject) => {
+                reject(e);
+            });
         }
     },
 
