@@ -13,7 +13,10 @@
         "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
         "lint:fix": "eslint --fix --ext .js,.vue --ignore-path .gitignore .",
         "prettier": "prettier --check '**/*.{scss,js,vue}'",
-        "prettier:fix": "prettier --write '**/*.{scss,js,vue}'"
+        "prettier:fix": "prettier --write '**/*.{scss,js,vue}'",
+        "test:hubble": "jest --config=modules/hubble-frontend-pwa/@hubblecommerce/hubble/jest.config.js",
+        "test:components": "jest --testPathPattern=/components/ --config=modules/hubble-frontend-pwa/@hubblecommerce/hubble/jest.config.js",
+        "test:store": "jest --testPathPattern=/store/ --config=modules/hubble-frontend-pwa/@hubblecommerce/hubble/jest.config.js"
     },
     "dependencies": {
         "@hubblecommerce/amazon-pay": "^1.0.0",
@@ -56,14 +59,22 @@
         "nuxt-purgecss": "^1.0.0"
     },
     "devDependencies": {
+        "@babel/core": "^7.12.10",
+        "@vue/test-utils": "^1.1.2",
+        "babel-core": "^7.0.0-bridge.0",
+        "babel-jest": "^26.6.3",
         "babel-eslint": "^10.1.0",
         "eslint": "^7.17.0",
         "eslint-config-prettier": "^7.1.0",
         "eslint-plugin-nuxt": "^2.0.0",
         "eslint-plugin-vue": "^7.4.0",
         "husky": "^4.3.6",
+        "jest": "^26.6.3",
+        "jest-expect-message": "^1.0.2",
+        "jest-serializer-vue": "^2.0.2",
         "lint-staged": "^10.5.3",
-        "prettier": "^2.2.1"
+        "prettier": "^2.2.1",
+        "vue-jest": "^3.0.7"
     },
     "repository": {
         "type": "git",

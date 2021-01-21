@@ -37,7 +37,7 @@ const asyncCopyApiTypeDirs = async (sourceDirs, targetDir, apiType) => {
 };
 const getPlugins = (dir) => globby([`${dir}/*.js`]);
 
-const dirBlacklist = ['cypress', 'node_modules', 'logs', '.hubble', '.nuxt', '.idea'];
+const dirBlacklist = ['cypress', 'node_modules', 'logs', '.hubble', '.nuxt', '.idea', '__tests__'];
 const apiTypeDirs = ['anonymous-middleware', 'middleware', 'plugins', 'store'];
 const targetDirName = '.hubble/';
 
