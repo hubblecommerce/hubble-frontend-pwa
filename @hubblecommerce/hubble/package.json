@@ -14,7 +14,7 @@
         "lint:fix": "eslint --fix --ext .js,.vue --ignore-path .gitignore .",
         "prettier": "prettier --check '**/*.{scss,js,vue}'",
         "prettier:fix": "prettier --write '**/*.{scss,js,vue}'",
-        "test:hubble": "jest --config=modules/hubble-frontend-pwa/@hubblecommerce/hubble/jest.config.js",
+        "test:hubble": "jest --testPathPattern=/__tests__/ --config=modules/hubble-frontend-pwa/@hubblecommerce/hubble/jest.config.js",
         "test:components": "jest --testPathPattern=/components/ --config=modules/hubble-frontend-pwa/@hubblecommerce/hubble/jest.config.js",
         "test:store": "jest --testPathPattern=/store/ --config=modules/hubble-frontend-pwa/@hubblecommerce/hubble/jest.config.js"
     },

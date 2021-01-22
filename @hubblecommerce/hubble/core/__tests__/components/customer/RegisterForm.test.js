@@ -15,7 +15,7 @@ let moduleB
 jest.setTimeout(10000);
 jest.useFakeTimers();
 
-const $t = jest.fn((msg) => msg)
+const $t = (msg) => msg
 
 const flushPromises = () => new Promise(setImmediate)
 

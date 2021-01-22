@@ -1,12 +1,11 @@
 import { mount, createLocalVue } from '@vue/test-utils'
 import QtySelector from '@hubblecommerce/hubble/core/components/utils/QtySelector'
 
-let wrapper
-
 const $t = () => {}
 
-beforeAll( () => {
-    wrapper = mount(QtySelector, {
+
+test('Test decrease/increase of Quantity in buybox', async () => {
+    let wrapper = mount(QtySelector, {
         propsData: {
             maxQty: 10,
         },
@@ -14,9 +13,7 @@ beforeAll( () => {
             $t
         }
     })
-})
 
-test('Test decrease/increase of Quantity in buybox', async () => {
     expect(wrapper.vm.qtySelected).toBe(1)
 
     await wrapper.findAll('button').at(1).trigger('click')
@@ -35,4 +32,26 @@ test('Test decrease/increase of Quantity in buybox', async () => {
 
     expect(wrapper.vm.qtySelected).toBe("10")
     expect(wrapper.emitted().changeQty[3]).toEqual([10])
+})
+
+test('Test decrease/increase of Quantity in buybox', async () => {
+    let wrapper = mount(QtySelector, {
+        propsData: {
+            maxQty: 10,
+            type: true,
+        },
+        mocks: {
+            $t
+        }
+    })
+
+    expect(wrapper.vm.qtySelected).toBe(1)
+
+    await wrapper.findAll('.select-text').at(0).findAll('option').at(3).setSelected()
+
+    expect(wrapper.vm.qtySelected).toBe(3)
+
+    await wrapper.findAll('.select-text').at(0).findAll('option').at(10).setSelected()
+
+    expect(wrapper.vm.qtySelected).toBe(10)
 })

@@ -7,57 +7,6 @@ import { expectedCategoryData } from '../TestConfigs/modApiCategoryTestConfig'
 import { generateTestArray } from '../TestUtils/computeTestArrays'
 
 let categoryData
-const categoryDataMappingTestsOld = [
-    [
-        'id',
-        'string'
-    ],
-    [
-        'name',
-        'string'
-    ],
-    [
-        'image',
-        'string'
-    ],
-    [
-        'description',
-        'string'
-    ],
-    [
-        'teaser',
-        'string'
-    ],
-    [
-        'meta_title',
-        'string'
-    ],
-    [
-        'meta_keywords',
-        'string'
-    ],
-    [
-        'meta_description',
-        'string'
-    ],
-    [
-        'level',
-        'string'
-    ],
-    [
-        'path_ids',
-        'string'
-    ],
-    [
-        'path_names',
-        'string'
-    ],
-    [
-        'path_urls',
-        'string'
-    ],
-]
-
 let categoryDataMappingTests
 
 jest.setTimeout(10000);
