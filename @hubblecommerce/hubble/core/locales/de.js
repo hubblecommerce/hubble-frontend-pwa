@@ -500,6 +500,10 @@ export default (context) => {
             'Show Cart': 'Warenkorb anzeigen',
             'Hide Cart': 'Warenkorb verstecken',
             'Addresses could not be loaded': 'Adressen konnten nicht geladen werden.',
+
+            'Card Holder': 'Karteninhaber',
+            'Account Holder': 'Kontoinhaber',
+            'Account Holder Email': 'E-mail Adresse',
         });
     });
 };

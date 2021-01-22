@@ -453,6 +453,11 @@ export default (context) => {
             'Hide Cart': 'Hide Cart',
             'Addresses could not be loaded': 'Addresses could not be loaded',
             'Edit': 'Edit',
+
+            'Card Holder': 'Card Holder',
+            'Account Holder': 'Account Holder',
+            'Account Holder Email': 'Account Holder Email',
+
         });
     });
 };

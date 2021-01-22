@@ -6,16 +6,13 @@
             <!-- Dynamic payment methods from api -->
             <div v-for="method in paymentMethods" v-if="method.active" :key="method.id" class="method-wrp">
                 <div class="hbl-checkbox">
-                    <input :id="'payment-option-' + method.id" v-model="chosenMethod" type="radio" :value="method.id" />
+                    <input :id="'payment-option-' + method.id" v-model="chosenMethod" type="radio" :value="method.id" :disabled="processingCheckout" />
                     <label :for="'payment-option-' + method.id" class="method-label">
                         <span class="name" v-text="method.name" />
                         <span class="description" v-text="method.description" />
                         <span :class="'method-image-' + method.id" />
                     </label>
                 </div>
-
-                <!-- sub contexts for specific payment methods like CC iFrame, Sofortüberweisung etc...  -->
-                <div  class="payment-content-wrp" />
             </div>
 
             <!-- Error if no payment isset -->
@@ -33,20 +30,108 @@
 
         <div v-show="showModal" class="payment-methods-modal">
             <div class="payment-content-wrp">
-                <form id="payment-form">
-                    <div v-show="chosenMethodObj.shortName === 'stripe.shopware_payment.payment_handler.card'" class="cc">
+                <div v-show="chosenMethodObj.shortName === 'stripe.shopware_payment.payment_handler.card'" class="cc">
+                    <validation-observer
+                        ref="observer"
+                        v-slot="{ passes }"
+                        tag="form"
+                        class="form-cc"
+                        @submit.prevent="passes(savePaymentSettings('card'))"
+                    >
+                        <validation-provider
+                            v-slot="{ errors }"
+                            name="cardHolder"
+                            rules="required"
+                            mode="eager"
+                            tag="div"
+                            class="hbl-input-group"
+                        >
+                            <input
+                                id="cardHolder"
+                                v-model="billingDetailsCard.name"
+                                type="text"
+                                name="cardHolder"
+                                value=""
+                                :class="{ invalid: errors.length > 0 }"
+                                placeholder=" "
+                                required
+                            />
+                            <label for="cardHolder" v-text="$t('Card Holder') + '*'" />
+                            <div class="validation-msg" v-text="$t(errors[0])" />
+                        </validation-provider>
+
                         <div ref="card" class="card-content-wrp" />
                         <div ref="cardErrors" id="card-errors" role="alert" />
-                    </div>
+                        <button @click.prevent="passes(savePaymentSettings('card'))">Create & Save CC Payment Method (Stripe)</button>
+                    </validation-observer>
+                </div>
 
-                    <div v-show="chosenMethodObj.shortName === 'stripe.shopware_payment.payment_handler.sepa'" class="iban">
-                        <div ref="iban" id="iban-content-wrp" />
-                        <div ref="ibanErrors" id="iban-errors" role="alert" />
-                    </div>
+                <div v-show="chosenMethodObj.shortName === 'stripe.shopware_payment.payment_handler.sepa'" class="sepa">
+                    <validation-observer
+                        ref="observer"
+                        v-slot="{ passes }"
+                        tag="form"
+                        class="form-cc"
+                        @submit.prevent="passes(savePaymentSettings('sepa_debit'))"
+                    >
+                        <validation-provider
+                            v-slot="{ errors }"
+                            name="accountHolder"
+                            rules="required"
+                            mode="eager"
+                            tag="div"
+                            class="hbl-input-group"
+                        >
+                            <input
+                                id="accountHolder"
+                                v-model="billingDetailsSepa.name"
+                                type="text"
+                                name="accountHolder"
+                                value=""
+                                :class="{ invalid: errors.length > 0 }"
+                                placeholder=" "
+                                required
+                            />
+                            <label for="accountHolder" v-text="$t('Account Holder') + '*'" />
+                            <div class="validation-msg" v-text="$t(errors[0])" />
+                        </validation-provider>
 
-                    <button @click.prevent="savePaymentSettings()">Create Payment Method (Stripe) and then set payment method settings (SW)</button>
-                    <button @click.prevent="closeModal()">Close</button>
-                </form>
+                        <validation-provider
+                            v-slot="{ errors }"
+                            name="accountHolderEmail"
+                            rules="required|email"
+                            mode="eager"
+                            tag="div"
+                            class="hbl-input-group"
+                        >
+                            <input
+                                id="accountHolderEmail"
+                                v-model="billingDetailsSepa.email"
+                                type="text"
+                                name="accountHolderEmail"
+                                value=""
+                                :class="{ invalid: errors.length > 0 }"
+                                placeholder=" "
+                                required
+                            />
+                            <label for="accountHolderEmail" v-text="$t('Account Holder Email') + '*'" />
+                            <div class="validation-msg" v-text="$t(errors[0])" />
+                        </validation-provider>
+
+                        <div ref="sepa" id="sepa-content-wrp" />
+                        <div ref="sepaErrors" id="sepa-errors" role="alert" />
+                        <div class="sepa-info">
+                            Ich ermächtige / Wir ermächtigen (A) Demostore sowie Stripe, den durchführenden Zahlungsdienstleister, Zahlungen von
+                            meinem / unserem Konto mittels Lastschrift einzuziehen. Zugleich (B) weise ich mein / weisen wir unser Kreditinstitut an,
+                            die von Demostore bzw. Stripe auf mein / unser Konto gezogenen Lastschriften einzulösen. Hinweis: Ich kann / Wir können innerhalb
+                            von acht Wochen, beginnend mit dem Belastungsdatum, die Erstattung des belasteten Betrages verlangen. Es gelten dabei die mit
+                            meinem / unserem Kreditinstitut vereinbarten Bedingungen.
+                        </div>
+                        <button @click.prevent="passes(savePaymentSettings('sepa_debit'))">Create & Save SEPA Payment Method (Stripe)</button>
+                    </validation-observer>
+                </div>
+
+                <button @click.prevent="closeModal()">Close</button>
             </div>
         </div>
     </div>
@@ -68,9 +153,16 @@ export default {
             chosenMethodObj: {}, // Full Method Object from API
             stripe: null, // Stripe.js
             card: null, // Stripe.js elements: card
-            iban: null, // Stripe.js elements: iban
-            showModal: false,
-            stripePaymentMethod: null // Stripe result of createPayment function
+            sepa: null, // Stripe.js elements: iban
+            stripePaymentMethod: null, // Stripe result of createPayment function
+            billingDetailsCard: {
+                name: ''
+            },
+            billingDetailsSepa: {
+                name: '',
+                email: ''
+            },
+            showModal: false
         };
     },
 
@@ -79,6 +171,7 @@ export default {
             paymentMethods: (state) => state.modApiPayment.paymentMethods,
             chosenPaymentMethod: (state) => state.modApiPayment.order.chosenPaymentMethod,
             paymentError: (state) => state.modApiPayment.paymentError,
+            processingCheckout: (state) => state.modApiPayment.processingCheckout,
         }),
         ...mapGetters({
             getChosenPaymentMethod: 'modApiPayment/getChosenPaymentMethod',
@@ -87,7 +180,7 @@ export default {
 
     watch: {
         chosenMethod: function (newValue) {
-            // Set method by id
+            // Set paymentMethodObj by id
             this.setMethodById(newValue);
 
             this.saveChosenPaymentMethodToApi();
@@ -118,15 +211,12 @@ export default {
             this.card = this.initStripeElement("card", this.$refs.card, this.$refs.cardErrors, cardOptions);
 
             // Init Stripe Elements: Iban
-            const ibanOptions = {
+            const sepaOptions = {
                 style: {},
                 supportedCountries: ["SEPA"],
-                // If you know the country of the customer, you can optionally pass it to
-                // the Element as placeholderCountry. The example IBAN that is being used
-                // as placeholder reflects the IBAN format of that country.
                 placeholderCountry: "DE"
             };
-            this.iban = this.initStripeElement("iban", this.$refs.iban, this.$refs.ibanErrors, ibanOptions);
+            this.sepa = this.initStripeElement("iban", this.$refs.sepa, this.$refs.sepaErrors, sepaOptions);
         } catch (e) {
             console.log("Failed to init Stripe.js");
         }
@@ -175,29 +265,55 @@ export default {
 
             return element;
         },
-        savePaymentSettings: function () {
-            // TODO: Set full name from customer.billingaddress
-            let paymentMethodData = {type:"card", card: this.card, billing_details: { name: 'Test Name' }};
+        savePaymentSettings: function (type) {
+            let paymentMethodData = {};
 
-            this.stripe.createPaymentMethod(paymentMethodData).then((result) => {
-                this.stripePaymentMethod = result;
-                let payload = null;
+            if(type === 'card') {
+                paymentMethodData = {
+                    type:"card",
+                    card: this.card,
+                    billing_details: this.billingDetailsCard
+                };
+            }
 
-                if(result.paymentMethod.card != null) {
-                    payload = {
-                        card: result.paymentMethod.card,
-                        saveCardForFutureCheckouts: null
+            if(type === 'sepa_debit') {
+                paymentMethodData = {
+                    type:"sepa_debit",
+                    sepa_debit: this.sepa,
+                    billing_details: this.billingDetailsSepa
+                };
+            }
+
+            if(!_.isEmpty(paymentMethodData)) {
+                this.stripe.createPaymentMethod(paymentMethodData).then((result) => {
+                    this.stripePaymentMethod = result;
+                    let payload = null;
+
+                    if(result.paymentMethod.card != null) {
+                        payload = {
+                            card: result.paymentMethod.card,
+                            saveCardForFutureCheckouts: null
+                        }
+                        _.assign(payload.card, { id: result.paymentMethod.id });
+                        _.assign(payload.card, { name: result.paymentMethod.billing_details.name });
                     }
-                    _.assign(payload.card, { id: result.paymentMethod.id });
-                    _.assign(payload.card, { name: result.paymentMethod.billing_details.name });
-                }
 
-                // TODO: save stripePaymentMethod to vuex
-                // TODO: on order submit:  !this.chosenMethodObj.shortName.includes(this.stripePaymentMethod.paymentMethod.type)
-                this.$store.dispatch('modApiPayment/swSetPaymentMethodSettings', payload);
+                    if(result.paymentMethod.sepaBankAccount != null) {
+                        payload = {
+                            sepaBankAccount: result.paymentMethod.sepaBankAccount,
+                            saveSepaBankAccountForFutureCheckouts: null
+                        }
+                        _.assign(payload.card, { id: result.paymentMethod.id });
+                        _.assign(payload.card, { name: result.paymentMethod.billing_details.name });
+                    }
 
-                this.closeModal();
-            });
+                    // TODO: save stripePaymentMethod to vuex
+                    // TODO: on order submit:  !this.chosenMethodObj.shortName.includes(this.stripePaymentMethod.paymentMethod.type)
+                    this.$store.dispatch('modApiPayment/swSetPaymentMethodSettings', payload);
+
+                    this.closeModal();
+                });
+            }
         },
         closeModal: function() {
             // Reset chosen method if iframe error
