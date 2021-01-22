@@ -12,6 +12,18 @@
                         <span class="description" v-text="method.description" />
                         <span :class="'method-image-' + method.id" />
                     </label>
+                    <template v-if="method.shortName === 'stripe.shopware_payment.payment_handler.card'">
+                        <div v-if="Object.keys(stripePaymentMethods.card).length > 0">
+                            <span>{{ stripePaymentMethods.card.name }} | ****{{ stripePaymentMethods.card.last4 }}</span>
+                            <span @click="editPaymentSettings(method.id)">{{$t('Edit')}}</span>
+                        </div>
+                    </template>
+                    <template v-if="method.shortName === 'stripe.shopware_payment.payment_handler.sepa'">
+                        <div v-if="Object.keys(stripePaymentMethods.sepaBankAccount).length > 0">
+                            <span>{{ stripePaymentMethods.sepaBankAccount.name }} | ****{{ stripePaymentMethods.sepaBankAccount.last4 }}</span>
+                            <span @click="editPaymentSettings(method.id)">{{$t('Edit')}}</span>
+                        </div>
+                    </template>
                 </div>
             </div>
 
@@ -154,11 +166,14 @@ export default {
             stripe: null, // Stripe.js
             card: null, // Stripe.js elements: card
             sepa: null, // Stripe.js elements: iban
-            stripePaymentMethod: null, // Stripe result of createPayment function
-            billingDetailsCard: {
+            stripePaymentMethods: { // Stripe result of createPayment function
+                card: {},
+                sepaBankAccount: {}
+            },
+            billingDetailsCard: { // Stripe required customer info
                 name: ''
             },
-            billingDetailsSepa: {
+            billingDetailsSepa: { // Stripe required customer info
                 name: '',
                 email: ''
             },
@@ -225,7 +240,7 @@ export default {
         if (_.isEmpty(this.paymentMethods)) {
             this.getPaymentMethods().then(() => {
                 this.loading = false;
-                //this.setChosenPaymentMethod();
+                this.setChosenPaymentMethod();
             }).catch((error) => {
                 this.apiError = true;
                 this.loading = false;
@@ -286,39 +301,42 @@ export default {
 
             if(!_.isEmpty(paymentMethodData)) {
                 this.stripe.createPaymentMethod(paymentMethodData).then((result) => {
-                    this.stripePaymentMethod = result;
                     let payload = null;
 
                     if(result.paymentMethod.card != null) {
+                        this.stripePaymentMethods.card = result.paymentMethod.card;
+
                         payload = {
                             card: result.paymentMethod.card,
                             saveCardForFutureCheckouts: null
-                        }
+                        };
                         _.assign(payload.card, { id: result.paymentMethod.id });
                         _.assign(payload.card, { name: result.paymentMethod.billing_details.name });
+
+                        this.$store.dispatch('modApiPayment/swSetPaymentMethodSettings', payload);
+                        this.closeModal(this.card);
                     }
 
-                    if(result.paymentMethod.sepaBankAccount != null) {
+                    if(result.paymentMethod.sepa_debit != null) {
+                        this.stripePaymentMethods.sepaBankAccount = result.paymentMethod.sepa_debit;
+
                         payload = {
-                            sepaBankAccount: result.paymentMethod.sepaBankAccount,
+                            sepaBankAccount: result.paymentMethod.sepa_debit,
                             saveSepaBankAccountForFutureCheckouts: null
-                        }
-                        _.assign(payload.card, { id: result.paymentMethod.id });
-                        _.assign(payload.card, { name: result.paymentMethod.billing_details.name });
+                        };
+                        _.assign(payload.sepaBankAccount, { id: result.paymentMethod.id });
+                        _.assign(payload.sepaBankAccount, { name: result.paymentMethod.billing_details.name });
+
+                        this.$store.dispatch('modApiPayment/swSetPaymentMethodSettings', payload);
+                        this.closeModal(this.sepa);
                     }
-
-                    // TODO: save stripePaymentMethod to vuex
-                    // TODO: on order submit:  !this.chosenMethodObj.shortName.includes(this.stripePaymentMethod.paymentMethod.type)
-                    this.$store.dispatch('modApiPayment/swSetPaymentMethodSettings', payload);
-
-                    this.closeModal();
                 });
             }
         },
-        closeModal: function() {
+        closeModal: function(element) {
             // Reset chosen method if iframe error
-            if(this.card != null) {
-                if(this.card._empty || this.card._invalid) {
+            if(element != null) {
+                if(element._empty || element._invalid) {
                     this.resetChosenPaymentMethod();
                 }
             }
@@ -346,6 +364,11 @@ export default {
                         reject();
                     });
             });
+        },
+        editPaymentSettings: function(id) {
+            // Set chosenMethod to trigger watcher:
+            // set chosen method + open related modal
+            this.chosenMethod = id;
         },
         getPaymentMethods: function () {
             return new Promise((resolve, reject) => {

@@ -116,6 +116,7 @@ export default {
             customer: (state) => state.modApiCustomer.customer,
         }),
     },
+
     methods: {
         ...mapMutations({
             setProcessingCheckout: 'modApiPayment/setProcessingCheckout',
