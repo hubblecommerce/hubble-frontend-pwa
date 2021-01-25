@@ -11,7 +11,7 @@
             <nuxt-link :to="localePath('index')">
                 <button class="button-secondary" v-text="$t('Back to shop')" />
             </nuxt-link>
-            <order-detail v-if="order !== null && !isGuest" :order="order" />
+            <order-detail v-if="order !== null && !isGuest && !isShopware" :order="order" />
         </div>
     </div>
 </template>
@@ -20,7 +20,6 @@
 import { mapState, mapActions } from 'vuex';
 import OrderDetail from '../../components/customer/OrderDetail';
 import _ from 'lodash';
-import successValidate from '~/anonymous-middleware/successValidate';
 import apiCustomerAuthenticate from '~/anonymous-middleware/apiCustomerAuthenticate';
 import apiPaymentAuthenticate from '~/anonymous-middleware/apiPaymentAuthenticate';
 
@@ -31,12 +30,13 @@ export default {
 
     layout: 'hubble_light',
 
-    middleware: [apiPaymentAuthenticate, apiCustomerAuthenticate, successValidate, 'apiLocalization', 'trackClickPath'],
+    middleware: [apiPaymentAuthenticate, apiCustomerAuthenticate, 'apiLocalization', 'trackClickPath'],
 
     data() {
         return {
             loading: true,
             order: null,
+            isShopware: process.env.API_TYPE === 'sw',
         };
     },
 
