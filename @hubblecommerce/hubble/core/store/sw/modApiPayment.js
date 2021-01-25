@@ -223,8 +223,8 @@ export const actions = {
                     endpoint: 'store-api/v3/handle-payment',
                     data: {
                         orderId: payload,
-                        finishUrl: process.env.SW_PAYMENT_FINISH_URL,
-                        errorUrl: process.env.SW_PAYMENT_ERROR_URL
+                        finishUrl: process.env.SW_PAYMENT_FINISH_URL+'?orderId='+payload,
+                        errorUrl: process.env.SW_PAYMENT_ERROR_URL+'?orderId='+payload
                     }
                 },
                 { root: true }
@@ -234,6 +234,30 @@ export const actions = {
                 })
                 .catch((response) => {
                     console.log('swStartPayment - API post request failed: %o', response);
+
+                    reject(response);
+                });
+        });
+    },
+    async swResetPayment({ dispatch, rootState }, payload) {
+        return new Promise((resolve, reject) => {
+            dispatch(
+                'apiCall',
+                {
+                    action: 'post',
+                    tokenType: 'sw',
+                    apiType: 'data',
+                    swContext: rootState.modApiCustomer.customer.customerAuth.token,
+                    endpoint: 'store-api/v3/order/payment',
+                    data: payload
+                },
+                { root: true }
+            )
+                .then((response) => {
+                    resolve(response);
+                })
+                .catch((response) => {
+                    console.log('swResetPayment - API post request failed: %o', response);
 
                     reject(response);
                 });
@@ -286,23 +310,11 @@ export const actions = {
             resolve();
         });
     },
-    async placeOrder({ dispatch, commit }) {
+    async placeOrder({ dispatch }) {
         return new Promise((resolve, reject) => {
             dispatch('swPlaceOrder')
                 .then((response) => {
-                    dispatch('modCart/refreshCart', {}, { root: true })
-                        .then(() => {
-                            dispatch('clearOrder').then(() => {
-                                commit('setCurrentOrder', response.data);
-
-                                resolve(response);
-                            });
-                        })
-                        .catch((err) => {
-                            console.log('clearAll error: ', err);
-
-                            reject(err);
-                        });
+                    resolve(response);
                 })
                 .catch((err) => {
                     console.log('placeOrder error: ', err);

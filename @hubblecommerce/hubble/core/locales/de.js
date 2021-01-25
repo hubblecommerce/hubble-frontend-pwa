@@ -504,6 +504,11 @@ export default (context) => {
             'Card Holder': 'Karteninhaber',
             'Account Holder': 'Kontoinhaber',
             'Account Holder Email': 'E-mail Adresse',
+
+            'Something is wrong with your payment': 'Bezahlvorgang fehlgeschlagen',
+            'We did receive your order, but something is wrong with your payment process.': 'Wir haben Ihre Bestellung erhalten, jedoch ist etwas beim Bezahlvorgang schief gelaufen.',
+            'Please try a different payment method, or contact our customer service via email or hotline.': 'Bitte versuchen Sie eine andere Bezahlmethode oder kontaktieren Sie unseren Kundenservice per E-Mail oder Telefon.',
+            'Pay': 'Bezahlen',
         });
     });
 };

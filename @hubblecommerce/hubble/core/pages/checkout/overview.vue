@@ -49,7 +49,7 @@
 
                 <button
                     class="button button-primary checkout-btn"
-                    :disabled="processingCheckout || !isEmpty(errors)"
+                    :disabled="processingCheckout"
                     @click="placeOrder()"
                 >
                     <span v-if="!processingCheckout">{{ $t('Place Order') }}</span>
@@ -160,7 +160,28 @@ export default {
             let paymentResponse;
 
             try {
+                // Place order
                 order = await this.placeOrderAction();
+
+                // Clear cart
+                await this.$store.dispatch('modCart/refreshCart', {}, { root: true })
+
+                // Clear order info
+                await this.$store.dispatch('modApiPayment/clearOrder')
+
+                // Set order data for success page
+                this.$store.commit('modApiPayment/setCurrentOrder', order);
+            } catch (err) {
+                this.resetProcessingCheckout();
+
+                this.errors.push(this.$t('Order could not be completed.'));
+                _.forEach(this.addBackendErrors(err), (error) => {
+                    this.errors.push(error);
+                });
+            }
+
+            try {
+                // Init payment
                 paymentResponse = await this.swStartPayment(order.data.id);
 
                 if (paymentResponse.data.redirectUrl !== null) {
@@ -169,7 +190,7 @@ export default {
                 } else {
                     this.$router.push(
                         {
-                            path: this.localePath('checkout-shopware-success'),
+                            path: this.localePath('checkout-shopware-success')
                         },
                         () => {
                             this.resetProcessingCheckout();
@@ -177,13 +198,18 @@ export default {
                     );
                 }
             } catch (err) {
-                console.log('placeOrder failed: ', err);
-
-                this.errors.push(this.$t('Order could not be placed successfully'));
-
-                _.forEach(this.addBackendErrors(err), (error) => {
-                    this.errors.push(error);
-                });
+                // Redirect to error page
+                this.$router.push(
+                    this.localePath({
+                        name: 'checkout-error',
+                        query: {
+                            orderId: order.data.id
+                        }
+                    }),
+                    () => {
+                        this.resetProcessingCheckout();
+                    }
+                );
             }
         },
     },
