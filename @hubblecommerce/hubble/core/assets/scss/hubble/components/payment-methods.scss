@@ -29,68 +29,24 @@
         .description {
             display: none;
         }
+    }
+}
 
-        .method-image-1 {
-            position: absolute;
-            right: 0;
-            top: 0;
-            bottom: 0;
-            margin: auto 0;
-            width: 105px;
-            height: 24px;
-            background-image: url('~assets/images/payment/cc.png');
-            background-size: cover;
-        }
+.payment-methods-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.5);
 
-        .method-image-2 {
-            position: absolute;
-            right: 0;
-            top: 0;
-            bottom: 0;
-            margin: auto 0;
-            width: 49px;
-            height: 12px;
-            background-image: url('~assets/images/payment/paypal.png');
-            background-size: cover;
-        }
-
-        .method-image-3 {
-            position: absolute;
-            right: 0;
-            top: 0;
-            bottom: 0;
-            margin: auto 0;
-            width: 35px;
-            height: 20px;
-            background-image: url('~assets/images/payment/nachnahme.png');
-            background-size: cover;
-        }
-
-        .online-bank-transfer-image {
-            position: absolute;
-            right: 0;
-            top: 0;
-            bottom: 0;
-            margin: auto 0;
-            width: 126px;
-            height: 26px;
-            background-image: url('~assets/images/payment/online-bank-transfer.png');
-            background-size: cover;
-        }
-
-        &.online-bank-transfer {
-            .payone-payment-wrp {
-                .method-label {
-                    padding-top: 10px;
-                    padding-bottom: 10px;
-                    margin-bottom: 10px;
-                }
-
-                .hbl-input-group {
-                    max-width: 300px;
-                }
-            }
-        }
+    .payment-content-wrp {
+        margin: auto;
+        max-width: 100%;
+        width: 450px;
+        background: $white;
+        padding: 40px;
     }
 }
 
@@ -115,6 +71,12 @@
                 display: inline;
                 margin-left: 20px;
             }
+        }
+    }
+
+    .payment-methods-modal {
+        .payment-content-wrp {
+            margin: 40px auto auto;
         }
     }
 }

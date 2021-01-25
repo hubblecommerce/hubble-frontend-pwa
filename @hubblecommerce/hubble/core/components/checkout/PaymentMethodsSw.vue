@@ -15,14 +15,14 @@
                     <template v-if="method.shortName === 'stripe.shopware_payment.payment_handler.card'">
                         <div v-if="Object.keys(stripePaymentMethods.card).length > 0">
                             <span>{{ stripePaymentMethods.card.name }} | ****{{ stripePaymentMethods.card.last4 }}</span>
-                            <span @click="editPaymentSettings(method.id)">{{$t('Edit')}}</span>
                         </div>
+                        <span @click="editPaymentSettings(method.id)">{{$t('Edit')}}</span>
                     </template>
                     <template v-if="method.shortName === 'stripe.shopware_payment.payment_handler.sepa'">
                         <div v-if="Object.keys(stripePaymentMethods.sepaBankAccount).length > 0">
                             <span>{{ stripePaymentMethods.sepaBankAccount.name }} | ****{{ stripePaymentMethods.sepaBankAccount.last4 }}</span>
-                            <span @click="editPaymentSettings(method.id)">{{$t('Edit')}}</span>
                         </div>
+                        <span @click="editPaymentSettings(method.id)">{{$t('Edit')}}</span>
                     </template>
                 </div>
             </div>
@@ -368,7 +368,11 @@ export default {
         editPaymentSettings: function(id) {
             // Set chosenMethod to trigger watcher:
             // set chosen method + open related modal
-            this.chosenMethod = id;
+            if(this.chosenMethod !== id) {
+                this.chosenMethod = id;
+            } else {
+                this.showModal = true;
+            }
         },
         getPaymentMethods: function () {
             return new Promise((resolve, reject) => {
