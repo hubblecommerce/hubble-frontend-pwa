@@ -166,7 +166,7 @@ export const actions = {
             });
         });
     },
-    async register({ dispatch, commit, state, getters }, payload) {
+    async register({ dispatch, commit, state, rootState,  getters }, payload) {
         // Map customer data to fit SW6 headless API
         let customer = {
             guest: payload.guest,
@@ -204,6 +204,7 @@ export const actions = {
                     tokenType: 'sw',
                     apiType: 'data',
                     endpoint: '/store-api/v3/account/register',
+                    swContext: rootState.modCart.swtc,
                     data: customer,
                 },
                 { root: true }
