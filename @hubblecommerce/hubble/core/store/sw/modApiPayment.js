@@ -350,17 +350,18 @@ export const actions = {
             reject('Sorry, coupons are currently not available.');
         });
     },
-    async getPaymentMethods({ commit, dispatch }) {
+    async getPaymentMethods({ commit, dispatch, rootState }) {
         return new Promise((resolve, reject) => {
             dispatch(
                 'apiCall',
                 {
-                    action: 'get',
+                    action: 'post',
                     tokenType: 'sw',
                     apiType: 'data',
+                    swContext: rootState.modApiCustomer.customer.customerAuth.token,
                     endpoint: '/store-api/v3/payment-method',
-                    params: {
-                        limit: 500,
+                    data: {
+                        onlyAvailable: true
                     },
                 },
                 { root: true }
@@ -378,15 +379,19 @@ export const actions = {
                 });
         });
     },
-    async getShippingMethods({ commit, dispatch }) {
+    async getShippingMethods({ commit, dispatch, rootState }) {
         return new Promise((resolve, reject) => {
             dispatch(
                 'apiCall',
                 {
-                    action: 'get',
+                    action: 'post',
                     tokenType: 'sw',
                     apiType: 'data',
+                    swContext: rootState.modApiCustomer.customer.customerAuth.token,
                     endpoint: '/store-api/v3/shipping-method',
+                    data: {
+                        onlyAvailable: true
+                    }
                 },
                 { root: true }
             )
