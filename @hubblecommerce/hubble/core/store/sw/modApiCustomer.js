@@ -266,6 +266,29 @@ export const actions = {
             return response;
         }
     },
+    async setGuestSession({commit, dispatch, state, getters}, contextToken){
+        let authData = {
+            created_at: new Date(),
+            expires_at: getters.getCookieExpires,
+            expires_in: 86400,
+            token: contextToken,
+            token_name: 'swtc',
+            token_type: 'context',
+            updated_at: '',
+        };
+
+        commit('setCustomerAuth', authData);
+
+        this.$cookies.set(state.cookieName, state.customer, {
+            path: state.cookiePath,
+            expires: getters.getCookieExpires,
+        });
+
+        // If you log in with cart context token, Shopware merges cart automatically.
+        // You only have to use the returned context token for all future requests (cart/customer/checkout)
+        await dispatch('modCart/saveSwtc', contextToken, { root: true });
+        await dispatch('modCart/refreshCart', {}, { root: true });
+    },
     async logIn({ commit, state, dispatch, rootState, getters }, payload) {
         const loginCreds = {
             username: payload.email,
@@ -372,7 +395,7 @@ export const actions = {
             };
         } else {
             // Save cookie to store
-            commit('setCustomer', _cookie);
+            commit('setCustomerAuth', _cookie.customerAuth);
 
             return {
                 success: true,
@@ -461,6 +484,40 @@ export const actions = {
         });
 
         return mappedAddresses;
+    },
+    async setCustomerInfo({ commit, state, dispatch }, customer) {
+        try {
+            const customerData = {
+                guest: customer.guest,
+                name: `${customer.firstName} ${customer.lastName}`,
+                firstName: customer.firstName,
+                lastName: customer.lastName,
+                salutationId: customer.salutationId,
+                title: customer.title,
+                birthDay: customer.birthday,
+                email: customer.email,
+                defaultBillingAddressId: customer.defaultBillingAddressId,
+                defaultShippingAddressId: customer.defaultShippingAddressId,
+            };
+
+            commit('setCustomerData', customerData);
+
+            const addresses = {
+                billingDefault: customer.defaultBillingAddress,
+                shippingDefault: customer.defaultShippingAddress,
+            };
+
+            // todo: find out why store api endpoint sends default addresses as null
+            if (addresses.billingDefault !== null || addresses.shippingDefault !== null) {
+                const mappedAddresses = await dispatch('mapDefaultAddresses', addresses);
+
+                commit('setCustomerAddresses', mappedAddresses);
+            }
+
+            return customerData;
+        } catch (e) {
+            console.log('setCustomerInfo failed: %o', e);
+        }
     },
     async getCustomerInfo({ commit, state, dispatch }) {
         try {

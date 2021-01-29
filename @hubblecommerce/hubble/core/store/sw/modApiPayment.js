@@ -213,6 +213,14 @@ export const actions = {
     },
     async swStartPayment({ dispatch, rootState }, payload) {
         return new Promise((resolve, reject) => {
+            let requiredData = {
+                orderId: payload.orderId,
+                finishUrl: process.env.SW_PAYMENT_FINISH_URL+'?orderId='+payload.orderId,
+                errorUrl: process.env.SW_PAYMENT_ERROR_URL+'?orderId='+payload.orderId
+            };
+
+            let requestData = _.merge(requiredData, payload.dataBag);
+
             dispatch(
                 'apiCall',
                 {
@@ -221,11 +229,7 @@ export const actions = {
                     apiType: 'data',
                     swContext: rootState.modApiCustomer.customer.customerAuth.token,
                     endpoint: 'store-api/v3/handle-payment',
-                    data: {
-                        orderId: payload,
-                        finishUrl: process.env.SW_PAYMENT_FINISH_URL+'?orderId='+payload,
-                        errorUrl: process.env.SW_PAYMENT_ERROR_URL+'?orderId='+payload
-                    }
+                    data: requestData
                 },
                 { root: true }
             )

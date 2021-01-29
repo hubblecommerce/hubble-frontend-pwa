@@ -75,11 +75,11 @@ import CartItemsListNonInteractive from '../../components/checkout/CartItemsList
 import Coupons from '../../components/checkout/Coupons';
 import Totals from '../../components/checkout/Totals';
 import cartValidate from '~/anonymous-middleware/cartValidate';
+import setCheckoutSession from '~/anonymous-middleware/setCheckoutSession';
 import CustomerAddresses from '../../components/customer/CustomerAddresses';
 import { mapActions, mapMutations, mapState } from 'vuex';
 import { addBackendErrors } from '../../utils/formMixins';
 import _ from 'lodash';
-import apiCustomerAuthenticate from '~/anonymous-middleware/apiCustomerAuthenticate';
 
 export default {
     name: 'CheckoutOverview',
@@ -98,7 +98,7 @@ export default {
 
     layout: 'hubble_light',
 
-    middleware: [apiCustomerAuthenticate, cartValidate, 'apiLocalization', 'trackClickPath'],
+    middleware: [cartValidate, 'apiLocalization', setCheckoutSession, 'trackClickPath'],
 
     data() {
         return {
@@ -115,6 +115,10 @@ export default {
             processingCheckout: (state) => state.modApiPayment.processingCheckout,
             customer: (state) => state.modApiCustomer.customer,
         }),
+    },
+
+    mounted() {
+        console.log();
     },
 
     methods: {
@@ -181,8 +185,11 @@ export default {
             }
 
             try {
+                // Get params of current route, for extra payment info. E.g. used by paypal express etc.
+                let dataBag = this.$router.currentRoute.query;
+
                 // Init payment
-                paymentResponse = await this.swStartPayment(order.data.id);
+                paymentResponse = await this.swStartPayment({orderId: order.data.id, dataBag: dataBag});
 
                 if (paymentResponse.data.redirectUrl !== null) {
                     this.resetProcessingCheckout();
@@ -198,6 +205,7 @@ export default {
                     );
                 }
             } catch (err) {
+                console.log(err);
                 // Redirect to error page
                 this.$router.push(
                     this.localePath({

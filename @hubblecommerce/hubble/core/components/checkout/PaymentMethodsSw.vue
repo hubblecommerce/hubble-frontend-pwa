@@ -247,6 +247,7 @@ export default {
                 console.log(error);
             });
         } else {
+            this.setChosenPaymentMethod();
             this.loading = false;
         }
     },
@@ -387,7 +388,7 @@ export default {
             });
         },
         setChosenPaymentMethod: function () {
-            if (this.getChosenPaymentMethod) {
+            if (this.getChosenPaymentMethod.id != null) {
                 this.chosenMethod = this.getChosenPaymentMethod.id;
             }
         },

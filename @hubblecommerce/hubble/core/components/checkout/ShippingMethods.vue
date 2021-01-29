@@ -92,6 +92,7 @@ export default {
                     this.loading = false;
                 });
         } else {
+            this.setChosenShippingMethod();
             this.loading = false;
         }
     },

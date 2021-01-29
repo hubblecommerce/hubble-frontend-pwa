@@ -32,7 +32,9 @@
 
         <div class="register-options-wrp">
             <!-- Placeholder for express checkouts as paypal express, amazon pay etc. -->
-            <div class="express-checkout-wrp" />
+            <div class="express-checkout-wrp">
+                <SwPaypalExpress />
+            </div>
 
             <div class="customer-register-wrp">
                 <div class="headline headline-2" v-text="$t('Contact Information')" />
@@ -53,11 +55,12 @@ import Totals from '../../components/checkout/Totals';
 import cartValidate from '~/anonymous-middleware/cartValidate';
 import RegisterForm from '../../components/customer/RegisterForm';
 import { mapState } from 'vuex';
+import SwPaypalExpress from "@@/modules/hubble-frontend-pwa/@hubblecommerce/hubble/core/components/checkout/SwPaypalExpress";
 
 export default {
     name: 'CheckoutRegister',
 
-    components: { RegisterForm, Totals, Coupons, CartItemsListNonInteractive },
+    components: {SwPaypalExpress, RegisterForm, Totals, Coupons, CartItemsListNonInteractive},
 
     layout: 'hubble_light',
 
