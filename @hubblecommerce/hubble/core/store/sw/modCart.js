@@ -601,7 +601,7 @@ export const actions = {
                     display_price_brutto: product.price.unitPrice,
                 },
                 image: product.cover.url,
-                url_pds: null,
+                url_pds: product.payload.seoUrl != null ? product.payload.seoUrl : null,
                 variants: product.payload.options.map((option) => {
                     return {
                         label: option.group,
