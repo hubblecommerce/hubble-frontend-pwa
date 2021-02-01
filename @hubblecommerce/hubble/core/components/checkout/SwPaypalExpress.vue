@@ -1,5 +1,8 @@
 <template>
     <div class="pp-express-wrp">
+        <div v-if="error != null" class="pp-express-error-wrp">
+            <div class="error-msg" v-text="error"/>
+        </div>
         <transition name="fade">
             <div v-if="!scriptLoaded" class="loader-wrp">
                 <div class="loader lds-ellipsis">
@@ -123,7 +126,8 @@ export default {
                 'sepa',
                 'sofort',
                 'venmo'
-            ]
+            ],
+            error: null
         }
     },
 
@@ -354,8 +358,14 @@ export default {
         },
 
         onError: function() {
-            // TODO: Add exception handling
-            console.log("PP ERROR");
+            this.loading = false;
+
+            if (typeof this.options.clientId === 'undefined' || this.options.clientId === '') {
+                console.error('No StoreApiClient defined in child plugin class');
+                return;
+            }
+
+            this.error = this.$t('Please try a different payment method, or contact our customer service via email or hotline.');
         },
 
         addProductToCart: function() {

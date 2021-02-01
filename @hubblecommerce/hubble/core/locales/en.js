@@ -461,7 +461,7 @@ export default (context) => {
             'Something is wrong with your payment': 'Something is wrong with your payment',
             'We did receive your order, but something is wrong with your payment process.': 'We did receive your order, but something is wrong with your payment process.',
             'Please try a different payment method, or contact our customer service via email or hotline.': 'Please try a different payment method, or contact our customer service via email or hotline.',
-            'Pay': 'Pay',
+            'Pay': 'Pay'
 
         });
     });
