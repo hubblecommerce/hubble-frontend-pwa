@@ -83,86 +83,6 @@ export const getters = {
 };
 
 export const actions = {
-    async registerGuest({ dispatch, commit, state, getters }, payload) {
-        // Map customer data to fit SW6 headless API
-        let customer = {
-            guest: payload.guest,
-            salutationId: payload.address.gender,
-            email: payload.email,
-            firstName: payload.address.firstName,
-            lastName: payload.address.lastName,
-            defaultBillingAddressId: 0,
-            defaultShippingAddressId: 1,
-        };
-
-        let customerAddresses = [];
-        customerAddresses.push({
-            id: 0,
-            salutationId: payload.address.gender,
-            firstName: payload.address.firstName,
-            lastName: payload.address.lastName,
-            street: payload.address.street,
-            zipcode: payload.address.postal,
-            city: payload.address.city,
-            countryId: payload.address.country,
-        });
-
-        let shippingAddress;
-        if (payload.shippingAddress !== null) {
-            shippingAddress = {
-                id: 1,
-                salutationId: payload.shippingAddress.gender,
-                firstName: payload.shippingAddress.firstName,
-                lastName: payload.shippingAddress.lastName,
-                street: payload.shippingAddress.street,
-                zipcode: payload.shippingAddress.postal,
-                city: payload.shippingAddress.city,
-                countryId: payload.shippingAddress.country,
-            };
-        } else {
-            shippingAddress = {
-                id: 1,
-                salutationId: payload.address.gender,
-                firstName: payload.address.firstName,
-                lastName: payload.address.lastName,
-                street: payload.address.street,
-                zipcode: payload.address.postal,
-                city: payload.address.city,
-                countryId: payload.address.country,
-            };
-        }
-        customerAddresses.push(shippingAddress);
-
-        // Remove cookies
-        this.$cookies.remove(state.cookieName);
-        this.$cookies.remove(state.cookieNameOrder);
-        this.$cookies.remove(state.cookieNameAddress);
-
-        let authData = {
-            created_at: new Date(),
-            expires_at: getters.getCookieExpires,
-            expires_in: 86400,
-            token: 'guest',
-            token_name: 'swtc',
-            token_type: 'context',
-            updated_at: '',
-        };
-
-        // Clear order Data
-        commit('modApiPayment/setChosenPaymentMethod', {}, { root: true });
-        commit('modApiPayment/setChosenShippingMethod', {}, { root: true });
-
-        commit('setCustomerData', customer);
-        commit('setCustomerAuth', authData);
-
-        const mappedAddresses = await dispatch('mapAddresses', customerAddresses);
-        commit('setCustomerAddresses', mappedAddresses);
-
-        this.$cookies.set(state.cookieName, state.customer, {
-            path: state.cookiePath,
-            expires: getters.getCookieExpires,
-        });
-    },
     async register({ dispatch, commit, state, rootState, getters }, payload) {
         // Map customer data to fit SW6 headless API
         let customer = {
@@ -228,6 +148,7 @@ export const actions = {
                 token_name: 'swtc',
                 token_type: 'context',
                 updated_at: '',
+                guest: true
             };
 
             const customerData = {
@@ -275,6 +196,7 @@ export const actions = {
             token_name: 'swtc',
             token_type: 'context',
             updated_at: '',
+            guest: true
         };
 
         commit('setCustomerAuth', authData);
@@ -325,6 +247,7 @@ export const actions = {
             token_name: 'swtc',
             token_type: 'context',
             updated_at: '',
+            guest: false
         };
 
         // Save auth data to store
@@ -356,7 +279,6 @@ export const actions = {
 
         return loginResponse;
     },
-
     async logOut({ commit, state, dispatch }) {
         const response = await dispatch(
             'apiCall',
@@ -383,6 +305,23 @@ export const actions = {
         this.$cookies.remove(state.cookieNameAddress);
 
         return await dispatch('modCart/saveSwtc', response.data['contextToken'], { root: true });
+    },
+    async logOutGuest({ commit, state, dispatch }) {
+        // Clear customer data
+        commit('clearCustomerData');
+
+        // Clear order data
+        commit('modApiPayment/setChosenPaymentMethod', {}, { root: true });
+        commit('modApiPayment/setChosenShippingMethod', {}, { root: true });
+
+        // Remove cookies
+        this.$cookies.remove(state.cookieName);
+        this.$cookies.remove(state.cookieNameOrder);
+        this.$cookies.remove(state.cookieNameAddress);
+
+        // Remove cart cookie / local storage
+        await dispatch('modCart/initCart', {}, { root: true });
+        await dispatch('modCart/refreshCart', {}, { root: true }); 
     },
     async setByCookie({ commit, state }) {
         let _cookie = this.$cookies.get(state.cookieName);

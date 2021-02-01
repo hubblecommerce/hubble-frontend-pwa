@@ -11,26 +11,35 @@
         </div>
 
         <div class="row content-wrp">
-            <transition name="fade" mode="out-in">
-                <div v-if="isLoggedIn" :key="'loggedIn'">
-                    <customer-account-navigation />
+            <div v-if="isLoggedIn && !isGuest" :key="'loggedIn'">
+                <customer-account-navigation />
+            </div>
+
+
+            <div v-if="isLoggedIn && isGuest" :key="'isGuest'">
+                <div class="link-wrp">
+                    <button class="button-primary logout-button" @click.prevent="onClickLogOutGuest()">
+                        {{ $t('Quit guest session') }}
+
+                        <material-ripple />
+                    </button>
                 </div>
+            </div>
 
-                <div v-if="!isLoggedIn" :key="'loggedOut'">
-                    <login-form />
+            <div v-if="!isLoggedIn" :key="'loggedOut'">
+                <login-form />
 
-                    <div class="register-form">
-                        <div class="headline" v-text="$t('I am not having an account yet')" />
+                <div class="register-form">
+                    <div class="headline" v-text="$t('I am not having an account yet')" />
 
-                        <div class="subline">{{ $t('Simply create a customer account with us.') }}</div>
+                    <div class="subline">{{ $t('Simply create a customer account with us.') }}</div>
 
-                        <button class="button-primary" @click.prevent="showFormRegister">
-                            {{ $t('Register') }}
-                            <material-ripple />
-                        </button>
-                    </div>
+                    <button class="button-primary" @click.prevent="showFormRegister">
+                        {{ $t('Register') }}
+                        <material-ripple />
+                    </button>
                 </div>
-            </transition>
+            </div>
         </div>
     </div>
 </template>
@@ -58,18 +67,26 @@ export default {
             customer: (state) => state.modApiCustomer.customer,
         }),
         isLoggedIn: function () {
-            if (!_.isEmpty(this.customer.customerAuth) && !this.customer.customerData.guest) {
+            if (!_.isEmpty(this.customer.customerAuth)) {
                 return this.customer.customerAuth.token;
             }
 
             return false;
         },
+        isGuest: function() {
+            if (!_.isEmpty(this.customer.customerAuth)) {
+                return this.customer.customerAuth.guest;
+            }
+
+            return false;
+        }
     },
 
     methods: {
         ...mapActions({
             toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction',
             hideOffcanvasAction: 'modNavigation/hideOffcanvasAction',
+            logOutGuest: 'modApiCustomer/logOutGuest'
         }),
         toggle: function () {
             this.toggleOffcanvasAction({
@@ -88,6 +105,9 @@ export default {
                 query: { tab: 1 },
             });
         },
+        onClickLogOutGuest: function() {
+            this.logOutGuest();
+        }
     }
 };
 </script>

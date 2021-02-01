@@ -106,8 +106,8 @@ export default {
             return false;
         },
         isGuest: function() {
-            if (!_.isEmpty(this.customer.customerData)) {
-                return this.customer.customerData.guest;
+            if (!_.isEmpty(this.customer.customerAuth)) {
+                return this.customer.customerAuth.guest;
             }
 
             return false;

@@ -330,6 +330,7 @@ export default {
             // Add a loading indicator to the body to prevent the user breaking the checkout process
             this.loading = true;
 
+            // Loggs in a guest customer, with the data of a paypal order
             try {
                 const response = await this.apiCall({
                         action: 'post',

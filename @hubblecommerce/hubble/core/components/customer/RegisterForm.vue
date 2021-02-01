@@ -754,8 +754,7 @@ export default {
             register: 'modApiCustomer/register',
             postWishlist: 'modApiCustomer/postWishlist',
             storeCustomerAddress: 'modApiCustomer/storeCustomerAddress',
-            saveToStore: 'modWishlist/saveToStore',
-            registerGuest: 'modApiCustomer/registerGuest',
+            saveToStore: 'modWishlist/saveToStore'
         }),
         ...mapMutations({
             setWishlistId: 'modWishlist/setWishlistId',

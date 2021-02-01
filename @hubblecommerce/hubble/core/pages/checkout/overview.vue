@@ -154,8 +154,12 @@ export default {
             this.setProcessingCheckout();
 
             try {
+                this.errors = [];
+
+                // Payment and Shipping isset
                 await this.validateOrder();
             } catch (error) {
+                this.errors.push(error);
                 this.resetProcessingCheckout();
                 return false;
             }
@@ -182,6 +186,8 @@ export default {
                 _.forEach(this.addBackendErrors(err), (error) => {
                     this.errors.push(error);
                 });
+
+                return false;
             }
 
             try {
