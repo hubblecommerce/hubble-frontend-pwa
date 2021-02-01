@@ -92,6 +92,7 @@ export const defaultDotEnv = {
         'API_PAYMENT_BASE_URL',
         'SW_PAYMENT_FINISH_URL',
         'SW_PAYMENT_ERROR_URL',
+        'SW_PAYPAL_CLIENT_ID',
         'PAYONE_MODE',
         'PAYONE_MID',
         'PAYONE_AID',

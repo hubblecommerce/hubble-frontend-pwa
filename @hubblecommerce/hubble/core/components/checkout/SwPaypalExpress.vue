@@ -10,6 +10,16 @@
                 </div>
             </div>
         </transition>
+        <transition name="fade">
+            <div v-if="loading" class="fullscreen-loader-wrp">
+                <div class="loader lds-ring">
+                    <div />
+                    <div />
+                    <div />
+                    <div />
+                </div>
+            </div>
+        </transition>
         <div ref="pp-express-button" />
     </div>
 </template>
@@ -98,6 +108,7 @@ export default {
             },
             loadingScript: false,
             scriptLoaded: false,
+            loading: false,
             callbacks: [],
             availableAPMs: [
                 'card',
@@ -124,6 +135,10 @@ export default {
 
     mounted() {
         this.createButton();
+    },
+
+    beforeDestroy() {
+        this.loading = false;
     },
 
     methods: {
@@ -308,8 +323,8 @@ export default {
                 token: data.orderID
             };
 
-            // TODO Add a loading indicator to the body to prevent the user breaking the checkout process
-            //ElementLoadingIndicatorUtil.create(document.body);
+            // Add a loading indicator to the body to prevent the user breaking the checkout process
+            this.loading = true;
 
             try {
                 const response = await this.apiCall({
@@ -333,6 +348,7 @@ export default {
                     }
                 });
             } catch(e) {
+                this.loading = false;
                 console.log(e);
             }
         },
