@@ -221,6 +221,7 @@ export const actions = {
 
             let product = payload.product;
 
+            obj.active = product.available;
             obj.id = product.id;
             obj.sku = product.ean;
             obj.type = 'simple';
@@ -260,9 +261,21 @@ export const actions = {
                 obj.url_pds = '';
             }
             obj.stock_item = {
-                qty: product.stock,
-                is_in_stock: product.available,
+                qty: product.availableStock,
+                minPurchase: product.minPurchase,
+                maxPurchase: product.maxPurchase,
+                purchaseSteps: product.purchaseSteps,
+                is_in_stock: false
             };
+
+            if(product.isCloseout && product.availableStock > 0) {
+                obj.stock_item.is_in_stock = true;
+            }
+
+            if(!product.isCloseout) {
+                obj.stock_item.is_in_stock = true;
+            }
+
             obj.final_price_item = {
                 special_to_date: null,
                 special_from_date: null,

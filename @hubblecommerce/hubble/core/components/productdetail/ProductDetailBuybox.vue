@@ -26,9 +26,16 @@
         </div>
 
         <!-- Add to cart -->
-        <div class="add-to-cart-wrp">
-            <qty-selector :max-qty="dataProduct.stock_item.qty" @changeQty="onChangeQty($event)" />
+        <div v-if="dataProduct.stock_item.is_in_stock" class="add-to-cart-wrp">
+            <qty-selector
+                :min-qty="dataProduct.stock_item.minPurchase"
+                :max-qty="dataProduct.stock_item.maxPurchase != null ? dataProduct.stock_item.maxPurchase : 10"
+                @changeQty="onChangeQty($event)"
+            />
             <product-detail-add-to-cart :qty="qty" :item="dataProduct" :loader-display="'ellipsis'" />
+        </div>
+        <div v-else class="out-of-stock-wrp">
+            {{ $t('We are sorry, this product is currently out of stock.') }}
         </div>
     </div>
 </template>

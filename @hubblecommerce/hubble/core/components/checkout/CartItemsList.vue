@@ -85,7 +85,7 @@
 
                         <qty-selector
                             :type="true"
-                            :qty="item.qty"
+                            :min-qty="item.qty"
                             :max-qty="getStockQtyOfVariant(item)"
                             @changeQty="onChangeQty(item.id, $event)"
                         />

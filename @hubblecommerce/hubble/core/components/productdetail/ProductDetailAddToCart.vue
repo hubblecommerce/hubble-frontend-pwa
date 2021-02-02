@@ -78,7 +78,7 @@ export default {
             let qty = this.qty != null ? this.qty : this.selectedQty;
 
             // Return if qty is not in stock
-            if(qty > this.dataProduct.result.item.stock_item.qty) {
+            if(!this.dataProduct.result.item.stock_item.is_in_stock) {
                 this.setIsLoading(false);
 
                 // Display Error Message (eg. Qty of item is at maxQty)

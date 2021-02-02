@@ -128,8 +128,8 @@ export default async function (moduleOptions) {
     // Remove preload links to reduce time to first meaningful paint
     // https://cmty.app/nuxt/nuxt.js/issues/c6837
     this.nuxt.hook('render:before', (ctx, options) => {
-        ctx.nuxt.options.render.bundleRenderer.shouldPreload = () => {
-            return false;
+        ctx.nuxt.options.render.bundleRenderer.shouldPreload = (type) => {
+            return ['font'].includes(type);
         };
     });
 

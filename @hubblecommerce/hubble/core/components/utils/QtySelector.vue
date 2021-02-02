@@ -27,9 +27,7 @@
                 <select v-model="qtySelected" class="select-text" required :disabled="qtyOptions.length < 1">
                     <option value="" disabled selected />
                     <option v-if="qtyOptions.length < 1" value="1">1</option>
-                    <option v-for="(item, index) in qtyOptions" :key="index" :value="item.value">{{
-                        item.text
-                    }}</option>
+                    <option v-for="(item, index) in qtyOptions" :key="index" :value="item.value">{{ item.text }}</option>
                 </select>
                 <span class="select-highlight" />
                 <span class="select-bar" />
@@ -63,7 +61,7 @@ export default {
     name: 'QtySelector',
 
     props: {
-        qty: {
+        minQty: {
             type: Number,
             required: false,
             default: 1,
@@ -88,8 +86,8 @@ export default {
         return {
             name: 'QtySelector',
             qtyOptions: [],
-            qtySelected: this.qty,
-            showInput: this.qty > 10,
+            qtySelected: this.minQty,
+            showInput: this.minQty > 10,
             qtyCartDisplay: this.type,
         };
     },
