@@ -105,7 +105,9 @@ export default (context) => {
             'Edit Customer Information': 'Kundeninformationen bearbeiten',
             'Edit Information': 'Informationen bearbeiten',
             'Edit': 'Bearbeiten',
+            'Save': 'Speichern',
             'Shipping Address': 'Versandadresse',
+            'Your address': 'Ihre Adresse',
             'Edit Address': 'Adresse bearbeiten',
             'Add Address': 'Adresse hinzufügen',
             'Invoice Address': 'Rechnungsadresse',
@@ -124,6 +126,8 @@ export default (context) => {
             'Remove Address': 'Adresse entfernen',
             'Save Address': 'Adresse aktualisieren',
             'Add new Address': 'Neue Adresse hinzufügen',
+            'Add shipping address': 'Rechnungsadresse hinzufügen',
+            'Add billing address': 'Versandadresse hinzufügen',
             'open': 'Offen',
             'No orders yet': 'Noch keine Bestellungen vorhanden',
             'Customer Dashboard': 'Benutzerkonto-Übersicht',
@@ -506,10 +510,12 @@ export default (context) => {
             'Account Holder Email': 'E-mail Adresse',
 
             'Something is wrong with your payment': 'Bezahlvorgang fehlgeschlagen',
-            'We did receive your order, but something is wrong with your payment process.': 'Wir haben Ihre Bestellung erhalten, jedoch ist etwas beim Bezahlvorgang schief gelaufen.',
-            'Please try a different payment method, or contact our customer service via email or hotline.': 'Bitte versuchen Sie eine andere Bezahlmethode oder kontaktieren Sie unseren Kundenservice per E-Mail oder Telefon.',
+            'We did receive your order, but something is wrong with your payment process.':
+                'Wir haben Ihre Bestellung erhalten, jedoch ist etwas beim Bezahlvorgang schief gelaufen.',
+            'Please try a different payment method, or contact our customer service via email or hotline.':
+                'Bitte versuchen Sie eine andere Bezahlmethode oder kontaktieren Sie unseren Kundenservice per E-Mail oder Telefon.',
             'Pay': 'Bezahlen',
-            'Quit guest session': 'Gastsitzung beenden'
+            'Quit guest session': 'Gastsitzung beenden',
         });
     });
 };

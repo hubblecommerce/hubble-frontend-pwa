@@ -148,7 +148,7 @@ export const actions = {
                 token_name: 'swtc',
                 token_type: 'context',
                 updated_at: '',
-                guest: true
+                guest: true,
             };
 
             const customerData = {
@@ -187,7 +187,7 @@ export const actions = {
             return response;
         }
     },
-    async setGuestSession({commit, dispatch, state, getters}, contextToken){
+    async setGuestSession({ commit, dispatch, state, getters }, contextToken) {
         let authData = {
             created_at: new Date(),
             expires_at: getters.getCookieExpires,
@@ -196,7 +196,7 @@ export const actions = {
             token_name: 'swtc',
             token_type: 'context',
             updated_at: '',
-            guest: true
+            guest: true,
         };
 
         commit('setCustomerAuth', authData);
@@ -247,7 +247,7 @@ export const actions = {
             token_name: 'swtc',
             token_type: 'context',
             updated_at: '',
-            guest: false
+            guest: false,
         };
 
         // Save auth data to store
@@ -321,7 +321,7 @@ export const actions = {
 
         // Remove cart cookie / local storage
         await dispatch('modCart/initCart', {}, { root: true });
-        await dispatch('modCart/refreshCart', {}, { root: true }); 
+        await dispatch('modCart/refreshCart', {}, { root: true });
     },
     async setByCookie({ commit, state }) {
         let _cookie = this.$cookies.get(state.cookieName);
@@ -343,83 +343,44 @@ export const actions = {
             };
         }
     },
+    async setActiveAddress({ dispatch, rootState }, payload) {
+        let context = await dispatch(
+            'apiCall',
+            {
+                action: 'patch',
+                tokenType: 'sw',
+                apiType: 'data',
+                swContext: rootState.modApiCustomer.customer.customerAuth.token,
+                endpoint: '/store-api/v3/context',
+                data: payload,
+            },
+            { root: true }
+        );
+
+        await dispatch('modCart/saveSwtc', context.data['contextToken'], { root: true });
+
+        context = await dispatch(
+            'apiCall',
+            {
+                action: 'get',
+                tokenType: 'sw',
+                apiType: 'data',
+                endpoint: '/store-api/v3/context',
+                swContext: context.data['contextToken'],
+            },
+            { root: true }
+        );
+
+        // only data that changed is address data, so set current active addresses
+        if (context.data.customer != null && !_.isEmpty(context.data.customer)) {
+            await dispatch('setCustomerInfo', context.data.customer);
+        }
+    },
     async mapAddresses({ state }, addresses) {
         let mappedAddresses = [];
 
         _.forEach(addresses, (address) => {
-            let addressMap = {
-                id: address.id,
-                is_billing: true,
-                is_billing_default: false,
-                is_shipping: true,
-                is_shipping_default: false,
-                payload: {
-                    gender: address.salutationId,
-                    firstName: address.firstName,
-                    lastName: address.lastName,
-                    street: address.street,
-                    houseNo: '',
-                    postal: address.zipcode,
-                    city: address.city,
-                    country: address.countryId,
-                    company: address.company,
-                },
-            };
-
-            if (address.id === state.customer.customerData.defaultBillingAddressId) {
-                addressMap.is_billing_default = true;
-            }
-
-            if (address.id === state.customer.customerData.defaultShippingAddressId) {
-                addressMap.is_shipping_default = true;
-            }
-
-            mappedAddresses.push(addressMap);
-        });
-
-        return mappedAddresses;
-    },
-    async mapDefaultAddresses({ dispatch }, addresses) {
-        let mappedAddresses = [],
-            billingDefault = addresses.billingDefault,
-            shippingDefault = addresses.shippingDefault;
-
-        mappedAddresses.push({
-            id: billingDefault.id,
-            is_billing: true,
-            is_billing_default: true,
-            is_shipping: false,
-            is_shipping_default: false,
-            payload: {
-                gender: billingDefault.salutationId,
-                firstName: billingDefault.firstName,
-                lastName: billingDefault.lastName,
-                street: billingDefault.street,
-                houseNo: '',
-                postal: billingDefault.zipcode,
-                city: billingDefault.city,
-                country: billingDefault.countryId,
-                company: billingDefault.company,
-            },
-        });
-
-        mappedAddresses.push({
-            id: shippingDefault.id,
-            is_billing: false,
-            is_billing_default: false,
-            is_shipping: true,
-            is_shipping_default: true,
-            payload: {
-                gender: shippingDefault.salutationId,
-                firstName: shippingDefault.firstName,
-                lastName: shippingDefault.lastName,
-                street: shippingDefault.street,
-                houseNo: '',
-                postal: shippingDefault.zipcode,
-                city: shippingDefault.city,
-                country: shippingDefault.countryId,
-                company: shippingDefault.company,
-            },
+            mappedAddresses.push(mapAddress(address));
         });
 
         return mappedAddresses;
@@ -437,21 +398,11 @@ export const actions = {
                 email: customer.email,
                 defaultBillingAddressId: customer.defaultBillingAddressId,
                 defaultShippingAddressId: customer.defaultShippingAddressId,
+                activeBillingAddress: mapAddress(customer.activeBillingAddress),
+                activeShippingAddress: mapAddress(customer.activeShippingAddress),
             };
 
             commit('setCustomerData', customerData);
-
-            const addresses = {
-                billingDefault: customer.defaultBillingAddress,
-                shippingDefault: customer.defaultShippingAddress,
-            };
-
-            // todo: find out why store api endpoint sends default addresses as null
-            if (addresses.billingDefault !== null || addresses.shippingDefault !== null) {
-                const mappedAddresses = await dispatch('mapDefaultAddresses', addresses);
-
-                commit('setCustomerAddresses', mappedAddresses);
-            }
 
             return customerData;
         } catch (e) {
@@ -486,19 +437,6 @@ export const actions = {
             };
 
             commit('setCustomerData', customerData);
-
-            const addresses = {
-                billingDefault: response.data.defaultBillingAddress,
-                shippingDefault: response.data.defaultShippingAddress,
-            };
-
-            // todo: find out why store api endpoint sends default addresses as null
-            if (addresses.billingDefault !== null || addresses.shippingDefault !== null) {
-                const mappedAddresses = await dispatch('mapDefaultAddresses', addresses);
-
-                commit('setCustomerAddresses', mappedAddresses);
-            }
-
             return customerData;
         } catch (e) {
             console.log('getCustomerInfo failed: %o', e);
@@ -525,13 +463,13 @@ export const actions = {
     },
     async storeCustomerAddress({ state, dispatch }, address) {
         let requestBody = {
-            salutationId: address.payload.gender,
-            firstName: address.payload.firstName,
-            lastName: address.payload.lastName,
-            street: address.payload.street,
-            zipcode: address.payload.postal,
-            city: address.payload.city,
-            countryId: address.payload.country,
+            salutationId: address.gender,
+            firstName: address.firstName,
+            lastName: address.lastName,
+            street: address.street,
+            zipcode: address.postal,
+            city: address.city,
+            countryId: address.country,
         };
 
         const response = await dispatch(
@@ -547,25 +485,17 @@ export const actions = {
             { root: true }
         );
 
-        if (address.is_billing_default) {
-            await dispatch('setDefaultBillingAddress', response.data.id);
-        }
-
-        if (address.is_shipping_default) {
-            await dispatch('setDefaultShippingAddress', response.data.id);
-        }
-
         return response;
     },
     async editAddress({ state, dispatch }, address) {
         let requestBody = {
-            salutationId: address.payload.gender,
-            firstName: address.payload.firstName,
-            lastName: address.payload.lastName,
-            street: address.payload.street,
-            zipcode: address.payload.postal,
-            city: address.payload.city,
-            countryId: address.payload.country,
+            salutationId: address.gender,
+            firstName: address.firstName,
+            lastName: address.lastName,
+            street: address.street,
+            zipcode: address.postal,
+            city: address.city,
+            countryId: address.country,
         };
 
         return await dispatch(
@@ -856,3 +786,18 @@ export const actions = {
         );
     },
 };
+
+function mapAddress(address) {
+    return {
+        id: address.id,
+        gender: address.salutationId,
+        firstName: address.firstName,
+        lastName: address.lastName,
+        street: address.street,
+        houseNo: '',
+        postal: address.zipcode,
+        city: address.city,
+        country: address.countryId,
+        company: address.company,
+    };
+}

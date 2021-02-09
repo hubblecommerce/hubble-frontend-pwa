@@ -1,3 +1,77 @@
+.new-customer-addresses-wrp {
+    margin-bottom: 20px;
+
+    .loader-wrp {
+        width: 100%;
+        height: 210px;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .headline {
+        margin-bottom: 20px;
+    }
+
+    .billing-address-wrp,
+    .shipping-address-wrp {
+        border: 1px solid $border-color;
+        padding: 20px;
+        position: relative;
+    }
+
+    .edit-address-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 1000;
+        background: rgba(0, 0, 0, 0.5);
+
+        .edit-address-wrp {
+            display: flex;
+            justify-content: end;
+            align-items: center;
+            width: 100%;
+            background: $white;
+
+            .modal-headline {
+                border-bottom: 1px solid $border-color;
+                padding: 17px 24px 14px 40px;
+                align-items: center;
+                text-transform: uppercase;
+            }
+
+            .form-edit {
+                padding: 40px;
+            }
+        }
+    }
+
+    .edit-address {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+    }
+
+    .link {
+        text-decoration: underline;
+    }
+}
+
+@media (min-width: 1024px) {
+    .new-customer-addresses-wrp {
+        .edit-address-modal {
+            justify-content: center;
+            .edit-address-wrp {
+                width: 50%;
+            }
+        }
+    }
+}
+
 .customer-addresses-wrp {
     border-bottom: 1px solid $border-color;
     padding-bottom: 20px;

@@ -96,6 +96,7 @@ export default (context) => {
             'Edit Information': 'Edit Information',
             'Shipping Address': 'Shipping Address',
             'No shipping address': 'No shipping address',
+            'Your address': 'Your address',
             'Edit Address': 'Edit Address',
             'Invoice Address': 'Invoice Address',
             'No billing address': 'No billing address',
@@ -107,6 +108,8 @@ export default (context) => {
             'Last Name': 'Last Name',
             'Street': 'Street',
             'Add new Address': 'Add new Address',
+            'Add shipping address': 'Add shipping address',
+            'Add billing address': 'Add billing address',
             'Your order is processing': 'Your order is processing',
             'Thank you for shopping!': 'Thank you for shopping!',
             'House no.': 'House no.',
@@ -453,17 +456,19 @@ export default (context) => {
             'Hide Cart': 'Hide Cart',
             'Addresses could not be loaded': 'Addresses could not be loaded',
             'Edit': 'Edit',
+            'Save': 'Save',
 
             'Card Holder': 'Card Holder',
             'Account Holder': 'Account Holder',
             'Account Holder Email': 'Account Holder Email',
 
             'Something is wrong with your payment': 'Something is wrong with your payment',
-            'We did receive your order, but something is wrong with your payment process.': 'We did receive your order, but something is wrong with your payment process.',
-            'Please try a different payment method, or contact our customer service via email or hotline.': 'Please try a different payment method, or contact our customer service via email or hotline.',
+            'We did receive your order, but something is wrong with your payment process.':
+                'We did receive your order, but something is wrong with your payment process.',
+            'Please try a different payment method, or contact our customer service via email or hotline.':
+                'Please try a different payment method, or contact our customer service via email or hotline.',
             'Pay': 'Pay',
-            'Quit guest session': 'Quit guest session'
-
+            'Quit guest session': 'Quit guest session',
         });
     });
 };

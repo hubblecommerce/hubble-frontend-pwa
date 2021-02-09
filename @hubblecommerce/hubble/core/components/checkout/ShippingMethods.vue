@@ -3,7 +3,13 @@
         <div class="headline headline-3" v-text="$t('Shipping methods')" />
 
         <div v-for="method in shippingMethods" v-if="method.active" :key="method.key" class="method-wrp hbl-checkbox">
-            <input :id="'shipping-option-' + method.id" v-model="chosenMethod" type="radio" :value="method.id" :disabled="processingCheckout" />
+            <input
+                :id="'shipping-option-' + method.id"
+                v-model="chosenMethod"
+                type="radio"
+                :value="method.id"
+                :disabled="processingCheckout"
+            />
 
             <label :for="'shipping-option-' + method.id" class="method-label">
                 <span class="name" v-text="method.name" />
@@ -48,7 +54,6 @@ export default {
             chosenShippingMethod: (state) => state.modApiPayment.order.chosenShippingMethod,
             shippingError: (state) => state.modApiPayment.shippingError,
             processingCheckout: (state) => state.modApiPayment.processingCheckout,
-            shippingAddress: (state) => state.modApiCustomer.customer.shippingAddress,
             countries: (state) => state.modApiCustomer.availableCountries,
             customerAddresses: (state) => state.modApiCustomer.customer.customerAddresses,
         }),

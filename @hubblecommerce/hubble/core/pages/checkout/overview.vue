@@ -32,7 +32,7 @@
 
         <div class="register-options-wrp">
             <div class="checkout-configs-wrp">
-                <customer-addresses />
+                <new-customer-addresses />
 
                 <shipping-methods />
 
@@ -47,11 +47,7 @@
                     <material-ripple />
                 </button>
 
-                <button
-                    class="button button-primary checkout-btn"
-                    :disabled="processingCheckout"
-                    @click="placeOrder()"
-                >
+                <button class="button button-primary checkout-btn" :disabled="processingCheckout" @click="placeOrder()">
                     <span v-if="!processingCheckout">{{ $t('Place Order') }}</span>
                     <div v-if="processingCheckout" class="loader lds-ellipsis">
                         <div />
@@ -76,19 +72,19 @@ import Coupons from '../../components/checkout/Coupons';
 import Totals from '../../components/checkout/Totals';
 import cartValidate from '~/anonymous-middleware/cartValidate';
 import setCheckoutSession from '~/anonymous-middleware/setCheckoutSession';
-import CustomerAddresses from '../../components/customer/CustomerAddresses';
 import { mapActions, mapMutations, mapState } from 'vuex';
 import { addBackendErrors } from '../../utils/formMixins';
 import _ from 'lodash';
+import NewCustomerAddresses from '../../components/customer/NewCustomerAddresses';
 
 export default {
     name: 'CheckoutOverview',
 
     components: {
+        NewCustomerAddresses,
         Totals,
         Coupons,
         CartItemsListNonInteractive,
-        CustomerAddresses,
         PaymentMethodsSw: () => import('../../components/checkout/PaymentMethodsSw'),
         PaymentMethods: () => import('../../components/checkout/PaymentMethods'),
         ShippingMethods: () => import('../../components/checkout/ShippingMethods'),
@@ -104,7 +100,7 @@ export default {
         return {
             showCart: false,
             errors: [],
-            isShopware: process.env.API_TYPE === 'sw'
+            isShopware: process.env.API_TYPE === 'sw',
         };
     },
 
@@ -172,10 +168,10 @@ export default {
                 order = await this.placeOrderAction();
 
                 // Clear cart
-                await this.$store.dispatch('modCart/refreshCart', {}, { root: true })
+                await this.$store.dispatch('modCart/refreshCart', {}, { root: true });
 
                 // Clear order info
-                await this.$store.dispatch('modApiPayment/clearOrder')
+                await this.$store.dispatch('modApiPayment/clearOrder');
 
                 // Set order data for success page
                 this.$store.commit('modApiPayment/setCurrentOrder', order);
@@ -195,7 +191,7 @@ export default {
                 let dataBag = this.$router.currentRoute.query;
 
                 // Init payment
-                paymentResponse = await this.swStartPayment({orderId: order.data.id, dataBag: dataBag});
+                paymentResponse = await this.swStartPayment({ orderId: order.data.id, dataBag: dataBag });
 
                 if (paymentResponse.data.redirectUrl !== null) {
                     this.resetProcessingCheckout();
@@ -203,7 +199,7 @@ export default {
                 } else {
                     this.$router.push(
                         {
-                            path: this.localePath('checkout-shopware-success')
+                            path: this.localePath('checkout-shopware-success'),
                         },
                         () => {
                             this.resetProcessingCheckout();
@@ -217,8 +213,8 @@ export default {
                     this.localePath({
                         name: 'checkout-error',
                         query: {
-                            orderId: order.data.id
-                        }
+                            orderId: order.data.id,
+                        },
                     }),
                     () => {
                         this.resetProcessingCheckout();
