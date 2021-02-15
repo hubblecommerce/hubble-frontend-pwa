@@ -1,53 +1,69 @@
 <template>
     <div class="container d-flex flex-column align-self-center justify-content-center">
-        <component :is="errorPage" :error="error" />
+        <div class="container error-wrp">
+            <i class="icon icon-frown" />
+            <h1 v-if="error.statusCode != null" v-text="error.statusCode" />
+            <div v-if="error.title != null" class="error-text" v-text="error.title" />
+            <div v-if="error.detail != null" class="error-text" v-text="error.detail" />
+            <nuxt-link :to="'index'">
+                <button class="button-primary" v-text="'Discover our products'" />
+            </nuxt-link>
+        </div>
     </div>
 </template>
 
 <script>
-import error400 from '../components/error/400.vue';
-import error401 from '../components/error/401.vue';
-import error404 from '../components/error/404.vue';
-import error500 from '../components/error/500.vue';
-import error503 from '../components/error/503.vue';
-import errorDefault from '../components/error/default.vue';
-
 export default {
-    name: 'LayoutError',
-
-    layout: 'hubble',
+    layout: 'Default',
 
     props: {
         error: {
             type: Object,
-            default: () => {},
-        },
-    },
-
-    computed: {
-        errorPage() {
-            if (this.error.statusCode === 400) {
-                return error400;
-            }
-
-            if (this.error.statusCode === 401) {
-                return error401;
-            }
-
-            if (this.error.statusCode === 404) {
-                return error404;
-            }
-
-            if (this.error.statusCode === 503) {
-                return error503;
-            }
-
-            if (process.env.DEFAULT_ERROR_PAGE === 'true') {
-                return errorDefault;
-            }
-
-            return error500;
-        },
-    },
+            default: () => {}
+        }
+    }
 };
 </script>
+
+<style lang="scss">
+@import '~assets/scss/hubble/variables';
+
+.error-wrp {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: $background-light;
+    padding: 60px;
+    margin: 20px 0;
+    border: 1px solid $border-color;
+    width: 100%;
+
+    i {
+        width: 70px;
+        height: 70px;
+        line-height: 70px;
+        text-align: center;
+        color: $border-color;
+        font-size: 70px;
+        margin-bottom: 20px;
+    }
+
+    h1,
+    .headline-1 {
+        margin-bottom: 10px;
+        text-align: center;
+    }
+
+    button {
+        margin-top: 20px;
+    }
+}
+
+.error-listing {
+    padding: 40px;
+
+    .error-no-items {
+        margin-bottom: 40px;
+    }
+}
+</style>

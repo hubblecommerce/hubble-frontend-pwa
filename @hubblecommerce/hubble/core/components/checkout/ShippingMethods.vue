@@ -1,144 +1,180 @@
 <template>
     <div v-if="!loading && !apiError" class="shipping-methods-wrp">
-        <div class="headline headline-3" v-text="$t('Shipping methods')" />
+        <div class="headline headline-3" v-text="'Shipping methods'" />
 
-        <div v-for="method in shippingMethods" v-if="method.active" :key="method.key" class="method-wrp hbl-checkbox">
+        <hbl-checkbox v-for="method in shippingMethods" v-if="method.active" :key="method.id" class="method-wrp">
             <input
                 :id="'shipping-option-' + method.id"
-                v-model="chosenMethod"
+                v-model="currentMethod"
                 type="radio"
                 :value="method.id"
                 :disabled="processingCheckout"
             />
-
             <label :for="'shipping-option-' + method.id" class="method-label">
-                <span class="name" v-text="method.name" />
-                <span class="description" v-text="method.description" />
-                <span :class="'method-image-' + method.key" />
+                <span class="name" v-text="method.translated.name" />
+                <span class="description" v-text="method.translated.description" />
             </label>
-        </div>
-        <div class="validation-msg" v-text="$t(shippingError)" />
+        </hbl-checkbox>
+
+        <div v-if="shippingError != null" class="validation-msg" v-text="shippingError" />
     </div>
 
     <div v-else-if="apiError" class="shipping-methods-api-error-wrp"> No shipping methods found </div>
 
-    <div v-else class="shipping-methods-placeholder">
-        <div class="loader lds-ellipsis">
-            <div />
-            <div />
-            <div />
-            <div />
-        </div>
-    </div>
+    <loader v-else class="shipping-methods-placeholder"/>
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions, mapMutations } from 'vuex';
-import _ from 'lodash';
+import { mapState } from 'vuex';
+import ApiClient from "@/utils/api-client";
 
 export default {
     name: 'ShippingMethods',
 
+    props: {
+        processingCheckout: {
+            type: Boolean,
+            required: true
+        },
+        sessionShippingMethod: {
+            type: String,
+            required: true
+        }
+    },
+
     data() {
         return {
             loading: false,
-            apiError: false,
-            chosenMethod: '',
-            chosenMethodObj: {},
+            apiError: false, // Error in case of api throws error
+            shippingError: null, // Error that could happen on method selection
+            shippingMethods: null,
+            currentMethod: null
         };
     },
 
     computed: {
         ...mapState({
-            shippingMethods: (state) => state.modApiPayment.shippingMethods,
-            chosenShippingMethod: (state) => state.modApiPayment.order.chosenShippingMethod,
-            shippingError: (state) => state.modApiPayment.shippingError,
-            processingCheckout: (state) => state.modApiPayment.processingCheckout,
-            countries: (state) => state.modApiCustomer.availableCountries,
-            customerAddresses: (state) => state.modApiCustomer.customer.customerAddresses,
-        }),
-        ...mapGetters({
-            getChosenShippingMethod: 'modApiPayment/getChosenShippingMethod',
-        }),
+            contextToken: (state) => state.modSession.contextToken
+        })
     },
 
     watch: {
-        chosenMethod: function (newValue) {
-            // Start Checkout loader
-            this.setProcessingCheckout();
+        currentMethod: async function(id) {
+            if(id === null) {
+                this.shippingError = 'Please choose a shipping method.';
+                this.$emit('shipping-error', true);
+                return;
+            }
 
-            this.setMethodById(newValue);
+            this.shippingError = null;
+            this.$emit('processing', true);
 
-            this.storeChosenShippingMethod(this.chosenMethodObj)
-                .then(() => {
-                    this.recalculateCart().then(() => {
-                        this.resetProcessingCheckout();
-                    });
-                })
-                .catch((err) => {
-                    this.flashMessage({
-                        flashType: 'error',
-                        flashMessage: err === 'No network connection' ? this.$t(err) : this.$t('An error occurred'),
-                    });
-                });
-        },
+            try {
+                await this.setShippingMethod(id);
+                this.$emit('processing', false);
+                this.$emit('shipping-error', false);
+                this.$emit('shipping-changed');
+            } catch (e) {
+                this.shippingError = e.detail;
+                this.$emit('processing', false);
+                this.$emit('shipping-error', true);
+            }
+        }
     },
 
-    mounted() {
+    async mounted() {
         this.loading = true;
-        if (_.isEmpty(this.shippingMethods)) {
-            this.getShippingMethods()
-                .then(() => {
-                    this.setChosenShippingMethod();
-                    this.loading = false;
-                })
-                .catch(() => {
-                    this.apiError = true;
-                    this.loading = false;
-                });
-        } else {
-            this.setChosenShippingMethod();
+
+        try {
+            const response = await this.fetchShippingMethods();
+            this.shippingMethods = response.data;
+
+            this.currentMethod = this.sessionShippingMethod;
+            this.loading = false;
+        } catch(e) {
+            this.apiError = true;
             this.loading = false;
         }
     },
 
     methods: {
-        ...mapActions({
-            storeChosenShippingMethod: 'modApiPayment/storeChosenShippingMethod',
-            recalculateCart: 'modCart/recalculateCart',
-            getShippingMethodsFromAPI: 'modApiPayment/getShippingMethods',
-            flashMessage: 'modFlash/flashMessage',
-        }),
-        ...mapMutations({
-            setProcessingCheckout: 'modApiPayment/setProcessingCheckout',
-            resetProcessingCheckout: 'modApiPayment/resetProcessingCheckout',
-        }),
-        getShippingMethods: function () {
-            // Fetch methods from api, to make them accessible in vuex store
-            return new Promise((resolve, reject) => {
-                this.getShippingMethodsFromAPI()
-                    .then(() => {
-                        resolve();
-                    })
-                    .catch((error) => {
-                        console.log('getShippingMethods error: ', error);
-
-                        reject(error);
-                    });
-            });
-        },
-        setChosenShippingMethod: function () {
-            if (!_.isEmpty(this.getChosenShippingMethod)) {
-                this.chosenMethod = this.getChosenShippingMethod.id;
-            }
-        },
-        setMethodById: function (key) {
-            _.forEach(this.shippingMethods, (val) => {
-                if (val.id === key) {
-                    this.chosenMethodObj = val;
+        fetchShippingMethods: async function() {
+            return await new ApiClient().apiCall({
+                action: 'post',
+                endpoint: 'store-api/v3/shipping-method',
+                contextToken: this.contextToken,
+                data: {
+                    onlyAvailable: true
                 }
             });
         },
-    },
+        setShippingMethod: async function(id) {
+            return await new ApiClient().apiCall({
+                action: 'patch',
+                endpoint: 'store-api/v3/context',
+                contextToken: this.contextToken,
+                data: {
+                    shippingMethodId: id
+                }
+            });
+        }
+    }
 };
 </script>
+
+<style lang="scss">
+@import '~assets/scss/hubble/variables';
+
+.shipping-methods-wrp {
+    margin-bottom: 30px;
+
+    .headline {
+        margin-bottom: 20px;
+    }
+
+    .method-wrp {
+        padding: 0 15px;
+        background: $background-light;
+        border: 1px solid $border-color;
+        margin-bottom: 5px;
+
+        .method-label {
+            width: 100%;
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+
+        .name {
+            font-size: 16px;
+        }
+
+        .description {
+            display: none;
+        }
+    }
+}
+
+.shipping-methods-placeholder {
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.shipping-methods-api-error-wrp {
+    color: $error-accent;
+    margin: 20px 0;
+}
+
+/* Tablet */
+@media (min-width: 768px) {
+    .shipping-methods-wrp {
+        .method-wrp {
+            .description {
+                display: inline;
+                margin-left: 20px;
+            }
+        }
+    }
+}
+</style>

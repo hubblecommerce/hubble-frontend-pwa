@@ -3,15 +3,13 @@
         <button class="toggle m-0 align-left headline-4" :class="toggleClasses" @mousedown.prevent="collapseContent()">
             {{ toggleText }}
 
-            <transition-rotate-x>
+<!--            <transition-rotate-x>-->
                 <i v-if="!collapse" :class="openIconClass" class="icon" />
-            </transition-rotate-x>
+<!--            </transition-rotate-x>-->
 
-            <transition-rotate-x>
+<!--            <transition-rotate-x>-->
                 <i v-if="collapse" :class="closeIconClass" class="icon" />
-            </transition-rotate-x>
-
-            <material-ripple />
+<!--            </transition-rotate-x>-->
         </button>
 
         <template v-if="displayViaIf">
@@ -33,16 +31,11 @@
 </template>
 
 <script>
-import TransitionRotateX from '../transitions/TransitionRotateX';
 import Vue from 'vue';
 import vClickOutside from 'v-click-outside';
 
 export default {
     name: 'Collapsible',
-
-    components: {
-        TransitionRotateX,
-    },
 
     props: {
         toggleTag: {
@@ -115,6 +108,45 @@ export default {
         hideContent: function () {
             this.collapse = false;
         },
-    },
+    }
 };
 </script>
+
+<style lang="scss">
+.collapse-wrp {
+    width: 100%;
+
+    button {
+        width: 100%;
+        display: flex;
+        text-align: center;
+        text-transform: none;
+
+        &.align-left {
+            justify-content: flex-start;
+            align-items: center;
+            padding-right: 50px;
+        }
+    }
+
+    .icon {
+        position: absolute;
+        right: 20px;
+    }
+
+    .collapse-item {
+        overflow: hidden;
+        transition: max-height 0.3s;
+        display: flex;
+        flex-direction: column;
+
+        button {
+            justify-content: center;
+        }
+
+        > * {
+            padding: 15px;
+        }
+    }
+}
+</style>

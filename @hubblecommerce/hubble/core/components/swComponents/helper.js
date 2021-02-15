@@ -1,17 +1,9 @@
 /*
 Shopware CMS Helper Functions
 */
-import _ from 'lodash';
 function returnSlotByType(type) {
     return () =>
-        import('./slots/' + type).catch(() => {
-            return import('./NoComponent');
-        });
-}
-
-function returnBlockByType(type) {
-    return () =>
-        import('./blocks/' + type).catch(() => {
+        import('./slots/' + type + '-slot').catch(() => {
             return import('./NoComponent');
         });
 }
@@ -28,7 +20,7 @@ export const blockMixins = {
     methods: {
         getSlotByPosition(slots, position) {
             let typeName = '';
-            _.forEach(slots, (slot) => {
+            slots.forEach((slot) => {
                 if (slot.slot === position) {
                     typeName = slot.type;
                 }
@@ -37,7 +29,7 @@ export const blockMixins = {
         },
         getContentByPosition(slots, position) {
             let slotContent = {};
-            _.forEach(slots, (slot) => {
+            slots.forEach((slot) => {
                 if (slot.slot === position) {
                     slotContent = slot;
                 }
@@ -52,10 +44,5 @@ export const sectionMixins = {
         blockClass() {
             return 'cms-block-' + this.content.type;
         },
-    },
-    methods: {
-        getBlockByType(type) {
-            return returnBlockByType(type);
-        },
-    },
+    }
 };

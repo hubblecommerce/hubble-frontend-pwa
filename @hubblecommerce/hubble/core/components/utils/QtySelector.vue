@@ -5,7 +5,7 @@
                 v-model="qtySelected"
                 class="quantity"
                 type="number"
-                aria-label="Menge"
+                aria-label="Quantity"
                 name="qty"
                 step="1"
                 min="1"
@@ -15,15 +15,15 @@
             />
             <div class="btn-wrp">
                 <button class="qty-button" @click="increaseQty()">
-                    <i class="icon icon-plus" />
+                    <span class="increase" v-text="'+'" />
                 </button>
                 <button class="qty-button" @click="decreaseQty()">
-                    <i class="icon icon-minus" />
+                    <span class="decrease" v-text="'-'" />
                 </button>
             </div>
         </div>
         <div v-show="qtyCartDisplay">
-            <div v-show="!showInput" class="hbl-select">
+            <hbl-select>
                 <select v-model="qtySelected" class="select-text" required :disabled="qtyOptions.length < 1">
                     <option value="" disabled selected />
                     <option v-if="qtyOptions.length < 1" value="1">1</option>
@@ -31,32 +31,13 @@
                 </select>
                 <span class="select-highlight" />
                 <span class="select-bar" />
-                <label class="select-label" v-text="$t('Quantity')" />
-            </div>
-            <div v-show="showInput" class="hbl-input-group">
-                <input
-                    id="quantity"
-                    v-model="qtySelected"
-                    aria-label="Menge"
-                    type="number"
-                    name="qty"
-                    step="1"
-                    min="1"
-                    max="maxQty"
-                    required
-                    @blur="qtyOnBlur()"
-                />
-                <span class="highlight" />
-                <span class="bar" />
-                <label for="quantity" v-text="$t('Quantity')" />
-            </div>
+                <label class="select-label" v-text="'Quantity'" />
+            </hbl-select>
         </div>
     </div>
 </template>
 
 <script>
-import _ from 'lodash';
-
 export default {
     name: 'QtySelector',
 
@@ -64,22 +45,18 @@ export default {
         minQty: {
             type: Number,
             required: false,
-            default: 1,
+            default: 1
         },
         maxQty: {
             type: Number,
             required: true,
-            default: 1,
-        },
-        showMore: {
-            type: Boolean,
-            required: false,
+            default: 1
         },
         type: {
             type: Boolean,
             required: false,
-            default: false,
-        },
+            default: false
+        }
     },
 
     data() {
@@ -87,27 +64,21 @@ export default {
             name: 'QtySelector',
             qtyOptions: [],
             qtySelected: this.minQty,
-            showInput: this.minQty > 10,
-            qtyCartDisplay: this.type,
+            qtyCartDisplay: this.type
         };
     },
 
     watch: {
         qtySelected() {
-            if (this.qtySelected === 'more') {
-                this.showInput = true;
-                this.qtySelected = this.qtyOptions[0].value;
-            }
-
             if (this.qtySelected > this.maxQty) {
                 this.qtySelected = this.maxQty;
             }
 
             // emit the Quantity to parent if it is a valid number between 1 and maxQty
-            if (!_.isNaN(this.qtySelected) && this.qtySelected >= 1 && this.qtySelected <= this.maxQty) {
-                this.$emit('changeQty', _.parseInt(this.qtySelected, 10));
+            if (!isNaN(this.qtySelected) && this.qtySelected >= 1 && this.qtySelected <= this.maxQty) {
+                this.$emit('changeQty', parseInt(this.qtySelected, 10));
             }
-        },
+        }
     },
 
     created() {
@@ -116,10 +87,6 @@ export default {
             let i;
             for (i = 1; i <= this.maxQty; i++) {
                 this.qtyOptions.push({ text: i, value: i });
-            }
-
-            if (this.showMore) {
-                this.qtyOptions.push({ text: 'mehr', value: 'more' });
             }
         } else {
             this.qtySelected = 0;
@@ -140,7 +107,53 @@ export default {
                 return;
             }
             this.qtySelected -= 1;
-        },
-    },
+        }
+    }
 };
 </script>
+
+<style lang="scss">
+@import '~assets/scss/hubble/variables';
+
+$btn-icon-width: 36px;
+$btn-icon-height: 36px;
+$btn-background-color: $light-gray;
+$btn-icon-color: $dark-gray;
+$qty-selector-width: $btn-icon-width * 2.5;
+
+.quantity-selector {
+    max-width: $qty-selector-width;
+
+    .qty-wrp {
+        display: flex;
+        height: 100%;
+
+        .quantity {
+            width: 100%;
+            border: 1px solid $border-color;
+            border-right: none;
+            text-align: center;
+        }
+
+        .btn-wrp {
+            .qty-button {
+                color: $btn-icon-color;
+                font-size: 23px;
+                padding: 10px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background: transparent;
+                height: $btn-icon-height;
+                width: $btn-icon-width;
+                border: 1px solid $border-color;
+                border-radius: unset;
+
+                &:active {
+                    background: $btn-background-color;
+                }
+            }
+        }
+    }
+}
+</style>

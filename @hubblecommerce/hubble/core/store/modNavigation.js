@@ -1,5 +1,3 @@
-import _ from 'lodash';
-
 export const state = () => ({
     showMenu: false,
     offcanvas: {
@@ -35,14 +33,14 @@ export const mutations = {
             state.offcanvas.isActive = false;
 
             // Reset direction from which offcanvas layer appears
-            _.forEach(state.offcanvas.direction, function (value, key) {
+            Object.entries(state.offcanvas.direction).forEach(function (value, key) {
                 state.offcanvas.direction[key] = false;
             });
         } else {
             state.offcanvas.isActive = true;
 
             // Toggle Off | Set direction from which offcanvas layer appears
-            _.forEach(state.offcanvas.direction, function (value, key) {
+            Object.entries(state.offcanvas.direction).forEach(function (value, key) {
                 if (payload.direction === key) {
                     state.offcanvas.direction[key] = true;
                 } else {
@@ -59,7 +57,7 @@ export const mutations = {
         state.offcanvas.isActive = true;
 
         // Set direction from which offcanvas layer appears
-        _.forEach(state.offcanvas.direction, function (value, key) {
+        Object.entries(state.offcanvas.direction).forEach(function (value, key) {
             if (payload.direction === key) {
                 state.offcanvas.direction[key] = true;
             } else {
@@ -75,7 +73,7 @@ export const mutations = {
         state.offcanvas.isActive = false;
 
         // Set direction from which offcanvas layer appears
-        _.forEach(state.offcanvas.direction, function (value, key) {
+        Object.entries(state.offcanvas.direction).forEach(function (value, key) {
             state.offcanvas.direction[key] = false;
         });
     },

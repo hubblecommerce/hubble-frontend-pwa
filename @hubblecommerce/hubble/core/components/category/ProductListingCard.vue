@@ -1,0 +1,335 @@
+<template>
+    <div class="product-card">
+        <nuxt-link :to="routeUrlPds" @click.ctrl.exact="gtmProductClick()">
+            <div class="card-media">
+                <div class="actions">
+                    <div class="badge-wrp">
+                        <div class="badge sale" v-text="'Sale'" />
+                        <div class="badge new" v-text="'New'" />
+                    </div>
+                </div>
+
+                <template v-if="index < 2">
+                    <img
+                        data-not-lazy
+                        :src="routeUrlProductImg(800)"
+                        :alt="itemData.name"
+                    />
+                </template>
+                <img
+                    v-else
+                    :src="routeUrlProductImg(800)"
+                    :alt="itemData.name"
+                />
+            </div>
+
+            <div class="product-card-info-wrp-link">
+                <div class="product-card-info-wrp">
+                    <div v-if="itemData.name !== null" class="product-name" v-text="itemData.name" />
+
+                    <div class="price-box price-excluding-tax product-price">
+                        <span class="sale-price" v-text="formatPrice(itemData.final_price_item.display_price_brutto)" />
+                        <span class="old-price" v-text="formatPrice(itemData.final_price_item.display_price_brutto)" />
+                    </div>
+                </div>
+            </div>
+        </nuxt-link>
+    </div>
+</template>
+
+<script>
+export default {
+    name: 'ProductListingCard',
+
+    props: {
+        itemOrig: {
+            type: Object,
+            required: true,
+        },
+        isSlider: {
+            type: Boolean,
+            default: false,
+            required: false,
+        },
+        list: {
+            type: String,
+            required: false,
+            default: '',
+        },
+        index: {
+            type: Number,
+            required: false
+        }
+    },
+
+    data() {
+        return {
+            productUrl: '/#/detail',
+            itemData: {}
+        };
+    },
+
+    computed: {
+        routeUrlPds: function () {
+            return '/' + this.itemOrig.url_pds;
+        }
+    },
+
+    created() {
+        this.itemData = this.itemOrig;
+    },
+
+    methods: {
+        routeUrlProductImg: function (width) {
+            let image = this.itemData.image.url;
+
+            if(width != null) {
+                this.itemData.image.thumbnails.forEach((thumbnail) => {
+                    if(thumbnail.width === width) {
+                        image = thumbnail.url;
+                    }
+                })
+            }
+
+            return image;
+        },
+        formatPrice: function(price) {
+            const formatter = new Intl.NumberFormat('de-DE', {
+                style: 'currency',
+                currency: 'EUR',
+                minimumFractionDigits: 2
+            });
+
+            return formatter.format(price);
+        },
+        gtmProductClick: function () {
+            if (this.$gtm) {
+                let price = this.getPriceAndCurrency('display_price_brutto', this.priceSwitcherIncludeVat);
+
+                if (this.itemIsSpecial) {
+                    price = this.getPriceAndCurrency('display_price_brutto_special', this.priceSwitcherIncludeVat);
+                }
+
+                this.$gtm.pushEvent({
+                    event: 'productClick',
+                    ecommerce: {
+                        click: {
+                            actionField: {
+                                list: this.list,
+                            },
+                            products: [
+                                {
+                                    name: this.itemData.name,
+                                    id: this.itemData.id,
+                                    price: price,
+                                    brand: this.itemData.manufacturer_name,
+                                },
+                            ],
+                        },
+                        impressions: undefined,
+                        detail: undefined,
+                        add: undefined,
+                        remove: undefined,
+                        purchase: undefined,
+                    },
+                });
+            }
+        }
+    }
+};
+</script>
+
+<style lang="scss">
+@import '~assets/scss/hubble/variables';
+@import '~assets/scss/hubble/typography';
+
+.product-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 100%;
+    height: 100%;
+    background-color: $background;
+    transition: all 0.2s ease-in;
+    border: 1px solid $gray;
+    cursor: pointer;
+
+    .card-media {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 200px;
+
+        .img-listing img {
+            padding: 6px 6px 0 6px;
+            max-width: 150px;
+            max-height: 150px;
+        }
+
+        img {
+            display: block;
+            margin: auto;
+            max-width: 100%;
+        }
+    }
+
+    .actions {
+        position: absolute;
+        left: 3px;
+        top: 3px;
+
+        display: flex;
+        align-items: center;
+    }
+
+    .add-to-wishlist-wrp {
+        margin-left: 1px;
+    }
+
+    .product-card-info-wrp {
+        padding: 12px;
+        text-align: left;
+        min-height: 120px;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .price-box {
+        font-weight: $font-weight-bold;
+        .old-price {
+            font-size: 12px;
+            line-height: 14px;
+            font-weight: $font-weight-regular;
+            text-decoration: line-through;
+            color: $dark-gray;
+        }
+
+        .sale-price {
+            color: $error-accent;
+            margin-right: 10px;
+        }
+
+        .unit-price-wrp {
+            @include font-size($text-font-sizes);
+            color: $text-light;
+        }
+    }
+
+    .card-expand {
+        display: none;
+        position: absolute;
+        top: 98%;
+        left: 0;
+        right: 0;
+        margin: auto;
+        width: calc(100% - 10px);
+        padding: 10px 15px 30px;
+        z-index: 0;
+        background: $background;
+        box-shadow: 0 10px 10px 0 rgba(41, 40, 47, 0.1);
+        border: 1px solid $border-color;
+        border-top: 0;
+
+        opacity: 0;
+
+        transition: opacity 0.2s ease-out;
+    }
+
+    .manufacturer {
+        @include font-size($text-font-sizes);
+        font-weight: $font-weight-bold;
+        margin-bottom: 5px;
+    }
+
+    .product-name {
+        font-size: 14px;
+        line-height: 17px;
+        margin-bottom: 5px;
+        font-weight: $font-weight-bold;
+    }
+
+    .product-price {
+        @include font-size($text-font-sizes);
+        font-weight: $font-weight-bold;
+        color: $text-primary;
+        margin-bottom: 10px;
+        margin-top: auto;
+    }
+}
+
+@media (min-width: 768px) {
+    .product-card {
+        .price-box {
+            display: block;
+            line-height: inherit;
+
+            .old-price {
+                width: auto;
+                vertical-align: middle;
+            }
+
+            .sale-price {
+                vertical-align: middle;
+            }
+        }
+        .manufacturer {
+            font-size: 16px;
+            font-weight: $font-weight-bold;
+            margin-bottom: 5px;
+        }
+        .product-name {
+            margin-bottom: 32px;
+        }
+    }
+}
+
+@media (min-width: 1024px) {
+    .product-card {
+        &:hover {
+            box-shadow: 0 2px 5px 0 rgba(41, 40, 47, 0.1);
+            border: 1px solid $border-color;
+
+            .card-expand {
+                display: block;
+                opacity: 1;
+                top: 98%;
+                z-index: 1;
+            }
+        }
+
+        .product-card-info-wrp {
+            padding: 20px;
+        }
+
+        .actions {
+            left: 5px;
+            top: 5px;
+        }
+    }
+}
+
+@media (min-width: 1200px) {
+    .product-card {
+        .card-media {
+            .img-listing img {
+                max-width: 200px;
+                max-height: 200px;
+            }
+        }
+    }
+}
+
+@media (min-width: 1600px) {
+    .product-card {
+        .card-media {
+            min-height: 230px;
+            .img-listing img {
+                max-width: 250px;
+                max-height: 200px;
+            }
+        }
+    }
+}
+</style>

@@ -20,3 +20,12 @@ fse.exists(path.join(projectDir, '/.env'), function (exists) {
         );
     }
 });
+
+fse.exists(path.join(projectDir, '/static/sw.js'), function (exists) {
+    if (!exists) {
+        fse.copy(
+            path.join(projectDir, '/node_modules/@hubblecommerce/hubble/sw.js'),
+            path.join(projectDir, '/static/sw.js')
+        );
+    }
+});

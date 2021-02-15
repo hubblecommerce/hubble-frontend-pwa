@@ -1,18 +1,14 @@
-import {
-    defaultDotEnv,
-    defaultEnv,
-    defaultModules,
-    defaultServerMiddleware,
-    defaultCss,
-    defaultBuildBabelConfig,
-    defaultBuildExtractCSSConfig,
-    defaultRouterPrefetchLinksConfig,
-} from './core/utils/config';
-import defu from 'defu';
 const path = require('path');
 const chokidar = require('chokidar');
 const fse = require('fs-extra');
 const globby = require('globby');
+import defu from 'defu';
+
+import {
+    defaultDotEnv,
+    defaultEnv,
+    defaultModules
+} from './core/utils/config';
 
 const listAllDirs = (dir) => globby(`${dir}/*`, { onlyDirectories: true });
 const getLastSectionOfPath = (thePath) => thePath.substring(thePath.lastIndexOf('/') + 1);
@@ -37,8 +33,8 @@ const asyncCopyApiTypeDirs = async (sourceDirs, targetDir, apiType) => {
 };
 const getPlugins = (dir) => globby([`${dir}/*.js`]);
 
-const dirBlacklist = ['cypress', 'node_modules', 'logs', '.hubble', '.nuxt', '.idea'];
-const apiTypeDirs = ['anonymous-middleware', 'middleware', 'plugins', 'store'];
+const dirBlacklist = ['components', 'node_modules', '.hubble', '.nuxt', '.idea'];
+const apiTypeDirs = ['middleware', 'plugins', 'store'];
 const targetDirName = '.hubble/';
 
 export default async function (moduleOptions) {
@@ -73,7 +69,7 @@ export default async function (moduleOptions) {
     await asyncCopyNewDirs(newDirs, targetDir);
 
     // Resolve api type specific dirs inside nuxt source dir
-    await asyncCopyApiTypeDirs(apiTypeDirs, targetDir, options.apiType);
+    //await asyncCopyApiTypeDirs(apiTypeDirs, targetDir, options.apiType);
 
     // Set aliases, to make them work in target dir
     const baseAliases = {
@@ -96,49 +92,25 @@ export default async function (moduleOptions) {
     // Merge objects
     this.options.env = defu(this.options.env, defaultEnv);
 
-    // Use default serverMiddleware if nuxt.config.js serverMiddleware node is empty
-    this.options.serverMiddleware =
-        this.options.serverMiddleware.length > 0 ? this.options.serverMiddleware : defaultServerMiddleware(targetDir);
+    // Deactivate scss source maps to prevent errors when changing styles in chrome dev tools (only dev purposes)
+    //this.options.build.loaders = this.options.build.loaders != null ? this.options.build.loaders : { scss: { sourceMap: false } }
 
-    // Use default css paths if nuxt.config.js css node is empty
-    this.options.css = this.options.css.length > 0 ? this.options.css : defaultCss;
+    if(this.options.build.transpile.length === 0) {
+        this.options.build.transpile = [
+            '@hubblecommerce/hubble'
+        ];
+    }
 
-    this.options.router.prefetchLinks = defaultRouterPrefetchLinksConfig;
-
-    this.options.build.babel.plugins = this.options.build.babel.hasOwnProperty('plugins')
-        ? this.options.build.babel.plugins
-        : defaultBuildBabelConfig.plugins;
-    this.options.build.babel.presets = this.options.build.babel.hasOwnProperty('presets')
-        ? this.options.build.babel.presets
-        : defaultBuildBabelConfig.presets;
-    this.options.build.extractCSS = defaultBuildExtractCSSConfig;
-    this.options.build.transpile =
-        this.options.build.transpile.length > 0
-            ? this.options.build.transpile
-            : [
-                  '@hubblecommerce/hubble',
-                  '@hubblecommerce/payone',
-                  '@hubblecommerce/amazon-pay',
-                  'vee-validate/dist/rules',
-              ];
-
-    // Deactivate auto import function by nuxt because hubble components are already dynamic imported
-    this.options.components = false;
-
-    // Remove preload links to reduce time to first meaningful paint
-    // https://cmty.app/nuxt/nuxt.js/issues/c6837
-    this.nuxt.hook('render:before', (ctx, options) => {
-        ctx.nuxt.options.render.bundleRenderer.shouldPreload = (type) => {
-            return ['font'].includes(type);
-        };
-    });
+    // https://github.com/nuxt/components#overwriting-components
+    this.options.components = [
+        path.resolve('.hubble/components')
+    ];
 
     /*
      * Register nuxt.js modules
      * TODO: https://nuxtjs.org/blog/moving-from-nuxtjs-dotenv-to-runtime-config/
      */
     this.requireModule(['@nuxtjs/dotenv', defu(this.options.dotenv, defaultDotEnv)]);
-    this.requireModule(['nuxt-purgecss']);
 
     // Override module options
     defaultModules.forEach((defaultModule) => {
@@ -170,40 +142,19 @@ export default async function (moduleOptions) {
         }
     });
 
-    if (options.gtmId !== null) {
-        this.addModule([
-            '@nuxtjs/google-tag-manager',
-            {
-                id: options.gtmId,
-                layer: 'dataLayer',
-                pageTracking: true,
-                pageViewEventName: 'hubbleRoute',
-            },
-        ]);
-    }
-
     /*
      * Register plugins from module
      */
     const modulePlugins = await getPlugins(path.resolve(targetDir, 'plugins'));
     modulePlugins.forEach((modulePlugin) => {
-        // Check if ssr
-        let serverRendering = true;
-
-        if (modulePlugin.indexOf('no_ssr') !== -1) {
-            serverRendering = false;
-        }
-
         this.options.plugins.push({
-            src: modulePlugin,
-            ssr: serverRendering,
+            src: modulePlugin
         });
     });
 
     /*
      * File watcher for dev purposes
      */
-
     if (this.options.dev || this.options._start) {
         const toTargetPath = (oldPath) => path.resolve(oldPath.replace(rootDir, targetDir));
 

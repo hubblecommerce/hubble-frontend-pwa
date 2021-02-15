@@ -1,1025 +1,500 @@
 <template>
-    <div class="customer-addresses-wrp">
-        <div v-if="loading" class="loader-wrp">
-            <div class="loader lds-ellipsis">
-                <div />
-                <div />
-                <div />
-                <div />
-            </div>
+    <div v-if="!isLoading" class="customer-addresses-wrp">
+        <div v-if="differentShippingAddress" class="d-flex justify-content-between">
+            <div class="headline headline-3" v-text="'Billing Address'" />
+            <hbl-button class="button" @click.native="createAddress('billing')" v-text="'Create new address'" />
         </div>
 
-        <div v-if="!loading && billingAddresses.length > 0" class="billing-addresses-wrp">
-            <div v-if="alternativeShippingAddress" class="headline headline-3" v-text="$t('Billing Address')" />
-
-            <div v-else class="headline headline-3" v-text="$t('Address')" />
-
-            <div v-for="address in billingAddresses" :key="address.id" class="billing-address-wrp">
-                <div>
-                    <span v-text="mapKeyToValue(address.payload.gender, salutations)" />
-                    <span v-text="address.payload.firstName" />
-                    <span v-text="address.payload.lastName" />
-                </div>
-                <div>
-                    <span v-text="address.payload.street" />
-                    <span v-text="address.payload.houseNo" />
-                </div>
-                <div>
-                    <span v-text="address.payload.postal" />
-                    <span v-text="address.payload.city" />
-                </div>
-                <div>
-                    <span v-text="mapIsoToCountry(address.payload.country, countries)" />
-                </div>
-                <div class="link text-small edit-address" @click="updateAddress(address)" v-text="$t('Edit address')" />
-            </div>
-            <div class="button-wrapper">
-                <button
-                    v-if="!isGuest && addresses.billing.length > 0"
-                    class="button-primary mb-1 w-100"
-                    @click="selectDefaultAddress('billing')"
-                    v-text="$t('Select new default address')"
-                />
-                <button
-                    v-if="!isGuest"
-                    class="button-secondary w-100"
-                    @click="createAddress('billing')"
-                    v-text="$t('Create new address')"
-                />
-            </div>
+        <div v-else class="d-flex justify-content-between">
+            <div class="headline headline-3" v-text="'Your Address'" />
+            <hbl-button
+                class="button"
+                @click.native="createAddress('shipping')"
+                v-text="'Add different shipping address'"
+            />
         </div>
 
-        <div
-            v-if="alternativeShippingAddress && !loading && shippingAddresses.length > 0"
-            class="shipping-addresses-wrp"
-        >
-            <div class="headline headline-3" v-text="$t('Shipping Address')" />
-
-            <div v-for="address in shippingAddresses" :key="address.id" class="shipping-address-wrp">
-                <div>
-                    <span v-text="mapKeyToValue(address.payload.gender, salutations)" />
-                    <span v-text="address.payload.firstName" />
-                    <span v-text="address.payload.lastName" />
-                </div>
-                <div>
-                    <span v-text="address.payload.street" />
-                    <span v-text="address.payload.houseNo" />
-                </div>
-                <div>
-                    <span v-text="address.payload.postal" />
-                    <span v-text="address.payload.city" />
-                </div>
-                <div>
-                    <span v-text="mapIsoToCountry(address.payload.country, countries)" />
-                </div>
-                <div v-if="isGuest && defaultBillingAddress.id === defaultShippingAddress.id"
-                    class="link text-small edit-address"
-                    @click="updateAddress({
-                    id: null,
-                    payload: {
-                    gender: '',
-                    firstName: '',
-                    lastName: '',
-                    street: '',
-                    houseNo: '',
-                    postal: '',
-                    city: '',
-                    country: '',
-                    company: '',
-                }
-                    })"
-                    v-text="$t('Set different address as shipping address')"
-                />
-                <div v-else
-                    class="link text-small edit-address"
-                    @click="updateAddress(defaultShippingAddress)"
-                    v-text="$t('Edit address')"
-                />
+        <div class="billing-address-wrp">
+            <div>
+                <span v-text="getSalutationById(activeBillingAddress.salutationId)" />
+                <span v-text="activeBillingAddress.firstName" />
+                <span v-text="activeBillingAddress.lastName" />
             </div>
-            <div class="button-wrapper">
-                <button
-                    v-if="!isGuest && addresses.shipping.length > 0"
-                    class="button-primary mb-1 w-100"
-                    @click="selectDefaultAddress('shipping')"
-                    v-text="$t('Select new default address')"
-                />
-                <button
-                    v-if="!isGuest"
-                    class="button-secondary w-100"
-                    @click="createAddress('shipping')"
-                    v-text="$t('Create new address')"
-                />
+            <div>
+                <span v-text="activeBillingAddress.street" />
             </div>
+            <div>
+                <span v-text="activeBillingAddress.zipcode" />
+                <span v-text="activeBillingAddress.city" />
+            </div>
+            <div>
+                <span v-text="getCountryById(activeBillingAddress.countryId)" />
+            </div>
+            <hbl-button
+                class="button edit-address"
+                @click.native="updateAddress(activeBillingAddress, 'billing')"
+                v-text="'Edit'"
+            />
         </div>
 
-        <template v-for="error in uniqueErrors">
-            <div class="error-message" v-text="error" />
+        <template v-if="differentShippingAddress">
+            <div class="d-flex justify-content-between mt-4">
+                <div class="headline headline-3" v-text="'Shipping Address'" />
+                <hbl-button class="button" @click.native="createAddress('shipping')" v-text="'Create new address'" />
+            </div>
+            <div class="shipping-address-wrp">
+                <div>
+                    <span v-text="getSalutationById(activeShippingAddress.salutationId)" />
+                    <span v-text="activeShippingAddress.firstName" />
+                    <span v-text="activeShippingAddress.lastName" />
+                </div>
+                <div>
+                    <span v-text="activeShippingAddress.street" />
+                </div>
+                <div>
+                    <span v-text="activeShippingAddress.zipcode" />
+                    <span v-text="activeShippingAddress.city" />
+                </div>
+                <div>
+                    <span v-text="getCountryById(activeShippingAddress.countryId)" />
+                </div>
+                <hbl-button
+                    class="button edit-address"
+                    @click.native="updateAddress(activeShippingAddress, 'shipping')"
+                    v-text="'Edit'"
+                />
+            </div>
         </template>
 
-        <transition-expand-layer :direction="{ sm: 'bottomTop', md: 'rightLeft', lg: 'rightLeft' }">
-            <div v-if="showLayer" class="transition-expand-wrp">
-                <div class="container expand-content">
-                    <div class="row overlay-header">
-                        <button class="button-icon button-close-menu" @click="toggle()">
-                            <i class="icon icon-x" aria-hidden="true" />
-                            <material-ripple />
-                        </button>
-                        <div v-if="formIsActiveAddressUpdate" class="overlay-headline" v-text="$t('Edit address')" />
-                        <div
-                            v-if="formIsActiveAddressCreate"
-                            class="overlay-headline"
-                            v-text="$t('Create new address')"
-                        />
-                        <div
-                            v-if="formIsActiveAddressSelectDefault"
-                            class="overlay-headline"
-                            v-text="$t('Select new default address')"
-                        />
-                    </div>
-                    <div v-if="!formIsActiveAddressSelectDefault">
-                        <div class="row content-wrp">
-                            <div class="col-12">
-                                <validation-observer
-                                    ref="observer"
-                                    v-slot="{ passes }"
-                                    tag="form"
-                                    class="form-edit"
-                                    @submit.prevent="passes(submitUpdateForm)"
-                                >
-                                    <validation-provider
-                                        v-slot="{ errors }"
-                                        name="gender"
-                                        rules="required"
-                                        mode="eager"
-                                        tag="div"
-                                        class="hbl-select"
-                                    >
-                                        <select v-model="address.payload.gender" class="select-text" required>
-                                            <option
-                                                v-for="salutation in salutations"
-                                                :key="salutation.key"
-                                                :value="salutation.key"
-                                                :class="{ invalid: errors.length > 0 }"
-                                            >
-                                                {{ salutation.value }}
-                                            </option>
-                                        </select>
-
-                                        <label class="select-label" v-text="$t('Salutation') + '*'" />
-
-                                        <div class="validation-msg" v-text="$t(errors[0])" />
-                                    </validation-provider>
-
-                                    <validation-provider
-                                        v-slot="{ errors }"
-                                        name="firstName"
-                                        rules="required|max:30"
-                                        mode="eager"
-                                        tag="div"
-                                        class="hbl-input-group"
-                                    >
-                                        <input
-                                            id="firstName"
-                                            v-model="address.payload.firstName"
-                                            type="text"
-                                            name="firstName"
-                                            value=""
-                                            :class="{ invalid: errors.length > 0 }"
-                                            placeholder=" "
-                                            required
-                                        />
-
-                                        <label for="firstName" v-text="$t('First Name') + '*'" />
-
-                                        <div class="validation-msg" v-text="$t(errors[0])" />
-                                    </validation-provider>
-
-                                    <validation-provider
-                                        v-slot="{ errors }"
-                                        name="lastName"
-                                        rules="required|max:30"
-                                        mode="eager"
-                                        tag="div"
-                                        class="hbl-input-group"
-                                    >
-                                        <input
-                                            id="lastName"
-                                            v-model="address.payload.lastName"
-                                            type="text"
-                                            name="lastName"
-                                            value=""
-                                            :class="{ invalid: errors.length > 0 }"
-                                            placeholder=" "
-                                            required
-                                        />
-
-                                        <label for="lastName" v-text="$t('Last Name') + '*'" />
-
-                                        <div class="validation-msg" v-text="$t(errors[0])" />
-                                    </validation-provider>
-
-                                    <template v-if="streetIncludesHouseNo">
-                                        <validation-provider
-                                            v-slot="{ errors }"
-                                            name="street"
-                                            rules="required|max:60"
-                                            mode="eager"
-                                            tag="div"
-                                            class="hbl-input-group"
-                                        >
-                                            <input
-                                                id="street"
-                                                v-model="address.payload.street"
-                                                type="text"
-                                                name="street"
-                                                value=""
-                                                :class="{ invalid: errors.length > 0 }"
-                                                placeholder=" "
-                                                required
-                                            />
-
-                                            <label for="street" v-text="$t('Street') + '/' + $t('Houseno.') + '*'" />
-
-                                            <div class="validation-msg" v-text="$t(errors[0])" />
-                                        </validation-provider>
-                                    </template>
-
-                                    <div v-else class="form-row street-nr">
-                                        <validation-provider
-                                            v-slot="{ errors }"
-                                            name="street"
-                                            rules="required|max:60"
-                                            mode="eager"
-                                            tag="div"
-                                            class="hbl-input-group"
-                                        >
-                                            <input
-                                                id="street"
-                                                v-model="address.payload.street"
-                                                type="text"
-                                                name="street"
-                                                value=""
-                                                :class="{ invalid: errors.length > 0 }"
-                                                placeholder=" "
-                                                required
-                                            />
-
-                                            <label for="street" v-text="$t('Street') + '*'" />
-
-                                            <div class="validation-msg" v-text="$t(errors[0])" />
-                                        </validation-provider>
-
-                                        <validation-provider
-                                            v-slot="{ errors }"
-                                            name="houseNo"
-                                            rules="required|max:5"
-                                            mode="eager"
-                                            tag="div"
-                                            class="hbl-input-group"
-                                        >
-                                            <input
-                                                id="houseNr"
-                                                v-model="address.payload.houseNo"
-                                                type="text"
-                                                name="houseNr"
-                                                value=""
-                                                :class="{ invalid: errors.length > 0 }"
-                                                placeholder=" "
-                                                required
-                                            />
-
-                                            <label for="houseNr" v-text="$t('Houseno.') + '*'" />
-
-                                            <div class="validation-msg" v-text="$t(errors[0])" />
-                                        </validation-provider>
-                                    </div>
-
-                                    <div class="form-row zip-city">
-                                        <validation-provider
-                                            v-slot="{ errors }"
-                                            name="postal"
-                                            rules="required|numeric|max:5"
-                                            mode="eager"
-                                            tag="div"
-                                            class="hbl-input-group"
-                                        >
-                                            <input
-                                                id="zipCode"
-                                                v-model="address.payload.postal"
-                                                type="text"
-                                                name="zipCode"
-                                                value=""
-                                                :class="{ invalid: errors.length > 0 }"
-                                                placeholder=" "
-                                                required
-                                            />
-
-                                            <label for="zipCode" v-text="$t('Zipcode') + '*'" />
-
-                                            <div class="validation-msg" v-text="$t(errors[0])" />
-                                        </validation-provider>
-
-                                        <validation-provider
-                                            v-slot="{ errors }"
-                                            name="city"
-                                            rules="required|max:30"
-                                            mode="eager"
-                                            tag="div"
-                                            class="hbl-input-group"
-                                        >
-                                            <input
-                                                id="city"
-                                                v-model="address.payload.city"
-                                                type="text"
-                                                name="city"
-                                                value=""
-                                                :class="{ invalid: errors.length > 0 }"
-                                                placeholder=" "
-                                                required
-                                            />
-
-                                            <label for="city" v-text="$t('City') + '*'" />
-
-                                            <div class="validation-msg" v-text="$t(errors[0])" />
-                                        </validation-provider>
-                                    </div>
-
-                                    <validation-provider
-                                        v-slot="{ errors }"
-                                        name="country"
-                                        rules="required"
-                                        mode="eager"
-                                        tag="div"
-                                        class="hbl-select"
-                                    >
-                                        <select
-                                            v-model="address.payload.country"
-                                            class="select-text"
-                                            :class="{ invalid: errors.length > 0 }"
-                                            required
-                                        >
-                                            <option
-                                                v-for="country in countries"
-                                                :key="country.iso_code_2"
-                                                :value="country.iso_code_2"
-                                                >{{ country.name }}</option
-                                            >
-                                        </select>
-
-                                        <label class="select-label" v-text="$t('Country') + '*'" />
-
-                                        <div class="validation-msg" v-text="$t(errors[0])" />
-                                    </validation-provider>
-
-                                    <template v-for="(error, index) in errors">
-                                        <div :key="index" class="error-message">{{ error }}.</div>
-                                    </template>
-
-                                    <button
-                                        v-if="formIsActiveAddressUpdate"
-                                        class="button-primary"
-                                        @click.prevent="passes(submitUpdateForm)"
-                                    >
-                                        {{ $t('Edit') }}
-                                        <material-ripple />
-                                    </button>
-
-                                    <button
-                                        v-if="formIsActiveAddressCreate"
-                                        class="button-primary"
-                                        @click.prevent="passes(submitCreateForm)"
-                                    >
-                                        {{ $t('Add') }}
-                                        <material-ripple />
-                                    </button>
-                                </validation-observer>
-                            </div>
-                        </div>
-                    </div>
-                    <div v-else-if="formIsActiveAddressSelectDefault">
-                        <div class="row content-wrp">
-                            <div class="col-12">
-                                <div class="selectable-address-wrp">
-                                    <div
-                                        class="selectable-address selectable-default-address"
-                                        :class="isSelectedAsDefault(currentDefaultAddress)"
-                                        @click.prevent="selectDefault(currentDefaultAddress)"
-                                    >
-                                        <div>
-                                            <span
-                                                v-text="
-                                                    mapKeyToValue(currentDefaultAddress.payload.gender, salutations)
-                                                "
-                                            />
-                                            <span v-text="currentDefaultAddress.payload.firstName" />
-                                            <span v-text="currentDefaultAddress.payload.lastName" />
-                                        </div>
-
-                                        <div>
-                                            <span v-text="currentDefaultAddress.payload.street" />
-                                            <span v-text="currentDefaultAddress.payload.houseNo" />
-                                        </div>
-
-                                        <div>
-                                            <span v-text="currentDefaultAddress.payload.postal" />
-                                            <span v-text="currentDefaultAddress.payload.city" />
-                                        </div>
-
-                                        <div>
-                                            <span
-                                                v-text="
-                                                    mapIsoToCountry(currentDefaultAddress.payload.country, countries)
-                                                "
-                                            />
-                                        </div>
-                                    </div>
-                                    <div
-                                        v-for="address in possibleDefaultAddresses"
-                                        :key="address.id"
-                                        class="selectable-address"
-                                        :class="isSelectedAsDefault(address)"
-                                    >
-                                        <div class="selectable-default-address" @click.prevent="selectDefault(address)">
-                                            <div>
-                                                <span v-text="mapKeyToValue(address.payload.gender, salutations)" />
-                                                <span v-text="address.payload.firstName" />
-                                                <span v-text="address.payload.lastName" />
-                                            </div>
-
-                                            <div>
-                                                <span v-text="address.payload.street" />
-                                                <span v-text="address.payload.houseNo" />
-                                            </div>
-
-                                            <div>
-                                                <span v-text="address.payload.postal" />
-                                                <span v-text="address.payload.city" />
-                                            </div>
-
-                                            <div>
-                                                <span v-text="mapIsoToCountry(address.payload.country, countries)" />
-                                            </div>
-                                        </div>
-                                        <div
-                                            v-if="showDeleteIcon(address)"
-                                            class="delete-icon-wrp"
-                                            @click.prevent="selectDelete(address)"
-                                        >
-                                            <button class="button-icon">
-                                                <i
-                                                    class="icon"
-                                                    :class="isSelectedForDeletion(address)"
-                                                    aria-hidden="true"
-                                                />
-
-                                                <span class="hidden-link-name">Delete</span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="actions">
-                                    <template v-for="(error, index) in errors">
-                                        <div :key="index" class="error-message">{{ error }}.</div>
-                                    </template>
-
-                                    <button
-                                        v-if="!selectedDelete.length > 0"
-                                        class="button-primary"
-                                        :class="isNewDefaultAddress()"
-                                        @click.prevent="submitNewDefault()"
-                                    >
-                                        {{ $t('Select as default address') }}
-                                        <material-ripple />
-                                    </button>
-
-                                    <button
-                                        v-else
-                                        class="button-primary delete-address-button"
-                                        @click.prevent="submitDeleteAddress()"
-                                    >
-                                        {{ $t('Delete selected addresses') }}
-                                        <material-ripple />
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        <div v-if="modalOpen" class="edit-address-modal">
+            <div class="edit-address-wrp" v-click-outside="closeModal">
+                <div class="modal-headline d-flex justify-content-between">
+                    <div class="font-weight-bold" v-text="modalTitle" />
+                    <hbl-button class="button-icon button-close-modal" @click.native="closeModal">
+                        <svg-icon icon="x" />
+                    </hbl-button>
                 </div>
+                <form class="form-edit">
+                    <hbl-select>
+                        <select v-model="address.salutationId" class="select-text" required>
+                            <option v-for="salutation in salutations" :key="salutation.id" :value="salutation.id">
+                                {{ salutation.translated.displayName }}
+                            </option>
+                        </select>
+                        <label class="select-label" v-text="'Salutation'" />
+                    </hbl-select>
+
+                    <hbl-input>
+                        <input
+                            id="firstName"
+                            v-model="address.firstName"
+                            type="text"
+                            name="firstName"
+                            value=""
+                            placeholder=" "
+                            required
+                        />
+
+                        <label for="firstName" v-text="'First Name'" />
+                    </hbl-input>
+
+                    <hbl-input>
+                        <input
+                            id="lastName"
+                            v-model="address.lastName"
+                            type="text"
+                            name="lastName"
+                            value=""
+                            placeholder=" "
+                            required
+                        />
+
+                        <label for="lastName" v-text="'Last Name'" />
+                    </hbl-input>
+
+                    <hbl-input>
+                        <input
+                            id="street"
+                            v-model="address.street"
+                            type="text"
+                            name="street"
+                            value=""
+                            placeholder=" "
+                            required
+                        />
+
+                        <label for="street" v-text="'Street'" />
+                    </hbl-input>
+
+                    <div class="form-row zip-city">
+                        <hbl-input>
+                            <input
+                                id="zipcode"
+                                v-model="address.zipcode"
+                                type="text"
+                                name="zipcode"
+                                value=""
+                                placeholder=" "
+                                required
+                            />
+
+                            <label for="zipcode" v-text="'Zipcode'" />
+                        </hbl-input>
+
+                        <hbl-input>
+                            <input
+                                id="city"
+                                v-model="address.city"
+                                type="text"
+                                name="city"
+                                value=""
+                                placeholder=" "
+                                required
+                            />
+
+                            <label for="city" v-text="'City'" />
+                        </hbl-input>
+                    </div>
+
+                    <hbl-select>
+                        <select id="country" v-model="address.countryId" class="select-text" required>
+                            <option
+                                v-for="country in countries"
+                                :key="country.id"
+                                :value="country.id"
+                                v-text="country.name"
+                            />
+                        </select>
+
+                        <label for="country" class="select-label" v-text="'Country'" />
+                    </hbl-select>
+
+                    <hbl-button class="button-primary w-100" @click.native="submitForm" v-text="'Save'" />
+                </form>
             </div>
-        </transition-expand-layer>
+        </div>
     </div>
+    <loader v-else />
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import Form from '@hubblecommerce/hubble/core/utils/form';
-import {
-    mapKeyToValue,
-    mapIsoToCountry,
-    addBackendErrors,
-    salutations,
-} from '@hubblecommerce/hubble/core/utils/formMixins';
-import _ from 'lodash';
+import { mapActions, mapState } from 'vuex';
+import Vue from 'vue';
+import vClickOutside from 'v-click-outside';
+import apiClient from "@/utils/api-client";
 
 export default {
     name: 'CustomerAddresses',
 
-    mixins: [mapKeyToValue, mapIsoToCountry, addBackendErrors, salutations],
-
-    props: {
-        showAllAddresses: {
-            type: Boolean,
-            required: false,
-            default: false,
-        },
-    },
-
     data() {
         return {
-            name: 'CustomerAddresses',
-
-            streetIncludesHouseNo: process.env.STREETINFO_INCLUDES_HOUSENO === 'true',
-            alternativeShippingAddress: process.env.ALTERNATIVE_SHIPPING_ADDRESS === 'true',
-
-            addresses: {
-                billing: [],
-                shipping: [],
-            },
-            loading: false,
-            address: new Form({}),
-
-            defaultBillingAddress: null,
-            defaultShippingAddress: null,
-
-            selectedDefault: null,
-            selectedDelete: [],
-
-            errors: [],
-
-            addressTemplate: new Form({
-                is_billing: false,
-                is_billing_default: false,
-                is_shipping: false,
-                is_shipping_default: false,
-                payload: {
-                    gender: '',
-                    firstName: '',
-                    lastName: '',
-                    street: '',
-                    houseNo: '',
-                    postal: '',
-                    city: '',
-                    country: '',
-                    company: '',
-                },
-            }),
-            formIsActiveAddressCreate: false,
-            formIsActiveAddressUpdate: false,
-            formIsActiveAddressSelectDefault: false,
+            isLoading: true,
+            salutations: [],
+            countries: [],
+            address: {},
+            activeBillingAddress: null,
+            activeShippingAddress: null,
+            modalOpen: false,
+            actionType: '',
+            contextType: ''
         };
     },
 
     computed: {
         ...mapState({
-            customer: (state) => state.modApiCustomer.customer,
-            countries: (state) => state.modApiCustomer.availableCountries,
-            offcanvas: (state) => state.modNavigation.offcanvas,
+            contextToken: (state) => state.modSession.contextToken,
         }),
-        showLayer: function () {
-            return this.offcanvas.component === this.name;
+        differentShippingAddress: function () {
+            if(this.activeBillingAddress != null && this.activeShippingAddress != null) {
+                return this.activeBillingAddress.id !== this.activeShippingAddress.id;
+            }
         },
-        isGuest: function () {
-            return this.customer.customerData.guest;
-        },
-        currentDefaultAddress: function () {
-            if (this.address.is_billing) {
-                return this.defaultBillingAddress;
+        modalTitle: function () {
+            if (this.type === 'shipping') {
+                return 'Add shipping address';
             }
-            if (this.address.is_shipping) {
-                return this.defaultShippingAddress;
-            }
-            return this.defaultBillingAddress;
-        },
-        possibleDefaultAddresses: function () {
-            if (this.address.is_billing) {
-                return this.addresses.billing;
-            }
-            if (this.address.is_shipping) {
-                return this.addresses.shipping;
-            }
-            return this.addresses.billing;
-        },
-        billingAddresses: function () {
-            let addresses = [];
-            if (this.defaultBillingAddress !== null) {
-                addresses.push(this.defaultBillingAddress);
-            }
-            if (this.showAllAddresses) {
-                addresses = _.concat(addresses, this.addresses.billing);
-            }
-            return addresses;
-        },
-        shippingAddresses: function () {
-            let addresses = [];
-            if (this.defaultShippingAddress !== null) {
-                addresses.push(this.defaultShippingAddress);
-            }
-            if (this.showAllAddresses) {
-                addresses = _.concat(addresses, this.addresses.shipping);
-            }
-            return addresses;
-        },
-        uniqueErrors: function () {
-            return new Set(this.errors);
-        },
-    },
 
-    watch: {
-        selectedDelete: function () {
-            if (!_.isEmpty(this.selectedDelete)) {
-                this.selectedDefault = this.currentDefaultAddress;
-            }
-        },
-        defaultShippingAddress: function () {
-            // recalculate shipping cost when shipping address changes
-            this.calculateShippingCosts(this.defaultShippingAddress.country)
-                .then(() => {
-                    //console.log(response);
-                })
-                .catch(() => {
-                    //console.log('Calculated Shipping costs failed: ', error);
-                });
-        },
-    },
-
-    mounted() {
-        if (_.isEmpty(this.countries)) {
-            this.getAvailableCountries();
+            return 'Add billing address';
         }
-        this.getAddresses();
+    },
+
+    created() {
+        Vue.use(vClickOutside);
+    },
+
+    async mounted() {
+        try {
+            let [salutationResponse, countryResponse] = await this.fetchFormOptions();
+            this.salutations = salutationResponse.data;
+            this.countries = countryResponse.data.elements;
+
+            // Fetch current context (activeBillingAddress and activeShippingAddress)
+            let contextResponse = await this.fetchContext();
+            if(contextResponse.data.customer != null) {
+                this.activeBillingAddress = contextResponse.data.customer.activeBillingAddress;
+                this.activeShippingAddress = contextResponse.data.customer.activeShippingAddress;
+            }
+
+            this.isLoading = false;
+        } catch (e) {
+            this.isLoading = false;
+            throw e;
+        }
     },
 
     methods: {
         ...mapActions({
-            getAvailableCountries: 'modApiCustomer/getAvailableCountries',
-            getCustomerAddresses: 'modApiCustomer/getCustomerAddresses',
+            updateAddressAction: 'modApiCustomer/editAddress',
+            setActiveAddress: 'modApiCustomer/setActiveAddress',
             storeCustomerAddress: 'modApiCustomer/storeCustomerAddress',
-            editAddress: 'modApiCustomer/editAddress',
-            deleteCustomerAddress: 'modApiCustomer/deleteCustomerAddress',
-            register: 'modApiCustomer/register',
-            toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction',
-            hideOffcanvasAction: 'modNavigation/hideOffcanvasAction',
-            editGuestAddress: 'modApiCustomer/editGuestAddress',
-            calculateShippingCosts: 'modCart/calculateShippingCosts',
-            flashMessage: 'modFlash/flashMessage',
         }),
-        toggle: function () {
-            return new Promise((resolve) => {
-                this.toggleOffcanvasAction({
-                    component: this.name,
-                    direction: 'rightLeft',
-                }).then(() => {
-                    // reset ...
-                    if (!this.showLayer) {
-                        this.formIsActiveAddressCreate = false;
-                        this.formIsActiveAddressUpdate = false;
-                        this.formIsActiveAddressSelectDefault = false;
-
-                        this.address = new Form();
-                    }
-
-                    //reset error message
-                    this.errors = [];
-                    resolve('OffCanvas toggled.');
-                });
+        fetchFormOptions: async function() {
+            return await Promise.all([this.fetchSalutations(), this.fetchCountries()]);
+        },
+        fetchSalutations: async function() {
+            return await new apiClient().apiCall({
+                action: 'get',
+                endpoint: 'store-api/v3/salutation'
             });
         },
-        hide: function () {
-            this.hideOffcanvasAction();
-        },
-        getAddresses: function () {
-            this.loading = true;
-            // Get addresses from store if guest
-            if (this.isGuest) {
-                this.mapAddresses();
-
-                this.loading = false;
-            } else {
-                // Get addresses from api if logged in user
-                this.getCustomerAddresses()
-                    .then(() => {
-                        this.mapAddresses();
-
-                        this.loading = false;
-                    })
-                    .catch((res) => {
-                        this.loading = false;
-
-                        this.errors.push(this.$t('Addresses could not be loaded'));
-
-                        if (!this.errors.includes('No network connection')) {
-                            _.forEach(this.addBackendErrors(res), (error) => {
-                                this.errors.push(error);
-                            });
+        fetchCountries: async function() {
+            return await new apiClient().apiCall({
+                action: 'post',
+                endpoint: 'store-api/v3/country',
+                data: {
+                    filter: [
+                        {
+                            type: 'equals',
+                            field: 'active',
+                            value: true
+                        },
+                        {
+                            type: 'equals',
+                            field: 'shippingAvailable',
+                            value: true
                         }
-                    });
-            }
-        },
-        mapAddresses: function () {
-            this.addresses = {
-                billing: [],
-                shipping: [],
-            };
-            _.forEach(this.customer.customerAddresses, (val) => {
-                if (val.is_billing) {
-                    if (val.is_billing_default) {
-                        this.defaultBillingAddress = val;
-                    } else {
-                        this.addresses.billing.push(val);
-                    }
-                }
-                if (val.is_shipping) {
-                    if (val.is_shipping_default) {
-                        this.defaultShippingAddress = val;
-                    } else {
-                        this.addresses.shipping.push(val);
-                    }
+                    ],
+                    sort: [
+                        {
+                            field: 'position',
+                            order: 'ASC'
+                        }
+                    ]
                 }
             });
         },
-        createAddress: function (addressType) {
-            this.formIsActiveAddressCreate = true;
-            this.formIsActiveAddressSelectDefault = false;
-            this.formIsActiveAddressUpdate = false;
-
-            // Clone empty address template
-            let clone = _.cloneDeep(this.addressTemplate);
-
-            // Init new form object
-            this.address = new Form(clone);
-
-            // Set type of address
-            if (addressType === 'billing') {
-                this.address.is_billing = true;
-                this.address.is_billing_default = true;
-            }
-
-            if (addressType === 'shipping') {
-                this.address.is_shipping = true;
-                this.address.is_shipping_default = true;
-            }
-
-            this.toggle();
-        },
-        updateAddress: function (address) {
-            this.formIsActiveAddressCreate = false;
-            this.formIsActiveAddressSelectDefault = false;
-            this.formIsActiveAddressUpdate = true;
-
-            // Clone object to avoid editing vuex state directly
-            let clone = _.cloneDeep(address);
-
-            // Init new form object
-            this.address = new Form(clone);
-
-            this.toggle();
-        },
-        selectDefaultAddress: function (addressType) {
-            this.formIsActiveAddressCreate = false;
-            this.formIsActiveAddressSelectDefault = true;
-            this.formIsActiveAddressUpdate = false;
-
-            // Clone empty address template
-            let clone = _.cloneDeep(this.addressTemplate);
-
-            // Init new form object
-            this.address = new Form(clone);
-
-            // Clear selectedDelete
-            this.selectedDelete = [];
-
-            // Set type of address
-            if (addressType === 'billing') {
-                this.address.is_billing = true;
-
-                // Set SelectedDefault
-                this.selectedDefault = this.defaultBillingAddress;
-            }
-
-            if (addressType === 'shipping') {
-                this.address.is_shipping = true;
-
-                // Set SelectedDefault
-                this.selectedDefault = this.defaultShippingAddress;
-            }
-
-            this.toggle();
-        },
-        submitCreateForm: function () {
-            let address = this.address.getPayloadData();
-
-            // remove house number from payload object if street includes it
-            if (this.streetIncludesHouseNo) {
-                address.payload = _.omit(address.payload, 'houseNo');
-            }
-
-            this.storeCustomerAddress(address)
-                .then(() => {
-                    // Refresh addresses and close offcanvas
-                    this.getAddresses();
-
-                    this.toggle();
-                })
-                .catch((err) => {
-                    // Show api request error
-                    console.log('storeCustomerAddress error: ', err);
-
-                    this.errors.push(this.$t('Address could not be saved'));
-
-                    _.forEach(this.addBackendErrors(err), (error) => {
-                        this.errors.push(error);
-                    });
-                });
-        },
-        submitUpdateForm: function () {
-            let address = this.address.getPayloadData();
-
-            // remove house number from payload object if street includes it
-            if (this.streetIncludesHouseNo) {
-                address = _.omit(address, 'houseNo');
-            }
-
-            // Do API call if is logged in user
-            if (!this.isGuest) {
-                // dispatch data to api ...
-                this.editAddress(address)
-                    .then(() => {
-                        // Refresh addresses and close offcanvas
-                        this.getAddresses();
-
-                        this.toggle();
-                    })
-                    .catch((err) => {
-                        console.log('editAddress error: ', err);
-
-                        // Show api request error
-                        _.forEach(this.addBackendErrors(err), (error) => {
-                            this.errors.push(error);
-                        });
-                    });
-            } else {
-                // right now shopware doesnt provide correct logged in context token on registration
-                // so instead of patching address by id just register new user with changed address
-                let billingAddress = this.defaultBillingAddress.payload;
-                let shippingAddress = null;
-                if(this.customer.customerData.defaultBillingAddressId !== this.customer.customerData.defaultShippingAddressId) {
-                    shippingAddress = this.defaultShippingAddress.payload;
-
-                    if(address.id === this.customer.customerData.defaultShippingAddressId) {
-                        shippingAddress = address.payload;
-                    }
-                } else {
-                    if(address.id === null) {
-                        shippingAddress = address.payload;
-                    }
-                }
-
-                if(address.id === this.customer.customerData.defaultBillingAddressId) {
-                    billingAddress = address.payload;
-                }
-
-                let userData = {
-                    email: this.customer.customerData.email,
-                    password: null,
-                    password_confirm: null,
-                    address: billingAddress,
-                    birthday: this.customer.customerData.birthday,
-                    shippingAddress: shippingAddress,
-                    guest: true,
-                };
-                this.register(userData).then(() => {
-                    this.getAddresses();
-
-                    this.toggle();
-                })
-                .catch(() => {
-                    // Show api request error
-                    this.errors.push(this.$t('Editing address failed'));
-                });
-            }
-        },
-        submitNewDefault: function () {
-            if (this.address.is_billing) {
-                if (this.selectedDefault === this.defaultBillingAddress) {
-                    this.toggle();
-                } else {
-                    let newDefaultAddress = _.cloneDeep(this.selectedDefault);
-                    newDefaultAddress.is_billing_default = true;
-
-                    // remove house number from payload object if street includes it
-                    if (this.streetIncludesHouseNo) {
-                        newDefaultAddress = _.omit(newDefaultAddress, 'houseNo');
-                    }
-
-                    this.editAddress(newDefaultAddress)
-                        .then(() => {
-                            this.getAddresses();
-
-                            this.toggle();
-                        })
-                        .catch((err) => {
-                            console.log('editAddress error: ', err);
-
-                            // Show api request error
-                            this.errors.push(this.$t('Selecting new billing address failed'));
-
-                            _.forEach(this.addBackendErrors(err), (error) => {
-                                this.errors.push(error);
-                            });
-                        });
-                }
-            }
-            if (this.address.is_shipping) {
-                if (this.selectedDefault === this.defaultShippingAddress) {
-                    this.toggle();
-                } else {
-                    let newDefaultAddress = _.cloneDeep(this.selectedDefault);
-                    newDefaultAddress.is_shipping_default = true;
-
-                    // remove house number from payload object if street includes it
-                    if (this.streetIncludesHouseNo) {
-                        newDefaultAddress = _.omit(newDefaultAddress, 'houseNo');
-                    }
-
-                    this.editAddress(newDefaultAddress)
-                        .then(() => {
-                            this.getAddresses();
-                            this.toggle();
-                        })
-                        .catch((err) => {
-                            console.log('editAddress error: ', err);
-
-                            // Show api request error
-                            this.errors.push(this.$t('Selecting new shipping address failed'));
-
-                            _.forEach(this.addBackendErrors(err), (error) => {
-                                this.errors.push(error);
-                            });
-                        });
-                }
-            }
-        },
-        submitDeleteAddress: function () {
-            // dispatch delete calls to api..
-            _.forEach(this.selectedDelete, (address) => {
-                this.deleteCustomerAddress(address)
-                    .then(() => {
-                        this.getAddresses();
-                    })
-                    .catch((err) => {
-                        // Show api request error
-                        this.errors.push(this.$t('Deleting new shipping address failed'));
-
-                        _.forEach(this.addBackendErrors(err), (error) => {
-                            this.errors.push(error);
-                        });
-                    });
+        fetchContext: async function() {
+            return await new apiClient().apiCall({
+                action: 'get',
+                endpoint: 'store-api/v3/context',
+                contextToken: this.contextToken
             });
+        },
+        getSalutationById: function (id) {
+            let selectFieldName = null;
+            this.salutations.forEach((field) => {
+                if (field.id === id) {
+                    selectFieldName = field.translated.displayName;
+                    return selectFieldName;
+                }
+            });
+            return selectFieldName;
+        },
+        getCountryById: function (id) {
+            let selectFieldName = null;
+            this.countries.forEach((field) => {
+                if (field.id === id) {
+                    selectFieldName = field.translated.name;
+                    return selectFieldName;
+                }
+            });
+            return selectFieldName;
+        },
+        updateAddress(address, type) {
+            this.address = Object.assign({}, address);
+            this.actionType = 'update';
+            this.contextType = type;
+            this.modalOpen = true;
+        },
+        updateAddressCall: async function(address) {
+            return await new apiClient().apiCall({
+                action: 'patch',
+                endpoint: `store-api/v3/account/address/${address.id}`,
+                contextToken: this.contextToken,
+                data: address
+            });
+        },
+        setActiveAddressToContext: async function(payload) {
+            return await new apiClient().apiCall({
+                action: 'patch',
+                endpoint: 'store-api/v3/context',
+                contextToken: this.contextToken,
+                data: payload
+            });
+        },
+        createAddress(type) {
+            this.actionType = 'create';
+            this.contextType = type;
+            this.modalOpen = true;
+        },
+        createAddressCall: async function(address) {
+            return await new apiClient().apiCall({
+                action: 'post',
+                endpoint: 'store-api/v3/account/address',
+                contextToken: this.contextToken,
+                data: address
+            });
+        },
+        selectAddess(type) {
+            this.actionType = 'select';
+            this.contextType = type;
+            this.modalOpen = true;
+        },
+        closeModal() {
+            this.address = {};
+            this.actionType = '';
+            this.modalOpen = false;
+        },
+        async submitForm() {
+            this.isLoading = true;
 
-            this.selectedDelete = [];
-        },
-        selectDefault: function (address) {
-            if (this.selectedDelete.length > 0) return;
-            this.selectedDefault = address;
-        },
-        selectDelete(address) {
-            if (!_.includes(this.selectedDelete, address)) {
-                this.selectedDelete.push(address);
-            } else {
-                this.selectedDelete = _.without(this.selectedDelete, address);
+            try {
+                let addressId;
+                let response;
+
+                if (this.actionType === 'update') {
+                    response = await this.updateAddressCall(this.address);
+                    addressId = response.data.id;
+                }
+                if (this.actionType === 'create') {
+                    response = await this.createAddressCall(this.address);
+                    addressId = response.data.id;
+                }
+                if (this.actionType === 'select') {
+                    // todo: select modal and current address in data property address
+                    addressId = this.address.id;
+                }
+
+                let payload = {};
+                if (this.contextType === 'billing') {
+                    payload.billingAddressId = addressId;
+                    this.activeBillingAddress = response.data;
+                }
+
+                if (this.contextType === 'shipping') {
+                    payload.shippingAddressId = addressId;
+                    this.activeShippingAddress = response.data;
+                }
+
+                // todo: flash message "address was saved/edited/selected"
+
+                await this.setActiveAddressToContext(payload);
+                this.closeModal();
+
+                this.isLoading = false;
+            } catch (e) {
+                console.log(e);
+                this.isLoading = false;
             }
-        },
-        showDeleteIcon: function (address) {
-            return !(address.is_billing_default || address.is_shipping_default);
-        },
-        // Methods for selecting classes
-        isSelectedForDeletion: function (address) {
-            return {
-                'icon-trash': !_.includes(this.selectedDelete, address),
-                'icon-trash-2': _.includes(this.selectedDelete, address),
-            };
-        },
-        isNewDefaultAddress: function () {
-            return {
-                'select-address-button': true,
-                'select-address-button-success': !_.isEqual(this.selectedDefault.id, this.currentDefaultAddress.id),
-            };
-        },
-        isSelectedAsDefault: function (address) {
-            return {
-                'selected-address': _.isEqual(this.selectedDefault.id, address.id),
-            };
-        },
-    },
+        }
+    }
 };
 </script>
+
+<style lang="scss" scoped>
+@import '~assets/scss/hubble/variables';
+
+.loader-wrp {
+    width: 100%;
+    height: 450px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.customer-addresses-wrp {
+    margin-bottom: 20px;
+
+    .headline {
+        margin-bottom: 20px;
+    }
+
+    .billing-address-wrp,
+    .shipping-address-wrp {
+        border: 1px solid $border-color;
+        padding: 20px;
+        position: relative;
+
+        margin-bottom: 20px;
+    }
+
+    .edit-address-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 1000;
+        background: rgba(0, 0, 0, 0.5);
+
+        .edit-address-wrp {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            background: $white;
+            overflow-y: scroll;
+
+            .modal-headline {
+                position: relative;
+                width: 100%;
+                border-bottom: 1px solid $border-color;
+                padding: 20px;
+                align-items: center;
+                text-transform: uppercase;
+            }
+
+            .button-close-modal {
+                position: absolute;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                margin: auto 0;
+            }
+
+            .form-edit {
+                padding: 20px;
+            }
+        }
+    }
+
+    .edit-address {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+    }
+
+    .link {
+        text-decoration: underline;
+    }
+}
+
+@media (min-width: 1024px) {
+    .customer-addresses-wrp {
+        .edit-address-modal {
+            justify-content: center;
+
+            .edit-address-wrp {
+                margin: auto;
+                width: auto;
+                max-width: 500px;
+                height: auto;
+                overflow: visible;
+            }
+        }
+    }
+}
+</style>
