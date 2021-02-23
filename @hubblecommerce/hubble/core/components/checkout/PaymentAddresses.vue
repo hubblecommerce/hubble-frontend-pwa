@@ -38,7 +38,7 @@
             <div
                 class="text-small link"
                 @click="selectAddress('billing')"
-                v-text="'Select a different default address'"
+                v-text="'Select a different address'"
             />
         </div>
 
@@ -71,7 +71,7 @@
                 <div
                     class="text-small link"
                     @click="selectAddress('shipping')"
-                    v-text="'Select a different default address'"
+                    v-text="'Select a different address'"
                 />
             </div>
         </template>
@@ -108,7 +108,7 @@
                       />
                   </div>
               </div>
-              <form v-else class="form-edit">
+                <form v-else class="form-edit">
                     <hbl-select>
                         <select v-model="address.salutationId" class="select-text" required>
                             <option v-for="salutation in salutations" :key="salutation.id" :value="salutation.id">
@@ -118,35 +118,35 @@
                         <label class="select-label" v-text="'Salutation'" />
                     </hbl-select>
 
-                  <div class="form-row">
-                      <hbl-input class="firstname-input">
-                          <input
-                              id="firstName"
-                              v-model="address.firstName"
-                              type="text"
-                              name="firstName"
-                              value=""
-                              placeholder=" "
-                              required
-                          />
+                    <div class="form-row">
+                        <hbl-input class="firstname-input">
+                            <input
+                                id="firstName"
+                                v-model="address.firstName"
+                                type="text"
+                                name="firstName"
+                                value=""
+                                placeholder=" "
+                                required
+                            />
 
-                          <label for="firstName" v-text="'First Name'" />
-                      </hbl-input>
+                            <label for="firstName" v-text="'First Name'" />
+                        </hbl-input>
 
-                      <hbl-input class="lastname-input">
-                          <input
-                              id="lastName"
-                              v-model="address.lastName"
-                              type="text"
-                              name="lastName"
-                              value=""
-                              placeholder=" "
-                              required
-                          />
+                        <hbl-input class="lastname-input">
+                            <input
+                                id="lastName"
+                                v-model="address.lastName"
+                                type="text"
+                                name="lastName"
+                                value=""
+                                placeholder=" "
+                                required
+                            />
 
-                          <label for="lastName" v-text="'Last Name'" />
-                      </hbl-input>
-                  </div>
+                            <label for="lastName" v-text="'Last Name'" />
+                        </hbl-input>
+                    </div>
                     <hbl-input>
                         <input
                             id="street"
@@ -219,7 +219,7 @@ import vClickOutside from 'v-click-outside';
 import apiClient from "@/utils/api-client";
 
 export default {
-    name: 'CustomerAddresses',
+    name: 'PaymentAddresses',
 
     data() {
         return {
@@ -242,10 +242,9 @@ export default {
         }),
         differentShippingAddress: function () {
             if(this.activeBillingAddress != null && this.activeShippingAddress != null) {
-                console.log(this.activeBillingAddress)
-                console.log(this.activeShippingAddress)
                 return this.activeBillingAddress.id !== this.activeShippingAddress.id;
             }
+            return false;
         },
         modalTitle: function () {
             return this.actionType + ' ' + this.contextType + ' address';
@@ -265,8 +264,8 @@ export default {
             // Fetch current context (activeBillingAddress and activeShippingAddress)
             let contextResponse = await this.fetchContext();
             if(contextResponse.data.customer != null) {
-                this.activeBillingAddress = contextResponse.data.customer.defaultBillingAddress;
-                this.activeShippingAddress = contextResponse.data.customer.defaultShippingAddress;
+                this.activeBillingAddress = contextResponse.data.customer.activeBillingAddress;
+                this.activeShippingAddress = contextResponse.data.customer.activeShippingAddress;
             }
 
             this.isLoading = false;
@@ -365,6 +364,14 @@ export default {
                 data: address
             });
         },
+        setActiveAddressToContext: async function(payload) {
+            return await new apiClient().apiCall({
+                action: 'patch',
+                endpoint: 'store-api/v3/context',
+                contextToken: this.contextToken,
+                data: payload
+            });
+        },
         createAddress(type) {
             this.actionType = 'create';
             this.contextType = type;
@@ -373,7 +380,11 @@ export default {
 
         async selectAddress(type) {
             const response = await this.fetchAddresses();
+            console.log(response)
             let addresses = response.data.elements
+
+
+
 
             if(type === 'shipping') {
                 addresses = addresses.filter(address => address.id !== this.activeBillingAddress.id);
@@ -392,21 +403,6 @@ export default {
           this.submitForm();
         },
         createAddressCall: async function(address) {
-            return await new apiClient().apiCall({
-                action: 'post',
-                endpoint: 'store-api/v3/account/address',
-                contextToken: this.contextToken,
-                data: address
-            });
-        },
-        updateDefaultAddressCall: async function(address) {
-            return await new apiClient().apiCall({
-                action: 'patch',
-                endpoint: 'store-api/v3/account/address/default-' + this.contextType + '/' + address.id,
-                contextToken: this.contextToken,
-            });
-        },
-        deleteAddressCall: async function(address) {
             return await new apiClient().apiCall({
                 action: 'post',
                 endpoint: 'store-api/v3/account/address',
@@ -440,7 +436,7 @@ export default {
                     addressId = response.data.id;
                 }
                 if (this.actionType === 'select') {
-                    response = await this.updateDefaultAddressCall(this.address);
+                    response.data = this.address;
                     addressId = this.address.id;
                 }
 
@@ -457,6 +453,7 @@ export default {
 
                 // todo: flash message "address was saved/edited/selected"
 
+                await this.setActiveAddressToContext(payload);
                 this.closeModal();
 
                 this.isLoading = false;
@@ -594,7 +591,7 @@ export default {
 
             .edit-address-wrp {
                 margin: auto;
-                //width: auto;
+                width: 640px;
                 max-width: 640px;
                 max-height: 640px;
                 overflow: scroll;

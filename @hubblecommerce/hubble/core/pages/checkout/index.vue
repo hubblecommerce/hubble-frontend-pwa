@@ -22,7 +22,7 @@
 
         <div class="register-options-wrp">
             <div class="checkout-configs-wrp">
-                <customer-addresses />
+                <payment-addresses />
 
                 <shipping-methods
                     :processing-checkout="processingCheckout"
