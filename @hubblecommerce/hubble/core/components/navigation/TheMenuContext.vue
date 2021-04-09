@@ -35,7 +35,7 @@ export default {
         try {
             this.isLoading = true;
             let response = await this.fetchMenu();
-            this.menu = mappingMenu(response.data.children);
+            this.menu = mappingMenu(response.data);
             this.isLoading = false;
         } catch (e) {
             this.isLoading = false;
@@ -53,7 +53,7 @@ export default {
         fetchMenu: async function() {
             return await new apiClient().apiCall({
                 action: 'post',
-                endpoint: 'store-api/v3/pwa/navigation',
+                endpoint: 'store-api/v3/navigation/main-navigation/main-navigation',
                 data: {
                     includes: {
                         category: [
