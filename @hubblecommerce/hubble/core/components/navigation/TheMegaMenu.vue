@@ -90,7 +90,7 @@ export default {
     async mounted() {
         try {
             let response = await this.fetchMenu();
-            this.dataItems = mappingMenu(response.data.children);
+            this.dataItems = mappingMenu(response.data);
         } catch (e) {
             throw e;
         }
@@ -112,7 +112,7 @@ export default {
         fetchMenu: async function() {
             return await new apiClient().apiCall({
                 action: 'post',
-                endpoint: 'store-api/v3/pwa/navigation',
+                endpoint: 'store-api/v3/navigation/main-navigation/main-navigation',
                 data: {
                     includes: {
                         category: [

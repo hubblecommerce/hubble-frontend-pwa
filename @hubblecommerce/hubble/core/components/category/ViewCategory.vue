@@ -50,7 +50,7 @@ export default {
             metaKeywords = process.env.meta.category.metaKeywords;
         }
 
-        if (this.category.meta_title !== '') {
+        if (this.category.meta_title !== null) {
             metaTitle = this.category.meta_title;
         } else if (this.category.name !== '') {
             metaTitle = this.category.name + process.env.meta.category.titleAdd;
