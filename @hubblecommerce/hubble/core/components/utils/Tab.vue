@@ -1,5 +1,5 @@
 <template>
-    <section v-if="isActive" :id="computedId" :aria-hidden="!isActive" class="tabs-component-panel" role="tabpanel">
+    <section v-show="isActive" :id="computedId" :aria-hidden="!isActive" class="tabs-component-panel" role="tabpanel">
         <slot />
     </section>
 </template>
