@@ -87,7 +87,7 @@ export default {
             try {
                 if (this.orderId != null && !this.paymentError) {
                     await this.resetPayment({
-                        paymentMethodId: this.chosenPaymentMethod,
+                        paymentMethodId: this.chosenPaymentMethod.id,
                         orderId: this.orderId,
                     });
                 } else {
