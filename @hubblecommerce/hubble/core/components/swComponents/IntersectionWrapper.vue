@@ -1,0 +1,76 @@
+<template>
+    <div>
+        <div
+            v-if="count != null && count >= heroSectionNumbers"
+            class="intersection-wrp"
+            :class="{ loading: !showBlock }"
+            :id="cmsSlot.id"
+        >
+            <lazy-block v-if="showBlock" :content="cmsSlot" />
+        </div>
+        <block v-else :content="cmsSlot" />
+    </div>
+</template>
+
+<script>
+export default {
+    name: 'IntersectionWrapper',
+
+    props: {
+        cmsSlot: {
+            type: Object,
+            required: true,
+        },
+        count: {
+            type: Number,
+            required: false,
+            default: null,
+        },
+    },
+
+    data() {
+        return {
+            showBlock: false,
+            heroSectionNumbers: 2,
+        };
+    },
+
+    mounted() {
+        if (this.count != null && this.count >= this.heroSectionNumbers) {
+            this.registerIntersectionObserver(`${this.cmsSlot.id}`);
+        }
+    },
+
+    methods: {
+        registerIntersectionObserver: function (targetSelector) {
+            let options = {
+                rootMargin: '20px',
+                threshold: 0.01,
+            };
+
+            let observer = new IntersectionObserver(this.intersectionCallback, options);
+            let target = document.getElementById(targetSelector);
+            observer.observe(target);
+        },
+        intersectionCallback: function (entries, observer) {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    this.showBlock = true;
+                    observer.disconnect();
+                }
+            });
+        },
+    },
+};
+</script>
+
+<style lang="scss" scoped>
+.intersection-wrp {
+    width: 100%;
+    min-height: 0;
+
+    &.loading {
+        min-height: 200px;
+    }
+}
+</style>
