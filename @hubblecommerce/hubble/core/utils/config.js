@@ -51,6 +51,7 @@ export const defaultModules = [
     {
         name: 'nuxt-lazy-load',
         options: {
+            directiveOnly: true,
             loadingClass: 'lazy-placeholder',
         },
     },
