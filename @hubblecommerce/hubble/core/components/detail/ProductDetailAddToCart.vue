@@ -39,7 +39,7 @@ export default {
             setCart: 'modCart/setCart',
         }),
         ...mapActions({
-            //flashMessage: 'modFlash/flashMessage',
+            flashMessage: 'modFlashMessage/flashMessage',
             addItem: 'modCart/addItem',
             toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction',
         }),
@@ -49,12 +49,6 @@ export default {
             // Return if qty is not in stock
             if (!this.dataProduct.stock_item.is_in_stock) {
                 this.setIsLoading({ name: 'isLoading', state: false });
-
-                // Display Error Message (eg. Qty of item is at maxQty)
-                //this.flashMessage({
-                //    flashType: 'error',
-                //    flashMessage: 'Not enough Products in stock.',
-                //});
 
                 return false;
             }
@@ -73,22 +67,13 @@ export default {
                     this.setIsLoading({ name: 'isLoading', state: false });
 
                     // Display Success Message
-                    //this.flashMessage({
-                    //    flashType: 'success',
-                    //    flashMessage: 'Successfully added item to cart.'
-                    //});
+                    this.flashMessage({
+                        type: 'success',
+                        text: 'Successfully added item to cart.',
+                    });
                 });
             } catch (e) {
                 this.setIsLoading({ name: 'isLoading', state: false });
-
-                // Display Error Message (eg. Qty of item is at maxQty)
-                //this.flashMessage({
-                //    flashType: 'error',
-                //    flashMessage:
-                //        error === 'No network connection' || error === 'Product could not be saved to cart'
-                //            ? error
-                //            : 'An error occurred'
-                //});
 
                 throw e;
             }

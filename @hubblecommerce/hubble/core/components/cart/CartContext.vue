@@ -9,9 +9,7 @@
                 <div class="overlay-headline" v-text="'Cart'" />
             </div>
 
-            <!--            <div class="row">-->
-            <!--                <flash-messages v-if="qty > 0" :fade-out="false" :in-off-canvas="true" />-->
-            <!--            </div>-->
+            <flash-message />
 
             <template v-if="qty > 0 && !isLoading">
                 <div class="row">
