@@ -41,6 +41,13 @@ function mappingCategoryProducts(products) {
         obj.ean = product.ean;
         obj.type = product.sw;
 
+        if (product.markAsTopseller != null) {
+            obj.bestseller = product.markAsTopseller;
+        }
+        if (product.isNew != null) {
+            obj.new = product.isNew;
+        }
+
         obj.image = '';
         if (product.cover != null) {
             obj.image = product.cover.media;
@@ -70,6 +77,20 @@ function mappingCategoryProducts(products) {
             qty: product.stock,
             is_in_stock: product.available,
         };
+
+        obj.fromPrice = product.calculatedListingPrice.from;
+
+        if (product.calculatedPrice.listPrice !== null) {
+            obj.listPrice = product.calculatedPrice.listPrice;
+        }
+
+        obj.unitPrice = product.calculatedPrice.unitPrice;
+
+        if (product.translated.customFields.product_variants_extension) {
+            obj.variants = product.translated.customFields.product_variants_extension.elements;
+        }
+
+        // Will be deprecated, use price properties above instead
         obj.final_price_item = {
             special_to_date: null,
             special_from_date: null,
@@ -149,6 +170,10 @@ function mappingProduct(payload) {
         obj.stock_item.is_in_stock = true;
     }
 
+    if (product.calculatedPrice != null) {
+        obj.calculatedPrice = product.calculatedPrice;
+    }
+
     obj.final_price_item = {
         special_to_date: null,
         special_from_date: null,
@@ -171,7 +196,17 @@ function mappingProduct(payload) {
     obj.shipping_free = product.shippingFree;
 
     if (product.media != null) {
-        obj.media = product.media;
+        obj.media = product.media.sort(function (a, b) {
+            return a.position - b.position;
+        });
+    }
+
+    if (product.translated.customFields != null) {
+        obj.customFields = product.translated.customFields;
+    }
+
+    if (product.customFields != null) {
+        obj.extenstions = product.customFields;
     }
 
     obj.related_product_ids = {
@@ -211,15 +246,22 @@ function mappingCartProduct(product) {
         referencedId: product.referencedId,
         qty: product.quantity,
         stock_item: {
-            minPurchase: product.quantityInformation.minPurchase,
-            maxPurchase: product.payload.isCloseout ? product.deliveryInformation.stock : product.quantityInformation.maxPurchase,
-            purchaseSteps: product.quantityInformation.purchaseSteps,
+            minPurchase: product.quantityInformation != null ? product.quantityInformation.minPurchase : null,
+            maxPurchase: product.payload.isCloseout
+                ? product.deliveryInformation.stock
+                : product.quantityInformation != null
+                ? product.quantityInformation.maxPurchase
+                : null,
+            purchaseSteps: product.quantityInformation != null ? product.quantityInformation.purchaseSteps : null,
+            deliveryInformation: product.deliveryInformation,
         },
         final_price_item: {
-            special_price: null,
+            special_price: product.price.listPrice != null ? product.price.listPrice.price : null,
             display_price_brutto: product.price.unitPrice,
+            tax: product.price.calculatedTaxes,
         },
-        image: product.cover.url,
+        image: product.cover != null ? product.cover.url : null,
+        thumbnails: product.cover != null ? product.cover.thumbnails : null,
         url_pds: product.payload.seoUrl != null ? product.payload.seoUrl : null,
         variants: product.payload.options.map((option) => {
             return {
@@ -252,8 +294,17 @@ function mappingSearchSuggestProducts(products) {
         let obj = {};
 
         obj.id = product.id;
-        obj.name = product.name;
-        obj.image = product.cover.media.url;
+
+        if (product.name) {
+            obj.name = product.name;
+        } else {
+            obj.name = product.translated.name;
+        }
+
+        if (product.cover) {
+            obj.image = product.cover.media;
+        }
+
         obj.price = product.calculatedPrice.totalPrice;
         obj.url_pds = product.seoUrls[0].pathInfo;
 
