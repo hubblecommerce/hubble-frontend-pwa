@@ -82,6 +82,20 @@ export default {
             }, 300);
         },
     },
+    head() {
+        // Preload first image of gallery to improve performance of hero element
+        if (this.media.length > 0) {
+            return {
+                link: [
+                    {
+                        rel: 'preload',
+                        as: 'image',
+                        href: this.getMediaUrl(this.media[0], 800),
+                    },
+                ],
+            };
+        }
+    },
 };
 </script>
 
