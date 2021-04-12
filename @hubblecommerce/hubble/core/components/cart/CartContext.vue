@@ -16,7 +16,11 @@
                     <div v-if="qty === 1" class="col-12 qty-summary" v-text="`${qty} Item`" />
                     <div v-if="qty > 1" class="col-12 qty-summary" v-text="`${qty} Items`" />
 
-                    <lazy-cart-items-list :interactive="interactive" :items="products" v-on:items-list-changed="setCartData($event)" />
+                    <lazy-cart-items-list
+                        :interactive="interactive"
+                        :items="products"
+                        v-on:items-list-changed="setCartData($event)"
+                    />
 
                     <div class="totals container">
                         <div class="row">
@@ -62,7 +66,11 @@
                         <svg-icon icon="shopping-bag" />
                         <div class="text" v-text="'Your shopping cart is empty'" />
                         <nuxt-link :to="'/'">
-                            <hbl-button class="button-secondary" @click.native="hideMenu" v-text="'Discover our products'" />
+                            <hbl-button
+                                class="button-secondary"
+                                @click.native="hideMenu"
+                                v-text="'Discover our products'"
+                            />
                         </nuxt-link>
                     </div>
                 </div>

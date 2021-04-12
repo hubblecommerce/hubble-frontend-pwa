@@ -116,7 +116,10 @@ export default {
                 let mergedProduct = Object.assign(this.dataProduct, mappedProduct);
 
                 // Replace current url path with variant without losing optional GET params
-                let newSeoUrl = window.location.href.replace(window.location.pathname.replace(/^\/+/g, ''), mergedProduct.url_pds);
+                let newSeoUrl = window.location.href.replace(
+                    window.location.pathname.replace(/^\/+/g, ''),
+                    mergedProduct.url_pds
+                );
                 window.history.replaceState({}, mergedProduct.name, newSeoUrl);
 
                 // Release add to cart button

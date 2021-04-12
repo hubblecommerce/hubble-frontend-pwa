@@ -21,7 +21,9 @@ const asyncCopyApiTypeDirs = async (sourceDirs, targetDir, apiType) => {
             await fse.copy(path.join(targetDir, sourceDir, apiType), path.join(targetDir, sourceDir));
 
             const apiSpecificSubfolders = await listAllDirs(path.join(targetDir, sourceDir));
-            await Promise.all(apiSpecificSubfolders.map(async (__apiSpecificSubfolder) => await fse.remove(__apiSpecificSubfolder)));
+            await Promise.all(
+                apiSpecificSubfolders.map(async (__apiSpecificSubfolder) => await fse.remove(__apiSpecificSubfolder))
+            );
         })
     );
 };

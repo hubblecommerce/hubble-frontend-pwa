@@ -42,7 +42,11 @@
             </div>
 
             <div class="checkout-actions-wrp">
-                <hbl-button class="button-primary checkout-btn" :disabled="processingCheckout" @click.native="placeOrder()">
+                <hbl-button
+                    class="button-primary checkout-btn"
+                    :disabled="processingCheckout"
+                    @click.native="placeOrder()"
+                >
                     <span v-if="!processingCheckout">{{ 'Place Order' }}</span>
                     <loader v-if="processingCheckout" />
                 </hbl-button>

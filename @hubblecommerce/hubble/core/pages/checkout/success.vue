@@ -13,7 +13,11 @@
                         <span>{{ 'We have sent you an order confirmation by e-mail' }}</span>
                         <span v-if="$data.order != null">{{ 'at ' + order.orderCustomer.email }}</span>
                     </div>
-                    <div v-if="$data.order != null" class="email-info text-center" v-text="'Your order number: ' + order.orderNumber" />
+                    <div
+                        v-if="$data.order != null"
+                        class="email-info text-center"
+                        v-text="'Your order number: ' + order.orderNumber"
+                    />
                 </div>
             </transition>
         </div>

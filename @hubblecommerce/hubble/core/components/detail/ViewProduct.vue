@@ -79,7 +79,9 @@ export default {
                     'priceCurrency': this.priceCurrency,
                     'price': this.product.final_price_item.display_price_brutto,
                     'itemCondition': 'https://schema.org/NewCondition',
-                    'availability': this.product.stock_item.is_in_stock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+                    'availability': this.product.stock_item.is_in_stock
+                        ? 'https://schema.org/InStock'
+                        : 'https://schema.org/OutOfStock',
                 },
                 // More structured data...
             };

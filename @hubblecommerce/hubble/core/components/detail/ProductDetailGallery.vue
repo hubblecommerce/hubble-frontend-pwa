@@ -6,7 +6,12 @@
         <hooper :class="{ loading: loading }" :settings="hooperSettings" @updated="onHooperUpdated()">
             <slide v-for="(medium, index) in media" :key="index" :index="index">
                 <template v-if="index === 0">
-                    <img data-not-lazy :class="'slide-img'" :src="getMediaUrl(medium, 800)" :alt="`${alt} - Image Gallery Item ${index}`" />
+                    <img
+                        data-not-lazy
+                        :class="'slide-img'"
+                        :src="getMediaUrl(medium, 800)"
+                        :alt="`${alt} - Image Gallery Item ${index}`"
+                    />
                 </template>
                 <img
                     v-else

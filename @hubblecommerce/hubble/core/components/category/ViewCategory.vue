@@ -3,7 +3,12 @@
         <breadcrumb class="container" :path="breadcrumb" />
 
         <div class="container">
-            <sw-section v-if="data.cmsPage.sections != null" v-for="cmsSection in data.cmsPage.sections" :key="cmsSection.id" :content="cmsSection" />
+            <sw-section
+                v-if="data.cmsPage.sections != null"
+                v-for="cmsSection in data.cmsPage.sections"
+                :key="cmsSection.id"
+                :content="cmsSection"
+            />
         </div>
     </div>
 </template>

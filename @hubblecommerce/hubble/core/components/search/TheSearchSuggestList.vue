@@ -26,7 +26,10 @@
                     <div class="headline" v-text="'No results found'" />
 
                     <div class="elements-wrp">
-                        <div class="element" v-text="'We are sorry there is no such product. Please try another one.'" />
+                        <div
+                            class="element"
+                            v-text="'We are sorry there is no such product. Please try another one.'"
+                        />
                     </div>
                 </div>
             </div>

@@ -1,5 +1,11 @@
 <template>
-    <hbl-button :disabled="isLoading" type="button" :title="'Add to cart'" class="add-to-cart button-primary" @click.native="addToCart">
+    <hbl-button
+        :disabled="isLoading"
+        type="button"
+        :title="'Add to cart'"
+        class="add-to-cart button-primary"
+        @click.native="addToCart"
+    >
         <span v-if="!isLoading" class="cart-button-label" v-text="'Add to cart'" />
         <loader v-if="isLoading" />
     </hbl-button>
