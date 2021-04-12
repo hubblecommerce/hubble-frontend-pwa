@@ -1,7 +1,7 @@
 <template>
     <div class="pp-express-wrp">
         <div v-if="error != null" class="pp-express-error-wrp">
-            <div class="error-msg" v-text="error"/>
+            <div class="error-msg" v-text="error" />
         </div>
         <transition name="fade">
             <loader v-if="!scriptLoaded" />
@@ -16,11 +16,11 @@
 </template>
 
 <script>
-import {mapMutations, mapState} from "vuex";
-import apiClient from "@/utils/api-client";
+import { mapMutations, mapState } from 'vuex';
+import apiClient from '@/utils/api-client';
 
 export default {
-    name: "PaypalExpress",
+    name: 'PaypalExpress',
 
     data() {
         return {
@@ -96,34 +96,21 @@ export default {
                  *
                  * @type boolean
                  */
-                tagline: false
+                tagline: false,
             },
             loadingScript: false,
             scriptLoaded: false,
             loading: false,
             callbacks: [],
-            availableAPMs: [
-                'card',
-                'credit',
-                'bancontact',
-                'blik',
-                'eps',
-                'giropay',
-                'ideal',
-                'mybank',
-                'p24',
-                'sepa',
-                'sofort',
-                'venmo'
-            ],
-            error: null
-        }
+            availableAPMs: ['card', 'credit', 'bancontact', 'blik', 'eps', 'giropay', 'ideal', 'mybank', 'p24', 'sepa', 'sofort', 'venmo'],
+            error: null,
+        };
     },
 
     computed: {
         ...mapState({
-            contextToken: (state) => state.modSession.contextToken
-        })
+            contextToken: (state) => state.modSession.contextToken,
+        }),
     },
 
     mounted() {
@@ -136,17 +123,17 @@ export default {
 
     methods: {
         ...mapMutations({
-            setContextToken: 'modSession/setContextToken'
+            setContextToken: 'modSession/setContextToken',
         }),
 
-        createButton: function() {
+        createButton: function () {
             this.createScript(() => {
                 const paypal = window.paypal;
                 this.renderButton(paypal);
             });
         },
 
-        renderButton: function(paypal) {
+        renderButton: function (paypal) {
             return paypal.Buttons(this.getButtonConfig()).render(this.$refs['pp-express-button']);
         },
 
@@ -171,8 +158,8 @@ export default {
             document.head.appendChild(payPalScript);
         },
 
-        callCallbacks: function() {
-            this.callbacks.forEach(callback => {
+        callCallbacks: function () {
+            this.callbacks.forEach((callback) => {
                 callback.call(this);
             });
 
@@ -182,7 +169,7 @@ export default {
         /**
          * @return {string}
          */
-        getScriptUrlOptions: function() {
+        getScriptUrlOptions: function () {
             let config = '&components=marks,buttons,messages';
 
             if (typeof this.options.commit !== 'undefined') {
@@ -203,16 +190,14 @@ export default {
 
             if (this.options.useAlternativePaymentMethods !== undefined && !this.options.useAlternativePaymentMethods) {
                 config += `&disable-funding=${this.availableAPMs.join(',')}`;
-            } else if (this.options.disabledAlternativePaymentMethods !== undefined
-                && this.options.disabledAlternativePaymentMethods.length > 0
-            ) {
+            } else if (this.options.disabledAlternativePaymentMethods !== undefined && this.options.disabledAlternativePaymentMethods.length > 0) {
                 config += `&disable-funding=${this.options.disabledAlternativePaymentMethods.join(',')}`;
             }
 
             return config;
         },
 
-        getButtonConfig: function() {
+        getButtonConfig: function () {
             //const renderElement = this.el;
             //const { element: buyButton, disabled: isBuyButtonDisabled } = this.getBuyButtonState();
 
@@ -257,7 +242,7 @@ export default {
                     tagline: this.options.tagline,
                     layout: 'horizontal',
                     label: 'checkout',
-                    height: 40
+                    height: 40,
                 },
 
                 /**
@@ -273,14 +258,14 @@ export default {
                 /**
                  * Will be called if an error occurs during the payment process.
                  */
-                onError: this.onError.bind(this)
+                onError: this.onError.bind(this),
             };
         },
 
         /**
          * @return {Promise}
          */
-        createOrder: function() {
+        createOrder: function () {
             if (this.options.addProductToCart) {
                 return this.addProductToCart().then(() => {
                     return this._createOrder();
@@ -293,23 +278,23 @@ export default {
         /**
          * @return {Promise}
          */
-        _createOrder: async function() {
+        _createOrder: async function () {
             try {
                 const response = await new apiClient().apiCall({
                     action: 'post',
                     endpoint: 'store-api/v3/paypal/express/create-order',
-                    contextToken: this.contextToken
+                    contextToken: this.contextToken,
                 });
 
                 return response.data.token;
-            } catch(e) {
+            } catch (e) {
                 console.log(e);
             }
         },
 
-        onApprove: async function(data) {
+        onApprove: async function (data) {
             const requestPayload = {
-                token: data.orderID
+                token: data.orderID,
             };
 
             // Add a loading indicator to the body to prevent the user breaking the checkout process
@@ -321,7 +306,7 @@ export default {
                     action: 'post',
                     endpoint: 'store-api/v3/paypal/express/prepare-checkout',
                     contextToken: this.contextToken,
-                    data: requestPayload
+                    data: requestPayload,
                 });
 
                 await this.setContextToken(response.data.contextToken);
@@ -330,16 +315,16 @@ export default {
                     path: '/checkout',
                     query: {
                         isPayPalExpressCheckout: true,
-                        paypalOrderId: data.orderID
-                    }
+                        paypalOrderId: data.orderID,
+                    },
                 });
-            } catch(e) {
+            } catch (e) {
                 this.loading = false;
                 console.log(e);
             }
         },
 
-        onError: function() {
+        onError: function () {
             this.loading = false;
 
             if (typeof this.options.clientId === 'undefined' || this.options.clientId === '') {
@@ -350,18 +335,18 @@ export default {
             this.error = 'Please try a different payment method, or contact our customer service via email or hotline.';
         },
 
-        addProductToCart: function() {
+        addProductToCart: function () {
             //const buyForm = this.el.closest('form');
             //const buyButton = DomAccess.querySelector(buyForm, this.options.buyButtonSelector);
             //const plugin = window.PluginManager.getPluginInstanceFromElement(buyForm, 'AddToCart');
 
-            return new Promise(resolve => {
+            return new Promise((resolve) => {
                 //this._client.delete(this.options.deleteCartUrl, null, () => {
                 //    plugin.$emitter.subscribe('openOffCanvasCart', () => {
-                        resolve();
-                    //});
+                resolve();
+                //});
 
-                    //buyButton.click();
+                //buyButton.click();
                 //});
             });
         },
@@ -381,8 +366,8 @@ export default {
         //        disabled: element.getAttribute('disabled') === 'disabled'
         //    };
         //}
-    }
-}
+    },
+};
 </script>
 
 <style lang="scss" scoped>

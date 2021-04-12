@@ -17,9 +17,9 @@ export default {
         appearance: {
             type: String,
             required: false,
-            default: 'ring'
-        }
-    }
+            default: 'ring',
+        },
+    },
 };
 </script>
 

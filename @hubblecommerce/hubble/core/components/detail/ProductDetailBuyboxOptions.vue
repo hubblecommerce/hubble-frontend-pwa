@@ -8,7 +8,7 @@
                     v-for="(option, optionIndex) in group.options"
                     :key="optionIndex"
                     class="option-val"
-                    :class="showActiveClass(group.id, option.id) "
+                    :class="showActiveClass(group.id, option.id)"
                 >
                     <input
                         :id="option.id"
@@ -27,10 +27,10 @@
 </template>
 
 <script>
-import {mapMutations, mapState} from 'vuex';
-import apiClient from "@/utils/api-client";
-import {associations, includes} from "@/utils/api-post-body";
-import {mappingProduct} from "@/utils/api-mapping-helper";
+import { mapMutations, mapState } from 'vuex';
+import apiClient from '@/utils/api-client';
+import { associations, includes } from '@/utils/api-post-body';
+import { mappingProduct } from '@/utils/api-mapping-helper';
 
 export default {
     name: 'ProductDetailBuyboxOptions',
@@ -38,20 +38,20 @@ export default {
     props: {
         dataProduct: {
             type: Object,
-            required: true
-        }
+            required: true,
+        },
     },
 
     data() {
         return {
             selectedOptions: {},
-            updatedOptions: null
+            updatedOptions: null,
         };
     },
 
     computed: {
         ...mapState({
-            isLoading: (state) => state.modCart.isLoading
+            isLoading: (state) => state.modCart.isLoading,
         }),
         groups: function () {
             return this.dataProduct.groups != null ? this.dataProduct.groups : null;
@@ -64,17 +64,17 @@ export default {
 
     methods: {
         ...mapMutations({
-            setIsLoading: 'modCart/setState'
+            setIsLoading: 'modCart/setState',
         }),
         setInitialOptions: function () {
             this.dataProduct.options.forEach((option) => {
                 Object.assign(this.selectedOptions, { [option.group.id]: option.id });
             });
         },
-        onChange: async function(e) {
+        onChange: async function (e) {
             try {
                 // Deactivate add to cart button while variant is loading
-                this.setIsLoading({name: 'isLoading', state:true});
+                this.setIsLoading({ name: 'isLoading', state: true });
 
                 // Clone and write options to make them reactive
                 this.updatedOptions = Object.assign({}, this.selectedOptions);
@@ -82,35 +82,35 @@ export default {
                 let queries = [];
                 Object.entries(this.updatedOptions).forEach(([key, option]) => {
                     queries.push({
-                        "type": "contains",
-                        "field": "optionIds",
-                        "value": option
-                    })
+                        type: 'contains',
+                        field: 'optionIds',
+                        value: option,
+                    });
                 });
 
                 let filter = [
                     {
                         type: 'equals',
                         field: 'parentId',
-                        value: this.dataProduct.parentId
+                        value: this.dataProduct.parentId,
                     },
                     {
-                        type: "multi",
-                        operator: "and",
-                        queries: queries
-                    }
+                        type: 'multi',
+                        operator: 'and',
+                        queries: queries,
+                    },
                 ];
 
                 // Fetch product by current options selected
                 let response = await this.fetchProduct({ filter: filter });
 
                 // Return if no or more than one results
-                if(response.data.elements.length > 1 || response.data.elements.length === 0) {
+                if (response.data.elements.length > 1 || response.data.elements.length === 0) {
                     return false;
                 }
 
                 // Mapping response data (prepare to replace current product data)
-                let mappedProduct = mappingProduct({product: response.data.elements[0]});
+                let mappedProduct = mappingProduct({ product: response.data.elements[0] });
 
                 // Merge Productdata of variant with current product, to update current variant data
                 let mergedProduct = Object.assign(this.dataProduct, mappedProduct);
@@ -120,20 +120,20 @@ export default {
                 window.history.replaceState({}, mergedProduct.name, newSeoUrl);
 
                 // Release add to cart button
-                this.setIsLoading({name: 'isLoading', state: false});
-            } catch(error) {
+                this.setIsLoading({ name: 'isLoading', state: false });
+            } catch (error) {
                 // Release add to cart button
-                this.setIsLoading({name: 'isLoading', state: false});
+                this.setIsLoading({ name: 'isLoading', state: false });
             }
         },
-        showActiveClass: function(groupId, optionId) {
-            if(this.updatedOptions != null) {
+        showActiveClass: function (groupId, optionId) {
+            if (this.updatedOptions != null) {
                 return this.updatedOptions[groupId] === optionId ? 'active' : '';
             }
 
-            return this.selectedOptions[groupId] === optionId ? 'active' : ''
+            return this.selectedOptions[groupId] === optionId ? 'active' : '';
         },
-        fetchProduct: async function(payload) {
+        fetchProduct: async function (payload) {
             try {
                 return await new apiClient().apiCall({
                     action: 'post',
@@ -144,15 +144,15 @@ export default {
                         includes: {
                             product: includes.product,
                             product_media: includes.product_media,
-                            calculated_price: includes.calculated_price
-                        }
-                    }
+                            calculated_price: includes.calculated_price,
+                        },
+                    },
                 });
             } catch (e) {
                 throw e;
             }
-        }
-    }
+        },
+    },
 };
 </script>
 

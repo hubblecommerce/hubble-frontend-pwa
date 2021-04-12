@@ -10,21 +10,26 @@
                     <div class="customer-trigger-wrp">
                         <hbl-button
                             class="button-icon"
-                            @click.native="toggleOffcanvasAction({
-                                component: 'TheCustomerContext',
-                                direction: 'bottomTop'
-                            })"
+                            @click.native="
+                                toggleOffcanvasAction({
+                                    component: 'TheCustomerContext',
+                                    direction: 'bottomTop',
+                                })
+                            "
                         >
                             <div class="hidden-link-name" v-text="'Toggle Customer Context'" />
                             <svg-icon icon="account" />
                         </hbl-button>
                     </div>
                     <div class="search-trigger-wrp">
-                        <hbl-button class="button-icon"
-                            @click.native="toggleOffcanvasAction({
-                                component: 'TheSearchContext',
-                                direction: 'bottomTop'
-                            })"
+                        <hbl-button
+                            class="button-icon"
+                            @click.native="
+                                toggleOffcanvasAction({
+                                    component: 'TheSearchContext',
+                                    direction: 'bottomTop',
+                                })
+                            "
                         >
                             <div class="hidden-link-name" v-text="'Toggle Search Context'" />
                             <svg-icon icon="search" />
@@ -34,22 +39,28 @@
                         <client-only>
                             <div class="cart-qty" v-if="cartQty > 0" v-text="cartQty" />
                         </client-only>
-                        <hbl-button class="button-icon"
-                            @click.native="toggleOffcanvasAction({
-                                component: 'TheCartContext',
-                                direction: 'bottomTop'
-                            })"
+                        <hbl-button
+                            class="button-icon"
+                            @click.native="
+                                toggleOffcanvasAction({
+                                    component: 'TheCartContext',
+                                    direction: 'bottomTop',
+                                })
+                            "
                         >
                             <div class="hidden-link-name" v-text="'Toggle Cart Context'" />
                             <svg-icon icon="shopping-bag" />
                         </hbl-button>
                     </div>
                     <div class="menu-trigger-wrp">
-                        <hbl-button class="button-icon"
-                            @click.native="toggleOffcanvasAction({
-                                component: 'TheMenuContext',
-                                direction: 'bottomTop'
-                            })"
+                        <hbl-button
+                            class="button-icon"
+                            @click.native="
+                                toggleOffcanvasAction({
+                                    component: 'TheMenuContext',
+                                    direction: 'bottomTop',
+                                })
+                            "
                         >
                             <div class="hidden-link-name" v-text="'Toggle Menu Context'" />
                             <svg-icon icon="menu" />
@@ -63,11 +74,11 @@
         </header>
 
         <main>
-            <Nuxt/>
+            <Nuxt />
         </main>
 
         <footer>
-            <lazy-the-footer-context v-if="loadFooter"/>
+            <lazy-the-footer-context v-if="loadFooter" />
         </footer>
 
         <transition-expand-layer :direction="{ sm: 'bottomTop', md: 'rightLeft', lg: 'rightLeft' }">
@@ -82,7 +93,7 @@
 </template>
 
 <script>
-import {mapActions, mapMutations, mapState} from "vuex";
+import { mapActions, mapMutations, mapState } from 'vuex';
 
 export default {
     name: 'Default',
@@ -93,52 +104,51 @@ export default {
             menuInitiated: false,
             showOffcanvas: false,
             offcanvasDirection: 'bottomTop',
-            loadFooter: false
-        }
+            loadFooter: false,
+        };
     },
     computed: {
         ...mapState({
             offcanvas: (state) => state.modNavigation.offcanvas,
-            cartQty: (state) => state.modCart.qty
-        })
+            cartQty: (state) => state.modCart.qty,
+        }),
     },
     watch: {
-        '$route': function() {
+        $route: function () {
             this.hideOffcanvas();
-        }
+        },
     },
     mounted() {
         this.registerIntersectionObserver('footer');
-
     },
     methods: {
         ...mapMutations({
-            hideOffcanvas: 'modNavigation/hideOffcanvas'
+            hideOffcanvas: 'modNavigation/hideOffcanvas',
         }),
         ...mapActions({
             toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction',
-            hideOffcanvasAction: 'modNavigation/hideOffcanvasAction'
+            hideOffcanvasAction: 'modNavigation/hideOffcanvasAction',
         }),
-        registerIntersectionObserver: function(targetSelector) {
+        registerIntersectionObserver: function (targetSelector) {
             let options = {
                 rootMargin: '20px',
-                threshold: 0.01
-            }
+                threshold: 0.01,
+            };
 
             let observer = new IntersectionObserver(this.intersectionCallback, options);
             let target = document.querySelector(targetSelector);
             observer.observe(target);
         },
-        intersectionCallback: function(entries, observer) {
-            entries.forEach(entry => {
-                if(entry.isIntersecting) {
+        intersectionCallback: function (entries, observer) {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
                     this.loadFooter = true;
                     observer.disconnect();
                 }
             });
-        }
-    }
-}
+        },
+    },
+};
 </script>
 
 <style lang="scss">

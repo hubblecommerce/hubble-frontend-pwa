@@ -3,13 +3,7 @@
         <div class="headline headline-3" v-text="'Shipping methods'" />
 
         <hbl-checkbox v-for="method in shippingMethods" v-if="method.active" :key="method.id" class="method-wrp">
-            <input
-                :id="'shipping-option-' + method.id"
-                v-model="currentMethod"
-                type="radio"
-                :value="method.id"
-                :disabled="processingCheckout"
-            />
+            <input :id="'shipping-option-' + method.id" v-model="currentMethod" type="radio" :value="method.id" :disabled="processingCheckout" />
             <label :for="'shipping-option-' + method.id" class="method-label">
                 <span class="name" v-text="method.translated.name" />
                 <span class="description" v-text="method.translated.description" />
@@ -21,12 +15,12 @@
 
     <div v-else-if="apiError" class="shipping-methods-api-error-wrp"> No shipping methods found </div>
 
-    <loader v-else class="shipping-methods-placeholder"/>
+    <loader v-else class="shipping-methods-placeholder" />
 </template>
 
 <script>
 import { mapState } from 'vuex';
-import ApiClient from "@/utils/api-client";
+import ApiClient from '@/utils/api-client';
 
 export default {
     name: 'ShippingMethods',
@@ -34,12 +28,12 @@ export default {
     props: {
         processingCheckout: {
             type: Boolean,
-            required: true
+            required: true,
         },
         sessionShippingMethod: {
             type: String,
-            required: true
-        }
+            required: true,
+        },
     },
 
     data() {
@@ -48,19 +42,19 @@ export default {
             apiError: false, // Error in case of api throws error
             shippingError: null, // Error that could happen on method selection
             shippingMethods: null,
-            currentMethod: null
+            currentMethod: null,
         };
     },
 
     computed: {
         ...mapState({
-            contextToken: (state) => state.modSession.contextToken
-        })
+            contextToken: (state) => state.modSession.contextToken,
+        }),
     },
 
     watch: {
-        currentMethod: async function(id) {
-            if(id === null) {
+        currentMethod: async function (id) {
+            if (id === null) {
                 this.shippingError = 'Please choose a shipping method.';
                 this.$emit('shipping-error', true);
                 return;
@@ -79,7 +73,7 @@ export default {
                 this.$emit('processing', false);
                 this.$emit('shipping-error', true);
             }
-        }
+        },
     },
 
     async mounted() {
@@ -91,34 +85,34 @@ export default {
 
             this.currentMethod = this.sessionShippingMethod;
             this.loading = false;
-        } catch(e) {
+        } catch (e) {
             this.apiError = true;
             this.loading = false;
         }
     },
 
     methods: {
-        fetchShippingMethods: async function() {
+        fetchShippingMethods: async function () {
             return await new ApiClient().apiCall({
                 action: 'post',
                 endpoint: 'store-api/v3/shipping-method',
                 contextToken: this.contextToken,
                 data: {
-                    onlyAvailable: true
-                }
+                    onlyAvailable: true,
+                },
             });
         },
-        setShippingMethod: async function(id) {
+        setShippingMethod: async function (id) {
             return await new ApiClient().apiCall({
                 action: 'patch',
                 endpoint: 'store-api/v3/context',
                 contextToken: this.contextToken,
                 data: {
-                    shippingMethodId: id
-                }
+                    shippingMethodId: id,
+                },
             });
-        }
-    }
+        },
+    },
 };
 </script>
 

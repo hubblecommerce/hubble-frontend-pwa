@@ -1,12 +1,12 @@
 <template>
     <div :class="elementClass">
-<!--        <template v-if="$mq === 'lg'">-->
-<!--            <product-listing-filter />-->
-<!--            <selected-facets />-->
-<!--        </template>-->
-<!--        <template v-else>-->
-<!--            <off-canvas-filter :button-class="'button w-100'" />-->
-<!--        </template>-->
+        <!--        <template v-if="$mq === 'lg'">-->
+        <!--            <product-listing-filter />-->
+        <!--            <selected-facets />-->
+        <!--        </template>-->
+        <!--        <template v-else>-->
+        <!--            <off-canvas-filter :button-class="'button w-100'" />-->
+        <!--        </template>-->
     </div>
 </template>
 

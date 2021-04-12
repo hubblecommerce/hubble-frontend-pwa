@@ -4,7 +4,7 @@ export const state = () => ({
     qty: 0,
     cookieName: 'cart',
     cookiePath: '/',
-    cookieLifetime: 1 // hours
+    cookieLifetime: 1, // hours
 });
 
 export const mutations = {
@@ -21,7 +21,7 @@ export const mutations = {
             items.push({
                 id: lineItem.id,
                 referencedId: lineItem.referencedId,
-                qty: lineItem.quantity
+                qty: lineItem.quantity,
             });
 
             qty = qty + parseInt(lineItem.quantity);
@@ -35,11 +35,11 @@ export const mutations = {
             state.cookieName,
             {
                 items: state.items,
-                qty: state.qty
+                qty: state.qty,
             },
             {
                 path: state.cookiePath,
-                expires: new Date(new Date().getTime() + state.cookieLifetime * 60 * 60 * 1000)
+                expires: new Date(new Date().getTime() + state.cookieLifetime * 60 * 60 * 1000),
             }
         );
     },
@@ -48,12 +48,12 @@ export const mutations = {
         state.qty = 0;
         this.$cookies.remove(state.cookieName);
     },
-    setByCookie: function(state) {
+    setByCookie: function (state) {
         let cart = this.$cookies.get(state.cookieName);
 
-        if(cart != null) {
+        if (cart != null) {
             state.items = cart.items;
             state.qty = cart.qty;
         }
-    }
+    },
 };

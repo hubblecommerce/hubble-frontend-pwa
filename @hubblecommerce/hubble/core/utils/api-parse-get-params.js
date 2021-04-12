@@ -1,42 +1,41 @@
 const reqKeyMapping = [
     {
         reqParam: 'limit',
-        postKey: 'limit'
+        postKey: 'limit',
     },
     {
         reqParam: 'sorting',
-        postKey: 'order'
+        postKey: 'order',
     },
     {
         reqParam: 'page',
-        postKey: 'p'
+        postKey: 'p',
     },
     {
         reqParam: 'manufacturer',
-        postKey: 'manufacturer'
+        postKey: 'manufacturer',
     },
     {
         reqParam: 'price_from',
-        postKey: 'min-price'
+        postKey: 'min-price',
     },
     {
         reqParam: 'price_to',
-        postKey: 'max-price'
+        postKey: 'max-price',
     },
     {
         reqParam: 'rating',
-        postKey: 'rating'
+        postKey: 'rating',
     },
     {
         reqParam: 'shipping-free',
-        postKey: 'shipping-free'
+        postKey: 'shipping-free',
     },
     {
         reqParam: 'properties',
-        postKey: 'properties'
-    }
+        postKey: 'properties',
+    },
 ];
-
 
 /**
  * @setReqParamFromRoute
@@ -48,17 +47,17 @@ const reqKeyMapping = [
  * returns {Object}
  */
 function setReqParamFromRoute(route, postData) {
-    reqKeyMapping.forEach(o => {
+    reqKeyMapping.forEach((o) => {
         if (route.query[o.reqParam] != null) {
             // Add comma separated options as array
             let arrOfValues = route.query[o.reqParam].split(',');
-            if(arrOfValues.length > 1) {
+            if (arrOfValues.length > 1) {
                 Object.assign(postData, {
-                    [o.postKey]: arrOfValues
+                    [o.postKey]: arrOfValues,
                 });
             } else {
                 Object.assign(postData, {
-                    [o.postKey]: arrOfValues[0]
+                    [o.postKey]: arrOfValues[0],
                 });
             }
         }
@@ -67,4 +66,4 @@ function setReqParamFromRoute(route, postData) {
     return postData;
 }
 
-export {setReqParamFromRoute};
+export { setReqParamFromRoute };

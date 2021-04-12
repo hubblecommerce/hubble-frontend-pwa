@@ -1,10 +1,10 @@
 <template>
     <div>
         <div v-if="getType === 'newsletter'">
-<!--            <newsletter-form :title="getTitle" />-->
+            <!--            <newsletter-form :title="getTitle" />-->
         </div>
         <div v-else>
-<!--            <contact-form :title="getTitle" />-->
+            <!--            <contact-form :title="getTitle" />-->
         </div>
     </div>
 </template>

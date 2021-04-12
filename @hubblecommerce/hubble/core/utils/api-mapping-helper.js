@@ -24,8 +24,8 @@ function mappingBreadcrumb(payload) {
     Object.keys(payload).forEach((key) => {
         arr.push({
             name: payload[key].name,
-            url: payload[key].path
-        })
+            url: payload[key].path,
+        });
     });
 
     return arr;
@@ -58,7 +58,7 @@ function mappingCategoryProducts(products) {
             obj.manufacturer_name = product.manufacturer.name;
         }
 
-        if(product.seoUrls !== null) {
+        if (product.seoUrls !== null) {
             product.seoUrls.forEach((seoUrl) => {
                 if (seoUrl.isCanonical) {
                     obj.url_pds = seoUrl.seoPathInfo;
@@ -138,14 +138,14 @@ function mappingProduct(payload) {
         minPurchase: product.minPurchase,
         maxPurchase: product.maxPurchase,
         purchaseSteps: product.purchaseSteps,
-        is_in_stock: false
+        is_in_stock: false,
     };
 
-    if(product.isCloseout && product.availableStock > 0) {
+    if (product.isCloseout && product.availableStock > 0) {
         obj.stock_item.is_in_stock = true;
     }
 
-    if(!product.isCloseout) {
+    if (!product.isCloseout) {
         obj.stock_item.is_in_stock = true;
     }
 
@@ -197,7 +197,7 @@ function mappingProduct(payload) {
     obj.options = product.options;
     obj.parentId = product.parentId;
 
-    if(payload.configurator != null) {
+    if (payload.configurator != null) {
         obj.groups = payload.configurator;
     }
 
@@ -213,7 +213,7 @@ function mappingCartProduct(product) {
         stock_item: {
             minPurchase: product.quantityInformation.minPurchase,
             maxPurchase: product.payload.isCloseout ? product.deliveryInformation.stock : product.quantityInformation.maxPurchase,
-            purchaseSteps: product.quantityInformation.purchaseSteps
+            purchaseSteps: product.quantityInformation.purchaseSteps,
         },
         final_price_item: {
             special_price: null,
@@ -226,7 +226,7 @@ function mappingCartProduct(product) {
                 label: option.group,
                 value_label: option.option,
             };
-        })
+        }),
     };
 }
 
@@ -244,7 +244,7 @@ function mappingMenu(menuItems) {
             obj.request_path = menuItem.route.path;
         }
 
-        if ( menuItem.children != null && menuItem.children.length > 0) {
+        if (menuItem.children != null && menuItem.children.length > 0) {
             obj.children = mappingMenu(menuItem.children);
         }
 
@@ -266,4 +266,4 @@ function mappingSearchSuggestProducts(products) {
     });
 }
 
-export {mappingCategory, mappingBreadcrumb, mappingCategoryProducts, mappingProduct, mappingCartProduct, mappingMenu, mappingSearchSuggestProducts};
+export { mappingCategory, mappingBreadcrumb, mappingCategoryProducts, mappingProduct, mappingCartProduct, mappingMenu, mappingSearchSuggestProducts };

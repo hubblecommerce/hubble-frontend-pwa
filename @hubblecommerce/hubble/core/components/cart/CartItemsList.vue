@@ -4,12 +4,7 @@
             <nuxt-link :to="'/' + item.url_pds" class="col-8">
                 <div class="row">
                     <div class="col-4">
-                        <img
-                            :src="item.image"
-                            class="product-img img-minicart"
-                            alt="Product Image"
-                            :title="item.name_orig"
-                        />
+                        <img :src="item.image" class="product-img img-minicart" alt="Product Image" :title="item.name_orig" />
                     </div>
 
                     <div class="col-8">
@@ -20,7 +15,7 @@
 
                             <div class="row">
                                 <ul class="selected-variants-wrp">
-                                    <li v-for="(variant, key) in item.variants" :key="key" class="selected-variants" >
+                                    <li v-for="(variant, key) in item.variants" :key="key" class="selected-variants">
                                         {{ variant.label }}: {{ variant.value_label }}
                                     </li>
                                 </ul>
@@ -38,12 +33,7 @@
             <div v-if="interactive" class="col-4 actions-wrp text-right">
                 <div aria-hidden="true" class="remove-item" @click="removeItem(item)" v-text="'Remove'" />
 
-                <qty-selector
-                    :type="true"
-                    :min-qty="item.qty"
-                    :max-qty="item.stock_item.maxPurchase"
-                    @changeQty="onChangeQty(item, $event)"
-                />
+                <qty-selector :type="true" :min-qty="item.qty" :max-qty="item.stock_item.maxPurchase" @changeQty="onChangeQty(item, $event)" />
             </div>
         </div>
     </div>
@@ -51,33 +41,32 @@
 
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex';
-import ApiClient from "@/utils/api-client";
+import ApiClient from '@/utils/api-client';
 
 export default {
     name: 'CartItemsList',
 
     data() {
-        return {
-        };
+        return {};
     },
 
     props: {
         items: {
             type: Array,
-            required: true
+            required: true,
         },
         interactive: {
             type: Boolean,
             required: false,
-            default: true
-        }
+            default: true,
+        },
     },
 
     computed: {
         ...mapState({
             offcanvas: (state) => state.modNavigation.offcanvas,
-            contextToken: (state) => state.modSession.contextToken
-        })
+            contextToken: (state) => state.modSession.contextToken,
+        }),
     },
 
     methods: {
@@ -95,17 +84,17 @@ export default {
                 endpoint: 'store-api/v3/checkout/cart/line-item',
                 contextToken: this.contextToken,
                 data: {
-                    ids: [item.id]
-                }
+                    ids: [item.id],
+                },
             });
 
             return this.$emit('items-list-changed', response);
         },
-        formatPrice: function(price) {
+        formatPrice: function (price) {
             const formatter = new Intl.NumberFormat('de-DE', {
                 style: 'currency',
                 currency: 'EUR',
-                minimumFractionDigits: 2
+                minimumFractionDigits: 2,
             });
 
             return formatter.format(price);
@@ -120,10 +109,10 @@ export default {
                         {
                             id: item.id,
                             quantity: qty,
-                            referencedId: item.referencedId
-                        }
-                    ]
-                }
+                            referencedId: item.referencedId,
+                        },
+                    ],
+                },
             });
 
             return this.$emit('items-list-changed', response);
@@ -131,7 +120,7 @@ export default {
         getStockQtyOfVariant: function (item) {
             // If product has no variants return 10
             return 10;
-        }
+        },
     },
 };
 </script>

@@ -57,7 +57,7 @@
 
 <script>
 import { mapMutations, mapState } from 'vuex';
-import apiClient from "@/utils/api-client";
+import apiClient from '@/utils/api-client';
 
 export default {
     name: 'Checkout',
@@ -74,7 +74,7 @@ export default {
             contextToken = store.state.modSession.contextToken;
         }
 
-        if(contextToken === null) {
+        if (contextToken === null) {
             return redirect('/customer/login');
         }
 
@@ -83,11 +83,11 @@ export default {
             let response = await new apiClient().apiCall({
                 action: 'get',
                 endpoint: 'store-api/v3/context',
-                contextToken: contextToken
+                contextToken: contextToken,
             });
 
-            if(response.data.customer != null) {
-                if(response.data.customer.active) {
+            if (response.data.customer != null) {
+                if (response.data.customer.active) {
                     return response.data;
                 }
             }
@@ -105,21 +105,21 @@ export default {
             shippingError: false,
             paymentError: false,
             cartKey: 0, // Raise on every config change to trigger recalculate cart
-            errors: []
+            errors: [],
         };
     },
 
     computed: {
         ...mapState({
-            contextToken: (state) => state.modSession.contextToken
-        })
+            contextToken: (state) => state.modSession.contextToken,
+        }),
     },
 
     methods: {
         ...mapMutations({
             resetCart: 'modCart/resetCart',
         }),
-        recalculateCart: function() {
+        recalculateCart: function () {
             this.cartKey += 1;
         },
         toggleCart: function () {
@@ -128,18 +128,18 @@ export default {
         historyBack: function () {
             this.$router.go(-1);
         },
-        placeOrderCall: async function() {
+        placeOrderCall: async function () {
             return await new apiClient().apiCall({
                 action: 'post',
                 endpoint: 'store-api/v3/checkout/order',
-                contextToken: this.contextToken
+                contextToken: this.contextToken,
             });
         },
-        handlePayment: async function(payload) {
+        handlePayment: async function (payload) {
             let requiredData = {
                 orderId: payload.orderId,
-                finishUrl: process.env.SW_PAYMENT_FINISH_URL+'?orderId='+payload.orderId,
-                errorUrl: process.env.SW_PAYMENT_ERROR_URL+'?orderId='+payload.orderId
+                finishUrl: process.env.SW_PAYMENT_FINISH_URL + '?orderId=' + payload.orderId,
+                errorUrl: process.env.SW_PAYMENT_ERROR_URL + '?orderId=' + payload.orderId,
             };
 
             const requestData = Object.assign(requiredData, payload.dataBag);
@@ -148,11 +148,11 @@ export default {
                 action: 'post',
                 endpoint: 'store-api/v3/handle-payment',
                 contextToken: this.contextToken,
-                data: requestData
+                data: requestData,
             });
         },
         placeOrder: async function () {
-            if(this.paymentError || this.shippingError) {
+            if (this.paymentError || this.shippingError) {
                 return;
             }
 
@@ -185,15 +185,17 @@ export default {
                     this.processingCheckout = false;
                     window.open(paymentResponse.data.redirectUrl, '_self');
                 } else {
-                    this.$router.push({
-                        name: 'checkout-success',
-                        params: {
-                            order: order
+                    this.$router.push(
+                        {
+                            name: 'checkout-success',
+                            params: {
+                                order: order,
+                            },
+                        },
+                        () => {
+                            this.processingCheckout = false;
                         }
-                    },
-                    () => {
-                        this.processingCheckout = false;
-                    });
+                    );
                 }
             } catch (err) {
                 console.log(err);
@@ -203,22 +205,22 @@ export default {
                         name: 'checkout-error',
                         query: {
                             orderId: order.data.id,
-                        }
+                        },
                     },
                     () => {
                         this.processingCheckout = false;
                     }
                 );
             }
-        }
+        },
     },
 
     head() {
         return {
             title: 'Checkout',
-            meta: [{ hid: 'robots', name: 'robots', content: 'NOINDEX, FOLLOW' }]
+            meta: [{ hid: 'robots', name: 'robots', content: 'NOINDEX, FOLLOW' }],
         };
-    }
+    },
 };
 </script>
 

@@ -11,15 +11,15 @@
 
 <script>
 export default {
-    name: "Cart",
+    name: 'Cart',
 
     head() {
         return {
             title: 'Cart',
-            meta: [{ hid: 'robots', name: 'robots', content: 'NOINDEX, FOLLOW' }]
+            meta: [{ hid: 'robots', name: 'robots', content: 'NOINDEX, FOLLOW' }],
         };
-    }
-}
+    },
+};
 </script>
 
 <style lang="scss" scoped>

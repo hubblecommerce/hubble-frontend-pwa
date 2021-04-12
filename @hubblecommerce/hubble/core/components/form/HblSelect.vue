@@ -6,8 +6,8 @@
 
 <script>
 export default {
-    name: "HblSelect"
-}
+    name: 'HblSelect',
+};
 </script>
 
 <style lang="scss">

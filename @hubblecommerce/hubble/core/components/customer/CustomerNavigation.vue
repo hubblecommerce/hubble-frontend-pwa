@@ -13,32 +13,32 @@
 </template>
 
 <script>
-import {mapMutations, mapState} from 'vuex';
-import apiClient from "@/utils/api-client";
+import { mapMutations, mapState } from 'vuex';
+import apiClient from '@/utils/api-client';
 
 export default {
     name: 'CustomerNavigation',
 
     computed: {
         ...mapState({
-            contextToken: (state) => state.modSession.contextToken
-        })
+            contextToken: (state) => state.modSession.contextToken,
+        }),
     },
 
     methods: {
         ...mapMutations({
             resetContextToken: 'modSession/resetContextToken',
-            resetCart: 'modCart/resetCart'
+            resetCart: 'modCart/resetCart',
         }),
-        logout: async function() {
+        logout: async function () {
             try {
                 let response = await new apiClient().apiCall({
                     action: 'post',
                     endpoint: 'store-api/v3/account/logout',
-                    contextToken: this.contextToken
+                    contextToken: this.contextToken,
                 });
 
-                if(response.data.contextToken != null) {
+                if (response.data.contextToken != null) {
                     this.resetContextToken();
                     this.resetCart();
                     this.$emit('logout-success');
@@ -50,8 +50,8 @@ export default {
             } catch (e) {
                 throw e;
             }
-        }
-    }
+        },
+    },
 };
 </script>
 

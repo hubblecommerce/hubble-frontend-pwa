@@ -3,13 +3,13 @@
         <button class="toggle m-0 align-left headline-4" :class="toggleClasses" @mousedown.prevent="collapseContent()">
             {{ toggleText }}
 
-<!--            <transition-rotate-x>-->
-                <i v-if="!collapse" :class="openIconClass" class="icon" />
-<!--            </transition-rotate-x>-->
+            <!--            <transition-rotate-x>-->
+            <i v-if="!collapse" :class="openIconClass" class="icon" />
+            <!--            </transition-rotate-x>-->
 
-<!--            <transition-rotate-x>-->
-                <i v-if="collapse" :class="closeIconClass" class="icon" />
-<!--            </transition-rotate-x>-->
+            <!--            <transition-rotate-x>-->
+            <i v-if="collapse" :class="closeIconClass" class="icon" />
+            <!--            </transition-rotate-x>-->
         </button>
 
         <template v-if="displayViaIf">
@@ -108,7 +108,7 @@ export default {
         hideContent: function () {
             this.collapse = false;
         },
-    }
+    },
 };
 </script>
 

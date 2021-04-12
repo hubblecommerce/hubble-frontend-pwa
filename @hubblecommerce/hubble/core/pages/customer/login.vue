@@ -32,7 +32,7 @@
 
             <div v-else>
                 <div class="customer-register-wrp">
-                    <hbl-button class="button-secondary" @click.native="toggleLoginForm()" >
+                    <hbl-button class="button-secondary" @click.native="toggleLoginForm()">
                         {{ 'Back' }}
                     </hbl-button>
 
@@ -50,8 +50,7 @@
 </template>
 
 <script>
-
-import {mapState} from "vuex";
+import { mapState } from 'vuex';
 
 export default {
     name: 'CustomerLogin',
@@ -60,7 +59,7 @@ export default {
         return {
             showLoginForm: true,
             showRegisterForm: false,
-            defaultTab: 0
+            defaultTab: 0,
         };
     },
 
@@ -81,16 +80,16 @@ export default {
         },
         goToCheckout: function () {
             this.$router.push({
-                name: 'checkout'
+                name: 'checkout',
             });
-        }
+        },
     },
 
     head() {
         return {
-            meta: [{ hid: 'robots', name: 'robots', content: 'NOINDEX, FOLLOW' }]
+            meta: [{ hid: 'robots', name: 'robots', content: 'NOINDEX, FOLLOW' }],
         };
-    }
+    },
 };
 </script>
 
@@ -112,5 +111,4 @@ export default {
         margin-bottom: 20px;
     }
 }
-
 </style>

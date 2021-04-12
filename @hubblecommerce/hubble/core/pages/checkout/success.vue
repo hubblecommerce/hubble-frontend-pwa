@@ -25,14 +25,14 @@ export default {
     name: 'Success',
 
     async asyncData({ route }) {
-        if(route.params.order != null) {
+        if (route.params.order != null) {
             return { order: route.params.order.data };
         }
     },
 
     data() {
         return {
-            loading: true
+            loading: true,
         };
     },
 
@@ -44,9 +44,9 @@ export default {
 
     head() {
         return {
-            meta: [{ hid: 'robots', name: 'robots', content: 'NOINDEX, FOLLOW' }]
+            meta: [{ hid: 'robots', name: 'robots', content: 'NOINDEX, FOLLOW' }],
         };
-    }
+    },
 };
 </script>
 

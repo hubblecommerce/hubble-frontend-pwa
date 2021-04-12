@@ -1,17 +1,12 @@
 <template>
-    <div class="media-gallery-wrp" @click="media.length > 1 ? lazyLoadImage(): false">
+    <div class="media-gallery-wrp" @click="media.length > 1 ? lazyLoadImage() : false">
         <transition name="fade">
             <div v-if="loading" class="loader" />
         </transition>
-        <hooper :class="{loading: loading}" :settings="hooperSettings" @updated="onHooperUpdated()">
+        <hooper :class="{ loading: loading }" :settings="hooperSettings" @updated="onHooperUpdated()">
             <slide v-for="(medium, index) in media" :key="index" :index="index">
                 <template v-if="index === 0">
-                    <img
-                        data-not-lazy
-                        :class="'slide-img'"
-                        :src="getMediaUrl(medium, 800)"
-                        :alt="`${alt} - Image Gallery Item ${index}`"
-                    />
+                    <img data-not-lazy :class="'slide-img'" :src="getMediaUrl(medium, 800)" :alt="`${alt} - Image Gallery Item ${index}`" />
                 </template>
                 <img
                     v-else
@@ -32,24 +27,24 @@ import { Hooper, Slide, Navigation as HooperNavigation } from 'hooper';
 import 'hooper/dist/hooper.css';
 
 export default {
-    name: "ProductDetailGallery",
+    name: 'ProductDetailGallery',
 
     components: {
         Hooper,
         Slide,
-        HooperNavigation
+        HooperNavigation,
     },
 
     props: {
         media: {
             type: Array,
-            required: true
+            required: true,
         },
         alt: {
             type: String,
             required: false,
-            default: 'Image'
-        }
+            default: 'Image',
+        },
     },
 
     data() {
@@ -58,36 +53,36 @@ export default {
             hooperSettings: {
                 itemsToShow: 1,
                 wheelControl: false,
-                transition: 200
-            }
-        }
+                transition: 200,
+            },
+        };
     },
 
     methods: {
-        getMediaUrl: function(medium, width) {
+        getMediaUrl: function (medium, width) {
             let url = medium.media.url;
 
-            if(width != null) {
+            if (width != null) {
                 medium.media.thumbnails.forEach((thumbnail) => {
-                    if(thumbnail.width === width) {
+                    if (thumbnail.width === width) {
                         url = thumbnail.url;
                     }
-                })
+                });
             }
 
             return url;
         },
-        lazyLoadImage(){
+        lazyLoadImage() {
             let media = this.$refs['data-manual-lazy'];
-            [...media].forEach(m => this.$lazyLoad(m))
+            [...media].forEach((m) => this.$lazyLoad(m));
         },
-        onHooperUpdated: function() {
+        onHooperUpdated: function () {
             setTimeout(() => {
                 this.loading = false;
             }, 300);
-        }
-    }
-}
+        },
+    },
+};
 </script>
 
 <style lang="scss">
@@ -107,7 +102,7 @@ $gallery-height: 270px;
         overflow: hidden;
         visibility: visible;
         opacity: 1;
-        transition: opacity ease-in-out .2s;
+        transition: opacity ease-in-out 0.2s;
 
         &.loading {
             visibility: hidden;
@@ -130,7 +125,7 @@ $gallery-height: 270px;
     }
 }
 
-@media(min-width: 768px) {
+@media (min-width: 768px) {
     $gallery-width: 738px;
     $gallery-height: 554px;
 
@@ -145,7 +140,7 @@ $gallery-height: 270px;
     }
 }
 
-@media(min-width: 1024px) {
+@media (min-width: 1024px) {
     $gallery-width: 497px;
     $gallery-height: 373px;
 

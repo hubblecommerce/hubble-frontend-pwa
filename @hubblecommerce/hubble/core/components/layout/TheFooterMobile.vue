@@ -12,9 +12,7 @@
                         <a href="https://www.hubblecommerce.io/">{{ 'About us' }}</a>
                         <a href="https://www.hubblecommerce.io/performance">{{ 'Performance' }}</a>
                         <a href="https://www.hubblecommerce.io/progressive-web-app">{{ 'PWA' }}</a>
-                        <a href="https://www.hubblecommerce.io/developer-experience">{{
-                            'Developer Experience'
-                        }}</a>
+                        <a href="https://www.hubblecommerce.io/developer-experience">{{ 'Developer Experience' }}</a>
                     </div>
                 </div>
             </collapsible>
@@ -128,6 +126,6 @@
 
 <script>
 export default {
-    name: 'TheFooterMobile'
+    name: 'TheFooterMobile',
 };
 </script>

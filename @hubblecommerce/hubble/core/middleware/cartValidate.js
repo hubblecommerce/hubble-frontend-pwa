@@ -4,7 +4,7 @@ export default function ({ store, redirect, app }) {
     // Get cookie serverside/clientside to check if order object exists
     if (process.server) {
         const cookie = app.$cookies.get(store.state.modCart.cookieName);
-        if(cookie != null) {
+        if (cookie != null) {
             cart = cookie.items;
         }
     } else {

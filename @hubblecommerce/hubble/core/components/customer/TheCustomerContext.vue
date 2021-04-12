@@ -3,7 +3,7 @@
         <div class="container expand-content">
             <div class="row overlay-header">
                 <hbl-button class="button-icon" @click.native="hideOffcanvasAction">
-                    <div class="hidden-link-name" v-text="'Close'"/>
+                    <div class="hidden-link-name" v-text="'Close'" />
                     <svg-icon icon="x" />
                 </hbl-button>
                 <div class="overlay-headline" v-text="'Customer Account'" />
@@ -43,31 +43,31 @@
 </template>
 
 <script>
-import {mapActions, mapMutations, mapState} from "vuex";
-import apiClient from "@/utils/api-client";
+import { mapActions, mapMutations, mapState } from 'vuex';
+import apiClient from '@/utils/api-client';
 
 export default {
-    name: "TheCustomerContext",
+    name: 'TheCustomerContext',
 
     data() {
         return {
             isLoading: true,
             isLoggedIn: false,
-            isGuest: false
-        }
+            isGuest: false,
+        };
     },
 
     computed: {
         ...mapState({
-            contextToken: (state) => state.modSession.contextToken
-        })
+            contextToken: (state) => state.modSession.contextToken,
+        }),
     },
 
     async mounted() {
         try {
             let response = await this.fetchContext();
 
-            if(response.data.customer != null) {
+            if (response.data.customer != null) {
                 this.isLoggedIn = response.data.customer.active;
                 this.isGuest = response.data.customer.guest;
             }
@@ -85,29 +85,29 @@ export default {
         }),
         ...mapMutations({
             resetContextToken: 'modSession/resetContextToken',
-            resetCart: 'modCart/resetCart'
+            resetCart: 'modCart/resetCart',
         }),
-        fetchContext: async function() {
+        fetchContext: async function () {
             return await new apiClient().apiCall({
                 action: 'get',
                 endpoint: 'store-api/v3/context',
-                contextToken: this.contextToken
+                contextToken: this.contextToken,
             });
         },
-        goToRegister: function() {
+        goToRegister: function () {
             this.$router.push({
                 name: 'customer-login',
-                query: { tab: 1 }
+                query: { tab: 1 },
             });
         },
-        logOutGuest: function() {
+        logOutGuest: function () {
             this.resetContextToken();
             this.resetCart();
             this.isLoggedIn = false;
             this.isGuest = false;
-        }
-    }
-}
+        },
+    },
+};
 </script>
 
 <style lang="scss" scoped>

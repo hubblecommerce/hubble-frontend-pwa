@@ -1,11 +1,6 @@
 <template>
     <div class="pagination">
-        <hbl-button
-            class="button-icon"
-            :class="{ disabled: paginationPrevDisabled }"
-            :disabled="paginationPrevDisabled"
-            @click.native="loadPrevPage"
-        >
+        <hbl-button class="button-icon" :class="{ disabled: paginationPrevDisabled }" :disabled="paginationPrevDisabled" @click.native="loadPrevPage">
             <svg-icon icon="chevron-left" />
             <span class="hidden-link-name" v-text="'Previous Page'" />
         </hbl-button>
@@ -13,19 +8,9 @@
             <span v-text="'Page'" />
             <span class="page-number" v-text="curPage" />
             <span v-text="'from'" />
-            <span
-                class="page-number last-page"
-                :class="{ disabled: paginationNextDisabled }"
-                @click="loadLastPage"
-                v-text="lastPage"
-            />
+            <span class="page-number last-page" :class="{ disabled: paginationNextDisabled }" @click="loadLastPage" v-text="lastPage" />
         </div>
-        <hbl-button
-            class="button-icon"
-            :class="{ disabled: paginationNextDisabled }"
-            :disabled="paginationNextDisabled"
-            @click.native="loadNextPage"
-        >
+        <hbl-button class="button-icon" :class="{ disabled: paginationNextDisabled }" :disabled="paginationNextDisabled" @click.native="loadNextPage">
             <svg-icon icon="chevron-right" />
             <span class="hidden-link-name" v-text="'Next Page'" />
         </hbl-button>
@@ -41,12 +26,12 @@ export default {
     props: {
         paginationItemsTotal: {
             type: Number,
-            required: true
+            required: true,
         },
         paginationPerPage: {
             type: Number,
-            required: true
-        }
+            required: true,
+        },
     },
 
     data() {
@@ -90,12 +75,12 @@ export default {
         },
         nextPage: function () {
             return this.curPage + 1;
-        }
+        },
     },
 
     methods: {
-        round: function(value, decimals) {
-            return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
+        round: function (value, decimals) {
+            return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
         },
         loadPrevPage: function () {
             if (this.paginationPrevDisabled) {
@@ -151,8 +136,8 @@ export default {
 
                 resolve();
             });
-        }
-    }
+        },
+    },
 };
 </script>
 

@@ -2,45 +2,45 @@
     <div :class="elementClass">
         <div :class="getGalleryPositionClass" class="is-cover" :style="getVerticalAlignStyle" style="min-height: 270px">
             <div class="image-gallery__grid">
-<!--                <slider-->
-<!--                    ref="tinySlider"-->
-<!--                    :controls="true"-->
-<!--                    :gutter="15"-->
-<!--                    :controls-text="controls"-->
-<!--                    :edge-padding="10"-->
-<!--                    :nav="false"-->
-<!--                    :loop="true"-->
-<!--                    :mouse-drag="true"-->
-<!--                    :lazyload="true"-->
-<!--                    :items="1"-->
-<!--                    :auto-height="false"-->
-<!--                >-->
-<!--                    <template v-for="item in images" class="image-gallery__grid__container">-->
-<!--                        <img-lazy :key="item.mediaId" :src="item.mediaUrl" />-->
-<!--                    </template>-->
-<!--                </slider>-->
+                <!--                <slider-->
+                <!--                    ref="tinySlider"-->
+                <!--                    :controls="true"-->
+                <!--                    :gutter="15"-->
+                <!--                    :controls-text="controls"-->
+                <!--                    :edge-padding="10"-->
+                <!--                    :nav="false"-->
+                <!--                    :loop="true"-->
+                <!--                    :mouse-drag="true"-->
+                <!--                    :lazyload="true"-->
+                <!--                    :items="1"-->
+                <!--                    :auto-height="false"-->
+                <!--                >-->
+                <!--                    <template v-for="item in images" class="image-gallery__grid__container">-->
+                <!--                        <img-lazy :key="item.mediaId" :src="item.mediaUrl" />-->
+                <!--                    </template>-->
+                <!--                </slider>-->
             </div>
 
             <div v-if="$mq !== 'sm'" class="image-gallery__preview">
-<!--                <slider-->
-<!--                    ref="tinySliderPreview"-->
-<!--                    :controls="true"-->
-<!--                    :gutter="0"-->
-<!--                    :loop="false"-->
-<!--                    :mouse-drag="true"-->
-<!--                    :controls-text="getGalleryPosition === 'underneath' ? controls : controlsLeft"-->
-<!--                    :edge-padding="2"-->
-<!--                    :nav="false"-->
-<!--                    :lazyload="true"-->
-<!--                    :responsive="getGalleryPosition === 'underneath' ? responsiveUnderneath : responsiveLeft"-->
-<!--                    :axis="getGalleryPosition === 'underneath' ? 'horizontal' : 'vertical'"-->
-<!--                >-->
-<!--                    <div v-for="(item, index) in images" :key="item.mediaId" class="image-gallery__grid__container">-->
-<!--                        <button @click.prevent="changeActiveImageToSelected(index)">-->
-<!--                            <img-lazy :src="item.mediaUrl" :class="activeImageIndex === index && 'imageWithBorder'" />-->
-<!--                        </button>-->
-<!--                    </div>-->
-<!--                </slider>-->
+                <!--                <slider-->
+                <!--                    ref="tinySliderPreview"-->
+                <!--                    :controls="true"-->
+                <!--                    :gutter="0"-->
+                <!--                    :loop="false"-->
+                <!--                    :mouse-drag="true"-->
+                <!--                    :controls-text="getGalleryPosition === 'underneath' ? controls : controlsLeft"-->
+                <!--                    :edge-padding="2"-->
+                <!--                    :nav="false"-->
+                <!--                    :lazyload="true"-->
+                <!--                    :responsive="getGalleryPosition === 'underneath' ? responsiveUnderneath : responsiveLeft"-->
+                <!--                    :axis="getGalleryPosition === 'underneath' ? 'horizontal' : 'vertical'"-->
+                <!--                >-->
+                <!--                    <div v-for="(item, index) in images" :key="item.mediaId" class="image-gallery__grid__container">-->
+                <!--                        <button @click.prevent="changeActiveImageToSelected(index)">-->
+                <!--                            <img-lazy :src="item.mediaUrl" :class="activeImageIndex === index && 'imageWithBorder'" />-->
+                <!--                        </button>-->
+                <!--                    </div>-->
+                <!--                </slider>-->
             </div>
         </div>
     </div>
@@ -159,9 +159,7 @@ export default {
                 this.activeImageIndex = info.index - 2;
 
                 if (this.$refs.tinySliderPreview) {
-                    this.$refs.tinySliderPreview.slider.goTo(
-                        this.activeImageIndex === undefined ? 0 : this.activeImageIndex
-                    );
+                    this.$refs.tinySliderPreview.slider.goTo(this.activeImageIndex === undefined ? 0 : this.activeImageIndex);
                 }
             });
 

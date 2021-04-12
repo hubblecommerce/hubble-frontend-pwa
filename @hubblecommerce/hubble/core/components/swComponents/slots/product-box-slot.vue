@@ -1,7 +1,7 @@
 <template>
     <div :class="elementClass">
         <div class="cms-element-alignment" :class="verticalAlign">
-<!--            <product-listing-card v-if="loaded" :item-orig="itemOrig" />-->
+            <!--            <product-listing-card v-if="loaded" :item-orig="itemOrig" />-->
         </div>
     </div>
 </template>

@@ -44,5 +44,5 @@ export const sectionMixins = {
         blockClass() {
             return 'cms-block-' + this.content.type;
         },
-    }
+    },
 };

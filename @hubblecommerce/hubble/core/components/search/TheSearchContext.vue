@@ -3,7 +3,7 @@
         <div class="container expand-content">
             <div class="row overlay-header">
                 <hbl-button class="button-icon" @click.native="hideOffcanvasAction">
-                    <div class="hidden-link-name" v-text="'Close'"/>
+                    <div class="hidden-link-name" v-text="'Close'" />
                     <svg-icon icon="x" />
                 </hbl-button>
                 <div class="overlay-headline" v-text="'Search'" />
@@ -40,9 +40,9 @@
 import Vue from 'vue';
 import { mapActions } from 'vuex';
 import vClickOutside from 'v-click-outside';
-import apiClient from "@/utils/api-client";
-import {includesSearchSuggest, associations} from "@/utils/api-post-body";
-import {mappingSearchSuggestProducts} from "@/utils/api-mapping-helper";
+import apiClient from '@/utils/api-client';
+import { includesSearchSuggest, associations } from '@/utils/api-post-body';
+import { mappingSearchSuggestProducts } from '@/utils/api-mapping-helper';
 
 export default {
     name: 'TheSearchContext',
@@ -57,7 +57,7 @@ export default {
             typeDelay: 750,
             focus: false,
             loading: false,
-            result: null
+            result: null,
         };
     },
 
@@ -66,12 +66,12 @@ export default {
     },
 
     watch: {
-        'term': function () {
+        term: function () {
             this.isTyping = true;
             this.isSearching = false;
 
             this.searchSuggest();
-        }
+        },
     },
 
     created() {
@@ -80,9 +80,9 @@ export default {
 
     methods: {
         ...mapActions({
-            hideOffcanvasAction: 'modNavigation/hideOffcanvasAction'
+            hideOffcanvasAction: 'modNavigation/hideOffcanvasAction',
         }),
-        searchSuggest: async function() {
+        searchSuggest: async function () {
             try {
                 clearTimeout(this.timeout);
 
@@ -113,14 +113,14 @@ export default {
                 //});
             }
         },
-        fetchSearchSuggest: async function() {
+        fetchSearchSuggest: async function () {
             return new apiClient().apiCall({
                 action: 'post',
                 endpoint: 'store-api/v3/search-suggest',
                 data: {
                     search: this.term,
-                    includes: includesSearchSuggest
-                }
+                    includes: includesSearchSuggest,
+                },
             });
         },
         onFocus: function () {
@@ -150,7 +150,7 @@ export default {
                 path: 'search',
                 query: {
                     term: this.term,
-                }
+                },
             };
 
             // Do not start loader if term is already in use on press enter
@@ -169,8 +169,8 @@ export default {
                     this.loading = false;
                 });
             }
-        }
-    }
+        },
+    },
 };
 </script>
 

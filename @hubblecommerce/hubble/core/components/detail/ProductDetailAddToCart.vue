@@ -1,11 +1,5 @@
 <template>
-    <hbl-button
-        :disabled="isLoading"
-        type="button"
-        :title="'Add to cart'"
-        class="add-to-cart button-primary"
-        @click.native="addToCart"
-    >
+    <hbl-button :disabled="isLoading" type="button" :title="'Add to cart'" class="add-to-cart button-primary" @click.native="addToCart">
         <span v-if="!isLoading" class="cart-button-label" v-text="'Add to cart'" />
         <loader v-if="isLoading" />
     </hbl-button>
@@ -13,7 +7,7 @@
 
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex';
-import apiClient from "@/utils/api-client";
+import apiClient from '@/utils/api-client';
 
 export default {
     name: 'ProductDetailAddToCart',
@@ -21,12 +15,12 @@ export default {
     props: {
         dataProduct: {
             type: Object,
-            required: true
+            required: true,
         },
         qty: {
             type: Number,
-            required: true
-        }
+            required: true,
+        },
     },
 
     computed: {
@@ -34,27 +28,27 @@ export default {
             isLoading: (state) => state.modCart.isLoading,
             contextToken: (state) => state.modSession.contextToken,
             cartItems: (state) => state.modCart.items,
-            cartQty: (state) => state.modCart.qty
-        })
+            cartQty: (state) => state.modCart.qty,
+        }),
     },
 
     methods: {
         ...mapMutations({
             setIsLoading: 'modCart/setState',
             setContextToken: 'modSession/setContextToken',
-            setCart: 'modCart/setCart'
+            setCart: 'modCart/setCart',
         }),
         ...mapActions({
             //flashMessage: 'modFlash/flashMessage',
             addItem: 'modCart/addItem',
-            toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction'
+            toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction',
         }),
-        addToCart: async function() {
-            this.setIsLoading({name: 'isLoading', state: true});
+        addToCart: async function () {
+            this.setIsLoading({ name: 'isLoading', state: true });
 
             // Return if qty is not in stock
-            if(!this.dataProduct.stock_item.is_in_stock) {
-                this.setIsLoading({name: 'isLoading', state: false});
+            if (!this.dataProduct.stock_item.is_in_stock) {
+                this.setIsLoading({ name: 'isLoading', state: false });
 
                 // Display Error Message (eg. Qty of item is at maxQty)
                 //this.flashMessage({
@@ -74,9 +68,9 @@ export default {
 
                 this.toggleOffcanvasAction({
                     component: 'TheCartContext',
-                    direction: 'bottomTop'
+                    direction: 'bottomTop',
                 }).then(() => {
-                    this.setIsLoading({name: 'isLoading', state: false});
+                    this.setIsLoading({ name: 'isLoading', state: false });
 
                     // Display Success Message
                     //this.flashMessage({
@@ -84,8 +78,8 @@ export default {
                     //    flashMessage: 'Successfully added item to cart.'
                     //});
                 });
-            } catch(e) {
-                this.setIsLoading({name: 'isLoading', state: false});
+            } catch (e) {
+                this.setIsLoading({ name: 'isLoading', state: false });
 
                 // Display Error Message (eg. Qty of item is at maxQty)
                 //this.flashMessage({
@@ -99,11 +93,11 @@ export default {
                 throw e;
             }
         },
-        initCart: async function() {
+        initCart: async function () {
             try {
                 let response = await new apiClient().apiCall({
                     action: 'post',
-                    endpoint: 'store-api/v3/checkout/cart'
+                    endpoint: 'store-api/v3/checkout/cart',
                 });
 
                 this.setContextToken(response.data['token']);
@@ -111,18 +105,18 @@ export default {
                 throw e;
             }
         },
-        addItem: async function(item, qty) {
+        addItem: async function (item, qty) {
             try {
                 // Check if item already in cart
                 let inCart = false;
                 this.cartItems.forEach((cartItem) => {
-                    if(cartItem.referencedId === item.id) {
+                    if (cartItem.referencedId === item.id) {
                         inCart = cartItem;
                     }
                 });
 
                 // Not in cart yet: add item to cart
-                if(!inCart) {
+                if (!inCart) {
                     let response = await new apiClient().apiCall({
                         action: 'post',
                         endpoint: 'store-api/v3/checkout/cart/line-item',
@@ -132,17 +126,17 @@ export default {
                                 {
                                     type: 'product',
                                     referencedId: item.id,
-                                    quantity: qty
-                                }
-                            ]
-                        }
+                                    quantity: qty,
+                                },
+                            ],
+                        },
                     });
 
                     this.setCart(response);
                 }
 
                 // Already in cart: raise item qty
-                if(inCart) {
+                if (inCart) {
                     let updatedQty = inCart.qty + qty;
 
                     let response = await new apiClient().apiCall({
@@ -153,10 +147,10 @@ export default {
                             items: [
                                 {
                                     id: inCart.id,
-                                    quantity: updatedQty
-                                }
-                            ]
-                        }
+                                    quantity: updatedQty,
+                                },
+                            ],
+                        },
                     });
 
                     this.setCart(response);
@@ -164,8 +158,8 @@ export default {
             } catch (e) {
                 throw e;
             }
-        }
-    }
+        },
+    },
 };
 </script>
 

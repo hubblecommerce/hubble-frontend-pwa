@@ -6,8 +6,8 @@
 
 <script>
 export default {
-    name: "hbl-input"
-}
+    name: 'hbl-input',
+};
 </script>
 
 <style lang="scss" scoped>

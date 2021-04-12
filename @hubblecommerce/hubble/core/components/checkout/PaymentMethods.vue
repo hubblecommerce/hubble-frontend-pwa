@@ -6,7 +6,13 @@
             <!-- Dynamic payment methods from api -->
             <div v-for="method in paymentMethods" v-if="method.active" :key="method.id" class="method-wrp">
                 <hbl-checkbox>
-                    <input :id="'payment-option-' + method.id" v-model="currentMethod" type="radio" :value="method.id" :disabled="processingCheckout" />
+                    <input
+                        :id="'payment-option-' + method.id"
+                        v-model="currentMethod"
+                        type="radio"
+                        :value="method.id"
+                        :disabled="processingCheckout"
+                    />
                     <label :for="'payment-option-' + method.id" class="method-label">
                         <span class="name" v-text="method.name" />
                         <span class="description" v-text="method.description" />
@@ -15,13 +21,13 @@
                         <div v-if="Object.keys(stripePaymentMethods.card).length > 0">
                             <span>{{ stripePaymentMethods.card.name }} | ****{{ stripePaymentMethods.card.last4 }}</span>
                         </div>
-                        <span @click="editPaymentSettings(method.id)">{{'Edit'}}</span>
+                        <span @click="editPaymentSettings(method.id)">{{ 'Edit' }}</span>
                     </template>
                     <template v-if="method.shortName === 'stripe.shopware_payment.payment_handler.sepa'">
                         <div v-if="Object.keys(stripePaymentMethods.sepaBankAccount).length > 0">
                             <span>{{ stripePaymentMethods.sepaBankAccount.name }} | ****{{ stripePaymentMethods.sepaBankAccount.last4 }}</span>
                         </div>
-                        <span @click="editPaymentSettings(method.id)">{{'Edit'}}</span>
+                        <span @click="editPaymentSettings(method.id)">{{ 'Edit' }}</span>
                     </template>
                 </hbl-checkbox>
             </div>
@@ -89,9 +95,9 @@
                         <div class="sepa-info">
                             Ich ermächtige / Wir ermächtigen (A) Demostore sowie Stripe, den durchführenden Zahlungsdienstleister, Zahlungen von
                             meinem / unserem Konto mittels Lastschrift einzuziehen. Zugleich (B) weise ich mein / weisen wir unser Kreditinstitut an,
-                            die von Demostore bzw. Stripe auf mein / unser Konto gezogenen Lastschriften einzulösen. Hinweis: Ich kann / Wir können innerhalb
-                            von acht Wochen, beginnend mit dem Belastungsdatum, die Erstattung des belasteten Betrages verlangen. Es gelten dabei die mit
-                            meinem / unserem Kreditinstitut vereinbarten Bedingungen.
+                            die von Demostore bzw. Stripe auf mein / unser Konto gezogenen Lastschriften einzulösen. Hinweis: Ich kann / Wir können
+                            innerhalb von acht Wochen, beginnend mit dem Belastungsdatum, die Erstattung des belasteten Betrages verlangen. Es gelten
+                            dabei die mit meinem / unserem Kreditinstitut vereinbarten Bedingungen.
                         </div>
                         <button @click.prevent="savePaymentSettings('sepa_debit')">Create & Save SEPA Payment Method (Stripe)</button>
                     </form>
@@ -106,7 +112,7 @@
 <script>
 import { mapState } from 'vuex';
 import { loadStripe } from '@stripe/stripe-js';
-import ApiClient from "@/utils/api-client";
+import ApiClient from '@/utils/api-client';
 
 export default {
     name: 'PaymentMethods',
@@ -114,12 +120,12 @@ export default {
     props: {
         processingCheckout: {
             type: Boolean,
-            required: true
+            required: true,
         },
         sessionPaymentMethod: {
             type: String,
-            required: true
-        }
+            required: true,
+        },
     },
 
     data() {
@@ -134,25 +140,28 @@ export default {
             stripe: null, // Stripe.js
             card: null, // Stripe.js elements: card
             sepa: null, // Stripe.js elements: iban
-            stripePaymentMethods: { // Stripe result of createPayment function
+            stripePaymentMethods: {
+                // Stripe result of createPayment function
                 card: {},
-                sepaBankAccount: {}
+                sepaBankAccount: {},
             },
-            billingDetailsCard: { // Stripe required customer info
-                name: ''
-            },
-            billingDetailsSepa: { // Stripe required customer info
+            billingDetailsCard: {
+                // Stripe required customer info
                 name: '',
-                email: ''
             },
-            showModal: false
+            billingDetailsSepa: {
+                // Stripe required customer info
+                name: '',
+                email: '',
+            },
+            showModal: false,
         };
     },
 
     computed: {
         ...mapState({
-            contextToken: (state) => state.modSession.contextToken
-        })
+            contextToken: (state) => state.modSession.contextToken,
+        }),
     },
 
     async mounted() {
@@ -166,21 +175,21 @@ export default {
             const cardOptions = {
                 style: {
                     base: {
-                        color: "#32325d",
-                    }
-                }
+                        color: '#32325d',
+                    },
+                },
             };
-            this.card = this.initStripeElement("card", this.$refs.card, this.$refs.cardErrors, cardOptions);
+            this.card = this.initStripeElement('card', this.$refs.card, this.$refs.cardErrors, cardOptions);
 
             // Init Stripe Elements: Iban
             const sepaOptions = {
                 style: {},
-                supportedCountries: ["SEPA"],
-                placeholderCountry: "DE"
+                supportedCountries: ['SEPA'],
+                placeholderCountry: 'DE',
             };
-            this.sepa = this.initStripeElement("iban", this.$refs.sepa, this.$refs.sepaErrors, sepaOptions);
+            this.sepa = this.initStripeElement('iban', this.$refs.sepa, this.$refs.sepaErrors, sepaOptions);
         } catch (e) {
-            console.log("Failed to init Stripe.js");
+            console.log('Failed to init Stripe.js');
         }
 
         try {
@@ -190,15 +199,15 @@ export default {
             this.currentMethod = this.sessionPaymentMethod;
             this.currentMethodObj = await this.getMethodById(this.sessionPaymentMethod);
             this.loading = false;
-        } catch(e) {
+        } catch (e) {
             this.apiError = true;
             this.loading = false;
         }
     },
 
     watch: {
-        currentMethod: async function(id) {
-            if(id === null) {
+        currentMethod: async function (id) {
+            if (id === null) {
                 this.paymentError = 'Please choose a payment method.';
                 this.$emit('payment-error', true);
                 return;
@@ -213,8 +222,10 @@ export default {
                 this.currentMethodObj = await this.getMethodById(id);
 
                 // Show payment method setting modal for CC and SEPA
-                if(this.currentMethodObj.shortName === 'stripe.shopware_payment.payment_handler.card' ||
-                    this.currentMethodObj.shortName === 'stripe.shopware_payment.payment_handler.sepa') {
+                if (
+                    this.currentMethodObj.shortName === 'stripe.shopware_payment.payment_handler.card' ||
+                    this.currentMethodObj.shortName === 'stripe.shopware_payment.payment_handler.sepa'
+                ) {
                     this.showModal = true;
                 }
 
@@ -226,28 +237,28 @@ export default {
                 this.$emit('processing', false);
                 this.$emit('payment-error', true);
             }
-        }
+        },
     },
 
     methods: {
-        fetchPaymentMethods: async function() {
+        fetchPaymentMethods: async function () {
             return await new ApiClient().apiCall({
                 action: 'post',
                 endpoint: 'store-api/v3/payment-method',
                 contextToken: this.contextToken,
                 data: {
-                    onlyAvailable: true
-                }
+                    onlyAvailable: true,
+                },
             });
         },
-        setPaymentMethod: async function(id) {
+        setPaymentMethod: async function (id) {
             return await new ApiClient().apiCall({
                 action: 'patch',
                 endpoint: 'store-api/v3/context',
                 contextToken: this.contextToken,
                 data: {
-                    paymentMethodId: id
-                }
+                    paymentMethodId: id,
+                },
             });
         },
         getMethodById: async function (id) {
@@ -259,12 +270,12 @@ export default {
             });
             return obj;
         },
-        initStripeElement: function(elementName, targetElement, errorTargetElement, options) {
+        initStripeElement: function (elementName, targetElement, errorTargetElement, options) {
             let elements = this.stripe.elements();
             let element = elements.create(elementName, options);
             element.mount(targetElement);
 
-            element.on('change', ({error}) => {
+            element.on('change', ({ error }) => {
                 let displayError = errorTargetElement;
                 if (error) {
                     displayError.textContent = error.message;
@@ -278,41 +289,41 @@ export default {
         savePaymentSettings: async function (type) {
             let paymentMethodData = {};
 
-            if(type === 'card') {
-                if(!this.card._complete || this.card._empty || this.card._invalid) {
+            if (type === 'card') {
+                if (!this.card._complete || this.card._empty || this.card._invalid) {
                     return;
                 }
 
                 paymentMethodData = {
-                    type:"card",
+                    type: 'card',
                     card: this.card,
-                    billing_details: this.billingDetailsCard
+                    billing_details: this.billingDetailsCard,
                 };
             }
 
-            if(type === 'sepa_debit' && !this.sepa._invalid) {
-                if(!this.sepa._complete || this.sepa._empty || this.sepa._invalid) {
+            if (type === 'sepa_debit' && !this.sepa._invalid) {
+                if (!this.sepa._complete || this.sepa._empty || this.sepa._invalid) {
                     return;
                 }
 
                 paymentMethodData = {
-                    type:"sepa_debit",
+                    type: 'sepa_debit',
                     sepa_debit: this.sepa,
-                    billing_details: this.billingDetailsSepa
+                    billing_details: this.billingDetailsSepa,
                 };
             }
 
-            if(Object.keys(paymentMethodData).length >= 0) {
+            if (Object.keys(paymentMethodData).length >= 0) {
                 try {
                     let result = await this.stripe.createPaymentMethod(paymentMethodData);
                     let payload = null;
 
-                    if(result.paymentMethod.card != null) {
+                    if (result.paymentMethod.card != null) {
                         this.stripePaymentMethods.card = result.paymentMethod.card;
 
                         payload = {
                             card: result.paymentMethod.card,
-                            saveCardForFutureCheckouts: null
+                            saveCardForFutureCheckouts: null,
                         };
                         Object.assign(payload.card, { id: result.paymentMethod.id });
                         Object.assign(payload.card, { name: result.paymentMethod.billing_details.name });
@@ -321,12 +332,12 @@ export default {
                         this.closeModal(this.card);
                     }
 
-                    if(result.paymentMethod.sepa_debit != null) {
+                    if (result.paymentMethod.sepa_debit != null) {
                         this.stripePaymentMethods.sepaBankAccount = result.paymentMethod.sepa_debit;
 
                         payload = {
                             sepaBankAccount: result.paymentMethod.sepa_debit,
-                            saveSepaBankAccountForFutureCheckouts: null
+                            saveSepaBankAccountForFutureCheckouts: null,
                         };
                         Object.assign(payload.sepaBankAccount, { id: result.paymentMethod.id });
                         Object.assign(payload.sepaBankAccount, { name: result.paymentMethod.billing_details.name });
@@ -335,11 +346,11 @@ export default {
                         this.closeModal(this.sepa);
                     }
                 } catch (e) {
-                    if(e.message != null) {
+                    if (e.message != null) {
                         this.paymentError = e.message;
                     }
 
-                    if(e.detail != null) {
+                    if (e.detail != null) {
                         this.paymentError = e.detail;
                     }
 
@@ -348,31 +359,31 @@ export default {
                 }
             }
         },
-        setPaymentMethodSettings: async function(payload) {
+        setPaymentMethodSettings: async function (payload) {
             return await new ApiClient().apiCall({
                 action: 'patch',
                 endpoint: 'stripe-payment/payment-method-settings',
                 contextToken: this.contextToken,
-                data: payload
+                data: payload,
             });
         },
-        closeModal: function(element, currentMethodObj) {
+        closeModal: function (element, currentMethodObj) {
             // Reset chosen method if iframe error
-            if(element != null) {
-                if(!element._complete || element._empty || element._invalid) {
+            if (element != null) {
+                if (!element._complete || element._empty || element._invalid) {
                     this.resetChosenPaymentMethod();
                 }
             }
 
-            if(currentMethodObj != null) {
-                if(currentMethodObj.shortName === 'stripe.shopware_payment.payment_handler.card') {
-                    if(!this.card._complete || this.card._empty || this.card._invalid) {
+            if (currentMethodObj != null) {
+                if (currentMethodObj.shortName === 'stripe.shopware_payment.payment_handler.card') {
+                    if (!this.card._complete || this.card._empty || this.card._invalid) {
                         this.resetChosenPaymentMethod();
                     }
                 }
 
-                if(currentMethodObj.shortName === 'stripe.shopware_payment.payment_handler.sepa') {
-                    if(!this.sepa._complete || this.sepa._empty || this.sepa._invalid) {
+                if (currentMethodObj.shortName === 'stripe.shopware_payment.payment_handler.sepa') {
+                    if (!this.sepa._complete || this.sepa._empty || this.sepa._invalid) {
                         this.resetChosenPaymentMethod();
                     }
                 }
@@ -380,20 +391,20 @@ export default {
 
             this.showModal = false;
         },
-        resetChosenPaymentMethod: function() {
+        resetChosenPaymentMethod: function () {
             this.currentMethod = null;
             this.currentMethodObj = {};
         },
-        editPaymentSettings: function(id) {
+        editPaymentSettings: function (id) {
             // Set currentMethod to trigger watcher
             // Set currentMethod + open related modal
-            if(this.currentMethod !== id) {
+            if (this.currentMethod !== id) {
                 this.currentMethod = id;
             } else {
                 this.showModal = true;
             }
-        }
-    }
+        },
+    },
 };
 </script>
 

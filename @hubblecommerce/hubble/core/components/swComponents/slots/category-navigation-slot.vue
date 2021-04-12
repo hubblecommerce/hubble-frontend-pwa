@@ -1,7 +1,7 @@
 <template>
     <div :class="elementClass">
         <div class="category-navigation-box">
-<!--            <product-listing-sidebar-nav :path-ids="pathIds" :category-id="categoryId" />-->
+            <!--            <product-listing-sidebar-nav :path-ids="pathIds" :category-id="categoryId" />-->
         </div>
     </div>
 </template>
@@ -18,7 +18,7 @@ export default {
         content: {
             type: Object,
             default: () => ({}),
-        }
-    }
+        },
+    },
 };
 </script>

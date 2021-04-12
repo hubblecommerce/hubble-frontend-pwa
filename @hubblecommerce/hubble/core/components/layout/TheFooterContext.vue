@@ -13,8 +13,8 @@
 
 <script>
 export default {
-    name: "TheFooterContext"
-}
+    name: 'TheFooterContext',
+};
 </script>
 
 <style lang="scss">

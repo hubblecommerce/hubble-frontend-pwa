@@ -20,13 +20,25 @@
 
         <div class="row">
             <div class="col-12">
-                <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, <a class="link-primary" href="#">sed diam nonumy eirmod</a> tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
+                <p
+                    >Lorem ipsum dolor sit amet, consetetur sadipscing elitr, <a class="link-primary" href="#">sed diam nonumy eirmod</a> tempor
+                    invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet
+                    clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing
+                    elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam
+                    et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p
+                >
             </div>
         </div>
 
         <div class="row">
             <div class="col-12">
-                <div class="text-small">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, <a class="link-primary" href="#">sed diam nonumy eirmod</a> tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</div>
+                <div class="text-small"
+                    >Lorem ipsum dolor sit amet, consetetur sadipscing elitr, <a class="link-primary" href="#">sed diam nonumy eirmod</a> tempor
+                    invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet
+                    clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing
+                    elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam
+                    et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</div
+                >
             </div>
         </div>
 
@@ -131,14 +143,14 @@
         <div class="row">
             <div class="col-4">
                 <hbl-checkbox>
-                    <input id="checkboxId1" type="checkbox">
+                    <input id="checkboxId1" type="checkbox" />
                     <label for="checkboxId1">Item 1</label>
                 </hbl-checkbox>
             </div>
 
             <div class="col-4">
                 <hbl-checkbox>
-                    <input id="checkboxId2" type="checkbox" checked>
+                    <input id="checkboxId2" type="checkbox" checked />
                     <label for="checkboxId2">Item 2</label>
                 </hbl-checkbox>
             </div>
@@ -147,14 +159,14 @@
         <div class="row">
             <div class="col-4">
                 <hbl-checkbox>
-                    <input id="radioId1" name="radio" type="radio">
+                    <input id="radioId1" name="radio" type="radio" />
                     <label for="radioId1">Item 1</label>
                 </hbl-checkbox>
             </div>
 
             <div class="col-4">
                 <hbl-checkbox>
-                    <input id="radioId2" name="radio" type="radio" checked>
+                    <input id="radioId2" name="radio" type="radio" checked />
                     <label for="radioId2">Item 2</label>
                 </hbl-checkbox>
             </div>
@@ -163,7 +175,7 @@
 </template>
 
 <script>
-export default {}
+export default {};
 </script>
 
 <style lang="scss" scoped>

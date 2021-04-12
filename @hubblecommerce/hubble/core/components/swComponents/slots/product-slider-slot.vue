@@ -1,7 +1,7 @@
 <template>
     <div :class="elementClass">
         <div class="cms-element-alignment" :class="verticalAlign">
-<!--            <product-listing v-if="loaded" :data-items="dataItems" :is-slider="true" :loop="false" />-->
+            <!--            <product-listing v-if="loaded" :data-items="dataItems" :is-slider="true" :loop="false" />-->
         </div>
     </div>
 </template>

@@ -5,10 +5,10 @@
         <div class="detail-top-wrp">
             <product-detail-gallery v-if="product !== null" :media="product.media" :alt="product.name" />
 
-<!--            <div class="badge-wrp">-->
-<!--                <div class="badge sale" v-text="'40%'" />-->
-<!--                <div class="badge new" v-text="'New'" />-->
-<!--            </div>-->
+            <!--            <div class="badge-wrp">-->
+            <!--                <div class="badge sale" v-text="'40%'" />-->
+            <!--                <div class="badge new" v-text="'New'" />-->
+            <!--            </div>-->
         </div>
 
         <div class="buybox-wrp">
@@ -25,19 +25,19 @@
             </tabs>
         </div>
 
-<!--        <div class="product-recommendation-wrp">-->
-<!--            <product-detail-cross-selling-sw-->
-<!--                v-if="productData.crossSellings !== null"-->
-<!--                :product-id="productData.id"-->
-<!--                :cross-sellings="productData.crossSellings"-->
-<!--            />-->
-<!--            <product-detail-recommendations v-if="hasProductsCrossByOrder" :product-id="productData.id" />-->
-<!--        </div>-->
+        <!--        <div class="product-recommendation-wrp">-->
+        <!--            <product-detail-cross-selling-sw-->
+        <!--                v-if="productData.crossSellings !== null"-->
+        <!--                :product-id="productData.id"-->
+        <!--                :cross-sellings="productData.crossSellings"-->
+        <!--            />-->
+        <!--            <product-detail-recommendations v-if="hasProductsCrossByOrder" :product-id="productData.id" />-->
+        <!--        </div>-->
     </div>
 </template>
 
 <script>
-import {mappingProduct} from "@/utils/api-mapping-helper";
+import { mappingProduct } from '@/utils/api-mapping-helper';
 
 export default {
     name: 'ViewProduct',
@@ -45,13 +45,13 @@ export default {
     props: {
         data: {
             type: Object,
-            required: true
-        }
+            required: true,
+        },
     },
 
     data() {
         return {
-            product: null
+            product: null,
         };
     },
 
@@ -79,9 +79,7 @@ export default {
                     'priceCurrency': this.priceCurrency,
                     'price': this.product.final_price_item.display_price_brutto,
                     'itemCondition': 'https://schema.org/NewCondition',
-                    'availability': this.product.stock_item.is_in_stock
-                        ? 'https://schema.org/InStock'
-                        : 'https://schema.org/OutOfStock',
+                    'availability': this.product.stock_item.is_in_stock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
                 },
                 // More structured data...
             };
@@ -91,11 +89,11 @@ export default {
 
             path.push({
                 name: this.product.name,
-                url: this.product.url_pds
+                url: this.product.url_pds,
             });
 
             return path;
-        }
+        },
     },
 
     created() {
@@ -138,7 +136,7 @@ export default {
             ],
             script: [{ json: this.structuredData, type: 'application/ld+json' }],
         };
-    }
+    },
 };
 </script>
 

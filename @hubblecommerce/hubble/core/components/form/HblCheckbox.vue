@@ -6,8 +6,8 @@
 
 <script>
 export default {
-    name: "HblCheckbox"
-}
+    name: 'HblCheckbox',
+};
 </script>
 
 <style lang="scss">

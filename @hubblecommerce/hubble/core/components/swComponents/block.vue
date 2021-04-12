@@ -22,8 +22,8 @@ export default {
 
     data() {
         return {
-            component: null
-        }
+            component: null,
+        };
     },
 
     created() {
@@ -32,10 +32,11 @@ export default {
 
     methods: {
         setComponentName() {
-            this.component = () => import(`~/components/swComponents/blocks/${this.content.type}-block`).catch(() => {
-                return import('./NoComponent');
-            });
-        }
+            this.component = () =>
+                import(`~/components/swComponents/blocks/${this.content.type}-block`).catch(() => {
+                    return import('./NoComponent');
+                });
+        },
     },
 
     computed: {

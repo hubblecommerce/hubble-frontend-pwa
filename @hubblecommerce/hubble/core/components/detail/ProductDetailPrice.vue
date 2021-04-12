@@ -14,10 +14,7 @@
 
         <template v-else-if="itemIsSpecial">
             <span class="old-price" v-text="formatPrice(item.final_price_item.display_price_brutto)" />
-            <span
-                class="sale-price"
-                v-text="formatPrice(item.final_price_item.display_price_brutto)"
-            />
+            <span class="sale-price" v-text="formatPrice(item.final_price_item.display_price_brutto)" />
         </template>
 
         <template v-else>
@@ -35,27 +32,27 @@ export default {
     props: {
         item: {
             type: Object,
-            required: true
-        }
+            required: true,
+        },
     },
 
     computed: {
         itemIsSpecial: function () {
             return false;
-        }
+        },
     },
 
     methods: {
-        formatPrice: function(price) {
+        formatPrice: function (price) {
             const formatter = new Intl.NumberFormat('de-DE', {
                 style: 'currency',
                 currency: 'EUR',
-                minimumFractionDigits: 2
+                minimumFractionDigits: 2,
             });
 
             return formatter.format(price);
         },
-    }
+    },
 };
 </script>
 

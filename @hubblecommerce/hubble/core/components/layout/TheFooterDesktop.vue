@@ -23,62 +23,22 @@
                 <div class="title">{{ 'Shipping methods' }}</div>
                 <a href="https://www.hubblecommerce.io/" class="logos">
                     <span class="hidden-link-name">{{ 'Shipping methods' }}</span>
-                    <img
-                        :src="require('~/assets/images/shipping/dhl_200x120.png')"
-                        :alt="'DHL'"
-                        :title="'DHL'"
-                    />
-                    <img
-                        :src="require('~/assets/images/shipping/gls_200x120.png')"
-                        :alt="'GLS'"
-                        :title="'GLS'"
-                    />
+                    <img :src="require('~/assets/images/shipping/dhl_200x120.png')" :alt="'DHL'" :title="'DHL'" />
+                    <img :src="require('~/assets/images/shipping/gls_200x120.png')" :alt="'GLS'" :title="'GLS'" />
                 </a>
             </div>
             <div class="column">
                 <div class="title">{{ 'Pay easy and secure' }}</div>
                 <a href="https://www.hubblecommerce.io/" class="logos">
                     <span class="hidden-link-name">{{ 'Pay easy and secure' }}</span>
-                    <img
-                        :src="require('~/assets/images/payment/rechnung_200x120.png')"
-                        :alt="'Rechnung'"
-                        :title="'Rechnung'"
-                    />
-                    <img
-                        :src="require('~/assets/images/payment/visa_200x120.png')"
-                        :alt="'Visa'"
-                        :title="'Visa'"
-                    />
-                    <img
-                        :src="require('~/assets/images/payment/mastercard_200x120.png')"
-                        :alt="'Mastercard'"
-                        :title="'Mastercard'"
-                    />
-                    <img
-                        :src="require('~/assets/images/payment/aa_200x120.png')"
-                        :alt="'American Express'"
-                        :title="'American Express'"
-                    />
-                    <img
-                        :src="require('~/assets/images/payment/giropay_200x120.png')"
-                        :alt="'Giropay'"
-                        :title="'Giropay'"
-                    />
-                    <img
-                        :src="require('~/assets/images/payment/paypal_200x120.png')"
-                        :alt="'Paypal'"
-                        :title="'Paypal'"
-                    />
-                    <img
-                        :src="require('~/assets/images/payment/klarna_200x120.png')"
-                        :alt="'Klarna'"
-                        :title="'Klarna'"
-                    />
-                    <img
-                        :src="require('~/assets/images/payment/amazon_pay_200x120.png')"
-                        :alt="'Amazon Pay'"
-                        :title="'Amazon Pay'"
-                    />
+                    <img :src="require('~/assets/images/payment/rechnung_200x120.png')" :alt="'Rechnung'" :title="'Rechnung'" />
+                    <img :src="require('~/assets/images/payment/visa_200x120.png')" :alt="'Visa'" :title="'Visa'" />
+                    <img :src="require('~/assets/images/payment/mastercard_200x120.png')" :alt="'Mastercard'" :title="'Mastercard'" />
+                    <img :src="require('~/assets/images/payment/aa_200x120.png')" :alt="'American Express'" :title="'American Express'" />
+                    <img :src="require('~/assets/images/payment/giropay_200x120.png')" :alt="'Giropay'" :title="'Giropay'" />
+                    <img :src="require('~/assets/images/payment/paypal_200x120.png')" :alt="'Paypal'" :title="'Paypal'" />
+                    <img :src="require('~/assets/images/payment/klarna_200x120.png')" :alt="'Klarna'" :title="'Klarna'" />
+                    <img :src="require('~/assets/images/payment/amazon_pay_200x120.png')" :alt="'Amazon Pay'" :title="'Amazon Pay'" />
                 </a>
             </div>
         </div>

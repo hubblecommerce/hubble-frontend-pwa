@@ -3,8 +3,7 @@
 import axios from 'axios';
 
 class ApiClient {
-    constructor()
-    {
+    constructor() {
         this.baseUrl = process.env.API_BASE_URL;
     }
 
@@ -61,7 +60,7 @@ class ApiClient {
                 params: payloadParams, // GET params
                 data: payloadData, // POST data
             });
-        } catch(error) {
+        } catch (error) {
             let rejection = error;
 
             if (error.response) {

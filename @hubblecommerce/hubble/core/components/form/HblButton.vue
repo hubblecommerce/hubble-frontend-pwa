@@ -6,8 +6,8 @@
 
 <script>
 export default {
-    name: "HblButton"
-}
+    name: 'HblButton',
+};
 </script>
 
 <style lang="scss" scoped>

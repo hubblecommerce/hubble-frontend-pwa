@@ -9,23 +9,23 @@
 </template>
 
 <script>
-import {mappingCategory, mappingBreadcrumb} from "@/utils/api-mapping-helper";
+import { mappingCategory, mappingBreadcrumb } from '@/utils/api-mapping-helper';
 
 export default {
-    name: "ViewCategory",
+    name: 'ViewCategory',
 
     props: {
         data: {
             type: Object,
-            required: true
-        }
+            required: true,
+        },
     },
 
     data() {
         return {
             category: null,
-            breadcrumb: null
-        }
+            breadcrumb: null,
+        };
     },
 
     created() {
@@ -64,11 +64,11 @@ export default {
                 // hid is used as unique identifier. Do not use `vmid` for it as it will not work
                 { hid: 'description', name: 'description', content: metaDescription },
                 { hid: 'keywords', name: 'keywords', content: metaKeywords },
-                { hid: 'robots', name: 'robots', content: 'INDEX, FOLLOW' }
-            ]
+                { hid: 'robots', name: 'robots', content: 'INDEX, FOLLOW' },
+            ],
         };
-    }
-}
+    },
+};
 </script>
 
 <style lang="scss">

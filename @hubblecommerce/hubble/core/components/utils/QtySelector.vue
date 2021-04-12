@@ -45,18 +45,18 @@ export default {
         minQty: {
             type: Number,
             required: false,
-            default: 1
+            default: 1,
         },
         maxQty: {
             type: Number,
             required: true,
-            default: 1
+            default: 1,
         },
         type: {
             type: Boolean,
             required: false,
-            default: false
-        }
+            default: false,
+        },
     },
 
     data() {
@@ -64,7 +64,7 @@ export default {
             name: 'QtySelector',
             qtyOptions: [],
             qtySelected: this.minQty,
-            qtyCartDisplay: this.type
+            qtyCartDisplay: this.type,
         };
     },
 
@@ -78,12 +78,12 @@ export default {
             if (!isNaN(this.qtySelected) && this.qtySelected >= 1 && this.qtySelected <= this.maxQty) {
                 this.$emit('changeQty', parseInt(this.qtySelected, 10));
             }
-        }
+        },
     },
 
     created() {
         // Build array of options based on maxQty parameter
-        if(this.maxQty > 0) {
+        if (this.maxQty > 0) {
             let i;
             for (i = 1; i <= this.maxQty; i++) {
                 this.qtyOptions.push({ text: i, value: i });
@@ -107,8 +107,8 @@ export default {
                 return;
             }
             this.qtySelected -= 1;
-        }
-    }
+        },
+    },
 };
 </script>
 

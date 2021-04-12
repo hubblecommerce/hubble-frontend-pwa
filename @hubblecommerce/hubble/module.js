@@ -4,11 +4,7 @@ const fse = require('fs-extra');
 const globby = require('globby');
 import defu from 'defu';
 
-import {
-    defaultDotEnv,
-    defaultEnv,
-    defaultModules
-} from './core/utils/config';
+import { defaultDotEnv, defaultEnv, defaultModules } from './core/utils/config';
 
 const listAllDirs = (dir) => globby(`${dir}/*`, { onlyDirectories: true });
 const getLastSectionOfPath = (thePath) => thePath.substring(thePath.lastIndexOf('/') + 1);
@@ -25,9 +21,7 @@ const asyncCopyApiTypeDirs = async (sourceDirs, targetDir, apiType) => {
             await fse.copy(path.join(targetDir, sourceDir, apiType), path.join(targetDir, sourceDir));
 
             const apiSpecificSubfolders = await listAllDirs(path.join(targetDir, sourceDir));
-            await Promise.all(
-                apiSpecificSubfolders.map(async (__apiSpecificSubfolder) => await fse.remove(__apiSpecificSubfolder))
-            );
+            await Promise.all(apiSpecificSubfolders.map(async (__apiSpecificSubfolder) => await fse.remove(__apiSpecificSubfolder)));
         })
     );
 };
@@ -95,16 +89,12 @@ export default async function (moduleOptions) {
     // Deactivate scss source maps to prevent errors when changing styles in chrome dev tools (only dev purposes)
     //this.options.build.loaders = this.options.build.loaders != null ? this.options.build.loaders : { scss: { sourceMap: false } }
 
-    if(this.options.build.transpile.length === 0) {
-        this.options.build.transpile = [
-            '@hubblecommerce/hubble'
-        ];
+    if (this.options.build.transpile.length === 0) {
+        this.options.build.transpile = ['@hubblecommerce/hubble'];
     }
 
     // https://github.com/nuxt/components#overwriting-components
-    this.options.components = [
-        path.resolve('.hubble/components')
-    ];
+    this.options.components = [path.resolve('.hubble/components')];
 
     /*
      * Register nuxt.js modules
@@ -148,7 +138,7 @@ export default async function (moduleOptions) {
     const modulePlugins = await getPlugins(path.resolve(targetDir, 'plugins'));
     modulePlugins.forEach((modulePlugin) => {
         this.options.plugins.push({
-            src: modulePlugin
+            src: modulePlugin,
         });
     });
 
@@ -183,16 +173,16 @@ export default async function (moduleOptions) {
                 }
 
                 // Check for api specific dirs and resolve them
-                const hasApiSpecificSubfolders = apiTypeDirs.filter((__apiTypeDir) =>
-                    newDestination.includes(__apiTypeDir)
-                );
-                if (hasApiSpecificSubfolders.length !== 0) {
-                    if (newDestination.includes(`/${process.env.API_TYPE}/`)) {
-                        newDestination = newDestination.replace(`/${process.env.API_TYPE}/`, '/');
-                    } else {
-                        return;
-                    }
-                }
+                //const hasApiSpecificSubfolders = apiTypeDirs.filter((__apiTypeDir) =>
+                //    newDestination.includes(__apiTypeDir)
+                //);
+                //if (hasApiSpecificSubfolders.length !== 0) {
+                //    if (newDestination.includes(`/${process.env.API_TYPE}/`)) {
+                //        newDestination = newDestination.replace(`/${process.env.API_TYPE}/`, '/');
+                //    } else {
+                //        return;
+                //    }
+                //}
 
                 if (event === 'add' || event === 'change') {
                     await fse.copy(filePath, newDestination);

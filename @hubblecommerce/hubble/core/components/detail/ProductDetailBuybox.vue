@@ -17,7 +17,7 @@
 
         <!-- Variants -->
         <div class="variants-wrp">
-            <lazy-product-detail-buybox-options v-if="itemIsConfigurable" :data-product="dataProduct"/>
+            <lazy-product-detail-buybox-options v-if="itemIsConfigurable" :data-product="dataProduct" />
         </div>
 
         <!-- Add to cart -->
@@ -42,8 +42,8 @@ export default {
     props: {
         dataProduct: {
             type: Object,
-            required: true
-        }
+            required: true,
+        },
     },
 
     data() {
@@ -56,14 +56,14 @@ export default {
     computed: {
         itemIsConfigurable: function () {
             return this.dataProduct.type === 'configurable';
-        }
+        },
     },
 
     methods: {
         onChangeQty: function (e) {
             this.qty = e;
-        }
-    }
+        },
+    },
 };
 </script>
 

@@ -4,7 +4,10 @@
     </div>
     <div v-else>
         <div class="toolbar-top">
-            <product-listing-pagination :paginationItemsTotal="content.slots[0].data.listing.total" :paginationPerPage="content.slots[0].data.listing.limit" />
+            <product-listing-pagination
+                :paginationItemsTotal="content.slots[0].data.listing.total"
+                :paginationPerPage="content.slots[0].data.listing.limit"
+            />
         </div>
         <product-listing
             v-if="products != null"
@@ -13,13 +16,16 @@
             :listing-class="'col-12 col-sm-12 col-md-4 col-lg-3'"
         />
         <div class="toolbar-bottom">
-            <product-listing-pagination :paginationItemsTotal="content.slots[0].data.listing.total" :paginationPerPage="content.slots[0].data.listing.limit" />
+            <product-listing-pagination
+                :paginationItemsTotal="content.slots[0].data.listing.total"
+                :paginationPerPage="content.slots[0].data.listing.limit"
+            />
         </div>
     </div>
 </template>
 
 <script>
-import {mappingCategoryProducts} from '@/utils/api-mapping-helper';
+import { mappingCategoryProducts } from '@/utils/api-mapping-helper';
 
 export default {
     name: 'ProductListingBlock',
@@ -28,18 +34,18 @@ export default {
         content: {
             type: Object,
             default: () => ({}),
-        }
+        },
     },
 
     data() {
         return {
-            products: null
+            products: null,
         };
     },
 
     created() {
         this.products = mappingCategoryProducts(this.content.slots[0].data.listing.elements);
-    }
+    },
 };
 </script>
 
@@ -48,7 +54,7 @@ export default {
     display: none;
 }
 
-@media(min-width: 1024px) {
+@media (min-width: 1024px) {
     .toolbar-top {
         display: block;
     }

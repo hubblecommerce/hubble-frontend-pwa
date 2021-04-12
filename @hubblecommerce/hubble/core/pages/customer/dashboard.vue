@@ -51,8 +51,8 @@
 </template>
 
 <script>
-import apiClient from "@/utils/api-client";
-import {mapState} from "vuex";
+import apiClient from '@/utils/api-client';
+import { mapState } from 'vuex';
 
 export default {
     name: 'CustomerDashboard',
@@ -62,21 +62,21 @@ export default {
     data() {
         return {
             customer: null,
-            isLoading: true
-        }
+            isLoading: true,
+        };
     },
 
     computed: {
         ...mapState({
-            contextToken: (state) => state.modSession.contextToken
-        })
+            contextToken: (state) => state.modSession.contextToken,
+        }),
     },
 
     async mounted() {
         try {
             let response = await this.fetchCustomer();
 
-            if(response.data != null) {
+            if (response.data != null) {
                 this.customer = response.data;
             }
 
@@ -88,24 +88,24 @@ export default {
     },
 
     methods: {
-        fetchCustomer: async function() {
+        fetchCustomer: async function () {
             return await new apiClient().apiCall({
                 action: 'get',
                 endpoint: 'store-api/v3/account/customer',
-                contextToken: this.contextToken
+                contextToken: this.contextToken,
             });
         },
-        goToHome: function() {
+        goToHome: function () {
             this.$router.push({ path: '/' });
-        }
+        },
     },
 
     head() {
         return {
             title: 'Customer Account Dashboard',
-            meta: [{ hid: 'robots', name: 'robots', content: 'NOINDEX, FOLLOW' }]
+            meta: [{ hid: 'robots', name: 'robots', content: 'NOINDEX, FOLLOW' }],
         };
-    }
+    },
 };
 </script>
 

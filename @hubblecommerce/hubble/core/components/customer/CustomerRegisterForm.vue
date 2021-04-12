@@ -117,7 +117,7 @@
                 <div class="error-message" v-text="error" />
             </template>
 
-            <hbl-button class="button-primary" :disabled="isLoading" @click.prevent="onSubmit" >
+            <hbl-button class="button-primary" :disabled="isLoading" @click.prevent="onSubmit">
                 <span v-if="!isLoading">{{ 'Register' }}</span>
                 <loader v-if="isLoading" />
             </hbl-button>
@@ -126,11 +126,11 @@
 </template>
 
 <script>
-import apiClient from "@/utils/api-client";
-import {mapMutations, mapState} from "vuex";
+import apiClient from '@/utils/api-client';
+import { mapMutations, mapState } from 'vuex';
 
 export default {
-    name: "CustomerRegisterForm",
+    name: 'CustomerRegisterForm',
 
     data() {
         return {
@@ -150,8 +150,8 @@ export default {
                     countryId: '',
                     street: '',
                     zipcode: '',
-                    city: ''
-                }
+                    city: '',
+                },
             },
             shippingAddress: {
                 countryId: '',
@@ -160,15 +160,15 @@ export default {
                 lastName: '',
                 street: '',
                 zipcode: '',
-                city: ''
-            }
-        }
+                city: '',
+            },
+        };
     },
 
     computed: {
         ...mapState({
-            contextToken: (state) => state.modSession.contextToken
-        })
+            contextToken: (state) => state.modSession.contextToken,
+        }),
     },
 
     async mounted() {
@@ -183,18 +183,18 @@ export default {
 
     methods: {
         ...mapMutations({
-            setContextToken: 'modSession/setContextToken'
+            setContextToken: 'modSession/setContextToken',
         }),
-        fetchFormOptions: async function() {
-             return await Promise.all([this.fetchSalutations(), this.fetchCountries()]);
+        fetchFormOptions: async function () {
+            return await Promise.all([this.fetchSalutations(), this.fetchCountries()]);
         },
-        fetchSalutations: async function() {
+        fetchSalutations: async function () {
             return await new apiClient().apiCall({
                 action: 'get',
-                endpoint: 'store-api/v3/salutation'
+                endpoint: 'store-api/v3/salutation',
             });
         },
-        fetchCountries: async function() {
+        fetchCountries: async function () {
             return await new apiClient().apiCall({
                 action: 'post',
                 endpoint: 'store-api/v3/country',
@@ -203,29 +203,29 @@ export default {
                         {
                             type: 'equals',
                             field: 'active',
-                            value: true
+                            value: true,
                         },
                         {
                             type: 'equals',
                             field: 'shippingAvailable',
-                            value: true
-                        }
+                            value: true,
+                        },
                     ],
                     sort: [
                         {
                             field: 'position',
-                            order: 'ASC'
-                        }
-                    ]
-                }
+                            order: 'ASC',
+                        },
+                    ],
+                },
             });
         },
-        onSubmit: async function() {
+        onSubmit: async function () {
             try {
                 this.isLoading = true;
 
                 let postData = Object.assign(this.form, { storefrontUrl: process.env.API_BASE_URL });
-                if(!this.sameShippingAddress) {
+                if (!this.sameShippingAddress) {
                     postData = Object.assign(postData, this.shippingAddress);
                 }
 
@@ -233,11 +233,11 @@ export default {
                     action: 'post',
                     endpoint: 'store-api/v3/account/register',
                     contextToken: this.contextToken,
-                    data: postData
+                    data: postData,
                 });
 
                 // Property 'guest' where context token is returned isset for both, customers and guest register calls
-                if(response.data.extensions.guest['sw-context-token'] != null) {
+                if (response.data.extensions.guest['sw-context-token'] != null) {
                     this.setContextToken(response.data.extensions.guest['sw-context-token']);
                     this.$emit('register-success');
                 }
@@ -252,9 +252,9 @@ export default {
                 this.errors.push(e.detail);
                 this.isLoading = false;
             }
-        }
-    }
-}
+        },
+    },
+};
 </script>
 
 <style lang="scss" scoped>

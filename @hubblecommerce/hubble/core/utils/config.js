@@ -6,19 +6,19 @@ export const defaultEnv = {
             title: 'Category - Hubble Demo',
             titleAdd: ' - buy now at hubble Demostore',
             metaKeywords: 'PWA, ecommerce, hubble, headless, nuxt, vue, responsive, progressive',
-            metaDescription: 'Official hubble demo page.'
+            metaDescription: 'Official hubble demo page.',
         },
         product: {
             title: 'Product Hubble Demo',
             metaKeywords: 'PWA, ecommerce, hubble, headless, nuxt, vue, responsive, progressive',
-            metaDescription: 'Official hubble demo page.'
+            metaDescription: 'Official hubble demo page.',
         },
         cms: {
             title: 'CMS - Hubble Demo',
             metaKeywords: 'PWA, ecommerce, hubble, headless, nuxt, vue, responsive, progressive',
-            metaDescription: 'Official hubble demo page.'
-        }
-    }
+            metaDescription: 'Official hubble demo page.',
+        },
+    },
 };
 
 export const defaultDotEnv = {
@@ -31,7 +31,7 @@ export const defaultDotEnv = {
         'SW_PAYMENT_FINISH_URL',
         'SW_PAYMENT_ERROR_URL',
         'SW_PAYPAL_CLIENT_ID',
-        'SW_STRIPE_PUBLIC_KEY'
+        'SW_STRIPE_PUBLIC_KEY',
     ],
     path: '~/..',
 };
@@ -52,9 +52,9 @@ export const defaultModules = [
         name: 'nuxt-lazy-load',
         options: {
             loadingClass: 'lazy-placeholder',
-        }
+        },
     },
     {
         name: 'cookie-universal-nuxt',
-    }
+    },
 ];

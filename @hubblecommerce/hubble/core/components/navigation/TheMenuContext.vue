@@ -3,7 +3,7 @@
         <div class="container expand-content">
             <div class="row overlay-header">
                 <hbl-button class="button-icon" @click.native="hideOffcanvasAction">
-                    <div class="hidden-link-name" v-text="'Close'"/>
+                    <div class="hidden-link-name" v-text="'Close'" />
                     <svg-icon icon="x" />
                 </hbl-button>
                 <div class="overlay-headline" v-text="'Navigation'" />
@@ -17,18 +17,18 @@
 </template>
 
 <script>
-import {mapActions} from "vuex";
-import apiClient from "@/utils/api-client";
-import {mappingMenu} from "@/utils/api-mapping-helper";
+import { mapActions } from 'vuex';
+import apiClient from '@/utils/api-client';
+import { mappingMenu } from '@/utils/api-mapping-helper';
 
 export default {
-    name: "TheMenuContext",
+    name: 'TheMenuContext',
 
     data() {
         return {
             isLoading: null,
-            menu: null
-        }
+            menu: null,
+        };
     },
 
     async mounted() {
@@ -45,36 +45,26 @@ export default {
 
     methods: {
         ...mapActions({
-            hideOffcanvasAction: 'modNavigation/hideOffcanvasAction'
+            hideOffcanvasAction: 'modNavigation/hideOffcanvasAction',
         }),
         hideMenu: function () {
             this.hideOffcanvasAction();
         },
-        fetchMenu: async function() {
+        fetchMenu: async function () {
             return await new apiClient().apiCall({
                 action: 'post',
                 endpoint: 'store-api/v3/navigation/main-navigation/main-navigation',
                 data: {
                     includes: {
-                        category: [
-                            'id',
-                            'parentId',
-                            'name',
-                            'level',
-                            'active',
-                            '_uniqueIdentifier',
-                            'seoUrls',
-                            'type',
-                            'children',
-                        ],
+                        category: ['id', 'parentId', 'name', 'level', 'active', '_uniqueIdentifier', 'seoUrls', 'type', 'children'],
                     },
                     buildTree: true,
-                    depth: 5
-                }
+                    depth: 5,
+                },
             });
-        }
-    }
-}
+        },
+    },
+};
 </script>
 
 <style lang="scss" scoped>

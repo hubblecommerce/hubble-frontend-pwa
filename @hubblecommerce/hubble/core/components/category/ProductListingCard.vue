@@ -10,17 +10,9 @@
                 </div>
 
                 <template v-if="index < 2">
-                    <img
-                        data-not-lazy
-                        :src="routeUrlProductImg(800)"
-                        :alt="itemData.name"
-                    />
+                    <img data-not-lazy :src="routeUrlProductImg(800)" :alt="itemData.name" />
                 </template>
-                <img
-                    v-else
-                    :src="routeUrlProductImg(800)"
-                    :alt="itemData.name"
-                />
+                <img v-else :src="routeUrlProductImg(800)" :alt="itemData.name" />
             </div>
 
             <div class="product-card-info-wrp-link">
@@ -58,21 +50,21 @@ export default {
         },
         index: {
             type: Number,
-            required: false
-        }
+            required: false,
+        },
     },
 
     data() {
         return {
             productUrl: '/#/detail',
-            itemData: {}
+            itemData: {},
         };
     },
 
     computed: {
         routeUrlPds: function () {
             return '/' + this.itemOrig.url_pds;
-        }
+        },
     },
 
     created() {
@@ -83,21 +75,21 @@ export default {
         routeUrlProductImg: function (width) {
             let image = this.itemData.image.url;
 
-            if(width != null) {
+            if (width != null) {
                 this.itemData.image.thumbnails.forEach((thumbnail) => {
-                    if(thumbnail.width === width) {
+                    if (thumbnail.width === width) {
                         image = thumbnail.url;
                     }
-                })
+                });
             }
 
             return image;
         },
-        formatPrice: function(price) {
+        formatPrice: function (price) {
             const formatter = new Intl.NumberFormat('de-DE', {
                 style: 'currency',
                 currency: 'EUR',
-                minimumFractionDigits: 2
+                minimumFractionDigits: 2,
             });
 
             return formatter.format(price);
@@ -134,8 +126,8 @@ export default {
                     },
                 });
             }
-        }
-    }
+        },
+    },
 };
 </script>
 

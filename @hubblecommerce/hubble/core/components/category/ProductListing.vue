@@ -13,18 +13,18 @@ export default {
     props: {
         dataItems: {
             type: Array,
-            required: true
+            required: true,
         },
         total: {
             type: Number,
-            required: false
+            required: false,
         },
         listingClass: {
             type: String,
             required: false,
-            default: 'col-6 col-sm-6 col-md-4 col-lg-3'
-        }
-    }
+            default: 'col-6 col-sm-6 col-md-4 col-lg-3',
+        },
+    },
 };
 </script>
 

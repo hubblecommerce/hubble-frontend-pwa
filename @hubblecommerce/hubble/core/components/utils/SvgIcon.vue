@@ -6,13 +6,13 @@
 // Todo: create an editable svg icon component
 // To load inline svg in nuxt: https://github.com/nuxt-community/svg-module
 export default {
-    name: "SvgIcon",
+    name: 'SvgIcon',
 
     props: {
         icon: {
             type: String,
-            default: 'placeholder'
-        }
-    }
-}
+            default: 'placeholder',
+        },
+    },
+};
 </script>

@@ -51,7 +51,7 @@
 
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex';
-import apiClient from "@/utils/api-client";
+import apiClient from '@/utils/api-client';
 
 export default {
     name: 'CustomerLoginForm',
@@ -62,26 +62,26 @@ export default {
             showLoginForm: true,
             email: '',
             password: '',
-            errors: []
+            errors: [],
         };
     },
 
     computed: {
         ...mapState({
             contextToken: (state) => state.modSession.contextToken,
-            cartQty: (state) => state.modCart.qty
-        })
+            cartQty: (state) => state.modCart.qty,
+        }),
     },
 
     methods: {
         ...mapMutations({
-            setContextToken: 'modSession/setContextToken'
+            setContextToken: 'modSession/setContextToken',
         }),
-        toggleLoginForm: function() {
+        toggleLoginForm: function () {
             this.errors = [];
             this.showLoginForm = !this.showLoginForm;
         },
-        submitLoginForm: async function() {
+        submitLoginForm: async function () {
             try {
                 this.isLoading = true;
                 let response = await new apiClient().apiCall({
@@ -90,8 +90,8 @@ export default {
                     contextToken: this.contextToken,
                     data: {
                         username: this.email,
-                        password: this.password
-                    }
+                        password: this.password,
+                    },
                 });
 
                 //this.flashMessage({
@@ -99,7 +99,7 @@ export default {
                 //    flashMessage: 'Successfully logged in.'
                 //});
 
-                if(response.data.contextToken != null) {
+                if (response.data.contextToken != null) {
                     this.setContextToken(response.data.contextToken);
                     this.$emit('login-success');
                 }
@@ -110,7 +110,7 @@ export default {
                 this.errors.push(e.detail);
             }
         },
-        submitPwResetForm: async function() {
+        submitPwResetForm: async function () {
             try {
                 this.isLoading = true;
                 await new apiClient().apiCall({
@@ -119,7 +119,7 @@ export default {
                     data: {
                         email: this.email,
                         storefrontUrl: process.env.API_BASE_URL,
-                    }
+                    },
                 });
 
                 // Reset data
@@ -140,8 +140,8 @@ export default {
                 this.errors.push(e.detail);
                 this.isLoading = false;
             }
-        }
-    }
+        },
+    },
 };
 </script>
 

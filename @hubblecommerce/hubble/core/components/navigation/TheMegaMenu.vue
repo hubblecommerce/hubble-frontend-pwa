@@ -35,29 +35,13 @@
                 <div class="max-width-container">
                     <template>
                         <div class="children-wrp">
-                            <div
-                                v-for="child in activeCategory.children"
-                                v-if="showChild(child)"
-                                :key="child.id"
-                                class="child-wrp"
-                            >
+                            <div v-for="child in activeCategory.children" v-if="showChild(child)" :key="child.id" class="child-wrp">
                                 <div v-if="!child.request_path" class="child-item" v-text="child.name" />
                                 <nuxt-link v-else :to="itemUrlPath(child)" class="child-item" v-text="child.name" />
 
                                 <template v-for="subchild in child.children">
-                                    <div
-                                        v-if="!subchild.request_path"
-                                        :key="subchild.id"
-                                        class="subchild-item"
-                                        v-text="subchild.name"
-                                    />
-                                    <nuxt-link
-                                        v-else
-                                        :key="subchild.id"
-                                        class="subchild-item"
-                                        :to="itemUrlPath(subchild)"
-                                        v-text="subchild.name"
-                                    />
+                                    <div v-if="!subchild.request_path" :key="subchild.id" class="subchild-item" v-text="subchild.name" />
+                                    <nuxt-link v-else :key="subchild.id" class="subchild-item" :to="itemUrlPath(subchild)" v-text="subchild.name" />
                                 </template>
                             </div>
                         </div>
@@ -70,8 +54,8 @@
 
 <script>
 import { mapActions } from 'vuex';
-import apiClient from "@/utils/api-client";
-import {mappingMenu} from "@/utils/api-mapping-helper";
+import apiClient from '@/utils/api-client';
+import { mappingMenu } from '@/utils/api-mapping-helper';
 
 export default {
     name: 'TheMegaMenu',
@@ -83,7 +67,7 @@ export default {
             showMenu: false,
             isActive: null,
             activeCategory: {},
-            layerLeft: 0
+            layerLeft: 0,
         };
     },
 
@@ -107,29 +91,19 @@ export default {
         ...mapActions({
             hideOffcanvasAction: 'modNavigation/hideOffcanvasAction',
             showOffcanvasAction: 'modNavigation/showOffcanvasAction',
-            toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction'
+            toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction',
         }),
-        fetchMenu: async function() {
+        fetchMenu: async function () {
             return await new apiClient().apiCall({
                 action: 'post',
                 endpoint: 'store-api/v3/navigation/main-navigation/main-navigation',
                 data: {
                     includes: {
-                        category: [
-                            'id',
-                            'parentId',
-                            'name',
-                            'level',
-                            'active',
-                            '_uniqueIdentifier',
-                            'seoUrls',
-                            'type',
-                            'children',
-                        ],
+                        category: ['id', 'parentId', 'name', 'level', 'active', '_uniqueIdentifier', 'seoUrls', 'type', 'children'],
                     },
                     buildTree: true,
-                    depth: 5
-                }
+                    depth: 5,
+                },
             });
         },
         toggle: function () {

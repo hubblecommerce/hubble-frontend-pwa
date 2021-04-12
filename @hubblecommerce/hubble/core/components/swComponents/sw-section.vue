@@ -176,7 +176,7 @@ General styling for cms sections
     padding: 0 15px;
 }
 
-@media(min-width: 1024px) {
+@media (min-width: 1024px) {
     .cms-section-sidebar-sidebar-content {
         width: 285px;
     }

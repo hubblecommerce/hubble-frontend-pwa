@@ -1,4 +1,4 @@
-import apiClient from "@/utils/api-client";
+import apiClient from '@/utils/api-client';
 
 export default async function ({ app, store, redirect }) {
     // Check for contextToken either as cookie or set in vuex store
@@ -10,7 +10,7 @@ export default async function ({ app, store, redirect }) {
         contextToken = store.state.modSession.contextToken;
     }
 
-    if(contextToken === null) {
+    if (contextToken === null) {
         return redirect('/customer/login');
     }
 
@@ -19,11 +19,11 @@ export default async function ({ app, store, redirect }) {
         let response = await new apiClient().apiCall({
             action: 'get',
             endpoint: 'store-api/v3/context',
-            contextToken: contextToken
+            contextToken: contextToken,
         });
 
-        if(response.data.customer != null) {
-            if(response.data.customer.active && !response.data.customer.guest) {
+        if (response.data.customer != null) {
+            if (response.data.customer.active && !response.data.customer.guest) {
                 return;
             }
         }

@@ -32,14 +32,14 @@ export default {
             required: false,
             default: () => ({
                 useUrlFragment: true,
-                currentTab: null
+                currentTab: null,
             }),
         },
         defaultTab: {
             type: Number,
             required: false,
-            default: null
-        }
+            default: null,
+        },
     },
 
     data: () => ({
@@ -48,7 +48,7 @@ export default {
         activeTabIndex: 0,
         lastActiveTabHash: '',
         activeWidth: 0,
-        activePosLeft: 0
+        activePosLeft: 0,
     }),
 
     created() {
@@ -116,8 +116,8 @@ export default {
             const tab = this.findTab(hash);
 
             return this.tabs.indexOf(tab);
-        }
-    }
+        },
+    },
 };
 </script>
 

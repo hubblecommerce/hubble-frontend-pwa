@@ -1,17 +1,17 @@
 <template>
     <div class="minicart-wrapper">
-        <div :class="{'expand-content': displayInLayer}" class="container">
+        <div :class="{ 'expand-content': displayInLayer }" class="container">
             <div v-if="displayInLayer" class="row overlay-header">
                 <hbl-button class="button-icon" @click.native="hideOffcanvasAction">
-                    <div class="hidden-link-name" v-text="'Close'"/>
+                    <div class="hidden-link-name" v-text="'Close'" />
                     <svg-icon icon="x" />
                 </hbl-button>
                 <div class="overlay-headline" v-text="'Cart'" />
             </div>
 
-<!--            <div class="row">-->
-<!--                <flash-messages v-if="qty > 0" :fade-out="false" :in-off-canvas="true" />-->
-<!--            </div>-->
+            <!--            <div class="row">-->
+            <!--                <flash-messages v-if="qty > 0" :fade-out="false" :in-off-canvas="true" />-->
+            <!--            </div>-->
 
             <template v-if="qty > 0 && !isLoading">
                 <div class="row">
@@ -74,9 +74,9 @@
 </template>
 
 <script>
-import {mapState, mapActions, mapMutations} from 'vuex';
-import apiClient from "@/utils/api-client";
-import {mappingCartProduct} from "@/utils/api-mapping-helper";
+import { mapState, mapActions, mapMutations } from 'vuex';
+import apiClient from '@/utils/api-client';
+import { mappingCartProduct } from '@/utils/api-mapping-helper';
 
 export default {
     name: 'CartContext',
@@ -85,18 +85,18 @@ export default {
         displayInLayer: {
             type: Boolean,
             required: false,
-            default: false
+            default: false,
         },
         interactive: {
             type: Boolean,
             required: false,
-            default: true
+            default: true,
         },
         recalculateCart: {
             type: Number,
             required: false,
-            default: null
-        }
+            default: null,
+        },
     },
 
     data() {
@@ -104,28 +104,28 @@ export default {
             isLoading: false,
             products: null,
             totals: null,
-            qty: 0
+            qty: 0,
         };
     },
 
     computed: {
         ...mapState({
-            contextToken: (state) => state.modSession.contextToken
-        })
+            contextToken: (state) => state.modSession.contextToken,
+        }),
     },
 
     async mounted() {
-        if(this.contextToken !== null) {
+        if (this.contextToken !== null) {
             let response = await this.fetchCart();
             this.setCartData(response);
         }
     },
 
     watch: {
-        recalculateCart: async function() {
+        recalculateCart: async function () {
             let response = await this.fetchCart();
             this.setCartData(response);
-        }
+        },
     },
 
     methods: {
@@ -133,68 +133,70 @@ export default {
             hideOffcanvasAction: 'modNavigation/hideOffcanvasAction',
         }),
         ...mapMutations({
-            saveCart: 'modCart/setCart'
+            saveCart: 'modCart/setCart',
         }),
-        fetchCart: async function() {
+        fetchCart: async function () {
             try {
                 this.isLoading = true;
                 const response = await new apiClient().apiCall({
                     action: 'post',
                     endpoint: 'store-api/v3/checkout/cart',
-                    contextToken: this.contextToken
+                    contextToken: this.contextToken,
                 });
                 this.isLoading = false;
                 return response;
             } catch (requestError) {
                 this.isLoading = false;
-                return {requestError};
+                return { requestError };
             }
         },
-        setCartData: function(cartResponse) {
+        setCartData: function (cartResponse) {
             this.products = this.mappingProducts(cartResponse.data.lineItems);
             this.totals = this.mappingTotals(cartResponse.data);
 
             this.saveCart(cartResponse);
         },
-        mappingProducts: function(products) {
+        mappingProducts: function (products) {
             let mappedProducts = [];
             this.qty = 0;
 
             products.forEach((product) => {
                 mappedProducts.push(mappingCartProduct(product));
-                this.qty = this.qty + product.quantity
+                this.qty = this.qty + product.quantity;
             });
 
             return mappedProducts;
         },
-        mappingTotals: function(data) {
+        mappingTotals: function (data) {
             return {
                 subTotals: data.price.positionPrice,
                 totals: data.price.totalPrice,
-                shippingCosts: data.deliveries.length > 0 ? data.deliveries[0].shippingCosts.totalPrice : 0
+                shippingCosts: data.deliveries.length > 0 ? data.deliveries[0].shippingCosts.totalPrice : 0,
             };
         },
         checkoutCart: function () {
-            this.$router.push({
-                path: '/checkout'
-            },
-            () => {
-                this.hideMenu();
-            });
+            this.$router.push(
+                {
+                    path: '/checkout',
+                },
+                () => {
+                    this.hideMenu();
+                }
+            );
         },
-        formatPrice: function(price) {
+        formatPrice: function (price) {
             const formatter = new Intl.NumberFormat('de-DE', {
                 style: 'currency',
                 currency: 'EUR',
-                minimumFractionDigits: 2
+                minimumFractionDigits: 2,
             });
 
             return formatter.format(price);
         },
         hideMenu: function () {
             this.hideOffcanvasAction();
-        }
-    }
+        },
+    },
 };
 </script>
 
@@ -280,7 +282,8 @@ export default {
         }
     }
 
-    .checkout-btn, .shopping-button {
+    .checkout-btn,
+    .shopping-button {
         width: 100%;
         margin-bottom: 20px;
     }
@@ -297,11 +300,9 @@ export default {
 
 /* Tablet */
 @media (min-width: 768px) {
-
 }
 
 /* Desktop */
 @media (min-width: 1024px) {
-
 }
 </style>

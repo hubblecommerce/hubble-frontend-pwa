@@ -2,11 +2,7 @@
     <transition name="slide-in">
         <div class="tree-menu">
             <div class="back-trigger">
-                <svg-icon
-                    icon="chevron-left"
-                    v-if="depth > 1"
-                    @click.native="closeSubcategory"
-                />
+                <svg-icon icon="chevron-left" v-if="depth > 1" @click.native="closeSubcategory" />
             </div>
 
             <nuxt-link v-if="firstItem && $parent.dataItem.request_path" :to="parentUrlPath">
@@ -61,22 +57,22 @@ export default {
     props: {
         dataItem: {
             type: Object,
-            required: true
+            required: true,
         },
         depth: {
             type: Number,
-            required: true
+            required: true,
         },
         firstItem: {
             type: Boolean,
-            default: false
+            default: false,
         },
     },
 
     data() {
         return {
             showChildren: false,
-            isInCurrentCategoryPath: false
+            isInCurrentCategoryPath: false,
         };
     },
 
@@ -98,11 +94,10 @@ export default {
         },
         parentUrlPath: function () {
             return '/' + this.$parent.dataItem.request_path;
-        }
+        },
     },
 
-    created() {
-    },
+    created() {},
 
     methods: {
         toggleChildren: function (nodes) {
@@ -116,8 +111,8 @@ export default {
 
             this.isInCurrentCategoryPath = false;
             this.$parent.isInCurrentCategoryPath = false;
-        }
-    }
+        },
+    },
 };
 </script>
 

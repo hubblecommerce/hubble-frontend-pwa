@@ -7,8 +7,8 @@
             </div>
 
             <div class="error-info">
-                {{'We did receive your order, but something is wrong with your payment process.'}}
-                {{'Please try a different payment method, or contact our customer service via email or hotline.'}}
+                {{ 'We did receive your order, but something is wrong with your payment process.' }}
+                {{ 'Please try a different payment method, or contact our customer service via email or hotline.' }}
             </div>
 
             <payment-methods
@@ -32,8 +32,8 @@
 </template>
 
 <script>
-import {mapState} from 'vuex';
-import apiClient from "@/utils/api-client";
+import { mapState } from 'vuex';
+import apiClient from '@/utils/api-client';
 
 export default {
     name: 'CheckoutError',
@@ -43,7 +43,7 @@ export default {
             processingCheckout: false,
             orderId: null,
             chosenPaymentMethod: null,
-            errors: []
+            errors: [],
         };
     },
 
@@ -53,46 +53,46 @@ export default {
 
     computed: {
         ...mapState({
-            contextToken: (state) => state.modSession.contextToken
-        })
+            contextToken: (state) => state.modSession.contextToken,
+        }),
     },
 
     methods: {
-        resetPayment: async function(payload) {
+        resetPayment: async function (payload) {
             return await new apiClient().apiCall({
                 action: 'post',
                 endpoint: 'store-api/v3/order/payment',
                 contextToken: this.contextToken,
-                data: payload
+                data: payload,
             });
         },
-        handlePayment: async function(orderId) {
+        handlePayment: async function (orderId) {
             let requestData = {
                 orderId: orderId,
-                finishUrl: process.env.SW_PAYMENT_FINISH_URL+'?orderId='+orderId,
-                errorUrl: process.env.SW_PAYMENT_ERROR_URL+'?orderId='+orderId
+                finishUrl: process.env.SW_PAYMENT_FINISH_URL + '?orderId=' + orderId,
+                errorUrl: process.env.SW_PAYMENT_ERROR_URL + '?orderId=' + orderId,
             };
 
             return await new apiClient().apiCall({
                 action: 'post',
                 endpoint: 'store-api/v3/handle-payment',
                 contextToken: this.contextToken,
-                data: requestData
+                data: requestData,
             });
         },
-        submit: async function() {
+        submit: async function () {
             this.processingCheckout = true;
 
             // Reset payment transactions of order, set new payment method
             try {
-                if(this.orderId != null && !this.paymentError) {
+                if (this.orderId != null && !this.paymentError) {
                     await this.resetPayment({
                         paymentMethodId: this.chosenPaymentMethod,
-                        orderId: this.orderId
+                        orderId: this.orderId,
                     });
                 } else {
                     this.processingCheckout = false;
-                    this.errors.push("Please choose a payment method.");
+                    this.errors.push('Please choose a payment method.');
                     return false;
                 }
             } catch (e) {
@@ -108,25 +108,27 @@ export default {
                     this.processingCheckout = false;
                     window.open(paymentResponse.data.redirectUrl, '_self');
                 } else {
-                    this.$router.push({
-                        name: 'checkout-success'
-                    },
-                    () => {
-                        this.processingCheckout = false;
-                    });
+                    this.$router.push(
+                        {
+                            name: 'checkout-success',
+                        },
+                        () => {
+                            this.processingCheckout = false;
+                        }
+                    );
                 }
             } catch (e) {
                 this.processingCheckout = false;
                 this.errors.push(e.detail);
             }
-        }
+        },
     },
 
     head() {
         return {
-            meta: [{ hid: 'robots', name: 'robots', content: 'NOINDEX, FOLLOW' }]
+            meta: [{ hid: 'robots', name: 'robots', content: 'NOINDEX, FOLLOW' }],
         };
-    }
+    },
 };
 </script>
 
@@ -144,7 +146,7 @@ export default {
             margin: 10px 0 20px;
             padding: 20px;
             border: 1px solid rgba(208, 2, 27, 1);
-            background: rgba(159, 1, 12, .1);
+            background: rgba(159, 1, 12, 0.1);
 
             i {
                 width: 45px;

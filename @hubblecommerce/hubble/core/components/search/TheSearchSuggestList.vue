@@ -13,7 +13,7 @@
                 <div v-if="products.length > 0">
                     <div class="headline" v-text="`Products (${products.length})`" />
 
-                    <div v-for="(product, key) in products" :key="key" class="elements-wrp" >
+                    <div v-for="(product, key) in products" :key="key" class="elements-wrp">
                         <nuxt-link :to="'/' + product.url_pds" class="element">
                             <img data-no-lazy :src="product.image" :alt="product.name" />
                             <span class="name" v-text="product.name" />
@@ -42,26 +42,26 @@ export default {
         categories: {
             type: Array,
             required: false,
-            default: () => []
+            default: () => [],
         },
         products: {
             type: Array,
             required: false,
-            default: () => []
-        }
+            default: () => [],
+        },
     },
 
     methods: {
-        formatPrice: function(price) {
+        formatPrice: function (price) {
             const formatter = new Intl.NumberFormat('de-DE', {
                 style: 'currency',
                 currency: 'EUR',
-                minimumFractionDigits: 2
+                minimumFractionDigits: 2,
             });
 
             return formatter.format(price);
-        }
-    }
+        },
+    },
 };
 </script>
 
@@ -100,7 +100,7 @@ export default {
         }
 
         .name {
-            width:  100%;
+            width: 100%;
             text-align: left;
             line-height: 21px;
         }

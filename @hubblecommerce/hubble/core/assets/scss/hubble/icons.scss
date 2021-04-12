@@ -1,9 +1,8 @@
 @font-face {
     font-family: 'icons';
     src: url('~assets/fonts/icons/hubble.eot');
-    src: url('~assets/fonts/icons/hubble.eot') format('embedded-opentype'),
-    url('~assets/fonts/icons/hubble.woff2') format('woff2'),
-    url('~assets/fonts/icons/hubble.ttf') format('truetype'), url('~assets/fonts/icons/hubble.woff') format('woff');
+    src: url('~assets/fonts/icons/hubble.eot') format('embedded-opentype'), url('~assets/fonts/icons/hubble.woff2') format('woff2'),
+        url('~assets/fonts/icons/hubble.ttf') format('truetype'), url('~assets/fonts/icons/hubble.woff') format('woff');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -24,32 +23,32 @@
 }
 
 .icon-menu:before {
-    content: "\e917";
+    content: '\e917';
 }
 .icon-check:before {
-    content: "\e93e";
+    content: '\e93e';
 }
 .icon-chevron-down:before {
-    content: "\e93f";
+    content: '\e93f';
 }
 .icon-chevron-left:before {
-    content: "\e940";
+    content: '\e940';
 }
 .icon-chevron-right:before {
-    content: "\e941";
+    content: '\e941';
 }
 .icon-chevron-up:before {
-    content: "\e942";
+    content: '\e942';
 }
 .icon-search:before {
-    content: "\e9dd";
+    content: '\e9dd';
 }
 .icon-shopping-bag:before {
-    content: "\e9e5";
+    content: '\e9e5';
 }
 .icon-account:before {
-    content: "\ea13";
+    content: '\ea13';
 }
 .icon-x:before {
-    content: "\ea23";
+    content: '\ea23';
 }

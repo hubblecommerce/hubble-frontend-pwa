@@ -33,6 +33,6 @@
 
 <script>
 export default {
-    name: 'ThePostFooter'
+    name: 'ThePostFooter',
 };
 </script>
