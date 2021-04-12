@@ -68,7 +68,11 @@ class ApiClient {
                 // that falls out of the range of 2xx
 
                 // reject errors
-                rejection = error.response.data.errors[0];
+                if (error.response.data.errors != null) {
+                    rejection = error.response.data.errors[0];
+                } else {
+                    rejection = error.response;
+                }
             } else if (error.request) {
                 // The request was made but no response was received
                 // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
