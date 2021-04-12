@@ -20,7 +20,7 @@
                 </div>
                 <div class="col-md-8 col-lg-6">
                     <div class="copyright-wrp">
-                        <div class="copyright-text text-small" v-text="'Copyright © 2020 digital.manufaktur GmbH. All rights reserved'" />
+                        <div class="copyright-text text-small" v-text="`Copyright © ${new Date().getFullYear()} digital.manufaktur GmbH. All rights reserved`" />
                     </div>
                 </div>
                 <div class="col-md-2 col-lg-3">
