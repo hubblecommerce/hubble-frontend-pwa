@@ -1,6 +1,11 @@
 <template>
     <div>
-        <component v-if="currentComponent !== null && Object.keys(currentPageData).length > 0" :is="currentComponent" :data="currentPageData" />
+        <component
+            v-if="currentComponent !== null && Object.keys(currentPageData).length > 0"
+            :is="currentComponent"
+            :data="currentPageData"
+            :key="$route.fullPath"
+        />
     </div>
 </template>
 
@@ -24,7 +29,7 @@ export default {
         };
 
         // Set GET params to POST data if set in url
-        if (route.query.length > 0) {
+        if (Object.keys(route.query).length > 0) {
             let { setReqParamFromRoute } = await import('../utils/api-parse-get-params');
             postData = setReqParamFromRoute(route, postData);
         }
@@ -36,10 +41,34 @@ export default {
                 data: postData,
             });
 
+            let currentComponent = null;
+            let currentPageData = {};
+
+            if (response.data.resourceType != null) {
+                if (response.data.resourceType === 'frontend.navigation.page') {
+                    currentComponent = 'view-category';
+                    Object.assign(currentPageData, { category: response.data.category });
+                    Object.assign(currentPageData, { cmsPage: response.data.cmsPage });
+                    Object.assign(currentPageData, { breadcrumb: response.data.breadcrumb });
+                }
+
+                if (response.data.resourceType === 'frontend.detail.page') {
+                    currentComponent = 'view-product';
+                    Object.assign(currentPageData, {
+                        product: response.data.product,
+                        configurator: response.data.configurator,
+                    });
+                }
+            }
+
             if (response.data != null) {
-                return response.data;
+                return {
+                    currentComponent: currentComponent,
+                    currentPageData: currentPageData,
+                };
             }
         } catch (e) {
+            console.log(e);
             error({
                 statusCode: e.status,
                 title: e.title,
@@ -48,27 +77,7 @@ export default {
         }
     },
 
-    data() {
-        return {
-            currentComponent: null,
-            currentPageData: {},
-        };
-    },
-
-    created() {
-        if (this.resourceType != null) {
-            if (this.resourceType === 'frontend.navigation.page') {
-                this.currentComponent = 'view-category';
-                Object.assign(this.currentPageData, { category: this.category });
-                Object.assign(this.currentPageData, { cmsPage: this.cmsPage });
-                Object.assign(this.currentPageData, { breadcrumb: this.breadcrumb });
-            }
-
-            if (this.resourceType === 'frontend.detail.page') {
-                this.currentComponent = 'view-product';
-                Object.assign(this.currentPageData, { product: this.$data.product, configurator: this.$data.configurator });
-            }
-        }
-    },
+    // Watch for $route.query.page to call Component methods (asyncData, fetch, validate, layout, etc.)
+    watchQuery: true,
 };
 </script>
