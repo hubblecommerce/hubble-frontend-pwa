@@ -224,6 +224,10 @@ General styling for cms elements
         position: relative;
         display: flex;
 
+        a {
+            width: 100%;
+        }
+
         &.is-cover {
             height: 100%;
 
