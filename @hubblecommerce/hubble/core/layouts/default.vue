@@ -81,6 +81,8 @@
             <lazy-the-footer-context v-if="loadFooter" />
         </footer>
 
+        <background-blur />
+
         <transition-expand-layer :direction="{ sm: 'bottomTop', md: 'rightLeft', lg: 'rightLeft' }">
             <div v-if="offcanvas.isActive" class="transition-expand-wrp">
                 <lazy-the-customer-context v-if="offcanvas.component === 'TheCustomerContext'" />
