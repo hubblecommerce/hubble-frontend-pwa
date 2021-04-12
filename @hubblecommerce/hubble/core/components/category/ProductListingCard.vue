@@ -128,6 +128,20 @@ export default {
             }
         },
     },
+    head() {
+        // Preload first image of listing to improve performance of hero element
+        if (this.index < 2) {
+            return {
+                link: [
+                    {
+                        rel: 'preload',
+                        as: 'image',
+                        href: this.routeUrlProductImg(800),
+                    },
+                ],
+            };
+        }
+    },
 };
 </script>
 
