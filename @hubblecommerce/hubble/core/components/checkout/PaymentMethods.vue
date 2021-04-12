@@ -231,7 +231,7 @@ export default {
 
                 this.$emit('processing', false);
                 this.$emit('payment-error', false);
-                this.$emit('payment-changed', id);
+                this.$emit('payment-changed', this.currentMethodObj);
             } catch (e) {
                 this.paymentError = e.detail;
                 this.$emit('processing', false);
@@ -362,7 +362,7 @@ export default {
         setPaymentMethodSettings: async function (payload) {
             return await new ApiClient().apiCall({
                 action: 'patch',
-                endpoint: 'stripe-payment/payment-method-settings',
+                endpoint: 'store-api/v3/stripe-payment/payment-method-settings',
                 contextToken: this.contextToken,
                 data: payload,
             });
