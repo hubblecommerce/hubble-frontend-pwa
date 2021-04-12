@@ -11,7 +11,7 @@
                 <loader />
             </div>
         </transition>
-        <div ref="pp-express-button" />
+        <div :ref="`pp-express-button${id != null ? id : ''}`" />
     </div>
 </template>
 
@@ -21,6 +21,14 @@ import apiClient from '@/utils/api-client';
 
 export default {
     name: 'PaypalExpress',
+
+    props: {
+        id: {
+            type: String,
+            required: false,
+            default: '',
+        },
+    },
 
     data() {
         return {
@@ -134,7 +142,9 @@ export default {
         },
 
         renderButton: function (paypal) {
-            return paypal.Buttons(this.getButtonConfig()).render(this.$refs['pp-express-button']);
+            return paypal
+                .Buttons(this.getButtonConfig())
+                .render(this.$refs[`pp-express-button${this.id != null ? this.id : ''}`]);
         },
 
         createScript(callback) {
