@@ -237,12 +237,7 @@ function mappingMenu(menuItems) {
         obj.name = menuItem.name;
         obj.level = menuItem.level;
         obj.id = menuItem.name;
-
-        if (menuItem.route.path === '/') {
-            obj.request_path = false;
-        } else {
-            obj.request_path = menuItem.route.path;
-        }
+        obj.request_path = menuItem.seoUrls[0].seoPathInfo;
 
         if (menuItem.children != null && menuItem.children.length > 0) {
             obj.children = mappingMenu(menuItem.children);
