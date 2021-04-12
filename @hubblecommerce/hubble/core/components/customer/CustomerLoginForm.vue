@@ -1,9 +1,5 @@
 <template>
     <div class="customer-login-form-wrp">
-        <div v-if="cartQty > 0" class="express-checkout-wrp">
-            <paypal-express />
-        </div>
-
         <form @submit.prevent="submitLoginForm" v-if="showLoginForm" class="login-form">
             <div class="headline headline-3" v-text="'I already have an account'" />
 
@@ -50,7 +46,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 import apiClient from '@/utils/api-client';
 
 export default {
