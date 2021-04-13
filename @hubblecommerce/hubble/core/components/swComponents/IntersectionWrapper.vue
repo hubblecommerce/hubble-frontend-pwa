@@ -4,7 +4,7 @@
             v-if="count != null && count >= heroSectionNumbers"
             class="intersection-wrp"
             :class="{ loading: !showBlock }"
-            :id="cmsSlot.id"
+            :id="cmsSlot._uniqueIdentifier"
         >
             <lazy-block v-if="showBlock" :content="cmsSlot" />
         </div>
@@ -37,7 +37,7 @@ export default {
 
     mounted() {
         if (this.count != null && this.count >= this.heroSectionNumbers) {
-            this.registerIntersectionObserver(`${this.cmsSlot.id}`);
+            this.registerIntersectionObserver(`${this.cmsSlot._uniqueIdentifier}`);
         }
     },
 

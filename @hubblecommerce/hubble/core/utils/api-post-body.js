@@ -33,10 +33,10 @@ const associations = {
 };
 
 const includes = {
-    cms_page_slot: ['id', 'type', 'slot', 'blockId', 'config', 'data', 'backgroundMediaMode', 'backgroundMedia'],
-    cms_page_block: ['slots', 'type', 'id', 'backgroundColor', 'backgroundMedia', 'sectionPosition'],
-    cms_page_section: ['id', 'backgroundMedia', 'blocks', 'type', 'sizingMode'],
-    cms_page: ['id', 'name', 'sections', 'type', 'config'],
+    cms_slot: ['_uniqueIdentifier', 'type', 'slot', 'blockId', 'config', 'data', 'backgroundMediaMode', 'backgroundMedia'],
+    cms_block: ['slots', 'type', '_uniqueIdentifier', 'backgroundColor', 'backgroundMedia', 'sectionPosition'],
+    cms_section: ['_uniqueIdentifier', 'backgroundMedia', 'blocks', 'type', 'sizingMode'],
+    cms_page: ['_uniqueIdentifier', 'name', 'sections', 'type', 'config'],
     product: [
         'media',
         'productReviews',

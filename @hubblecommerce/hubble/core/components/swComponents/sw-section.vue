@@ -4,13 +4,13 @@
             <div class="cms-section-sidebar-sidebar-content">
                 <client-only>
                     <div v-if="hasSidebar && $mq === 'lg'">
-                        <block v-for="sidebarSlot in sidebarSlots" :key="sidebarSlot.id" :content="sidebarSlot" />
+                        <block v-for="sidebarSlot in sidebarSlots" :key="sidebarSlot._uniqueIdentifier" :content="sidebarSlot" />
                     </div>
                 </client-only>
             </div>
 
             <div :class="elementClasses">
-                <intersection-wrapper v-for="cmsSlot in elementsSlots" :key="cmsSlot.id" :count="count" :cms-slot="cmsSlot" />
+                <intersection-wrapper v-for="cmsSlot in elementsSlots" :key="cmsSlot._uniqueIdentifier" :count="count" :cms-slot="cmsSlot" />
             </div>
         </div>
     </div>
