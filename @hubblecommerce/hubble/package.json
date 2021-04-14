@@ -22,7 +22,8 @@
         "nuxt": "^2.14.12",
         "nuxt-lazy-load": "^1.2.4",
         "nuxt-mq": "^2.0.2",
-        "v-click-outside": "^3.1.2"
+        "v-click-outside": "^3.1.2",
+        "@nuxtjs/svg": "^0.1.12"
     },
     "repository": {
         "type": "git",

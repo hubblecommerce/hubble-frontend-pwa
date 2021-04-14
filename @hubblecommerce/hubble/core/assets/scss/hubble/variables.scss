@@ -1,21 +1,22 @@
-$error-accent: #d0021b;
-$success-accent: #2db96c;
-$info-accent: #0b5460;
-$warning-accent: #856404;
+$error-accent: #d0021b !default;
+$success-accent: #2db96c !default;
+$info-accent: #0b5460 !default;
+$warning-accent: #856404 !default;
 
-$green: #5cdb95;
-$blue: #05386b;
-$gold: #d4a76f;
-$darkest-gray: #1b1b24;
-$darker-gray: #3e3e4d;
-$dark-gray: #94949e;
-$gray: #e7e8e9;
-$light-gray: #f7f7fa;
-$white: #ffffff;
+$green: #5cdb95 !default;
+$blue: #05386b !default;
+$gold: #d4a76f !default;
+$darkest-gray: #1b1b24 !default;
+$darker-gray: #3e3e4d !default;
+$dark-gray: #94949e !default;
+$gray: #e7e8e9 !default;
+$light-gray: #f7f7fa !default;
+$white: #ffffff !default;
 
 $primary: $green !default;
 $secondary: $blue !default;
 $accent: $green !default;
+$checkout: $green !default;
 $background: $white !default;
 $background-light: $light-gray !default;
 $border-color: $gray !default;
@@ -24,22 +25,31 @@ $text-light: $dark-gray !default;
 
 $font-family: 'Karla', sans-serif !default;
 
+$font-size-base: 16px !default;
+$font-size-lg: 20px !default;
+$font-size-sm: 14px !default;
+$font-size-xs: 12px !default;
+
 $border-radius: 0 !default;
 $header-height-mobile: 56px !default;
 $header-height-desktop: 72px !default;
 $header-navigation-height-desktop: 46px !default;
 
 $base-padding: 10px !default;
-$base-padding-md: 20px !default;
+$base-padding-sm: $base-padding / 2 !default;
+$base-padding-md: $base-padding * 2 !default;
+$base-padding-lg: $base-padding * 3 !default;
+$base-padding-xl: $base-padding * 4 !default;
+$base-padding-xxl: $base-padding * 5 !default;
 
-$form-max-width: 450px;
+$form-max-width: 450px !default;
 
 /* Bootstrap scss variables start */
 $container-max-widths: (
     sm: 768px,
     md: 1024px,
     lg: 1200px,
-);
+) !default;
 
 $grid-breakpoints: (
     xs: 0,

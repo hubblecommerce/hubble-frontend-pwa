@@ -156,6 +156,7 @@ export default {
 <style lang="scss">
 @import '~assets/scss/hubble/reset';
 @import '~assets/scss/hubble/variables';
+@import '~assets/scss/hubble/buttons';
 @import '~assets/scss/hubble/global';
 @import '~assets/scss/hubble/typography';
 @import '~assets/scss/hubble/icons';

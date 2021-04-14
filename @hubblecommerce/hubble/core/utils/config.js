@@ -58,4 +58,7 @@ export const defaultModules = [
     {
         name: 'cookie-universal-nuxt',
     },
+    {
+        name: '@nuxtjs/svg',
+    },
 ];

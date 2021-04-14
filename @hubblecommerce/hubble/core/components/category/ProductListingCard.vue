@@ -148,6 +148,8 @@ export default {
 <style lang="scss">
 @import '~assets/scss/hubble/variables';
 @import '~assets/scss/hubble/typography';
+@import '~assets/scss/hubble/badges';
+@import '~assets/scss/hubble/elevation';
 
 .product-card {
     display: flex;

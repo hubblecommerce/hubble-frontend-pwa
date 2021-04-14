@@ -1,0 +1,37 @@
+$badge-font-size: 14px !default;
+$badge-font-weight: 700 !default;
+$badge-line-height: 1.2 !default;
+$badge-color: $white !default;
+$badge-bg: $primary !default;
+$badge-border-radius: 12px !default;
+
+.product-badge {
+    display: inline-block;
+    min-width: 10px;
+    padding: 3px 10px;
+    font-size: $badge-font-size;
+    font-weight: $badge-font-weight;
+    line-height: $badge-line-height;
+    color: $badge-color;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    background-color: $badge-bg;
+    border-radius: $badge-border-radius;
+
+    &.badge-primary {
+        background: $primary;
+    }
+
+    &.badge-secondary {
+        background: $secondary;
+    }
+
+    &.badge-success {
+        background: $success-accent;
+    }
+
+    &.badge-danger {
+        background: $error-accent;
+    }
+}
