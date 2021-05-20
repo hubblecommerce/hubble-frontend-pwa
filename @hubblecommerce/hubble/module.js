@@ -95,8 +95,48 @@ export default async function (moduleOptions) {
         this.options.build.transpile = ['@hubblecommerce/hubble'];
     }
 
-    // https://github.com/nuxt/components#overwriting-components
-    this.options.components = [path.resolve('.hubble/components')];
+     // https://nuxtjs.org/docs/2.x/directory-structure/components
+     this.nuxt.hook('components:dirs', (dirs) => {
+        dirs.push({
+            path: path.resolve('.hubble/components/'),
+        });
+        dirs.push({
+            path: path.resolve('.hubble/components/cart'),
+        });
+        dirs.push({
+            path: path.resolve('.hubble/components/category'),
+        });
+        dirs.push({
+            path: path.resolve('.hubble/components/checkout'),
+        });
+        dirs.push({
+            path: path.resolve('.hubble/components/customer'),
+        });
+        dirs.push({
+            path: path.resolve('.hubble/components/detail'),
+        });
+        dirs.push({
+            path: path.resolve('.hubble/components/form'),
+        });
+        dirs.push({
+            path: path.resolve('.hubble/components/layout'),
+        });
+        dirs.push({
+            path: path.resolve('.hubble/components/navigation'),
+        });
+        dirs.push({
+            path: path.resolve('.hubble/components/search'),
+        });
+        dirs.push({
+            path: path.resolve('.hubble/components/swComponents'),
+        });
+        dirs.push({
+            path: path.resolve('.hubble/components/transitions'),
+        });
+        dirs.push({
+            path: path.resolve('.hubble/components/utils'),
+        });
+    });
 
     /*
      * Register nuxt.js modules
