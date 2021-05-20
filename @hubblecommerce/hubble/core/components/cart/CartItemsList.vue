@@ -4,12 +4,7 @@
             <nuxt-link :to="'/' + item.url_pds" class="col-8">
                 <div class="row">
                     <div class="col-4">
-                        <img
-                            :src="item.image"
-                            class="product-img img-minicart"
-                            alt="Product Image"
-                            :title="item.name_orig"
-                        />
+                        <img :src="item.image" class="product-img img-minicart" alt="Product Image" :title="item.name_orig" />
                     </div>
 
                     <div class="col-8">
@@ -27,14 +22,8 @@
                             </div>
 
                             <div class="row">
-                                <span
-                                    class="product-price old-price"
-                                    v-text="formatPrice(item.final_price_item.display_price_brutto)"
-                                />
-                                <span
-                                    class="product-price sale-price"
-                                    v-text="formatPrice(item.final_price_item.display_price_brutto)"
-                                />
+                                <span class="product-price old-price" v-text="formatPrice(item.final_price_item.display_price_brutto)" />
+                                <span class="product-price sale-price" v-text="formatPrice(item.final_price_item.display_price_brutto)" />
                             </div>
                         </div>
                     </div>
@@ -44,12 +33,7 @@
             <div v-if="interactive" class="col-4 actions-wrp text-right">
                 <div aria-hidden="true" class="remove-item" @click="removeItem(item)" v-text="'Remove'" />
 
-                <qty-selector
-                    :type="true"
-                    :min-qty="item.qty"
-                    :max-qty="item.stock_item.maxPurchase"
-                    @changeQty="onChangeQty(item, $event)"
-                />
+                <qty-selector :type="true" :min-qty="item.qty" :max-qty="item.stock_item.maxPurchase" @changeQty="onChangeQty(item, $event)" />
             </div>
         </div>
     </div>

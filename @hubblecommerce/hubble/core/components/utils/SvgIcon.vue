@@ -1,14 +1,10 @@
 <template>
-    <div
-        v-if="iconData != null"
-        :class="`${type} ${type}-${icon} is-${size}`"
-        v-html="iconData"
-    />
+    <div v-if="iconData != null" :class="`${type} ${type}-${icon} is-${size}`" v-html="iconData" />
 </template>
 
 <script>
 export default {
-    name: "SvgIcon",
+    name: 'SvgIcon',
 
     props: {
         icon: {
@@ -18,18 +14,18 @@ export default {
         size: {
             type: String,
             required: false,
-            default: "md",
+            default: 'md',
         },
         dir: {
             type: String,
             required: false,
-            default: "icons",
+            default: 'icons',
         },
         type: {
             type: String,
             required: false,
-            default: "icon",
-        }
+            default: 'icon',
+        },
     },
 
     data() {
@@ -44,9 +40,7 @@ export default {
 
     methods: {
         getIcon: async function () {
-            const imp = await import(
-                `~/assets/${this.dir}/${this.icon}.svg?raw`
-            );
+            const imp = await import(`~/assets/${this.dir}/${this.icon}.svg?raw`);
 
             return imp.default;
         },

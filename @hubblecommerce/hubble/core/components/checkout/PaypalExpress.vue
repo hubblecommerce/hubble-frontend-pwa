@@ -110,20 +110,7 @@ export default {
             scriptLoaded: false,
             loading: false,
             callbacks: [],
-            availableAPMs: [
-                'card',
-                'credit',
-                'bancontact',
-                'blik',
-                'eps',
-                'giropay',
-                'ideal',
-                'mybank',
-                'p24',
-                'sepa',
-                'sofort',
-                'venmo',
-            ],
+            availableAPMs: ['card', 'credit', 'bancontact', 'blik', 'eps', 'giropay', 'ideal', 'mybank', 'p24', 'sepa', 'sofort', 'venmo'],
             error: null,
         };
     },
@@ -155,9 +142,7 @@ export default {
         },
 
         renderButton: function (paypal) {
-            return paypal
-                .Buttons(this.getButtonConfig())
-                .render(this.$refs[`pp-express-button${this.id != null ? this.id : ''}`]);
+            return paypal.Buttons(this.getButtonConfig()).render(this.$refs[`pp-express-button${this.id != null ? this.id : ''}`]);
         },
 
         createScript(callback) {
@@ -213,10 +198,7 @@ export default {
 
             if (this.options.useAlternativePaymentMethods !== undefined && !this.options.useAlternativePaymentMethods) {
                 config += `&disable-funding=${this.availableAPMs.join(',')}`;
-            } else if (
-                this.options.disabledAlternativePaymentMethods !== undefined &&
-                this.options.disabledAlternativePaymentMethods.length > 0
-            ) {
+            } else if (this.options.disabledAlternativePaymentMethods !== undefined && this.options.disabledAlternativePaymentMethods.length > 0) {
                 config += `&disable-funding=${this.options.disabledAlternativePaymentMethods.join(',')}`;
             }
 

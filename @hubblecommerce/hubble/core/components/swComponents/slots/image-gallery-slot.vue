@@ -155,7 +155,7 @@ export default {
         this.$nextTick(() => {
             this.activeImageIndex = 0;
 
-            // @TODO replace tiny slider with hooper 
+            // @TODO replace tiny slider with hooper
             this.$refs.tinySlider.slider.events.on('indexChanged', (info) => {
                 this.activeImageIndex = info.index - 2;
 

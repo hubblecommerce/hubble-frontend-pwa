@@ -9,11 +9,7 @@
                 <div class="overlay-headline" v-text="'Navigation'" />
             </div>
             <div class="row">
-                <mobile-menu
-                    v-if="menu !== null && !isLoading"
-                    :data-item="{ name: 'root', children: menu }"
-                    :depth="0"
-                />
+                <mobile-menu v-if="menu !== null && !isLoading" :data-item="{ name: 'root', children: menu }" :depth="0" />
                 <loader v-if="isLoading" />
             </div>
         </div>

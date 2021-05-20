@@ -1,22 +1,22 @@
-$alert-padding:               15px !default;
-$alert-border-radius:         2px !default;
-$alert-link-font-weight:      bold !default;
+$alert-padding: 15px !default;
+$alert-border-radius: 2px !default;
+$alert-link-font-weight: bold !default;
 
-$alert-success-bg:            #dff0d8 !default;
-$alert-success-text:          #3c763d !default;
-$alert-success-border:        darken(adjust-hue($alert-success-bg, -10), 5%) !default;;
+$alert-success-bg: #dff0d8 !default;
+$alert-success-text: #3c763d !default;
+$alert-success-border: darken(adjust-hue($alert-success-bg, -10), 5%) !default;
 
-$alert-info-bg:               #d9edf7 !default;
-$alert-info-text:             #31708f !default;
-$alert-info-border:           darken(adjust-hue($alert-info-bg, -10), 7%) !default;
+$alert-info-bg: #d9edf7 !default;
+$alert-info-text: #31708f !default;
+$alert-info-border: darken(adjust-hue($alert-info-bg, -10), 7%) !default;
 
-$alert-warning-bg:            #fcf8e3 !default;
-$alert-warning-text:          #8a6d3b !default;
-$alert-warning-border:        darken(adjust-hue($alert-warning-bg, -10), 5%) !default;
+$alert-warning-bg: #fcf8e3 !default;
+$alert-warning-text: #8a6d3b !default;
+$alert-warning-border: darken(adjust-hue($alert-warning-bg, -10), 5%) !default;
 
-$alert-danger-bg:             #f2dede !default;
-$alert-danger-text:           #a94442 !default;
-$alert-danger-border:         darken(adjust-hue($alert-danger-bg, -10), 5%) !default;
+$alert-danger-bg: #f2dede !default;
+$alert-danger-text: #a94442 !default;
+$alert-danger-border: darken(adjust-hue($alert-danger-bg, -10), 5%) !default;
 
 @mixin alert-variant($background, $border, $text-color) {
     color: $text-color;

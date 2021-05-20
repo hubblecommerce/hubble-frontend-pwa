@@ -3,13 +3,7 @@
         <div class="headline headline-3" v-text="'Shipping methods'" />
 
         <hbl-checkbox v-for="method in shippingMethods" v-if="method.active" :key="method.id" class="method-wrp">
-            <input
-                :id="'shipping-option-' + method.id"
-                v-model="currentMethod"
-                type="radio"
-                :value="method.id"
-                :disabled="processingCheckout"
-            />
+            <input :id="'shipping-option-' + method.id" v-model="currentMethod" type="radio" :value="method.id" :disabled="processingCheckout" />
             <label :for="'shipping-option-' + method.id" class="method-label">
                 <span class="name" v-text="method.translated.name" />
                 <span class="description" v-text="method.translated.description" />

@@ -2,25 +2,13 @@
     <div :class="elementClass">
         <div v-if="verticalAlign" class="cms-element-alignment" :class="verticalAlign">
             <div class="cms-image-container" :class="setDisplayMode" :style="minHeight">
-                <img
-                    v-if="imgUrl != null"
-                    class="cms-image"
-                    :class="`cms-image ${setDisplayMode}`"
-                    :src="imgUrl"
-                    :alt="alt"
-                />
+                <img v-if="imgUrl != null" class="cms-image" :class="`cms-image ${setDisplayMode}`" :src="imgUrl" :alt="alt" />
             </div>
         </div>
 
         <template v-else>
             <div class="cms-image-container" :class="setDisplayMode" :style="minHeight">
-                <img
-                    v-if="imgUrl != null"
-                    class="cms-image"
-                    :class="`cms-image ${setDisplayMode}`"
-                    :src="imgUrl"
-                    :alt="alt"
-                />
+                <img v-if="imgUrl != null" class="cms-image" :class="`cms-image ${setDisplayMode}`" :src="imgUrl" :alt="alt" />
             </div>
         </template>
     </div>
@@ -70,9 +58,7 @@ export default {
         minHeight() {
             if (this.content.config.displayMode.value === 'cover') {
                 return {
-                    minHeight: `${this.content.config.minHeight.value}${
-                        this.content.config.minHeight.value.includes('px') ? '' : 'px'
-                    }`,
+                    minHeight: `${this.content.config.minHeight.value}${this.content.config.minHeight.value.includes('px') ? '' : 'px'}`,
                 };
             }
 

@@ -21,9 +21,7 @@ const asyncCopyApiTypeDirs = async (sourceDirs, targetDir, apiType) => {
             await fse.copy(path.join(targetDir, sourceDir, apiType), path.join(targetDir, sourceDir));
 
             const apiSpecificSubfolders = await listAllDirs(path.join(targetDir, sourceDir));
-            await Promise.all(
-                apiSpecificSubfolders.map(async (__apiSpecificSubfolder) => await fse.remove(__apiSpecificSubfolder))
-            );
+            await Promise.all(apiSpecificSubfolders.map(async (__apiSpecificSubfolder) => await fse.remove(__apiSpecificSubfolder)));
         })
     );
 };
@@ -95,8 +93,8 @@ export default async function (moduleOptions) {
         this.options.build.transpile = ['@hubblecommerce/hubble'];
     }
 
-     // https://nuxtjs.org/docs/2.x/directory-structure/components
-     this.nuxt.hook('components:dirs', (dirs) => {
+    // https://nuxtjs.org/docs/2.x/directory-structure/components
+    this.nuxt.hook('components:dirs', (dirs) => {
         dirs.push({
             path: path.resolve('.hubble/components/'),
         });
@@ -192,60 +190,58 @@ export default async function (moduleOptions) {
 
         const excludedDirectories = [...dirBlacklist.map((__blacklistedDir) => `${rootDir}/${__blacklistedDir}/**`)];
 
-        chokidar
-            .watch(`${rootDir}`, { ignoreInitial: true, ignored: excludedDirectories })
-            .on('all', async (event, filePath) => {
-                let newDestination = '';
+        chokidar.watch(`${rootDir}`, { ignoreInitial: true, ignored: excludedDirectories }).on('all', async (event, filePath) => {
+            let newDestination = '';
 
-                // Build file destination for local modules mode (Contribution Setup)
-                if (filePath.includes('/modules/')) {
-                    let moduleCoreDir = filePath.match(/@hubblecommerce\/hubble\/core\//);
+            // Build file destination for local modules mode (Contribution Setup)
+            if (filePath.includes('/modules/')) {
+                let moduleCoreDir = filePath.match(/@hubblecommerce\/hubble\/core\//);
 
-                    if (moduleCoreDir != null) {
-                        let relativePath = filePath.substr(moduleCoreDir[0].length + moduleCoreDir.index);
+                if (moduleCoreDir != null) {
+                    let relativePath = filePath.substr(moduleCoreDir[0].length + moduleCoreDir.index);
 
-                        newDestination = path.join(targetDir, relativePath);
+                    newDestination = path.join(targetDir, relativePath);
+                }
+            } else {
+                newDestination = toTargetPath(filePath);
+            }
+
+            if (newDestination === '') {
+                return;
+            }
+
+            // Check for api specific dirs and resolve them
+            //const hasApiSpecificSubfolders = apiTypeDirs.filter((__apiTypeDir) =>
+            //    newDestination.includes(__apiTypeDir)
+            //);
+            //if (hasApiSpecificSubfolders.length !== 0) {
+            //    if (newDestination.includes(`/${process.env.API_TYPE}/`)) {
+            //        newDestination = newDestination.replace(`/${process.env.API_TYPE}/`, '/');
+            //    } else {
+            //        return;
+            //    }
+            //}
+
+            if (event === 'add' || event === 'change') {
+                await fse.copy(filePath, newDestination);
+            }
+
+            if (event === 'unlink') {
+                const modulePath = filePath.replace(rootDir, baseDir);
+
+                fse.pathExists(modulePath, async (err, exists) => {
+                    if (exists) {
+                        // copy from module
+                        await fse.copy(modulePath, newDestination);
+                    } else if (!exists) {
+                        // path does not exist in module just remove from srcDir
+                        await fse.remove(newDestination);
+                    } else if (err) {
+                        console.log('err occurred: ', err);
                     }
-                } else {
-                    newDestination = toTargetPath(filePath);
-                }
-
-                if (newDestination === '') {
-                    return;
-                }
-
-                // Check for api specific dirs and resolve them
-                //const hasApiSpecificSubfolders = apiTypeDirs.filter((__apiTypeDir) =>
-                //    newDestination.includes(__apiTypeDir)
-                //);
-                //if (hasApiSpecificSubfolders.length !== 0) {
-                //    if (newDestination.includes(`/${process.env.API_TYPE}/`)) {
-                //        newDestination = newDestination.replace(`/${process.env.API_TYPE}/`, '/');
-                //    } else {
-                //        return;
-                //    }
-                //}
-
-                if (event === 'add' || event === 'change') {
-                    await fse.copy(filePath, newDestination);
-                }
-
-                if (event === 'unlink') {
-                    const modulePath = filePath.replace(rootDir, baseDir);
-
-                    fse.pathExists(modulePath, async (err, exists) => {
-                        if (exists) {
-                            // copy from module
-                            await fse.copy(modulePath, newDestination);
-                        } else if (!exists) {
-                            // path does not exist in module just remove from srcDir
-                            await fse.remove(newDestination);
-                        } else if (err) {
-                            console.log('err occurred: ', err);
-                        }
-                    });
-                }
-            });
+                });
+            }
+        });
     }
 }
 

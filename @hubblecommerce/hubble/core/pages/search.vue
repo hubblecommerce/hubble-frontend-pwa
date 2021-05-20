@@ -8,22 +8,14 @@
     <div v-else class="catalog-search-wrp container">
         <div class="row">
             <h1 class="col-12" v-text="'Search'" />
-            <div
-                class="col-12 headline-3"
-                v-text="`We have found ${$data.total} results for: ${$data.currentFilters.search}`"
-            />
+            <div class="col-12 headline-3" v-text="`We have found ${$data.total} results for: ${$data.currentFilters.search}`" />
         </div>
         <div class="row">
             <div class="toolbar-top col-12">
                 <product-listing-pagination :paginationItemsTotal="$data.total" :paginationPerPage="$data.limit" />
             </div>
         </div>
-        <product-listing
-            v-if="products != null"
-            :data-items="products"
-            :total="$data.total"
-            :listing-class="'col-12 col-sm-12 col-md-4 col-lg-3'"
-        />
+        <product-listing v-if="products != null" :data-items="products" :total="$data.total" :listing-class="'col-12 col-sm-12 col-md-4 col-lg-3'" />
         <div class="row">
             <div class="toolbar-bottom col-12">
                 <product-listing-pagination :paginationItemsTotal="$data.total" :paginationPerPage="$data.limit" />
