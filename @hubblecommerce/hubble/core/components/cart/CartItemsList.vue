@@ -1,43 +1,68 @@
 <template>
     <div class="cart-items-list-wrp container">
         <div v-for="item in items" :key="item.id" class="row cart-item">
-            <nuxt-link :to="getProductUrl(item.url_pds)" class="col-8">
-                <div class="row">
-                    <div class="col-4">
-                        <picture>
-                            <source media="(min-width: 768px)" :srcset="item.image" />
-                            <img :src="getMediaUrl(item.thumbnails, 400)" class="product-img img-minicart" alt="Product Image" :title="item.name_orig" />
-                        </picture>
-                    </div>
+            <template v-if="item.type === 'product'">
+                <nuxt-link :to="getProductUrl(item.url_pds)" class="col-8">
+                    <div class="row">
+                        <div class="col-4">
+                            <picture>
+                                <source media="(min-width: 768px)" :srcset="item.image" />
+                                <img :src="getMediaUrl(item.thumbnails, 400)" class="product-img img-minicart" alt="Product Image" :title="item.name_orig" />
+                            </picture>
+                        </div>
 
-                    <div class="col-8">
-                        <div class="container">
-                            <div class="row">
-                                <span class="product-name" v-text="item.name_orig" />
-                            </div>
+                        <div class="col-8">
+                            <div class="container">
+                                <div class="row">
+                                    <span class="product-name" v-text="item.name_orig" />
+                                </div>
 
-                            <div class="row">
-                                <ul class="selected-variants-wrp">
-                                    <li v-for="(variant, key) in item.variants" :key="key" class="selected-variants">
-                                        {{ variant.label }}: {{ variant.value_label }}
-                                    </li>
-                                </ul>
-                            </div>
+                                <div class="row">
+                                    <ul class="selected-variants-wrp">
+                                        <li v-for="(variant, key) in item.variants" :key="key" class="selected-variants">
+                                            {{ variant.label }}: {{ variant.value_label }}
+                                        </li>
+                                    </ul>
+                                </div>
 
-                            <div class="row">
-                                <span class="product-price old-price" v-text="formatPrice(item.final_price_item.display_price_brutto)" />
-                                <span class="product-price sale-price" v-text="formatPrice(item.final_price_item.display_price_brutto)" />
+                                <div class="row">
+                                    <span class="product-price old-price" v-text="formatPrice(item.final_price_item.display_price_brutto)" />
+                                    <span class="product-price sale-price" v-text="formatPrice(item.final_price_item.display_price_brutto)" />
+                                </div>
                             </div>
                         </div>
                     </div>
+                </nuxt-link>
+
+                <div v-if="interactive" class="col-4 actions-wrp text-right">
+                    <div aria-hidden="true" class="remove-item" @click="removeItem(item)" v-text="'Remove'" />
+
+                    <qty-selector :type="true" :min-qty="item.qty" :max-qty="item.stock_item.maxPurchase" @changeQty="onChangeQty(item, $event)" />
                 </div>
-            </nuxt-link>
+            </template>
 
-            <div v-if="interactive" class="col-4 actions-wrp text-right">
-                <div aria-hidden="true" class="remove-item" @click="removeItem(item)" v-text="'Remove'" />
+            <template v-if="item.type === 'promotion'">
+                <div class="cart-item-headline">
+                    <div class="cart-item-img">
+                        <svg-icon icon="promotion" />
+                    </div>
 
-                <qty-selector :type="true" :min-qty="item.qty" :max-qty="item.stock_item.maxPurchase" @changeQty="onChangeQty(item, $event)" />
-            </div>
+                    <div class="cart-item-name">
+                        <div v-text="item.name_orig" />
+                    </div>
+
+                    <div v-if="interactive" class="remove-item" @click="removeItem(item)">
+                        <span v-text="'Löschen'"></span>
+                        <svg-icon icon="x" />
+                    </div>
+                </div>
+
+                <div class="cart-item-footer">
+                    <div class="cart-item-price">
+                        <div class="product-price promotion" v-text="formatPrice(item.final_price_item.display_price_brutto)" />
+                    </div>
+                </div>
+            </template>
         </div>
     </div>
 </template>
@@ -161,13 +186,23 @@ $hbl-cart-item-image-size-md: 100px;
     padding-top: 10px;
     padding-bottom: 10px;
 
-    &:last-child {
-        border-bottom: none;
-    }
-
     img {
         margin: auto;
         display: block;
+    }
+
+    .cart-item-img {
+        display: block;
+        width: $hbl-cart-item-image-size;
+        margin-right: 12px;
+
+        img {
+            margin: auto;
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
     }
 
     .actions-wrp {
@@ -262,9 +297,24 @@ $hbl-cart-item-image-size-md: 100px;
 @media (min-width: 768px) {
     .cart-item {
         padding: 25px 0;
+        margin: 0;
 
         &.coupon {
             padding: 15px;
+        }
+
+        .cart-item-headline {
+            position: relative;
+            padding-right: 60px;
+            padding-left: $hbl-cart-item-image-size-md + 10;
+
+            .cart-item-img {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: $hbl-cart-item-image-size-md;
+                height: auto;
+            }
         }
     }
 }

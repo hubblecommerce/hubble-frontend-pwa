@@ -189,7 +189,7 @@ $overlay-header-height-desktop: 50px;
         border-left: 1px solid $border-color;
     }
     .expand-content {
-        height: calc(100vh - 80px);
+        height: 100vh;
     }
     .overlay-header {
         height: $overlay-header-height-desktop;

@@ -6,29 +6,36 @@
                     <div class="hidden-link-name" v-text="'Close'" />
                     <svg-icon icon="x" />
                 </hbl-button>
-                <div class="overlay-headline" v-text="'Cart'" />
+                <div class="overlay-headline">
+                    <span v-text="'Cart'" />
+                    <span v-if="qty === 1" class="cart-counter" v-text="`(${qty} Item)`" />
+                    <span v-if="qty > 1" class="cart-counter" v-text="`(${qty} Items)`" />
+                </div>
             </div>
 
-            <flash-message />
-
             <template v-if="qty > 0 && !isLoading">
-                <div class="row">
+                <flash-message />
+
+                <div class="cart-counter-wrp">
                     <div v-if="qty === 1" class="col-12 qty-summary" v-text="`${qty} Item`" />
                     <div v-if="qty > 1" class="col-12 qty-summary" v-text="`${qty} Items`" />
-
+                </div>
+                <div class="row overlay-content">
                     <lazy-cart-items-list :interactive="interactive" :items="products" v-on:items-list-changed="setCartData($event)" />
+
+                    <promotion-input v-on:promotion-code-added="setCartData($event)" />
 
                     <cart-totals :totals="totals" />
 
                     <template v-if="interactive">
                         <div class="container">
-                            <div class="row">
-                                <div class="col-12 col-md-6">
+                            <div class="action-row">
+                                <div class="button-wrp">
                                     <hbl-button class="shopping-button button-secondary" @click.native="hideMenu">
                                         {{ 'Keep shopping' }}
                                     </hbl-button>
                                 </div>
-                                <div class="col-12 col-md-6">
+                                <div class="button-wrp">
                                     <hbl-button class="checkout-btn button-primary" @click.native="checkoutCart">
                                         {{ 'Checkout' }}
                                     </hbl-button>
@@ -59,7 +66,7 @@
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex';
 import apiClient from '@/utils/api-client';
-import { mappingCartProduct } from '@/utils/api-mapping-helper';
+import { mappingCartProduct, mappingCartPromotion } from '@/utils/api-mapping-helper';
 
 export default {
     name: 'CartContext',
@@ -124,6 +131,7 @@ export default {
                 const response = await new apiClient().apiCall({
                     action: 'post',
                     endpoint: 'store-api/v3/checkout/cart',
+                    headers: [{ 'sw-include-seo-urls': true }],
                     contextToken: this.contextToken,
                 });
                 this.isLoading = false;
@@ -144,8 +152,12 @@ export default {
             this.qty = 0;
 
             products.forEach((product) => {
-                mappedProducts.push(mappingCartProduct(product));
-                this.qty = this.qty + product.quantity;
+                if (product.type === 'product') {
+                    mappedProducts.push(mappingCartProduct(product));
+                    this.qty = this.qty + product.quantity;
+                } else if (product.type === 'promotion') {
+                    mappedProducts.push(mappingCartPromotion(product));
+                }
             });
 
             return mappedProducts;
@@ -226,7 +238,6 @@ export default {
         line-height: 17px;
         font-weight: 600;
         padding: 12px 15px;
-        border-bottom: 1px solid $border-color;
     }
 
     .separator {
@@ -240,8 +251,25 @@ export default {
     .checkout-btn,
     .shopping-button {
         width: 100%;
-        margin-bottom: 20px;
     }
+
+    .shopping-button {
+        display: none;
+    }
+
+    .checkout-btn {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+    }
+}
+
+.cart-counter-wrp {
+    margin-bottom: 10px;
+}
+
+.overlay-content {
+    padding-bottom: 40px;
 }
 
 .loader-wrp {
@@ -253,8 +281,51 @@ export default {
     height: 70vh;
 }
 
+.overlay-headline {
+    .cart-counter {
+        display: none;
+    }
+}
+
 /* Tablet */
 @media (min-width: 768px) {
+    .minicart-wrapper {
+        .expand-content {
+            .overlay-headline {
+                .cart-counter {
+                    display: inline;
+                }
+            }
+
+            .overlay-content {
+                padding: 30px 0 50px;
+                max-height: calc(100vh - 50px);
+                overflow-y: auto;
+            }
+        }
+
+        .shopping-button {
+            display: block;
+        }
+
+        .checkout-btn {
+            position: relative;
+        }
+    }
+
+    .cart-counter-wrp {
+        display: none;
+    }
+
+    .action-row {
+        display: flex;
+        margin: 0 -5px;
+
+        .button-wrp {
+            width: 50%;
+            margin: 0 5px;
+        }
+    }
 }
 
 /* Desktop */

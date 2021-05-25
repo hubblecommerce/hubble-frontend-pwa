@@ -269,6 +269,21 @@ function mappingCartProduct(product) {
                 value_label: option.option,
             };
         }),
+        type: product.type
+    };
+}
+
+function mappingCartPromotion(promotion) {
+    return {
+        name_orig: promotion.label,
+        id: promotion.id,
+        referencedId: promotion.referencedId,
+        qty: promotion.quantity,
+        final_price_item: {
+            display_price_brutto: promotion.price.unitPrice,
+            tax: promotion.price.calculatedTaxes,
+        },
+        type: promotion.type,
     };
 }
 
@@ -312,4 +327,13 @@ function mappingSearchSuggestProducts(products) {
     });
 }
 
-export { mappingCategory, mappingBreadcrumb, mappingCategoryProducts, mappingProduct, mappingCartProduct, mappingMenu, mappingSearchSuggestProducts };
+export {
+    mappingCategory,
+    mappingBreadcrumb,
+    mappingCategoryProducts,
+    mappingProduct,
+    mappingCartProduct,
+    mappingMenu,
+    mappingCartPromotion,
+    mappingSearchSuggestProducts
+};
