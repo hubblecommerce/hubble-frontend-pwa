@@ -49,9 +49,11 @@ $hbl-select-hover-border: 1px solid $darker-gray;
     background: $hbl-select-background-color;
 
     &:after {
-        content: '\e93f';
-        font-family: 'icons';
-        font-size: 22px;
+        content: '';
+        background-image:  url("data:image/svg+xml,%3Csvg height='20' viewBox='0 0 20 20' width='20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23212a49' fill-rule='evenodd'%3E%3Cpath d='m3.29289322 6.29289322c.36048396-.36048396.92771502-.3882135 1.32000622-.08318861l.09420734.08318861 5.29289322 5.29210678 5.2928932-5.29210678c.360484-.36048396.927715-.3882135 1.3200062-.08318861l.0942074.08318861c.3604839.36048396.3882135.92771502.0831886 1.32000622l-.0831886.09420734-6 6.00000002c-.360484.3604839-.92771504.3882135-1.32000624.0831886l-.09420734-.0831886-6-6.00000002c-.39052429-.39052429-.39052429-1.02368927 0-1.41421356z' fill='%231b1b24' fill-rule='nonzero'/%3E%3C/g%3E%3C/svg%3E%0A");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 16px;
         color: $hbl-select-label-color;
 
         position: absolute;
