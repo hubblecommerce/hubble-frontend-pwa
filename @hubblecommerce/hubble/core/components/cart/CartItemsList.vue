@@ -1,10 +1,13 @@
 <template>
     <div class="cart-items-list-wrp container">
         <div v-for="item in items" :key="item.id" class="row cart-item">
-            <nuxt-link :to="'/' + item.url_pds" class="col-8">
+            <nuxt-link :to="getProductUrl(item.url_pds)" class="col-8">
                 <div class="row">
                     <div class="col-4">
-                        <img :src="item.image" class="product-img img-minicart" alt="Product Image" :title="item.name_orig" />
+                        <picture>
+                            <source media="(min-width: 768px)" :srcset="item.image" />
+                            <img :src="getMediaUrl(item.thumbnails, 400)" class="product-img img-minicart" alt="Product Image" :title="item.name_orig" />
+                        </picture>
                     </div>
 
                     <div class="col-8">
@@ -120,6 +123,27 @@ export default {
         getStockQtyOfVariant: function (item) {
             // If product has no variants return 10
             return 10;
+        },
+        getMediaUrl: function (medium, width) {
+            let url = '';
+
+             if (width != null && medium != null) {
+                medium.forEach((thumbnail) => {
+                    if (thumbnail.width === width) {
+                        url = thumbnail.url;
+                    }
+                });
+            }
+
+            return url;
+        },
+        getProductUrl: function (url) {
+            let path = '';
+            if (url != null) {
+                path = url;
+            }
+
+            return `/${path}`;
         },
     },
 };
