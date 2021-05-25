@@ -4,7 +4,7 @@
             <div class="error-msg" v-text="error" />
         </div>
         <transition name="fade">
-            <loader v-if="!scriptLoaded" />
+            <loader v-if="!scriptLoaded && !error" />
         </transition>
         <transition name="fade">
             <div v-if="loading" class="fullscreen-loader-wrp">
@@ -122,6 +122,11 @@ export default {
     },
 
     mounted() {
+        if (!this.options.clientId || this.options.clientId === '') {
+            this.error = 'PayPal Express: No ClientID defined.'
+            return;
+        }
+        
         this.createButton();
     },
 
