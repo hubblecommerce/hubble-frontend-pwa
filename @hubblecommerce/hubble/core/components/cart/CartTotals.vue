@@ -1,22 +1,24 @@
 <template>
-    <div class="container cart-totals">
-        <div class="row cart-total-item cart-total-subtotal">
-            <div class="col-6" v-text="'Subtotal'" />
-            <div class="col-6 value" v-text="formatPrice(totals.subTotals)" />
-        </div>
+    <div class="container">
+        <div class="cart-totals">
+            <div class="row cart-total-item cart-total-subtotal">
+                <div class="col-6" v-text="'Subtotal'" />
+                <div class="col-6 value" v-text="formatPrice(totals.subTotals)" />
+            </div>
 
-        <div class="row cart-total-item cart-total-shipping">
-            <div class="col-6" v-text="'Shipping'" />
-            <div class="col-6 value" v-text="totals.shippingCosts === 0 ? '-' : formatPrice(totals.shippingCosts)" />
-        </div>
+            <div class="row cart-total-item cart-total-shipping">
+                <div class="col-6" v-text="'Shipping'" />
+                <div class="col-6 value" v-text="formatPrice(totals.shippingCosts)" />
+            </div>
 
-        <div class="row cart-total-item cart-total-totals">
-            <div class="col-6" v-text="'Totals'" />
-            <div class="col-6 value" v-text="formatPrice(totals.totals)" />
-        </div>
+            <div class="row cart-total-item cart-total-totals">
+                <div class="col-6" v-text="'Totals'" />
+                <div class="col-6 value" v-text="formatPrice(totals.totals)" />
+            </div>
 
-        <div class="row cart-total-item cart-tax">
-            <div class="col-12 value" v-text="`Includes ${formatPrice(totals.tax[0].tax)} (${totals.tax[0].taxRate}% VAT)`" />
+            <div class="row cart-total-item cart-tax">
+                <div class="col-12 value" v-text="`Includes ${formatPrice(totals.tax[0].tax)} (${totals.tax[0].taxRate}% VAT)`" />
+            </div>
         </div>
     </div>
 </template>
