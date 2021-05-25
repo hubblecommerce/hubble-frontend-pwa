@@ -18,22 +18,7 @@
 
                     <lazy-cart-items-list :interactive="interactive" :items="products" v-on:items-list-changed="setCartData($event)" />
 
-                    <div class="totals container">
-                        <div class="row">
-                            <div class="col-6" v-text="'Subtotal'" />
-                            <div class="col-6 value" v-text="formatPrice(totals.subTotals)" />
-                        </div>
-
-                        <div class="row">
-                            <div class="col-6" v-text="'Shipping'" />
-                            <div class="col-6 value" v-text="formatPrice(totals.shippingCosts)" />
-                        </div>
-
-                        <div class="row">
-                            <div class="col-6" v-text="'Totals'" />
-                            <div class="col-6 value" v-text="formatPrice(totals.totals)" />
-                        </div>
-                    </div>
+                    <cart-totals :totals="totals" />
 
                     <template v-if="interactive">
                         <div class="container">
@@ -170,6 +155,7 @@ export default {
                 subTotals: data.price.positionPrice,
                 totals: data.price.totalPrice,
                 shippingCosts: data.deliveries.length > 0 ? data.deliveries[0].shippingCosts.totalPrice : 0,
+                tax: data.price.calculatedTaxes
             };
         },
         checkoutCart: function () {
@@ -181,15 +167,6 @@ export default {
                     this.hideMenu();
                 }
             );
-        },
-        formatPrice: function (price) {
-            const formatter = new Intl.NumberFormat('de-DE', {
-                style: 'currency',
-                currency: 'EUR',
-                minimumFractionDigits: 2,
-            });
-
-            return formatter.format(price);
         },
         hideMenu: function () {
             this.hideOffcanvasAction();
@@ -258,26 +235,6 @@ export default {
 
     .no-items {
         margin: 0 !important;
-    }
-
-    .totals {
-        background: $light-gray;
-        padding: 30px 50px;
-        margin-bottom: 20px;
-
-        .row {
-            margin-bottom: 10px;
-
-            &:last-child {
-                padding-top: 10px;
-                margin-bottom: 0;
-                font-weight: $font-weight-bold;
-            }
-        }
-
-        .value {
-            text-align: right;
-        }
     }
 
     .checkout-btn,
