@@ -268,16 +268,15 @@ $hbl-cart-item-image-size-md: 100px;
         @include font-size($text-font-sizes);
     }
 
-    .product-price,
-    .product-qty,
-    .separator {
+    .product-price {
         @include font-size($text-font-sizes);
         font-weight: $font-weight-bold;
+        
+        &.promotion {
+            color: $green;
+        }
     }
 
-    .product-price.promotion {
-        color: $green;
-    }
 
     .old-price {
         font-weight: 400;
@@ -288,17 +287,6 @@ $hbl-cart-item-image-size-md: 100px;
             margin-left: 15px;
         }
     }
-
-    &.coupon {
-        display: flex;
-        justify-content: space-between;
-        border-bottom: none;
-
-        .coupon-val {
-            min-width: 100px;
-            text-align: right;
-        }
-    }
 }
 
 /* Tablet */
@@ -306,10 +294,6 @@ $hbl-cart-item-image-size-md: 100px;
     .cart-item {
         padding: 25px 0;
         margin: 0;
-
-        &.coupon {
-            padding: 15px;
-        }
     }
 }
 </style>
