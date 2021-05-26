@@ -26,8 +26,8 @@
                                 </div>
 
                                 <div class="row">
-                                    <span class="product-price old-price" v-text="formatPrice(item.final_price_item.display_price_brutto)" />
-                                    <span class="product-price sale-price" v-text="formatPrice(item.final_price_item.display_price_brutto)" />
+                                    <span v-if="item.final_price_item.special_price" class="product-price old-price" v-text="formatPrice(item.final_price_item.special_price)" />
+                                    <span class="product-price" :class="{'sale-price': item.final_price_item.special_price}" v-text="formatPrice(item.final_price_item.display_price_brutto)" />
                                 </div>
                             </div>
                         </div>
