@@ -42,18 +42,13 @@ function mappingCategoryProducts(products) {
         obj.type = product.sw;
 
         if (product.markAsTopseller != null) {
-            obj.bestseller = product.markAsTopseller;
+            obj.markAsTopseller = product.markAsTopseller;
         }
         if (product.isNew != null) {
-            obj.new = product.isNew;
+            obj.isNew = product.isNew;
         }
 
-        obj.image = '';
-        if (product.cover != null) {
-            obj.image = product.cover.media;
-        } else {
-            // Todo: if not image isset insert placeholder image
-        }
+        obj.cover = product.cover;
 
         obj.name = product.translated.name;
         obj.description = product.translated.description;
@@ -66,11 +61,7 @@ function mappingCategoryProducts(products) {
         }
 
         if (product.seoUrls !== null) {
-            product.seoUrls.forEach((seoUrl) => {
-                if (seoUrl.isCanonical) {
-                    obj.url_pds = seoUrl.seoPathInfo;
-                }
-            });
+            obj.seoUrls = product.seoUrls;
         }
 
         obj.stock_item = {
@@ -78,6 +69,8 @@ function mappingCategoryProducts(products) {
             is_in_stock: product.available,
         };
 
+        obj.calculatedPrice = product.calculatedPrice;
+        obj.calculatedListingPrice = product.calculatedListingPrice;
         obj.fromPrice = product.calculatedListingPrice.from;
 
         if (product.calculatedPrice.listPrice !== null) {
@@ -151,7 +144,7 @@ function mappingProduct(payload) {
     if (product.seoUrls.length > 0) {
         obj.url_pds = product.seoUrls[product.seoUrls.length - 1].seoPathInfo;
     } else {
-        obj.url_pds = '';
+        obj.url_pds = 'detail/' + product.id;
     }
 
     obj.stock_item = {

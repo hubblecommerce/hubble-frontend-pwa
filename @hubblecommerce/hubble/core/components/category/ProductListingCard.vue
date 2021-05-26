@@ -4,15 +4,16 @@
             <div class="card-media">
                 <div class="actions">
                     <div class="badge-wrp">
-                        <div class="badge sale" v-text="'Sale'" />
-                        <div class="badge new" v-text="'New'" />
+                        <div v-if="itemData.calculatedPrice.listPrice" class="badge sale" v-text="'Sale'" />
+                        <div v-if="itemData.isNew" class="badge new" v-text="'New'" />
+                        <div v-if="itemData.markAsTopseller" class="badge bestseller" v-text="'Bestseller'" />
                     </div>
                 </div>
 
-                <template v-if="index < 2">
-                    <img data-not-lazy :src="routeUrlProductImg(800)" :alt="itemData.name" />
+                <template v-if="index < 4">
+                    <img :src="getMediaUrl(800)" :alt="itemData.name" />
                 </template>
-                <img v-else :src="routeUrlProductImg(800)" :alt="itemData.name" />
+                <img v-else v-lazy-load :src="getMediaUrl(800)" :alt="itemData.name" />
             </div>
 
             <div class="product-card-info-wrp-link">
@@ -20,8 +21,8 @@
                     <div v-if="itemData.name !== null" class="product-name" v-text="itemData.name" />
 
                     <div class="price-box price-excluding-tax product-price">
-                        <span class="sale-price" v-text="formatPrice(itemData.final_price_item.display_price_brutto)" />
-                        <span class="old-price" v-text="formatPrice(itemData.final_price_item.display_price_brutto)" />
+                        <span :class="{'sale-price': itemData.calculatedPrice.listPrice}" v-text="formatPrice(itemData.final_price_item.display_price_brutto)" />
+                        <span v-if="itemData.calculatedPrice.listPrice" class="old-price" v-text="formatPrice(itemData.calculatedPrice.listPrice.price)" />
                     </div>
                 </div>
             </div>
@@ -34,49 +35,55 @@ export default {
     name: 'ProductListingCard',
 
     props: {
-        itemOrig: {
+        itemData: {
             type: Object,
             required: true,
-        },
-        isSlider: {
-            type: Boolean,
-            default: false,
-            required: false,
-        },
-        list: {
-            type: String,
-            required: false,
-            default: '',
         },
         index: {
             type: Number,
             required: false,
         },
+        showBadges: {
+            type: Boolean,
+            value: true,
+        }
     },
 
     data() {
         return {
-            productUrl: '/#/detail',
-            itemData: {},
+            productUrl: `detail/${this.itemData.id}`,
         };
     },
 
     computed: {
         routeUrlPds: function () {
-            return '/' + this.itemOrig.url_pds;
+            let url_pds = this.productUrl;
+
+            if (this.itemData.seoUrls !== null) {
+                this.itemData.seoUrls.forEach((seoUrl) => {
+
+                    if (seoUrl.isCanonical) {
+                        url_pds = seoUrl.seoPathInfo;
+                    } else {
+                        url_pds = seoUrl.pathInfo;
+                    }
+                });
+            }
+
+            return '/' + url_pds;
         },
     },
 
-    created() {
-        this.itemData = this.itemOrig;
-    },
-
     methods: {
-        routeUrlProductImg: function (width) {
-            let image = this.itemData.image.url;
+        getMediaUrl: function (width) {
+            if (this.itemData.cover === null) {
+                return require('~/assets/images/hubble/placeholder.gif');
+            }
+            
+            let image = this.itemData.cover.media.url;
 
             if (width != null) {
-                this.itemData.image.thumbnails.forEach((thumbnail) => {
+                this.itemData.cover.media.thumbnails.forEach((thumbnail) => {
                     if (thumbnail.width === width) {
                         image = thumbnail.url;
                     }
@@ -136,7 +143,7 @@ export default {
                     {
                         rel: 'preload',
                         as: 'image',
-                        href: this.routeUrlProductImg(800),
+                        href: this.getMediaUrl(800),
                     },
                 ],
             };
