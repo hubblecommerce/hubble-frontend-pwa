@@ -24,7 +24,9 @@ export const mutations = {
                 qty: lineItem.quantity,
             });
 
-            qty = qty + parseInt(lineItem.quantity);
+            if (lineItem.type !== 'promotion') {
+                qty = qty + parseInt(lineItem.quantity);
+            }
         });
 
         state.items = items;
