@@ -42,25 +42,24 @@
             </template>
 
             <template v-if="item.type === 'promotion'">
-                <div class="cart-item-headline">
-                    <div class="cart-item-img">
-                        <svg-icon icon="promotion" />
-                    </div>
+                <div class="col-8">
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="cart-item-img">
+                                <svg-icon icon="promotion" size="xxl" />
+                            </div>
+                        </div>
 
-                    <div class="cart-item-name">
-                        <div v-text="item.name_orig" />
-                    </div>
+                        <div class="col-8">
+                            <div v-text="item.name_orig" />
 
-                    <div v-if="interactive" class="remove-item" @click="removeItem(item)">
-                        <span v-text="'Löschen'"></span>
-                        <svg-icon icon="x" />
+                            <div class="product-price promotion" v-text="formatPrice(item.final_price_item.display_price_brutto)" />
+                        </div>
                     </div>
                 </div>
 
-                <div class="cart-item-footer">
-                    <div class="cart-item-price">
-                        <div class="product-price promotion" v-text="formatPrice(item.final_price_item.display_price_brutto)" />
-                    </div>
+                <div v-if="interactive" class="col-4 actions-wrp text-right">
+                    <div aria-hidden="true" class="remove-item promotion" @click="removeItem(item)" v-text="'Remove'" />
                 </div>
             </template>
         </div>
@@ -194,7 +193,8 @@ $hbl-cart-item-image-size-md: 100px;
     .cart-item-img {
         display: block;
         width: $hbl-cart-item-image-size;
-        margin-right: 12px;
+        margin: 0 auto;
+        text-align: center;
 
         img {
             margin: auto;
@@ -215,6 +215,10 @@ $hbl-cart-item-image-size-md: 100px;
             text-align: right;
             margin-bottom: 45px;
             cursor: pointer;
+
+            &.promotion {
+                margin-bottom: 0;
+            }
         }
 
         .quantity-selector {
@@ -271,6 +275,10 @@ $hbl-cart-item-image-size-md: 100px;
         font-weight: $font-weight-bold;
     }
 
+    .product-price.promotion {
+        color: $green;
+    }
+
     .old-price {
         font-weight: 400;
         text-decoration: line-through;
@@ -301,20 +309,6 @@ $hbl-cart-item-image-size-md: 100px;
 
         &.coupon {
             padding: 15px;
-        }
-
-        .cart-item-headline {
-            position: relative;
-            padding-right: 60px;
-            padding-left: $hbl-cart-item-image-size-md + 10;
-
-            .cart-item-img {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: $hbl-cart-item-image-size-md;
-                height: auto;
-            }
         }
     }
 }
