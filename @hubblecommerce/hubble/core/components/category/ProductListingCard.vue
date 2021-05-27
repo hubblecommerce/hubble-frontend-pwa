@@ -4,9 +4,9 @@
             <div class="card-media">
                 <div class="actions">
                     <div class="badge-wrp">
-                        <div v-if="itemData.calculatedPrice.listPrice" class="badge sale" v-text="'Sale'" />
-                        <div v-if="itemData.isNew" class="badge new" v-text="'New'" />
-                        <div v-if="itemData.markAsTopseller" class="badge bestseller" v-text="'Bestseller'" />
+                        <div v-if="itemData.calculatedPrice.listPrice" class="product-badge badge-danger" v-text="'Sale'" />
+                        <div v-if="itemData.isNew" class="product-badge badge-secondary" v-text="'New'" />
+                        <div v-if="itemData.markAsTopseller" class="product-badge badge-success" v-text="'Bestseller'" />
                     </div>
                 </div>
 
@@ -21,8 +21,21 @@
                     <div v-if="itemData.name !== null" class="product-name" v-text="itemData.name" />
 
                     <div class="price-box price-excluding-tax product-price">
-                        <span :class="{'sale-price': itemData.calculatedPrice.listPrice}" v-text="formatPrice(itemData.final_price_item.display_price_brutto)" />
-                        <span v-if="itemData.calculatedPrice.listPrice" class="old-price" v-text="formatPrice(itemData.calculatedPrice.listPrice.price)" />
+                        <span
+                            v-if="itemData.calculatedListingPrice.from.unitPrice !== itemData.unitPrice"
+                            class="unit-price from-price"
+                            v-text="'Ab ' + formatPrice(itemData.calculatedListingPrice.from.unitPrice)"
+                        />
+                        <span
+                            v-else
+                            :class="{'sale-price': itemData.calculatedPrice.listPrice}"
+                            v-text="formatPrice(itemData.final_price_item.display_price_brutto)"
+                        />
+                        <span
+                            v-if="itemData.calculatedPrice.listPrice"
+                            class="old-price"
+                            v-text="formatPrice(itemData.calculatedPrice.listPrice.price)"
+                        />
                     </div>
                 </div>
             </div>
@@ -221,7 +234,8 @@ export default {
             color: $dark-gray;
         }
 
-        .sale-price {
+        .sale-price,
+        .from-price {
             color: $error-accent;
             margin-right: 10px;
         }
