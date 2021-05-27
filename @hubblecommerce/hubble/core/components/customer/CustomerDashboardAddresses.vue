@@ -1,123 +1,37 @@
 <template>
     <div v-if="!isLoading" class="customer-addresses-wrp">
-        <div v-if="differentShippingAddress" class="d-flex justify-content-between">
-            <div class="headline headline-3" v-text="'Billing Address'" />
-            <hbl-button v-if="!isGuest" class="button" @click.native="createAddress('billing')" v-text="'Create new address'" />
+        <div class="box">
+            <p class="box-title">Billing address:</p>
+            <address-box
+                :address="activeBillingAddress"
+                :salutations="salutations"
+                :countries="countries"
+                :updateAddressParent="updateAddress"
+                type="billing"
+            />
         </div>
 
-        <div v-else class="d-flex justify-content-between">
-            <div class="headline headline-3" v-text="'Your Address'" />
-            <hbl-button class="button" @click.native="createAddress('shipping')" v-text="'Add different shipping address'" />
+        <div class="box">
+            <p class="box-title">Shipping address:</p>
+            <address-box
+                :address="activeShippingAddress"
+                :salutations="salutations"
+                :countries="countries"
+                :updateAddressParent="updateAddress"
+                type="shipping"
+            />
         </div>
 
-        <div class="billing-address-wrp">
-            <div>
-                <span v-text="getSalutationById(activeBillingAddress.salutationId)" />
-                <span v-text="activeBillingAddress.firstName" />
-                <span v-text="activeBillingAddress.lastName" />
-            </div>
-            <div>
-                <span v-text="activeBillingAddress.street" />
-            </div>
-            <div>
-                <span v-text="activeBillingAddress.zipcode" />
-                <span v-text="activeBillingAddress.city" />
-            </div>
-            <div>
-                <span v-text="getCountryById(activeBillingAddress.countryId)" />
-            </div>
-            <hbl-button class="button edit-address" @click.native="updateAddress(activeBillingAddress, 'billing')" v-text="'Edit'" />
-        </div>
-
-        <template v-if="differentShippingAddress">
-            <div class="d-flex justify-content-between mt-4">
-                <div class="headline headline-3" v-text="'Shipping Address'" />
-                <hbl-button class="button" @click.native="createAddress('shipping')" v-text="'Create new address'" />
-            </div>
-            <div class="shipping-address-wrp">
-                <div>
-                    <span v-text="getSalutationById(activeShippingAddress.salutationId)" />
-                    <span v-text="activeShippingAddress.firstName" />
-                    <span v-text="activeShippingAddress.lastName" />
-                </div>
-                <div>
-                    <span v-text="activeShippingAddress.street" />
-                </div>
-                <div>
-                    <span v-text="activeShippingAddress.zipcode" />
-                    <span v-text="activeShippingAddress.city" />
-                </div>
-                <div>
-                    <span v-text="getCountryById(activeShippingAddress.countryId)" />
-                </div>
-                <hbl-button class="button edit-address" @click.native="updateAddress(activeShippingAddress, 'shipping')" v-text="'Edit'" />
-            </div>
-        </template>
-
-        <div v-if="modalOpen" class="edit-address-modal">
-            <div class="edit-address-wrp" v-click-outside="closeModal">
-                <div class="modal-headline d-flex justify-content-between">
-                    <div class="font-weight-bold" v-text="modalTitle" />
-                    <hbl-button class="button-icon button-close-modal" @click.native="closeModal">
-                        <svg-icon icon="x" />
-                    </hbl-button>
-                </div>
-                <form class="form-edit">
-                    <hbl-select>
-                        <select v-model="address.salutationId" class="select-text" required>
-                            <option v-for="salutation in salutations" :key="salutation.id" :value="salutation.id">
-                                {{ salutation.translated.displayName }}
-                            </option>
-                        </select>
-                        <label class="select-label" v-text="'Salutation'" />
-                    </hbl-select>
-
-                    <hbl-input>
-                        <input id="firstName" v-model="address.firstName" type="text" name="firstName" value="" placeholder=" " required />
-
-                        <label for="firstName" v-text="'First Name'" />
-                    </hbl-input>
-
-                    <hbl-input>
-                        <input id="lastName" v-model="address.lastName" type="text" name="lastName" value="" placeholder=" " required />
-
-                        <label for="lastName" v-text="'Last Name'" />
-                    </hbl-input>
-
-                    <hbl-input>
-                        <input id="street" v-model="address.street" type="text" name="street" value="" placeholder=" " required />
-
-                        <label for="street" v-text="'Street'" />
-                    </hbl-input>
-
-                    <div class="form-row zip-city">
-                        <hbl-input>
-                            <input id="zipcode" v-model="address.zipcode" type="text" name="zipcode" value="" placeholder=" " required />
-
-                            <label for="zipcode" v-text="'Zipcode'" />
-                        </hbl-input>
-
-                        <hbl-input>
-                            <input id="city" v-model="address.city" type="text" name="city" value="" placeholder=" " required />
-
-                            <label for="city" v-text="'City'" />
-                        </hbl-input>
-                    </div>
-
-                    <hbl-select>
-                        <select id="country" v-model="address.countryId" class="select-text" required>
-                            <option v-for="country in countries" :key="country.id" :value="country.id" v-text="country.name" />
-                        </select>
-
-                        <label for="country" class="select-label" v-text="'Country'" />
-                    </hbl-select>
-
-                    <hbl-button class="button-primary w-100" @click.native="submitForm" v-text="'Save'" />
-                </form>
-            </div>
-        </div>
+        <address-modal
+            v-if="modalOpen"
+            :closeModalFunction="closeModal"
+            :countries="countries"
+            :salutations="salutations"
+            :currentAddress="address"
+            :context="contextType"
+            :updateAddressFunction="updateAddress"
+        />
     </div>
-    <loader v-else />
 </template>
 
 <script>
@@ -127,7 +41,15 @@ import vClickOutside from 'v-click-outside';
 import apiClient from '@/utils/api-client';
 
 export default {
-    name: 'CustomerAddresses',
+    name: 'CustomerDashboardAddresses',
+
+    props: {
+        amazonPayScriptIsLoaded: {
+            type: Boolean,
+            required: false,
+            default: false,
+        },
+    },
 
     data() {
         return {
@@ -160,13 +82,20 @@ export default {
 
             return 'Add billing address';
         },
-        isGuest: function() {
+        isGuest: function () {
             if (this.context.data != null) {
                 return this.context.data.customer.guest;
             }
-            
+
             return null;
-        }
+        },
+        isAmazonCheckout: function () {
+            if (this.$router.currentRoute.query.oneClickCheckout != null && this.$router.currentRoute.query.amazonCheckoutSessionId != null) {
+                return true;
+            }
+
+            return false;
+        },
     },
 
     created() {
@@ -198,6 +127,8 @@ export default {
             updateAddressAction: 'modApiCustomer/editAddress',
             setActiveAddress: 'modApiCustomer/setActiveAddress',
             storeCustomerAddress: 'modApiCustomer/storeCustomerAddress',
+            showOffcanvasAction: 'modNavigation/showOffcanvasAction',
+            hideOffcanvasAction: 'modNavigation/hideOffcanvasAction',
         }),
         fetchFormOptions: async function () {
             return await Promise.all([this.fetchSalutations(), this.fetchCountries()]);
@@ -266,6 +197,15 @@ export default {
             this.actionType = 'update';
             this.contextType = type;
             this.modalOpen = true;
+            this.showOffcanvasAction({
+                component: '',
+            });
+
+            if (type == 'billing') {
+                this.activeBillingAddress = address;
+            } else {
+                this.activeShippingAddress = address;
+            }
         },
         updateAddressCall: async function (address) {
             return await new apiClient().apiCall({
@@ -305,6 +245,7 @@ export default {
             this.address = {};
             this.actionType = '';
             this.modalOpen = false;
+            this.hideOffcanvasAction();
         },
         async submitForm() {
             this.isLoading = true;
@@ -348,6 +289,14 @@ export default {
                 this.isLoading = false;
             }
         },
+        amazonBindChangeAction: function () {
+            window.amazon.Pay.bindChangeAction(`#${this.$refs['amazon-pay-change-shipping'].$el.id}`, {
+                amazonCheckoutSessionId: this.$router.currentRoute.query.amazonCheckoutSessionId,
+                changeAction: 'changeAddress',
+            });
+
+            this.$refs['amazon-pay-change-shipping'].$el.click();
+        },
     },
 };
 </script>
@@ -365,19 +314,19 @@ export default {
 }
 
 .customer-addresses-wrp {
-    margin-bottom: 20px;
+    margin-bottom: $base-padding-md;
 
     .headline {
-        margin-bottom: 20px;
+        margin-bottom: $base-padding-md;
     }
 
     .billing-address-wrp,
     .shipping-address-wrp {
         border: 1px solid $border-color;
-        padding: 20px;
+        padding: $base-padding-md;
         position: relative;
 
-        margin-bottom: 20px;
+        margin-bottom: $base-padding-md;
     }
 
     .edit-address-modal {
@@ -403,7 +352,7 @@ export default {
                 position: relative;
                 width: 100%;
                 border-bottom: 1px solid $border-color;
-                padding: 20px;
+                padding: $base-padding-md;
                 align-items: center;
                 text-transform: uppercase;
             }
@@ -417,7 +366,7 @@ export default {
             }
 
             .form-edit {
-                padding: 20px;
+                padding: $base-padding-md;
             }
         }
     }
@@ -444,6 +393,18 @@ export default {
                 max-width: 500px;
                 height: auto;
                 overflow: visible;
+            }
+        }
+    }
+}
+
+@media (max-width: 576px) {
+    .customer-dashboard {
+        .content-wrp {
+            .box {
+                .box-title {
+                    font-size: 14px;
+                }
             }
         }
     }

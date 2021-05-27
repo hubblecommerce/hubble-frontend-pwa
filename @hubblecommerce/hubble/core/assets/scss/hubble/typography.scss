@@ -163,6 +163,7 @@ p,
 .text {
     @include font-size($text-font-sizes);
     font-weight: $font-weight-regular;
+    margin-bottom: $base-padding;
 }
 
 .text-small {

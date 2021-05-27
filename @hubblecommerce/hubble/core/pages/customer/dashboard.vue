@@ -8,43 +8,7 @@
                     <customer-navigation v-on:logout-success="goToHome" />
                 </div>
 
-                <div class="col-sm-12 col-md-9 content-wrp">
-                    <div class="row">
-                        <div class="col-md-12 headline-wrp">
-                            <div class="title" v-text="'Customer Account Dashboard'" />
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="box account-info-wrp">
-                                <div class="box-title" v-text="'Account Information'" />
-
-                                <div class="box-content">
-                                    <p v-text="`${customer.firstName} ${customer.lastName}`" />
-                                    <p v-text="customer.email" />
-                                </div>
-
-                                <!--
-                                TODO: Implement components customer-password-change and customer-account-information
-                                <customer-password-change class="password-change-button" />
-                                <customer-account-information />
-                                -->
-                            </div>
-                        </div>
-                    </div>
-
-                    <customer-addresses />
-
-                    <!--
-                    TODO: Implement components customer-order-list
-                    <div class="row">
-                        <div class="col-md-12">
-                            <customer-order-list :title="'Recent Orders'" :limit="4" />
-                        </div>
-                    </div>
-                    -->
-                </div>
+                <nuxt-child :customer="customer" />
             </div>
         </div>
     </div>

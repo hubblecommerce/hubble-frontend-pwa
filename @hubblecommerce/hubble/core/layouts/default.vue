@@ -2,6 +2,8 @@
     <div class="app">
         <noscript>Please enable JavaScript and refresh this page, to use this application.</noscript>
 
+        <grid-helper />
+
         <header>
             <div class="nav-wrp container">
                 <the-logo />
@@ -84,7 +86,7 @@
         <background-blur />
 
         <transition-expand-layer :direction="{ sm: 'bottomTop', md: 'rightLeft', lg: 'rightLeft' }">
-            <div v-if="offcanvas.isActive" class="transition-expand-wrp">
+            <div v-if="offcanvas.isActive && offcanvas.component" class="transition-expand-wrp">
                 <lazy-the-customer-context v-if="offcanvas.component === 'TheCustomerContext'" />
                 <lazy-the-search-context v-if="offcanvas.component === 'TheSearchContext'" />
                 <lazy-cart-context v-if="offcanvas.component === 'TheCartContext'" :displayInLayer="true" />

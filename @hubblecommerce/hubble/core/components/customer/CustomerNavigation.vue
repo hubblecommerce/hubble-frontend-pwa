@@ -1,8 +1,18 @@
 <template>
     <div class="col-12 link-wrp">
-        <nuxt-link :to="'/customer/dashboard'" class="sidebar-link">
+        <nuxt-link :to="'/customer/dashboard/overview'" class="sidebar-link">
             <hbl-button class="button-secondary">
                 {{ 'Customer Dashboard' }}
+            </hbl-button>
+        </nuxt-link>
+        <nuxt-link :to="'/customer/dashboard/data'" class="sidebar-link">
+            <hbl-button class="button-secondary">
+                {{ 'Personal data' }}
+            </hbl-button>
+        </nuxt-link>
+        <nuxt-link :to="'/customer/dashboard/orders'" class="sidebar-link">
+            <hbl-button class="button-secondary">
+                {{ 'My orders' }}
             </hbl-button>
         </nuxt-link>
 
