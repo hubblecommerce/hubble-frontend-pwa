@@ -1,9 +1,14 @@
 <template>
-    <div class="view-category">
+    <div class="view-category" :class="`is-${isType}`">
         <breadcrumb class="container" :path="breadcrumb" />
 
-        <div class="container">
-            <sw-section v-if="data.cmsPage.sections != null" v-for="cmsSection in data.cmsPage.sections" :key="cmsSection.id" :content="cmsSection" />
+        <div v-if="data.cmsPage.sections != null" class="container">
+            <sw-section
+                v-for="(cmsSection, index) in data.cmsPage.sections"
+                :key="cmsSection._uniqueIdentifier"
+                :count="index"
+                :content="cmsSection"
+            />
         </div>
     </div>
 </template>
@@ -25,6 +30,7 @@ export default {
         return {
             category: null,
             breadcrumb: null,
+            isType: this.data.cmsPage.type,
         };
     },
 
@@ -38,13 +44,13 @@ export default {
             metaKeywords = {},
             metaTitle = '';
 
-        if (this.category.meta_description !== '') {
+        if (this.category.meta_description != null && this.category.meta_description !== '') {
             metaDescription = this.category.meta_description;
         } else {
             metaDescription = process.env.meta.category.metaDescription;
         }
 
-        if (this.category.meta_keywords !== '') {
+        if (this.category.meta_keywords != null && this.category.meta_keywords !== '') {
             metaKeywords = this.category.meta_keywords;
         } else {
             metaKeywords = process.env.meta.category.metaKeywords;
