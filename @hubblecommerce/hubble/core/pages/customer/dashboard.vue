@@ -139,6 +139,7 @@ export default {
                     box-shadow: none;
                     border: none;
                     text-align: left;
+                    margin: 0;
                 }
             }
         }
