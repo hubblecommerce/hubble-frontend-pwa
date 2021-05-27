@@ -59,6 +59,7 @@ export default {
     font-size: 14px;
     line-height: 17px;
     text-align: center;
+    padding: 15px 0;
 
     ul {
         align-items: center;

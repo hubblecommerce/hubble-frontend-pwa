@@ -70,12 +70,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss">
-.view-category,
-.view-catalogsearch {
-    .breadcrumb {
-        margin: 15px 0;
-    }
-}
-</style>
