@@ -5,7 +5,7 @@
             <product-detail-manufacturer :data-product="dataProduct" />
             <div class="product-headline-info">
                 <h1 class="product-name headline-4" v-text="dataProduct.name" />
-                <div v-if="dataProduct.sku" class="sku" v-text="`'SKU': ${dataProduct.sku}`" />
+                <div v-if="dataProduct.sku" class="sku" v-text="`SKU: ${dataProduct.sku}`" />
             </div>
         </div>
 
@@ -16,8 +16,8 @@
         <product-detail-delivery :item="dataProduct" />
 
         <!-- Variants -->
-        <div class="variants-wrp">
-            <lazy-product-detail-buybox-options v-if="itemIsConfigurable" :data-product="dataProduct" />
+        <div v-if="itemIsConfigurable" class="variants-wrp">
+            <lazy-product-detail-buybox-options :data-product="dataProduct" />
         </div>
 
         <!-- Add to cart -->
@@ -67,7 +67,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '~assets/scss/hubble/variables';
 @import '~assets/scss/hubble/typography';
 
@@ -166,32 +166,14 @@ export default {
 
     .add-to-cart-wrp {
         display: flex;
-        align-items: center;
-        justify-content: space-between;
-        width: 100%;
-        height: 72px;
-        margin-bottom: 20px;
+        height: 58px;
+
+        .quantity-selector {
+            margin-right: $base-padding;
+        }
 
         .add-to-cart {
-            width: 90%;
-            height: 100%;
-            margin-left: 10px;
-
-            &:disabled {
-                opacity: 1;
-            }
-
-            i {
-                display: none;
-            }
-
-            .lds-ellipsis {
-                height: 100%;
-                div {
-                    background: $secondary;
-                    top: 50%;
-                }
-            }
+            width: 100%;
         }
     }
 }

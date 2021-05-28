@@ -1,8 +1,12 @@
 <template>
-    <hbl-button :disabled="isLoading" type="button" :title="'Add to cart'" class="add-to-cart button-primary" @click.native="addToCart">
-        <span v-if="!isLoading" class="cart-button-label" v-text="'Add to cart'" />
-        <loader v-if="isLoading" />
-    </hbl-button>
+    <div class="product-detail-add-to-cart-wrp">
+        <hbl-button :disabled="isLoading" type="button" :title="'Add to cart'" class="add-to-cart button-primary" @click.native="addToCart">
+            <span v-if="!isLoading" class="cart-button-label" v-text="'Add to cart'" />
+            <loader v-if="isLoading" />
+        </hbl-button>
+
+        <flash-message />
+    </div>
 </template>
 
 <script>
@@ -31,12 +35,15 @@ export default {
             cartQty: (state) => state.modCart.qty,
         }),
     },
+    
+    beforeDestroy() {
+        this.setIsLoading({ name: 'isLoading', state: false });
+    },
 
     methods: {
         ...mapMutations({
             setIsLoading: 'modCart/setState',
             setContextToken: 'modSession/setContextToken',
-            setCart: 'modCart/setCart',
         }),
         ...mapActions({
             flashMessage: 'modFlashMessage/flashMessage',
@@ -75,7 +82,10 @@ export default {
             } catch (e) {
                 this.setIsLoading({ name: 'isLoading', state: false });
 
-                throw e;
+                this.flashMessage({
+                    type: 'error',
+                    text: e.title + ' - ' + e.detail,
+                });
             }
         },
         initCart: async function () {
@@ -102,7 +112,7 @@ export default {
 
                 // Not in cart yet: add item to cart
                 if (!inCart) {
-                    let response = await new apiClient().apiCall({
+                    await new apiClient().apiCall({
                         action: 'post',
                         endpoint: 'store-api/v3/checkout/cart/line-item',
                         contextToken: this.contextToken,
@@ -116,15 +126,13 @@ export default {
                             ],
                         },
                     });
-
-                    this.setCart(response);
                 }
 
                 // Already in cart: raise item qty
                 if (inCart) {
                     let updatedQty = inCart.qty + qty;
 
-                    let response = await new apiClient().apiCall({
+                    await new apiClient().apiCall({
                         action: 'patch',
                         endpoint: 'store-api/v3/checkout/cart/line-item',
                         contextToken: this.contextToken,
@@ -137,8 +145,6 @@ export default {
                             ],
                         },
                     });
-
-                    this.setCart(response);
                 }
             } catch (e) {
                 throw e;
@@ -151,9 +157,51 @@ export default {
 <style lang="scss">
 @import '~assets/scss/hubble/variables';
 
-.lds-ring {
-    div {
-        border-color: $secondary transparent transparent transparent !important;
+.product-detail-add-to-cart-wrp {
+    width: 100%;
+    height: 100%;
+
+    .add-to-cart {
+        width: 100%;
+        height: 100%;
+    }
+
+    .loader-wrp {
+        height: 25px;
+    }
+
+    .flash-message-wrp {
+        &.error {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            z-index: 100000;
+            width: 100%;
+        }
+
+        &.success {
+            display: none;
+        }
+    }
+
+    .lds-ring {
+        div {
+            border-color: $secondary transparent transparent transparent !important;
+        }
+    }
+}
+
+@media (min-width: 768px) {
+    .product-detail-add-to-cart-wrp {
+        .flash-message-wrp {
+            &.error {
+                width: 50%;
+                height: 20vh;
+                top: 0;
+                right: 0;
+                margin: auto;
+            }
+        }
     }
 }
 </style>
