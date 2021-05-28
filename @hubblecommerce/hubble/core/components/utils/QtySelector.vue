@@ -116,7 +116,7 @@ export default {
 @import '~assets/scss/hubble/variables';
 
 $btn-icon-width: 36px;
-$btn-icon-height: 36px;
+$btn-icon-height: 50%;
 $btn-background-color: $light-gray;
 $btn-icon-color: $dark-gray;
 $qty-selector-width: $btn-icon-width * 2.5;
@@ -151,6 +151,10 @@ $qty-selector-width: $btn-icon-width * 2.5;
 
                 &:active {
                     background: $btn-background-color;
+                }
+
+                &:nth-child(n + 2) {
+                    border-top: 0;
                 }
             }
         }
