@@ -8,7 +8,7 @@
                     v-for="(option, optionIndex) in group.options"
                     :key="optionIndex"
                     class="option-val"
-                    :class="showActiveClass(group.id, option.id)"
+                    :class="[{'is-color': option.colorHexCode}, showActiveClass(group.id, option.id)]"
                 >
                     <input
                         :id="option.id"
@@ -19,7 +19,11 @@
                         @change="onChange($event)"
                         :disabled="isLoading"
                     />
-                    <label :for="option.id" v-text="option.name" />
+                    <label
+                        :for="option.id"
+                        :style="option.colorHexCode ? getColorVariant(option.colorHexCode) : null"
+                        v-text="!option.colorHexCode ? option.name : null"
+                    />
                 </div>
             </div>
         </div>
@@ -66,11 +70,13 @@ export default {
         ...mapMutations({
             setIsLoading: 'modCart/setState',
         }),
+
         setInitialOptions: function () {
             this.dataProduct.options.forEach((option) => {
                 Object.assign(this.selectedOptions, { [option.group.id]: option.id });
             });
         },
+
         onChange: async function (e) {
             try {
                 // Deactivate add to cart button while variant is loading
@@ -116,7 +122,10 @@ export default {
                 let mergedProduct = Object.assign(this.dataProduct, mappedProduct);
 
                 // Replace current url path with variant without losing optional GET params
-                let newSeoUrl = window.location.href.replace(window.location.pathname.replace(/^\/+/g, ''), mergedProduct.url_pds);
+                let newSeoUrl = window.location.href.replace(
+                    window.location.pathname.replace(/^\/+/g, ''),
+                    mergedProduct.url_pds
+                );
                 window.history.replaceState({}, mergedProduct.name, newSeoUrl);
 
                 // Release add to cart button
@@ -126,6 +135,7 @@ export default {
                 this.setIsLoading({ name: 'isLoading', state: false });
             }
         },
+        
         showActiveClass: function (groupId, optionId) {
             if (this.updatedOptions != null) {
                 return this.updatedOptions[groupId] === optionId ? 'active' : '';
@@ -133,6 +143,7 @@ export default {
 
             return this.selectedOptions[groupId] === optionId ? 'active' : '';
         },
+
         fetchProduct: async function (payload) {
             try {
                 return await new apiClient().apiCall({
@@ -152,6 +163,12 @@ export default {
                 throw e;
             }
         },
+
+        getColorVariant: function(hex) {
+            return {
+                backgroundColor: hex
+            }
+        }
     },
 };
 </script>
@@ -195,10 +212,14 @@ export default {
 
             .option-val {
                 font-size: 14px;
-                margin: 0 2px 10px;
+                margin: 0 4px 10px;
                 padding: 0;
                 border: 1px solid $border-color;
                 background: #fff;
+
+                &:first-child {
+                    margin-left: 2px;
+                }
 
                 &.active {
                     border: 1px solid transparent;
@@ -213,6 +234,19 @@ export default {
                     cursor: pointer;
                     padding: 5px 10px;
                     width: 100%;
+                }
+
+                &.is-color {
+                    border-radius: 50%;
+                    padding: 2px;
+                    
+                    label {
+                        display: block;
+                        border-radius: 50%;
+                        padding: 0;
+                        width: 30px;
+                        height: 30px;
+                    }
                 }
             }
         }
