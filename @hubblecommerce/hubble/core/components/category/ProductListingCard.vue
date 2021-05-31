@@ -234,8 +234,7 @@ export default {
             color: $dark-gray;
         }
 
-        .sale-price,
-        .from-price {
+        .sale-price {
             color: $error-accent;
             margin-right: 10px;
         }
