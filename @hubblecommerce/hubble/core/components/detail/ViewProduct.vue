@@ -3,27 +3,37 @@
         <breadcrumb v-if="product !== null" :path="breadcrumb" />
 
         <div class="detail-top-wrp">
-            <product-detail-gallery v-if="product !== null" :media="product.media" :alt="product.name" />
+            <div class="detail-left-wrp">
+                <product-detail-gallery v-if="product !== null" :media="product.media" :alt="product.name" />
 
-            <!--            <div class="badge-wrp">-->
-            <!--                <div class="badge sale" v-text="'40%'" />-->
-            <!--                <div class="badge new" v-text="'New'" />-->
-            <!--            </div>-->
+                <!--            <div class="badge-wrp">-->
+                <!--                <div class="badge sale" v-text="'40%'" />-->
+                <!--                <div class="badge new" v-text="'New'" />-->
+                <!--            </div>-->
+            </div>
+
+            <div class="buybox-wrp">
+                <product-detail-buybox v-if="product !== null" :data-product="product" />
+                <product-detail-service-info />
+
+                <tabs class="detail-tabs">
+                    <tab class="description-tab" :name="'Description'">
+                        <div v-if="product !== null" class="tab-content">
+                            <div v-text="product.description" />
+                        </div>
+                    </tab>
+                    <tab class="review-tab" :name="'Reviews'"> No reviews yet </tab>
+                </tabs>
+            </div>
         </div>
 
-        <div class="buybox-wrp">
-            <product-detail-buybox v-if="product !== null" :data-product="product" />
-            <product-detail-service-info />
-
-            <tabs class="detail-tabs">
-                <tab class="description-tab" :name="'Description'">
-                    <div v-if="product !== null" class="tab-content">
-                        <div v-text="product.description" />
-                    </div>
-                </tab>
-                <tab class="review-tab" :name="'Reviews'"> No reviews yet </tab>
-            </tabs>
-        </div>
+        <template v-if="product.crossSellings.length">
+            <div class="detail-crosssellings">
+                <div v-if="loadCrosssellings" class="container">
+                    <lazy-product-detail-crosssellings :product-id="product.id" />
+                </div>
+            </div>
+        </template>
 
         <!--        <div class="product-recommendation-wrp">-->
         <!--            <product-detail-cross-selling-sw-->
@@ -52,6 +62,7 @@ export default {
     data() {
         return {
             product: null,
+            loadCrosssellings: false,
         };
     },
 
@@ -100,6 +111,34 @@ export default {
         this.product = mappingProduct(this.data);
     },
 
+    mounted() {
+        this.registerIntersectionObserver('.detail-crosssellings', 'loadCrosssellings');
+    },
+
+    methods: {
+        registerIntersectionObserver: function (targetSelector, flag) {
+            let target = document.querySelector(targetSelector);
+
+            if (!target) return;
+
+            let options = {
+                rootMargin: '20px',
+                threshold: 0.01,
+            };
+
+            let observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        this[flag] = true;
+                        observer.disconnect();
+                    }
+                });
+            }, options);
+
+            observer.observe(target);
+        },
+    },
+
     head() {
         let metaDescription = {},
             metaKeywords = {},
@@ -144,7 +183,7 @@ export default {
 @import '~assets/scss/hubble/variables';
 @import '~assets/scss/hubble/typography';
 
-.detail-wrp {
+.detail-top-wrp {
     margin-bottom: 30px;
 
     .breadcrumbs {
@@ -154,7 +193,7 @@ export default {
         padding-bottom: 10px;
     }
 
-    .detail-top-wrp {
+    .detail-left-wrp {
         position: relative;
         width: 100%;
 
@@ -263,7 +302,7 @@ export default {
 }
 
 @media (min-width: 768px) {
-    .detail-wrp {
+    .detail-top-wrp {
         display: flex;
         flex-wrap: wrap;
         padding: 15px;
@@ -316,7 +355,7 @@ export default {
 }
 
 @media (min-width: 1024px) {
-    .detail-wrp {
+    .detail-top-wrp {
         display: flex;
         justify-content: space-between;
 
@@ -328,7 +367,7 @@ export default {
             margin-bottom: 30px;
         }
 
-        .detail-top-wrp {
+        .detail-left-wrp {
             width: 50%;
         }
 

@@ -1,0 +1,113 @@
+<template>
+    <div class="detail-crosssellings-inner">
+        <div v-for="item in crossSellings.data" class="sw-product-slider">
+            <div v-if="item.crossSelling.name" class="sw-product-slider-title">
+                <h2 v-text="item.crossSelling.name" />
+            </div>
+
+            <hooper :settings="sliderSettings" style="height: auto">
+                <slide v-for="(dataItem, index) in item.products" :key="index" :index="index" :class="`sw-product-slider-item`">
+                    <product-listing-card :item-data="dataItem" :show-desc="false" :show-badges="true" />
+                </slide>
+                <hooper-navigation slot="hooper-addons"></hooper-navigation>
+            </hooper>
+        </div>
+    </div>
+</template>
+
+<script>
+import { Hooper, Slide, Navigation as HooperNavigation } from 'hooper';
+import { mapState } from 'vuex';
+import apiClient from '@/utils/api-client';
+import 'hooper/dist/hooper.css';
+
+export default {
+    name: 'ProductDetailCrosssellings',
+
+    components: {
+        Hooper,
+        Slide,
+        HooperNavigation,
+    },
+
+    props: {
+        productId: {
+            type: String,
+            required: true,
+        },
+    },
+
+    data() {
+        return {
+            crossSellings: [],
+            isLoading: true,
+            sliderSettings: {
+                itemsToShow: 1,
+                wheelControl: false,
+                keysControl: false,
+                mouseDrag: false,
+                infiniteScroll: true,
+                breakpoints: {
+                    376: {
+                        itemsToShow: 2,
+                    },
+                    768: {
+                        itemsToShow: 3,
+                    },
+                    1024: {
+                        itemsToShow: 4,
+                    },
+                },
+            },
+        };
+    },
+
+    async mounted() {
+        try {
+            this.crossSellings = await this.fetchCrossSeelings();
+        } catch (e) {
+            console.log(e);
+        }
+    },
+
+    computed: {
+        ...mapState({
+            contextToken: (state) => state.modSession.contextToken,
+        }),
+    },
+
+    methods: {
+        fetchCrossSeelings: async function () {
+            try {
+                return await new apiClient().apiCall({
+                    action: 'post',
+                    endpoint: `store-api/v3/product/${this.productId}/cross-selling`,
+                    contextToken: this.contextToken,
+                    headers: [{ 'sw-include-seo-urls': true }],
+                });
+            } catch (e) {
+                console.log(e);
+            }
+        },
+    },
+};
+</script>
+
+<style lang="scss">
+.sw-product-slider {
+    display: flex;
+    flex-wrap: wrap;
+    padding-top: 60px;
+}
+
+.sw-product-slider-item {
+    padding: 8px;
+}
+
+.sw-product-slider-title {
+    text-align: center;
+    width: 100%;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+</style>
