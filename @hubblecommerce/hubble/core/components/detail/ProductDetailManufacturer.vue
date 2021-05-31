@@ -17,3 +17,13 @@ export default {
     },
 };
 </script>
+
+<style lang="scss">
+.brand-logo-wrp {
+    height: 50px;
+
+    img {
+        height: 100%;
+    }
+}
+</style>

@@ -2,7 +2,8 @@
     <div class="product-info-wrp">
         <!-- Header -->
         <div class="product-headline">
-            <product-detail-manufacturer :data-product="dataProduct" />
+            <!-- <product-detail-manufacturer :data-product="dataProduct" /> -->
+            
             <div class="product-headline-info">
                 <h1 class="product-name headline-4" v-text="dataProduct.name" />
                 <div v-if="dataProduct.sku" class="sku" v-text="`SKU: ${dataProduct.sku}`" />
