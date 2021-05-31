@@ -12,8 +12,8 @@
             </div>
         </div>
 
-        <template v-else-if="itemIsSpecial">
-            <span class="old-price" v-text="formatPrice(item.final_price_item.display_price_brutto)" />
+        <template v-else-if="item.calculatedPrice.listPrice">
+            <span class="old-price" v-text="formatPrice(item.calculatedPrice.listPrice.price)" />
             <span class="sale-price" v-text="formatPrice(item.final_price_item.display_price_brutto)" />
         </template>
 
@@ -33,12 +33,6 @@ export default {
         item: {
             type: Object,
             required: true,
-        },
-    },
-
-    computed: {
-        itemIsSpecial: function () {
-            return false;
         },
     },
 
@@ -101,11 +95,12 @@ export default {
     }
 
     .old-price {
-        font-size: 18px;
+        font-size: 16px;
+        color: $dark-gray;
         text-decoration: line-through;
 
         & + .sale-price {
-            color: $error-accent;
+            font-size: 18px;
             font-weight: $font-weight-bold;
         }
     }
