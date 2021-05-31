@@ -108,7 +108,7 @@ function mappingProduct(payload) {
 
     obj.active = product.available;
     obj.id = product.id;
-    obj.sku = product.ean;
+    obj.sku = product.productNumber;
     obj.type = 'simple';
 
     if (product.optionIds !== null) {
