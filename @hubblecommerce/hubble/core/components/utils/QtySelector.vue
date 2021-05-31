@@ -133,6 +133,13 @@ $qty-selector-width: $btn-icon-width * 2.5;
             border: 1px solid $border-color;
             border-right: none;
             text-align: center;
+            -moz-appearance: textfield;
+
+            &::-webkit-outer-spin-button,
+            &::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
         }
 
         .btn-wrp {
