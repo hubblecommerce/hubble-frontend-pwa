@@ -98,6 +98,15 @@ export default {
         breadcrumb: function () {
             let path = [];
 
+            if (this.data.breadcrumb != null && Object.keys(this.data.breadcrumb).length > 0) {
+                Object.keys(this.data.breadcrumb).forEach((key) => {
+                    path.push({
+                        name: this.data.breadcrumb[key].name,
+                        url: this.data.breadcrumb[key].path,
+                    });
+                });
+            }
+
             path.push({
                 name: this.product.name,
                 url: this.product.url_pds,

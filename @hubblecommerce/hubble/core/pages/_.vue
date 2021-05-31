@@ -57,6 +57,7 @@ export default {
                     Object.assign(currentPageData, {
                         product: response.data.product,
                         configurator: response.data.configurator,
+                        breadcrumb: response.data.breadcrumb
                     });
                 }
             }
