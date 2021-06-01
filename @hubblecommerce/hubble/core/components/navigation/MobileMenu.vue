@@ -1,8 +1,12 @@
 <template>
     <transition name="slide-in">
         <div class="tree-menu">
-            <div class="back-trigger">
-                <svg-icon icon="chevron-left" v-if="depth > 1" @click.native="closeSubcategory" />
+            <div
+                v-if="depth > 1"
+                class="back-trigger"
+                @click="closeSubcategory"
+            >
+                <svg-icon icon="chevron-left" />
             </div>
 
             <nuxt-link v-if="firstItem && $parent.dataItem.request_path" :to="parentUrlPath">
@@ -148,9 +152,14 @@ export default {
     letter-spacing: 0.4px;
     padding: 16px 16px;
     border-bottom: 1px solid $border-color;
+    display: flex;
 
     img {
         vertical-align: top;
+        margin-left: auto;
+    }
+
+    .icon {
         margin-left: auto;
     }
 }
@@ -193,9 +202,11 @@ export default {
 
 .back-trigger {
     position: fixed;
-    top: 15px;
+    top: 0;
     right: 15px;
     z-index: 1;
+    height: 56px;
+    display: flex;
 
     .button-icon {
         font-size: 25px;
@@ -207,20 +218,14 @@ export default {
     transition: all 0.2s ease;
 }
 
-.slide-in-enter {
-    left: 100%;
-}
-
-.slide-in-enter-to {
-    left: 0;
-}
-
-.slide-in-leave {
-    left: 0;
-}
-
+.slide-in-enter,
 .slide-in-leave-to {
     left: 100%;
+}
+
+.slide-in-enter-to,
+.slide-in-leave {
+    left: 0;
 }
 
 @media (min-width: 768px) {
