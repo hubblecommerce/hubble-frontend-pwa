@@ -1,59 +1,66 @@
 <template>
-    <div class="mega-menu-wrp container" @mouseleave="hideChildren">
+    <div class="mega-menu-wrp container">
         <div class="level-0-wrp">
             <template v-for="item in dataItems">
-                <div
-                    v-if="!item.request_path"
-                    :key="item.id"
-                    class="menu-item"
-                    :class="{ active: isActive === item.id }"
-                    @mouseenter="showChildren(item)"
-                    v-text="item.name"
-                />
-                <nuxt-link
-                    v-else
-                    :key="item.id"
-                    :ref="item.id"
-                    class="menu-item"
-                    :name="item.name"
-                    :class="{ active: isActive === item.id }"
-                    :to="itemUrlPath(item)"
-                    @mouseenter.native="showChildren(item)"
-                    v-text="item.name"
-                />
-            </template>
-        </div>
+                <div @mouseenter="showChildren(item)" @mouseleave="hideChildren" class="menu-item">
+                    <a
+                        v-if="isExternalUrl(item)"
+                        :href="itemUrlPath(item)"
+                        target="_blank"
+                        class="menu-item-link"
+                        rel="noopener nofollow"
+                        v-text="item.name"
+                    />
+                    <nuxt-link
+                        v-else
+                        :key="item.id"
+                        :ref="item.id"
+                        class="menu-item-link"
+                        :name="item.name"
+                        :class="{ active: isActive === item.id }"
+                        :to="itemUrlPath(item)"
+                        v-text="item.name"
+                    />
 
-        <transition name="fade">
-            <div
-                v-if="showMenu && activeCategory.children"
-                ref="megaMenuLayer"
-                :class="'fixed-container ' + activeCategory.url_path"
-                :style="`left: ${layerLeft}px;`"
-                @mouseleave="hideChildren"
-            >
-                <div class="max-width-container">
-                    <template>
-                        <div class="children-wrp">
-                            <div v-for="child in activeCategory.children" v-if="showChild(child)" :key="child.id" class="child-wrp">
-                                <div v-if="!child.request_path" class="child-item" v-text="child.name" />
-                                <nuxt-link v-else :to="itemUrlPath(child)" class="child-item" v-text="child.name" />
+                    <transition name="fade">
+                        <div
+                            v-show="isActive === item.id"
+                            ref="megaMenuLayer"
+                            :class="'mega-menu-flyout ' + activeCategory.url_path"
+                        >
+                            <div class="mega-menu-flyout-inner">
+                                <div class="max-width-container">
+                                    <template>
+                                        <div class="children-wrp">
+                                            <div v-for="child in activeCategory.children" v-if="showChild(child)" :key="child.id" class="child-wrp">
+                                                <a
+                                                    v-if="isExternalUrl(child)"
+                                                    :href="itemUrlPath(child)"
+                                                    target="_blank"
+                                                    class="mega-menu-item-link"
+                                                    rel="noopener nofollow"
+                                                    v-text="child.name"
+                                                />
+                                                <nuxt-link v-else :to="itemUrlPath(child)" class="child-item" v-text="child.name" />
 
-                                <template v-for="subchild in child.children">
-                                    <div v-if="!subchild.request_path" :key="subchild.id" class="subchild-item" v-text="subchild.name" />
-                                    <nuxt-link v-else :key="subchild.id" class="subchild-item" :to="itemUrlPath(subchild)" v-text="subchild.name" />
-                                </template>
+                                                <template v-for="subchild in child.children">
+                                                    <div v-if="!subchild.request_path" :key="subchild.id" class="subchild-item" v-text="subchild.name" />
+                                                    <nuxt-link v-else :key="subchild.id" class="subchild-item" :to="itemUrlPath(subchild)" v-text="subchild.name" />
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
                             </div>
                         </div>
-                    </template>
+                    </transition>
                 </div>
-            </div>
-        </transition>
+            </template>
+        </div>
     </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
 import apiClient from '@/utils/api-client';
 import { mappingMenu } from '@/utils/api-mapping-helper';
 
@@ -67,7 +74,6 @@ export default {
             showMenu: false,
             isActive: null,
             activeCategory: {},
-            layerLeft: 0,
         };
     },
 
@@ -88,59 +94,40 @@ export default {
     },
 
     methods: {
-        ...mapActions({
-            hideOffcanvasAction: 'modNavigation/hideOffcanvasAction',
-            showOffcanvasAction: 'modNavigation/showOffcanvasAction',
-            toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction',
-        }),
         fetchMenu: async function () {
             return await new apiClient().apiCall({
                 action: 'post',
                 endpoint: 'store-api/v3/navigation/main-navigation/main-navigation',
+                headers: [{ 'sw-include-seo-urls': true }],
                 data: {
                     includes: {
-                        category: ['id', 'parentId', 'name', 'level', 'active', '_uniqueIdentifier', 'seoUrls', 'type', 'children'],
+                        category: ['id', 'parentId', 'name', 'level', 'active', '_uniqueIdentifier', 'seoUrls', 'type', 'children', 'externalLink'],
                     },
                     buildTree: true,
                     depth: 5,
                 },
             });
         },
+
         toggle: function () {
             this.showMenu = !this.showMenu;
-            this.toggleOffcanvasAction({ component: this.name });
         },
+
+        isExternalUrl(item) {
+            if (item.request_path.includes('https') || item.request_path.includes('http')) return true;
+            return false;
+        },
+
         itemUrlPath: function (item) {
             return '/' + item.request_path;
         },
+
         showChildren: function (item) {
             // Blur background on hover over category with children
             if (item.children != null) {
                 this.showMenu = true;
                 this.isActive = item.id;
                 this.activeCategory = item;
-                this.hideOffcanvasAction();
-
-                setTimeout(() => {
-                    this.setLayerPosition(this.$refs[item.id][0]);
-                }, 1);
-            } else {
-                this.hideOffcanvasAction();
-            }
-        },
-        setLayerPosition: function (triggerElement) {
-            if (this.$refs.megaMenuLayer == null) {
-                return;
-            }
-
-            const triggerPosition = triggerElement.$el.offsetLeft;
-            const parentPosition = triggerElement.$parent.$el.getBoundingClientRect();
-            const layerPosition = this.$refs.megaMenuLayer.getBoundingClientRect();
-
-            if (triggerPosition + layerPosition.width > parentPosition.width) {
-                this.layerLeft = parentPosition.width - layerPosition.width;
-            } else {
-                this.layerLeft = triggerPosition;
             }
         },
         // Check if child should be displayed
@@ -153,8 +140,8 @@ export default {
 
             return child.is_active;
         },
+
         hideChildren: function () {
-            this.hideOffcanvasAction();
             this.showMenu = false;
             this.isActive = null;
         },
@@ -191,6 +178,10 @@ nav {
         height: $megamenu-height + $megamenu-item-highlight-size;
 
         .menu-item {
+            position: relative;
+        }
+
+        .menu-item-link {
             height: $megamenu-item-line-height + $megamenu-item-highlight-size;
             text-transform: $megamenu-item-text-transform;
             font-size: $megamenu-item-font-size;
@@ -229,19 +220,25 @@ nav {
                 line-height: $megamenu-item-line-height;
             }
 
-            &.active {
+            &.active,
+            &.nuxt-link-active {
                 border-bottom: $megamenu-item-highlight-size solid $megamenu-item-highlight-color;
                 font-weight: $font-weight-bold;
             }
         }
     }
 
-    .fixed-container {
+    .mega-menu-flyout {
         position: absolute;
-        top: $megamenu-height + $megamenu-item-highlight-size;
-        border: 1px solid $border-color;
+        top: $megamenu-item-line-height;
+        padding-top: 30px;
+        z-index: 20;
+        pointer-events: initial;
+    }
+
+    .mega-menu-flyout-inner {
         background-color: $background;
-        z-index: -1;
+        border: 1px solid $border-color;
     }
 
     .max-width-container {
