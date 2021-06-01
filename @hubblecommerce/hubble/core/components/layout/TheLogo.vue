@@ -1,6 +1,6 @@
 <template>
     <div class="logo-wrp">
-        <nuxt-link :to="'/'" class="logo" aria-label="Hubble Logo" title="Hubble Logo">
+        <nuxt-link :to="logoUrl" class="logo" aria-label="Hubble Logo" title="Hubble Logo">
             <picture>
                 <source media="(min-width: 768px)" :srcset="logoPath" />
                 <img :src="logoPath" alt="Logo" title="Logo" />
@@ -12,6 +12,13 @@
 <script>
 export default {
     name: 'TheLogo',
+    props: {
+        logoUrl: {
+            type: String,
+            required: false,
+            default: "/",
+        },
+    },
     computed: {
         logoPath: function () {
             return require(`~/assets/images/${process.env.THEME}/logo.svg`);
