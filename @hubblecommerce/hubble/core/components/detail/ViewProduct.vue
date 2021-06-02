@@ -5,11 +5,6 @@
         <div class="detail-top-wrp">
             <div class="detail-left-wrp">
                 <product-detail-gallery v-if="product !== null" :media="product.media" :alt="product.name" />
-
-                <!--            <div class="badge-wrp">-->
-                <!--                <div class="badge sale" v-text="'40%'" />-->
-                <!--                <div class="badge new" v-text="'New'" />-->
-                <!--            </div>-->
             </div>
 
             <div class="buybox-wrp">
@@ -34,15 +29,6 @@
                 </div>
             </div>
         </template>
-
-        <!--        <div class="product-recommendation-wrp">-->
-        <!--            <product-detail-cross-selling-sw-->
-        <!--                v-if="productData.crossSellings !== null"-->
-        <!--                :product-id="productData.id"-->
-        <!--                :cross-sellings="productData.crossSellings"-->
-        <!--            />-->
-        <!--            <product-detail-recommendations v-if="hasProductsCrossByOrder" :product-id="productData.id" />-->
-        <!--        </div>-->
     </div>
 </template>
 

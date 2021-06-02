@@ -3,6 +3,7 @@
         <p v-if="item.delivery_time" class="in-stock">
             <span>{{ 'Delivery time' }}</span> <span v-text="item.delivery_time.name" />
         </p>
+        
         <p v-if="item.shipping_free">
             <strong>{{ 'No shipping costs' }}</strong>
         </p>

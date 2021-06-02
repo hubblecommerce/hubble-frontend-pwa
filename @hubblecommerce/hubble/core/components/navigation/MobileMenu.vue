@@ -40,14 +40,6 @@
                         :depth="depth + 1"
                         :first-item="index === 0"
                     />
-
-                    <mobile-menu
-                        v-for="(node, index) of dataItem.menu_items"
-                        :key="node.id"
-                        :data-item="node"
-                        :depth="depth + 1"
-                        :first-item="index === 0"
-                    />
                 </div>
             </transition>
         </div>
@@ -82,7 +74,7 @@ export default {
 
     computed: {
         hasChildren: function () {
-            return this.dataItem.children != null || this.dataItem.menu_items != null;
+            return this.dataItem.children != null;
         },
         itemUrlPath: function () {
             return '/' + this.dataItem.request_path;
@@ -105,7 +97,7 @@ export default {
 
     methods: {
         toggleChildren: function (nodes) {
-            if (nodes.children || nodes.menu_items) {
+            if (nodes.children) {
                 this.showChildren = !this.showChildren;
             }
         },

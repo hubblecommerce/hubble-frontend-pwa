@@ -4,8 +4,10 @@
             <div v-if="$mq === 'lg'" class="newsletter-footer-wrp">
                 <newsletter />
             </div>
-            <the-footer-mobile v-if="$mq === 'sm' || $mq === 'md'" />
-            <the-footer-desktop v-if="$mq === 'lg'" />
+            <div class="main-footer-wrp">
+                <the-footer-mobile v-if="$mq === 'sm' || $mq === 'md'" />
+                <the-footer-desktop v-if="$mq === 'lg'" />
+            </div>
         </client-only>
         <the-post-footer />
     </div>
