@@ -10,7 +10,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import '~assets/scss/hubble/variables';
 @import '~assets/scss/hubble/typography';
 

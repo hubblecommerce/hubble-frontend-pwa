@@ -10,7 +10,7 @@
             </div>
 
             <div class="row">
-                <hbl-input>
+                <hbl-input class="search-input-wrp">
                     <input
                         id="autocomplete-search"
                         ref="search"
@@ -101,7 +101,6 @@ export default {
                         this.result = mappingSearchSuggestProducts(response.data.elements);
 
                         this.loading = false;
-                        console.log(response);
                     }
                 }, this.typeDelay);
             } catch (e) {
@@ -188,7 +187,7 @@ export default {
         height: 30px;
     }
 
-    .hbl-input-group {
+    .search-input-wrp {
         width: 100%;
         margin: 0;
         position: relative;
