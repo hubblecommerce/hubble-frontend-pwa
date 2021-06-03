@@ -43,10 +43,14 @@
                                                 />
                                                 <nuxt-link v-else :to="itemUrlPath(child)" class="child-item" v-text="child.name" />
 
-                                                <template v-for="subchild in child.children">
-                                                    <div v-if="!subchild.request_path" :key="subchild.id" class="subchild-item" v-text="subchild.name" />
-                                                    <nuxt-link v-else :key="subchild.id" class="subchild-item" :to="itemUrlPath(subchild)" v-text="subchild.name" />
-                                                </template>
+                                                <ul v-if="child.children != null" class="subchild-list">
+                                                    <template v-for="subchild in child.children">
+                                                        <li :key="subchild.id">
+                                                            <div v-if="!subchild.request_path" class="subchild-item" v-text="subchild.name" />
+                                                            <nuxt-link v-else class="subchild-item" :to="itemUrlPath(subchild)" v-text="subchild.name" />
+                                                        </li>
+                                                    </template>
+                                                </ul>
                                             </div>
                                         </div>
                                     </template>
@@ -157,7 +161,7 @@ $megamenu-height: $header-navigation-height-desktop;
 $megamenu-background: $darkest-gray;
 
 $megamenu-item-text-transform: none;
-$megamenu-item-font-size: 16px;
+$megamenu-item-font-size: $font-size-base;
 $megamenu-item-color: $white;
 $megamenu-item-line-height: 19px;
 $megamenu-item-highlight-size: 0;
@@ -220,6 +224,7 @@ nav {
                 line-height: $megamenu-item-line-height;
             }
 
+            &:hover,
             &.active,
             &.nuxt-link-active {
                 border-bottom: $megamenu-item-highlight-size solid $megamenu-item-highlight-color;
@@ -250,7 +255,7 @@ nav {
 
     .children-wrp {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         width: 100%;
     }
 
@@ -264,18 +269,21 @@ nav {
     }
 
     .child-item {
-        width: 100%;
-        display: inline-block;
-        font-size: 16px;
+        font-size: $megamenu-item-font-size;
         font-weight: bold;
         text-transform: uppercase;
         line-height: 20px;
     }
 
+    .subchild-list {
+        padding: 0;
+        list-style: none;
+    }
+
     .subchild-item {
         width: 100%;
         display: inline-block;
-        font-size: 16px;
+        font-size: $megamenu-item-font-size;
         line-height: 15px;
     }
 
