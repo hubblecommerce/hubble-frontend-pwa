@@ -15,7 +15,7 @@
 
                     <div v-for="(product, key) in products" :key="key" class="elements-wrp">
                         <nuxt-link :to="'/' + product.url_pds" class="element">
-                            <img data-no-lazy :src="product.image" :alt="product.name" />
+                            <img data-no-lazy :src="getMediaUrl(product.image, 400)" :alt="product.name" />
                             <span class="name" v-text="product.name" />
                             <span class="price" v-text="formatPrice(product.price)" />
                         </nuxt-link>
@@ -52,6 +52,23 @@ export default {
     },
 
     methods: {
+        getMediaUrl: function (medium, width) {
+            if (!medium) {
+                return require('~/assets/images/hubble/placeholder.gif');
+            }
+
+            let image = medium.url;
+
+            if (width != null) {
+                medium.thumbnails.forEach((thumbnail) => {
+                    if (thumbnail.width === width) {
+                        image = thumbnail.url;
+                    }
+                });
+            }
+
+            return image;
+        },
         formatPrice: function (price) {
             const formatter = new Intl.NumberFormat('de-DE', {
                 style: 'currency',

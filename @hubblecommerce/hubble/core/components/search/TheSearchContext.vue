@@ -10,25 +10,27 @@
             </div>
 
             <div class="row">
-                <hbl-input class="search-input-wrp">
-                    <input
-                        id="autocomplete-search"
-                        ref="search"
-                        v-model="term"
-                        :placeholder="'Search'"
-                        autocomplete="off"
-                        type="text"
-                        name="term"
-                        value=""
-                        @keyup.esc="clearQuery"
-                        @keydown.enter.prevent="onEnter($event)"
-                        @focus="onFocus"
-                        @blur="onBlur"
-                    />
-                    <label class="hidden-link-name" for="autocomplete-search">{{ 'Search' }}</label>
-                    <svg-icon v-if="!loading" icon="search" @click.native="doCatalogSearch" />
-                    <loader v-if="loading" />
-                </hbl-input>
+                <div class="search-input-wrp">
+                    <hbl-input>
+                        <input
+                            id="autocomplete-search"
+                            ref="search"
+                            v-model="term"
+                            placeholder=" "
+                            autocomplete="off"
+                            type="text"
+                            name="term"
+                            value=""
+                            @keyup.esc="clearQuery"
+                            @keydown.enter.prevent="onEnter($event)"
+                            @focus="onFocus"
+                            @blur="onBlur"
+                        />
+                        <label for="autocomplete-search">{{ 'Search' }}</label>
+                        <svg-icon v-if="!loading" icon="search" @click.native="doCatalogSearch" />
+                        <loader v-if="loading" />
+                    </hbl-input>
+                </div>
 
                 <lazy-the-search-suggest-list v-if="result !== null" :products="result" class="autocomplete-list" />
             </div>
@@ -62,7 +64,9 @@ export default {
     },
 
     mounted() {
-        this.$refs.search.focus();
+        window.setTimeout(() => {
+            this.$refs.search.focus();
+        }, 300);
     },
 
     watch: {
@@ -146,11 +150,13 @@ export default {
             this.isSearching = true;
 
             let route = {
-                path: 'search',
+                path: '/search',
                 query: {
                     term: this.term,
                 },
             };
+
+            console.log('%c route: ', 'background:#b6f08d', route);
 
             // Do not start loader if term is already in use on press enter
             if (this.$router.history.current.query.term !== this.term) {
@@ -189,11 +195,13 @@ export default {
 
     .search-input-wrp {
         width: 100%;
-        margin: 0;
-        position: relative;
         padding: 16px;
         background: $light-gray;
-        border-bottom: 1px solid $border-color;
+    }
+
+    .hbl-input-group {
+        margin: 0;
+        position: relative;
 
         .icon {
             right: 30px;

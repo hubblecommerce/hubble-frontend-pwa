@@ -8,17 +8,28 @@
     <div v-else class="catalog-search-wrp container">
         <div class="row">
             <h1 class="col-12" v-text="'Search'" />
-            <div class="col-12 headline-3" v-text="`We have found ${$data.total} results for: ${$data.currentFilters.search}`" />
+            <div class="col-12 headline-3" v-text="`We have found ${$data.productData.total} results for: ${$data.productData.currentFilters.search}`" />
         </div>
         <div class="row">
             <div class="toolbar-top col-12">
-                <product-listing-pagination :paginationItemsTotal="$data.total" :paginationPerPage="$data.limit" />
+                <product-listing-pagination
+                    :paginationItemsTotal="$data.productData.total"
+                    :paginationPerPage="$data.productData.limit"
+                />
             </div>
         </div>
-        <product-listing v-if="products != null" :data-items="products" :total="$data.total" :listing-class="'col-12 col-sm-12 col-md-4 col-lg-3'" />
+        <product-listing
+            v-if="products != null"
+            :data-items="products"
+            :total="$data.productData.total"
+            :listing-class="'col-12 col-sm-12 col-md-4 col-lg-3'"
+        />
         <div class="row">
             <div class="toolbar-bottom col-12">
-                <product-listing-pagination :paginationItemsTotal="$data.total" :paginationPerPage="$data.limit" />
+                <product-listing-pagination
+                    :paginationItemsTotal="$data.productData.total"
+                    :paginationPerPage="$data.productData.limit"
+                />
             </div>
         </div>
     </div>
@@ -58,7 +69,10 @@ export default {
             });
 
             if (response.data != null) {
-                return response.data;
+                return {
+                    productData: response.data,
+                    products: mappingCategoryProducts(response.data.elements)
+                }
             }
         } catch (e) {
             error({
@@ -69,16 +83,6 @@ export default {
         }
     },
 
-    data() {
-        return {
-            products: null,
-        };
-    },
-
-    created() {
-        if (this.$data.elements != null) {
-            this.products = mappingCategoryProducts(this.$data.elements);
-        }
-    },
+    watchQuery: true,
 };
 </script>
