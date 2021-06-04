@@ -156,8 +156,6 @@ export default {
                 },
             };
 
-            console.log('%c route: ', 'background:#b6f08d', route);
-
             // Do not start loader if term is already in use on press enter
             if (this.$router.history.current.query.term !== this.term) {
                 this.loading = true;

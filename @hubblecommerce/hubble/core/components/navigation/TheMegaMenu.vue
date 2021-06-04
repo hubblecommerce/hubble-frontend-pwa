@@ -281,8 +281,6 @@ nav {
     }
 
     .subchild-item {
-        width: 100%;
-        display: inline-block;
         font-size: $megamenu-item-font-size;
         line-height: 15px;
     }

@@ -95,7 +95,7 @@ export default {
     }
 
     .old-price {
-        font-size: 16px;
+        font-size: $font-size-base;
         color: $dark-gray;
         text-decoration: line-through;
 
