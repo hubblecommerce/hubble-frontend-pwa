@@ -14,7 +14,7 @@
                     <div class="headline" v-text="`Products (${products.length})`" />
 
                     <div v-for="(product, key) in products" :key="key" class="elements-wrp">
-                        <nuxt-link :to="'/' + product.url_pds" class="element">
+                        <nuxt-link :to="product.url_pds" class="element">
                             <img data-no-lazy :src="getMediaUrl(product.image, 400)" :alt="product.name" />
                             <span class="name" v-text="product.name" />
                             <span class="price" v-text="formatPrice(product.price)" />
