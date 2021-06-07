@@ -8,6 +8,7 @@
         <hbl-input class="input-icon">
             <input id="newsletterEmail" type="text" placeholder=" " required />
             <label for="newsletterEmail" v-text="'E-mail address'" />
+            <svg-icon icon="mail" />
         </hbl-input>
     </div>
 </template>
@@ -17,3 +18,15 @@ export default {
     name: 'Newsletter',
 };
 </script>
+
+<style lang="scss">
+.newsletter-box {
+    .hbl-input-group {
+        .icon {
+            width: 21px;
+            height: 17px;
+            right: 15px;
+        }
+    }
+}
+</style>
