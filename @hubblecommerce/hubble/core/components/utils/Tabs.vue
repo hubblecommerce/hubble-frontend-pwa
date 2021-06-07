@@ -10,11 +10,19 @@
                 class="tabs-component-tab"
                 role="presentation"
             >
-                <a class="tabs-component-tab-a" role="tab" @click="selectTab(tab.hash, $event)" v-html="tab.header" />
+                <span
+                    class="tabs-component-item"
+                    role="tab"
+                    @click="selectTab(tab.hash, $event)"
+                    v-text="tab.header"
+                />
             </div>
 
             <div>
-                <span class="active-bar" :style="{ width: activeWidth + 'px', left: activePosLeft + 'px' }" />
+                <span
+                    class="active-bar"
+                    :style="{ width: activeWidth + 'px', left: activePosLeft + 'px' }"
+                />
             </div>
         </div>
 
@@ -172,13 +180,13 @@ $tab-active-color: $secondary;
             padding: 5px 15px;
             width: 50%;
 
-            a {
+            span {
                 color: $text-primary;
                 width: 100%;
             }
 
             &.is-active {
-                a {
+                span {
                     color: $tab-active-color;
                 }
             }
@@ -188,7 +196,7 @@ $tab-active-color: $secondary;
             }
         }
 
-        .tabs-component-tab-a {
+        .tabs-component-item {
             cursor: pointer;
             font-size: 14px;
             padding: 10px 15px;

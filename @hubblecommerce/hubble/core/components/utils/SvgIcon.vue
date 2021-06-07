@@ -1,5 +1,9 @@
 <template>
-    <div v-if="iconData != null" :class="`${type} ${type}-${icon} is-${size}`" v-html="iconData" />
+    <div
+        v-if="iconData != null"
+        :class="`${type} ${type}-${icon} is-${size}`"
+        v-html="iconData"
+    />
 </template>
 
 <script>
