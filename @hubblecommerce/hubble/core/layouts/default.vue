@@ -1,5 +1,5 @@
 <template>
-    <div class="app">
+    <div class="app" :class="{ 'active-offcanvas': offcanvas.isActive }">
         <noscript>Please enable JavaScript and refresh this page, to use this application.</noscript>
 
         <grid-helper />
@@ -170,6 +170,10 @@ export default {
     min-height: 100vh;
     overflow: hidden;
     display: block;
+
+    &.active-offcanvas {
+        max-height: 100vh;
+    }
 }
 
 header {
@@ -297,6 +301,14 @@ main {
 
 /* Tablet */
 @media (min-width: 1024px) {
+    .app {
+        overflow: visible;
+
+        &.active-offcanvas {
+            overflow: hidden;
+        }
+    }
+    
     .nav-wrp {
         .action-wrp {
             .menu-trigger-wrp {
