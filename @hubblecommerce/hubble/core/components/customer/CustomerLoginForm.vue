@@ -38,7 +38,7 @@
 
             <div class="pw-reset" @click.prevent="toggleLoginForm" v-text="'Login'" />
 
-            <hbl-button class="button-primary" :disabled="isLoading" @click.prevent="submitPwResetForm">
+            <hbl-button class="button-primary" :disabled="isLoading" @click.native="submitPwResetForm">
                 {{ 'Reset password' }}
             </hbl-button>
         </form>
@@ -65,7 +65,6 @@ export default {
     computed: {
         ...mapState({
             contextToken: (state) => state.modSession.contextToken,
-            cartQty: (state) => state.modCart.qty,
         }),
     },
 
@@ -90,10 +89,10 @@ export default {
                     },
                 });
 
-                //this.flashMessage({
-                //    flashType: 'success',
-                //    flashMessage: 'Successfully logged in.'
-                //});
+                // this.flashMessage({
+                //    type: 'success',
+                //    text: 'Successfully logged in.'
+                // });
 
                 if (response.data.contextToken != null) {
                     this.setContextToken(response.data.contextToken);
@@ -127,8 +126,8 @@ export default {
                 this.$emit('pw-reset-success');
 
                 //this.flashMessage({
-                //    flashType: 'success',
-                //    flashMessage: 'We send you an email with further instructions to reset your password.'
+                //    type: 'success',
+                //    text: 'We send you an email with further instructions to reset your password.'
                 //});
 
                 this.isLoading = false;
