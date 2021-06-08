@@ -4,16 +4,40 @@
             <div class="card-media">
                 <div class="actions">
                     <div class="badge-wrp">
-                        <div v-if="itemData.calculatedPrice.listPrice" class="product-badge badge-danger" v-text="'Sale'" />
-                        <div v-if="itemData.isNew" class="product-badge badge-secondary" v-text="'New'" />
-                        <div v-if="itemData.markAsTopseller" class="product-badge badge-success" v-text="'Bestseller'" />
+                        <span
+                            v-if="itemData.calculatedPrice.listPrice"
+                            class="product-badge badge-danger"
+                            v-text="'Sale'"
+                        />
+                        <span
+                            v-if="itemData.isNew"
+                            class="product-badge badge-secondary"
+                            v-text="'New'"
+                        />
+                        <span
+                            v-if="itemData.markAsTopseller"
+                            class="product-badge badge-success"
+                            v-text="'Bestseller'"
+                        />
                     </div>
                 </div>
 
                 <template v-if="index < 4">
-                    <img :src="getMediaUrl(800)" :alt="itemData.name" />
+                    <img
+                        class="product-image"
+                        :src="getMediaUrl(800)"
+                        :alt="itemData.name"
+                        :title="itemData.name"
+                    />
                 </template>
-                <img v-else v-lazy-load :src="getMediaUrl(800)" :alt="itemData.name" />
+                <img
+                    v-else
+                    v-lazy-load
+                    :src="getMediaUrl(800)"
+                    :alt="itemData.name"
+                    :title="itemData.name"
+                    class="product-image"
+                />
             </div>
 
             <div class="product-card-info-wrp-link">
@@ -194,12 +218,14 @@ export default {
             max-width: 150px;
             max-height: 150px;
         }
+    }
 
-        img {
-            display: block;
-            margin: auto;
-            max-width: 100%;
-        }
+    .product-image {
+        display: block;
+        width: 100%;
+        height: 100%;
+        -o-object-fit: contain;
+        object-fit: contain;
     }
 
     .actions {
