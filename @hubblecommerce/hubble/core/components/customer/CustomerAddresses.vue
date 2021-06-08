@@ -12,6 +12,9 @@
 
         <div class="billing-address-wrp">
             <div>
+                <span v-text="activeBillingAddress.company" />
+            </div>
+            <div>
                 <span v-text="getSalutationById(activeBillingAddress.salutationId)" />
                 <span v-text="activeBillingAddress.firstName" />
                 <span v-text="activeBillingAddress.lastName" />
@@ -32,9 +35,12 @@
         <template v-if="differentShippingAddress">
             <div class="d-flex justify-content-between mt-4">
                 <div class="headline headline-3" v-text="'Shipping Address'" />
-                <hbl-button class="button" @click.native="createAddress('shipping')" v-text="'Create new address'" />
+                <hbl-button v-if="!isGuest" class="button" @click.native="createAddress('shipping')" v-text="'Create new address'" />
             </div>
             <div class="shipping-address-wrp">
+                <div>
+                    <span v-text="activeShippingAddress.company" />
+                </div>
                 <div>
                     <span v-text="getSalutationById(activeShippingAddress.salutationId)" />
                     <span v-text="activeShippingAddress.firstName" />
@@ -62,7 +68,7 @@
                         <svg-icon icon="x" />
                     </hbl-button>
                 </div>
-                <form class="form-edit">
+                <form class="form-edit" @submit.prevent="submitForm">
                     <hbl-select>
                         <select v-model="address.salutationId" class="select-text" required>
                             <option v-for="salutation in salutations" :key="salutation.id" :value="salutation.id">
@@ -74,32 +80,37 @@
 
                     <hbl-input>
                         <input id="firstName" v-model="address.firstName" type="text" name="firstName" value="" placeholder=" " required />
-
                         <label for="firstName" v-text="'First Name'" />
                     </hbl-input>
 
                     <hbl-input>
                         <input id="lastName" v-model="address.lastName" type="text" name="lastName" value="" placeholder=" " required />
-
                         <label for="lastName" v-text="'Last Name'" />
                     </hbl-input>
 
                     <hbl-input>
-                        <input id="street" v-model="address.street" type="text" name="street" value="" placeholder=" " required />
+                        <input id="phoneNumber" v-model="address.phoneNumber" type="text" placeholder=" " autocomplete="phone" />
+                        <label for="phoneNumber" v-text="'Telefon (optional)'" />
+                    </hbl-input>
 
+                    <hbl-input>
+                        <input id="company" v-model="address.company" type="text" placeholder=" " autocomplete="company" />
+                        <label for="company" v-text="'Firma, c/o (optional)'" />
+                    </hbl-input>
+
+                    <hbl-input>
+                        <input id="street" v-model="address.street" type="text" name="street" value="" placeholder=" " required />
                         <label for="street" v-text="'Street'" />
                     </hbl-input>
 
                     <div class="form-row zip-city">
                         <hbl-input>
                             <input id="zipcode" v-model="address.zipcode" type="text" name="zipcode" value="" placeholder=" " required />
-
                             <label for="zipcode" v-text="'Zipcode'" />
                         </hbl-input>
 
                         <hbl-input>
                             <input id="city" v-model="address.city" type="text" name="city" value="" placeholder=" " required />
-
                             <label for="city" v-text="'City'" />
                         </hbl-input>
                     </div>
@@ -266,6 +277,12 @@ export default {
             this.actionType = 'update';
             this.contextType = type;
             this.modalOpen = true;
+
+            if (type == 'billing') {
+                this.activeBillingAddress = address;
+            } else {
+                this.activeShippingAddress = address;
+            }
         },
         updateAddressCall: async function (address) {
             return await new apiClient().apiCall({
