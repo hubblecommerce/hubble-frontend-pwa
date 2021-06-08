@@ -330,5 +330,13 @@ export default {
 
 /* Desktop */
 @media (min-width: 1024px) {
+    .minicart-wrapper {
+        .expand-content {
+            .overlay-content {
+                max-height: calc(100vh - 122px);
+            }
+        }
+    }
 }
 </style>
+^
