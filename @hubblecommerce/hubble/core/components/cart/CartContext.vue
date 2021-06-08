@@ -108,6 +108,8 @@ export default {
         if (this.contextToken !== null) {
             let response = await this.fetchCart();
             this.setCartData(response);
+        } else {
+            this.resetCart();
         }
     },
 
@@ -124,6 +126,7 @@ export default {
         }),
         ...mapMutations({
             saveCart: 'modCart/setCart',
+            resetCart: 'modCart/resetCart',
         }),
         fetchCart: async function () {
             try {
@@ -142,25 +145,25 @@ export default {
             }
         },
         setCartData: function (cartResponse) {
-            this.products = this.mappingProducts(cartResponse.data.lineItems);
+            this.products = this.mappingLineItems(cartResponse.data.lineItems);
             this.totals = this.mappingTotals(cartResponse.data);
 
             this.saveCart(cartResponse);
         },
-        mappingProducts: function (products) {
-            let mappedProducts = [];
+        mappingLineItems: function (lineItems) {
+            let mappedLineItems = [];
             this.qty = 0;
 
-            products.forEach((product) => {
-                if (product.type === 'product') {
-                    mappedProducts.push(mappingCartProduct(product));
-                    this.qty = this.qty + product.quantity;
-                } else if (product.type === 'promotion') {
-                    mappedProducts.push(mappingCartPromotion(product));
+            lineItems.forEach((lineItem) => {
+                if (lineItem.type === 'product') {
+                    mappedLineItems.push(mappingCartProduct(lineItem));
+                    this.qty = this.qty + lineItem.quantity;
+                } else if (lineItem.type === 'promotion') {
+                    mappedLineItems.push(mappingCartPromotion(lineItem));
                 }
             });
 
-            return mappedProducts;
+            return mappedLineItems;
         },
         mappingTotals: function (data) {
             return {
