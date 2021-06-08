@@ -102,12 +102,12 @@
 
         <div class="bottom-row-wrapper">
             <p>
-                {{ order.lineItems.length }} Item for
+                {{ order.lineItems.length }} Item{{ order.lineItems.length > 1 ? 's' : ''}} for
                 {{ formatPrice(order.amountTotal) }}
             </p>
 
             <hbl-button class="button-secondary" @click.native="toggleDropdown">
-                Information {{ isExpanded ? 'ausblenden' : 'einblenden' }}
+                {{ isExpanded ? 'Hide' : 'Show' }} Information
             </hbl-button>
         </div>
     </div>
