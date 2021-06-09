@@ -8,7 +8,10 @@
 
             <hbl-checkbox>
                 <input id="registerAsGuest" v-model="form.guest" type="checkbox" />
-                <label for="registerAsGuest" v-text="'Do not create an account'" />
+                <label for="registerAsGuest">
+                    <svg-icon icon="check" />
+                    <span>Do not create an account</span>
+                </label>
             </hbl-checkbox>
 
             <hbl-input v-if="!form.guest">
@@ -36,6 +39,11 @@
             </hbl-input>
 
             <hbl-input>
+                <input v-model="form.billingAddress.company" id="company" type="text" placeholder=" " />
+                <label for="company" v-text="'Company (optional)'" />
+            </hbl-input>
+
+            <hbl-input>
                 <input v-model="form.billingAddress.street" id="street" type="text" placeholder=" " required />
                 <label for="street" v-text="'Street'" />
             </hbl-input>
@@ -52,6 +60,11 @@
                 </hbl-input>
             </div>
 
+            <hbl-input>
+                <input v-model="form.billingAddress.phoneNumber" id="phoneNumber" type="text" placeholder=" " />
+                <label for="phoneNumber" v-text="'Phone (optional)'" />
+            </hbl-input>
+
             <hbl-select>
                 <select id="country" v-model="form.billingAddress.countryId" class="select-text" required>
                     <option v-for="country in countries" :key="country.id" :value="country.id">
@@ -63,7 +76,10 @@
 
             <hbl-checkbox>
                 <input id="sameShippingAddress" v-model="sameShippingAddress" type="checkbox" />
-                <label for="sameShippingAddress" v-text="'Use same address as shipping address'" />
+                <label for="sameShippingAddress">
+                    <svg-icon icon="check" />
+                    <span>Use same address as shipping address</span>
+                </label>
             </hbl-checkbox>
 
             <template v-if="!sameShippingAddress">
@@ -151,6 +167,8 @@ export default {
                     street: '',
                     zipcode: '',
                     city: '',
+                    phoneNumber: '',
+                    company: '',
                 },
             },
             shippingAddress: {
@@ -224,9 +242,12 @@ export default {
             try {
                 this.isLoading = true;
 
-                let postData = Object.assign(this.form, { storefrontUrl: process.env.API_BASE_URL });
+                let postData = Object.assign(this.form, {
+                    storefrontUrl: process.env.API_BASE_URL,
+                });
+                
                 if (!this.sameShippingAddress) {
-                    postData = Object.assign(postData, this.shippingAddress);
+                    postData = Object.assign(postData, { shippingAddress: this.shippingAddress });
                 }
 
                 let response = await new apiClient().apiCall({
@@ -243,8 +264,8 @@ export default {
                 }
 
                 //this.flashMessage({
-                //    flashType: 'success',
-                //    flashMessage: 'Successfully registered.'
+                //    type: 'success',
+                //    text: 'Successfully registered.'
                 //});
 
                 this.isLoading = false;
