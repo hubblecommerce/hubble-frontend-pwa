@@ -159,6 +159,8 @@ $hbl-radiobox-inner-width: $hbl-checkbox-size - ($hbl-checkbox-border-width * 2)
                 border-radius: 100%;
                 transition: all 0.3s ease;
                 opacity: 0;
+                top: 50%;
+                margin-top: -$hbl-radiobox-inner-width / 2;
                 transform: scale(0);
             }
         }
