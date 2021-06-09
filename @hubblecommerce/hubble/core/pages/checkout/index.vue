@@ -62,6 +62,8 @@ import apiClient from '@/utils/api-client';
 export default {
     name: 'Checkout',
 
+    layout: 'checkout',
+
     middleware: ['cartValidate'],
 
     async asyncData({ app, store, redirect }) {
