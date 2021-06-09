@@ -90,12 +90,12 @@
 
                     <hbl-input>
                         <input id="phoneNumber" v-model="address.phoneNumber" type="text" placeholder=" " autocomplete="phone" />
-                        <label for="phoneNumber" v-text="'Telefon (optional)'" />
+                        <label for="phoneNumber" v-text="'Phone (optional)'" />
                     </hbl-input>
 
                     <hbl-input>
                         <input id="company" v-model="address.company" type="text" placeholder=" " autocomplete="company" />
-                        <label for="company" v-text="'Firma, c/o (optional)'" />
+                        <label for="company" v-text="'Company (optional)'" />
                     </hbl-input>
 
                     <hbl-input>
