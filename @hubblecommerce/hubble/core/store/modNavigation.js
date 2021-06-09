@@ -1,14 +1,15 @@
+const defaultDirection = {
+    sm: "rightLeft",
+    md: "rightLeft",
+    lg: "rightLeft",
+};
+
 export const state = () => ({
     showMenu: false,
     offcanvas: {
         component: '',
         isActive: false,
-        direction: {
-            leftRight: false,
-            rightLeft: false,
-            bottomTop: false,
-            topBottom: false,
-        },
+        direction: defaultDirection,
         sameLayerOpened: false,
     },
 });
@@ -28,26 +29,19 @@ export const mutations = {
             state.offcanvas.component = payload.component;
         }
 
-        // Toggle On | Set or reset layer to active depends on component that is set
-        if (state.offcanvas.isActive === true && state.offcanvas.component === '') {
-            state.offcanvas.isActive = false;
-
-            // Reset direction from which offcanvas layer appears
-            Object.entries(state.offcanvas.direction).forEach(function (value, key) {
-                state.offcanvas.direction[key] = false;
-            });
+        // Set direction from which offcanvas layer appears
+        if (state.offcanvas.direction != null) {
+            state.offcanvas.direction = payload.direction;
         } else {
-            state.offcanvas.isActive = true;
-
-            // Toggle Off | Set direction from which offcanvas layer appears
-            Object.entries(state.offcanvas.direction).forEach(function (value, key) {
-                if (payload.direction === key) {
-                    state.offcanvas.direction[key] = true;
-                } else {
-                    state.offcanvas.direction[key] = false;
-                }
-            });
+            // Set default if not set in payload
+            state.offcanvas.direction = defaultDirection;
         }
+
+        // Toggle On | Set or reset layer to active depends on component that is set
+        state.offcanvas.isActive = !(
+            state.offcanvas.isActive === true &&
+            state.offcanvas.component === ""
+        );
     },
     showOffcanvas(state, payload) {
         // Set component name to identify current active layer
@@ -57,13 +51,12 @@ export const mutations = {
         state.offcanvas.isActive = true;
 
         // Set direction from which offcanvas layer appears
-        Object.entries(state.offcanvas.direction).forEach(function (value, key) {
-            if (payload.direction === key) {
-                state.offcanvas.direction[key] = true;
-            } else {
-                state.offcanvas.direction[key] = false;
-            }
-        });
+        if (state.offcanvas.direction != null) {
+            state.offcanvas.direction = payload.direction;
+        } else {
+            // Set default if not set in payload
+            state.offcanvas.direction = defaultDirection;
+        }
     },
     hideOffcanvas(state) {
         // Set component name to identify current active layer
@@ -72,10 +65,7 @@ export const mutations = {
         // Set state of offcanvas status
         state.offcanvas.isActive = false;
 
-        // Set direction from which offcanvas layer appears
-        Object.entries(state.offcanvas.direction).forEach(function (value, key) {
-            state.offcanvas.direction[key] = false;
-        });
+        // DO NOT set direction to make sure layer disapperas the same way it has been appeared
     },
     setSameLayerOpened(state, payload) {
         // If isActive currently true
@@ -99,16 +89,11 @@ export const mutations = {
 };
 
 export const actions = {
-    async toggleOffcanvasAction({ commit, dispatch }, payload) {
+    async toggleOffcanvasAction({ commit }, payload) {
         return new Promise((resolve) => {
-            dispatch('setSameLayerOpenedAction', {
+            commit('toggleOffcanvas', {
                 component: payload.component,
                 direction: payload.direction,
-            }).then(() => {
-                commit('toggleOffcanvas', {
-                    component: payload.component,
-                    direction: payload.direction,
-                });
             });
 
             resolve('resolved');
@@ -129,6 +114,8 @@ export const actions = {
             dispatch('resetSameLayerOpenedAction').then(() => {
                 commit('hideOffcanvas');
             });
+
+            dispatch('modFlashMessage/unflashMessage', null, { root: true });
 
             resolve('resolved');
         });

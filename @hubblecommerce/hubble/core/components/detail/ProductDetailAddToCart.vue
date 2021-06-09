@@ -69,7 +69,11 @@ export default {
 
                 this.toggleOffcanvasAction({
                     component: 'TheCartContext',
-                    direction: 'bottomTop',
+                    direction: {
+                        sm: 'rightLeft',
+                        md: 'rightLeft',
+                        lg: 'rightLeft',
+                    },
                 }).then(() => {
                     this.setIsLoading({ name: 'isLoading', state: false });
 

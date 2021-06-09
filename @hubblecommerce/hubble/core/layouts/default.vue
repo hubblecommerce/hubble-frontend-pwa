@@ -15,7 +15,11 @@
                             @click.native="
                                 toggleOffcanvasAction({
                                     component: 'TheCustomerContext',
-                                    direction: 'bottomTop',
+                                    direction: {
+                                        sm: 'rightLeft',
+                                        md: 'rightLeft',
+                                        lg: 'rightLeft',
+                                    },
                                 })
                             "
                         >
@@ -29,7 +33,11 @@
                             @click.native="
                                 toggleOffcanvasAction({
                                     component: 'TheSearchContext',
-                                    direction: 'bottomTop',
+                                    direction: {
+                                        sm: 'rightLeft',
+                                        md: 'rightLeft',
+                                        lg: 'rightLeft',
+                                    },
                                 })
                             "
                         >
@@ -46,7 +54,11 @@
                             @click.native="
                                 toggleOffcanvasAction({
                                     component: 'TheCartContext',
-                                    direction: 'bottomTop',
+                                     direction: {
+                                        sm: 'rightLeft',
+                                        md: 'rightLeft',
+                                        lg: 'rightLeft',
+                                    },
                                 })
                             "
                         >
@@ -60,7 +72,11 @@
                             @click.native="
                                 toggleOffcanvasAction({
                                     component: 'TheMenuContext',
-                                    direction: 'bottomTop',
+                                    direction: {
+                                        sm: 'rightLeft',
+                                        md: 'rightLeft',
+                                        lg: 'rightLeft',
+                                    },
                                 })
                             "
                         >
@@ -85,8 +101,12 @@
 
         <background-blur />
 
-        <transition-expand-layer :direction="{ sm: 'bottomTop', md: 'rightLeft', lg: 'rightLeft' }">
-            <div v-if="offcanvas.isActive && offcanvas.component" class="transition-expand-wrp">
+        <transition-expand-layer :direction="offcanvas.direction">
+            <div
+                v-if="offcanvas.isActive && offcanvas.component"
+                :class="'sm-' + offcanvas.direction.sm + ' md-' + offcanvas.direction.md + ' lg-' + offcanvas.direction.lg"
+                class="transition-expand-wrp"
+            >
                 <lazy-the-customer-context v-if="offcanvas.component === 'TheCustomerContext'" />
                 <lazy-the-search-context v-if="offcanvas.component === 'TheSearchContext'" />
                 <lazy-cart-context v-if="offcanvas.component === 'TheCartContext'" :displayInLayer="true" />
@@ -131,7 +151,6 @@ export default {
         }),
         ...mapActions({
             toggleOffcanvasAction: 'modNavigation/toggleOffcanvasAction',
-            hideOffcanvasAction: 'modNavigation/hideOffcanvasAction',
         }),
         registerIntersectionObserver: function (targetSelector) {
             let options = {

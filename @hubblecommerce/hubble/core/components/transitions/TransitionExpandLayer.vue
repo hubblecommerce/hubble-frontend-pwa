@@ -137,6 +137,13 @@ $overlay-header-height-desktop: 50px;
     background-color: $background;
     z-index: 100;
     max-width: none;
+
+    .express-checkout-wrp,
+    .register-form,
+    .login-form,
+    .pw-reset-form {
+        max-width: 100% !important;
+    }
 }
 
 /* Wrapper to be able to scroll in overlay */
