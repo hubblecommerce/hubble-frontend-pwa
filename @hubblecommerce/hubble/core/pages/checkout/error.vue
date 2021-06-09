@@ -2,7 +2,7 @@
     <div class="container checkout-error">
         <div class="checkout-error-wrp">
             <div class="error-msg-wrp">
-                <i class="icon icon-x" />
+                <svg-icon icon="x" />
                 <div class="message headline-3" v-text="'Something is wrong with your payment'" />
             </div>
 
@@ -16,7 +16,10 @@
                 :session-payment-method="''"
                 v-on:processing="processingCheckout = $event"
                 v-on:payment-error="paymentError = $event"
-                v-on:payment-changed="chosenPaymentMethod = $event"
+                v-on:payment-changed="
+                    chosenPaymentMethod = $event;
+                    errors = [];
+                "
             />
 
             <button @click="submit()" class="button button-primary">
@@ -81,6 +84,7 @@ export default {
             });
         },
         submit: async function () {
+            this.errors = [];
             this.processingCheckout = true;
 
             // Reset payment transactions of order, set new payment method
@@ -111,6 +115,9 @@ export default {
                     this.$router.push(
                         {
                             name: 'checkout-success',
+                            query: {
+                                orderId: this.orderId,
+                            },
                         },
                         () => {
                             this.processingCheckout = false;
@@ -148,16 +155,17 @@ export default {
             border: 1px solid rgba(208, 2, 27, 1);
             background: rgba(159, 1, 12, 0.1);
 
-            i {
-                width: 45px;
-                height: 45px;
+            .icon {
+                width: 35px;
+                height: 35px;
                 line-height: 42px;
                 margin-bottom: 20px;
                 font-size: 30px;
                 color: $error-accent;
-                border: 3px solid $error-accent;
+                border: 2px solid $error-accent;
                 border-radius: 70px;
                 text-align: center;
+                padding: 3px;
             }
 
             .message {
