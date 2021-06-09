@@ -144,14 +144,20 @@
             <div class="col-4">
                 <hbl-checkbox>
                     <input id="checkboxId1" type="checkbox" />
-                    <label for="checkboxId1">Item 1</label>
+                    <label for="checkboxId1">
+                        <svg-icon icon="check" />
+                        <span>Item 1</span>
+                    </label>
                 </hbl-checkbox>
             </div>
 
             <div class="col-4">
                 <hbl-checkbox>
                     <input id="checkboxId2" type="checkbox" checked />
-                    <label for="checkboxId2">Item 2</label>
+                    <label for="checkboxId2">
+                         <svg-icon icon="check" />
+                        <span>Item 2</span>
+                    </label>
                 </hbl-checkbox>
             </div>
         </div>

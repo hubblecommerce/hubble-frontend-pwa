@@ -30,6 +30,7 @@ $hbl-checkbox-checked-color-disabled: $gray;
 $hbl-checkbox-background-color: $white;
 
 $hbl-checkbox-size: 20px;
+$hbl-checkbox-icon-size: 15px;
 $hbl-checkbox-margin-bottom: 15px;
 $hbl-checkbox-border-width: 1px;
 $hbl-checkbox-border-radius: 4px;
@@ -70,7 +71,7 @@ $hbl-radiobox-inner-width: $hbl-checkbox-size - ($hbl-checkbox-border-width * 2)
         }
 
         &:before,
-        &:after {
+        .icon {
             content: '';
             position: absolute;
             left: 0;
@@ -91,8 +92,16 @@ $hbl-radiobox-inner-width: $hbl-checkbox-size - ($hbl-checkbox-border-width * 2)
             transition: background 0.3s;
         }
 
-        &:after {
-            // checkmark
+        .icon{
+            width: $hbl-checkbox-icon-size;
+            height: $hbl-checkbox-icon-size;
+            left: 2px;
+            transform: scale(0);
+            transition: transform .1s;
+
+            svg path {
+                fill: white;
+            }
         }
     }
 
@@ -113,16 +122,8 @@ $hbl-radiobox-inner-width: $hbl-checkbox-size - ($hbl-checkbox-border-width * 2)
                 background: $hbl-checkbox-checked-color;
                 border: $hbl-checkbox-border-width solid $hbl-checkbox-checked-border-color;
             }
-            + label:after {
-                font-family: 'icons';
-                content: '\e93e';
-                width: $hbl-checkbox-size;
-                height: $hbl-checkbox-size;
-                line-height: $hbl-checkbox-size;
-                text-align: center;
-                color: $hbl-checkmark-color;
-                font-size: $hbl-checkmark-width;
-                font-weight: bold;
+            + label .icon {
+                transform: scale(1);
             }
         }
 
