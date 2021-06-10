@@ -2,8 +2,6 @@
     <div class="app" :class="{ 'active-offcanvas': offcanvas.isActive }">
         <noscript>Please enable JavaScript and refresh this page, to use this application.</noscript>
 
-        <grid-helper />
-
         <header>
             <div class="nav-wrp container">
                 <the-logo />
@@ -16,7 +14,7 @@
                                 toggleOffcanvasAction({
                                     component: 'TheCustomerContext',
                                     direction: {
-                                        sm: 'rightLeft',
+                                        sm: 'bottomTop',
                                         md: 'rightLeft',
                                         lg: 'rightLeft',
                                     },
@@ -34,7 +32,7 @@
                                 toggleOffcanvasAction({
                                     component: 'TheSearchContext',
                                     direction: {
-                                        sm: 'rightLeft',
+                                        sm: 'bottomTop',
                                         md: 'rightLeft',
                                         lg: 'rightLeft',
                                     },
@@ -55,7 +53,7 @@
                                 toggleOffcanvasAction({
                                     component: 'TheCartContext',
                                      direction: {
-                                        sm: 'rightLeft',
+                                        sm: 'bottomTop',
                                         md: 'rightLeft',
                                         lg: 'rightLeft',
                                     },
@@ -73,7 +71,7 @@
                                 toggleOffcanvasAction({
                                     component: 'TheMenuContext',
                                     direction: {
-                                        sm: 'rightLeft',
+                                        sm: 'bottomTop',
                                         md: 'rightLeft',
                                         lg: 'rightLeft',
                                     },

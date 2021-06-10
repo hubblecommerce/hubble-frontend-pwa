@@ -70,7 +70,7 @@ export default {
                 this.toggleOffcanvasAction({
                     component: 'TheCartContext',
                     direction: {
-                        sm: 'rightLeft',
+                        sm: 'bottomTop',
                         md: 'rightLeft',
                         lg: 'rightLeft',
                     },

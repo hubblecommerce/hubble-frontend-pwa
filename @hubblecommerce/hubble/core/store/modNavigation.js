@@ -1,5 +1,5 @@
 const defaultDirection = {
-    sm: "rightLeft",
+    sm: "bottomTop",
     md: "rightLeft",
     lg: "rightLeft",
 };
