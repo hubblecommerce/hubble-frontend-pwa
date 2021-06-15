@@ -1,5 +1,5 @@
 <template>
-    <div class="view-category container" :class="'is-' + data.cmsPage.type">
+    <div class="view-category" :class="'is-' + data.cmsPage.type">
         <sw-section
             v-if="data.cmsPage.sections != null"
             v-for="(cmsSection, key) in data.cmsPage.sections"

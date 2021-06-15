@@ -1,6 +1,6 @@
 <template>
     <div :class="[sectionType, sectionPadding, background]" class="cms-section" :style="getBackgroundStyles">
-        <div :class="[sectionClasses, sectionType, mobileSidebarBehavior, sizingMode]">
+        <div :class="[sectionClasses, sectionType, mobileSidebarBehavior, sizingMode, { container: sizingMode.boxed }]">
             <div class="cms-section-sidebar-sidebar-content">
                 <client-only>
                     <div v-if="hasSidebar && $mq === 'lg'">
