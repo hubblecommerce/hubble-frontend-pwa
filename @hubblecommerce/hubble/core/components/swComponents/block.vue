@@ -70,6 +70,7 @@ specific styling for elements dependent on their parent block
 
 .cms-block {
     overflow: hidden;
+    margin-top: $cms-block-margin;
 
     &.bg-image {
         background-repeat: no-repeat;

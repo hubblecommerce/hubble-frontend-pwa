@@ -161,6 +161,10 @@ General styling for cms sections
 .cms-section {
     overflow: hidden;
 
+    &:first-child{
+        margin-top: -$cms-block-margin;
+    }
+
     &.bg-image {
         background-repeat: no-repeat;
         background-position: 50%;
