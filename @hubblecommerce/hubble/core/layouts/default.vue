@@ -1,5 +1,5 @@
 <template>
-    <div class="app" :class="{ 'active-offcanvas': offcanvas.isActive }">
+    <div class="app">
         <noscript>Please enable JavaScript and refresh this page, to use this application.</noscript>
 
         <header>
@@ -129,6 +129,15 @@ export default {
             loadFooter: false,
         };
     },
+    head() {
+        return {
+            bodyAttrs: {
+                class: [
+                    this.offcanvas.isActive ? 'scroll-block' : ''
+                ]
+            }
+        }
+    },
     computed: {
         ...mapState({
             offcanvas: (state) => state.modNavigation.offcanvas,
@@ -187,10 +196,6 @@ export default {
     min-height: 100vh;
     overflow: hidden;
     display: block;
-
-    &.active-offcanvas {
-        max-height: 100vh;
-    }
 }
 
 header {

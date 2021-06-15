@@ -16,6 +16,10 @@ body {
     font-size: $font-size-base;
     background-color: $background;
     overflow-x: hidden;
+
+    &.scroll-block {
+        overflow-y: hidden;
+    }
 }
 
 /* Links */
