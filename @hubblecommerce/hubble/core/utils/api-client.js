@@ -43,9 +43,15 @@ class ApiClient {
             'Content-Type': 'application/json',
         };
 
+        // Set optional headers
+        if (payload.headers != null) {
+            payload.headers.forEach((header) => {
+                Object.assign(_headers, header);
+            });
+        }
+
         if (process.env.API_TYPE === 'sw') {
             Object.assign(_headers, { 'sw-access-key': process.env.API_SW_ACCESS_KEY });
-            Object.assign(_headers, { 'sw-include-seo-urls': true });
 
             if (payload.contextToken != null) {
                 Object.assign(_headers, { 'sw-context-token': payload.contextToken });

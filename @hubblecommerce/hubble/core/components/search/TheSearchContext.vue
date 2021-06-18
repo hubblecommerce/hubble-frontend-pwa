@@ -124,6 +124,7 @@ export default {
                     search: this.term,
                     includes: includesSearchSuggest,
                 },
+                headers: [{ 'sw-include-seo-urls': true }],
             });
         },
         onFocus: function () {

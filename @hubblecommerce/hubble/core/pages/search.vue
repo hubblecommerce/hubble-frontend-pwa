@@ -65,6 +65,7 @@ export default {
             let response = await new apiClient().apiCall({
                 action: 'post',
                 endpoint: 'store-api/v3/search',
+                headers: [{ 'sw-include-seo-urls': true }],
                 data: postData,
             });
 

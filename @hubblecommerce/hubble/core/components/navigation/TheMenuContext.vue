@@ -54,6 +54,7 @@ export default {
             return await new apiClient().apiCall({
                 action: 'post',
                 endpoint: 'store-api/v3/navigation/main-navigation/main-navigation',
+                headers: [{ 'sw-include-seo-urls': true }],
                 data: {
                     includes: {
                         category: ['id', 'parentId', 'name', 'level', 'active', '_uniqueIdentifier', 'seoUrls', 'type', 'children'],
