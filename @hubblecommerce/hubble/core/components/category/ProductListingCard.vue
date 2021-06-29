@@ -96,7 +96,7 @@ export default {
         routeUrlPds: function () {
             let url_pds = this.productUrl;
 
-            if (this.itemData.seoUrls !== null) {
+            if (this.itemData.seoUrls != null) {
                 this.itemData.seoUrls.forEach((seoUrl) => {
 
                     if (seoUrl.isCanonical) {
