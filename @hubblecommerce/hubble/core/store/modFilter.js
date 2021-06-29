@@ -6,13 +6,26 @@ export const state = () => ({
     minMaxPrice: {}
 });
 
+export const getters = {
+    anyFilterSet(state) {
+        return state.manufacturer.length !== 0
+            || state.properties.length !== 0
+            || state.minMaxPrice.min != null;
+    }
+};
+
 export const mutations = {
-    setAggregations(state, payload) {
+    resetFilters(state, updateFilter = false) {
+        if (updateFilter) state.filterTs = Date.now();
+
         state.properties = [];
         state.manufacturer = [];
         state.minMaxPrice = {};
-
+    },
+    setAggregations(state, payload) {
         state.aggregations = payload;
+
+        this.commit('modFilter/resetFilters');
     },
     updateProperties(state, payload) {
         state.filterTs = Date.now();
