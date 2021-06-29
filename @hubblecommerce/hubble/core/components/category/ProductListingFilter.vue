@@ -1,28 +1,34 @@
 <template>
     <div class="product-listing-filter">
-        <filter-property
-            name= 'Manufacturer'
-            :options="manufacturer"
-            type="manufacturer"
-        />
+        <div class="product-listing-filter__properties">
+            <filter-property
+                name= 'Manufacturer'
+                :options="manufacturer"
+                type="manufacturer"
+            />
 
-        <filter-property
-            v-for="prop in properties"
-            :key="prop.id"
-            :name="prop.name"
-            :options="prop.options"
-            type="properties"
-        />
+            <filter-property
+                v-for="prop in properties"
+                :key="prop.id"
+                :name="prop.name"
+                :options="prop.options"
+                type="properties"
+            />
 
-        <filter-property
-            name="Price"
-            :price="price"
-            type="price"
-        />
+            <filter-property
+                name="Price"
+                :price="price"
+                type="price"
+            />
+        </div>
+
+        <filter-pills v-if="anyFilterSet" />
     </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
     props: {
         aggregations: {
@@ -32,6 +38,9 @@ export default {
     },
 
     computed: {
+        ...mapGetters({
+            anyFilterSet: 'modFilter/anyFilterSet',
+        }),
         properties() {
             return this.aggregations.properties && this.aggregations.properties.entities.filter(val => val.filterable)
         },
