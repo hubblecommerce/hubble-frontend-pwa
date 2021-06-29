@@ -1,19 +1,32 @@
 <template>
     <div :class="elementClass">
         <div class="cms-element-alignment" :class="verticalAlign">
-            <!--            <product-listing v-if="loaded" :data-items="dataItems" :is-slider="true" :loop="false" />-->
+            <hooper ref="hooper" :settings="sliderSettings" style="height: auto">
+                <slide v-for="(dataItem, index) in dataItems" :key="index" :index="index" :class="`sw-product-slider-item`">
+                    <product-listing-card :item-data="dataItem" :show-desc="false" :show-badges="true" />
+                </slide>
+                <hooper-navigation slot="hooper-addons"></hooper-navigation>
+            </hooper>
         </div>
     </div>
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { Hooper, Slide, Navigation as HooperNavigation } from 'hooper';
 import { slotMixins } from '../helper';
-//import ProductListing from '../../productlist/ProductListing';
+import 'hooper/dist/hooper.css';
+
 export default {
     name: 'ProductSliderSlot',
-    //components: { ProductListing },
+    
+    components: {
+        Hooper,
+        Slide,
+        HooperNavigation,
+    },
+    
     mixins: [slotMixins],
+
     props: {
         content: {
             type: Object,
@@ -24,14 +37,28 @@ export default {
     data() {
         return {
             dataItems: [],
-            loaded: false,
+            sliderSettings: {
+                itemsToShow: 1,
+                wheelControl: false,
+                keysControl: false,
+                mouseDrag: false,
+                infiniteScroll: true,
+                breakpoints: {
+                    376: {
+                        itemsToShow: 2,
+                    },
+                    768: {
+                        itemsToShow: 3,
+                    },
+                    1024: {
+                        itemsToShow: 4,
+                    },
+                },
+            },
         };
     },
 
     computed: {
-        //...mapState({
-        //    dataProductUrls: (state) => state.modApiResources.dataProductUrls,
-        //}),
         verticalAlign() {
             if (this.content.config && this.content.config.verticalAlign) {
                 if (this.content.config.verticalAlign.value === 'center') {
@@ -48,19 +75,16 @@ export default {
         },
     },
 
-    //created() {
-    //    this.mappingCategoryProducts({
-    //        data: this.content.data.products,
-    //    }).then((res) => {
-    //        this.dataItems = res.items;
-    //        this.loaded = true;
-    //    });
-    //},
-    //
-    //methods: {
-    //    ...mapActions({
-    //        mappingCategoryProducts: 'modApiCategory/mappingCategoryProducts',
-    //    }),
-    //},
+    mounted() {
+        this.dataItems = this.content.data.products
+    },
 };
 </script>
+
+<style lang="scss">
+.cms-element-product-slider {
+    .cms-element-alignment {
+        margin: -8px;
+    }
+}
+</style>
