@@ -1,9 +1,10 @@
 <template>
-    <div class="listing-wrp row">
+    <div v-if="!loading" class="listing-wrp row">
         <div v-for="(item, index) in dataItems" :key="index" class="listing-item" :class="listingClass">
             <product-listing-card :index="index" :item-data="item" :show-badges="true" />
         </div>
     </div>
+    <loader v-else />
 </template>
 
 <script>
@@ -24,6 +25,11 @@ export default {
             required: false,
             default: 'col-6 col-sm-6 col-md-4 col-lg-3',
         },
+        loading: {
+            type: Boolean,
+            required: false,
+            default: false,
+        }
     },
 };
 </script>
