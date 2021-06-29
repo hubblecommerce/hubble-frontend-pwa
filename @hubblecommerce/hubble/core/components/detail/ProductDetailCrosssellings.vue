@@ -94,20 +94,4 @@ export default {
 </script>
 
 <style lang="scss">
-.sw-product-slider {
-    display: flex;
-    flex-wrap: wrap;
-    padding-top: 60px;
-}
-
-.sw-product-slider-item {
-    padding: 8px;
-}
-
-.sw-product-slider-title {
-    text-align: center;
-    width: 100%;
-    padding-left: 8px;
-    padding-right: 8px;
-}
 </style>
