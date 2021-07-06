@@ -142,7 +142,8 @@ export default {
     font-weight: $font-weight-bold;
     text-transform: uppercase;
     letter-spacing: 0.4px;
-    padding: 16px 16px;
+    padding: 0 20px;
+    line-height: 56px;
     border-bottom: 1px solid $border-color;
     display: flex;
 
@@ -195,7 +196,7 @@ export default {
 .back-trigger {
     position: fixed;
     top: 0;
-    right: 15px;
+    right: 20px;
     z-index: 1;
     height: 56px;
     display: flex;

@@ -170,6 +170,10 @@ $overlay-header-height-desktop: 50px;
         position: absolute;
         top: 0;
         bottom: 0;
+
+        &.close {
+            left: 10px;
+        }
     }
 
     .overlay-headline {

@@ -1,8 +1,12 @@
 <template>
     <div class="mega-menu-wrp container">
         <div class="level-0-wrp">
-            <template v-for="item in dataItems">
-                <div @mouseenter="showChildren(item)" @mouseleave="hideChildren" class="menu-item">
+            <template v-for="(item, i) in dataItems">
+                <div
+                    :key="i"
+                    @mouseenter="showChildren(item, $event, i)"
+                    @mouseleave="hideChildren"
+                    class="menu-item">
                     <a
                         v-if="isExternalUrl(item)"
                         :href="itemUrlPath(item)"
@@ -22,10 +26,13 @@
                         v-text="item.name"
                     />
 
+                    <div v-if="isActive === item.id" class="mega-menu-flyout-indicator" />
+
                     <transition name="fade">
                         <div
                             v-show="isActive === item.id"
                             ref="megaMenuLayer"
+                            :style="{width: `${flyoutDesktopWidth}px`}"
                             :class="'mega-menu-flyout ' + activeCategory.url_path"
                         >
                             <div class="mega-menu-flyout-inner">
@@ -78,6 +85,7 @@ export default {
             showMenu: false,
             isActive: null,
             activeCategory: {},
+            flyoutDesktopWidth: 860
         };
     },
 
@@ -126,13 +134,20 @@ export default {
             return '/' + item.request_path;
         },
 
-        showChildren: function (item) {
+        showChildren: function (item, e, i) {
             // Blur background on hover over category with children
             if (item.children != null) {
                 this.showMenu = true;
                 this.isActive = item.id;
                 this.activeCategory = item;
             }
+
+             // Check if flyout would overflow and set transform value to it
+            const { target } = e;
+            const offsetLeft = target.getBoundingClientRect().left;
+            const overflow = (this.flyoutDesktopWidth + offsetLeft) - window.innerWidth;
+
+            if (overflow > 0) this.$refs.megaMenuLayer[i].style.transform = `translateX(-${overflow + 30}px)`;
         },
         // Check if child should be displayed
         // always display if it is a manufacturer
@@ -166,6 +181,7 @@ $megamenu-item-color: $white;
 $megamenu-item-line-height: 19px;
 $megamenu-item-highlight-size: 0;
 $megamenu-item-highlight-color: $primary;
+$megamenu-level-0-margin: 20px;
 
 nav {
     background-color: $megamenu-background;
@@ -190,14 +206,11 @@ nav {
             text-transform: $megamenu-item-text-transform;
             font-size: $megamenu-item-font-size;
             line-height: $megamenu-item-line-height;
-            margin: 0 45px 0 0;
+            margin: 0 $megamenu-level-0-margin;
             border: $megamenu-item-highlight-size solid transparent;
             color: $megamenu-item-color;
 
-            /* Display only one line and cut with '...' */
-            -moz-hyphens: auto;
-            -ms-hyphens: auto;
-            -webkit-hyphens: auto;
+            text-align: center;
             display: block;
             display: -webkit-box;
             hyphens: auto;
@@ -231,6 +244,36 @@ nav {
                 font-weight: $font-weight-bold;
             }
         }
+
+        .menu-item:first-child {
+            .menu-item-link {
+                margin-left: 0;
+            }
+
+            .mega-menu-flyout-indicator {
+                transform: translateX(calc(-50% - 10px));
+            }
+        }
+
+        .menu-item:last-child {
+            .menu-item-link {
+                margin-right: 0;
+            }
+
+            .mega-menu-flyout-indicator {
+                transform: translateX(calc(-50% + 10px));
+            }
+        }
+
+        .mega-menu-flyout-indicator {
+            border-style: solid;
+            border-width: 0 10px 10px 10px;
+            border-color: transparent transparent white transparent;
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
     }
 
     .mega-menu-flyout {
@@ -244,45 +287,63 @@ nav {
     .mega-menu-flyout-inner {
         background-color: $background;
         border: 1px solid $border-color;
+        border-top-width: 0;
     }
 
     .max-width-container {
         max-width: map_get($container-max-widths, xl);
         display: flex;
         margin: 0 auto;
-        padding: 15px 20px;
+        padding: 48px 40px 20px;
     }
 
     .children-wrp {
         display: flex;
         flex-direction: row;
         width: 100%;
+        flex-wrap: wrap;
+        overflow-y: hidden;
     }
 
     .child-wrp {
-        min-width: 200px;
+        width: 33.333%;
+        padding-right: 60px;
         margin-bottom: 20px;
+        position: relative;
 
-        &:last-child {
-            margin-bottom: 0;
+        &::after {
+            content: '';
+            position: absolute;
+            height: 200%;
+            width: 1px;
+            background: $light-gray;
+            top: 0;
+            right: 40px;
+        }
+
+        &:nth-child(3n) {
+            &::after {
+                display: none;
+            }
         }
     }
 
     .child-item {
         font-size: $megamenu-item-font-size;
         font-weight: bold;
-        text-transform: uppercase;
-        line-height: 20px;
+        line-height: $megamenu-item-line-height;
     }
 
     .subchild-list {
+        margin-top: 12px;
         padding: 0;
         list-style: none;
     }
 
     .subchild-item {
-        font-size: $megamenu-item-font-size;
-        line-height: 15px;
+        display: block;
+        font-size: calc(#{$megamenu-item-font-size} - 2px);
+        line-height: 24px;
     }
 
     .slide-top-bottom-enter-active,

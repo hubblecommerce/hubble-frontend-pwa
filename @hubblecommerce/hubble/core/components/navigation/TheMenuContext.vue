@@ -2,7 +2,7 @@
     <div class="menu-context-wrapper">
         <div class="container expand-content">
             <div class="row overlay-header">
-                <hbl-button class="button-icon" @click.native="hideOffcanvasAction">
+                <hbl-button class="button-icon close" @click.native="hideOffcanvasAction">
                     <div class="hidden-link-name" v-text="'Close'" />
                     <svg-icon icon="x" />
                 </hbl-button>
