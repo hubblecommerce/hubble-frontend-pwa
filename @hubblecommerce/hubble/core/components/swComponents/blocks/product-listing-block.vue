@@ -1,8 +1,6 @@
 <template>
-    <div v-if="products.length === 0" class="container">
-        <div v-if="!loading" class="error-message" v-text="'There are no products available in this category or for this filter.'" />
-
-        <loader v-else />
+    <div v-if="content.slots[0].data.listing === 0" class="container">
+        <div class="error-message" v-text="'There are no products available in this category or for this filter.'" />
     </div>
     <div v-else>
         <div class="toolbar-top">
@@ -16,7 +14,6 @@
             :data-items="products"
             :total="content.slots[0].data.listing.total"
             :listing-class="'col-12 col-sm-12 col-md-4 col-lg-3'"
-            :loading="loading"
         />
         <div class="toolbar-bottom">
             <product-listing-pagination
@@ -28,9 +25,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
 import { mappingCategoryProducts } from '@/utils/api-mapping-helper';
-import apiClient from '@/utils/api-client';
 
 export default {
     name: 'ProductListingBlock',
@@ -45,56 +40,12 @@ export default {
     data() {
         return {
             products: null,
-            loading: false,
         };
-    },
-
-    computed: {
-        ...mapState({
-            filterTs: state => state.modFilter.filterTs,
-            properties: state => state.modFilter.properties,
-            manufacturer: state => state.modFilter.manufacturer,
-            minMaxPrice: state => state.modFilter.minMaxPrice
-        }),
-        categoryId() {
-            return this.content.slots[0].data.listing.currentFilters.navigationId;
-        }
-    },
-
-    watch: {
-        filterTs() {
-            this.loadProductsByFilter();
-        },
     },
 
     created() {
         this.products = mappingCategoryProducts(this.content.slots[0].data.listing.elements);
-        this.$store.commit('modFilter/setAggregations', this.content.slots[0].data.listing.aggregations);
     },
-
-    methods: {
-        async loadProductsByFilter() {
-            this.loading = true;
-
-            const resp = await this.fetchFilteredProducts();
-            this.products = this.products = mappingCategoryProducts(resp.data.elements);
-
-            this.loading = false;
-        },
-        
-        async fetchFilteredProducts() {
-            return new apiClient().apiCall({
-                action: 'post',
-                endpoint: `store-api/v3/product-listing/${this.categoryId}`,
-                data: {
-                    properties: this.properties,
-                    manufacturer: this.manufacturer,
-                    'min-price': this.minMaxPrice.min,
-                    'max-price': this.minMaxPrice.max
-                }
-            });
-        }
-    }
 };
 </script>
 
