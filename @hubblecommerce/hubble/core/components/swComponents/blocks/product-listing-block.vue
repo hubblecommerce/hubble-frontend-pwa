@@ -10,11 +10,6 @@
                 :paginationItemsTotal="content.slots[0].data.listing.total"
                 :paginationPerPage="content.slots[0].data.listing.limit"
             />
-
-            <sorting-dropdown
-                :sortings="availableSortings"
-                :sorting="currentSorting"
-                @onChangeSorting="changeSorting" />
         </div>
         <product-listing
             v-if="products != null"
@@ -49,8 +44,6 @@ export default {
 
     data() {
         return {
-            availableSortings: [],
-            currentSorting: '',
             products: null,
             loading: false,
         };
@@ -76,9 +69,6 @@ export default {
 
     created() {
         this.products = mappingCategoryProducts(this.content.slots[0].data.listing.elements);
-        this.availableSortings = this.content.slots[0].data.listing.availableSortings;
-        this.currentSorting = this.content.slots[0].data.listing.sorting;
-
         this.$store.commit('modFilter/setAggregations', this.content.slots[0].data.listing.aggregations);
     },
 
@@ -100,16 +90,9 @@ export default {
                     properties: this.properties,
                     manufacturer: this.manufacturer,
                     'min-price': this.minMaxPrice.min,
-                    'max-price': this.minMaxPrice.max,
-                    order: this.currentSorting
+                    'max-price': this.minMaxPrice.max
                 }
             });
-        },
-
-        changeSorting(sorting) {
-            this.currentSorting = sorting;
-            
-            this.loadProductsByFilter();
         }
     }
 };
@@ -123,7 +106,6 @@ export default {
 @media (min-width: 1024px) {
     .toolbar-top {
         display: block;
-        position: relative;
     }
 }
 </style>
