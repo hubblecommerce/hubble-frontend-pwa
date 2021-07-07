@@ -212,13 +212,8 @@ nav {
 
             text-align: center;
             display: block;
-            display: -webkit-box;
-            hyphens: auto;
-            word-wrap: break-word;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            -webkit-line-clamp: 1;
-            -webkit-box-orient: vertical;
+            white-space: nowrap;
+            position: relative;
 
             &:last-child {
                 margin: 0;
@@ -242,6 +237,19 @@ nav {
             &.nuxt-link-active {
                 border-bottom: $megamenu-item-highlight-size solid $megamenu-item-highlight-color;
                 font-weight: $font-weight-bold;
+            }
+
+            &.nuxt-link-active {
+                color: $primary;
+
+                &::before {
+                    content: '';
+                    position: absolute;
+                    height: 2px;
+                    width: 100%;
+                    background-color: $megamenu-item-highlight-color;
+                    bottom: -13px;
+                }
             }
         }
 
