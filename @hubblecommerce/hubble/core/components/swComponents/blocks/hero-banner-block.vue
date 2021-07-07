@@ -40,8 +40,9 @@ export default {
 <style lang="scss">
 .cms-block-hero-banner {
     position: relative;
+    padding: 100px 0 25px;
     
-    &::after{
+    &::before {
         content: '';
         position: absolute;
         bottom: 0;
@@ -49,20 +50,10 @@ export default {
         width: 100%;
         opacity: 0.3;
         background: linear-gradient(180deg, rgba(0,0,0,0) 0%, #000000 100%);
-        z-index: 0;
-    }
-    
-    &__wrp {
-        padding-top: 56.25%;
-        position: relative;
     }
 
     &__content {
-        position: absolute;
-        width: 100%;
-        z-index: 1;
         color: white;
-        bottom: 60px;
     }
 
     .cms-element-headline__el {
@@ -71,6 +62,31 @@ export default {
         &.is--headline {
             font-weight: bold;
             margin: 15px 0 30px;
+        }
+    }
+}
+
+@media (min-width: 768px) {
+    .cms-block-hero-banner {
+        padding: 0;
+
+        &__wrp {
+            position: relative;
+            padding-top: 56.25%;
+        }
+
+        &__content {
+            position: absolute;
+            width: 75%;
+            bottom: 60px;
+        }
+    }
+}
+
+@media (min-width: 1024px) {
+    .cms-block-hero-banner {
+        &__content {
+            width: 50%;
         }
     }
 }
