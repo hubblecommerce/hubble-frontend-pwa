@@ -19,12 +19,12 @@ $button-success-color: $white;
 $button-success-background-color: $success-accent;
 $button-success-border: none;
 
-$button-font-size: 18px;
+$button-font-size: 14px;
 $button-font-weight: 500;
-$button-text-transform: none;
+$button-text-transform: uppercase;
 
-$button-line-height: 1.4;
-$button-padding: 10px 25px 11px;
+$button-line-height: 1.215;
+$button-padding: 13px 30px 12px;
 
 $button-icon-width: 40px;
 $button-icon-height: 40px;
@@ -33,6 +33,10 @@ $button-icon-padding: 10px;
 $button-icon-background: transparent;
 $button-icon-hover-background: transparent;
 $button-icon-focus-background: transparent;
+
+$button-ghost-background: transparent;
+$button-ghost-color: $white;
+$button-ghost-border: $white;
 
 .btn,
 button,
@@ -194,6 +198,18 @@ button,
     &.button-block {
         width: 100%;
         display: block;
+    }
+
+    &.btn-ghost,
+    &.button-ghost {
+        color: $button-ghost-color;
+        background-color: $button-ghost-background;
+        border: $button-border-radius solid $button-ghost-border;
+
+        &:hover {
+            background-color: $button-ghost-color;
+            color: $button-color;
+        }
     }
 }
 

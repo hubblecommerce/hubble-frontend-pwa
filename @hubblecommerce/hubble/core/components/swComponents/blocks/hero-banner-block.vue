@@ -64,6 +64,10 @@ export default {
             margin: 15px 0 30px;
         }
     }
+
+    .button {
+        padding: 10px 25px 9px;
+    }
 }
 
 @media (min-width: 768px) {

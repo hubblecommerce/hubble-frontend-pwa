@@ -1,6 +1,6 @@
 <template>
     <div :class="elementClass">
-        <nuxt-link class="button button-primary" :to="content.config.url.value">{{ content.config.linkText.value }}</nuxt-link>
+        <nuxt-link :class="content.config.linkCssClasses.value" :to="content.config.url.value">{{ content.config.linkText.value }}</nuxt-link>
     </div>
 </template>
 
