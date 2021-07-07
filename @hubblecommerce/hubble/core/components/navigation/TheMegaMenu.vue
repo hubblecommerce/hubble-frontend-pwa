@@ -251,7 +251,7 @@ nav {
             }
 
             .mega-menu-flyout-indicator {
-                transform: translateX(calc(-50% - 10px));
+                transform: translateX(calc(-50% - 10px)) rotate(45deg);
             }
         }
 
@@ -261,18 +261,19 @@ nav {
             }
 
             .mega-menu-flyout-indicator {
-                transform: translateX(calc(-50% + 10px));
+                transform: translateX(calc(-50% + 10px)) rotate(45deg);
             }
         }
 
         .mega-menu-flyout-indicator {
-            border-style: solid;
-            border-width: 0 10px 10px 10px;
-            border-color: transparent transparent white transparent;
+            width: 15px;
+            height: 15px;
+            background-color: white;
             position: absolute;
-            bottom: -30px;
+            bottom: -38px;
             left: 50%;
-            transform: translateX(-50%);
+            transform: translateX(-50%) rotate(45deg);
+            z-index: 101;
         }
     }
 
@@ -286,8 +287,8 @@ nav {
 
     .mega-menu-flyout-inner {
         background-color: $background;
-        border: 1px solid $border-color;
-        border-top-width: 0;
+        box-shadow: $box-shadow;
+        box-shadow: $box-shadow, 0 -10px 10px 0 rgba(27,27,36,0.01);
     }
 
     .max-width-container {
