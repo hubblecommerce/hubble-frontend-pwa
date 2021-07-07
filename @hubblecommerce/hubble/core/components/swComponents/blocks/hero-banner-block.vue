@@ -58,14 +58,18 @@ export default {
 
     .cms-element-headline__el {
         text-transform: uppercase;
+        margin: 0;
 
         &.is--headline {
+            margin-top: 5px;
             font-weight: bold;
-            margin: 15px 0 30px;
+            font-size: 32px;
+            line-height: 40px;
         }
     }
 
     .button {
+        margin-top: 30px;
         padding: 10px 25px 9px;
     }
 }
@@ -84,6 +88,13 @@ export default {
             width: 75%;
             bottom: 60px;
         }
+
+         .cms-element-headline__el {
+            &.is--headline {
+                font-size: 44px;
+                line-height: 52px;
+            }
+        }
     }
 }
 
@@ -91,6 +102,13 @@ export default {
     .cms-block-hero-banner {
         &__content {
             width: 50%;
+        }
+
+        .cms-element-headline__el {
+            &.is--headline {
+                font-size: 56px;
+                line-height: 65px;
+            }
         }
     }
 }
