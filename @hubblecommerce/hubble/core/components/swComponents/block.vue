@@ -1,7 +1,10 @@
 <template>
     <div class="cms-block" :class="[blockClass, backgroundImageExists]" :style="backgroundStyles">
         <div class="cms-block-container">
-            <component :is="component" :content="content" class="cms-block-container-row cms-row" />
+            <div :class="{ container: sizingMode['full-width']} ">
+                <h2 v-if="content.name" class="cms-block-headline headline-1">{{ content.name }}</h2>
+            </div>
+            <component :is="component" :content="content" :sizing-mode="sizingMode" class="cms-block-container-row cms-row" />
         </div>
     </div>
 </template>
@@ -17,6 +20,10 @@ export default {
         content: {
             type: Object,
             default: () => ({}),
+        },
+        sizingMode: {
+            type: Object,
+            default: () => {}
         },
     },
 

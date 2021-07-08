@@ -301,7 +301,6 @@ export default {
         font-size: 14px;
         line-height: 17px;
         margin-bottom: 5px;
-        font-weight: $font-weight-bold;
     }
 
     .product-price {
@@ -321,7 +320,7 @@ export default {
 }
 
 .sw-product-slider-item {
-    padding: 8px;
+    padding: 10px;
 }
 
 .sw-product-slider-title {

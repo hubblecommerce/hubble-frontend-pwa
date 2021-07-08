@@ -1,7 +1,7 @@
 <template>
     <div class="row">
         <div class="col-12">
-            <component :is="getSlot" :content="getContentByPosition(content.slots, 'productSlider')" />
+            <component :is="getSlot" :sizing-mode="sizingMode" :content="getContentByPosition(content.slots, 'productSlider')" />
         </div>
     </div>
 </template>
@@ -17,6 +17,10 @@ export default {
         content: {
             type: Object,
             default: () => ({}),
+        },
+        sizingMode: {
+            type: Object,
+            default: () => {}
         },
     },
     computed: {

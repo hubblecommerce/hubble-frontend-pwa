@@ -6,9 +6,9 @@
             :class="{ loading: !showBlock }"
             :id="cmsSlot._uniqueIdentifier"
         >
-            <lazy-block v-if="showBlock" :content="cmsSlot" />
+            <lazy-block v-if="showBlock" :content="cmsSlot" :sizing-mode="sizingMode" />
         </div>
-        <block v-else :content="cmsSlot" />
+        <block v-else :content="cmsSlot" :sizing-mode="sizingMode" />
     </div>
 </template>
 
@@ -25,6 +25,10 @@ export default {
             type: Number,
             required: false,
             default: null,
+        },
+        sizingMode: {
+            type: Object,
+            default: () => {}
         },
     },
 

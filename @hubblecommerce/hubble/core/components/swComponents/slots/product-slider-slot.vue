@@ -1,12 +1,17 @@
 <template>
-    <div :class="elementClass">
-        <div class="cms-element-alignment" :class="verticalAlign">
-            <hooper ref="hooper" :settings="sliderSettings" style="height: auto">
-                <slide v-for="(dataItem, index) in dataItems" :key="index" :index="index" :class="`sw-product-slider-item`">
-                    <product-listing-card :item-data="dataItem" :show-desc="false" :show-badges="true" />
-                </slide>
-                <hooper-navigation slot="hooper-addons"></hooper-navigation>
-            </hooper>
+    <div :class="[elementClass, { 'is--full-width': sizingMode['full-width'] }]">
+        <div :class="{ container: sizingMode['full-width'] }">
+            <div class="cms-element-alignment" :class="verticalAlign">
+                <hooper ref="hooper" :settings="sliderSettings" style="height: auto">
+                    <slide v-for="(dataItem, index) in dataItems" :key="index" :index="index" :class="`sw-product-slider-item`">
+                        <product-listing-card :item-data="dataItem" :show-desc="false" :show-badges="true" />
+                    </slide>
+                    <hooper-navigation slot="hooper-addons">
+                        <svg-icon slot="hooper-prev" icon="arrow-left" />
+                        <svg-icon slot="hooper-next" icon="arrow-right" />
+                    </hooper-navigation>
+                </hooper>
+            </div>
         </div>
     </div>
 </template>
@@ -31,6 +36,10 @@ export default {
         content: {
             type: Object,
             default: () => ({}),
+        },
+        sizingMode: {
+            type: Object,
+            default: () => {}
         },
     },
 
@@ -84,7 +93,36 @@ export default {
 <style lang="scss">
 .cms-element-product-slider {
     .cms-element-alignment {
-        margin: -8px;
+        position: relative;
+        margin: -10px;
+    }
+
+    &.is--full-width {
+        .cms-element-alignment {
+            &::before,
+            &::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                height: 100%;
+                width: 100%;
+                background: white;
+                opacity: 0.7;
+                z-index: 1;
+            }
+
+            &::before {
+                right: 100%;
+            }
+
+            &::after {
+                left: 100%;
+            }
+        }
+
+        .hooper-list {
+            overflow: visible;
+        }
     }
 }
 </style>

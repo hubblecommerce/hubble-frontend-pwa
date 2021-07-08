@@ -69,7 +69,7 @@ button,
         width: $button-icon-size;
 
         > svg {
-            top: -3px;
+            top: -1px;
         }
     }
 
@@ -210,6 +210,27 @@ button,
             background-color: $button-ghost-color;
             color: $button-color;
         }
+    }
+
+    &.hooper-prev,
+    &.hooper-next {
+        z-index: 10;
+        border-radius: 50%;
+        background-color: white;
+        box-shadow: $box-shadow-circle;
+        padding: 9px;
+
+        svg {
+            fill: none;
+        }
+    }
+
+    &.hooper-prev {
+        left: -5px;
+    }
+
+    &.hooper-next {
+        right: -5px;
     }
 }
 

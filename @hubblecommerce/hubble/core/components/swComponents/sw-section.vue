@@ -10,7 +10,11 @@
             </div>
 
             <div :class="elementClasses">
-                <intersection-wrapper v-for="cmsSlot in elementsSlots" :key="cmsSlot._uniqueIdentifier" :count="count" :cms-slot="cmsSlot" />
+                <intersection-wrapper
+                    v-for="cmsSlot in elementsSlots"
+                    :key="cmsSlot._uniqueIdentifier"
+                    :count="count" :cms-slot="cmsSlot"
+                    :sizing-mode="sizingMode" />
             </div>
         </div>
     </div>
