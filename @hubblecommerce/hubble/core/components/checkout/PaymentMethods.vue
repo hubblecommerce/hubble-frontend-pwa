@@ -194,7 +194,7 @@ export default {
 
         try {
             const response = await this.fetchPaymentMethods();
-            this.paymentMethods = response.data;
+            this.paymentMethods = response.data.elements;
 
             this.currentMethod = this.sessionPaymentMethod;
             this.currentMethodObj = await this.getMethodById(this.sessionPaymentMethod);
@@ -244,7 +244,7 @@ export default {
         fetchPaymentMethods: async function () {
             return await new ApiClient().apiCall({
                 action: 'post',
-                endpoint: 'store-api/v3/payment-method',
+                endpoint: 'store-api/payment-method',
                 contextToken: this.contextToken,
                 data: {
                     onlyAvailable: true,
@@ -254,7 +254,7 @@ export default {
         setPaymentMethod: async function (id) {
             return await new ApiClient().apiCall({
                 action: 'patch',
-                endpoint: 'store-api/v3/context',
+                endpoint: 'store-api/context',
                 contextToken: this.contextToken,
                 data: {
                     paymentMethodId: id,
@@ -362,7 +362,7 @@ export default {
         setPaymentMethodSettings: async function (payload) {
             return await new ApiClient().apiCall({
                 action: 'patch',
-                endpoint: 'store-api/v3/stripe-payment/payment-method-settings',
+                endpoint: 'store-api/stripe-payment/payment-method-settings',
                 contextToken: this.contextToken,
                 data: payload,
             });

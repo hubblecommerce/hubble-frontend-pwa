@@ -64,7 +64,7 @@ export default {
         resetPayment: async function (payload) {
             return await new apiClient().apiCall({
                 action: 'post',
-                endpoint: 'store-api/v3/order/payment',
+                endpoint: 'store-api/order/payment',
                 contextToken: this.contextToken,
                 data: payload,
             });
@@ -78,7 +78,7 @@ export default {
 
             return await new apiClient().apiCall({
                 action: 'post',
-                endpoint: 'store-api/v3/handle-payment',
+                endpoint: 'store-api/handle-payment',
                 contextToken: this.contextToken,
                 data: requestData,
             });

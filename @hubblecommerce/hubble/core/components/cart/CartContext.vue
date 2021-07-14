@@ -133,7 +133,7 @@ export default {
                 this.isLoading = true;
                 const response = await new apiClient().apiCall({
                     action: 'post',
-                    endpoint: 'store-api/v3/checkout/cart',
+                    endpoint: 'store-api/checkout/cart',
                     headers: [{ 'sw-include-seo-urls': true }],
                     contextToken: this.contextToken,
                 });

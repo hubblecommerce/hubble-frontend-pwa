@@ -3,7 +3,7 @@
         <sw-section
             v-if="data.cmsPage.sections != null"
             v-for="(cmsSection, key) in data.cmsPage.sections"
-            :key="key"
+            :key="$route.fullPath"
             :count="key"
             :content="cmsSection"
         />
@@ -12,6 +12,7 @@
 
 <script>
 import apiClient from '@/utils/api-client';
+import {associations, includes} from "~/utils/api-post-body";
 
 export default {
     name: 'Home',
@@ -37,11 +38,20 @@ export default {
         },
     },
 
-    async asyncData({ error }) {
+    async asyncData({ error, route }) {
         try {
+            let postData = {};
+
+            // Set GET params to POST data if set in url
+            if (Object.keys(route.query).length > 0) {
+                let { setReqParamFromRoute } = await import('../utils/api-parse-get-params');
+                postData = setReqParamFromRoute(route, postData);
+            }
+
             let response = await new apiClient().apiCall({
-                action: 'get',
-                endpoint: 'store-api/v3/category/home',
+                action: 'post',
+                endpoint: 'store-api/category/home',
+                data: postData,
             });
 
             return { data: response.data };
@@ -74,5 +84,8 @@ export default {
 
         return obj;
     },
+
+    // Watch for $route.query.page to call Component methods (asyncData, fetch, validate, layout, etc.)
+    watchQuery: true,
 };
 </script>

@@ -126,7 +126,7 @@ export default {
             this.error = 'PayPal Express: No ClientID defined.'
             return;
         }
-        
+
         this.createButton();
     },
 
@@ -295,7 +295,7 @@ export default {
             try {
                 const response = await new apiClient().apiCall({
                     action: 'post',
-                    endpoint: 'store-api/v3/paypal/express/create-order',
+                    endpoint: 'store-api/paypal/express/create-order',
                     contextToken: this.contextToken,
                 });
 
@@ -317,7 +317,7 @@ export default {
             try {
                 const response = await new apiClient().apiCall({
                     action: 'post',
-                    endpoint: 'store-api/v3/paypal/express/prepare-checkout',
+                    endpoint: 'store-api/paypal/express/prepare-checkout',
                     contextToken: this.contextToken,
                     data: requestPayload,
                 });

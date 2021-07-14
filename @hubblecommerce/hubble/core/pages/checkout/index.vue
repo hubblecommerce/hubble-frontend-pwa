@@ -84,7 +84,7 @@ export default {
         try {
             let response = await new apiClient().apiCall({
                 action: 'get',
-                endpoint: 'store-api/v3/context',
+                endpoint: 'store-api/context',
                 contextToken: contextToken,
             });
 
@@ -133,7 +133,7 @@ export default {
         placeOrderCall: async function () {
             return await new apiClient().apiCall({
                 action: 'post',
-                endpoint: 'store-api/v3/checkout/order',
+                endpoint: 'store-api/checkout/order',
                 contextToken: this.contextToken,
             });
         },
@@ -148,7 +148,7 @@ export default {
 
             return await new apiClient().apiCall({
                 action: 'post',
-                endpoint: 'store-api/v3/handle-payment',
+                endpoint: 'store-api/handle-payment',
                 contextToken: this.contextToken,
                 data: requestData,
             });

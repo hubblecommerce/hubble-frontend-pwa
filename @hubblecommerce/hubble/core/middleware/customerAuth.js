@@ -18,7 +18,7 @@ export default async function ({ app, store, redirect }) {
     try {
         let response = await new apiClient().apiCall({
             action: 'get',
-            endpoint: 'store-api/v3/context',
+            endpoint: 'store-api/context',
             contextToken: contextToken,
         });
 

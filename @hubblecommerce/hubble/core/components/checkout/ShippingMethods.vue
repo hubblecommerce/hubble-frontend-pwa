@@ -81,7 +81,7 @@ export default {
 
         try {
             const response = await this.fetchShippingMethods();
-            this.shippingMethods = response.data;
+            this.shippingMethods = response.data.elements;
 
             this.currentMethod = this.sessionShippingMethod;
             this.loading = false;
@@ -95,7 +95,7 @@ export default {
         fetchShippingMethods: async function () {
             return await new ApiClient().apiCall({
                 action: 'post',
-                endpoint: 'store-api/v3/shipping-method',
+                endpoint: 'store-api/shipping-method',
                 contextToken: this.contextToken,
                 data: {
                     onlyAvailable: true,
@@ -105,7 +105,7 @@ export default {
         setShippingMethod: async function (id) {
             return await new ApiClient().apiCall({
                 action: 'patch',
-                endpoint: 'store-api/v3/context',
+                endpoint: 'store-api/context',
                 contextToken: this.contextToken,
                 data: {
                     shippingMethodId: id,

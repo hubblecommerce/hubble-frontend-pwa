@@ -81,7 +81,7 @@ export default {
             try {
                 return await new apiClient().apiCall({
                     action: 'post',
-                    endpoint: `store-api/v3/product/${this.productId}/cross-selling`,
+                    endpoint: `store-api/product/${this.productId}/cross-selling`,
                     contextToken: this.contextToken,
                     headers: [{ 'sw-include-seo-urls': true }],
                 });

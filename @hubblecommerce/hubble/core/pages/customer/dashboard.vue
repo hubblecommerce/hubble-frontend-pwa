@@ -55,7 +55,7 @@ export default {
         fetchCustomer: async function () {
             return await new apiClient().apiCall({
                 action: 'get',
-                endpoint: 'store-api/v3/account/customer',
+                endpoint: 'store-api/account/customer',
                 contextToken: this.contextToken,
             });
         },

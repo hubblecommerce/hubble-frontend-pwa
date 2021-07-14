@@ -70,14 +70,19 @@ function mappingCategoryProducts(products) {
         };
 
         obj.calculatedPrice = product.calculatedPrice;
-        obj.calculatedListingPrice = product.calculatedListingPrice;
-        obj.fromPrice = product.calculatedListingPrice.from;
+        obj.calculatedListingPrice = product.calculatedCheapestPrice;
+
+        if(product.calculatedCheapestPrice != null) {
+            obj.fromPrice = product.calculatedCheapestPrice.totalPrice;
+        }
 
         if (product.calculatedPrice.listPrice !== null) {
             obj.listPrice = product.calculatedPrice.listPrice;
         }
 
-        obj.unitPrice = product.calculatedPrice.unitPrice;
+        if(product.calculatedPrice != null) {
+            obj.unitPrice = product.calculatedPrice.unitPrice;
+        }
 
         if (product.translated.customFields.product_variants_extension) {
             obj.variants = product.translated.customFields.product_variants_extension.elements;

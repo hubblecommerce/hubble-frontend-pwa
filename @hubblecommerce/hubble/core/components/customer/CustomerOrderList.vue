@@ -67,7 +67,7 @@ export default {
         fetchOrders: async function () {
             return await new apiClient().apiCall({
                 action: "post",
-                endpoint: "store-api/v3/order",
+                endpoint: "store-api/order",
                 contextToken: this.contextToken,
                 data: {
                     // includes: {

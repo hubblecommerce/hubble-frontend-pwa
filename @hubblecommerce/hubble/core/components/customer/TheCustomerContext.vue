@@ -90,7 +90,7 @@ export default {
         fetchContext: async function () {
             return await new apiClient().apiCall({
                 action: 'get',
-                endpoint: 'store-api/v3/context',
+                endpoint: 'store-api/context',
                 contextToken: this.contextToken,
             });
         },

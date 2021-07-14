@@ -175,7 +175,7 @@ export default {
             if (this.context.data != null) {
                 return this.context.data.customer.guest;
             }
-            
+
             return null;
         }
     },
@@ -187,7 +187,7 @@ export default {
     async mounted() {
         try {
             let [salutationResponse, countryResponse] = await this.fetchFormOptions();
-            this.salutations = salutationResponse.data;
+            this.salutations = salutationResponse.data.elements;
             this.countries = countryResponse.data.elements;
 
             // Fetch current context (activeBillingAddress and activeShippingAddress)
@@ -216,13 +216,13 @@ export default {
         fetchSalutations: async function () {
             return await new apiClient().apiCall({
                 action: 'get',
-                endpoint: 'store-api/v3/salutation',
+                endpoint: 'store-api/salutation',
             });
         },
         fetchCountries: async function () {
             return await new apiClient().apiCall({
                 action: 'post',
-                endpoint: 'store-api/v3/country',
+                endpoint: 'store-api/country',
                 data: {
                     filter: [
                         {
@@ -248,7 +248,7 @@ export default {
         fetchContext: async function () {
             return await new apiClient().apiCall({
                 action: 'get',
-                endpoint: 'store-api/v3/context',
+                endpoint: 'store-api/context',
                 contextToken: this.contextToken,
             });
         },
@@ -287,7 +287,7 @@ export default {
         updateAddressCall: async function (address) {
             return await new apiClient().apiCall({
                 action: 'patch',
-                endpoint: `store-api/v3/account/address/${address.id}`,
+                endpoint: `store-api/account/address/${address.id}`,
                 contextToken: this.contextToken,
                 data: address,
             });
@@ -295,7 +295,7 @@ export default {
         setActiveAddressToContext: async function (payload) {
             return await new apiClient().apiCall({
                 action: 'patch',
-                endpoint: 'store-api/v3/context',
+                endpoint: 'store-api/context',
                 contextToken: this.contextToken,
                 data: payload,
             });
@@ -308,7 +308,7 @@ export default {
         createAddressCall: async function (address) {
             return await new apiClient().apiCall({
                 action: 'post',
-                endpoint: 'store-api/v3/account/address',
+                endpoint: 'store-api/account/address',
                 contextToken: this.contextToken,
                 data: address,
             });

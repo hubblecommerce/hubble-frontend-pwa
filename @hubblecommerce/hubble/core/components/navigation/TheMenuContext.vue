@@ -53,7 +53,7 @@ export default {
         fetchMenu: async function () {
             return await new apiClient().apiCall({
                 action: 'post',
-                endpoint: 'store-api/v3/navigation/main-navigation/main-navigation',
+                endpoint: 'store-api/navigation/main-navigation/main-navigation',
                 headers: [{ 'sw-include-seo-urls': true }],
                 data: {
                     includes: {

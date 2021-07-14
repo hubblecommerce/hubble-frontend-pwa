@@ -81,7 +81,7 @@ export default {
                 this.isLoading = true;
                 let response = await new apiClient().apiCall({
                     action: 'post',
-                    endpoint: 'store-api/v3/account/login',
+                    endpoint: 'store-api/account/login',
                     contextToken: this.contextToken,
                     data: {
                         username: this.email,
@@ -110,7 +110,7 @@ export default {
                 this.isLoading = true;
                 await new apiClient().apiCall({
                     action: 'post',
-                    endpoint: 'store-api/v3/account/recovery-password',
+                    endpoint: 'store-api/account/recovery-password',
                     data: {
                         email: this.email,
                         storefrontUrl: process.env.API_BASE_URL,

@@ -46,12 +46,6 @@
 
                     <div class="price-box price-excluding-tax product-price">
                         <span
-                            v-if="itemData.calculatedListingPrice.from.unitPrice !== itemData.unitPrice"
-                            class="unit-price from-price"
-                            v-text="'Ab ' + formatPrice(itemData.calculatedListingPrice.from.unitPrice)"
-                        />
-                        <span
-                            v-else
                             :class="{'sale-price': itemData.calculatedPrice.listPrice}"
                             v-text="formatPrice(itemData.final_price_item.display_price_brutto)"
                         />
@@ -116,7 +110,7 @@ export default {
             if (this.itemData.cover === null) {
                 return require('~/assets/images/hubble/placeholder.gif');
             }
-            
+
             let image = this.itemData.cover.media.url;
 
             if (width != null) {
@@ -312,7 +306,7 @@ export default {
     }
 }
 
-// global Slider styles 
+// global Slider styles
 .sw-product-slider {
     display: flex;
     flex-wrap: wrap;

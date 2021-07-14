@@ -135,7 +135,7 @@ export default {
                 this.setIsLoading({ name: 'isLoading', state: false });
             }
         },
-        
+
         showActiveClass: function (groupId, optionId) {
             if (this.updatedOptions != null) {
                 return this.updatedOptions[groupId] === optionId ? 'active' : '';
@@ -148,7 +148,7 @@ export default {
             try {
                 return await new apiClient().apiCall({
                     action: 'post',
-                    endpoint: 'store-api/v3/product',
+                    endpoint: 'store-api/product',
                     data: {
                         filter: payload.filter,
                         associations: associations,
@@ -239,7 +239,7 @@ export default {
                 &.is-color {
                     border-radius: 50%;
                     padding: 2px;
-                    
+
                     label {
                         display: block;
                         border-radius: 50%;

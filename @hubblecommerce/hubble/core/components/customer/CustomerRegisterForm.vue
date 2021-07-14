@@ -192,7 +192,7 @@ export default {
     async mounted() {
         try {
             let [salutationResponse, countryResponse] = await this.fetchFormOptions();
-            this.salutations = salutationResponse.data;
+            this.salutations = salutationResponse.data.elements;
             this.countries = countryResponse.data.elements;
         } catch (e) {
             throw e;
@@ -209,13 +209,13 @@ export default {
         fetchSalutations: async function () {
             return await new apiClient().apiCall({
                 action: 'get',
-                endpoint: 'store-api/v3/salutation',
+                endpoint: 'store-api/salutation',
             });
         },
         fetchCountries: async function () {
             return await new apiClient().apiCall({
                 action: 'post',
-                endpoint: 'store-api/v3/country',
+                endpoint: 'store-api/country',
                 data: {
                     filter: [
                         {
@@ -245,21 +245,20 @@ export default {
                 let postData = Object.assign(this.form, {
                     storefrontUrl: process.env.API_BASE_URL,
                 });
-                
+
                 if (!this.sameShippingAddress) {
                     postData = Object.assign(postData, { shippingAddress: this.shippingAddress });
                 }
 
                 let response = await new apiClient().apiCall({
                     action: 'post',
-                    endpoint: 'store-api/v3/account/register',
+                    endpoint: 'store-api/account/register',
                     contextToken: this.contextToken,
                     data: postData,
                 });
 
-                // Property 'guest' where context token is returned isset for both, customers and guest register calls
-                if (response.data.extensions.guest['sw-context-token'] != null) {
-                    this.setContextToken(response.data.extensions.guest['sw-context-token']);
+                if (response.headers['sw-context-token'] != null) {
+                    this.setContextToken(response.headers['sw-context-token']);
                     this.$emit('register-success');
                 }
 

@@ -44,7 +44,7 @@ export default {
             try {
                 let response = await new apiClient().apiCall({
                     action: 'post',
-                    endpoint: 'store-api/v3/account/logout',
+                    endpoint: 'store-api/account/logout',
                     contextToken: this.contextToken,
                 });
 

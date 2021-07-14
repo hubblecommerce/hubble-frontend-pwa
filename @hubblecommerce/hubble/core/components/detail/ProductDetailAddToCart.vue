@@ -35,7 +35,7 @@ export default {
             cartQty: (state) => state.modCart.qty,
         }),
     },
-    
+
     beforeDestroy() {
         this.setIsLoading({ name: 'isLoading', state: false });
     },
@@ -96,7 +96,7 @@ export default {
             try {
                 let response = await new apiClient().apiCall({
                     action: 'post',
-                    endpoint: 'store-api/v3/checkout/cart',
+                    endpoint: 'store-api/checkout/cart',
                 });
 
                 this.setContextToken(response.data['token']);
@@ -118,7 +118,7 @@ export default {
                 if (!inCart) {
                     await new apiClient().apiCall({
                         action: 'post',
-                        endpoint: 'store-api/v3/checkout/cart/line-item',
+                        endpoint: 'store-api/checkout/cart/line-item',
                         contextToken: this.contextToken,
                         data: {
                             items: [
@@ -138,7 +138,7 @@ export default {
 
                     await new apiClient().apiCall({
                         action: 'patch',
-                        endpoint: 'store-api/v3/checkout/cart/line-item',
+                        endpoint: 'store-api/checkout/cart/line-item',
                         contextToken: this.contextToken,
                         data: {
                             items: [

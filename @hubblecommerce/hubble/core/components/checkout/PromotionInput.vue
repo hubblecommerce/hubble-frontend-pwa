@@ -46,7 +46,7 @@ export default {
 
                 const response = await new apiClient().apiCall({
                     action: 'post',
-                    endpoint: 'store-api/v3/checkout/cart/line-item',
+                    endpoint: 'store-api/checkout/cart/line-item',
                     headers: [{ 'sw-include-seo-urls': true }],
                     contextToken: this.contextToken,
                     data: {
@@ -75,10 +75,10 @@ export default {
 
 .promotion-wrp {
     padding: 30px 0 10px;
-    
+
     .hbl-input-group {
         display: flex;
-        
+
         input {
             margin-right: 10px;
         }

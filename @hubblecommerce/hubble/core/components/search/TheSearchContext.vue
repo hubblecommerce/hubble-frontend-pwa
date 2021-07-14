@@ -119,7 +119,7 @@ export default {
         fetchSearchSuggest: async function () {
             return new apiClient().apiCall({
                 action: 'post',
-                endpoint: 'store-api/v3/search-suggest',
+                endpoint: 'store-api/search-suggest',
                 data: {
                     search: this.term,
                     includes: includesSearchSuggest,

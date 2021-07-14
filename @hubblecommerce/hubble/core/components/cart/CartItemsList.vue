@@ -108,7 +108,7 @@ export default {
         removeItem: async function (item) {
             let response = await new ApiClient().apiCall({
                 action: 'delete',
-                endpoint: 'store-api/v3/checkout/cart/line-item',
+                endpoint: 'store-api/checkout/cart/line-item',
                 contextToken: this.contextToken,
                 data: {
                     ids: [item.id],
@@ -129,7 +129,7 @@ export default {
         onChangeQty: async function (item, qty) {
             let response = await new ApiClient().apiCall({
                 action: 'patch',
-                endpoint: 'store-api/v3/checkout/cart/line-item',
+                endpoint: 'store-api/checkout/cart/line-item',
                 contextToken: this.contextToken,
                 data: {
                     items: [
@@ -271,7 +271,7 @@ $hbl-cart-item-image-size-md: 100px;
     .product-price {
         @include font-size($text-font-sizes);
         font-weight: $font-weight-bold;
-        
+
         &.promotion {
             color: $green;
         }

@@ -160,7 +160,7 @@ export default {
         async fetchUserAddresses() {
             return await new apiClient().apiCall({
                 action: 'post',
-                endpoint: 'store-api/v3/account/list-address',
+                endpoint: 'store-api/account/list-address',
                 contextToken: this.contextToken,
             });
         },
@@ -188,7 +188,7 @@ export default {
             console.log('standard');
             let response = await new apiClient().apiCall({
                 action: 'patch',
-                endpoint: `store-api/v3/account/address/default-${this.context}/${id}`,
+                endpoint: `store-api/account/address/default-${this.context}/${id}`,
                 contextToken: this.contextToken,
             });
 
@@ -220,7 +220,7 @@ export default {
             try {
                 let response = await new apiClient().apiCall({
                     action: 'post',
-                    endpoint: 'store-api/v3/account/address',
+                    endpoint: 'store-api/account/address',
                     contextToken: this.contextToken,
                     data: address,
                 });
@@ -237,7 +237,7 @@ export default {
             try {
                 let response = await new apiClient().apiCall({
                     action: 'patch',
-                    endpoint: `store-api/v3/account/address/${address.id}`,
+                    endpoint: `store-api/account/address/${address.id}`,
                     contextToken: this.contextToken,
                     data: address,
                 });

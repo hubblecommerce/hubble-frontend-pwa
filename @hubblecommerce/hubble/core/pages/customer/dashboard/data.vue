@@ -213,9 +213,8 @@ export default {
     async mounted() {
         try {
             let salutationResponse = await this.fetchSalutations();
-            this.salutations = salutationResponse.data;
+            this.salutations = salutationResponse.data.elements;
             this.isLoading = false;
-            console.log(this.salutations);
         } catch (e) {
             this.isLoading = false;
             throw e;
@@ -240,14 +239,14 @@ export default {
         fetchSalutations: async function () {
             return await new apiClient().apiCall({
                 action: 'get',
-                endpoint: 'store-api/v3/salutation',
+                endpoint: 'store-api/salutation',
             });
         },
         submitProfile: async function () {
             try {
                 await new apiClient().apiCall({
                     action: 'post',
-                    endpoint: 'store-api/v3/account/change-profile',
+                    endpoint: 'store-api/account/change-profile',
                     contextToken: this.contextToken,
                     data: {
                         salutationId: this.customer.salutationId,
@@ -268,7 +267,7 @@ export default {
             try {
                 let response = await new apiClient().apiCall({
                     action: 'post',
-                    endpoint: 'store-api/v3/account/change-password',
+                    endpoint: 'store-api/account/change-password',
                     contextToken: this.contextToken,
                     data: this.updatedPassword,
                 });
@@ -286,7 +285,7 @@ export default {
             try {
                 let response = await new apiClient().apiCall({
                     action: 'post',
-                    endpoint: 'store-api/v3/account/change-email',
+                    endpoint: 'store-api/account/change-email',
                     contextToken: this.contextToken,
                     data: this.updatedEmail,
                 });
