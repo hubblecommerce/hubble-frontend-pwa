@@ -9,7 +9,7 @@
         "access": "public"
     },
     "scripts": {
-        "postinstall": "node .hubble/scripts/post-install.js"
+        "postinstall": "node scripts/post-install.js"
     },
     "dependencies": {
         "@nuxtjs/axios": "^5.13.0",
