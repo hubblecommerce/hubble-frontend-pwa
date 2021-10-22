@@ -1,3 +1,5 @@
+@use 'sass:math';
+
 /* Functions */
 @function breakpoint-min($name, $breakpoints: $grid-breakpoints) {
     $min: map-get($breakpoints, $name);
@@ -11,8 +13,8 @@
 /* Mixins */
 @mixin make-container($gutter: $grid-gutter-width) {
     width: 100%;
-    padding-right: $gutter / 2;
-    padding-left: $gutter / 2;
+    padding-right: math.div($gutter, 2);
+    padding-left: math.div($gutter, 2);
     margin-right: auto;
     margin-left: auto;
 }
@@ -20,8 +22,8 @@
 @mixin make-row($gutter: $grid-gutter-width) {
     display: flex;
     flex-wrap: wrap;
-    margin-right: -$gutter / 2;
-    margin-left: -$gutter / 2;
+    margin-right: math.div(-$gutter, 2);
+    margin-left: math.div(-$gutter, 2);
 }
 
 @mixin make-grid-columns($columns: $grid-columns, $gutter: $grid-gutter-width, $breakpoints: $grid-breakpoints) {
@@ -29,8 +31,8 @@
     %grid-column {
         position: relative;
         width: 100%;
-        padding-right: $gutter / 2;
-        padding-left: $gutter / 2;
+        padding-right: math.div($gutter, 2);
+        padding-left: math.div($gutter, 2);
     }
 
     @each $breakpoint in map-keys($breakpoints) {
@@ -94,11 +96,11 @@
 }
 
 @mixin make-col($size, $columns: $grid-columns) {
-    flex: 0 0 percentage($size / $columns);
+    flex: 0 0 percentage(math.div($size, $columns));
     // Add a `max-width` to ensure content within each column does not blow out
     // the width of the column. Applies to IE10+ and Firefox. Chrome and Safari
     // do not appear to require this.
-    max-width: percentage($size / $columns);
+    max-width: percentage(math.div($size, $columns));
 }
 
 // For each breakpoint, define the maximum width of the container in a media query
@@ -111,7 +113,7 @@
 }
 
 @mixin make-col-offset($size, $columns: $grid-columns) {
-    $num: $size / $columns;
+    $num: math.div($size, $columns);
     margin-left: if($num == 0, 0, percentage($num));
 }
 

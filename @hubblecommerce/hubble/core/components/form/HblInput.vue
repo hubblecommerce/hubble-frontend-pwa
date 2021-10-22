@@ -11,6 +11,7 @@ export default {
 </script>
 
 <style lang="scss">
+@use 'sass:math';
 @import '~assets/scss/hubble/variables';
 @import '~assets/scss/hubble/typography';
 
@@ -110,7 +111,7 @@ $hbl-input-highlight-color: $primary;
     input:focus ~ label,
     input:not(:placeholder-shown) ~ label {
         width: auto;
-        top: -($hbl-input-label-focus-height / 2);
+        top: math.div(-$hbl-input-label-focus-height, 2);
         height: $hbl-input-label-focus-height;
         line-height: $hbl-input-label-focus-height;
         margin: 0;
