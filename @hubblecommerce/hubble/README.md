@@ -1,15 +1,14 @@
-# Next Generation Shopfrontend
-> Hochperformante Progressive Web App für jede gängige E-Commerce Plattform auf Basis von [Nuxt.js](https://nuxtjs.org/).
+# PWA for headless e-commerce
+> High performant, intuitive and easy to develop progressive web app to connect with the api of your e-commerce systems API based on [Nuxt.js](https://nuxtjs.org/).
 
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/hubblecommerce/hubble-frontend-pwa)
 ![GitHub contributors](https://img.shields.io/github/contributors/hubblecommerce/hubble-frontend-pwa)
-![David](https://img.shields.io/david/hubblecommerce/hubble-frontend-pwa)
 ![PWA Shields](https://www.pwa-shields.com/1.0.0/series/classic/solid/gray.svg)
 
-✔ Shop Integration mit Magento, Magento 2, Shopware, xt:Commerce, etc.  
-✔ Enthält alle gängigen Shop Seitenarten (Kategorie, Detailansicht, Warenkorb, Zur Kasse, etc.)  
-✔ Exzellente Google Lighthouse Ergebnisse in allen Audits  
-✔ Toolbox / Framework zum Erstellen eigener Shop Frontends 
+✔ Integrated to Shopware 6 and possible with Magento, Magento 2, xt:Commerce, etc.  
+✔ Contains all common pagetypes like: Category, Product Detail, Cart, Checkout, Customer Account, ...)  
+✔ Excellent Google Lighthouse results in all audits  
+✔ Toolbox / Boilerplate to create your own frontend 
 
 ## Installation
 
@@ -18,20 +17,13 @@ OS X & Linux:
 1. Install [NuxtJS](https://nuxtjs.org/guides/get-started/installation)
 2. Install hubble NuxtJs Module 
 ```sh
-npm i @hubblecommerce/hubble
+npm i @hubblecommerce/hubble --save-dev
 ```
 3. Add module to nuxt.config.js
 ```js
 buildModules: [
     ['@hubblecommerce/hubble']
-],
-
-/*
- ** hubble module configuration
- */
-hubble: {
-    apiType: process.env.API_TYPE
-},
+]
 ```
 4. Edit configs in .env file
 ```sh
@@ -51,12 +43,6 @@ API_BASE_URL      = ''
 npm run dev
 ```
 
-## Release History
-* 1.1.0
-    * Extracted the hubble core to nuxt module
-* 1.0.0
-    * The first proper release
-
 ## Meta
 
 digital.manufaktur GmbH – hallo@digitalmanufaktur.com
@@ -67,6 +53,6 @@ Distributed under the MIT license. See [LICENSE](https://github.com/hubblecommer
 
 ## Contributing
 
-Eine genaue Anleitung für Pull Requests ist hier zu finden:
+Detailed instructions to do pull requests can be found here:
 [hubble Contribution Guide](https://docs.hubblecommerce.io/pwa/contribution/contributionpwa.html)
 
