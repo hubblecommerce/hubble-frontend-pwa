@@ -24,9 +24,9 @@
 
         <template v-if="product.crossSellings.length">
             <div class="detail-crosssellings">
-                <div v-if="loadCrosssellings" class="container">
+                <template v-if="loadCrosssellings">
                     <lazy-product-detail-crosssellings :product-id="product.id" />
-                </div>
+                </template>
             </div>
         </template>
     </div>

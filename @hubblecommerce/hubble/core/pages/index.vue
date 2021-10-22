@@ -3,7 +3,7 @@
         <sw-section
             v-if="data.cmsPage.sections != null"
             v-for="(cmsSection, key) in data.cmsPage.sections"
-            :key="$route.fullPath"
+            :key="key"
             :count="key"
             :content="cmsSection"
         />
@@ -12,7 +12,6 @@
 
 <script>
 import apiClient from '@/utils/api-client';
-import {associations, includes} from "~/utils/api-post-body";
 
 export default {
     name: 'Home',

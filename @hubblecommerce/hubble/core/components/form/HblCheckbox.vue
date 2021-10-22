@@ -11,6 +11,7 @@ export default {
 </script>
 
 <style lang="scss">
+@use 'sass:math';
 @import '~assets/scss/hubble/variables';
 @import '~assets/scss/hubble/typography';
 
@@ -160,7 +161,7 @@ $hbl-radiobox-inner-width: $hbl-checkbox-size - ($hbl-checkbox-border-width * 2)
                 transition: all 0.3s ease;
                 opacity: 0;
                 top: 50%;
-                margin-top: -$hbl-radiobox-inner-width / 2;
+                margin-top: math.div(-$hbl-radiobox-inner-width, 2);
                 transform: scale(0);
             }
         }

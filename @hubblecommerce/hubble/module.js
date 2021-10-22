@@ -15,20 +15,9 @@ const asyncCopyNewDirs = async (sourceDirs, targetDir) => {
         })
     );
 };
-const asyncCopyApiTypeDirs = async (sourceDirs, targetDir, apiType) => {
-    await Promise.all(
-        sourceDirs.map(async (sourceDir) => {
-            await fse.copy(path.join(targetDir, sourceDir, apiType), path.join(targetDir, sourceDir));
-
-            const apiSpecificSubfolders = await listAllDirs(path.join(targetDir, sourceDir));
-            await Promise.all(apiSpecificSubfolders.map(async (__apiSpecificSubfolder) => await fse.remove(__apiSpecificSubfolder)));
-        })
-    );
-};
 const getPlugins = (dir) => globby([`${dir}/*.js`]);
 
 const dirBlacklist = ['node_modules', '.hubble', '.nuxt', '.idea'];
-const apiTypeDirs = ['middleware', 'plugins', 'store'];
 const targetDirName = '.hubble/';
 
 export default async function (moduleOptions) {
@@ -62,9 +51,6 @@ export default async function (moduleOptions) {
     // 3. Copy dirs from nuxt except of blacklisted dirs to nuxt source dir
     await asyncCopyNewDirs(newDirs, targetDir);
 
-    // Resolve api type specific dirs inside nuxt source dir
-    //await asyncCopyApiTypeDirs(apiTypeDirs, targetDir, options.apiType);
-
     // Set aliases, to make them work in target dir
     const baseAliases = {
         '~~': rootDir,
@@ -85,9 +71,6 @@ export default async function (moduleOptions) {
      */
     // Merge objects
     this.options.env = defu(this.options.env, defaultEnv);
-
-    // Deactivate scss source maps to prevent errors when changing styles in chrome dev tools (only dev purposes)
-    //this.options.build.loaders = this.options.build.loaders != null ? this.options.build.loaders : { scss: { sourceMap: false } }
 
     if (this.options.build.transpile.length === 0) {
         this.options.build.transpile = ['@hubblecommerce/hubble'];
@@ -209,18 +192,6 @@ export default async function (moduleOptions) {
             if (newDestination === '') {
                 return;
             }
-
-            // Check for api specific dirs and resolve them
-            //const hasApiSpecificSubfolders = apiTypeDirs.filter((__apiTypeDir) =>
-            //    newDestination.includes(__apiTypeDir)
-            //);
-            //if (hasApiSpecificSubfolders.length !== 0) {
-            //    if (newDestination.includes(`/${process.env.API_TYPE}/`)) {
-            //        newDestination = newDestination.replace(`/${process.env.API_TYPE}/`, '/');
-            //    } else {
-            //        return;
-            //    }
-            //}
 
             if (event === 'add' || event === 'change') {
                 await fse.copy(filePath, newDestination);
