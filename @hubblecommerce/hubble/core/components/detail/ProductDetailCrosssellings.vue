@@ -6,7 +6,7 @@
             </div>
 
             <hooper :settings="sliderSettings" style="height: auto">
-                <slide v-for="(dataItem, index) in item.products" :key="index" :index="index" :class="`sw-product-slider-item`">
+                <slide v-for="(dataItem, index) in mappingProducts(item.products)" :key="index" :index="index" :class="`sw-product-slider-item`">
                     <product-listing-card :item-data="dataItem" :show-desc="false" :show-badges="true" />
                 </slide>
                 <hooper-navigation slot="hooper-addons"></hooper-navigation>
@@ -20,6 +20,7 @@ import { Hooper, Slide, Navigation as HooperNavigation } from 'hooper';
 import { mapState } from 'vuex';
 import apiClient from '@/utils/api-client';
 import 'hooper/dist/hooper.css';
+import { mappingCategoryProducts } from '@/utils/api-mapping-helper';
 
 export default {
     name: 'ProductDetailCrosssellings',
@@ -73,7 +74,7 @@ export default {
     computed: {
         ...mapState({
             contextToken: (state) => state.modSession.contextToken,
-        }),
+        })
     },
 
     methods: {
@@ -89,9 +90,31 @@ export default {
                 console.log(e);
             }
         },
+        mappingProducts: function(products) {
+            return mappingCategoryProducts(products);
+        }
     },
 };
 </script>
 
 <style lang="scss">
+$gap: 10px;
+
+.detail-crosssellings-inner {
+    .sw-product-slider {
+        .sw-product-slider-title {
+            margin-bottom: 20px;
+        }
+    }
+
+    .hooper {
+        width: calc(100% + 2 * #{$gap});
+        margin-left: -$gap;
+        margin-right: -$gap;
+
+        .hooper-slide {
+            padding: 0 $gap;
+        }
+    }
+}
 </style>
