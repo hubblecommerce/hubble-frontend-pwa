@@ -47,12 +47,12 @@ buildModules: [
 ]
 ```
 
-**7**: Install dependencies
+**6**: Install dependencies
 ``` bash
 npm install
 ```
 
-**6**: Edit configs in .env file
+**7**: Edit configs in .env file
 ```sh
 # API
 # Define api type:
