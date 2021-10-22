@@ -1,7 +1,7 @@
 /*
 Shopware CMS Helper Functions
 */
-function returnSlotByType(type) {
+export default function returnSlotByType(type) {
     return () =>
         import('./slots/' + type + '-slot').catch(() => {
             return import('./NoComponent');
