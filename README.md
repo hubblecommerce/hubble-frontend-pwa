@@ -1,7 +1,7 @@
 # PWA for headless e-commerce
 > High performant, intuitive and easy to develop progressive web app to connect with the api of your e-commerce systems API based on [Nuxt.js](https://nuxtjs.org/).
 
-![GitHub package.json version](https://img.shields.io/github/package-json/v/hubblecommerce/hubble-frontend-pwa)
+![GitHub package.json version](https://img.shields.io/npm/dm/@hubblecommerce/hubble)
 ![GitHub contributors](https://img.shields.io/github/contributors/hubblecommerce/hubble-frontend-pwa)
 ![PWA Shields](https://www.pwa-shields.com/1.0.0/series/classic/solid/gray.svg)
 
