@@ -7,7 +7,7 @@ const process = require('process');
 
 const runCommand = async command => {
     try {
-        execSync(`${command}`, {stdio: 'inherit'});
+        execSync(`${command}`);
     } catch (e) {
         console.error(`Failed to execute ${command}`, e);
         return false;
