@@ -3,6 +3,7 @@
 const {execSync} = require('child_process');
 const fs = require('fs').promises;
 const readline = require('readline');
+const process = require('process');
 
 const runCommand = async command => {
     try {
@@ -38,15 +39,27 @@ const updateFile = async (filename, replacements) => {
      *
      */
 
-    console.log('Installing nuxt.js');
-
     const appName = process.argv[2];
     if(!appName) {
-        console.log('Please provide an app name like: npx hubblePWA <project-name>');
+        console.log('Please provide an app name like: npx @hubblecommerce/hubble <project-name>');
         process.exit(-1);
     }
 
-    const installNuxtCommand = `npx create-nuxt-app --answers '{"name":"${appName}","pm":"npm","ui":"none","target":"server","features":[],"linter":[],"test":"none","mode":"universal","devTools":[]}'`;
+    const createProjectDir = `mkdir ${appName}`;
+    const projectDirCreated = await runCommand(createProjectDir);
+    if(!projectDirCreated) process.exit(-1);
+
+    // Change the directory
+    try {
+        process.chdir(appName);
+    } catch (err) {
+        console.error("error occurred while "
+            + "changing directory: " + err);
+    }
+
+    console.log('Installing nuxt.js');
+
+    const installNuxtCommand = `npx create-nuxt-app --answers '{"name":"my-app","language":"js","pm":"npm","ui":"none","target":"server","features":[],"linter":[],"test":"none","mode":"universal","devTools":[]}'`;
     const nuxtInstalled = await runCommand(installNuxtCommand);
     if(!nuxtInstalled) process.exit(-1);
 
