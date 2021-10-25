@@ -1,6 +1,6 @@
 {
     "name": "@hubblecommerce/hubble",
-    "version": "1.3.6",
+    "version": "1.3.7",
     "description": "PWA for eCommerce frameworks based on NuxtJs",
     "author": "hubble commerce",
     "license": "MIT",
@@ -8,6 +8,7 @@
     "publishConfig": {
         "access": "public"
     },
+    "bin": "bin/install.js",
     "scripts": {
         "postinstall": "node ./scripts/post-install.js"
     },
