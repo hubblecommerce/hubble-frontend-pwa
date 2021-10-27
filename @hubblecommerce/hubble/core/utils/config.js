@@ -64,4 +64,7 @@ export const defaultModules = [
     {
         name: 'portal-vue/nuxt',
     },
+    {
+        name: '@nuxtjs/composition-api/module',
+    },
 ];
