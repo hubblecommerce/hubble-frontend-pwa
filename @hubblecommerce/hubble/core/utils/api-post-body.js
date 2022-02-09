@@ -29,7 +29,7 @@ const associations = {
     },
     categories: {},
     seoUrls: {},
-    crossSellings: {},
+    // crossSellings: {}, // doesnt work on non variant products without cross selling (https://issues.shopware.com/issues/NEXT-20039)
 };
 
 const includes = {
