@@ -19,19 +19,6 @@
                     </label>
 
                     <PluginSlot name="checkout-payment-methods-method" :data="method" />
-
-                    <template v-if="method.shortName === 'stripe.shopware_payment.payment_handler.card'">
-                        <div v-if="Object.keys(stripePaymentMethods.card).length > 0">
-                            <span>{{ stripePaymentMethods.card.name }} | ****{{ stripePaymentMethods.card.last4 }}</span>
-                        </div>
-                        <span @click="editPaymentSettings(method.id)">{{ 'Edit' }}</span>
-                    </template>
-                    <template v-if="method.shortName === 'stripe.shopware_payment.payment_handler.sepa'">
-                        <div v-if="Object.keys(stripePaymentMethods.sepaBankAccount).length > 0">
-                            <span>{{ stripePaymentMethods.sepaBankAccount.name }} | ****{{ stripePaymentMethods.sepaBankAccount.last4 }}</span>
-                        </div>
-                        <span @click="editPaymentSettings(method.id)">{{ 'Edit' }}</span>
-                    </template>
                 </hbl-checkbox>
             </div>
 
@@ -43,72 +30,7 @@
 
         <loader v-else />
 
-        <div v-show="showModal" class="payment-methods-modal">
-            <div v-if="Object.keys(currentMethodObj).length >= 0" class="payment-content-wrp">
-                <div v-show="currentMethodObj.shortName === 'stripe.shopware_payment.payment_handler.card'" class="cc">
-                    <form @submit.prevent="savePaymentSettings('card')" class="form-cc">
-                        <hbl-input>
-                            <input
-                                id="cardHolder"
-                                v-model="billingDetailsCard.name"
-                                type="text"
-                                name="cardHolder"
-                                value=""
-                                placeholder=" "
-                                required
-                            />
-                            <label for="cardHolder" v-text="'Card Holder' + '*'" />
-                        </hbl-input>
-                        <div ref="card" class="card-content-wrp" />
-                        <div ref="cardErrors" id="card-errors" role="alert" />
-                        <button @click.prevent="savePaymentSettings('card')">Create & Save CC Payment Method (Stripe)</button>
-                    </form>
-                </div>
-
-                <div v-show="currentMethodObj.shortName === 'stripe.shopware_payment.payment_handler.sepa'" class="sepa">
-                    <form @submit.prevent="savePaymentSettings('sepa_debit')" class="form-cc">
-                        <hbl-input>
-                            <input
-                                id="accountHolder"
-                                v-model="billingDetailsSepa.name"
-                                type="text"
-                                name="accountHolder"
-                                value=""
-                                placeholder=" "
-                                required
-                            />
-                            <label for="accountHolder" v-text="'Account Holder' + '*'" />
-                        </hbl-input>
-
-                        <hbl-input>
-                            <input
-                                id="accountHolderEmail"
-                                v-model="billingDetailsSepa.email"
-                                type="text"
-                                name="accountHolderEmail"
-                                value=""
-                                placeholder=" "
-                                required
-                            />
-                            <label for="accountHolderEmail" v-text="'Account Holder Email' + '*'" />
-                        </hbl-input>
-
-                        <div ref="sepa" id="sepa-content-wrp" />
-                        <div ref="sepaErrors" id="sepa-errors" role="alert" />
-                        <div class="sepa-info">
-                            Ich ermächtige / Wir ermächtigen (A) Demostore sowie Stripe, den durchführenden Zahlungsdienstleister, Zahlungen von
-                            meinem / unserem Konto mittels Lastschrift einzuziehen. Zugleich (B) weise ich mein / weisen wir unser Kreditinstitut an,
-                            die von Demostore bzw. Stripe auf mein / unser Konto gezogenen Lastschriften einzulösen. Hinweis: Ich kann / Wir können
-                            innerhalb von acht Wochen, beginnend mit dem Belastungsdatum, die Erstattung des belasteten Betrages verlangen. Es gelten
-                            dabei die mit meinem / unserem Kreditinstitut vereinbarten Bedingungen.
-                        </div>
-                        <button @click.prevent="savePaymentSettings('sepa_debit')">Create & Save SEPA Payment Method (Stripe)</button>
-                    </form>
-                </div>
-
-                <button @click.prevent="closeModal(null, currentMethodObj)">Close</button>
-            </div>
-        </div>
+        <PluginSlot name="checkout-payment-methods-after" :data="{contextToken, currentMethod, currentMethodObj, showModal}" />
     </div>
 </template>
 
@@ -116,7 +38,7 @@
 import ApiClient from '@/utils/api-client';
 import { ssrRef, useStore, watch, computed } from '@nuxtjs/composition-api';
 import paymentMethodStripe from "@/composables/paymentMethodStripe";
-import PluginSlot from "~~/modules/hubble-frontend-pwa/@hubblecommerce/hubble/core/components/utils/PluginSlot";
+import PluginSlot from "@/components/utils/PluginSlot";
 
 export default {
     name: 'PaymentMethods',
@@ -139,7 +61,7 @@ export default {
         let paymentMethods = ssrRef(null);
         let showModal = ssrRef(false);
 
-        const store  = useStore();
+        const store = useStore();
         const contextToken = computed(() => store.state.modSession.contextToken);
 
         const {

@@ -1,8 +1,10 @@
 <template>
     <div v-if="slotEntries != null">
+        Slot: {{name}}
         <div v-for="slotEntry in slotEntries">
-            {{ slotEntry.component }}
-            <component :is="importComponent(slotEntry.component)" :data="data" />
+            Component name: {{ slotEntry.componentName }}
+            Component: {{ slotEntry.component }}
+            <component :is="slotEntry.componentName" :data="data" />
         </div>
     </div>
 
@@ -10,6 +12,8 @@
 </template>
 
 <script>
+import { pluginMapping, generateImports } from '@/components/swPlugins/pluginMapping';
+
 export default {
     name: "PluginSlot",
 
@@ -25,34 +29,16 @@ export default {
         }
     },
 
+    components: generateImports(),
+
     data() {
         return {
-            slotEntries: null,
-            pluginMapping: [
-                {
-                    "slot": "checkout-payment-methods-method",
-                    "component": "../utils/Loader"
-                },
-                {
-                    "slot": "checkout-payment-methods-modal",
-                    "component": "../utils/Loader"
-                },
-                {
-                    "slot": "checkout-payment-methods-method",
-                    "component": "../utils/Loader"
-                },
-            ]
+            slotEntries: null
         }
     },
 
     created() {
-        this.slotEntries = this.pluginMapping.filter(entry => entry.slot === this.name);
-    },
-
-    methods: {
-        importComponent: function(path) {
-            return () => import(path);
-        }
+        this.slotEntries = pluginMapping.filter(entry => entry.slot === this.name);
     }
 }
 </script>
