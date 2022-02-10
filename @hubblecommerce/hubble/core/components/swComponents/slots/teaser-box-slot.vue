@@ -1,13 +1,9 @@
 <template>
-    <div
-        v-if="textPosition === 'within'"
-        :class="[elementClass, 'is--' + textPosition]"
-        :style="{backgroundImage: bgImageStyle}"
-    >
+    <div v-if="textPosition === 'within'" :class="[elementClass, 'is--' + textPosition]" :style="{ backgroundImage: bgImageStyle }">
         <div :class="elementClass + '__content'" v-html="content.config.content.value" />
     </div>
     <div v-else-if="textPosition === 'below'" :class="[elementClass, 'is--' + textPosition]">
-        <div :class="elementClass + '__image'" :style="{backgroundImage: bgImageStyle}" />
+        <div :class="elementClass + '__image'" :style="{ backgroundImage: bgImageStyle }" />
         <div :class="elementClass + '__content'" v-html="content.config.content.value" />
     </div>
 </template>
@@ -18,16 +14,11 @@ import { slotMixins } from '../helper';
 export default {
     name: 'TeaserBoxSlot',
     mixins: [slotMixins],
-    props: {
-        content: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
+
     computed: {
         bgImageUrl() {
             const imageVal = this.content.config.backgroundImage.value;
-            
+
             if (!imageVal) return null;
 
             return imageVal.url;
@@ -39,7 +30,7 @@ export default {
         },
         textPosition() {
             return this.content.config.textPosition.value;
-        }
+        },
     },
 };
 </script>
@@ -67,13 +58,13 @@ export default {
         background-position: center;
     }
 
-    &__content{
+    &__content {
         width: 100%;
         background-color: white;
         padding: 30px;
 
         .is--below & {
-            background-color: #F7F7FA;
+            background-color: #f7f7fa;
         }
     }
 }

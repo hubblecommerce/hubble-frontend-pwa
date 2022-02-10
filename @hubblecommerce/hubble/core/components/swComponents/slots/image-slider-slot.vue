@@ -37,12 +37,6 @@ export default {
         //},
     },
     mixins: [slotMixins],
-    props: {
-        content: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
 
     data() {
         return {

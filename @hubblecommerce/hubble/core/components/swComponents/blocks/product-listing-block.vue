@@ -49,16 +49,12 @@
 
 <script>
 import { mappingCategoryProducts, mappingListingFilters } from '@/utils/api-mapping-helper';
+import { blockMixins } from '../helper';
 
 export default {
     name: 'ProductListingBlock',
 
-    props: {
-        content: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
+    mixins: [blockMixins],
 
     data() {
         return {

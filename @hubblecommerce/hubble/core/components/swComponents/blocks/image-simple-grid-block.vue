@@ -20,12 +20,6 @@ export default {
 
     mixins: [blockMixins],
 
-    props: {
-        content: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
     computed: {
         leftTopSlot() {
             return this.getSlotByPosition(this.content.slots, 'left-top');

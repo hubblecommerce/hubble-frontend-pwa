@@ -14,13 +14,6 @@ export default {
 
     mixins: [blockMixins],
 
-    props: {
-        content: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
-
     computed: {
         getSlot() {
             return this.getSlotByPosition(this.content.slots, 'video');

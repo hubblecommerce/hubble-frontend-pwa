@@ -16,12 +16,7 @@ import { slotMixins } from '../helper';
 export default {
     name: 'TextSlot',
     mixins: [slotMixins],
-    props: {
-        content: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
+
     computed: {
         rawHtml() {
             return this.content && this.content.data && this.content.data.content;

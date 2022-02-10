@@ -11,12 +11,6 @@ export default {
 
     mixins: [slotMixins],
 
-    props: {
-        content: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
     computed: {
         getVideoUrl() {
             return `https://www.youtube-nocookie.com/embed/${this.content.config.videoID.value}?rel=0&${this.getAutoPlay}${this.getLoop}${this.getShowControls}${this.getStart}${this.getEnd}disablekb=1`;

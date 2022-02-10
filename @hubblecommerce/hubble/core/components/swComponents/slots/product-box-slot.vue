@@ -15,12 +15,6 @@ export default {
     name: 'ProductBoxSlot',
     //components: { ProductListingCard },
     mixins: [slotMixins],
-    props: {
-        content: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
 
     data() {
         return {

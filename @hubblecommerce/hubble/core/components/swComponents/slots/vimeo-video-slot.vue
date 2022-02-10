@@ -12,12 +12,6 @@ export default {
 
     mixins: [slotMixins],
 
-    props: {
-        content: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
     computed: {
         getVideoID() {
             return this.content.config.videoID.value;

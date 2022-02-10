@@ -19,12 +19,7 @@ import { slotMixins } from '../helper';
 export default {
     name: 'ImageSlot',
     mixins: [slotMixins],
-    props: {
-        content: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
+
     data() {
         return {
             sm: 'sm',

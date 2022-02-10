@@ -10,18 +10,15 @@
 </template>
 
 <script>
+import { slotMixins } from '../helper';
 //import NewsletterForm from '../../utils/NewsletterForm';
 //import ContactForm from '../../utils/ContactForm';
 
 export default {
     name: 'FormSlot',
+    mixins: [slotMixins],
+
     //components: { ContactForm, NewsletterForm },
-    props: {
-        content: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
     computed: {
         getType() {
             return this.content.config.type.value;

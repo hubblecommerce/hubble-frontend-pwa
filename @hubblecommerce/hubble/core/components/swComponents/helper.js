@@ -9,6 +9,16 @@ export default function returnSlotByType(type) {
 }
 
 export const slotMixins = {
+    props: {
+        content: {
+            type: Object,
+            default: () => {},
+        },
+        sizingMode: {
+            type: Object,
+            default: () => {},
+        },
+    },
     computed: {
         elementClass() {
             return 'cms-element-' + this.content.type;
@@ -17,6 +27,17 @@ export const slotMixins = {
 };
 
 export const blockMixins = {
+    props: {
+        content: {
+            type: Object,
+            default: () => {},
+        },
+        sizingMode: {
+            type: Object,
+            default: () => {},
+        },
+    },
+
     methods: {
         getSlotByPosition(slots, position) {
             let typeName = '';

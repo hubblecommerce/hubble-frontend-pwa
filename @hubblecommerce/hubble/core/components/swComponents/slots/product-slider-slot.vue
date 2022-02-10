@@ -24,25 +24,14 @@ import 'hooper/dist/hooper.css';
 
 export default {
     name: 'ProductSliderSlot',
-    
+
     components: {
         Hooper,
         Slide,
         HooperNavigation,
     },
-    
-    mixins: [slotMixins],
 
-    props: {
-        content: {
-            type: Object,
-            default: () => ({}),
-        },
-        sizingMode: {
-            type: Object,
-            default: () => {}
-        },
-    },
+    mixins: [slotMixins],
 
     data() {
         return {
@@ -86,7 +75,7 @@ export default {
     },
 
     mounted() {
-        this.dataItems = mappingCategoryProducts(this.content.data.products)
+        this.dataItems = mappingCategoryProducts(this.content.data.products);
     },
 };
 </script>

@@ -11,14 +11,9 @@ import { blockMixins } from '../helper';
 
 export default {
     name: 'ImageSliderBlock',
+
     mixins: [blockMixins],
 
-    props: {
-        content: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
     computed: {
         getSlot() {
             return this.getSlotByPosition(this.content.slots, 'imageSlider');

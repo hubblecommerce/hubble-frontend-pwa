@@ -15,14 +15,9 @@ import { blockMixins } from '../helper';
 
 export default {
     name: 'HeroBannerBlock',
+
     mixins: [blockMixins],
 
-    props: {
-        content: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
     computed: {
         tagline() {
             return this.getSlotByPosition(this.content.slots, 'tagline');
@@ -41,7 +36,7 @@ export default {
 .cms-block-hero-banner {
     position: relative;
     padding: 100px 0 25px;
-    
+
     &::before {
         content: '';
         position: absolute;
@@ -49,7 +44,7 @@ export default {
         height: 50%;
         width: 100%;
         opacity: 0.3;
-        background: linear-gradient(180deg, rgba(0,0,0,0) 0%, #000000 100%);
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 100%);
     }
 
     &__content {
@@ -89,7 +84,7 @@ export default {
             bottom: 60px;
         }
 
-         .cms-element-headline__el {
+        .cms-element-headline__el {
             &.is--headline {
                 font-size: 44px;
                 line-height: 52px;
