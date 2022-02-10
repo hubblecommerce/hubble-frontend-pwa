@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="row">
         <div class="col-md-6">
             <component :is="leftSlot" :content="getContentByPosition(content.slots, 'left')" />
         </div>

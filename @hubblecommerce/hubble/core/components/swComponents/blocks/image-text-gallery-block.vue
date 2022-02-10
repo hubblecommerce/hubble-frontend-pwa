@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="row">
         <div class="col-md-4">
             <div class="image-text-gallery-card">
                 <component :is="leftImageSlot" :content="getContentByPosition(content.slots, 'left-image')" />

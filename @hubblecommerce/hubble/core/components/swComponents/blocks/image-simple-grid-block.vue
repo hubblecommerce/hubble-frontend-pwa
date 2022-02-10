@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="row">
         <div class="col-md-6 image-simple-grid__side-images">
             <div class="image-simple-grid__side-images--top">
                 <component :is="leftTopSlot" :content="getContentByPosition(content.slots, 'left-top')" />
