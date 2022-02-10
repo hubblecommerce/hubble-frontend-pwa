@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import { mappingCategoryProducts } from '@/utils/api-mapping-helper';
 import { Hooper, Slide, Navigation as HooperNavigation } from 'hooper';
 import { slotMixins } from '../helper';
 import 'hooper/dist/hooper.css';
@@ -85,7 +86,7 @@ export default {
     },
 
     mounted() {
-        this.dataItems = this.content.data.products
+        this.dataItems = mappingCategoryProducts(this.content.data.products)
     },
 };
 </script>
