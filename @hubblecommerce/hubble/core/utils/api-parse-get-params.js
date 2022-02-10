@@ -5,7 +5,7 @@ const reqKeyMapping = [
     },
     {
         reqParam: 'sorting',
-        postKey: 'order',
+        postKey: 'sorting',
     },
     {
         reqParam: 'page',
@@ -66,4 +66,48 @@ function setReqParamFromRoute(route, postData) {
     return postData;
 }
 
-export { setReqParamFromRoute };
+function buildUriWithParamsFromObject(route, postData) {
+    let params = [];
+
+    // Set parameters with keys from mapping
+    Object.keys(postData).forEach((key) => {
+        reqKeyMapping.forEach((o) => {
+            if(key === o.postKey) {
+                if(typeof postData[key] === 'string' && postData[key] !== '') {
+                    params.push(`${encodeURIComponent(o.reqParam)}=${encodeURIComponent(postData[key])}`);
+                }
+
+                if(typeof postData[key] === 'number') {
+                    params.push(`${encodeURIComponent(o.reqParam)}=${encodeURIComponent(postData[key])}`);
+                }
+
+                if(typeof postData[key] === 'object' && postData[key].length > 0) {
+                    params.push(`${encodeURIComponent(o.reqParam)}=${postData[key].join(',')}`);
+                }
+
+                if(typeof postData[key] === 'boolean' && postData[key] === true) {
+                    params.push(`${encodeURIComponent(o.reqParam)}=${encodeURIComponent(postData[key])}`);
+                }
+            }
+        });
+    });
+
+    // Keep foreign get parameters if exists
+    Object.keys(route.currentRoute.query).forEach((existingParam) => {
+        let exists = false;
+
+        reqKeyMapping.forEach((o) => {
+            if(existingParam === o.reqParam) {
+                exists = true;
+            }
+        });
+
+        if(!exists) {
+            params.push(`${encodeURIComponent(existingParam)}=${encodeURIComponent(route.currentRoute.query[existingParam])}`);
+        }
+    });
+
+    return `${route.currentRoute.path}?${params.join('&')}`;
+}
+
+export { setReqParamFromRoute, buildUriWithParamsFromObject };

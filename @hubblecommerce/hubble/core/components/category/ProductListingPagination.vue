@@ -1,5 +1,5 @@
 <template>
-    <div class="pagination">
+    <div v-if="paginationItemsTotal > 0" class="pagination">
         <hbl-button
             class="button-icon"
             :class="{ disabled: paginationPrevDisabled }"

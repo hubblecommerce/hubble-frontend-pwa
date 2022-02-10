@@ -1,6 +1,7 @@
 <template>
     <div class="listing-wrp row">
-        <div v-for="(item, index) in dataItems" :key="index" class="listing-item" :class="listingClass">
+        <div v-if="dataItems.length === 0" class="error-message" v-text="'There are no products available in this category or for this filter.'" />
+        <div v-else v-for="(item, index) in dataItems" :key="index" class="listing-item" :class="listingClass">
             <product-listing-card :index="index" :item-data="item" :show-badges="true" />
         </div>
     </div>
@@ -14,10 +15,6 @@ export default {
         dataItems: {
             type: Array,
             required: true,
-        },
-        total: {
-            type: Number,
-            required: false,
         },
         listingClass: {
             type: String,
