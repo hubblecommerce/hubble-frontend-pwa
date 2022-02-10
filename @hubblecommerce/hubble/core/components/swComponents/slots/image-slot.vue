@@ -33,7 +33,7 @@ export default {
             return this.getMedia && this.getMedia.url;
         },
         imgTypeSvg() {
-            this.imgUrl && this.imgUrl.includes('svg');
+            return this.imgUrl && this.imgUrl.includes('svg');
         },
         alt() {
             return this.getMedia && this.getMedia.alt;
