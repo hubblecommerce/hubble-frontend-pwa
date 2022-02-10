@@ -1,7 +1,7 @@
 <template>
     <div class="cms-block" :class="[blockClass, backgroundImageExists]" :style="backgroundStyles">
         <div class="cms-block-container">
-            <div :class="{ container: sizingMode != null ?sizingMode['full-width'] : 'container'} ">
+            <div v-if="content.name" :class="{ container: sizingMode != null ? sizingMode['full-width'] : 'container' }">
                 <h2 v-if="content.name" class="cms-block-headline headline-1">{{ content.name }}</h2>
             </div>
             <component :is="component" :content="content" :sizing-mode="sizingMode" class="cms-block-container-row cms-row" />
