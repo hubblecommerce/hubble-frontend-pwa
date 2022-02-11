@@ -95,6 +95,14 @@ export default {
         },
     },
 
+    watch: {
+        paginationItemsTotal: function() {
+            // Total items might change on filter selection
+            // Therefore we just need to reset the pagination to page 1, but without reloading the whole page
+            this.resetPaginationWithoutReload();
+        }
+    },
+
     methods: {
         round: function (value, decimals) {
             return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
@@ -120,13 +128,29 @@ export default {
 
             this.routePagination(this.lastPage);
         },
+        buildObjectFromGetParams: function() {
+            const search = location.search.substring(1);
+            return JSON.parse('{"' + search.replace(/&/g, '","').replace(/=/g,'":"') + '"}', function(key, value) {
+                return key===""?value:decodeURIComponent(value)
+            });
+        },
+        resetPaginationWithoutReload: function() {
+            let query = this.buildObjectFromGetParams();
+
+            let query2 = Object.assign({}, query, {
+                page: 1,
+            });
+
+            let route = {
+                path: this.$route.path,
+                query: query2,
+            };
+        },
         routePagination: function (pageNumber) {
             return new Promise((resolve, reject) => {
                 this.$nuxt.$loading.start();
 
-                const omitSingle = (key, { [key]: _, ...obj }) => obj;
-
-                let query = omitSingle('page', this.$route.query);
+                let query = this.buildObjectFromGetParams();
 
                 let query2 = Object.assign({}, query, {
                     page: pageNumber,

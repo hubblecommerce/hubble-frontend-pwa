@@ -47,7 +47,8 @@ export default {
             currentFilters: null,
             total: null,
             limit: null,
-            sorting: null
+            sorting: null,
+            refreshComponent: 0
         };
     },
 
@@ -64,6 +65,7 @@ export default {
             this.aggregations = data.aggregations;
             this.currentFilters = data.currentFilters;
             this.total = data.total;
+            this.refreshComponent++;
         })
     }
 };
