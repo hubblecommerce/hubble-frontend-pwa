@@ -22,4 +22,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style lang="scss">
+.cms-block-sidebar-filter {
+    overflow: visible;
+}
+</style>

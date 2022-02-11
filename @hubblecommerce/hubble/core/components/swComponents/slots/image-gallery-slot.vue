@@ -171,3 +171,12 @@ export default {
     },
 };
 </script>
+
+<style lang="scss">
+.cms-element-image-gallery {
+    // hides magnifier overlay because zoom container is displayed over gallery
+    .magnifier-overlay {
+        display: none;
+    }
+}
+</style>

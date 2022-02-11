@@ -39,3 +39,30 @@ export default {
     },
 };
 </script>
+
+<style lang="scss">
+.cms-element-text {
+    .cms-block-center-text & {
+        padding: 30px;
+    }
+
+    .cms-block-image-text-bubble &,
+    .cms-block-image-text-row & {
+        padding-top: 20px;
+    }
+
+    .cms-block-image-text-gallery & {
+        padding: 20px;
+    }
+
+    .cms-block-text-on-image & {
+        padding: 30px;
+        align-items: center;
+        min-height: 240px;
+    }
+
+    .cms-block-image-text-cover & {
+        padding-top: 30px;
+    }
+}
+</style>

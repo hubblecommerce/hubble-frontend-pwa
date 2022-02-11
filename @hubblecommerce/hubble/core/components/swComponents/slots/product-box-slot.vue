@@ -45,6 +45,8 @@ export default {
 
 <style lang="scss">
 .cms-element-product-box {
+    width: 100%;
+
     .product-card:hover {
         .card-expand {
             display: none;

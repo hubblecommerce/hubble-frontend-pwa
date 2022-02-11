@@ -32,3 +32,15 @@ export default {
     },
 };
 </script>
+
+<style lang="scss">
+.cms-block-image-three-cover {
+    .row {
+        margin: 0;
+    }
+
+    [class^='col-'] {
+        padding: 0;
+    }
+}
+</style>

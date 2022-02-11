@@ -51,4 +51,10 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style lang="scss">
+.cms-block-image-text-gallery {
+    .image-text-gallery-card {
+        box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.2);
+    }
+}
+</style>

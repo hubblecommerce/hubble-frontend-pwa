@@ -82,11 +82,6 @@ export default {
 
 <style lang="scss">
 .cms-element-product-slider {
-    .cms-element-alignment {
-        position: relative;
-        margin: -10px;
-    }
-
     &.is--full-width {
         .cms-element-alignment {
             &::before,
@@ -113,6 +108,15 @@ export default {
         .hooper-list {
             overflow: visible;
         }
+    }
+
+    .cms-element-alignment {
+        position: relative;
+        margin: -10px;
+    }
+
+    .cms-element-title {
+        font-weight: bold;
     }
 }
 </style>
