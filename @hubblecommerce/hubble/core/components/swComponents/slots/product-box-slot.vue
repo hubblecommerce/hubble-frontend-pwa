@@ -1,24 +1,22 @@
 <template>
     <div :class="elementClass">
         <div class="cms-element-alignment" :class="verticalAlign">
-            <!--            <product-listing-card v-if="loaded" :item-orig="itemOrig" />-->
+            <product-listing-card v-if="dataItem" :item-data="dataItem" />
         </div>
     </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
 import { slotMixins } from '../helper';
-//import ProductListingCard from '../../productlist/ProductListingCard';
+import { mappingProduct } from '@/utils/api-mapping-helper';
 
 export default {
     name: 'ProductBoxSlot',
-    //components: { ProductListingCard },
     mixins: [slotMixins],
 
     data() {
         return {
-            itemOrig: {},
+            dataItem: null,
             loaded: false,
         };
     },
@@ -39,18 +37,9 @@ export default {
         },
     },
 
-    //created() {
-    //    this.mappingProduct(this.content.data).then((response) => {
-    //        this.itemOrig = response;
-    //        this.loaded = true;
-    //    });
-    //},
-    //
-    //methods: {
-    //    ...mapActions({
-    //        mappingProduct: 'modApiProduct/mappingProduct',
-    //    }),
-    //},
+    mounted() {
+        this.dataItem = mappingProduct({ product: this.content.data.product });
+    },
 };
 </script>
 
