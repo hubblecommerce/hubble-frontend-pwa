@@ -163,8 +163,6 @@ General styling for cms sections
 @import '~assets/scss/hubble/variables';
 
 .cms-section {
-    overflow: hidden;
-
     &:first-child{
         margin-top: -$cms-block-margin;
     }
