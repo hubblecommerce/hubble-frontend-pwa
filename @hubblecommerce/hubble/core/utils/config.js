@@ -61,4 +61,7 @@ export const defaultModules = [
     {
         name: '@nuxtjs/svg',
     },
+    {
+        name: 'portal-vue/nuxt',
+    },
 ];

@@ -26,7 +26,8 @@
         "@nuxtjs/svg": "^0.1.12",
         "fibers": "^5.0.0",
         "sass": "^1.43.3",
-        "sass-loader": "^10.2.0"
+        "sass-loader": "^10.2.0",
+        "portal-vue": "^2.1.7"
     },
     "repository": {
         "type": "git",
