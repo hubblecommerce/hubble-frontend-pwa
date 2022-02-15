@@ -325,6 +325,25 @@ function mappingSearchSuggestProducts(products) {
     });
 }
 
+function mappingListingFilters(filters) {
+    let obj = {};
+
+    obj.navigationId = filters.navigationId;
+    obj.manufacturer = filters.manufacturer;
+    obj['min-price'] = '';
+    if(filters.price.min !== 0) {
+        obj['min-price'] = filters.price.min;
+    }
+    obj['max-price'] = '';
+    if(filters.price.max !== 0) {
+        obj['max-price'] = filters.price.max;
+    }
+    obj['shipping-free'] = filters['shipping-free'];
+    obj.properties = filters.properties;
+
+    return obj;
+}
+
 export {
     mappingCategory,
     mappingBreadcrumb,
@@ -333,5 +352,6 @@ export {
     mappingCartProduct,
     mappingMenu,
     mappingCartPromotion,
-    mappingSearchSuggestProducts
+    mappingSearchSuggestProducts,
+    mappingListingFilters
 };

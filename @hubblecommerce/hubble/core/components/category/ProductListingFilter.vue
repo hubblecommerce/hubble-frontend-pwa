@@ -170,17 +170,7 @@ export default {
     methods: {
         setInitialAppliedFilters: function () {
             this.appliedFilters = Object.assign({}, this.filterTemplate);
-
-            // Cannot set applied filters from currentFilters, because format of price is different
-            this.appliedFilters.manufacturer = this.currentFilters.manufacturer;
-            if(this.currentFilters.price.min !== 0) {
-                this.appliedFilters['min-price'] = this.currentFilters.price.min;
-            }
-            if(this.currentFilters.price.max !== 0) {
-                this.appliedFilters['max-price'] = this.currentFilters.price.max;
-            }
-            this.appliedFilters['shipping-free'] = this.currentFilters['shipping-free'];
-            this.appliedFilters.properties = this.currentFilters.properties;
+            this.appliedFilters = this.currentFilters;
         },
         applyFilter: async function() {
             let postData = {
