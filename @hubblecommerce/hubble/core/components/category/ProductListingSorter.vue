@@ -1,8 +1,13 @@
 <template>
-    <div class="limiter-wrp">
+    <div class="sorter-wrp">
         <hbl-select>
-            <select id="limiter" v-model="selectedLimit" @change="setLimit(selectedLimit)" class="select-text">
-                <option v-for="availableLimit in availableLimits" :key="availableLimit" :value="availableLimit" v-text="availableLimit" />
+            <select id="limiter" v-model="selectedSorting" @change="setSorting(selectedSorting)" class="select-text">
+                <option
+                    v-for="availableSorting in availableSortings"
+                    :key="availableSorting.key"
+                    :value="availableSorting.key"
+                    v-text="availableSorting.translated.label"
+                />
             </select>
             <label class="select-label" v-text="'Limiter'" />
         </hbl-select>
@@ -15,27 +20,30 @@ import { associations, includes } from '@/utils/api-post-body';
 import { buildUriWithParamsFromObject } from '@/utils/api-parse-get-params';
 
 export default {
-    name: "ProductListingLimiter",
+    name: "ProductListingSorter",
 
     props: {
-        limit: {
-            type: Number,
+        availableSortings: {
+            type: Array,
+            required: true
+        },
+        sorting: {
+            type: String,
             required: true
         },
         currentFilters: {
             type: Object,
             required: true
         },
-        sorting: {
-            type: String,
+        limit: {
+            type: Number,
             required: true
         }
     },
 
     data() {
         return {
-            availableLimits: [ 12, 24, 48, 96 ], // Default = 24, values have to match layout of 1, 3 and 4 products per row
-            selectedLimit: null
+            selectedSorting: null,
         }
     },
 
@@ -46,19 +54,21 @@ export default {
     },
 
     created() {
-        this.selectedLimit = this.limit;
+        this.selectedSorting = this.sorting;
     },
 
     methods: {
-        setLimit: async function(number) {
+        setSorting: async function(sorting) {
             let postData = {
                 associations: associations,
                 includes: includes,
-                limit: number,
-                order: this.sorting
+                limit: this.limit,
+                order: sorting
             };
 
             Object.assign(postData, this.currentFilters);
+
+            console.log(postData);
 
             try {
                 let response = await new apiClient().apiCall({
@@ -67,7 +77,7 @@ export default {
                     data: postData,
                 });
 
-                this.$nuxt.$emit('set-limit', response.data);
+                this.$nuxt.$emit('set-sorting', response.data);
 
                 // Write parameters to current url without reloading the page
                 window.history.pushState(
@@ -86,13 +96,13 @@ export default {
 <style lang="scss" scoped>
 @import '~assets/scss/hubble/variables';
 
-.limiter-wrp {
+.sorter-wrp {
     display: flex;
-    justify-content: flex-start;
-    order: 20;
+    justify-content: flex-end;
+    order: 30;
 
     .hbl-select {
-        width: 82px;
+        width: 170px;
         margin: 0;
 
         .select-text {
@@ -103,8 +113,8 @@ export default {
 }
 
 @media(min-width: 768px) {
-    .limiter-wrp {
-        order: 10;
+    .sorter-wrp {
+        order: 30;
         width: 20%;
     }
 }

@@ -177,7 +177,7 @@ export default {
                 associations: associations,
                 includes: includes,
                 limit: this.limit,
-                sorting: this.sorting
+                order: this.sorting
             };
 
             Object.assign(postData, this.appliedFilters);
@@ -354,7 +354,7 @@ export default {
 
         .filter-options-wrp {
             position: absolute;
-            z-index: 1;
+            z-index: 15;
             min-width: 240px;
             padding: 15px;
             margin-top: 8px;

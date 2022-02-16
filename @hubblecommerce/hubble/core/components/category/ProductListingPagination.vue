@@ -70,7 +70,7 @@ export default {
                 includes: includes,
                 p: number,
                 limit: this.limit,
-                sorting: this.sorting
+                order: this.sorting
             };
 
             postData = Object.assign(postData, this.appliedFilters);
@@ -107,12 +107,21 @@ export default {
 
 .pagination-wrp {
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
+    order: 10;
+    width: 100%;
 
     .page-info {
         font-size: $font-size-sm;
         margin: 0 10px;
+    }
+}
+
+@media(min-width: 768px) {
+    .pagination-wrp {
+        order: 20;
+        width: 50%;
     }
 }
 </style>

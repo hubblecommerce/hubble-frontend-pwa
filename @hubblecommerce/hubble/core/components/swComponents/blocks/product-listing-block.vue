@@ -20,6 +20,12 @@
                 :sorting="sorting"
                 :current-filters="currentFilters"
             />
+            <product-listing-sorter
+                :available-sortings="availableSortings"
+                :sorting="sorting"
+                :current-filters="currentFilters"
+                :limit="limit"
+            />
         </div>
         <product-listing
             v-if="products != null"
@@ -62,7 +68,8 @@ export default {
             page: null,
             total: null,
             limit: null,
-            sorting: null
+            sorting: null,
+            availableSortings: null
         };
     },
 
@@ -73,6 +80,7 @@ export default {
         this.page = this.content.slots[0].data.listing.page;
         this.total = this.content.slots[0].data.listing.total;
         this.limit = this.content.slots[0].data.listing.limit;
+        this.availableSortings = this.content.slots[0].data.listing.availableSortings;
         this.sorting = this.content.slots[0].data.listing.sorting;
 
         this.$nuxt.$on('set-filter', (data) => {
@@ -93,6 +101,12 @@ export default {
             this.limit = data.limit;
             this.page = data.page;
         });
+
+        this.$nuxt.$on('set-sorting', (data) => {
+            this.products = mappingCategoryProducts(data.elements);
+            this.sorting = data.sorting;
+            this.page = data.page;
+        });
     }
 };
 </script>
@@ -100,10 +114,29 @@ export default {
 <style lang="scss">
 .toolbar {
     display: flex;
-    justify-content: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
 
     &.top {
-        display: none;
+        margin-bottom: 15px;
+
+        .pagination-wrp {
+            display: none;
+        }
+    }
+
+    &.bottom {
+        justify-content: center;
+    }
+}
+
+@media(min-width: 768px) {
+    .toolbar {
+        &.top {
+            .pagination-wrp {
+                display: flex;
+            }
+        }
     }
 }
 
