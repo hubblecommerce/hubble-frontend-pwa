@@ -5,7 +5,7 @@ const reqKeyMapping = [
     },
     {
         reqParam: 'sorting',
-        postKey: 'sorting',
+        postKey: 'order',
     },
     {
         reqParam: 'page',
