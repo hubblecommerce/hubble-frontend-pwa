@@ -7,6 +7,11 @@
             :sorting="sorting"
         />
         <div class="toolbar top">
+            <product-listing-limiter
+                :limit="limit"
+                :current-filters="currentFilters"
+                :sorting="sorting"
+            />
             <product-listing-pagination
                 v-if="total > 0"
                 :page="page"
@@ -76,11 +81,16 @@ export default {
             this.currentFilters = mappingListingFilters(data.currentFilters);
             this.page = data.page;
             this.total = data.total;
-            this.refreshComponent++;
         });
 
         this.$nuxt.$on('set-page', (data) => {
             this.products = mappingCategoryProducts(data.elements);
+            this.page = data.page;
+        });
+
+        this.$nuxt.$on('set-limit', (data) => {
+            this.products = mappingCategoryProducts(data.elements);
+            this.limit = data.limit;
             this.page = data.page;
         });
     }
@@ -101,6 +111,7 @@ export default {
     .toolbar {
         &.top {
             display: flex;
+            justify-content: space-between;
         }
     }
 }
