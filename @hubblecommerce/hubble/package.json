@@ -9,7 +9,10 @@
         "access": "public"
     },
     "scripts": {
-        "postinstall": "node ./scripts/post-install.js"
+        "postinstall": "hubble post-install"
+    },
+    "bin": {
+        "hubble": "./bin/hubble-cli.js"
     },
     "dependencies": {
         "@nuxtjs/axios": "^5.13.0",
