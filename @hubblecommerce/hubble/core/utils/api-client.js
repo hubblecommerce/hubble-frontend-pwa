@@ -3,8 +3,10 @@
 import axios from 'axios';
 
 class ApiClient {
-    constructor() {
-        this.baseUrl = process.env.API_BASE_URL;
+    constructor(config) {
+        this.apiBaseUrl = config.apiBaseUrl;
+        this.apiType = config.apiType;
+        this.apiSwAccessKey = config.apiSwAccessKey;
     }
 
     /**
@@ -50,8 +52,8 @@ class ApiClient {
             });
         }
 
-        if (process.env.API_TYPE === 'sw') {
-            Object.assign(_headers, { 'sw-access-key': process.env.API_SW_ACCESS_KEY });
+        if (this.apiType === 'sw') {
+            Object.assign(_headers, { 'sw-access-key': this.apiSwAccessKey });
 
             if (payload.contextToken != null) {
                 Object.assign(_headers, { 'sw-context-token': payload.contextToken });
@@ -61,7 +63,7 @@ class ApiClient {
         try {
             return await axios({
                 method: payload.action,
-                url: [this.baseUrl, payload.endpoint.trim()].join('/'),
+                url: [this.apiBaseUrl, payload.endpoint.trim()].join('/'),
                 headers: _headers,
                 params: payloadParams, // GET params
                 data: payloadData, // POST data
@@ -84,7 +86,7 @@ class ApiClient {
                 // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
                 // http.ClientRequest in node.js
 
-                if (process.env.API_TYPE === 'sw') {
+                if (this.apiType === 'sw') {
                     rejection = 'No network connection';
                 } else {
                     rejection = error.request;

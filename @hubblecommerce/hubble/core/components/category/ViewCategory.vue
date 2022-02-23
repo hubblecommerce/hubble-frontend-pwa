@@ -47,21 +47,21 @@ export default {
         if (this.category.meta_description != null && this.category.meta_description !== '') {
             metaDescription = this.category.meta_description;
         } else {
-            metaDescription = process.env.meta.category.metaDescription;
+            metaDescription = this.$config.meta.category.metaDescription;
         }
 
         if (this.category.meta_keywords != null && this.category.meta_keywords !== '') {
             metaKeywords = this.category.meta_keywords;
         } else {
-            metaKeywords = process.env.meta.category.metaKeywords;
+            metaKeywords = this.$config.meta.category.metaKeywords;
         }
 
         if (this.category.meta_title !== null) {
             metaTitle = this.category.meta_title;
         } else if (this.category.name !== '') {
-            metaTitle = this.category.name + process.env.meta.category.titleAdd;
+            metaTitle = this.category.name + this.$config.meta.category.titleAdd;
         } else {
-            metaTitle = process.env.meta.category.title;
+            metaTitle = this.$config.meta.category.title;
         }
 
         return {

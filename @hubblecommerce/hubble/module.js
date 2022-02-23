@@ -4,7 +4,7 @@ const fse = require('fs-extra');
 const globby = require('globby');
 import defu from 'defu';
 
-import { defaultDotEnv, defaultEnv, defaultModules } from './core/utils/config';
+import {defaultPublicRuntimeConfig, defaultPrivateRuntimeConfig, defaultModules} from './core/utils/config';
 
 const listAllDirs = (dir) => globby(`${dir}/*`, { onlyDirectories: true });
 const getLastSectionOfPath = (thePath) => thePath.substring(thePath.lastIndexOf('/') + 1);
@@ -64,17 +64,13 @@ export default async function (moduleOptions) {
     };
     this.options.alias = { ...this.options.aliases, ...baseAliases };
 
-    /*
-     * Set default configs for nuxt from module
-     * Override default if isset in nuxt.config.js
-     * Override > Merging to let the user REMOVE things if necessary
-     */
-    // Merge objects
-    this.options.env = defu(this.options.env, defaultEnv);
-
     if (this.options.build.transpile.length === 0) {
         this.options.build.transpile = ['@hubblecommerce/hubble'];
     }
+
+    // Merge default configs with configs set in nuxt.config.js
+    this.options.publicRuntimeConfig = defu(this.options.publicRuntimeConfig, defaultPublicRuntimeConfig);
+    this.options.privateRuntimeConfig = defu(this.options.privateRuntimeConfig, defaultPrivateRuntimeConfig);
 
     // https://nuxtjs.org/docs/2.x/directory-structure/components
     this.nuxt.hook('components:dirs', (dirs) => {
@@ -118,12 +114,6 @@ export default async function (moduleOptions) {
             path: path.resolve('.hubble/components/utils'),
         });
     });
-
-    /*
-     * Register nuxt.js modules
-     * TODO: https://nuxtjs.org/blog/moving-from-nuxtjs-dotenv-to-runtime-config/
-     */
-    this.requireModule(['@nuxtjs/dotenv', defu(this.options.dotenv, defaultDotEnv)]);
 
     // Override module options
     defaultModules.forEach((defaultModule) => {

@@ -1,6 +1,4 @@
-const path = require('path');
-
-export const defaultEnv = {
+export const defaultPublicRuntimeConfig = {
     meta: {
         category: {
             title: 'Category - Hubble Demo',
@@ -19,22 +17,19 @@ export const defaultEnv = {
             metaDescription: 'Official hubble demo page.',
         },
     },
+    appBaseUrl: process.env.APP_BASE_URL,
+    apiType: process.env.API_TYPE,
+    apiBaseUrl: process.env.API_BASE_URL,
+    apiSwAccessKey: process.env.API_SW_ACCESS_KEY,
+    theme: process.env.THEME,
+    swPaymentFinishUrl: process.env.SW_PAYMENT_FINISH_URL,
+    swPaymentErrorUrl: process.env.SW_PAYMENT_ERROR_URL,
+    swPaypalClientId: process.env.SW_PAYPAL_CLIENT_ID,
+    swStripePublicKey: process.env.SW_STRIPE_PUBLIC_KEY,
+    storyblockAccessToken: process.env.STORYBLOCK_ACCESS_TOKEN
 };
 
-export const defaultDotEnv = {
-    only: [
-        'APP_BASE_URL',
-        'API_TYPE',
-        'API_BASE_URL',
-        'API_SW_ACCESS_KEY',
-        'THEME',
-        'SW_PAYMENT_FINISH_URL',
-        'SW_PAYMENT_ERROR_URL',
-        'SW_PAYPAL_CLIENT_ID',
-        'SW_STRIPE_PUBLIC_KEY',
-    ],
-    path: '~/..',
-};
+export const defaultPrivateRuntimeConfig = {};
 
 export const defaultModules = [
     {

@@ -65,7 +65,7 @@
 
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex';
-import apiClient from '@/utils/api-client';
+import ApiClient from '@/utils/api-client';
 import { mappingCartProduct, mappingCartPromotion } from '@/utils/api-mapping-helper';
 
 export default {
@@ -131,7 +131,7 @@ export default {
         fetchCart: async function () {
             try {
                 this.isLoading = true;
-                const response = await new apiClient().apiCall({
+                const response = await new ApiClient(this.$config).apiCall({
                     action: 'post',
                     endpoint: 'store-api/checkout/cart',
                     headers: [{ 'sw-include-seo-urls': true }],

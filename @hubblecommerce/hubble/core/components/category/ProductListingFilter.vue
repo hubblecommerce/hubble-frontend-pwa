@@ -115,7 +115,7 @@
 </template>
 
 <script>
-import apiClient from '@/utils/api-client';
+import ApiClient from '@/utils/api-client';
 import { associations, includes } from '@/utils/api-post-body';
 import { buildUriWithParamsFromObject } from '@/utils/api-parse-get-params';
 
@@ -183,7 +183,7 @@ export default {
             Object.assign(postData, this.appliedFilters);
 
             try {
-                let response = await new apiClient().apiCall({
+                let response = await new ApiClient(this.$config).apiCall({
                     action: 'post',
                     endpoint: `store-api/product-listing/${this.categoryId}`,
                     data: postData,

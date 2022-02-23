@@ -32,7 +32,7 @@
 
 <script>
 import { mapMutations, mapState } from 'vuex';
-import apiClient from '@/utils/api-client';
+import ApiClient from '@/utils/api-client';
 import { associations, includes } from '@/utils/api-post-body';
 import { mappingProduct } from '@/utils/api-mapping-helper';
 
@@ -146,7 +146,7 @@ export default {
 
         fetchProduct: async function (payload) {
             try {
-                return await new apiClient().apiCall({
+                return await new ApiClient(this.$config).apiCall({
                     action: 'post',
                     endpoint: 'store-api/product',
                     data: {

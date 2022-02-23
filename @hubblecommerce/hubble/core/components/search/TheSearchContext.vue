@@ -42,7 +42,7 @@
 import Vue from 'vue';
 import { mapActions } from 'vuex';
 import vClickOutside from 'v-click-outside';
-import apiClient from '@/utils/api-client';
+import ApiClient from '@/utils/api-client';
 import { includesSearchSuggest, associations } from '@/utils/api-post-body';
 import { mappingSearchSuggestProducts } from '@/utils/api-mapping-helper';
 
@@ -117,7 +117,7 @@ export default {
             }
         },
         fetchSearchSuggest: async function () {
-            return new apiClient().apiCall({
+            return new ApiClient(this.$config).apiCall({
                 action: 'post',
                 endpoint: 'store-api/search-suggest',
                 data: {

@@ -113,7 +113,7 @@ export default function paymentMethodStripe(context, contextToken, currentMethod
     };
 
     const setPaymentMethodSettings = async function (payload) {
-        return await new ApiClient().apiCall({
+        return await new ApiClient(this.$config).apiCall({
             action: 'patch',
             endpoint: 'store-api/stripe-payment/payment-method-settings',
             contextToken: contextToken.value,
@@ -164,7 +164,7 @@ export default function paymentMethodStripe(context, contextToken, currentMethod
     const mountStripeJs = async function() {
         try {
             // Init Stripe.js
-            stripe.value = await loadStripe(process.env.SW_STRIPE_PUBLIC_KEY);
+            stripe.value = await loadStripe(context.$config.swStripePublicKey);
 
             // Init Stripe Elements: Card
             const cardOptions = {

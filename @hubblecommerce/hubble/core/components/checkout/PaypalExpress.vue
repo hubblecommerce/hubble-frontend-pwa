@@ -17,7 +17,7 @@
 
 <script>
 import { mapMutations, mapState } from 'vuex';
-import apiClient from '@/utils/api-client';
+import ApiClient from '@/utils/api-client';
 
 export default {
     name: 'PaypalExpress',
@@ -38,7 +38,7 @@ export default {
                  *
                  * @type string
                  */
-                clientId: process.env.SW_PAYPAL_CLIENT_ID,
+                clientId: this.$config.swPaypalClientId,
                 /**
                  * This option toggles the PayNow/Login text at PayPal
                  *
@@ -293,7 +293,7 @@ export default {
          */
         _createOrder: async function () {
             try {
-                const response = await new apiClient().apiCall({
+                const response = await new ApiClient(this.$config).apiCall({
                     action: 'post',
                     endpoint: 'store-api/paypal/express/create-order',
                     contextToken: this.contextToken,
@@ -315,7 +315,7 @@ export default {
 
             // Loggs in a guest customer, with the data of a paypal order
             try {
-                const response = await new apiClient().apiCall({
+                const response = await new ApiClient(this.$config).apiCall({
                     action: 'post',
                     endpoint: 'store-api/paypal/express/prepare-checkout',
                     contextToken: this.contextToken,

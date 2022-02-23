@@ -74,7 +74,7 @@ export default {
         } = paymentMethodStripe(context, contextToken, currentMethod, currentMethodObj, showModal);
 
         const setPaymentMethod =  async function (id) {
-            return await new ApiClient().apiCall({
+            return await new ApiClient(this.$config).apiCall({
                 action: 'patch',
                 endpoint: 'store-api/context',
                 contextToken: contextToken.value,
@@ -172,7 +172,7 @@ export default {
 
     methods: {
         fetchPaymentMethods: async function () {
-            return await new ApiClient().apiCall({
+            return await new ApiClient(this.$config).apiCall({
                 action: 'post',
                 endpoint: 'store-api/payment-method',
                 contextToken: this.contextToken.value,

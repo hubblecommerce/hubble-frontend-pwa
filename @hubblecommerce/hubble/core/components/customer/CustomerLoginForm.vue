@@ -47,7 +47,7 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex';
-import apiClient from '@/utils/api-client';
+import ApiClient from '@/utils/api-client';
 
 export default {
     name: 'CustomerLoginForm',
@@ -79,7 +79,7 @@ export default {
         submitLoginForm: async function () {
             try {
                 this.isLoading = true;
-                let response = await new apiClient().apiCall({
+                let response = await new ApiClient(this.$config).apiCall({
                     action: 'post',
                     endpoint: 'store-api/account/login',
                     contextToken: this.contextToken,
@@ -108,12 +108,12 @@ export default {
         submitPwResetForm: async function () {
             try {
                 this.isLoading = true;
-                await new apiClient().apiCall({
+                await new ApiClient(this.$config).apiCall({
                     action: 'post',
                     endpoint: 'store-api/account/recovery-password',
                     data: {
                         email: this.email,
-                        storefrontUrl: process.env.API_BASE_URL,
+                        storefrontUrl: this.$config.apiBaseUrl,
                     },
                 });
 

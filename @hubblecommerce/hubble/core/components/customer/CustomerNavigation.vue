@@ -24,7 +24,7 @@
 
 <script>
 import { mapMutations, mapState } from 'vuex';
-import apiClient from '@/utils/api-client';
+import ApiClient from '@/utils/api-client';
 
 export default {
     name: 'CustomerNavigation',
@@ -42,7 +42,7 @@ export default {
         }),
         logout: async function () {
             try {
-                let response = await new apiClient().apiCall({
+                let response = await new ApiClient(this.$config).apiCall({
                     action: 'post',
                     endpoint: 'store-api/account/logout',
                     contextToken: this.contextToken,

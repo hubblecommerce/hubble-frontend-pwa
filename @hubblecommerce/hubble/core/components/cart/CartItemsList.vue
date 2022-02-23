@@ -106,7 +106,7 @@ export default {
             setCart: 'modCart/setCart',
         }),
         removeItem: async function (item) {
-            let response = await new ApiClient().apiCall({
+            let response = await new ApiClient(this.$config).apiCall({
                 action: 'delete',
                 endpoint: 'store-api/checkout/cart/line-item',
                 contextToken: this.contextToken,
@@ -127,7 +127,7 @@ export default {
             return formatter.format(price);
         },
         onChangeQty: async function (item, qty) {
-            let response = await new ApiClient().apiCall({
+            let response = await new ApiClient(this.$config).apiCall({
                 action: 'patch',
                 endpoint: 'store-api/checkout/cart/line-item',
                 contextToken: this.contextToken,

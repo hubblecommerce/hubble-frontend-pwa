@@ -121,7 +121,7 @@
 </template>
 <script>
 import { mapState } from 'vuex';
-import apiClient from '@/utils/api-client';
+import ApiClient from '@/utils/api-client';
 
 export default {
     name: 'AddressModal',
@@ -158,7 +158,7 @@ export default {
 
     methods: {
         async fetchUserAddresses() {
-            return await new apiClient().apiCall({
+            return await new ApiClient(this.$config).apiCall({
                 action: 'post',
                 endpoint: 'store-api/account/list-address',
                 contextToken: this.contextToken,
@@ -186,7 +186,7 @@ export default {
         },
         async useAsStandard(id) {
             console.log('standard');
-            let response = await new apiClient().apiCall({
+            let response = await new ApiClient(this.$config).apiCall({
                 action: 'patch',
                 endpoint: `store-api/account/address/default-${this.context}/${id}`,
                 contextToken: this.contextToken,
@@ -218,7 +218,7 @@ export default {
         },
         async createAddress(address) {
             try {
-                let response = await new apiClient().apiCall({
+                let response = await new ApiClient(this.$config).apiCall({
                     action: 'post',
                     endpoint: 'store-api/account/address',
                     contextToken: this.contextToken,
@@ -235,7 +235,7 @@ export default {
         },
         async updateAddress(address) {
             try {
-                let response = await new apiClient().apiCall({
+                let response = await new ApiClient(this.$config).apiCall({
                     action: 'patch',
                     endpoint: `store-api/account/address/${address.id}`,
                     contextToken: this.contextToken,

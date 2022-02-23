@@ -18,7 +18,7 @@
 
 <script>
 import { slotMixins } from '../helper';
-import apiClient from '@/utils/api-client';
+import ApiClient from '@/utils/api-client';
 import { mappingMenu } from '@/utils/api-mapping-helper';
 
 export default {
@@ -51,7 +51,7 @@ export default {
 
     methods: {
         fetchMenu: async function () {
-            return await new apiClient().apiCall({
+            return await new ApiClient(this.$config).apiCall({
                 action: 'post',
                 endpoint: 'store-api/navigation/main-navigation/main-navigation',
                 headers: [{ 'sw-include-seo-urls': true }],

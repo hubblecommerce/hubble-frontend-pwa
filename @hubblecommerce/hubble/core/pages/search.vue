@@ -37,13 +37,13 @@
 
 <script>
 import { associations, includes } from '@/utils/api-post-body';
-import apiClient from '@/utils/api-client';
+import ApiClient from '@/utils/api-client';
 import { mappingCategoryProducts } from '@/utils/api-mapping-helper';
 
 export default {
     name: 'Search',
 
-    async asyncData({ route, error }) {
+    async asyncData({ $config, route, error }) {
         const term = route.query.term != null ? route.query.term : null;
         if (term === null) {
             return;
@@ -62,7 +62,7 @@ export default {
         }
 
         try {
-            let response = await new apiClient().apiCall({
+            let response = await new ApiClient($config).apiCall({
                 action: 'post',
                 endpoint: 'store-api/search',
                 headers: [{ 'sw-include-seo-urls': true }],

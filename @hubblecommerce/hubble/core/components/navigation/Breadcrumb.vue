@@ -36,7 +36,7 @@ export default {
                     '@type': 'ListItem',
                     'position': key + 1,
                     'name': pathItem.name,
-                    'item': process.env.APP_BASE_URL + pathItem.url,
+                    'item': this.$config.appBaseUrl + pathItem.url,
                 });
             });
 

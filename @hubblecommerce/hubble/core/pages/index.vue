@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import apiClient from '@/utils/api-client';
+import ApiClient from '@/utils/api-client';
 
 export default {
     name: 'Home',
@@ -27,17 +27,17 @@ export default {
             return {
                 '@context': 'https://schema.org',
                 '@type': 'WebSite',
-                'url': process.env.APP_BASE_URL,
+                'url': this.$config.appBaseUrl,
                 'potentialAction': {
                     '@type': 'SearchAction',
-                    'target': process.env.APP_BASE_URL + '/search?term={search_term_string}',
+                    'target': this.$config.appBaseUrl + '/search?term={search_term_string}',
                     'query-input': 'required name=search_term_string',
                 },
             };
         },
     },
 
-    async asyncData({ error, route }) {
+    async asyncData({ $config, error, route }) {
         try {
             let postData = {};
 
@@ -47,7 +47,7 @@ export default {
                 postData = setReqParamFromRoute(route, postData);
             }
 
-            let response = await new apiClient().apiCall({
+            let response = await new ApiClient($config).apiCall({
                 action: 'post',
                 endpoint: 'store-api/category/home',
                 data: postData,

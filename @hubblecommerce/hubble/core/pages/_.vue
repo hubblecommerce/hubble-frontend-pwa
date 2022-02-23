@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import apiClient from '@/utils/api-client';
+import ApiClient from '@/utils/api-client';
 import { associations, includes } from '@/utils/api-post-body';
 
 export default {
@@ -21,7 +21,7 @@ export default {
         ViewProduct: () => import('../components/detail/ViewProduct'),
     },
 
-    async asyncData({ route, error }) {
+    async asyncData({ $config, route, error }) {
         let postData = {
             associations: associations,
             includes: includes,
@@ -35,7 +35,7 @@ export default {
         }
 
         try {
-            let response = await new apiClient().apiCall({
+            let response = await new ApiClient($config).apiCall({
                 action: 'post',
                 endpoint: 'store-api/pwa/page',
                 headers: [{ 'sw-include-seo-urls': true }],

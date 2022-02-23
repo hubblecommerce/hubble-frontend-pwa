@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import apiClient from '@/utils/api-client';
+import ApiClient from '@/utils/api-client';
 import { mapState } from 'vuex';
 
 export default {
@@ -53,7 +53,7 @@ export default {
 
     methods: {
         fetchCustomer: async function () {
-            return await new apiClient().apiCall({
+            return await new ApiClient(this.$config).apiCall({
                 action: 'get',
                 endpoint: 'store-api/account/customer',
                 contextToken: this.contextToken,
