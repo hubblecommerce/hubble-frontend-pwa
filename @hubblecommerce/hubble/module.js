@@ -72,6 +72,17 @@ export default async function (moduleOptions) {
     this.options.publicRuntimeConfig = defu(this.options.publicRuntimeConfig, defaultPublicRuntimeConfig);
     this.options.privateRuntimeConfig = defu(this.options.privateRuntimeConfig, defaultPrivateRuntimeConfig);
 
+    // Handle shopware plugin configurations
+    const swPluginsDir = 'swPlugins';
+    const swPluginsConfigFile = 'pluginConfig.json';
+    const swPluginsConfigPath = [rootDir,swPluginsDir,swPluginsConfigFile].join('/');
+    const swPluginsConfigExists = await fse.pathExists(swPluginsConfigPath);
+
+    if(swPluginsConfigExists) {
+        const swPluginConfigs = await fse.readJson(swPluginsConfigPath);
+        this.options.publicRuntimeConfig = defu(this.options.publicRuntimeConfig, swPluginConfigs);
+    }
+
     // https://nuxtjs.org/docs/2.x/directory-structure/components
     this.nuxt.hook('components:dirs', (dirs) => {
         dirs.push({
