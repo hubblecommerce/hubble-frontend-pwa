@@ -5,6 +5,8 @@ const fse = require('fs-extra');
 const axios = require('axios');
 const dotenv = require('dotenv');
 dotenv.config();
+const helper = require('./helper');
+const { install, setPackageManager } = require('lmify');
 
 const projectDir = process.env.INIT_CWD || path.resolve('../../', __dirname);
 const pluginsDirName = 'swPlugins';
@@ -16,6 +18,9 @@ const authRoute = '/api/oauth/token';
 const clientId = process.env.API_CLIENT_ID;
 const clientSecret = process.env.API_CLIENT_SECRET;
 const dumpBundlesRoute = '/api/_action/pwa/dump-bundles';
+
+const assetsZipPath = [pluginsDir, 'assets.zip'].join('/');
+const mappingFileName = 'pluginMapping.json';
 
 async function clearPlugins() {
     try {
@@ -91,6 +96,109 @@ async function createPluginConfig(pluginConfigs) {
     }
 }
 
+async function downloadAssets(fileUrl) {
+    try {
+        await fse.ensureDir(pluginsDir);
+        await fse.remove(assetsZipPath);
+        const response = await helper.downloadFile(fileUrl, assetsZipPath);
+        return [response, null];
+    } catch (e) {
+        return [null, e];
+    }
+}
+
+async function unzipAssets() {
+    try {
+        const response = await helper.unzipFile(assetsZipPath, pluginsDir);
+        return [response, null];
+    } catch (e) {
+        return [null, e];
+    }
+}
+
+async function getDirs(dir) {
+    const pluginDirs = [];
+    const dirents = await fse.readdir(dir, { withFileTypes: true });
+
+    for(const dirent of dirents) {
+        if (dirent.isDirectory()) {
+            pluginDirs.push([pluginsDir, dirent.name].join('/'))
+        }
+    }
+
+    return pluginDirs;
+}
+
+async function collectDependencies() {
+    try {
+        let dependencies = [];
+        const pluginDirs = await getDirs(pluginsDir);
+
+        for(const pluginDir of pluginDirs) {
+            const packageJson = await fse.readJson([pluginDir, 'package.json'].join('/'))
+
+            if(packageJson) {
+                for (const dep in packageJson.dependencies) {
+                    dependencies.push(dep + "@" + packageJson.dependencies[dep]);
+                }
+            }
+        }
+
+        return [dependencies, null];
+    } catch (e) {
+        return [null, e];
+    }
+}
+
+async function installDependencies(deps) {
+    try {
+        setPackageManager('npm');
+
+        for(const dep of deps) {
+            await install(dep);
+        }
+
+        return [true, null];
+    } catch (e) {
+        return [null, e];
+    }
+}
+
+async function collectPluginMapping() {
+    try {
+        let mapping = [];
+        const pluginDirs = await getDirs(pluginsDir);
+
+        for(const pluginDir of pluginDirs) {
+            const pluginMappingJson = await fse.readJson([pluginDir, mappingFileName].join('/'))
+
+            if(pluginMappingJson) {
+                if(!pluginMappingJson.hasOwnProperty('pluginSlots')) {
+                    throw `${mappingFileName} of ${pluginDir} has wrong format`;
+                }
+
+                pluginMappingJson.pluginSlots.forEach((slot) => {
+                    mapping.push(slot);
+                });
+            }
+        }
+
+        return [mapping, null];
+    } catch (e) {
+        return [null, e];
+    }
+}
+
+async function setPluginMapping(pluginMapping) {
+    try {
+        await fse.writeJson([pluginsDir, mappingFileName].join('/'), { pluginSlots: pluginMapping });
+
+        return [true, null];
+    } catch (e) {
+        return [null, e];
+    }
+}
+
 async function init() {
     const error = await clearPlugins();
     if(error) {
@@ -100,7 +208,9 @@ async function init() {
 
     const [authResponse, authError] = await authorize();
     if(authError) {
-        console.error("Authorization failed, please check if your .env file provides the data API_CLIENT_ID and API_CLIENT_SECRET with values from your Shopware created integration https://docs.shopware.com/en/shopware-6-en/settings/system/integrationen?category=shopware-6-en/settings/system");
+        console.error("Authorization failed, please check if your .env file provides the data API_CLIENT_ID " +
+            "and API_CLIENT_SECRET with values from your Shopware created integration " +
+            "https://docs.shopware.com/en/shopware-6-en/settings/system/integrationen?category=shopware-6-en/settings/system");
         return;
     }
 
@@ -123,6 +233,50 @@ async function init() {
     }
 
     console.log(`Successfully built config file ${pluginConfigFile}`);
+
+    const [downloadResponse, downloadAssetsError] = await downloadAssets(buildArtifact.asset);
+    if(downloadAssetsError) {
+        console.error(downloadAssetsError);
+        return;
+    }
+
+    const [unzipAssetsResponse, unzipAssetsError] = await unzipAssets();
+    if(unzipAssetsError) {
+        console.error(unzipAssetsError);
+        return;
+    }
+
+    await fse.remove(assetsZipPath);
+
+    console.log(`Successfully downloaded assets`);
+
+    const [dependencies, collectDependenciesError] = await collectDependencies();
+    if(collectDependenciesError) {
+        console.error(collectDependenciesError);
+        return;
+    }
+
+    const [installDepsResponse, installDepsError] = await installDependencies(dependencies);
+    if(installDepsError) {
+        console.error(installDepsError);
+        return;
+    }
+
+    console.log(`Successfully installed dependencies`);
+
+    const [pluginMapping, collectPluginMappingError] = await collectPluginMapping();
+    if(collectPluginMappingError) {
+        console.error(collectPluginMappingError);
+        return;
+    }
+
+    const [setPluginMappingResponse, setPluginMappingError] = await setPluginMapping(pluginMapping);
+    if(setPluginMappingError) {
+        console.error(setPluginMappingError);
+        return;
+    }
+
+    console.log(`Successfully generated plugin slot mapping`);
 }
 
 init();
