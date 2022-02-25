@@ -1,11 +1,9 @@
-#!/usr/bin/env node
-
+const axios = require('axios');
+const unzipper = require('unzipper');
 const path = require('path');
 const fse = require('fs-extra');
-const axios = require('axios');
 const dotenv = require('dotenv');
 dotenv.config();
-const helper = require('./helper');
 const { install, setPackageManager } = require('lmify');
 
 const projectDir = process.env.INIT_CWD || path.resolve('../../', __dirname);
@@ -15,6 +13,9 @@ const pluginConfigFile = 'pluginConfig.json';
 
 const apiBasePath = process.env.API_BASE_URL;
 const authRoute = '/api/oauth/token';
+const authErrorMsg = "Authorization failed, please check if your .env file provides the data API_CLIENT_ID " +
+    "and API_CLIENT_SECRET with values from your Shopware created integration " +
+    "https://docs.shopware.com/en/shopware-6-en/settings/system/integrationen?category=shopware-6-en/settings/system";
 const clientId = process.env.API_CLIENT_ID;
 const clientSecret = process.env.API_CLIENT_SECRET;
 const dumpBundlesRoute = '/api/_action/pwa/dump-bundles';
@@ -22,9 +23,65 @@ const dumpBundlesRoute = '/api/_action/pwa/dump-bundles';
 const assetsZipPath = [pluginsDir, 'assets.zip'].join('/');
 const mappingFileName = 'pluginMapping.json';
 
+function downloadFile(fileUrl, outputLocationPath) {
+    const writer = fse.createWriteStream(outputLocationPath);
+
+    return axios({
+        method: 'get',
+        url: fileUrl,
+        responseType: 'stream',
+    }).then(response => {
+        return new Promise((resolve, reject) => {
+            response.data.pipe(writer);
+            let error = null;
+            writer.on('error', err => {
+                error = err;
+                writer.close();
+                reject(err);
+            });
+            writer.on('close', () => {
+                if (!error) {
+                    resolve(true);
+                }
+                // no need to call the reject here, as it will have been called in the 'error' stream;
+            });
+        });
+    });
+}
+
+function unzipFile(inputLocationPath, outputLocationPath) {
+    return new Promise((resolve, reject) => {
+        let error = null;
+        fse.createReadStream(inputLocationPath).pipe(unzipper.Extract({ path: outputLocationPath }))
+            .on('close', () => {
+                if (!error) {
+                    resolve(true);
+                }
+            })
+            .on('error', err => {
+                error = err;
+                reject(err);
+            });
+    });
+}
+
+function camelCase(input) {
+    return input.toLowerCase().replace(/-(.)/g, function(match, group1) {
+        return group1.toUpperCase();
+    });
+}
+
 async function clearPlugins() {
     try {
         await fse.emptyDir(pluginsDir);
+    } catch (e) {
+        return e;
+    }
+}
+
+async function ensurePluginsDir() {
+    try {
+        await fse.ensureDir(pluginsDir);
     } catch (e) {
         return e;
     }
@@ -57,6 +114,15 @@ async function dumpBundles(authResponse) {
     }
 }
 
+async function removeConfigFile() {
+    try {
+        await fse.remove(path.join(pluginsDirName, `/${pluginConfigFile}`));
+        return [true, null];
+    } catch (e) {
+        return [null, e];
+    }
+}
+
 async function fetchPluginConfig(path) {
     try {
         const response = await axios.get(apiBasePath + path);
@@ -64,12 +130,6 @@ async function fetchPluginConfig(path) {
     } catch (e) {
         return [null, e];
     }
-}
-
-function camelCase(input) {
-    return input.toLowerCase().replace(/-(.)/g, function(match, group1) {
-        return group1.toUpperCase();
-    });
 }
 
 async function createPluginConfig(pluginConfigs) {
@@ -88,7 +148,7 @@ async function createPluginConfig(pluginConfigs) {
             }
         });
 
-        await fse.writeJson( path.join(pluginsDirName, `/${pluginConfigFile}`), obj);
+        await fse.writeJson(path.join(pluginsDirName, `/${pluginConfigFile}`), obj);
 
         return [pluginConfigFile, null];
     } catch (e) {
@@ -100,8 +160,22 @@ async function downloadAssets(fileUrl) {
     try {
         await fse.ensureDir(pluginsDir);
         await fse.remove(assetsZipPath);
-        const response = await helper.downloadFile(fileUrl, assetsZipPath);
+        const response = await downloadFile(fileUrl, assetsZipPath);
         return [response, null];
+    } catch (e) {
+        return [null, e];
+    }
+}
+
+async function removePluginDirs() {
+    try {
+        const pluginDirs = await getDirs(pluginsDir);
+
+        for(const pluginDir of pluginDirs) {
+            await fse.remove(pluginDir);
+        }
+
+        return [true, null];
     } catch (e) {
         return [null, e];
     }
@@ -109,7 +183,8 @@ async function downloadAssets(fileUrl) {
 
 async function unzipAssets() {
     try {
-        const response = await helper.unzipFile(assetsZipPath, pluginsDir);
+        const response = await unzipFile(assetsZipPath, pluginsDir);
+        await fse.remove(assetsZipPath);
         return [response, null];
     } catch (e) {
         return [null, e];
@@ -189,6 +264,16 @@ async function collectPluginMapping() {
     }
 }
 
+async function removeMapping() {
+    try {
+        await fse.remove([pluginsDir, mappingFileName].join('/'));
+
+        return [true, null];
+    } catch (e) {
+        return [null, e];
+    }
+}
+
 async function setPluginMapping(pluginMapping) {
     try {
         await fse.writeJson([pluginsDir, mappingFileName].join('/'), { pluginSlots: pluginMapping });
@@ -199,84 +284,23 @@ async function setPluginMapping(pluginMapping) {
     }
 }
 
-async function init() {
-    const error = await clearPlugins();
-    if(error) {
-        console.error(error);
-        return;
-    }
-
-    const [authResponse, authError] = await authorize();
-    if(authError) {
-        console.error("Authorization failed, please check if your .env file provides the data API_CLIENT_ID " +
-            "and API_CLIENT_SECRET with values from your Shopware created integration " +
-            "https://docs.shopware.com/en/shopware-6-en/settings/system/integrationen?category=shopware-6-en/settings/system");
-        return;
-    }
-
-    const [buildArtifact, buildError] = await dumpBundles(authResponse);
-    if(buildError) {
-        console.error(buildError);
-        return;
-    }
-
-    const [pluginConfigs, fetchPluginConfigError] = await fetchPluginConfig(buildArtifact.config);
-    if(fetchPluginConfigError) {
-        console.error(fetchPluginConfigError);
-        return;
-    }
-
-    const [pluginConfigFile, createConfigError] = await createPluginConfig(pluginConfigs);
-    if(createConfigError) {
-        console.error(createConfigError);
-        return;
-    }
-
-    console.log(`Successfully built config file ${pluginConfigFile}`);
-
-    const [downloadResponse, downloadAssetsError] = await downloadAssets(buildArtifact.asset);
-    if(downloadAssetsError) {
-        console.error(downloadAssetsError);
-        return;
-    }
-
-    const [unzipAssetsResponse, unzipAssetsError] = await unzipAssets();
-    if(unzipAssetsError) {
-        console.error(unzipAssetsError);
-        return;
-    }
-
-    await fse.remove(assetsZipPath);
-
-    console.log(`Successfully downloaded assets`);
-
-    const [dependencies, collectDependenciesError] = await collectDependencies();
-    if(collectDependenciesError) {
-        console.error(collectDependenciesError);
-        return;
-    }
-
-    const [installDepsResponse, installDepsError] = await installDependencies(dependencies);
-    if(installDepsError) {
-        console.error(installDepsError);
-        return;
-    }
-
-    console.log(`Successfully installed dependencies`);
-
-    const [pluginMapping, collectPluginMappingError] = await collectPluginMapping();
-    if(collectPluginMappingError) {
-        console.error(collectPluginMappingError);
-        return;
-    }
-
-    const [setPluginMappingResponse, setPluginMappingError] = await setPluginMapping(pluginMapping);
-    if(setPluginMappingError) {
-        console.error(setPluginMappingError);
-        return;
-    }
-
-    console.log(`Successfully generated plugin slot mapping`);
-}
-
-init();
+exports.downloadFile = downloadFile;
+exports.unzipFile = unzipFile;
+exports.camelCase = camelCase;
+exports.clearPlugins = clearPlugins;
+exports.ensurePluginsDir = ensurePluginsDir;
+exports.authorize = authorize;
+exports.authErrorMsg = authErrorMsg;
+exports.dumpBundles = dumpBundles;
+exports.removeConfigFile = removeConfigFile;
+exports.fetchPluginConfig = fetchPluginConfig;
+exports.createPluginConfig = createPluginConfig;
+exports.downloadAssets = downloadAssets;
+exports.removePluginDirs = removePluginDirs;
+exports.unzipAssets = unzipAssets;
+exports.getDirs = getDirs;
+exports.collectDependencies = collectDependencies;
+exports.installDependencies = installDependencies;
+exports.collectPluginMapping = collectPluginMapping;
+exports.removeMapping = removeMapping;
+exports.setPluginMapping = setPluginMapping;
