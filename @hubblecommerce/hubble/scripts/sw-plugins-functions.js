@@ -71,6 +71,10 @@ function camelCase(input) {
     });
 }
 
+function capitalizeFirstLetter(string) {
+    return string.replace(/^\w/, (c) => c.toUpperCase());
+}
+
 async function clearPlugins() {
     try {
         await fse.emptyDir(pluginsDir);
@@ -140,7 +144,7 @@ async function createPluginConfig(pluginConfigs) {
             if(Object.keys(pluginConfigs[pluginName].configuration).length > 0) {
                 Object.keys(pluginConfigs[pluginName].configuration.config).forEach((configName) => {
                     let parsedObject = {
-                        [camelCase(`${pluginName}-${configName}`)]: pluginConfigs[pluginName].configuration.config[configName]
+                        [camelCase(pluginName) + capitalizeFirstLetter(configName)]: pluginConfigs[pluginName].configuration.config[configName]
                     };
 
                     Object.assign(obj, parsedObject);
@@ -210,9 +214,12 @@ async function collectDependencies() {
         const pluginDirs = await getDirs(pluginsDir);
 
         for(const pluginDir of pluginDirs) {
-            const packageJson = await fse.readJson([pluginDir, 'package.json'].join('/'))
+            const packageJsonPath = [pluginDir, 'package.json'].join('/');
+            const packageJsonExists = await fse.pathExists(packageJsonPath);
 
-            if(packageJson) {
+            if(packageJsonExists) {
+                const packageJson = await fse.readJson(packageJsonPath);
+
                 for (const dep in packageJson.dependencies) {
                     dependencies.push(dep + "@" + packageJson.dependencies[dep]);
                 }
