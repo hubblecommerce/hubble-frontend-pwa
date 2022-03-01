@@ -143,11 +143,14 @@ async function createPluginConfig(pluginConfigs) {
         Object.keys(pluginConfigs).forEach((pluginName) => {
             if(Object.keys(pluginConfigs[pluginName].configuration).length > 0) {
                 Object.keys(pluginConfigs[pluginName].configuration.config).forEach((configName) => {
-                    let parsedObject = {
-                        [camelCase(pluginName) + capitalizeFirstLetter(configName)]: pluginConfigs[pluginName].configuration.config[configName]
-                    };
+                    // Skip secret and private keys by name to prevent to expose them to frontend
+                    if (configName.toLowerCase().indexOf('secret') === -1 && configName.toLowerCase().indexOf('private') === -1) {
+                        let parsedObject = {
+                            [camelCase(pluginName) + capitalizeFirstLetter(configName)]: pluginConfigs[pluginName].configuration.config[configName]
+                        };
 
-                    Object.assign(obj, parsedObject);
+                        Object.assign(obj, parsedObject);
+                    }
                 });
             }
         });
