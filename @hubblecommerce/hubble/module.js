@@ -176,6 +176,11 @@ export default async function (moduleOptions) {
             }
 
             if (event === 'add' || event === 'change') {
+                for(const swPluginDir of swPluginDirs) {
+                    const subDirs = await globby(`${swPluginDir}/*`, { onlyDirectories: true });
+                    await asyncCopyDirs(subDirs, targetDir);
+                }
+
                 await fse.copy(filePath, newDestination);
             }
 
