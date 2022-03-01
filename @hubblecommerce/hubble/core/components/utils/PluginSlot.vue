@@ -13,11 +13,14 @@ import pluginMapping from "@/swPlugins/pluginMapping.json";
 
 function generateImports() {
     let obj = {};
-    pluginMapping.pluginSlots.map((plugin) => {
-        Object.assign(obj, {
-            [plugin.componentName]: () => import('@/components'+plugin.componentPath)
+
+    if(pluginMapping != null && pluginMapping.pluginSlots != null) {
+        pluginMapping.pluginSlots.map((plugin) => {
+            Object.assign(obj, {
+                [plugin.componentName]: () => import('@/components'+plugin.componentPath)
+            });
         });
-    });
+    }
 
     return obj;
 }
@@ -46,7 +49,9 @@ export default {
     },
 
     created() {
-        this.slotEntries = pluginMapping.pluginSlots.filter(entry => entry.slot === this.name);
+        if(pluginMapping != null && pluginMapping.pluginSlots != null) {
+            this.slotEntries = pluginMapping.pluginSlots.filter(entry => entry.slot === this.name);
+        }
     }
 }
 </script>
