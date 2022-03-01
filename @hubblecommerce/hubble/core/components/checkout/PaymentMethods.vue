@@ -18,7 +18,7 @@
                         <span class="description" v-text="method.description" />
                     </label>
 
-                    <PluginSlot name="checkout-payment-methods-method" :data="method" />
+                    <PluginSlot name="checkout-payment-methods-method" :data="{method, contextToken, currentMethod, currentMethodObj, showModal}" />
                 </hbl-checkbox>
             </div>
 
@@ -36,8 +36,7 @@
 
 <script>
 import ApiClient from '@/utils/api-client';
-import { ssrRef, useStore, watch, computed } from '@nuxtjs/composition-api';
-import paymentMethodStripe from "@/composables/paymentMethodStripe";
+import { useContext, ssrRef, useStore, watch, computed } from '@nuxtjs/composition-api';
 import PluginSlot from "@/components/utils/PluginSlot";
 
 export default {
@@ -55,26 +54,17 @@ export default {
     },
 
     setup(props, context) {
+        const { $config } = useContext();
         let currentMethod = ssrRef(null);
         let currentMethodObj = ssrRef({});
         let paymentError = ssrRef(null); // Error that could happen on method selection
         let paymentMethods = ssrRef(null);
         let showModal = ssrRef(false);
-
         const store = useStore();
         const contextToken = computed(() => store.state.modSession.contextToken);
 
-        const {
-            stripe,
-            card,
-            sepa,
-            stripePaymentMethods,
-            billingDetailsCard,
-            billingDetailsSepa,
-        } = paymentMethodStripe(context, contextToken, currentMethod, currentMethodObj, showModal);
-
         const setPaymentMethod =  async function (id) {
-            return await new ApiClient(this.$config).apiCall({
+            return await new ApiClient($config).apiCall({
                 action: 'patch',
                 endpoint: 'store-api/context',
                 contextToken: contextToken.value,
@@ -109,14 +99,6 @@ export default {
 
                 currentMethodObj.value = await getMethodById(id);
 
-                // Show payment method setting modal for CC and SEPA
-                if (
-                    currentMethodObj.value.shortName === 'stripe.shopware_payment.payment_handler.card' ||
-                    currentMethodObj.value.shortName === 'stripe.shopware_payment.payment_handler.sepa'
-                ) {
-                    showModal.value = true;
-                }
-
                 context.emit('processing', false);
                 context.emit('payment-error', false);
                 context.emit('payment-changed', currentMethodObj.value);
@@ -134,14 +116,6 @@ export default {
             paymentMethods,
             contextToken,
             showModal,
-
-            stripe,
-            card,
-            sepa,
-            stripePaymentMethods,
-            billingDetailsCard,
-            billingDetailsSepa,
-
             setPaymentMethod,
             getMethodById
         } // anything returned here will be available for the rest of the component

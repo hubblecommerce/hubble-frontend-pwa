@@ -25,7 +25,6 @@ export const defaultPublicRuntimeConfig = {
     swPaymentFinishUrl: process.env.SW_PAYMENT_FINISH_URL,
     swPaymentErrorUrl: process.env.SW_PAYMENT_ERROR_URL,
     swPaypalClientId: process.env.SW_PAYPAL_CLIENT_ID,
-    swStripePublicKey: process.env.SW_STRIPE_PUBLIC_KEY,
     storyblockAccessToken: process.env.STORYBLOCK_ACCESS_TOKEN
 };
 
