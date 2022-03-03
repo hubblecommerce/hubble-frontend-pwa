@@ -18,7 +18,7 @@
                         <span class="description" v-text="method.description" />
                     </label>
 
-                    <PluginSlot name="checkout-payment-methods-method" :data="{method, contextToken, currentMethod, currentMethodObj, showModal}" />
+                    <plugin-slot name="checkout-payment-methods-method" :data="{method, contextToken, currentMethod, currentMethodObj, showModal}" />
                 </hbl-checkbox>
             </div>
 
@@ -30,7 +30,7 @@
 
         <loader v-else />
 
-        <PluginSlot name="checkout-payment-methods-after" :data="{contextToken, currentMethod, currentMethodObj, showModal}" />
+        <plugin-slot name="checkout-payment-methods-after" :data="{contextToken, currentMethod, currentMethodObj, showModal}" />
     </div>
 </template>
 
