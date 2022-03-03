@@ -105,6 +105,11 @@ export default {
             this.resetCart();
             this.isLoggedIn = false;
             this.isGuest = false;
+
+            // Refresh page if current page is /cart
+            if (this.$router.currentRoute.path === '/cart') {
+                this.$router.go(0);
+            }
         },
     },
 };
