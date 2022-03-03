@@ -41,6 +41,8 @@
                                     </hbl-button>
                                 </div>
                             </div>
+
+                            <plugin-slot name="cart-context-actions-after" :data="{}" />
                         </div>
                     </template>
                 </div>
