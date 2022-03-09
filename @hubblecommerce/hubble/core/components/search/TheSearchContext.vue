@@ -147,7 +147,6 @@ export default {
                 return;
             }
 
-            // stop searching ...
             this.isSearching = true;
 
             let route = {
@@ -162,11 +161,11 @@ export default {
                 this.loading = true;
             }
 
-            // If last route was a search request, then only replace current route to keep history
-            // thats how we can do a go(-1) to reach the last non search page
+            // If current route is search request, reload the page to flush filters
             if (this.$router.history.current.path === '/search') {
                 this.$router.replace(route, () => {
                     this.loading = false;
+                    location.reload();
                 });
             } else {
                 this.$router.push(route, () => {

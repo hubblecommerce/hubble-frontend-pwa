@@ -1,36 +1,54 @@
 <template>
-    <div v-if="products === null || products.length <= 0" class="catalog-search-wrp container">
-        <div class="row">
+    <div class="catalog-search-wrp container">
+        <div class="row catalog-search-header">
             <h1 class="col-12" v-text="'Search'" />
-            <div class="col-12 headline-3" v-text="'We are sorry, your search did not match any products.'" />
+            <div class="col-12 headline-3" v-text="`We have found ${total} results for: ${currentFilters.search}`" />
         </div>
-    </div>
-    <div v-else class="catalog-search-wrp container">
-        <div class="row">
-            <h1 class="col-12" v-text="'Search'" />
-            <div class="col-12 headline-3" v-text="`We have found ${$data.productData.total} results for: ${$data.productData.currentFilters.search}`" />
-        </div>
-        <div class="row">
-            <div class="toolbar-top col-12">
-                <product-listing-pagination
-                    :paginationItemsTotal="$data.productData.total"
-                    :paginationPerPage="$data.productData.limit"
-                />
-            </div>
+        <PortalTarget name="filters"></PortalTarget>
+        <product-listing-filter
+            :aggregations="aggregations"
+            :current-filters="currentFilters"
+            :limit="limit"
+            :sorting="sorting"
+            :key="$route.fullPath"
+        />
+        <div class="toolbar top">
+            <product-listing-limiter
+                :limit="limit"
+                :current-filters="currentFilters"
+                :sorting="sorting"
+            />
+            <product-listing-pagination
+                v-if="total > 0"
+                :page="page"
+                :limit="limit"
+                :total="total"
+                :sorting="sorting"
+                :current-filters="currentFilters"
+            />
+            <product-listing-sorter
+                :available-sortings="availableSortings"
+                :sorting="sorting"
+                :current-filters="currentFilters"
+                :limit="limit"
+            />
         </div>
         <product-listing
             v-if="products != null"
             :data-items="products"
-            :total="$data.productData.total"
+            :total="total"
             :listing-class="'col-12 col-sm-12 col-md-4 col-lg-3'"
         />
-        <div class="row">
-            <div class="toolbar-bottom col-12">
-                <product-listing-pagination
-                    :paginationItemsTotal="$data.productData.total"
-                    :paginationPerPage="$data.productData.limit"
-                />
-            </div>
+        <div class="toolbar bottom">
+            <product-listing-pagination
+                v-if="total > 0"
+                :page="page"
+                :limit="limit"
+                :total="total"
+                :sorting="sorting"
+                :current-filters="currentFilters"
+                :scroll-top-on-change="true"
+            />
         </div>
     </div>
 </template>
@@ -38,7 +56,7 @@
 <script>
 import { associations, includes } from '@/utils/api-post-body';
 import ApiClient from '@/utils/api-client';
-import { mappingCategoryProducts } from '@/utils/api-mapping-helper';
+import { mappingCategoryProducts, mappingListingFilters } from '@/utils/api-mapping-helper';
 
 export default {
     name: 'Search',
@@ -51,12 +69,11 @@ export default {
 
         let postData = {
             associations: associations,
-            includes: includes,
-            search: term,
+            includes: includes
         };
 
         // Set GET params to POST data if set in url
-        if (route.query.length > 0) {
+        if (Object.keys(route.query).length > 0) {
             let { setReqParamFromRoute } = await import('../utils/api-parse-get-params');
             postData = setReqParamFromRoute(route, postData);
         }
@@ -71,8 +88,14 @@ export default {
 
             if (response.data != null) {
                 return {
-                    productData: response.data,
-                    products: mappingCategoryProducts(response.data.elements)
+                    products: mappingCategoryProducts(response.data.elements),
+                    aggregations: response.data.aggregations,
+                    currentFilters: mappingListingFilters(response.data.currentFilters),
+                    page: response.data.page,
+                    total: response.data.total,
+                    limit: response.data.limit,
+                    availableSortings: response.data.availableSortings,
+                    sorting: response.data.sorting
                 }
             }
         } catch (e) {
@@ -84,6 +107,78 @@ export default {
         }
     },
 
+    created() {
+        this.$nuxt.$on('set-filter', (data) => {
+            this.products = mappingCategoryProducts(data.elements);
+            this.aggregations = data.aggregations;
+            this.currentFilters = mappingListingFilters(data.currentFilters);
+            this.page = data.page;
+            this.total = data.total;
+        });
+
+        this.$nuxt.$on('set-page', (data) => {
+            this.products = mappingCategoryProducts(data.elements);
+            this.page = data.page;
+        });
+
+        this.$nuxt.$on('set-limit', (data) => {
+            this.products = mappingCategoryProducts(data.elements);
+            this.limit = data.limit;
+            this.page = data.page;
+        });
+
+        this.$nuxt.$on('set-sorting', (data) => {
+            this.products = mappingCategoryProducts(data.elements);
+            this.sorting = data.sorting;
+            this.page = data.page;
+        });
+    },
+
     watchQuery: true,
 };
 </script>
+
+<style lang="scss">
+.catalog-search-wrp {
+    .catalog-search-header {
+        margin-bottom: 15px;
+    }
+}
+
+.toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    &.top {
+        margin-bottom: 15px;
+
+        .pagination-wrp {
+            display: none;
+        }
+    }
+
+    &.bottom {
+        justify-content: center;
+    }
+}
+
+@media(min-width: 768px) {
+    .toolbar {
+        &.top {
+            .pagination-wrp {
+                display: flex;
+            }
+        }
+    }
+}
+
+@media (min-width: 1024px) {
+    .toolbar {
+        &.top {
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+}
+</style>

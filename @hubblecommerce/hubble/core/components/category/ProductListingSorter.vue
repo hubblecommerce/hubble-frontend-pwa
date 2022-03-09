@@ -47,12 +47,6 @@ export default {
         }
     },
 
-    computed: {
-        categoryId: function() {
-            return this.currentFilters.navigationId;
-        }
-    },
-
     created() {
         this.selectedSorting = this.sorting;
     },
@@ -68,12 +62,19 @@ export default {
 
             Object.assign(postData, this.currentFilters);
 
-            console.log(postData);
+            let route;
+            if(this.currentFilters.navigationId) {
+                route = `store-api/product-listing/${this.currentFilters.navigationId}`
+            }
+
+            if(this.currentFilters.search) {
+                route = 'store-api/search';
+            }
 
             try {
                 let response = await new ApiClient(this.$config).apiCall({
                     action: 'post',
-                    endpoint: `store-api/product-listing/${this.categoryId}`,
+                    endpoint: route,
                     data: postData,
                 });
 

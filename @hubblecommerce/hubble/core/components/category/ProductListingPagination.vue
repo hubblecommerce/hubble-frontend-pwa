@@ -57,9 +57,6 @@ export default {
     computed: {
         maxPage: function() {
             return Math.ceil(this.total / this.limit);
-        },
-        categoryId: function() {
-            return this.currentFilters.navigationId;
         }
     },
 
@@ -75,10 +72,19 @@ export default {
 
             postData = Object.assign(postData, this.appliedFilters);
 
+            let route;
+            if(this.currentFilters.navigationId) {
+                route = `store-api/product-listing/${this.currentFilters.navigationId}`
+            }
+
+            if(this.currentFilters.search) {
+                route = 'store-api/search';
+            }
+
             try {
                 let response = await new ApiClient(this.$config).apiCall({
                     action: 'post',
-                    endpoint: `store-api/product-listing/${this.categoryId}`,
+                    endpoint: route,
                     data: postData,
                 });
 
