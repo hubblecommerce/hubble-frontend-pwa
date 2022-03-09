@@ -4,7 +4,7 @@
             <!--            <newsletter-form :title="getTitle" />-->
         </div>
         <div v-else>
-            <!--            <contact-form :title="getTitle" />-->
+            <contact-form :title="getTitle" />
         </div>
     </div>
 </template>
@@ -12,13 +12,14 @@
 <script>
 import { slotMixins } from '../helper';
 //import NewsletterForm from '../../utils/NewsletterForm';
-//import ContactForm from '../../utils/ContactForm';
+import ContactForm from '../../utils/ContactForm';
 
 export default {
     name: 'FormSlot',
-    mixins: [slotMixins],
 
     //components: { ContactForm, NewsletterForm },
+    components: { ContactForm },
+    mixins: [slotMixins],
     computed: {
         getType() {
             return this.content.config.type.value;
