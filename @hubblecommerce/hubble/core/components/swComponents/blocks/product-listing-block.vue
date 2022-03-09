@@ -108,39 +108,41 @@ export default {
 </script>
 
 <style lang="scss">
-.toolbar {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+.cms-block-product-listing {
+    .toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
 
-    &.top {
-        margin-bottom: 15px;
+        &.top {
+            margin-bottom: 15px;
 
-        .pagination-wrp {
-            display: none;
+            .pagination-wrp {
+                display: none;
+            }
+        }
+
+        &.bottom {
+            justify-content: center;
         }
     }
 
-    &.bottom {
-        justify-content: center;
-    }
-}
-
-@media(min-width: 768px) {
-    .toolbar {
-        &.top {
-            .pagination-wrp {
-                display: flex;
+    @media(min-width: 768px) {
+        .toolbar {
+            &.top {
+                .pagination-wrp {
+                    display: flex;
+                }
             }
         }
     }
-}
 
-@media (min-width: 1024px) {
-    .toolbar {
-        &.top {
-            display: flex;
-            justify-content: space-between;
+    @media (min-width: 1024px) {
+        .toolbar {
+            &.top {
+                display: flex;
+                justify-content: space-between;
+            }
         }
     }
 }
