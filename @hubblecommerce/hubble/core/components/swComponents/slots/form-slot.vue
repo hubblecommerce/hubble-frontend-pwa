@@ -1,24 +1,23 @@
 <template>
     <div>
         <div v-if="getType === 'newsletter'">
-            <!--            <newsletter-form :title="getTitle" />-->
+            <newsletter-form :title="getTitle" />
         </div>
         <div v-else>
-            <contact-form :title="getTitle" />
+            <contact-form :title="getTitle" :mail-receiver="getMailReceiver" />
         </div>
     </div>
 </template>
 
 <script>
 import { slotMixins } from '../helper';
-//import NewsletterForm from '../../utils/NewsletterForm';
+import NewsletterForm from '../../utils/NewsletterForm';
 import ContactForm from '../../utils/ContactForm';
 
 export default {
     name: 'FormSlot',
 
-    //components: { ContactForm, NewsletterForm },
-    components: { ContactForm },
+    components: { ContactForm, NewsletterForm },
     mixins: [slotMixins],
     computed: {
         getType() {

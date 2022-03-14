@@ -32,7 +32,15 @@
             <div class="row">
                 <div class="col-6">
                     <div class="hbl-input-group">
-                        <input id="mail" v-model="formData.mail" required type="text" name="mail" placeholder=" " />
+                        <input
+                            id="mail"
+                            v-model="formData.mail"
+                            required
+                            type="email"
+                            name="mail"
+                            placeholder=" "
+                            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                        />
                         <label for="mail">Email address</label>
                     </div>
                 </div>
@@ -59,8 +67,8 @@
                     </div>
 
                     <div class="option">
-                        <input id="privacy" type="checkbox" name="privacy" required />
-                        <label for="privacy">I have read the data protection information.</label>
+                        <input id="privacyContact" type="checkbox" name="privacyContact" required />
+                        <label for="privacyContact">I have read the data protection information.</label>
                     </div>
                 </div>
             </div>
@@ -78,6 +86,10 @@ export default {
         title: {
             type: String,
             default: '',
+        },
+        mailReceiver: {
+            type: Array,
+            default: () => [],
         },
     },
 
