@@ -20,3 +20,10 @@ fse.exists(path.join(projectDir, '/static/sw.js'), function (exists) {
         fse.copy(path.join(projectDir, '/node_modules/@hubblecommerce/hubble/sw.js'), path.join(projectDir, '/static/sw.js'));
     }
 });
+
+fse.exists(path.join(projectDir, '/swPlugins/pluginMapping.json'), async function (exists) {
+    if (!exists) {
+        await fse.ensureDir(path.join(projectDir, '/swPlugins'));
+        await fse.writeJson(path.join(projectDir, '/swPlugins/pluginMapping.json'), {});
+    }
+});

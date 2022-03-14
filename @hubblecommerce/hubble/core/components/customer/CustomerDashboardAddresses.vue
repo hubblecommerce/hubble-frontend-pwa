@@ -38,7 +38,7 @@
 import { mapActions, mapState } from 'vuex';
 import Vue from 'vue';
 import vClickOutside from 'v-click-outside';
-import apiClient from '@/utils/api-client';
+import ApiClient from '@/utils/api-client';
 
 export default {
     name: 'CustomerDashboardAddresses',
@@ -134,13 +134,13 @@ export default {
             return await Promise.all([this.fetchSalutations(), this.fetchCountries()]);
         },
         fetchSalutations: async function () {
-            return await new apiClient().apiCall({
+            return await new ApiClient(this.$config).apiCall({
                 action: 'get',
                 endpoint: 'store-api/salutation',
             });
         },
         fetchCountries: async function () {
-            return await new apiClient().apiCall({
+            return await new ApiClient(this.$config).apiCall({
                 action: 'post',
                 endpoint: 'store-api/country',
                 data: {
@@ -166,7 +166,7 @@ export default {
             });
         },
         fetchContext: async function () {
-            return await new apiClient().apiCall({
+            return await new ApiClient(this.$config).apiCall({
                 action: 'get',
                 endpoint: 'store-api/context',
                 contextToken: this.contextToken,
@@ -208,7 +208,7 @@ export default {
             }
         },
         updateAddressCall: async function (address) {
-            return await new apiClient().apiCall({
+            return await new ApiClient(this.$config).apiCall({
                 action: 'patch',
                 endpoint: `store-api/account/address/${address.id}`,
                 contextToken: this.contextToken,
@@ -216,7 +216,7 @@ export default {
             });
         },
         setActiveAddressToContext: async function (payload) {
-            return await new apiClient().apiCall({
+            return await new ApiClient(this.$config).apiCall({
                 action: 'patch',
                 endpoint: 'store-api/context',
                 contextToken: this.contextToken,
@@ -229,7 +229,7 @@ export default {
             this.modalOpen = true;
         },
         createAddressCall: async function (address) {
-            return await new apiClient().apiCall({
+            return await new ApiClient(this.$config).apiCall({
                 action: 'post',
                 endpoint: 'store-api/account/address',
                 contextToken: this.contextToken,

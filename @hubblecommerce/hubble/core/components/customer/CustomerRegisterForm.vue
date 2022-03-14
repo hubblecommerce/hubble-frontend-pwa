@@ -142,7 +142,7 @@
 </template>
 
 <script>
-import apiClient from '@/utils/api-client';
+import ApiClient from '@/utils/api-client';
 import { mapMutations, mapState } from 'vuex';
 
 export default {
@@ -207,13 +207,13 @@ export default {
             return await Promise.all([this.fetchSalutations(), this.fetchCountries()]);
         },
         fetchSalutations: async function () {
-            return await new apiClient().apiCall({
+            return await new ApiClient(this.$config).apiCall({
                 action: 'get',
                 endpoint: 'store-api/salutation',
             });
         },
         fetchCountries: async function () {
-            return await new apiClient().apiCall({
+            return await new ApiClient(this.$config).apiCall({
                 action: 'post',
                 endpoint: 'store-api/country',
                 data: {
@@ -243,14 +243,14 @@ export default {
                 this.isLoading = true;
 
                 let postData = Object.assign(this.form, {
-                    storefrontUrl: process.env.API_BASE_URL,
+                    storefrontUrl: this.$config.apiBaseUrl,
                 });
 
                 if (!this.sameShippingAddress) {
                     postData = Object.assign(postData, { shippingAddress: this.shippingAddress });
                 }
 
-                let response = await new apiClient().apiCall({
+                let response = await new ApiClient(this.$config).apiCall({
                     action: 'post',
                     endpoint: 'store-api/account/register',
                     contextToken: this.contextToken,

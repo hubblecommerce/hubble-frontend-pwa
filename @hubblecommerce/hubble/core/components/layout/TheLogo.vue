@@ -21,7 +21,7 @@ export default {
     },
     computed: {
         logoPath: function () {
-            return require(`~/assets/images/${process.env.THEME}/logo.svg`);
+            return require(`~/assets/images/${this.$config.theme}/logo.svg`);
         },
     },
 };

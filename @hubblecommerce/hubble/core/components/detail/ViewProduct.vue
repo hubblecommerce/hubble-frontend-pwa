@@ -72,7 +72,7 @@ export default {
                 'mpn': this.product.sku,
                 'offers': {
                     '@type': 'Offer',
-                    'url': process.env.APP_BASE_URL.trim() + '/' + this.product.url_pds,
+                    'url': this.$config.appBaseUrl.trim() + '/' + this.product.url_pds,
                     'priceCurrency': this.priceCurrency,
                     'price': this.product.final_price_item.display_price_brutto,
                     'itemCondition': 'https://schema.org/NewCondition',
@@ -142,13 +142,13 @@ export default {
         if (this.product.meta_description != null) {
             metaDescription = this.product.meta_description;
         } else {
-            metaDescription = process.env.meta.product.metaDescription;
+            metaDescription = this.$config.meta.product.metaDescription;
         }
 
         if (this.product.meta_keywords != null) {
             metaKeywords = this.product.meta_keywords;
         } else {
-            metaKeywords = process.env.meta.product.metaKeywords;
+            metaKeywords = this.$config.meta.product.metaKeywords;
         }
 
         if (this.product.meta_title != null) {
@@ -156,7 +156,7 @@ export default {
         } else if (this.product.name_orig != null) {
             metaTitle = this.product.name_orig;
         } else {
-            metaTitle = process.env.meta.product.title;
+            metaTitle = this.$config.meta.product.title;
         }
 
         return {

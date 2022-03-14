@@ -184,7 +184,7 @@
 </template>
 
 <script>
-import apiClient from '@/utils/api-client';
+import ApiClient from '@/utils/api-client';
 import { mapState } from 'vuex';
 
 export default {
@@ -237,14 +237,14 @@ export default {
             return selectFieldName;
         },
         fetchSalutations: async function () {
-            return await new apiClient().apiCall({
+            return await new ApiClient(this.$config).apiCall({
                 action: 'get',
                 endpoint: 'store-api/salutation',
             });
         },
         submitProfile: async function () {
             try {
-                await new apiClient().apiCall({
+                await new ApiClient(this.$config).apiCall({
                     action: 'post',
                     endpoint: 'store-api/account/change-profile',
                     contextToken: this.contextToken,
@@ -265,7 +265,7 @@ export default {
         },
         submitPassword: async function () {
             try {
-                let response = await new apiClient().apiCall({
+                let response = await new ApiClient(this.$config).apiCall({
                     action: 'post',
                     endpoint: 'store-api/account/change-password',
                     contextToken: this.contextToken,
@@ -283,7 +283,7 @@ export default {
         },
         submitEmail: async function () {
             try {
-                let response = await new apiClient().apiCall({
+                let response = await new ApiClient(this.$config).apiCall({
                     action: 'post',
                     endpoint: 'store-api/account/change-email',
                     contextToken: this.contextToken,

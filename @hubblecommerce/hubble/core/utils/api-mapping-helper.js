@@ -328,13 +328,16 @@ function mappingSearchSuggestProducts(products) {
 function mappingListingFilters(filters) {
     let obj = {};
 
-    obj.navigationId = filters.navigationId;
+    if(filters.navigationId != null) {
+        obj.navigationId = filters.navigationId;
+    }
+    if(filters.search != null) {
+        obj.search = filters.search;
+    }
     obj.manufacturer = filters.manufacturer;
-    obj['min-price'] = '';
     if(filters.price.min !== 0) {
         obj['min-price'] = filters.price.min;
     }
-    obj['max-price'] = '';
     if(filters.price.max !== 0) {
         obj['max-price'] = filters.price.max;
     }

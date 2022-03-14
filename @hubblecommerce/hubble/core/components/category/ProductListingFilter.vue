@@ -79,14 +79,14 @@
                 </div>
             </template>
 
-            <template v-if="appliedFilters['min-price'] !== ''">
+            <template v-if="appliedFilters['min-price'] !== '' && appliedFilters['min-price'] != null">
                 <div :key="`from_${appliedFilters['min-price']}`" class="tag" @click="removeOption('min-price')">
                     <span v-text="`Price from: ${formatPrice(appliedFilters['min-price'])}`" />
                     <svg-icon icon="x" />
                 </div>
             </template>
 
-            <template v-if="appliedFilters['max-price'] !== ''">
+            <template v-if="appliedFilters['max-price'] !== '' && appliedFilters['max-price'] != null">
                 <div :key="`to_${appliedFilters['max-price']}`" class="tag" @click="removeOption('max-price')">
                     <span v-text="`Price to: ${formatPrice(appliedFilters['max-price'])}`" />
                     <svg-icon icon="x" />
@@ -115,7 +115,7 @@
 </template>
 
 <script>
-import apiClient from '@/utils/api-client';
+import ApiClient from '@/utils/api-client';
 import { associations, includes } from '@/utils/api-post-body';
 import { buildUriWithParamsFromObject } from '@/utils/api-parse-get-params';
 
@@ -156,15 +156,13 @@ export default {
     computed: {
         atLeastOneFilterIsset: function () {
             return this.appliedFilters.manufacturer.length > 0 ||
-                this.appliedFilters['min-price'] !== '' ||
-                this.appliedFilters['max-price'] !== '' ||
+                (this.appliedFilters['min-price'] !== '' && this.appliedFilters['min-price'] != null) ||
+                (this.appliedFilters['max-price'] !== '' && this.appliedFilters['max-price'] != null) ||
                 this.appliedFilters['shipping-free'] ||
                 this.appliedFilters.properties.length > 0;
         }
     },
     created() {
-        this.categoryId = this.currentFilters.navigationId;
-
         this.setInitialAppliedFilters();
     },
     methods: {
@@ -182,10 +180,25 @@ export default {
 
             Object.assign(postData, this.appliedFilters);
 
+            // Remove applied filters with empty string values because shop system
+            // returns 0 e.g. price filter which leads to wrong result sets
+            const asArray = Object.entries(postData);
+            const filtered = asArray.filter(([key, value]) => value !== '');
+            postData = Object.fromEntries(filtered);
+
+            let route;
+            if(this.currentFilters.navigationId) {
+                route = `store-api/product-listing/${this.currentFilters.navigationId}`
+            }
+
+            if(this.currentFilters.search) {
+                route = 'store-api/search';
+            }
+
             try {
-                let response = await new apiClient().apiCall({
+                let response = await new ApiClient(this.$config).apiCall({
                     action: 'post',
-                    endpoint: `store-api/product-listing/${this.categoryId}`,
+                    endpoint: route,
                     data: postData,
                 });
 
@@ -268,6 +281,11 @@ export default {
         },
         removeAllOptions: function () {
             this.appliedFilters = Object.assign({}, this.filterTemplate);
+
+            if(this.currentFilters.search) {
+                this.appliedFilters = Object.assign(this.appliedFilters, { search: this.currentFilters.search });
+            }
+
             this.applyFilter();
         },
         getOptionName: function(filter, option) {

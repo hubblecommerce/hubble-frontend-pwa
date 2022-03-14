@@ -42,7 +42,7 @@
 import Vue from 'vue';
 import { mapActions } from 'vuex';
 import vClickOutside from 'v-click-outside';
-import apiClient from '@/utils/api-client';
+import ApiClient from '@/utils/api-client';
 import { includesSearchSuggest, associations } from '@/utils/api-post-body';
 import { mappingSearchSuggestProducts } from '@/utils/api-mapping-helper';
 
@@ -117,7 +117,7 @@ export default {
             }
         },
         fetchSearchSuggest: async function () {
-            return new apiClient().apiCall({
+            return new ApiClient(this.$config).apiCall({
                 action: 'post',
                 endpoint: 'store-api/search-suggest',
                 data: {
@@ -147,7 +147,6 @@ export default {
                 return;
             }
 
-            // stop searching ...
             this.isSearching = true;
 
             let route = {
@@ -162,11 +161,11 @@ export default {
                 this.loading = true;
             }
 
-            // If last route was a search request, then only replace current route to keep history
-            // thats how we can do a go(-1) to reach the last non search page
+            // If current route is search request, reload the page to flush filters
             if (this.$router.history.current.path === '/search') {
                 this.$router.replace(route, () => {
                     this.loading = false;
+                    location.reload();
                 });
             } else {
                 this.$router.push(route, () => {

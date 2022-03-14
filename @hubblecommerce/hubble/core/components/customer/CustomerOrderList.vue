@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import apiClient from "@/utils/api-client";
+import ApiClient from "@/utils/api-client";
 import { mapState } from "vuex";
 
 export default {
@@ -65,7 +65,7 @@ export default {
 
     methods: {
         fetchOrders: async function () {
-            return await new apiClient().apiCall({
+            return await new ApiClient(this.$config).apiCall({
                 action: "post",
                 endpoint: "store-api/order",
                 contextToken: this.contextToken,

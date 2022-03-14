@@ -1,14 +1,20 @@
-# PWA for headless e-commerce
-> High performant, intuitive and easy to develop progressive web app to connect with the api of your e-commerce systems API based on [Nuxt.js](https://nuxtjs.org/).
+# Headless E-Commerce Interface
+> Progressive Web App for your online store based on [Nuxt.js](https://nuxtjs.org/)
+
+- [x] An open source project
+- [x] Installable as a Nuxt.js Module
+- [x] Compatible with Shopware 6
+- [x] Covers all common e-commerce features
+- [x] Excellent performance and usability
+- [x] Toolbox / framework for creating your own shop frontend
 
 ![GitHub package.json version](https://img.shields.io/npm/dm/@hubblecommerce/hubble)
 ![GitHub contributors](https://img.shields.io/github/contributors/hubblecommerce/hubble-frontend-pwa)
 ![PWA Shields](https://www.pwa-shields.com/1.0.0/series/classic/solid/gray.svg)
 
-✔ Integrated to Shopware 6 and possible with Magento, Magento 2, xt:Commerce, etc.  
-✔ Contains all common pagetypes like: Category, Product Detail, Cart, Checkout, Customer Account, ...)  
-✔ Excellent Google Lighthouse results in all audits  
-✔ Toolbox / Boilerplate to create your own frontend
+## Official Documentation
+
+[docs.hubblecommerce.io](https://docs.hubblecommerce.io/)
 
 ## Contribution Guide PWA
 
@@ -16,8 +22,8 @@
 Every change to the code and every pull request must be assigned to an issue.
 The issue ID created is required for the following steps.
 
-**2**: [Fork](https://docs.github.com/en/free-pro-team@latest/github/getting-started-with-github/fork-a-repo) des
-[hubble Repositorys](https://github.com/hubblecommerce/hubble-frontend-pwa) auf eigenen Github Account erstellen.
+**2**: [Fork](https://docs.github.com/en/free-pro-team@latest/github/getting-started-with-github/fork-a-repo)
+the [hubble Repository](https://github.com/hubblecommerce/hubble-frontend-pwa) with your Github account.
 
 **3**: Setup NuxtJs
 ``` bash

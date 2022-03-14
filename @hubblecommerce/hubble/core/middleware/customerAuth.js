@@ -1,4 +1,4 @@
-import apiClient from '@/utils/api-client';
+import ApiClient from '@/utils/api-client';
 
 export default async function ({ app, store, redirect }) {
     // Check for contextToken either as cookie or set in vuex store
@@ -16,7 +16,7 @@ export default async function ({ app, store, redirect }) {
 
     // Fetch context for current contextToken to verify customer is logged in and not a guest
     try {
-        let response = await new apiClient().apiCall({
+        let response = await new ApiClient(this.$config).apiCall({
             action: 'get',
             endpoint: 'store-api/context',
             contextToken: contextToken,

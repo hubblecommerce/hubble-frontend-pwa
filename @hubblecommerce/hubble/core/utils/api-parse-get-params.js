@@ -35,6 +35,10 @@ const reqKeyMapping = [
         reqParam: 'properties',
         postKey: 'properties',
     },
+    {
+        reqParam: 'term',
+        postKey: 'search',
+    },
 ];
 
 /**

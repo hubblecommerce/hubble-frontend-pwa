@@ -18,7 +18,7 @@
 <script>
 import { Hooper, Slide, Navigation as HooperNavigation } from 'hooper';
 import { mapState } from 'vuex';
-import apiClient from '@/utils/api-client';
+import ApiClient from '@/utils/api-client';
 import 'hooper/dist/hooper.css';
 import { mappingCategoryProducts } from '@/utils/api-mapping-helper';
 
@@ -80,7 +80,7 @@ export default {
     methods: {
         fetchCrossSeelings: async function () {
             try {
-                return await new apiClient().apiCall({
+                return await new ApiClient(this.$config).apiCall({
                     action: 'post',
                     endpoint: `store-api/product/${this.productId}/cross-selling`,
                     contextToken: this.contextToken,

@@ -36,7 +36,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import apiClient from '@/utils/api-client';
+import ApiClient from '@/utils/api-client';
 
 export default {
     name: 'CheckoutError',
@@ -62,7 +62,7 @@ export default {
 
     methods: {
         resetPayment: async function (payload) {
-            return await new apiClient().apiCall({
+            return await new ApiClient(this.$config).apiCall({
                 action: 'post',
                 endpoint: 'store-api/order/payment',
                 contextToken: this.contextToken,
@@ -72,11 +72,11 @@ export default {
         handlePayment: async function (orderId) {
             let requestData = {
                 orderId: orderId,
-                finishUrl: process.env.SW_PAYMENT_FINISH_URL + '?orderId=' + orderId,
-                errorUrl: process.env.SW_PAYMENT_ERROR_URL + '?orderId=' + orderId,
+                finishUrl: this.$config.swPaymentFinishUrl + '?orderId=' + orderId,
+                errorUrl: this.$config.swPaymentErrorUrl + '?orderId=' + orderId,
             };
 
-            return await new apiClient().apiCall({
+            return await new ApiClient(this.$config).apiCall({
                 action: 'post',
                 endpoint: 'store-api/handle-payment',
                 contextToken: this.contextToken,

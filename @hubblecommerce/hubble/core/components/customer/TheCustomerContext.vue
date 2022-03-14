@@ -44,7 +44,7 @@
 
 <script>
 import { mapActions, mapMutations, mapState } from 'vuex';
-import apiClient from '@/utils/api-client';
+import ApiClient from '@/utils/api-client';
 
 export default {
     name: 'TheCustomerContext',
@@ -88,7 +88,7 @@ export default {
             resetCart: 'modCart/resetCart',
         }),
         fetchContext: async function () {
-            return await new apiClient().apiCall({
+            return await new ApiClient(this.$config).apiCall({
                 action: 'get',
                 endpoint: 'store-api/context',
                 contextToken: this.contextToken,
@@ -105,6 +105,11 @@ export default {
             this.resetCart();
             this.isLoggedIn = false;
             this.isGuest = false;
+
+            // Refresh page if current page is /cart
+            if (this.$router.currentRoute.path === '/cart') {
+                this.$router.go(0);
+            }
         },
     },
 };

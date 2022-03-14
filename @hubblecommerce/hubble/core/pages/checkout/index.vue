@@ -57,7 +57,7 @@
 
 <script>
 import { mapMutations, mapState } from 'vuex';
-import apiClient from '@/utils/api-client';
+import ApiClient from '@/utils/api-client';
 
 export default {
     name: 'Checkout',
@@ -66,7 +66,7 @@ export default {
 
     middleware: ['cartValidate'],
 
-    async asyncData({ app, store, redirect }) {
+    async asyncData({ app, $config, store, redirect }) {
         // Check for contextToken either as cookie or set in vuex store
         let contextToken = null;
 
@@ -82,7 +82,7 @@ export default {
 
         // Fetch context for current contextToken to verify customer is logged in and not a guest
         try {
-            let response = await new apiClient().apiCall({
+            let response = await new ApiClient($config).apiCall({
                 action: 'get',
                 endpoint: 'store-api/context',
                 contextToken: contextToken,
@@ -131,7 +131,7 @@ export default {
             this.$router.go(-1);
         },
         placeOrderCall: async function () {
-            return await new apiClient().apiCall({
+            return await new ApiClient(this.$config).apiCall({
                 action: 'post',
                 endpoint: 'store-api/checkout/order',
                 contextToken: this.contextToken,
@@ -140,13 +140,13 @@ export default {
         handlePayment: async function (payload) {
             let requiredData = {
                 orderId: payload.orderId,
-                finishUrl: process.env.SW_PAYMENT_FINISH_URL + '?orderId=' + payload.orderId,
-                errorUrl: process.env.SW_PAYMENT_ERROR_URL + '?orderId=' + payload.orderId,
+                finishUrl: this.$config.swPaymentFinishUrl + '?orderId=' + payload.orderId,
+                errorUrl: this.$config.swPaymentErrorUrl + '?orderId=' + payload.orderId,
             };
 
             const requestData = Object.assign(requiredData, payload.dataBag);
 
-            return await new apiClient().apiCall({
+            return await new ApiClient(this.$config).apiCall({
                 action: 'post',
                 endpoint: 'store-api/handle-payment',
                 contextToken: this.contextToken,

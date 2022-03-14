@@ -4,14 +4,14 @@ const fse = require('fs-extra');
 const globby = require('globby');
 import defu from 'defu';
 
-import { defaultDotEnv, defaultEnv, defaultModules } from './core/utils/config';
+import {defaultPublicRuntimeConfig, defaultPrivateRuntimeConfig, defaultModules} from './core/utils/config';
 
 const listAllDirs = (dir) => globby(`${dir}/*`, { onlyDirectories: true });
 const getLastSectionOfPath = (thePath) => thePath.substring(thePath.lastIndexOf('/') + 1);
-const asyncCopyNewDirs = async (sourceDirs, targetDir) => {
+const asyncCopyDirs = async (sourceDirs, targetDir, options = {}) => {
     await Promise.all(
         sourceDirs.map(async (sourceDir) => {
-            await fse.copy(sourceDir, path.join(targetDir, path.basename(sourceDir)));
+            await fse.copy(sourceDir, path.join(targetDir, path.basename(sourceDir)), options);
         })
     );
 };
@@ -19,6 +19,8 @@ const getPlugins = (dir) => globby([`${dir}/*.js`]);
 
 const dirBlacklist = ['node_modules', '.hubble', '.nuxt', '.idea'];
 const targetDirName = '.hubble/';
+const swPluginsDirName = 'swPlugins';
+const swPluginsConfigFile = 'pluginConfig.json';
 
 export default async function (moduleOptions) {
     // Set toplevel options of module
@@ -32,13 +34,15 @@ export default async function (moduleOptions) {
     const baseDir = path.join(this.options.rootDir, '/node_modules/@hubblecommerce/hubble/core');
     const targetDir = path.join(this.options.rootDir, targetDirName);
     const rootDir = path.join(this.options.rootDir);
+    const swPluginsPath = path.join(rootDir, swPluginsDirName)
+    const swPluginsConfigPath = path.join(swPluginsPath, swPluginsConfigFile);
 
     // Get filtered list of root dirs
     const rootDirs = await listAllDirs(rootDir);
-    let newDirs = [];
+    let validRootDirs = [];
     rootDirs.forEach((dir) => {
         if (!dirBlacklist.includes(getLastSectionOfPath(dir))) {
-            newDirs.push(dir);
+            validRootDirs.push(dir);
         }
     });
 
@@ -48,8 +52,16 @@ export default async function (moduleOptions) {
     // 2. Copy dirs from core module (base) to nuxt source dir
     await fse.copy(baseDir, targetDir);
 
-    // 3. Copy dirs from nuxt except of blacklisted dirs to nuxt source dir
-    await asyncCopyNewDirs(newDirs, targetDir);
+    // 3. Copy Shopware Plugins from each module to target dir
+    const swPluginDirs = await listAllDirs(swPluginsPath);
+
+    for(const swPluginDir of swPluginDirs) {
+        const subDirs = await globby(`${swPluginDir}/*`, { onlyDirectories: true });
+        await asyncCopyDirs(subDirs, targetDir, {overwrite: false, errorOnExist: true});
+    }
+
+    // 4. Copy dirs from nuxt except of blacklisted dirs to nuxt source dir
+    await asyncCopyDirs(validRootDirs, targetDir);
 
     // Set aliases, to make them work in target dir
     const baseAliases = {
@@ -64,66 +76,36 @@ export default async function (moduleOptions) {
     };
     this.options.alias = { ...this.options.aliases, ...baseAliases };
 
-    /*
-     * Set default configs for nuxt from module
-     * Override default if isset in nuxt.config.js
-     * Override > Merging to let the user REMOVE things if necessary
-     */
-    // Merge objects
-    this.options.env = defu(this.options.env, defaultEnv);
-
     if (this.options.build.transpile.length === 0) {
         this.options.build.transpile = ['@hubblecommerce/hubble'];
     }
 
+    // Merge default configs with configs set in nuxt.config.js
+    this.options.publicRuntimeConfig = defu(this.options.publicRuntimeConfig, defaultPublicRuntimeConfig);
+    this.options.privateRuntimeConfig = defu(this.options.privateRuntimeConfig, defaultPrivateRuntimeConfig);
+
+    // Handle shopware plugin configurations
+    const swPluginsConfigExists = await fse.pathExists(swPluginsConfigPath);
+
+    if(swPluginsConfigExists) {
+        const swPluginConfigs = await fse.readJson(swPluginsConfigPath);
+        this.options.publicRuntimeConfig = defu(this.options.publicRuntimeConfig, swPluginConfigs);
+    }
+
     // https://nuxtjs.org/docs/2.x/directory-structure/components
-    this.nuxt.hook('components:dirs', (dirs) => {
+    this.nuxt.hook('components:dirs', async (dirs) => {
         dirs.push({
             path: path.resolve('.hubble/components/'),
         });
-        dirs.push({
-            path: path.resolve('.hubble/components/cart'),
-        });
-        dirs.push({
-            path: path.resolve('.hubble/components/category'),
-        });
-        dirs.push({
-            path: path.resolve('.hubble/components/checkout'),
-        });
-        dirs.push({
-            path: path.resolve('.hubble/components/customer'),
-        });
-        dirs.push({
-            path: path.resolve('.hubble/components/detail'),
-        });
-        dirs.push({
-            path: path.resolve('.hubble/components/form'),
-        });
-        dirs.push({
-            path: path.resolve('.hubble/components/layout'),
-        });
-        dirs.push({
-            path: path.resolve('.hubble/components/navigation'),
-        });
-        dirs.push({
-            path: path.resolve('.hubble/components/search'),
-        });
-        dirs.push({
-            path: path.resolve('.hubble/components/swComponents'),
-        });
-        dirs.push({
-            path: path.resolve('.hubble/components/transitions'),
-        });
-        dirs.push({
-            path: path.resolve('.hubble/components/utils'),
-        });
-    });
 
-    /*
-     * Register nuxt.js modules
-     * TODO: https://nuxtjs.org/blog/moving-from-nuxtjs-dotenv-to-runtime-config/
-     */
-    this.requireModule(['@nuxtjs/dotenv', defu(this.options.dotenv, defaultDotEnv)]);
+        const componentsDirs = await listAllDirs(path.resolve('.hubble/components/'));
+
+        for(const componentDir of componentsDirs) {
+            dirs.push({
+                path: path.resolve(componentDir),
+            });
+        }
+    });
 
     // Override module options
     defaultModules.forEach((defaultModule) => {
@@ -194,6 +176,11 @@ export default async function (moduleOptions) {
             }
 
             if (event === 'add' || event === 'change') {
+                for(const swPluginDir of swPluginDirs) {
+                    const subDirs = await globby(`${swPluginDir}/*`, { onlyDirectories: true });
+                    await asyncCopyDirs(subDirs, targetDir);
+                }
+
                 await fse.copy(filePath, newDestination);
             }
 

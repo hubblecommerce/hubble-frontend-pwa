@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import apiClient from '@/utils/api-client';
+import ApiClient from '@/utils/api-client';
 import { mapState } from 'vuex';
 
 export default {
@@ -44,7 +44,7 @@ export default {
                     return;
                 }
 
-                const response = await new apiClient().apiCall({
+                const response = await new ApiClient(this.$config).apiCall({
                     action: 'post',
                     endpoint: 'store-api/checkout/cart/line-item',
                     headers: [{ 'sw-include-seo-urls': true }],

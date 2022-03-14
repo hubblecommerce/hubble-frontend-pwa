@@ -93,7 +93,7 @@ export default {
 
     methods: {
         fetchShippingMethods: async function () {
-            return await new ApiClient().apiCall({
+            return await new ApiClient(this.$config).apiCall({
                 action: 'post',
                 endpoint: 'store-api/shipping-method',
                 contextToken: this.contextToken,
@@ -103,7 +103,7 @@ export default {
             });
         },
         setShippingMethod: async function (id) {
-            return await new ApiClient().apiCall({
+            return await new ApiClient(this.$config).apiCall({
                 action: 'patch',
                 endpoint: 'store-api/context',
                 contextToken: this.contextToken,

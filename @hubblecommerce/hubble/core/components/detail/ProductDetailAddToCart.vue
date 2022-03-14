@@ -11,7 +11,7 @@
 
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex';
-import apiClient from '@/utils/api-client';
+import ApiClient from '@/utils/api-client';
 
 export default {
     name: 'ProductDetailAddToCart',
@@ -94,7 +94,7 @@ export default {
         },
         initCart: async function () {
             try {
-                let response = await new apiClient().apiCall({
+                let response = await new ApiClient(this.$config).apiCall({
                     action: 'post',
                     endpoint: 'store-api/checkout/cart',
                 });
@@ -116,7 +116,7 @@ export default {
 
                 // Not in cart yet: add item to cart
                 if (!inCart) {
-                    await new apiClient().apiCall({
+                    await new ApiClient(this.$config).apiCall({
                         action: 'post',
                         endpoint: 'store-api/checkout/cart/line-item',
                         contextToken: this.contextToken,
@@ -136,7 +136,7 @@ export default {
                 if (inCart) {
                     let updatedQty = inCart.qty + qty;
 
-                    await new apiClient().apiCall({
+                    await new ApiClient(this.$config).apiCall({
                         action: 'patch',
                         endpoint: 'store-api/checkout/cart/line-item',
                         contextToken: this.contextToken,
