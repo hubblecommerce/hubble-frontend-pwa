@@ -1,62 +1,48 @@
 <template>
     <div :class="elementClass">
-        <div :class="getGalleryPositionClass" class="is-cover" :style="getVerticalAlignStyle" style="min-height: 270px">
-            <div class="image-gallery__grid">
-                <!--                <slider-->
-                <!--                    ref="tinySlider"-->
-                <!--                    :controls="true"-->
-                <!--                    :gutter="15"-->
-                <!--                    :controls-text="controls"-->
-                <!--                    :edge-padding="10"-->
-                <!--                    :nav="false"-->
-                <!--                    :loop="true"-->
-                <!--                    :mouse-drag="true"-->
-                <!--                    :lazyload="true"-->
-                <!--                    :items="1"-->
-                <!--                    :auto-height="false"-->
-                <!--                >-->
-                <!--                    <template v-for="item in images" class="image-gallery__grid__container">-->
-                <!--                        <img-lazy :key="item.mediaId" :src="item.mediaUrl" />-->
-                <!--                    </template>-->
-                <!--                </slider>-->
+        <div :class="getGalleryPositionClass" class="image-gallery is-cover" :style="getVerticalAlignStyle" style="min-height: 270px">
+            <div v-if="$mq !== 'sm'" class="image-gallery__preview">
+                <hooper ref="preview" group="preview" :settings="{ ...sliderSettings, ...sliderSettingsPreview }" @slide="onUpdatePreviewSlider">
+                    <slide v-for="(image, index) in images" :key="image.media.id">
+                        <button class="image-gallery__preview-btn" @click="changeActiveImageToSelected(index)">
+                            <img :src="image.media.url" />
+                        </button>
+                    </slide>
+
+                    <navigation slot="hooper-addons" />
+                </hooper>
             </div>
 
-            <div v-if="$mq !== 'sm'" class="image-gallery__preview">
-                <!--                <slider-->
-                <!--                    ref="tinySliderPreview"-->
-                <!--                    :controls="true"-->
-                <!--                    :gutter="0"-->
-                <!--                    :loop="false"-->
-                <!--                    :mouse-drag="true"-->
-                <!--                    :controls-text="getGalleryPosition === 'underneath' ? controls : controlsLeft"-->
-                <!--                    :edge-padding="2"-->
-                <!--                    :nav="false"-->
-                <!--                    :lazyload="true"-->
-                <!--                    :responsive="getGalleryPosition === 'underneath' ? responsiveUnderneath : responsiveLeft"-->
-                <!--                    :axis="getGalleryPosition === 'underneath' ? 'horizontal' : 'vertical'"-->
-                <!--                >-->
-                <!--                    <div v-for="(item, index) in images" :key="item.mediaId" class="image-gallery__grid__container">-->
-                <!--                        <button @click.prevent="changeActiveImageToSelected(index)">-->
-                <!--                            <img-lazy :src="item.mediaUrl" :class="activeImageIndex === index && 'imageWithBorder'" />-->
-                <!--                        </button>-->
-                <!--                    </div>-->
-                <!--                </slider>-->
+            <div class="image-gallery__main">
+                <hooper
+                    ref="main"
+                    group="main"
+                    :settings="{ ...sliderSettings, ...sliderSettingsMain }"
+                    :style="{ height: getMinHeight }"
+                    @slide="onUpdateMainSlider"
+                >
+                    <slide v-for="image in images" :key="image.media.id">
+                        <img :src="image.media.url" />
+                    </slide>
+
+                    <navigation slot="hooper-addons" />
+                </hooper>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import { Hooper, Slide, Navigation } from 'hooper';
+import 'hooper/dist/hooper.css';
 import { slotMixins } from '../helper';
 
 export default {
     name: 'ImageGallerySlot',
     components: {
-        //Slider: () => {
-        //    if (process.client) {
-        //        return import('vue-tiny-slider');
-        //    }
-        //},
+        Hooper,
+        Slide,
+        Navigation,
     },
     mixins: [slotMixins],
 
@@ -64,41 +50,20 @@ export default {
         return {
             images: [],
 
-            controls: [
-                '<i class="icon icon-chevron-left"></i><span class="hidden-link-name">Navigate left</span>',
-                '<i class="icon icon-chevron-right"></i><span class="hidden-link-name">Navigate right</span>',
-            ],
-
-            controlsLeft: [
-                '<i class="icon icon-chevron-up"></i><span class="hidden-link-name">Navigate up</span>',
-                '<i class="icon icon-chevron-down"></i><span class="hidden-link-name">Navigate down</span>',
-            ],
+            sliderSettings: {
+                keysControl: false,
+                mouseDrag: false,
+                wheelControl: false,
+            },
+            sliderSettingsPreview: {
+                itemsToShow: 5,
+                vertical: true,
+            },
+            sliderSettingsMain: {
+                mouseDrag: true,
+            },
 
             activeImageIndex: 0,
-
-            responsiveUnderneath: {
-                0: {
-                    items: 5,
-                },
-                768: {
-                    items: 5,
-                },
-                1024: {
-                    items: 5,
-                },
-            },
-
-            responsiveLeft: {
-                0: {
-                    items: 3,
-                },
-                768: {
-                    items: 3,
-                },
-                1024: {
-                    items: 3,
-                },
-            },
         };
     },
     computed: {
@@ -123,60 +88,76 @@ export default {
         },
     },
 
-    watch: {
-        activeImageIndex: {
-            handler(newValue) {
-                if (newValue === undefined) this.activeImageIndex = 0;
-                else this.activeImageIndex = newValue;
-
-                if (this.$refs.tinySliderPreview) this.$refs.tinySliderPreview.slider.goTo(newValue);
-            },
-        },
-
-        $mq: {
-            handler() {
-                if (this.$refs.tinySliderPreview) {
-                    this.$refs.tinySliderPreview.slider.goTo(this.activeImageIndex);
-                }
-            },
-        },
-    },
-
     created() {
-        this.images = this.content.config.sliderItems.value;
-    },
-
-    mounted() {
-        this.$nextTick(() => {
-            this.activeImageIndex = 0;
-
-            // @TODO replace tiny slider with hooper
-            this.$refs.tinySlider.slider.events.on('indexChanged', (info) => {
-                this.activeImageIndex = info.index - 2;
-
-                if (this.$refs.tinySliderPreview) {
-                    this.$refs.tinySliderPreview.slider.goTo(this.activeImageIndex === undefined ? 0 : this.activeImageIndex);
-                }
-            });
-
-            this.activeImageIndex = this.$refs.tinySlider.slider.events.on('indexChanged', (info) => info.index - 2);
-        });
+        this.images = this.content.data.sliderItems;
     },
 
     methods: {
         changeActiveImageToSelected(selection) {
             this.activeImageIndex = selection;
-            this.$refs.tinySlider.slider.goTo(this.activeImageIndex);
+            this.$refs.main.slideTo(this.activeImageIndex);
+            this.$refs.preview.slideTo(this.activeImageIndex);
+        },
+        onUpdatePreviewSlider(slider) {
+            const i = slider.currentSlide;
+
+            this.activeImageIndex = i;
+            this.$refs.main.slideTo(this.activeImageIndex);
+        },
+        onUpdateMainSlider(slider) {
+            const i = slider.currentSlide;
+
+            this.activeImageIndex = i;
+            this.$refs.preview.slideTo(this.activeImageIndex);
         },
     },
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+@import '~assets/scss/hubble/variables';
+
 .cms-element-image-gallery {
     // hides magnifier overlay because zoom container is displayed over gallery
     .magnifier-overlay {
         display: none;
+    }
+}
+
+.image-gallery {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    &__preview {
+        width: 90px;
+        flex-shrink: 0;
+        margin-right: 10px;
+    }
+
+    &__preview-btn {
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        border: 2px solid white;
+
+        .is-current & {
+            border-color: $green;
+        }
+    }
+
+    &__main {
+        width: 100%;
+
+        @media (min-width: 768px) {
+            width: calc(100% - 100px);
+        }
     }
 }
 </style>
