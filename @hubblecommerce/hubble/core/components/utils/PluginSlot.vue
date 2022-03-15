@@ -1,7 +1,7 @@
 <template>
     <div v-if="slotEntries != null">
         <div v-for="slotEntry in slotEntries">
-            <component :is="slotEntry.componentName" :data="data" />
+            <component :is="slotEntry.componentName" v-bind="data" v-on="events" />
         </div>
     </div>
 
@@ -34,6 +34,11 @@ export default {
             required: true
         },
         data: {
+            type: Object,
+            required: false,
+            default: () => {}
+        },
+        events: {
             type: Object,
             required: false,
             default: () => {}

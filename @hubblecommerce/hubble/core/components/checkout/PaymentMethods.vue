@@ -18,7 +18,7 @@
                         <span class="description" v-text="method.description" />
                     </label>
 
-                    <plugin-slot name="checkout-payment-methods-method" :data="{method, contextToken, currentMethod, currentMethodObj, showModal}" />
+                    <plugin-slot name="checkout-payment-methods-method" :data="{method: method, contextToken: contextToken, currentMethod: currentMethod, currentMethodObj: currentMethodObj, showModal: showModal}" />
                 </hbl-checkbox>
             </div>
 
@@ -30,7 +30,9 @@
 
         <loader v-else />
 
-        <plugin-slot name="checkout-payment-methods-after" :data="{contextToken, currentMethod, currentMethodObj, showModal}" />
+        <div v-show="showModal" class="payment-methods-modal">
+            <plugin-slot name="checkout-payment-methods-after" :events="events" :data="{contextToken: contextToken, currentMethod: currentMethod, currentMethodObj: currentMethodObj, showModal: showModal}" />
+        </div>
     </div>
 </template>
 
@@ -55,13 +57,24 @@ export default {
 
     setup(props, context) {
         const { $config } = useContext();
-        let currentMethod = ssrRef(null);
+        const store = useStore();
+        let contextToken = computed(() => store.state.modSession.contextToken);
+        if (process.server) {
+            contextToken = computed(() => context.root.$cookies.get(store.state.modSession.cookieName));
+        }
+
+        let currentMethod = ssrRef('');
         let currentMethodObj = ssrRef({});
         let paymentError = ssrRef(null); // Error that could happen on method selection
         let paymentMethods = ssrRef(null);
         let showModal = ssrRef(false);
-        const store = useStore();
-        const contextToken = computed(() => store.state.modSession.contextToken);
+
+        const events = ssrRef({
+            'update:showModal': (bool) => { showModal.value = bool; },
+            'update:currentMethod': (data) => { currentMethod.value = data; },
+            'update:currentMethodObj': (data) => { currentMethodObj.value = data; },
+            'on:payment-error': (error) => { paymentError.value = error; }
+        });
 
         const setPaymentMethod =  async function (id) {
             return await new ApiClient($config).apiCall({
@@ -85,7 +98,7 @@ export default {
         };
 
         watch(currentMethod, async (id) => {
-            if (id === null) {
+            if (id === '') {
                 paymentError.value = 'Please choose a payment method.';
                 context.emit('payment-error', true);
                 return;
@@ -117,8 +130,9 @@ export default {
             contextToken,
             showModal,
             setPaymentMethod,
-            getMethodById
-        } // anything returned here will be available for the rest of the component
+            getMethodById,
+            events
+        }
     },
 
     data() {
