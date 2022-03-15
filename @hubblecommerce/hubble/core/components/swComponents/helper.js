@@ -39,6 +39,9 @@ export const blockMixins = {
     },
 
     methods: {
+        getSlotByType(type) {
+            return returnSlotByType(type);
+        },
         getSlotByPosition(slots, position) {
             let typeName = '';
             slots.forEach((slot) => {
