@@ -18,7 +18,7 @@
                     ref="main"
                     group="main"
                     :settings="{ ...sliderSettings, ...sliderSettingsMain }"
-                    :style="{ height: getMinHeight }"
+                    :style="{ minHeight: getMinHeight }"
                     @slide="onUpdateMainSlider"
                 >
                     <slide v-for="image in images" :key="image.media.id">
@@ -84,7 +84,7 @@ export default {
         },
         getVerticalAlignStyle() {
             if (!this.getVerticalAlign) return null;
-            else return `justify-content: ${this.element.config.verticalAlign.value};`;
+            else return `justify-content: ${this.content.config.verticalAlign.value};`;
         },
     },
 

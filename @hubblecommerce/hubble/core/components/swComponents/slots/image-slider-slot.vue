@@ -2,7 +2,7 @@
     <div :class="elementClass" class="sw-image-slider">
         <div class="cms-element-alignment" :class="verticalAlign">
             <client-only>
-                <hooper :style="{ height: getMinHeight }" :settings="sliderSettings">
+                <hooper :style="{ minHeight: getMinHeight }" :settings="sliderSettings">
                     <slide v-for="image in imageItems" :key="image.media.id">
                         <img :src="image.media.url" />
                     </slide>
