@@ -14,10 +14,6 @@ export const slotMixins = {
             type: Object,
             default: () => {},
         },
-        actAsType: {
-            type: String,
-            default: '',
-        },
         sizingMode: {
             type: Object,
             default: () => {},
@@ -25,10 +21,7 @@ export const slotMixins = {
     },
     computed: {
         elementClass() {
-            let className = 'cms-element-' + this.content.type;
-            if (this.actAsType) className = className.concat(' cms-element-' + this.actAsType);
-
-            return className;
+            return 'cms-element-' + this.content.type;
         },
     },
 };

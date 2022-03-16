@@ -4,7 +4,7 @@
             <component :is="leftSlot" :content="getContentByPosition(content.slots, 'left')" />
         </div>
         <div class="col-md-2">
-            <component :is="rightSlot" act-as-type="image" :content="getContentByPosition(content.slots, 'right')" />
+            <component :is="rightSlot" :content="getContentByPosition(content.slots, 'right')" />
         </div>
     </div>
 </template>
@@ -19,10 +19,10 @@ export default {
 
     computed: {
         leftSlot() {
-            return this.getSlotByType('text');
+            return this.getSlotByPosition(this.content.slots, 'left');
         },
         rightSlot() {
-            return this.getSlotByType('image');
+            return this.getSlotByPosition(this.content.slots, 'right');
         },
     },
 };
