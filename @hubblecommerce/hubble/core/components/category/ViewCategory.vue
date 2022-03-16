@@ -2,7 +2,7 @@
     <div class="view-category" :class="`is-${isType}`">
         <breadcrumb class="container" :path="breadcrumb" />
 
-        <div v-if="data.cmsPage.sections != null" class="container">
+        <div v-if="data.cmsPage.sections != null" class="sections-wrp">
             <sw-section
                 v-for="(cmsSection, index) in data.cmsPage.sections"
                 :key="cmsSection._uniqueIdentifier"
@@ -32,11 +32,6 @@ export default {
             breadcrumb: null,
             isType: this.data.cmsPage.type,
         };
-    },
-
-    created() {
-        this.category = mappingCategory(this.data.category);
-        this.breadcrumb = mappingBreadcrumb(this.data.breadcrumb);
     },
 
     head() {
@@ -73,6 +68,11 @@ export default {
                 { hid: 'robots', name: 'robots', content: 'INDEX, FOLLOW' },
             ],
         };
+    },
+
+    created() {
+        this.category = mappingCategory(this.data.category);
+        this.breadcrumb = mappingBreadcrumb(this.data.breadcrumb);
     },
 };
 </script>
