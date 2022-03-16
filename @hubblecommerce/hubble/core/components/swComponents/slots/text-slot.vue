@@ -61,6 +61,11 @@ export default {
         min-height: 240px;
     }
 
+    .cms-block-text-on-image.container & {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
     .cms-block-image-text-cover & {
         padding-top: 30px;
     }
