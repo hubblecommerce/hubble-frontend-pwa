@@ -1,5 +1,5 @@
 <template>
-    <div class="cms-block" :class="[blockClass, backgroundImageExists]" :style="backgroundStyles">
+    <div class="cms-block" :class="[cssClass, blockClass, backgroundImageExists]" :style="backgroundStyles">
         <div class="cms-block-container">
             <div v-if="content.name" :class="{ container: sizingMode != null ? sizingMode['full-width'] : 'container' }">
                 <h2 v-if="content.name" class="cms-block-headline headline-1">{{ content.name }}</h2>
@@ -47,6 +47,9 @@ export default {
     },
 
     computed: {
+        cssClass() {
+            return this.content.cssClass;
+        },
         backgroundStyles() {
             const { backgroundColor, backgroundMedia, backgroundMediaMode } = this.content;
 

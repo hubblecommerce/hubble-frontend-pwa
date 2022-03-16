@@ -1,5 +1,5 @@
 <template>
-    <div :class="[sectionType, sectionPadding, background]" class="cms-section" :style="getBackgroundStyles">
+    <div :class="[cssClass, sectionType, sectionPadding, background]" class="cms-section" :style="getBackgroundStyles">
         <div :class="[sectionClasses, sectionType, mobileSidebarBehavior, sizingMode, { container: sizingMode.boxed }]">
             <div class="cms-section-sidebar-sidebar-content">
                 <client-only>
@@ -39,6 +39,9 @@ export default {
     computed: {
         isBlock() {
             return this.content.blocks && this.content.blocks.length;
+        },
+        cssClass() {
+            return this.content.cssClass;
         },
         cmsSlots() {
             const key = this.isBlock ? 'blocks' : 'slots';
