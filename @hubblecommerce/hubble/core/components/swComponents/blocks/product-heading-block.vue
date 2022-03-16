@@ -4,7 +4,7 @@
             <component :is="leftSlot" :content="getContentByPosition(content.slots, 'left')" />
         </div>
         <div class="col-md-2">
-            <component :is="rightSlot" :content="getContentByPosition(content.slots, 'right')" />
+            <component :is="rightSlot" act-as-type="image" :content="getContentByPosition(content.slots, 'right')" />
         </div>
     </div>
 </template>
