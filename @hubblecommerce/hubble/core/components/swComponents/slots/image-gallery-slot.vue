@@ -102,13 +102,15 @@ export default {
             const i = slider.currentSlide;
 
             this.activeImageIndex = i;
-            this.$refs.main.slideTo(this.activeImageIndex);
+
+            if (this.$refs.main) this.$refs.main.slideTo(this.activeImageIndex);
         },
         onUpdateMainSlider(slider) {
             const i = slider.currentSlide;
 
             this.activeImageIndex = i;
-            this.$refs.preview.slideTo(this.activeImageIndex);
+
+            if (this.$refs.preview) this.$refs.preview.slideTo(this.activeImageIndex);
         },
     },
 };
