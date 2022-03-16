@@ -23,7 +23,7 @@ export default {
         },
         sizingMode: {
             type: Object,
-            default: () => {}
+            default: () => {},
         },
     },
 
@@ -31,6 +31,26 @@ export default {
         return {
             component: null,
         };
+    },
+
+    computed: {
+        cssClass() {
+            return this.content.cssClass;
+        },
+        backgroundStyles() {
+            const { backgroundColor, backgroundMedia, backgroundMediaMode } = this.content;
+
+            return {
+                backgroundColor,
+                backgroundImage: backgroundMedia ? `url('${backgroundMedia.url}')` : null,
+                backgroundSize: backgroundMediaMode ? backgroundMediaMode : null,
+            };
+        },
+        backgroundImageExists() {
+            const { backgroundMedia } = this.content;
+
+            return backgroundMedia ? 'bg-image' : '';
+        },
     },
 
     created() {
@@ -43,26 +63,6 @@ export default {
                 import(`~/components/swComponents/blocks/${this.content.type}-block`).catch(() => {
                     return import('./NoComponent');
                 });
-        },
-    },
-
-    computed: {
-        cssClass() {
-            return this.content.cssClass;
-        },
-        backgroundStyles() {
-            const { backgroundColor, backgroundMedia, backgroundMediaMode } = this.content;
-
-            return {
-                backgroundColor,
-                backgroundImage: backgroundMedia ? `url(${backgroundMedia.url})` : null,
-                backgroundSize: backgroundMediaMode ? backgroundMediaMode : null,
-            };
-        },
-        backgroundImageExists() {
-            const { backgroundMedia } = this.content;
-
-            return backgroundMedia ? 'bg-image' : '';
         },
     },
 };

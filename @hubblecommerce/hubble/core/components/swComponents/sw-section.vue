@@ -13,8 +13,10 @@
                 <intersection-wrapper
                     v-for="cmsSlot in elementsSlots"
                     :key="cmsSlot._uniqueIdentifier"
-                    :count="count" :cms-slot="cmsSlot"
-                    :sizing-mode="sizingMode" />
+                    :count="count"
+                    :cms-slot="cmsSlot"
+                    :sizing-mode="sizingMode"
+                />
             </div>
         </div>
     </div>
@@ -103,7 +105,7 @@ export default {
         getBackgroundStyles() {
             return {
                 backgroundColor: this.getBackgroundColor ? this.getBackgroundColor : null,
-                backgroundImage: this.getBackgroundMediaUrl ? `url(${this.getBackgroundMediaUrl})` : null,
+                backgroundImage: this.getBackgroundMediaUrl ? `url('${this.getBackgroundMediaUrl}')` : null,
                 backgroundSize: this.getBackgroundMediaMode ? this.getBackgroundMediaMode : null,
             };
         },
@@ -166,7 +168,7 @@ General styling for cms sections
 @import '~assets/scss/hubble/variables';
 
 .cms-section {
-    &:first-child{
+    &:first-child {
         margin-top: -$cms-block-margin;
     }
 
