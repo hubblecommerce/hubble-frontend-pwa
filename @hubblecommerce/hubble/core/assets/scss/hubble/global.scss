@@ -63,6 +63,11 @@ a:focus {
     left: 0;
 }
 
+.has-vertical-alignment {
+    display: flex;
+    height: 100%;
+}
+
 .align-self-start {
     align-self: flex-start !important;
 }
