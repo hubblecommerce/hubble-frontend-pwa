@@ -102,6 +102,11 @@ export default {
                 context.emit('processing', false);
                 context.emit('payment-error', false);
                 context.emit('payment-changed', currentMethodObj.value);
+                $nuxt.$emit('checkout-payment-method-changed', {
+                    checkout: {
+                        actionField: { step: 2, option: currentMethodObj.value.name }
+                    }
+                })
             } catch (e) {
                 paymentError.value = e.detail;
                 context.emit('processing', false);
