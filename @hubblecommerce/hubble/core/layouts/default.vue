@@ -1,7 +1,9 @@
 <template>
     <div class="app">
         <noscript>Please enable JavaScript and refresh this page, to use this application.</noscript>
-
+        
+        <plugin-slot name="global-before-header" :data="{}" />
+        
         <header>
             <div class="nav-wrp container">
                 <the-logo />

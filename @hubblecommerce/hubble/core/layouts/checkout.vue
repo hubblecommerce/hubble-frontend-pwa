@@ -1,6 +1,8 @@
 <template>
     <div class="app">
         <noscript>Please enable JavaScript and refresh this page, to use this application.</noscript>
+        
+        <plugin-slot name="global-before-header" :data="{}" />
 
         <header class="main-header">
             <div class="main-header-wrp">
