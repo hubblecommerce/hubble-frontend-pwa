@@ -203,7 +203,7 @@ export default {
                             tax: order.data.amountTotal - order.data.amountNet,
                             shipping: order.data.shippingTotal,
                         },
-                        products: productsArray,
+                        products: productArray,
                     },
                 });
 
