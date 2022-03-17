@@ -108,6 +108,17 @@ export default {
 
     mounted() {
         this.registerIntersectionObserver('.detail-crosssellings', 'loadCrosssellings');
+
+        $nuxt.$emit('product-detail-view', {
+            product: {
+                name: this.product.name_orig != null ? this.product.name_orig : this.product.name,
+                id: this.product.id,
+                sku: this.product.sku != null ? this.product.sku : 'undefined',
+                price: this.product.calculatedPrice.unitPrice,
+                brand: this.product.manufacturer_name != null ? this.product.manufacturer_name : 'undefined',
+                category: this.breadcrumb != null ? this.getCategoryFromBreadcrumb(this.breadcrumb) : 'undefined',
+            },
+        });
     },
 
     methods: {
@@ -131,6 +142,13 @@ export default {
             }, options);
 
             observer.observe(target);
+        },
+        getCategoryFromBreadcrumb: function (breadcrumb) {
+            if (Object.keys(breadcrumb).length > 0) {
+                return breadcrumb[Object.keys(breadcrumb)[Object.keys(breadcrumb).length - 1]].name;
+            }
+
+            return 'undefined';
         },
     },
 

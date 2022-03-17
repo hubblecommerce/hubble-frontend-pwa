@@ -83,6 +83,18 @@ export default {
                         text: 'Successfully added item to cart.',
                     });
                 });
+
+                $nuxt.$emit('product-add-to-cart', {
+                    product: {
+                        name: this.dataProduct.name_orig != null ? this.dataProduct.name_orig : this.dataProduct.name,
+                        id: this.dataProduct.id,
+                        sku: this.dataProduct.sku != null ? this.dataProduct.sku : 'undefined',
+                        price: this.dataProduct.calculatedPrice.unitPrice,
+                        brand: this.dataProduct.manufacturer_name != null ? this.dataProduct.manufacturer_name : 'undefined',
+                        quantity: this.qty,
+                    },
+                });
+                
             } catch (e) {
                 this.setIsLoading({ name: 'isLoading', state: false });
 
