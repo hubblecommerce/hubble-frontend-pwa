@@ -100,6 +100,13 @@ export default {
 
             return path;
         },
+        category: function () {
+            if (Object.keys(this.breadcrumb).length > 0) {
+                return this.breadcrumb[Object.keys(this.breadcrumb)[Object.keys(this.breadcrumb).length - 2]].name;
+            }
+
+            return 'undefined';
+        }
     },
 
     created() {
@@ -116,7 +123,7 @@ export default {
                 sku: this.product.sku != null ? this.product.sku : 'undefined',
                 price: this.product.calculatedPrice.unitPrice,
                 brand: this.product.manufacturer_name != null ? this.product.manufacturer_name : 'undefined',
-                category: this.breadcrumb != null ? this.getCategoryFromBreadcrumb(this.breadcrumb) : 'undefined',
+                category: this.category,
             },
         });
     },
@@ -142,13 +149,6 @@ export default {
             }, options);
 
             observer.observe(target);
-        },
-        getCategoryFromBreadcrumb: function (breadcrumb) {
-            if (Object.keys(breadcrumb).length > 0) {
-                return breadcrumb[Object.keys(breadcrumb)[Object.keys(breadcrumb).length - 1]].name;
-            }
-
-            return 'undefined';
         },
     },
 
