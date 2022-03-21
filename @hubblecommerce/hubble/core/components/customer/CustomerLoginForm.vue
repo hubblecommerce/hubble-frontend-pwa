@@ -79,6 +79,11 @@ export default {
         submitLoginForm: async function () {
             try {
                 this.isLoading = true;
+
+                if (this.contextToken === null) {
+                    await this.fetchContext();
+                }
+
                 let response = await new ApiClient(this.$config).apiCall({
                     action: 'post',
                     endpoint: 'store-api/account/login',
@@ -104,6 +109,14 @@ export default {
                 this.isLoading = false;
                 this.errors.push(e.detail);
             }
+        },
+        fetchContext: async function() {
+            let response = await new ApiClient(this.$config).apiCall({
+                action: 'get',
+                endpoint: 'store-api/context',
+            });
+
+            this.setContextToken(response.data['token']);
         },
         submitPwResetForm: async function () {
             try {
