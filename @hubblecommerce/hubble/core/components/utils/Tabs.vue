@@ -224,7 +224,7 @@ $tab-active-color: $secondary;
 
         .tabs-component-panel {
             position: relative;
-            padding: 10px 0;
+            padding: 20px 0 10px;
         }
     }
 }
