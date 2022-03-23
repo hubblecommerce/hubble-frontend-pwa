@@ -116,6 +116,11 @@ function mappingProduct(payload) {
     obj.sku = product.productNumber;
     obj.type = 'simple';
 
+    if (product.productReviews && product.productReviews.length) {
+        obj.reviews = product.productReviews;
+        obj.ratingAverage = product.ratingAverage;
+    }
+
     if (product.optionIds !== null) {
         obj.type = 'configurable';
     }
