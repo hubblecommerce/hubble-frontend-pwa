@@ -79,7 +79,6 @@ specific styling for elements dependent on their parent block
 */
 
 .cms-block {
-    overflow: hidden;
     margin-top: $cms-block-margin;
 
     &.bg-image {
@@ -92,6 +91,19 @@ specific styling for elements dependent on their parent block
             flex-direction: row;
         }
     }
+
+    p a {
+        text-decoration: underline;
+
+        &:hover,
+        &:focus {
+            text-decoration: none;
+        }
+    }
+}
+
+.cms-block-headline {
+    margin-bottom: 20px;
 }
 
 @media (min-width: 1024px) {
