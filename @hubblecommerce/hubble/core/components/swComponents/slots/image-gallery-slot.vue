@@ -1,10 +1,19 @@
 <template>
     <div :class="elementClass">
         <div :class="getGalleryPositionClass" class="image-gallery is-cover" :style="getVerticalAlignStyle" style="min-height: 270px">
-            <div v-if="$mq !== 'sm'" class="image-gallery__preview">
-                <hooper ref="preview" group="preview" :settings="{ ...sliderSettings, ...sliderSettingsPreview }" @slide="onUpdatePreviewSlider">
+            <div v-if="$mq !== 'sm' && images.length > 1" class="image-gallery__preview">
+                <hooper
+                    ref="preview"
+                    :group="'preview-' + content.blockId"
+                    :settings="{ ...sliderSettings, ...sliderSettingsPreview }"
+                    @slide="onUpdatePreviewSlider"
+                >
                     <slide v-for="(image, index) in images" :key="image.media.id">
-                        <button class="image-gallery__preview-btn" @click="changeActiveImageToSelected(index)">
+                        <button
+                            class="image-gallery__preview-btn"
+                            :class="{ 'is-active': activeImageIndex === index }"
+                            @click="changeActiveImageToSelected(index)"
+                        >
                             <img :src="image.media.url" />
                         </button>
                     </slide>
@@ -16,7 +25,7 @@
             <div class="image-gallery__main">
                 <hooper
                     ref="main"
-                    group="main"
+                    :group="'main-' + content.blockId"
                     :settings="{ ...sliderSettings, ...sliderSettingsMain }"
                     :style="{ minHeight: getMinHeight }"
                     @slide="onUpdateMainSlider"
@@ -25,7 +34,7 @@
                         <img :src="image.media.url" />
                     </slide>
 
-                    <navigation slot="hooper-addons" />
+                    <navigation v-if="images.length > 1" slot="hooper-addons" />
                 </hooper>
             </div>
         </div>
@@ -141,6 +150,10 @@ export default {
         width: 90px;
         flex-shrink: 0;
         margin-right: 10px;
+
+        .hooper {
+            height: 100%;
+        }
     }
 
     &__preview-btn {
@@ -149,7 +162,7 @@ export default {
         padding: 0;
         border: 2px solid white;
 
-        .is-current & {
+        &.is-active {
             border-color: $green;
         }
     }
