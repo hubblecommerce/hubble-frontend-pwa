@@ -1,6 +1,7 @@
 <template>
     <div :class="[elementClass, { 'is--full-width': sizingMode['full-width'] }]">
         <div :class="{ container: sizingMode['full-width'] }">
+            <h2 v-if="title" class="cms-block-headline headline-1">{{ title }}</h2>
             <div class="cms-element-alignment" :class="verticalAlign">
                 <hooper ref="hooper" :settings="sliderSettings" style="height: auto">
                     <slide v-for="(dataItem, index) in dataItems" :key="index" :index="index" :class="`sw-product-slider-item`">
@@ -58,6 +59,13 @@ export default {
     },
 
     computed: {
+        title() {
+            if (this.content.config && this.content.config.title) {
+                return this.content.config.title.value;
+            }
+
+            return '';
+        },
         verticalAlign() {
             if (this.content.config && this.content.config.verticalAlign) {
                 if (this.content.config.verticalAlign.value === 'center') {
@@ -82,6 +90,16 @@ export default {
 
 <style lang="scss">
 .cms-element-product-slider {
+    &:not(.is--full-width) {
+        .hooper-prev {
+            left: 15px;
+        }
+
+        .hooper-next {
+            right: 15px;
+        }
+    }
+
     &.is--full-width {
         .cms-element-alignment {
             &::before,
