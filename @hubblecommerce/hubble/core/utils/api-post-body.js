@@ -34,8 +34,8 @@ const associations = {
 
 const includes = {
     cms_slot: ['_uniqueIdentifier', 'type', 'slot', 'blockId', 'config', 'data', 'backgroundMediaMode', 'backgroundMedia'],
-    cms_block: ['slots', 'type', '_uniqueIdentifier', 'backgroundColor', 'backgroundMedia', 'sectionPosition'],
-    cms_section: ['_uniqueIdentifier', 'backgroundMedia', 'blocks', 'type', 'sizingMode'],
+    cms_block: ['slots', 'type', '_uniqueIdentifier', 'cssClass', 'name', 'backgroundColor', 'backgroundMedia', 'backgroundMediaMode', 'sectionPosition'],
+    cms_section: ['_uniqueIdentifier', 'cssClass', 'backgroundMedia', 'backgroundMediaMode', 'blocks', 'type', 'sizingMode'],
     cms_page: ['_uniqueIdentifier', 'name', 'sections', 'type', 'config'],
     product: [
         'media',
