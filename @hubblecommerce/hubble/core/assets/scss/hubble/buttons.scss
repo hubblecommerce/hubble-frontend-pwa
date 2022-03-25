@@ -219,6 +219,12 @@ button,
         background-color: white;
         box-shadow: $box-shadow-circle;
         padding: 9px;
+
+        .hooper-navigation.is-vertical & {
+            left: 50%;
+            right: auto;
+            transform: translateX(-50%);
+        }
     }
 
     &.hooper-prev {
