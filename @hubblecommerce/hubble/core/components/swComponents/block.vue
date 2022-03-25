@@ -100,6 +100,10 @@ specific styling for elements dependent on their parent block
             text-decoration: none;
         }
     }
+
+    hr {
+        margin: 10px 0;
+    }
 }
 
 .cms-block-headline {
