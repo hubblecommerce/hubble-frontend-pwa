@@ -189,6 +189,7 @@ export default {
 @import '~assets/scss/hubble/typography';
 @import '~assets/scss/hubble/icons';
 @import '~assets/scss/hubble/bootstrap-essentials';
+@import '~assets/scss/hubble/utils';
 @import '~assets/scss/hubble/elevation';
 
 .app {
