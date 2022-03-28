@@ -1,10 +1,12 @@
 <template>
     <div :class="[elementClass]">
+        <h2 class="cms-block-headline">{{ getTitle }}</h2>
+
         <div v-if="getType === 'newsletter'">
-            <newsletter-form :salutations="salutations" :title="getTitle" @success="onSuccess" @error="onError" />
+            <newsletter-form :salutations="salutations" @success="onSuccess" @error="onError" />
         </div>
         <div v-else>
-            <contact-form :salutations="salutations" :title="getTitle" :mail-receiver="getMailReceiver" @success="onSuccess" @error="onError" />
+            <contact-form :salutations="salutations" :mail-receiver="getMailReceiver" @success="onSuccess" @error="onError" />
         </div>
 
         <flash-message v-if="content && content.blockId === flashMessageBlockId" />

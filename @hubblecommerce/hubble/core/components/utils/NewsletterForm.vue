@@ -1,7 +1,5 @@
 <template>
-    <div class="contact-form">
-        <h2>{{ title }}</h2>
-
+    <div class="newsletter-form">
         <form @submit.prevent="onSubmitForm">
             <div class="row">
                 <div class="col-12">
