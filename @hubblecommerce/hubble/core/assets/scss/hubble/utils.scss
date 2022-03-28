@@ -3,11 +3,30 @@
 /*
   mixin for creating classes
 */
-@mixin create-util($property, $class, $values) {
+$breakpoints: (
+  sm: 576px,
+  md: 768px,
+  lg: 1024px,
+  xl: 1200px,
+);
+
+@mixin create-util($property, $class, $values, $responsive: false) {
     @each $key, $val in $values {
         .#{$class}-#{$key} {
             #{$property}: $val;
         }
+    }
+
+    @if $responsive {
+      @each $bpKey, $bpVal in $breakpoints {
+        @each $key, $val in $values {
+            .#{$class}-#{$bpKey}-#{$key} {
+              @media (min-width: #{$bpVal}) {
+                #{$property}: $val;
+              }
+            }
+        }
+      }
     }
 }
 
@@ -47,7 +66,7 @@ $values: (
     inline-flex: inline-flex,
 );
 
-@include create-util('display', 'd', $values);
+@include create-util('display', 'd', $values, $responsive: true);
 
 /*
   justify-content
@@ -95,14 +114,19 @@ $values: (
   min-height
 */
 $values: (
-    h-none: none,
-    h-sm: 16rem,
-    h-md: 32rem,
-    h-lg: 48rem,
-    vh-25: 25vh,
-    vh-50: 50vh,
-    vh-75: 75vh,
-    vh-100: 100vh,
+    none: none,
+    sm: 16rem,
+    md: 32rem,
+    lg: 48rem,
 );
 
-@include create-util('min-height', 'min', $values);
+@include create-util('min-height', 'min-h', $values, $responsive: true);
+
+$values: (
+    25: 25vh,
+    50: 50vh,
+    75: 75vh,
+    100: 100vh,
+);
+
+@include create-util('min-height', 'min-vh', $values, $responsive: true);
