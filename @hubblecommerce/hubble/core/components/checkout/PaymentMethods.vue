@@ -104,7 +104,7 @@ export default {
                 context.emit('payment-changed', currentMethodObj.value);
                 $nuxt.$emit('checkout-payment-method-changed', {
                     checkout: {
-                        actionField: { step: 2, option: currentMethodObj.value.name }
+                        actionField: { option: currentMethodObj.value.name }
                     }
                 })
             } catch (e) {

@@ -183,9 +183,9 @@ export default {
                 // Init payment
                 paymentResponse = await this.handlePayment({ orderId: order.data.id, dataBag: dataBag });
 
-                let productArray = [];
+                let productsArray = [];
                 order.data.lineItems.forEach((product) => {
-                    productArray.push({
+                    productsArray.push({
                         name: product.label != null ? product.label : 'undefined',
                         id: product.id,
                         sku: product.payload.productNumber != null ? product.payload.productNumber : 'undefined',
@@ -203,7 +203,7 @@ export default {
                             tax: order.data.amountTotal - order.data.amountNet,
                             shipping: order.data.shippingTotal,
                         },
-                        products: productArray,
+                        products: productsArray,
                     },
                 });
 
