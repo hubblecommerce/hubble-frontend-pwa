@@ -28,7 +28,31 @@ export default function () {
         };
     };
 
+    const getStructuredDataFAQ = function (faqs) {
+        if (faqs === null) {
+            return {};
+        }
+
+        let structuredFaqs = faqs.map((faq) => {
+            return {
+                '@type': 'Question',
+                'name': faq.question,
+                'acceptedAnswer': {
+                    '@type': 'Answer',
+                    'text': faq.answer,
+                },
+            };
+        });
+
+        return {
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            'mainEntity': structuredFaqs,
+        };
+    };
+
     return {
         getStructuredDataProduct,
+        getStructuredDataFAQ,
     };
 }
