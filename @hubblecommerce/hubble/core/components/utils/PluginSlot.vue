@@ -1,14 +1,18 @@
 <template>
     <div class="plugin-slot">
-        <template v-if="!hasChildSlots || (hasChildSlots && hasCustomPluginData)">
-            <template v-if="slotEntries != null">
-                <component :is="slotEntries[0].componentName" v-bind="data" v-on="events" />
-            </template>
+        <template v-if="slotEntries != null">
+            <div v-for="slotEntry in slotEntries">
+                <component
+                    :is="slotEntry.componentName"
+                    v-if="!hasSlotContent || (data && data.customFields)"
+                    v-bind="data"
+                    v-on="events" />
 
-            <div v-else class="empty-slot" />
+                <slot v-else />
+            </div>
         </template>
 
-        <slot v-else />
+        <div v-else class="empty-slot" />
     </div>
 </template>
 
@@ -58,30 +62,8 @@ export default {
     },
 
     computed: {
-        hasChildSlots() {
+        hasSlotContent() {
             return this.$slots && this.$slots.default;
-        },
-        hasCustomPluginData() {
-            if(pluginMapping != null && pluginMapping.pluginSlots != null) {
-                const currentSlot = pluginMapping.pluginSlots.filter(entry => entry.slot === this.name);
-
-                if (currentSlot.length) {
-                    const namespace = currentSlot[0].pluginNamespace;
-                    let containsNamespaceData = false;
-
-                    if (this.data && this.data.customFields != null) {
-                        Object.keys(this.data.customFields).forEach(key => {
-                            if (key.includes(namespace)) containsNamespaceData = true;
-                        })
-                    }
-
-                    return containsNamespaceData;
-                }
-
-                return false;
-            }
-
-            return false;
         }
     },
 
