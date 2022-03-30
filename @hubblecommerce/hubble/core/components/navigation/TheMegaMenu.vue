@@ -181,7 +181,7 @@ $megamenu-item-color: $white;
 $megamenu-item-line-height: 19px;
 $megamenu-item-highlight-size: 0;
 $megamenu-item-highlight-color: $primary;
-$megamenu-level-0-margin: 20px;
+$megamenu-level-0-margin: 30px;
 
 nav {
     background-color: $megamenu-background;

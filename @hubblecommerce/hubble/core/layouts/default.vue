@@ -310,7 +310,7 @@ main {
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                margin: 0 10px;
+                margin: 0 6px;
                 cursor: pointer;
 
                 &:last-child {

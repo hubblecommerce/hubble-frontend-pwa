@@ -186,14 +186,14 @@ export default {
 
             .title {
                 font-weight: $font-weight-bold;
-                margin-bottom: 15px;
+                margin-bottom: 16px;
             }
 
             .links {
                 a {
                     display: block;
-                    font-size: 14px;
-                    line-height: 26px;
+                    font-size: 16px;
+                    line-height: 32px;
 
                     &:hover {
                         text-decoration: none;
