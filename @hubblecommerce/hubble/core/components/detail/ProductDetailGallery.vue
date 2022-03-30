@@ -3,19 +3,21 @@
         <transition name="fade">
             <div v-if="loading" class="loader" />
         </transition>
-        <hooper :class="{ loading: loading }" :settings="hooperSettings" @updated="onHooperUpdated()">
+        <hooper :class="{ loading: loading }" :settings="hooperSettings" @slide="onHooperSlide" @updated="onHooperUpdated()">
             <slide v-for="(medium, index) in media" :key="index" :index="index">
-                <template v-if="index === 0">
-                    <img data-not-lazy :class="'slide-img'" :src="getMediaUrl(medium, 800)" :alt="`${alt} - Image Gallery Item ${index}`" />
-                </template>
-                <img
-                    v-else
-                    ref="data-manual-lazy"
-                    data-manual-lazy
-                    :class="'slide-img'"
-                    :src="getMediaUrl(medium, 800)"
-                    :alt="`${alt} - Image Gallery Item ${index}`"
-                />
+                <plugin-slot name="product-gallery-slide" :data="{...medium, hooperData}">
+                    <template v-if="index === 0">
+                        <img data-not-lazy :class="'slide-img'" :src="getMediaUrl(medium, 800)" :alt="`${alt} - Image Gallery Item ${index}`" />
+                    </template>
+                    <img
+                        v-else
+                        ref="data-manual-lazy"
+                        data-manual-lazy
+                        :class="'slide-img'"
+                        :src="getMediaUrl(medium, 800)"
+                        :alt="`${alt} - Image Gallery Item ${index}`"
+                    />
+                </plugin-slot>
             </slide>
             <hooper-navigation slot="hooper-addons"></hooper-navigation>
         </hooper>
@@ -50,6 +52,7 @@ export default {
     data() {
         return {
             loading: true,
+            hooperData: null,
             hooperSettings: {
                 itemsToShow: 1,
                 wheelControl: false,
@@ -74,7 +77,10 @@ export default {
         },
         lazyLoadImage() {
             let media = this.$refs['data-manual-lazy'];
-            [...media].forEach((m) => this.$lazyLoad(m));
+            if (media) [...media].forEach((m) => this.$lazyLoad(m));
+        },
+        onHooperSlide(hooper) {
+            this.hooperData = hooper;
         },
         onHooperUpdated: function () {
             setTimeout(() => {
@@ -108,6 +114,10 @@ $gallery-height: 270px;
     height: $gallery-height !important;
     width: $gallery-width;
     margin: 0 auto;
+
+    .plugin-slot {
+        height: 100%;
+    }
 
     .hooper {
         position: relative;
