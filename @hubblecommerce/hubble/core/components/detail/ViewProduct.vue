@@ -34,13 +34,10 @@
 
 <script>
 import { mappingProduct } from '@/utils/api-mapping-helper';
-import PluginSlot from '../utils/PluginSlot.vue';
-import ViewProductRichSnippets from '@/components/ViewProductRichSnippets.vue';
 import useRichSnippets from '@/composables/useRichSnippets';
 import { useContext } from '@nuxtjs/composition-api';
 
 export default {
-    components: { PluginSlot, ViewProductRichSnippets },
     name: 'ViewProduct',
 
     setup(props) {
