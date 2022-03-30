@@ -1,11 +1,15 @@
 <template>
-    <div v-if="slotEntries != null">
-        <div v-for="slotEntry in slotEntries">
-            <component :is="slotEntry.componentName" v-bind="data" v-on="events" />
-        </div>
-    </div>
+    <div class="plugin-slot">
+        <template v-if="!hasChildSlots || (hasChildSlots && hasCustomPluginData)">
+            <template v-if="slotEntries != null">
+                <component :is="slotEntries[0].componentName" v-bind="data" v-on="events" />
+            </template>
 
-    <div v-else class="empty-slot" />
+            <div v-else class="empty-slot" />
+        </template>
+
+        <slot v-else />
+    </div>
 </template>
 
 <script>
@@ -50,6 +54,34 @@ export default {
     data() {
         return {
             slotEntries: null
+        }
+    },
+
+    computed: {
+        hasChildSlots() {
+            return this.$slots && this.$slots.default;
+        },
+        hasCustomPluginData() {
+            if(pluginMapping != null && pluginMapping.pluginSlots != null) {
+                const currentSlot = pluginMapping.pluginSlots.filter(entry => entry.slot === this.name);
+
+                if (currentSlot.length) {
+                    const namespace = currentSlot[0].pluginNamespace;
+                    let containsNamespaceData = false;
+
+                    if (this.data && this.data.customFields != null) {
+                        Object.keys(this.data.customFields).forEach(key => {
+                            if (key.includes(namespace)) containsNamespaceData = true;
+                        })
+                    }
+
+                    return containsNamespaceData;
+                }
+
+                return false;
+            }
+
+            return false;
         }
     },
 
