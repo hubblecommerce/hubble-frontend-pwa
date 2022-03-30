@@ -1,28 +1,43 @@
 <template>
-    <div>
+    <div :class="[elementClass]">
+        <h2 class="cms-block-headline">{{ getTitle }}</h2>
+
         <div v-if="getType === 'newsletter'">
-            <!--            <newsletter-form :title="getTitle" />-->
+            <newsletter-form :salutations="salutations" @success="onSuccess" @error="onError" />
         </div>
         <div v-else>
-            <!--            <contact-form :title="getTitle" />-->
+            <contact-form :salutations="salutations" :mail-receiver="getMailReceiver" @success="onSuccess" @error="onError" />
         </div>
+
+        <flash-message v-if="content && content.blockId === flashMessageBlockId" />
     </div>
 </template>
 
 <script>
-//import NewsletterForm from '../../utils/NewsletterForm';
-//import ContactForm from '../../utils/ContactForm';
+import { mapState } from 'vuex';
+import apiClient from '@/utils/api-client';
+import { slotMixins } from '../helper';
+import NewsletterForm from '../../utils/NewsletterForm';
+import ContactForm from '../../utils/ContactForm';
 
 export default {
     name: 'FormSlot',
-    //components: { ContactForm, NewsletterForm },
-    props: {
-        content: {
-            type: Object,
-            default: () => ({}),
-        },
+
+    components: { ContactForm, NewsletterForm },
+    mixins: [slotMixins],
+
+    data() {
+        return {
+            salutations: [],
+            defaultConfirmationText: 'The contact form has been sent successfully.',
+            errorText: 'An error occured. Please try again.',
+        };
     },
+
     computed: {
+        ...mapState({
+            flashMessageBlockId: (state) => state.modFlashMessage.blockId,
+        }),
         getType() {
             return this.content.config.type.value;
         },
@@ -39,5 +54,44 @@ export default {
             return this.content.config.confirmationText.value;
         },
     },
+
+    async mounted() {
+        const salutationResponse = await new apiClient().apiCall({
+            endpoint: 'store-api/salutation',
+        });
+
+        this.salutations = salutationResponse.data && salutationResponse.data.elements;
+    },
+
+    methods: {
+        onSuccess() {
+            const text = this.getConfirmationText ? this.getConfirmationText : this.defaultConfirmationText;
+
+            this.$store.dispatch('modFlashMessage/flashMessage', {
+                type: 'success',
+                text,
+                blockId: this.content.blockId,
+            });
+        },
+        onError() {
+            this.$store.dispatch('modFlashMessage/flashMessage', {
+                type: 'error',
+                text: this.errorText,
+                blockId: this.content.blockId,
+            });
+        },
+    },
 };
 </script>
+
+<style lang="scss">
+.cms-element-form {
+    .action-wrp {
+        margin-top: 20px;
+    }
+
+    .flash-message-wrp {
+        margin-top: 20px;
+    }
+}
+</style>

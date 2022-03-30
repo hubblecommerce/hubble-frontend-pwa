@@ -1,9 +1,9 @@
 <template>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-7">
             <component :is="leftSlot" :content="getContentByPosition(content.slots, 'left')" />
         </div>
-        <div class="col-md-6">
+        <div class="col-md-5">
             <component :is="rightSlot" :content="getContentByPosition(content.slots, 'right')" />
         </div>
     </div>
@@ -13,7 +13,7 @@
 import { blockMixins } from '../helper';
 
 export default {
-    name: 'ImageTextCoverBlock',
+    name: 'GalleryBuyboxBlock',
 
     mixins: [blockMixins],
 
@@ -27,5 +27,3 @@ export default {
     },
 };
 </script>
-
-<style scoped></style>

@@ -14,14 +14,9 @@ import { blockMixins } from '../helper';
 
 export default {
     name: 'TwoColumnGridBlock',
+
     mixins: [blockMixins],
 
-    props: {
-        content: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
     computed: {
         leftColumnCount() {
             return this.content.customFields.division.split('/')[0];

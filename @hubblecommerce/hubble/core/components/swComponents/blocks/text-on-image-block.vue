@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="row">
         <div class="col-12">
             <component :is="getSlot" :content="getContentByPosition(content.slots, 'content')" />
         </div>
@@ -14,12 +14,6 @@ export default {
 
     mixins: [blockMixins],
 
-    props: {
-        content: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
     computed: {
         getSlot() {
             return this.getSlotByPosition(this.content.slots, 'content');

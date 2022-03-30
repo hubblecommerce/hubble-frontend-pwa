@@ -63,6 +63,23 @@ a:focus {
     left: 0;
 }
 
+.has-vertical-alignment {
+    display: flex;
+    height: 100%;
+}
+
+.align-self-start {
+    align-self: flex-start !important;
+}
+
+.align-self-end {
+    align-self: flex-end !important;
+}
+
+.align-self-center {
+    align-self: center !important;
+}
+
 /* nuxt.js specific */
 .nuxt-progress {
     background: $primary;

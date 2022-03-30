@@ -295,6 +295,11 @@ export default {
         font-size: 14px;
         line-height: 17px;
         margin-bottom: 5px;
+
+        .cms-block-product-slider & {
+            height: 34px;
+            overflow: hidden;
+        }
     }
 
     .product-price {

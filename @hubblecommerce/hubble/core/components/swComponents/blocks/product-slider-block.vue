@@ -11,18 +11,9 @@ import { blockMixins } from '../helper';
 
 export default {
     name: 'ProductSliderBlock',
+
     mixins: [blockMixins],
 
-    props: {
-        content: {
-            type: Object,
-            default: () => ({}),
-        },
-        sizingMode: {
-            type: Object,
-            default: () => {}
-        },
-    },
     computed: {
         getSlot() {
             return this.getSlotByPosition(this.content.slots, 'productSlider');

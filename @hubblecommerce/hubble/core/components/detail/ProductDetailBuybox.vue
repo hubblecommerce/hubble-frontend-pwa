@@ -17,7 +17,7 @@
         <product-detail-delivery :item="dataProduct" />
 
         <!-- Variants -->
-        <div v-if="itemIsConfigurable" class="variants-wrp">
+        <div v-if="itemIsConfigurable && dataProduct.options" class="variants-wrp">
             <lazy-product-detail-buybox-options :data-product="dataProduct" />
         </div>
 

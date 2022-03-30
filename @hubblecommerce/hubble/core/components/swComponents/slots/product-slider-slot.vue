@@ -1,6 +1,7 @@
 <template>
     <div :class="[elementClass, { 'is--full-width': sizingMode['full-width'] }]">
         <div :class="{ container: sizingMode['full-width'] }">
+            <h2 v-if="title" class="cms-block-headline headline-1">{{ title }}</h2>
             <div class="cms-element-alignment" :class="verticalAlign">
                 <hooper ref="hooper" :settings="sliderSettings" style="height: auto">
                     <slide v-for="(dataItem, index) in dataItems" :key="index" :index="index" :class="`sw-product-slider-item`">
@@ -17,31 +18,21 @@
 </template>
 
 <script>
+import { mappingCategoryProducts } from '@/utils/api-mapping-helper';
 import { Hooper, Slide, Navigation as HooperNavigation } from 'hooper';
 import { slotMixins } from '../helper';
 import 'hooper/dist/hooper.css';
 
 export default {
     name: 'ProductSliderSlot',
-    
+
     components: {
         Hooper,
         Slide,
         HooperNavigation,
     },
-    
-    mixins: [slotMixins],
 
-    props: {
-        content: {
-            type: Object,
-            default: () => ({}),
-        },
-        sizingMode: {
-            type: Object,
-            default: () => {}
-        },
-    },
+    mixins: [slotMixins],
 
     data() {
         return {
@@ -68,6 +59,13 @@ export default {
     },
 
     computed: {
+        title() {
+            if (this.content.config && this.content.config.title) {
+                return this.content.config.title.value;
+            }
+
+            return '';
+        },
         verticalAlign() {
             if (this.content.config && this.content.config.verticalAlign) {
                 if (this.content.config.verticalAlign.value === 'center') {
@@ -85,16 +83,21 @@ export default {
     },
 
     mounted() {
-        this.dataItems = this.content.data.products
+        this.dataItems = mappingCategoryProducts(this.content.data.products);
     },
 };
 </script>
 
 <style lang="scss">
 .cms-element-product-slider {
-    .cms-element-alignment {
-        position: relative;
-        margin: -10px;
+    &:not(.is--full-width) {
+        .hooper-prev {
+            left: 15px;
+        }
+
+        .hooper-next {
+            right: 15px;
+        }
     }
 
     &.is--full-width {
@@ -123,6 +126,15 @@ export default {
         .hooper-list {
             overflow: visible;
         }
+    }
+
+    .cms-element-alignment {
+        position: relative;
+        margin: -10px;
+    }
+
+    .cms-element-title {
+        font-weight: bold;
     }
 }
 </style>

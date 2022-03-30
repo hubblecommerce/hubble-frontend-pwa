@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="row">
         <div class="col-md-4">
             <component :is="leftSlot" :content="getContentByPosition(content.slots, 'left')" />
         </div>
@@ -19,12 +19,6 @@ export default {
 
     mixins: [blockMixins],
 
-    props: {
-        content: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
     computed: {
         leftSlot() {
             return this.getSlotByPosition(this.content.slots, 'left');
@@ -38,3 +32,15 @@ export default {
     },
 };
 </script>
+
+<style lang="scss">
+.cms-block-image-three-cover {
+    .row {
+        margin: 0;
+    }
+
+    [class^='col-'] {
+        padding: 0;
+    }
+}
+</style>

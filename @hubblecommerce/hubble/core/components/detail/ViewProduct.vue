@@ -17,7 +17,9 @@
                             <div v-text="product.description" />
                         </div>
                     </tab>
-                    <tab class="review-tab" :name="'Reviews'"> No reviews yet </tab>
+                    <tab class="review-tab" :name="'Reviews'">
+                        <reviews is-detail :reviews="product.reviews" :product-id="product.id" :rating-average="product.ratingAverage" />
+                    </tab>
                 </tabs>
             </div>
         </div>

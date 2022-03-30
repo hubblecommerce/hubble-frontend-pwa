@@ -14,7 +14,7 @@
 import { slotMixins } from '../helper';
 
 export default {
-    name: 'TextSlot',
+    name: 'ProductNameSlot',
     mixins: [slotMixins],
 
     computed: {
@@ -41,37 +41,6 @@ export default {
 </script>
 
 <style lang="scss">
-.cms-element-text {
-    h2, h3, h4, h5, h6 {
-        margin-bottom: 20px;
-    }
-
-    .cms-block-center-text & {
-        padding: 30px;
-    }
-
-    .cms-block-image-text-bubble &,
-    .cms-block-image-text-row & {
-        padding-top: 20px;
-    }
-
-    .cms-block-image-text-gallery & {
-        padding: 20px;
-    }
-
-    .cms-block-text-on-image & {
-        padding: 30px;
-        align-items: center;
-        min-height: 240px;
-    }
-
-    .cms-block-text-on-image.container & {
-        padding-left: 0;
-        padding-right: 0;
-    }
-
-    .cms-block-image-text-cover & {
-        padding-top: 30px;
-    }
+.cms-element-product-name {
 }
 </style>

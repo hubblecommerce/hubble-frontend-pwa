@@ -31,7 +31,7 @@
 <script>
 import { slotMixins } from '../helper';
 export default {
-    name: 'ImageSlot',
+    name: 'ManufacturerLogoSlot',
     mixins: [slotMixins],
 
     data() {
@@ -100,21 +100,9 @@ export default {
 <style lang="scss">
 @import '~assets/scss/hubble/variables';
 
-.cms-element-image {
+.cms-element-manufacturer-logo {
     position: relative;
     height: 100%;
-
-    .cms-block-image-highlight-row & {
-        border: 12px solid $border-color;
-    }
-
-    .cms-block-image-text-bubble &,
-    .cms-block-image-bubble-row & {
-        .LazyImage {
-            object-fit: cover;
-            height: 100%;
-        }
-    }
 
     .cms-image {
         display: block;
@@ -131,36 +119,6 @@ export default {
         max-width: 100%;
         position: relative;
         display: flex;
-
-        .cms-block-image-text-bubble &,
-        .cms-block-image-bubble-row & {
-            height: 300px;
-            width: 300px;
-            margin: auto;
-            border-radius: 50%;
-            background-clip: padding-box;
-            overflow: hidden;
-
-            @media (min-width: 768px) {
-                padding-top: 100%;
-                width: 100%;
-            }
-
-            @media (max-width: 1023px) and (min-width: 768px) {
-                min-height: auto !important;
-                height: auto !important;
-            }
-
-            @media (min-width: 1024px) {
-                width: 300px;
-                padding-top: 0;
-            }
-
-            .cms-image {
-                height: 100%;
-                object-fit: cover;
-            }
-        }
 
         &.is-cover {
             height: 100%;
@@ -193,44 +151,6 @@ export default {
     .cms-image-wrp {
         width: 100%;
         display: block;
-    }
-}
-
-@media (min-width: 768px) {
-    .cms-element-image {
-        .cms-block-image-highlight-row & {
-            height: auto;
-        }
-
-        .cms-image-container {
-            &.is-cover {
-                .cms-block-image-two-column &,
-                .cms-block-image-three-column &,
-                .cms-block-image-four-column &,
-                .cms-block-image-highlight-row & {
-                    height: auto;
-                }
-            }
-        }
-    }
-}
-
-@media (min-width: 1024px) {
-    .cms-element-image {
-        .cms-block-image-highlight-row & {
-            height: 100%;
-        }
-
-        .cms-image-container {
-            &.is-cover {
-                .cms-block-image-two-column &,
-                .cms-block-image-three-column &,
-                .cms-block-image-four-column &,
-                .cms-block-image-highlight-row & {
-                    height: 100%;
-                }
-            }
-        }
     }
 }
 </style>

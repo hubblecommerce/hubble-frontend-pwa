@@ -1,6 +1,6 @@
 <template>
     <div :class="elementClass">
-        <PortalTarget name="filters"></PortalTarget>
+        <lazy-product-detail-crosssellings :product-id="content.config.product.value" />
     </div>
 </template>
 
@@ -8,7 +8,8 @@
 import { slotMixins } from '../helper';
 
 export default {
-    name: 'SidebarFilterSlot',
-    mixins: [slotMixins]
+    name: 'CrossSellingSlot',
+
+    mixins: [slotMixins],
 };
 </script>
