@@ -104,7 +104,7 @@ export default {
             display: flex;
 
             img {
-                width: 25px;
+                width: 18px;
                 margin: 0 10px;
             }
         }
@@ -152,7 +152,7 @@ export default {
 
             .newsletter-subline {
                 margin: 0;
-                font-size: 14px;
+                font-size: 16px;
             }
 
             .text-wrp {
@@ -219,6 +219,10 @@ export default {
             .logo {
                 margin: 0 0 0 auto;
             }
+        }
+
+        .post-footer-wrp {
+            margin-bottom: 140px;
         }
 
         &.hubble-light {
