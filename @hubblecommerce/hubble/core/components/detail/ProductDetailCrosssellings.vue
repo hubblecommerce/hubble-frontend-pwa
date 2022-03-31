@@ -12,8 +12,6 @@
                 <hooper-navigation slot="hooper-addons"></hooper-navigation>
             </hooper>
         </div>
-
-        <div v-if="!crossSellings.data || !crossSellings.data.length">No cross-selling defined.</div>
     </div>
 </template>
 

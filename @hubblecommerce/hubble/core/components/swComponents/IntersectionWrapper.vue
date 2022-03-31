@@ -2,13 +2,13 @@
     <div>
         <div
             v-if="count != null && count >= heroSectionNumbers"
+            :id="cmsSlot._uniqueIdentifier"
             class="intersection-wrp"
             :class="{ loading: !showBlock }"
-            :id="cmsSlot._uniqueIdentifier"
         >
-            <lazy-block v-if="showBlock" :content="cmsSlot" :sizing-mode="sizingMode" />
+            <lazy-block v-if="showBlock" :content="cmsSlot" :product="product" :sizing-mode="sizingMode" />
         </div>
-        <block v-else :content="cmsSlot" :sizing-mode="sizingMode" />
+        <block v-else :content="cmsSlot" :product="product" :sizing-mode="sizingMode" />
     </div>
 </template>
 
@@ -28,6 +28,11 @@ export default {
         },
         sizingMode: {
             type: Object,
+            default: () => {}
+        },
+        product: {
+            type: Object,
+            required: false,
             default: () => {}
         },
     },

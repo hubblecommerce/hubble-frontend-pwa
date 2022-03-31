@@ -4,7 +4,7 @@
             <div class="cms-section-sidebar-sidebar-content">
                 <client-only>
                     <div v-if="hasSidebar && $mq === 'lg'">
-                        <block v-for="sidebarSlot in sidebarSlots" :key="sidebarSlot._uniqueIdentifier" :content="sidebarSlot" />
+                        <block v-for="sidebarSlot in sidebarSlots" :key="sidebarSlot._uniqueIdentifier" :product="product" :content="sidebarSlot" />
                     </div>
                 </client-only>
             </div>
@@ -16,6 +16,7 @@
                     :count="count"
                     :cms-slot="cmsSlot"
                     :sizing-mode="sizingMode"
+                    :product="product"
                 />
             </div>
         </div>
@@ -35,6 +36,11 @@ export default {
             type: Number,
             required: false,
             default: null,
+        },
+        product: {
+            type: Object,
+            required: false,
+            default: () => {}
         },
     },
 

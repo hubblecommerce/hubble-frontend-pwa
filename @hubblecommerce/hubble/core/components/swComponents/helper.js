@@ -18,6 +18,11 @@ export const slotMixins = {
             type: Object,
             default: () => {},
         },
+        product: {
+            type: Object,
+            required: false,
+            default: () => {}
+        },
     },
     computed: {
         elementClass() {
@@ -35,6 +40,11 @@ export const blockMixins = {
         sizingMode: {
             type: Object,
             default: () => {},
+        },
+        product: {
+            type: Object,
+            required: false,
+            default: () => {}
         },
     },
 

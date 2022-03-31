@@ -98,7 +98,11 @@ export default {
     },
 
     created() {
-        this.images = this.content.data.sliderItems;
+        if (this.product) {
+            this.images = this.product.media;
+        } else {
+            this.images = this.content.data.sliderItems;
+        }
     },
 
     methods: {

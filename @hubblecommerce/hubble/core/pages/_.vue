@@ -60,6 +60,7 @@ export default {
                         configurator: response.data.configurator,
                         breadcrumb: response.data.breadcrumb
                     });
+                    if (response.data.cmsPage != null) Object.assign(currentPageData, { cmsPage: response.data.cmsPage });
                 }
             }
 

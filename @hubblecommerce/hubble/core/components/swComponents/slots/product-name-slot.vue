@@ -1,11 +1,15 @@
 <template>
     <div :class="[elementClass, { 'has-vertical-alignment': verticalAlign }]">
         <template v-if="verticalAlign">
-            <div class="cms-element-alignment" :class="verticalAlign" v-html="rawHtml" />
+            <h2 v-if="product" class="cms-element-alignment" :class="verticalAlign" v-text="product.name" />
+
+            <div v-else class="cms-element-alignment" :class="verticalAlign" v-html="rawHtml" />
         </template>
 
         <template v-else>
-            <div v-html="rawHtml" />
+            <h2 v-if="product" v-html="product.name" />
+
+            <div v-else v-html="rawHtml" />
         </template>
     </div>
 </template>

@@ -44,7 +44,8 @@ export default {
             return this.content && this.content.data && this.content.data.media;
         },
         linkUrl() {
-            return this.content && this.content.data && this.content.data.url;
+            return (this.content && this.content.data && this.content.data.url) ||
+                (this.content.data.manufacturer &&  this.content.data.manufacturer.link);
         },
         linkNewTab() {
             return this.content && this.content.data && this.content.data.newTab;
