@@ -298,7 +298,7 @@ export default {
     }
 
     .product-price {
-        @include font-size($text-font-sizes);
+        @include font-size($h5-font-sizes);
         font-weight: $font-weight-bold;
         color: $text-primary;
         margin-bottom: 10px;

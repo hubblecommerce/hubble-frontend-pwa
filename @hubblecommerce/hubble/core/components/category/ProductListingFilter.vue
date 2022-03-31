@@ -326,8 +326,8 @@ export default {
 
     .filter {
         position: relative;
-        margin: 0 10px 10px 0;
-        min-width: 140px;
+        margin: 0 5px 10px 0;
+        // min-width: 130px;
 
         &.disabled {
             border: 1px solid red;
@@ -345,7 +345,7 @@ export default {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 8px 14px;
+            padding: 4px 10px 4px 14px;
             background-color: $background-light;
             font-size: $font-size-sm;
             transition: all .1s ease-in-out;
@@ -356,6 +356,7 @@ export default {
 
             .count {
                 margin-left: 5px;
+                margin-right: -6px;
                 padding: 7px;
                 border-radius: 50px;
                 color: $primary;
@@ -366,7 +367,7 @@ export default {
             }
 
             .icon {
-                margin-left: 5px;
+                margin-left: 16px;
             }
         }
 
@@ -436,7 +437,7 @@ export default {
         margin-bottom: 10px;
         padding: 5px 11px;
         background-color: $background-light;
-        font-size: $font-size-sm;
+        font-size: $font-size-xs;
         line-height: 16px;
         border-radius: 24px;
         transition: all .1s ease-in-out;
@@ -447,13 +448,12 @@ export default {
 
         &.reset {
             margin-right: 0;
-            color: $error-accent;
-            background-color: $background;
-            border: 1px solid $error-accent;
+            background-color: transparent;
+            text-decoration: underline;
+            font-size: $font-size-sm;
 
             &:hover {
-                color: $background;
-                background-color: $error-accent;
+                background-color: transparent;
             }
 
             span {
@@ -462,7 +462,7 @@ export default {
         }
 
         span {
-            margin-right: 15px;
+            margin-right: 18px;
         }
 
         .icon {
