@@ -110,9 +110,15 @@ export default {
     order: 10;
     width: 100%;
 
+    .btn {
+        &:disabled,
+        &[disabled] {
+            color: #E7E8E9;
+        }
+    }
+
     .page-info {
         font-size: $font-size-sm;
-        margin: 0 10px;
     }
 }
 
