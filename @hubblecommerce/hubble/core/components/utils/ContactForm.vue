@@ -77,7 +77,7 @@
 </template>
 
 <script>
-import apiClient from '@/utils/api-client';
+import ApiClient from '@/utils/api-client';
 
 export default {
     name: 'ContactForm',
@@ -119,7 +119,7 @@ export default {
             this.sending = true;
 
             try {
-                let formPost = await new apiClient().apiCall({
+                let formPost = await new ApiClient(this.$config).apiCall({
                     action: 'post',
                     endpoint: 'store-api/contact-form',
                     data: this.formData,
