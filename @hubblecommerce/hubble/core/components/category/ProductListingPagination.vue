@@ -1,18 +1,10 @@
 <template>
     <div class="pagination-wrp">
-        <button @click="selectPage(1)" :disabled="page === 1" class="btn btn-icon">
-            <svg-icon icon="chevron-left" />
-            <svg-icon icon="chevron-left" />
-        </button>
         <button @click="selectPage(page - 1)" :disabled="(page - 1) < 1" class="btn btn-icon">
             <svg-icon icon="chevron-left" />
         </button>
         <div class="page-info" v-text="`Page ${page} of ${maxPage}`" />
         <button @click="selectPage(page + 1)" :disabled="(page + 1) > maxPage" class="btn btn-icon">
-            <svg-icon icon="chevron-right" />
-        </button>
-        <button @click="selectPage(maxPage)" :disabled="(page + 1) > maxPage" class="btn btn-icon">
-            <svg-icon icon="chevron-right" />
             <svg-icon icon="chevron-right" />
         </button>
     </div>
