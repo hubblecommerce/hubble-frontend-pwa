@@ -256,7 +256,7 @@ export default {
 
         .sale-price {
             color: $error-accent;
-            margin-right: 10px;
+            margin-right: 8px;
         }
 
         .unit-price-wrp {
@@ -345,7 +345,7 @@ export default {
             margin-bottom: 5px;
         }
         .product-name {
-            margin-bottom: 32px;
+            margin-bottom: 14px;
         }
     }
 }

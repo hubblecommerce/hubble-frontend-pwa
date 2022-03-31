@@ -451,6 +451,7 @@ export default {
             background-color: transparent;
             text-decoration: underline;
             font-size: $font-size-sm;
+            color: $blue;
 
             &:hover {
                 background-color: transparent;
