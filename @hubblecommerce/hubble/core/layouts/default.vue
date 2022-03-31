@@ -285,7 +285,7 @@ main {
     header {
         position: fixed;
         margin: 0 auto;
-        width: 100vw;
+        width: 100%;
         z-index: 100;
     }
 

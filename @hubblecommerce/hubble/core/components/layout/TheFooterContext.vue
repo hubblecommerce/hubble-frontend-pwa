@@ -25,7 +25,7 @@ export default {
 
 .footer {
     background-color: $white;
-    width: 100vw;
+    width: 100%;
 
     .newsletter-box {
         .newsletter-headline {
