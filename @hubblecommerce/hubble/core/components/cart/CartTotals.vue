@@ -77,4 +77,11 @@ export default {
     color: $text-light;
     line-height: 18px;
 }
+
+@media (min-width: 1024px) {
+    .cart-totals {
+        margin-left: 25px;
+        margin-right: 25px;
+    }
+}
 </style>

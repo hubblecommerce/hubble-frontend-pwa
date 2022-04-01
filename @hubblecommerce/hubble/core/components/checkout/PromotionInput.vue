@@ -74,7 +74,7 @@ export default {
 @import '~assets/scss/hubble/variables';
 
 .promotion-wrp {
-    padding: 30px 0 10px;
+    padding: 30px 25px 10px;
 
     .hbl-input-group {
         display: flex;

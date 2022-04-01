@@ -3,17 +3,21 @@ $button-background-color: $gray;
 $button-border: none;
 $button-border-radius: 2px;
 
-$button-primary-color: $white;
+$button-primary-color: $blue;
 $button-primary-background-color: $primary;
 $button-primary-border: none;
 
-$button-secondary-color: $secondary;
-$button-secondary-background-color: $border-color;
+$button-secondary-color: $primary;
+$button-secondary-background-color: $secondary;
 $button-secondary-border: none;
 
 $button-checkout-color: $white;
 $button-checkout-background-color: $checkout;
 $button-checkout-border: none;
+
+$button-gray-color: $darkest-gray;
+$button-gray-background-color: $gray;
+$button-gray-border: none;
 
 $button-success-color: $white;
 $button-success-background-color: $success-accent;
@@ -152,6 +156,17 @@ button,
         }
     }
 
+    &.btn-gray,
+    &.button-gray {
+        color: $button-gray-color;
+        background-color: $button-gray-background-color;
+        border: $button-gray-border;
+
+        &:focus {
+            background-color: darken($button-gray-background-color, 15%);
+        }
+    }
+
     &.btn-success,
     &.button-success {
         color: $button-success-color;
@@ -258,6 +273,13 @@ button,
         &.button-checkout {
             &:hover {
                 background-color: darken($button-checkout-background-color, 5%);
+            }
+        }
+
+        &.btn-gray,
+        &.button-gray {
+            &:hover {
+                background-color: darken($button-gray-background-color, 5%);
             }
         }
 

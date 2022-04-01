@@ -196,6 +196,10 @@ export default {
 @import '~assets/scss/hubble/variables';
 @import '~assets/scss/hubble/typography';
 
+.overlay-content {
+
+}
+
 .empty-cart {
     display: flex;
     flex-direction: column;
@@ -325,6 +329,8 @@ export default {
     .action-row {
         display: flex;
         margin: 0 -5px;
+        padding-left: 25px;
+        padding-right: 25px;
 
         .button-wrp {
             width: 50%;
