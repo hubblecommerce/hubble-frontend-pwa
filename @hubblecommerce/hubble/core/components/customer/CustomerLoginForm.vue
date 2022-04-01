@@ -1,7 +1,7 @@
 <template>
     <div class="customer-login-form-wrp">
         <form @submit.prevent="submitLoginForm" v-if="showLoginForm" class="login-form">
-            <div class="headline headline-3" v-text="'I already have an account'" />
+            <div class="headline headline-5 " v-text="'I already have an account'" />
 
             <hbl-input>
                 <input v-model="email" id="email" type="text" placeholder=" " autocomplete="username" required />
@@ -157,7 +157,7 @@ export default {
     max-width: $form-max-width;
 
     .headline {
-        margin-bottom: 15px;
+        margin-bottom: 20px;
     }
 
     .title {
@@ -171,7 +171,7 @@ export default {
         text-decoration: underline;
         text-align: right;
         margin: 0;
-        margin-bottom: 13px;
+        margin-bottom: 6px;
         text-transform: none;
         font-size: 14px;
         cursor: pointer;

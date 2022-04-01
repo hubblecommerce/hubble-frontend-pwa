@@ -37,7 +37,7 @@ $hbl-input-highlight-color: $primary;
 /* form starting stylings ------------------------------- */
 .hbl-input-group {
     position: relative;
-    margin-bottom: 20px;
+    margin-bottom: 12px;
 
     input,
     textarea {
