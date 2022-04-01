@@ -106,16 +106,28 @@ export default {
             setCart: 'modCart/setCart',
         }),
         removeItem: async function (item) {
-            let response = await new ApiClient(this.$config).apiCall({
-                action: 'delete',
-                endpoint: 'store-api/checkout/cart/line-item',
-                contextToken: this.contextToken,
-                data: {
-                    ids: [item.id],
-                },
-            });
+            try {
+                let response = await new ApiClient(this.$config).apiCall({
+                    action: 'delete',
+                    endpoint: 'store-api/checkout/cart/line-item',
+                    contextToken: this.contextToken,
+                    data: {
+                        ids: [item.id],
+                    },
+                });
+                
+                $nuxt.$emit('product-remove-from-cart', { product: {
+                    name: item.name_orig != null ? item.name_orig : 'undefined',
+                    id: item.id,
+                    sku: item.sku != null ? item.sku : 'undefined',
+                    price: item.final_price_item.display_price_brutto,
+                    quantity: item.qty,
+                } });
 
-            return this.$emit('items-list-changed', response);
+                return this.$emit('items-list-changed', response);
+            } catch (e) {
+                console.log(e);
+            }
         },
         formatPrice: function (price) {
             const formatter = new Intl.NumberFormat('de-DE', {

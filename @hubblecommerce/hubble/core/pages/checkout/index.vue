@@ -183,6 +183,30 @@ export default {
                 // Init payment
                 paymentResponse = await this.handlePayment({ orderId: order.data.id, dataBag: dataBag });
 
+                let productsArray = [];
+                order.data.lineItems.forEach((product) => {
+                    productsArray.push({
+                        name: product.label != null ? product.label : 'undefined',
+                        id: product.id,
+                        sku: product.payload.productNumber != null ? product.payload.productNumber : 'undefined',
+                        price: product.priceDefinition.price,
+                        quantity: product.quantity,
+                    });
+                });
+
+                $nuxt.$emit('checkout-order-placed', {
+                    purchase: {
+                        actionField: {
+                            id: order.data.orderNumber, // Transaction ID. Required for purchases and refunds.
+                            affiliation: order.data.salesChannelId,
+                            revenue: order.data.amountTotal, // Total transaction value (incl. tax and shipping)
+                            tax: order.data.amountTotal - order.data.amountNet,
+                            shipping: order.data.shippingTotal,
+                        },
+                        products: productsArray,
+                    },
+                });
+
                 if (paymentResponse.data.redirectUrl !== null) {
                     this.processingCheckout = false;
                     window.open(paymentResponse.data.redirectUrl, '_self');
