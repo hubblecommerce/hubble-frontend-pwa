@@ -130,7 +130,6 @@ export default {
 
     .cms-element-alignment {
         position: relative;
-        margin: -10px;
     }
 
     .cms-element-title {
