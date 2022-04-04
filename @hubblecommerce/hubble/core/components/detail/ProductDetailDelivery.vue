@@ -37,6 +37,7 @@ export default {
 
         * {
             font-size: 14px;
+            font-weight: normal;
         }
     }
 }

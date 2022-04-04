@@ -79,6 +79,10 @@ export default {
         padding: 20px 0 0;
         margin-bottom: 15px;
         width: 100%;
+
+        .product-headline-info {
+            margin-top: 30px;
+        }
     }
 
     .product-name {
