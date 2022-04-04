@@ -23,7 +23,7 @@
                 <div class="col-12">
                     <div class="customer-register-wrp">
                         <div class="headline headline-5" v-text="'I am not having an account yet'" />
-                        <hbl-button v-if="!showRegisterForm" class="button-primary" @click.native="toggleRegisterForm()">
+                        <hbl-button v-if="!showRegisterForm" class="button-gray" @click.native="toggleRegisterForm()">
                             {{ 'Register' }}
                         </hbl-button>
                     </div>
@@ -101,9 +101,10 @@ export default {
     max-width: $form-max-width;
     margin: 0 auto;
     padding: 20px 0;
+    padding-top: 10px;
 
     .headline {
-        margin-bottom: 15px;
+        margin-bottom: 20px;
     }
 
     button {

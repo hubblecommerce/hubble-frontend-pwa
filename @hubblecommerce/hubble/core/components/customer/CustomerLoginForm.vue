@@ -145,7 +145,7 @@ export default {
 @import '~assets/scss/hubble/typography';
 
 .customer-login-form-wrp {
-    padding: 20px 0;
+    padding: 40px 0 20px;
 }
 
 .login-form,
