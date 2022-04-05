@@ -5,7 +5,7 @@
         </transition>
         <hooper :class="{ loading: loading }" :settings="hooperSettings" @slide="onHooperSlide" @updated="onHooperUpdated()">
             <slide v-for="(medium, index) in media" :key="index" :index="index">
-                <plugin-slot name="product-gallery-slide" :data="{...medium, hooperData}">
+                <plugin-slot name="product-gallery-slide" :data="{alt, hooperData, index, medium}">
                     <template v-if="index === 0">
                         <img data-not-lazy :class="'slide-img'" :src="getMediaUrl(medium, 800)" :alt="`${alt} - Image Gallery Item ${index}`" />
                     </template>
