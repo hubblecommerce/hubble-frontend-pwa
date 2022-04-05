@@ -200,6 +200,7 @@ export default {
             font-size: 14px;
             text-transform: capitalize;
             margin-bottom: 2px;
+            font-weight: bold;
         }
 
         .option-val-wrp {
@@ -483,6 +484,7 @@ export default {
                 font-size: 14px;
                 min-width: 100px;
                 padding: 5px 0;
+                font-weight: normal;
             }
 
             .option-val-wrp {

@@ -82,13 +82,28 @@ export default {
     width: 100%;
     .hbl-input-group {
         display: flex;
+        flex-direction: column;
 
         input {
             margin-right: 10px;
+            margin-bottom: 5px;
         }
 
         button {
             flex-shrink: 0;
+        }
+    }
+}
+
+@media (min-width: 1024px) {
+    .promotion-wrp {
+        .hbl-input-group {
+            display: flex;
+            flex-direction: row;
+
+            input {
+                margin-bottom: 0px;
+            }
         }
     }
 }

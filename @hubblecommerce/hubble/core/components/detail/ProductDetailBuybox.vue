@@ -172,6 +172,7 @@ export default {
     .add-to-cart-wrp {
         display: flex;
         height: 58px;
+        margin-bottom: 40px;
 
         .quantity-selector {
             margin-right: $base-padding;
@@ -242,10 +243,6 @@ export default {
                 font-size: 14px;
                 color: $dark-gray;
             }
-        }
-
-        .add-to-cart-wrp {
-            margin-bottom: 40px;
         }
     }
 }
