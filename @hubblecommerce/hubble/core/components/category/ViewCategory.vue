@@ -76,18 +76,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss">
-.view-category {
-    .cms-block-container-row {
-        padding-left: 0px;
-        padding-right: 0px;
-        
-        > div {
-            padding-left: 0px;
-            padding-right: 0px;
-        }
-    }
-    
-}
-</style>
