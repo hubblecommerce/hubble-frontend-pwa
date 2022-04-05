@@ -106,7 +106,7 @@
                 {{ formatPrice(order.amountTotal) }}
             </p>
 
-            <hbl-button class="button-secondary" @click.native="toggleDropdown">
+            <hbl-button @click.native="toggleDropdown">
                 {{ isExpanded ? 'Hide' : 'Show' }} Information
             </hbl-button>
         </div>
