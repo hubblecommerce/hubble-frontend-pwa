@@ -4,11 +4,8 @@
             <div v-for="slotEntry in slotEntries" class="plugin-slot-entries">
                 <component
                     :is="slotEntry.componentName"
-                    v-if="!hasSlotContent || (data && data.customFields)"
                     v-bind="data"
                     v-on="events" />
-
-                <slot v-else />
             </div>
         </template>
 
