@@ -136,6 +136,8 @@ $gallery-height: 270px;
 
     .slide-img {
         width: 100%;
+        height: 100%;
+        object-fit: contain;
     }
 }
 
