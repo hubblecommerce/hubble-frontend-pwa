@@ -1,5 +1,5 @@
 <template>
-    <div v-if="content.slots[0].data.listing != null" class="container">
+    <div v-if="content.slots[0].data.listing != null">
         <product-listing-filter
             :aggregations="aggregations"
             :current-filters="currentFilters"
