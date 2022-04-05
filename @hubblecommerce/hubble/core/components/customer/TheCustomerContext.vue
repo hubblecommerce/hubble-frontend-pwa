@@ -28,7 +28,7 @@
                     <div class="register-form-wrp">
                         <div class="register-form">
                             <div class="headline headline-5" v-text="'I am not having an account yet'" />
-                            <hbl-button class="button-gray" @click.native="goToRegister">
+                            <hbl-button @click.native="goToRegister">
                                 {{ 'Register' }}
                             </hbl-button>
                         </div>

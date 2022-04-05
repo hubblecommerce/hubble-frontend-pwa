@@ -23,7 +23,7 @@
                 <div class="col-12">
                     <div class="customer-register-wrp">
                         <div class="headline headline-5" v-text="'I am not having an account yet'" />
-                        <hbl-button v-if="!showRegisterForm" class="button-gray" @click.native="toggleRegisterForm()">
+                        <hbl-button v-if="!showRegisterForm" @click.native="toggleRegisterForm()">
                             {{ 'Register' }}
                         </hbl-button>
                     </div>
