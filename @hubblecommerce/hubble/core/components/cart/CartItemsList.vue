@@ -300,9 +300,29 @@ $hbl-cart-item-image-size-md: 100px;
 }
 
 @media (min-width: 1024px) {
-    .cart-items-list-wrp {
-        padding-left: 40px;
-        padding-right: 40px;
+    .transition-expand-wrp  {
+        .cart-items-list-wrp {
+            padding-left: 40px;
+            padding-right: 40px;
+        }
+    }
+
+    .checkout-overview-wrp {
+        .minicart-wrapper {
+            .cart-items-list-wrp {
+                padding-left: 0px;
+                padding-right: 0px;
+
+                .col-8 {
+                    padding-left: 0px;
+                    padding-right: 0px;
+
+                    .product-name {
+                        margin-bottom: 20px;
+                    }
+                }
+            }
+        }
     }
 }
 </style>

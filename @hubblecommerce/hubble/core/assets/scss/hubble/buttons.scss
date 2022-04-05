@@ -15,9 +15,9 @@ $button-checkout-color: $white;
 $button-checkout-background-color: $checkout;
 $button-checkout-border: none;
 
-$button-gray-color: $darkest-gray;
-$button-gray-background-color: $gray;
-$button-gray-border: none;
+$button-link-color: $darkest-gray;
+$button-link-background-color: transparent;
+$button-link-border: none;
 
 $button-success-color: $white;
 $button-success-background-color: $success-accent;
@@ -156,15 +156,12 @@ button,
         }
     }
 
-    &.btn-gray,
-    &.button-gray {
-        color: $button-gray-color;
-        background-color: $button-gray-background-color;
-        border: $button-gray-border;
-
-        &:focus {
-            background-color: darken($button-gray-background-color, 15%);
-        }
+    &.btn-link,
+    &.button-link {
+        color: $button-link-color;
+        background-color: $button-link-background-color;
+        border: $button-link-border;
+        text-decoration: underline;
     }
 
     &.btn-success,
@@ -276,10 +273,11 @@ button,
             }
         }
 
-        &.btn-gray,
-        &.button-gray {
+        &.btn-link,
+        &.button-link {
             &:hover {
-                background-color: darken($button-gray-background-color, 5%);
+                background-color: transparent;
+                text-decoration: underline;
             }
         }
 
