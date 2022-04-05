@@ -381,6 +381,13 @@ export default {
 
             @include elevation-2;
 
+            .option {
+                input[type='checkbox'] {
+                   width: 20px;
+                   height: 20px;
+                }
+            }
+
             &.range {
                 display: flex;
                 justify-content: space-between;
@@ -400,7 +407,7 @@ export default {
         .option {
             display: flex;
             align-items: center;
-            margin-bottom: 3px;
+            margin-bottom: 10px;
             font-size: $font-size-sm;
 
             &:last-child {
