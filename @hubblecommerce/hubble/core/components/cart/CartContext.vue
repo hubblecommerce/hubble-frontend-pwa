@@ -14,7 +14,7 @@
             </div>
 
             <template v-if="qty > 0 && !isLoading">
-                <flash-message />
+                <flash-message class="flash-message-wrapper"/>
 
                 <div class="cart-counter-wrp">
                     <div v-if="qty === 1" class="col-12 qty-summary" v-text="`${qty} Item`" />
@@ -196,6 +196,9 @@ export default {
 @import '~assets/scss/hubble/variables';
 @import '~assets/scss/hubble/typography';
 
+.flash-message-wrapper {
+    margin-top: 20px;
+}
 .overlay-content {
 
 }
@@ -246,7 +249,7 @@ export default {
         font-size: 14px;
         line-height: 17px;
         font-weight: 600;
-        padding: 12px 15px;
+        padding: 12px 15px 12px 0px;
     }
 
     .separator {
