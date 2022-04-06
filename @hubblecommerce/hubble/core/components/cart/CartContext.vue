@@ -199,9 +199,6 @@ export default {
 .flash-message-wrapper {
     margin-top: 20px;
 }
-.overlay-content {
-
-}
 
 .empty-cart {
     display: flex;
