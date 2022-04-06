@@ -1,17 +1,17 @@
 <template>
     <div class="col-12 link-wrp">
         <nuxt-link :to="'/customer/dashboard/overview'" class="sidebar-link">
-            <hbl-button class="button-secondary">
+            <hbl-button>
                 {{ 'Customer Dashboard' }}
             </hbl-button>
         </nuxt-link>
         <nuxt-link :to="'/customer/dashboard/data'" class="sidebar-link">
-            <hbl-button class="button-secondary">
+            <hbl-button>
                 {{ 'Personal data' }}
             </hbl-button>
         </nuxt-link>
         <nuxt-link :to="'/customer/dashboard/orders'" class="sidebar-link">
-            <hbl-button class="button-secondary">
+            <hbl-button>
                 {{ 'My orders' }}
             </hbl-button>
         </nuxt-link>
@@ -70,6 +70,7 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    margin-top: 1rem;
 
     button {
         width: 100%;

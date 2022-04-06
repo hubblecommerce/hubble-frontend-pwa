@@ -125,7 +125,7 @@ export default {
 
 $expand-layer-width-mobile: 100%;
 $expand-layer-width-tablet: 60%;
-$expand-layer-width-desktop: 600px;
+$expand-layer-width-desktop: 650px;
 $overlay-header-height-desktop: 50px;
 
 .transition-expand-wrp {
@@ -216,11 +216,16 @@ $overlay-header-height-desktop: 50px;
 @media (min-width: 1024px) {
     .transition-expand-wrp {
         width: $expand-layer-width-desktop;
-        top: 71px;
+        top: 77px;
         border-top: 1px solid $border-color;
     }
     .expand-content {
         overflow-y: inherit;
+
+        .overlay-header {
+            padding-left: 5px;
+            padding-right: 5px;
+        }
     }
     .overlay-header {
         .button-close-menu {

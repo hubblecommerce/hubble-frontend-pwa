@@ -11,7 +11,7 @@
                     <div class="items-wrp">
                         <client-only>
                             <div class="headline">
-                                <div class="headline-2" v-text="'Your Cart'" />
+                                <div class="headline-5" v-text="'Your Cart'" />
                             </div>
                             <cart-context :recalculate-cart="cartKey" :interactive="false" />
                         </client-only>
@@ -192,7 +192,7 @@ export default {
         .register-options-wrp {
             order: 10;
             width: 560px;
-            padding: 40px 10px 0 0;
+            padding: 20px 10px 0 0;
 
             .customer-register-wrp {
                 max-width: 560px;

@@ -288,7 +288,7 @@ main {
     header {
         position: fixed;
         margin: 0 auto;
-        width: 100vw;
+        width: 100%;
         z-index: 100;
     }
 
@@ -313,7 +313,7 @@ main {
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                margin: 0 10px;
+                margin: 0 6px;
                 cursor: pointer;
 
                 &:last-child {

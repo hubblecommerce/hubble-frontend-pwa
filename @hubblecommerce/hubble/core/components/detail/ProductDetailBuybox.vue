@@ -79,6 +79,10 @@ export default {
         padding: 20px 0 0;
         margin-bottom: 15px;
         width: 100%;
+
+        .product-headline-info {
+            margin-top: 30px;
+        }
     }
 
     .product-name {
@@ -168,6 +172,7 @@ export default {
     .add-to-cart-wrp {
         display: flex;
         height: 58px;
+        margin-bottom: 40px;
 
         .quantity-selector {
             margin-right: $base-padding;
@@ -238,10 +243,6 @@ export default {
                 font-size: 14px;
                 color: $dark-gray;
             }
-        }
-
-        .add-to-cart-wrp {
-            margin-bottom: 40px;
         }
     }
 }

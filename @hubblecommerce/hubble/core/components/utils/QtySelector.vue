@@ -115,11 +115,11 @@ export default {
 <style lang="scss">
 @import '~assets/scss/hubble/variables';
 
-$btn-icon-width: 36px;
+$btn-icon-width: 33px;
 $btn-icon-height: 50%;
 $btn-background-color: $light-gray;
 $btn-icon-color: $dark-gray;
-$qty-selector-width: $btn-icon-width * 2.5;
+$qty-selector-width: $btn-icon-width * 2.2;
 
 .quantity-selector {
     max-width: $qty-selector-width;
