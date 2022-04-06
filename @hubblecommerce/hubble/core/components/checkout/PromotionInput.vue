@@ -1,11 +1,11 @@
 <template>
     <div class="promotion-wrp">
-        <h5 class="promotion-headline">Gutschein</h5>
+        <h5 class="promotion-headline">Coupon</h5>
 
         <form @submit.prevent="addPromotionCode()">
             <hbl-input>
                 <input id="promotionCode" v-model="promotionCode" type="text" name="promotionCode" placeholder="Promotion Code" />
-                <hbl-button @click="addPromotionCode()">Speichern</hbl-button>
+                <hbl-button @click="addPromotionCode()">Save</hbl-button>
             </hbl-input>
         </form>
 
