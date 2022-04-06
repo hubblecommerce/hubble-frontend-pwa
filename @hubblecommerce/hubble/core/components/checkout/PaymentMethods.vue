@@ -100,6 +100,7 @@ export default {
         watch(currentMethod, async (id) => {
             if (id === '') {
                 paymentError.value = 'Please choose a payment method.';
+                context.emit('payment-changed', {});
                 context.emit('payment-error', true);
                 return;
             }
