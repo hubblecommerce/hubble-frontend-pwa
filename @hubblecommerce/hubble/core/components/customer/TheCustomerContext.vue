@@ -1,6 +1,6 @@
 <template>
-    <div class="search-context-wrapper">
-        <div class="container expand-content customer-flyout">
+    <div class="customer-context-wrapper">
+        <div class="container expand-content">
             <div class="row overlay-header">
                 <hbl-button class="button-icon" @click.native="hideOffcanvasAction">
                     <div class="hidden-link-name" v-text="'Close'" />
@@ -118,7 +118,7 @@ export default {
 @import '~assets/scss/hubble/variables';
 @import '~assets/scss/hubble/typography';
 
-.customer-flyout {
+.customer-context-wrapper {
     .customer-login-form-wrp {
         padding: 30px 25px;
     }
