@@ -48,7 +48,7 @@ export default {
 
         const { getStructuredDataProduct } = useRichSnippets();
         let structuredData = getStructuredDataProduct(product, $config);
-        console.log($config)
+
         return {
             product,
             loadCrosssellings,
@@ -63,43 +63,7 @@ export default {
         },
     },
 
-    // data() {
-    //     return {
-    //         product: null,
-    //         loadCrosssellings: false,
-    //     };
-    // },
-
     computed: {
-        // structuredData: function () {
-        //     if (this.product === null) {
-        //         return {};
-        //     }
-
-        //     return {
-        //         '@context': 'http://schema.org',
-        //         'testprop': undefined,
-        //         '@type': 'Product',
-        //         'name': this.product.name,
-        //         'image': this.product.media.url,
-        //         'description': this.product.description,
-        //         'sku': this.product.sku,
-        //         'brand': {
-        //             '@type': 'Thing',
-        //             'name': this.product.manufacturer_name,
-        //         },
-        //         'mpn': this.product.sku,
-        //         'offers': {
-        //             '@type': 'Offer',
-        //             'url': this.$config.appBaseUrl.trim() + '/' + this.product.url_pds,
-        //             'priceCurrency': this.priceCurrency,
-        //             'price': this.product.final_price_item.display_price_brutto,
-        //             'itemCondition': 'https://schema.org/NewCondition',
-        //             'availability': this.product.stock_item.is_in_stock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
-        //         },
-        //         // More structured data...
-        //     };
-        // },
         breadcrumb: function () {
             let path = [];
 
@@ -127,10 +91,6 @@ export default {
             return 'undefined';
         },
     },
-
-    // created() {
-    //     this.product = mappingProduct(this.data);
-    // },
 
     mounted() {
         this.registerIntersectionObserver('.detail-crosssellings', 'loadCrosssellings');
