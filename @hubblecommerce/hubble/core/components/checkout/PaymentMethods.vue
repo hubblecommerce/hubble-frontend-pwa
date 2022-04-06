@@ -18,7 +18,7 @@
                         <span class="description" v-text="method.description" />
                     </label>
 
-                    <plugin-slot name="checkout-payment-methods-method" :data="{method: method, contextToken: contextToken, currentMethod: currentMethod, currentMethodObj: currentMethodObj, showModal: showModal}" />
+                    <plugin-slot name="checkout-payment-methods-method" :events="events" :data="{method: method, contextToken: contextToken, currentMethod: currentMethod, currentMethodObj: currentMethodObj, showModal: showModal}" />
                 </hbl-checkbox>
             </div>
 
