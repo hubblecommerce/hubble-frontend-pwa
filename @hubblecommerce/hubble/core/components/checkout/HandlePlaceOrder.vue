@@ -17,7 +17,7 @@
 import placeOrderComposable from "@/composables/placeOrder";
 
 export default {
-    name: "Handle-Place-Order",
+    name: "HandlePlaceOrder",
 
     props: {
         currentPaymentMethod: {
