@@ -18,6 +18,7 @@ $badge-border-radius: 2px !default;
     vertical-align: middle;
     background-color: $badge-bg;
     border-radius: $badge-border-radius;
+    text-transform: uppercase;
 
     &.badge-primary {
         background: $primary;

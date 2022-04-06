@@ -7,17 +7,17 @@
                         <span
                             v-if="itemData.calculatedPrice.listPrice"
                             class="product-badge badge-danger"
-                            v-text="'SALE'"
+                            v-text="'Sale'"
                         />
                         <span
                             v-if="itemData.isNew"
                             class="product-badge badge-secondary"
-                            v-text="'NEW'"
+                            v-text="'new'"
                         />
                         <span
                             v-if="itemData.markAsTopseller"
                             class="product-badge badge-success"
-                            v-text="'BESTSELLER'"
+                            v-text="'Bestseller'"
                         />
                     </div>
                 </div>
