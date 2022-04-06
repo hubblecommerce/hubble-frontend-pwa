@@ -199,7 +199,6 @@ $tab-active-color: $secondary;
         .tabs-component-item {
             cursor: pointer;
             font-size: 14px;
-            // padding: 10px 15px;
         }
     }
 
