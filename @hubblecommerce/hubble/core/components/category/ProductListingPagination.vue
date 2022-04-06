@@ -1,8 +1,8 @@
 <template>
     <div class="pagination-wrp">
-        <button @click="selectPage(1)" :disabled="page === 1" class="btn btn-icon">
+        <!-- <button @click="selectPage(1)" :disabled="page === 1" class="btn btn-icon">
             <svg-icon icon="chevrons-left" class="no-fill" />
-        </button>
+        </button> -->
         <button @click="selectPage(page - 1)" :disabled="page - 1 < 1" class="btn btn-icon">
             <svg-icon icon="chevron-left" />
         </button>
@@ -10,9 +10,9 @@
         <button @click="selectPage(page + 1)" :disabled="page + 1 > maxPage" class="btn btn-icon">
             <svg-icon icon="chevron-right" />
         </button>
-        <button @click="selectPage(maxPage)" :disabled="page + 1 > maxPage" class="btn btn-icon">
+        <!-- <button @click="selectPage(maxPage)" :disabled="page + 1 > maxPage" class="btn btn-icon">
             <svg-icon icon="chevrons-right" class="no-fill"/>
-        </button>
+        </button> -->
     </div>
 </template>
 
