@@ -327,7 +327,6 @@ export default {
     .filter {
         position: relative;
         margin: 0 5px 10px 0;
-        // min-width: 130px;
 
         &.disabled {
             border: 1px solid red;
