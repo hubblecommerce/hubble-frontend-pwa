@@ -115,7 +115,7 @@ export default {
     .btn {
         &:disabled,
         &[disabled] {
-            color: #e7e8e9;
+            color: $gray;
         }
     }
 
