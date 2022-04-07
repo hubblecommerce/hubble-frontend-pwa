@@ -1,5 +1,5 @@
 <template>
-    <div class="breadcrumb-wrp" :class="{ container: container }">
+    <div class="breadcrumb-wrp" :class="{ container: boxed }">
         <div class="breadcrumb">
             <ul class="row">
                 <li class="breadcrumb-item">
@@ -21,7 +21,7 @@ export default {
     name: 'Breadcrumb',
 
     props: {
-        container: {
+        boxed: {
             type: Boolean,
             default: false
         },

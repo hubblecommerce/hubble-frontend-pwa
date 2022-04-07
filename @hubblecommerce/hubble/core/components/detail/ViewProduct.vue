@@ -1,6 +1,6 @@
 <template>
     <div class="detail-wrp" :class="{ container: !data.cmsPage }">
-        <breadcrumb v-if="product !== null" :container="data.cmsPage != null" :path="breadcrumb" />
+        <breadcrumb v-if="product !== null" :boxed="data.cmsPage != null" :path="breadcrumb" />
 
         <div v-if="data.cmsPage != null && data.cmsPage.sections != null" class="detail-sections">
              <sw-section
