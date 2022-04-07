@@ -1,7 +1,7 @@
 <template>
     <div class="row">
         <div class="col-12">
-            <component :is="contentSlot" :product="product" :content="getContentByPosition(content.slots, 'content')" />
+            <component :is="contentSlot" :content="getContentByPosition(content.slots, 'content')" />
         </div>
     </div>
 </template>

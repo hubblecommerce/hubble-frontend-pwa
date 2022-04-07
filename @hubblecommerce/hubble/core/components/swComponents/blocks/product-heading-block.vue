@@ -1,10 +1,10 @@
 <template>
     <div class="row">
         <div class="col-md-10">
-            <component :is="leftSlot" :product="product" :content="getContentByPosition(content.slots, 'left')" />
+            <component :is="leftSlot" :content="getContentByPosition(content.slots, 'left')" />
         </div>
         <div class="col-md-2">
-            <component :is="rightSlot" :product="product" :content="getContentByPosition(content.slots, 'right')" />
+            <component :is="rightSlot" :content="getContentByPosition(content.slots, 'right')" />
         </div>
     </div>
 </template>

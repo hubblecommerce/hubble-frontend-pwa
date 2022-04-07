@@ -4,7 +4,7 @@
             <div v-if="content.name" :class="{ container: sizingMode != null ? sizingMode['full-width'] : 'container' }">
                 <h2 v-if="content.name" class="cms-block-headline headline-1">{{ content.name }}</h2>
             </div>
-            <component :is="component" :content="content" :sizing-mode="sizingMode" :product="product" class="cms-block-container-row cms-row" />
+            <component :is="component" :content="content" :sizing-mode="sizingMode" class="cms-block-container-row cms-row" />
         </div>
     </div>
 </template>
@@ -24,11 +24,6 @@ export default {
         sizingMode: {
             type: Object,
             default: () => {},
-        },
-        product: {
-            type: Object,
-            required: false,
-            default: () => {}
         },
     },
 

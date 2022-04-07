@@ -8,7 +8,6 @@
                 :key="cmsSection._uniqueIdentifier"
                 :count="index"
                 :content="cmsSection"
-                :product="product"
             />
         </div>
 
