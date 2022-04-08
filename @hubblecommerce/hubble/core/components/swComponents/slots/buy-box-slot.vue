@@ -1,6 +1,6 @@
 <template>
     <div :class="elementClass">
-        <product-detail-buybox v-if="getProduct !== null" :data-product="getProduct" />
+        <product-detail-buybox v-if="product !== null" :data-product="product" :data-options="options" />
     </div>
 </template>
 
@@ -13,11 +13,12 @@ export default {
     mixins: [slotMixins],
 
     computed: {
-        getProduct() {
-            if (this.product) return this.product;
-
+        product() {
             return this.content && this.content.data && this.content.data.product && mappingProduct({ product: this.content.data.product });
         },
+        options() {
+            return this.content && this.content.data && this.content.data.configuratorSettings;
+        }
     },
 };
 </script>
