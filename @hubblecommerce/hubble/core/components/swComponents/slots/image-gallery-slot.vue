@@ -14,7 +14,7 @@
                             :class="{ 'is-active': activeImageIndex === index }"
                             @click="changeActiveImageToSelected(index)"
                         >
-                            <plugin-slot name="product-gallery-slide-preview" :data="{...image, hooperData}">
+                            <plugin-slot name="product-gallery-slide-preview" :data="{hooperData, index, medium: image}">
                                 <img :src="image.media.url" />
                             </plugin-slot>
                         </button>
@@ -32,8 +32,8 @@
                     :style="{ minHeight: getMinHeight }"
                     @slide="onUpdateMainSlider"
                 >
-                    <slide v-for="image in images" :key="image.media.id">
-                        <plugin-slot name="product-gallery-slide" :data="{...image, hooperData}">
+                    <slide v-for="(image, index) in images" :key="image.media.id">
+                        <plugin-slot name="product-gallery-slide" :data="{ hooperData, index, medium: image}">
                             <img :src="image.media.url" />
                         </plugin-slot>
                     </slide>
@@ -104,11 +104,7 @@ export default {
     },
 
     created() {
-        if (this.product) {
-            this.images = this.product.media;
-        } else {
-            this.images = this.content.data.sliderItems;
-        }
+        this.images = this.content.data.sliderItems;
     },
 
     methods: {
