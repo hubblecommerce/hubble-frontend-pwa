@@ -1,6 +1,6 @@
 <template>
     <div :class="elementClass">
-        <lazy-product-detail-crosssellings :product-id="productId" />
+        <lazy-product-detail-crosssellings :cross-sellings="crossSellings"  />
     </div>
 </template>
 
@@ -13,13 +13,8 @@ export default {
     mixins: [slotMixins],
 
     computed: {
-        getProduct() {
-            return this.content && this.content.config && this.content.config.product;
-        },
-        productId() {
-            if (this.product) return this.product.id;
-            
-            return this.getProduct && this.getProduct.value;
+        crossSellings() {
+            return this.content && this.content.data && this.content.data.crossSellings;
         }
     }
 };

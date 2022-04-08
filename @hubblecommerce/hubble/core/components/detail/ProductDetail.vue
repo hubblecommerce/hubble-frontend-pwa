@@ -20,13 +20,11 @@
             </div>
         </div>
 
-        <template v-if="product.crossSellings != null && product.crossSellings.length">
             <div class="detail-crosssellings">
                 <template v-if="loadCrosssellings">
-                    <lazy-product-detail-crosssellings :product-id="product.id" />
+                    <lazy-product-detail-crosssellings :product-id="product.id" :cross-sellings="product.crossSellings" />
                 </template>
             </div>
-        </template>
     </div>
 </template>
 
@@ -38,6 +36,12 @@ export default {
         product: {
             type: Object,
             default: () => {}
+        }
+    },
+
+    data() {
+        return {
+            loadCrosssellings: false,
         }
     },
 

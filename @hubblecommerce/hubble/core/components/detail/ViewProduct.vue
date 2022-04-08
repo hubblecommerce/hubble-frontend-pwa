@@ -31,7 +31,6 @@ export default {
     data() {
         return {
             product: null,
-            loadCrosssellings: false,
         };
     },
 

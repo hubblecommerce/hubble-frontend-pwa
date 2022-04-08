@@ -1,16 +1,18 @@
 <template>
     <div class="detail-crosssellings-inner">
-        <div v-for="item in crossSellings.data" class="sw-product-slider">
-            <div v-if="item.crossSelling.name" class="sw-product-slider-title">
-                <h2 v-text="item.crossSelling.name" />
-            </div>
+        <div v-for="item in items" class="sw-product-slider">
+            <template v-if="item.products && item.products.length">
+                <div v-if="item.crossSelling.name" class="sw-product-slider-title">
+                    <h2 v-text="item.crossSelling.name" />
+                </div>
 
-            <hooper :settings="sliderSettings" style="height: auto">
-                <slide v-for="(dataItem, index) in mappingProducts(item.products)" :key="index" :index="index" :class="`sw-product-slider-item`">
-                    <product-listing-card :item-data="dataItem" :show-desc="false" :show-badges="true" />
-                </slide>
-                <hooper-navigation slot="hooper-addons"></hooper-navigation>
-            </hooper>
+                <hooper :settings="sliderSettings" style="height: auto">
+                    <slide v-for="(dataItem, index) in mappingProducts(item.products)" :key="index" :index="index" :class="`sw-product-slider-item`">
+                        <product-listing-card :item-data="dataItem" :show-desc="false" :show-badges="true" />
+                    </slide>
+                    <hooper-navigation slot="hooper-addons"></hooper-navigation>
+                </hooper>
+            </template>
         </div>
     </div>
 </template>
@@ -34,13 +36,19 @@ export default {
     props: {
         productId: {
             type: String,
-            required: true,
+            required: false,
+            default: ''
         },
+        crossSellings: {
+            type: Array,
+            required: false,
+            default: () => []
+        }
     },
 
     data() {
         return {
-            crossSellings: [],
+            items: [],
             isLoading: true,
             sliderSettings: {
                 itemsToShow: 1,
@@ -64,10 +72,15 @@ export default {
     },
 
     async mounted() {
-        try {
-            this.crossSellings = await this.fetchCrossSeelings();
-        } catch (e) {
-            console.log(e);
+        if (!this.crossSellings && this.productId !== '') {
+            try {
+                const xSellResponse = await this.fetchCrossSeelings();
+                this.items = xSellResponse.data;
+            } catch (e) {
+                console.log(e);
+            }
+        } else {
+            this.items = this.crossSellings;
         }
     },
 
