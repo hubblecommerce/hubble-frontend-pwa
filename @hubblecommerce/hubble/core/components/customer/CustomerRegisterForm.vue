@@ -278,7 +278,7 @@ export default {
             }
         },
         fetchContext: async function () {
-            let response = await new apiClient().apiCall({
+            let response = await new ApiClient(this.$config).apiCall({
                 action: 'get',
                 endpoint: 'store-api/context',
             });
