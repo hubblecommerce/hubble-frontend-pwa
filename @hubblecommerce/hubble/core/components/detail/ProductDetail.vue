@@ -20,11 +20,11 @@
             </div>
         </div>
 
-            <div class="detail-crosssellings">
-                <template v-if="loadCrosssellings">
-                    <lazy-product-detail-crosssellings :product-id="product.id" :cross-sellings="product.crossSellings" />
-                </template>
-            </div>
+        <div class="detail-crosssellings">
+            <template v-if="loadCrosssellings">
+                <lazy-product-detail-crosssellings :product-id="product.id" :cross-sellings="product.crossSellings" />
+            </template>
+        </div>
     </div>
 </template>
 
