@@ -18,7 +18,7 @@
 
         <!-- Variants -->
         <div v-if="itemIsConfigurable && dataProduct.options" class="variants-wrp">
-            <lazy-product-detail-buybox-options :data-product="dataProduct" :data-options="dataOptions" />
+            <lazy-product-detail-buybox-options :data-product="dataProduct" />
         </div>
 
         <!-- Add to cart -->
@@ -44,11 +44,6 @@ export default {
         dataProduct: {
             type: Object,
             required: true,
-        },
-        dataOptions: {
-            type: Array,
-            required: false,
-            default: () => []
         },
     },
 

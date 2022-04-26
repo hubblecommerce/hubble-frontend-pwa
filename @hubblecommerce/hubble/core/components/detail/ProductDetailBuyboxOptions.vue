@@ -44,11 +44,6 @@ export default {
             type: Object,
             required: true,
         },
-        dataOptions: {
-            type: Array,
-            required: false,
-            default: () => []
-        },
     },
 
     data() {
@@ -63,8 +58,6 @@ export default {
             isLoading: (state) => state.modCart.isLoading,
         }),
         groups: function () {
-            if (this.dataOptions && this.dataOptions.length) return this.dataOptions;
-
             return this.dataProduct.groups != null ? this.dataProduct.groups : null;
         },
     },

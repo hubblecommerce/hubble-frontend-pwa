@@ -1,6 +1,6 @@
 <template>
     <div :class="elementClass">
-        <product-detail-buybox v-if="product !== null" :data-product="product" :data-options="options" />
+        <product-detail-buybox v-if="product !== null" :data-product="product" />
     </div>
 </template>
 
@@ -14,11 +14,8 @@ export default {
 
     computed: {
         product() {
-            return this.content && this.content.data && this.content.data.product && mappingProduct({ product: this.content.data.product });
+            return this.content && this.content.data && this.content.data.product && mappingProduct({ product: this.content.data.product, configurator: this.content.data.configuratorSettings });
         },
-        options() {
-            return this.content && this.content.data && this.content.data.configuratorSettings;
-        }
     },
 };
 </script>
