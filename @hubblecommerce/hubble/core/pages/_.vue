@@ -58,9 +58,9 @@ export default {
                     Object.assign(currentPageData, {
                         product: response.data.product,
                         configurator: response.data.configurator,
-                        breadcrumb: response.data.breadcrumb
+                        breadcrumb: response.data.breadcrumb,
+                        cmsPage: response.data.cmsPage
                     });
-                    if (response.data.cmsPage != null) Object.assign(currentPageData, { cmsPage: response.data.cmsPage });
                 }
             }
 
