@@ -49,6 +49,10 @@ export default {
         margin-bottom: 20px;
     }
 
+    div + div {
+        margin-top: 10px;
+    }
+
     .cms-element-alignment {
         flex-grow: 1;
     }
