@@ -17,9 +17,25 @@
 
 <script>
 import { mappingProduct } from '@/utils/api-mapping-helper';
+import useRichSnippets from '@/composables/useRichSnippets';
+import { useContext } from '@nuxtjs/composition-api';
 
 export default {
     name: 'ViewProduct',
+
+    setup(props) {
+        const product = mappingProduct(props.data);
+
+        const { $config } = useContext();
+
+        const { getStructuredDataProduct } = useRichSnippets();
+        let structuredData = getStructuredDataProduct(product, $config);
+
+        return {
+            product,
+            structuredData
+        };
+    },
 
     props: {
         data: {
@@ -28,10 +44,46 @@ export default {
         },
     },
 
-    data() {
-        return {
-            product: null,
-        };
+    computed: {
+        breadcrumb: function () {
+            let path = [];
+
+            if (this.data.breadcrumb != null && Object.keys(this.data.breadcrumb).length > 0) {
+                Object.keys(this.data.breadcrumb).forEach((key) => {
+                    path.push({
+                        name: this.data.breadcrumb[key].name,
+                        url: this.data.breadcrumb[key].path,
+                    });
+                });
+            }
+
+            path.push({
+                name: this.product.name,
+                url: this.product.url_pds,
+            });
+
+            return path;
+        },
+        category: function () {
+            if (Object.keys(this.breadcrumb).length > 0) {
+                return this.breadcrumb[Object.keys(this.breadcrumb)[Object.keys(this.breadcrumb).length - 2]].name;
+            }
+
+            return 'undefined';
+        },
+    },
+
+    mounted() {
+        $nuxt.$emit('product-detail-view', {
+            product: {
+                name: this.product.name_orig != null ? this.product.name_orig : this.product.name,
+                id: this.product.id,
+                sku: this.product.sku != null ? this.product.sku : 'undefined',
+                price: this.product.calculatedPrice.unitPrice,
+                brand: this.product.manufacturer_name != null ? this.product.manufacturer_name : 'undefined',
+                category: this.category,
+            },
+        });
     },
 
     head() {
@@ -68,62 +120,8 @@ export default {
                 { hid: 'robots', name: 'robots', content: this.product.meta_robots },
                 { hid: 'og:type', name: 'og:type', content: 'product' },
             ],
-            script: [{ json: this.structuredData, type: 'application/ld+json' }],
+            script: [{ json: this.structuredDataProduct, type: 'application/ld+json' }],
         };
-    },
-
-    computed: {
-        structuredData: function () {
-            if (this.product === null) {
-                return {};
-            }
-
-            return {
-                '@context': 'http://schema.org',
-                '@type': 'Product',
-                'name': this.product.name,
-                'image': this.product.media.url,
-                'description': this.product.description,
-                'sku': this.product.sku,
-                'brand': {
-                    '@type': 'Thing',
-                    'name': this.product.manufacturer_name,
-                },
-                'mpn': this.product.sku,
-                'offers': {
-                    '@type': 'Offer',
-                    'url': this.$config.appBaseUrl.trim() + '/' + this.product.url_pds,
-                    'priceCurrency': this.priceCurrency,
-                    'price': this.product.final_price_item.display_price_brutto,
-                    'itemCondition': 'https://schema.org/NewCondition',
-                    'availability': this.product.stock_item.is_in_stock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
-                },
-                // More structured data...
-            };
-        },
-        breadcrumb: function () {
-            let path = [];
-
-            if (this.data.breadcrumb != null && Object.keys(this.data.breadcrumb).length > 0) {
-                Object.keys(this.data.breadcrumb).forEach((key) => {
-                    path.push({
-                        name: this.data.breadcrumb[key].name,
-                        url: this.data.breadcrumb[key].path,
-                    });
-                });
-            }
-
-            path.push({
-                name: this.product.name,
-                url: this.product.url_pds,
-            });
-
-            return path;
-        },
-    },
-
-    created() {
-        this.product = mappingProduct(this.data);
     },
 };
 </script>
