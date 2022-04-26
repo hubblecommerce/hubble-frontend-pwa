@@ -1,6 +1,6 @@
 <template>
     <div :class="elementClass">
-        <lazy-product-detail-crosssellings :cross-sellings="crossSellings"  />
+        <lazy-product-detail-crosssellings v-if="crossSellings != null" :cross-sellings="crossSellings"  />
     </div>
 </template>
 
