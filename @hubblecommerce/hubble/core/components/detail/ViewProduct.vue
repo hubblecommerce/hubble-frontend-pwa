@@ -36,9 +36,27 @@
 
 <script>
 import { mappingProduct } from '@/utils/api-mapping-helper';
+import useRichSnippets from '@/composables/useRichSnippets';
+import { useContext } from '@nuxtjs/composition-api';
 
 export default {
     name: 'ViewProduct',
+
+    setup(props) {
+        const product = mappingProduct(props.data);
+        let loadCrosssellings = false;
+
+        const { $config } = useContext();
+
+        const { getStructuredDataProduct } = useRichSnippets();
+        let structuredData = getStructuredDataProduct(product, $config);
+
+        return {
+            product,
+            loadCrosssellings,
+            structuredData
+        };
+    },
 
     props: {
         data: {
@@ -47,42 +65,7 @@ export default {
         },
     },
 
-    data() {
-        return {
-            product: null,
-            loadCrosssellings: false,
-        };
-    },
-
     computed: {
-        structuredData: function () {
-            if (this.product === null) {
-                return {};
-            }
-
-            return {
-                '@context': 'http://schema.org',
-                '@type': 'Product',
-                'name': this.product.name,
-                'image': this.product.media.url,
-                'description': this.product.description,
-                'sku': this.product.sku,
-                'brand': {
-                    '@type': 'Thing',
-                    'name': this.product.manufacturer_name,
-                },
-                'mpn': this.product.sku,
-                'offers': {
-                    '@type': 'Offer',
-                    'url': this.$config.appBaseUrl.trim() + '/' + this.product.url_pds,
-                    'priceCurrency': this.priceCurrency,
-                    'price': this.product.final_price_item.display_price_brutto,
-                    'itemCondition': 'https://schema.org/NewCondition',
-                    'availability': this.product.stock_item.is_in_stock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
-                },
-                // More structured data...
-            };
-        },
         breadcrumb: function () {
             let path = [];
 
@@ -108,11 +91,7 @@ export default {
             }
 
             return 'undefined';
-        }
-    },
-
-    created() {
-        this.product = mappingProduct(this.data);
+        },
     },
 
     mounted() {
@@ -188,7 +167,7 @@ export default {
                 { hid: 'robots', name: 'robots', content: this.product.meta_robots },
                 { hid: 'og:type', name: 'og:type', content: 'product' },
             ],
-            script: [{ json: this.structuredData, type: 'application/ld+json' }],
+            script: [{ json: this.structuredDataProduct, type: 'application/ld+json' }],
         };
     },
 };
