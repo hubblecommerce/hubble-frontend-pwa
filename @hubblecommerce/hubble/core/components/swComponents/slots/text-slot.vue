@@ -1,5 +1,5 @@
 <template>
-    <div :class="[elementClass, { 'has-vertical-alignment': verticalAlign, 'is-mapped': isMapped }]">
+    <div :class="[elementClass, { 'has-vertical-alignment': verticalAlign, 'has-data-mapping': hasProductDataMapping }]">
         <template v-if="verticalAlign">
             <div class="cms-element-alignment" :class="verticalAlign" v-html="rawHtml" />
         </template>
@@ -18,7 +18,7 @@ export default {
     mixins: [slotMixins],
 
     computed: {
-        isMapped() {
+        hasProductDataMapping() {
             return this.content && this.content.config && this.content.config.content && this.content.config.content.source === 'mapped';
         },
         rawHtml() {
@@ -53,7 +53,7 @@ export default {
         flex-grow: 1;
     }
 
-    .cms-block-text-on-image &.is-mapped {
+    .cms-block-text-on-image &.has-data-mapping {
         color: white;
         text-align: center;
         font-size: 30px;
