@@ -74,8 +74,8 @@ export default {
     async mounted() {
         if (!this.crossSellings && this.productId !== '') {
             try {
-                const xSellResponse = await this.fetchCrossSeelings();
-                this.items = xSellResponse.data;
+                const crossSellingResponse = await this.fetchCrossSellings();
+                this.items = crossSellingResponse.data;
             } catch (e) {
                 console.log(e);
             }
@@ -91,7 +91,7 @@ export default {
     },
 
     methods: {
-        fetchCrossSeelings: async function () {
+        fetchCrossSellings: async function () {
             try {
                 return await new ApiClient(this.$config).apiCall({
                     action: 'post',
