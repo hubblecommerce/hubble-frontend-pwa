@@ -101,6 +101,8 @@ export default {
     }
 
     &.is--full-width {
+        overflow: hidden;
+
         .cms-element-alignment {
             &::before,
             &::after {
