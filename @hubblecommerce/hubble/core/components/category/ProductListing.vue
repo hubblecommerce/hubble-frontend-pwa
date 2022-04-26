@@ -30,7 +30,7 @@ export default {
 </script>
 
 <style lang="scss">
-$product-listing-gutter: 10px;
+$product-listing-gutter: 11px;
 
 .listing-wrp {
     position: relative;

@@ -10,13 +10,5 @@ import { slotMixins } from '../helper';
 export default {
     name: 'ExtendedLinkSlot',
     mixins: [slotMixins],
-    props: {
-        content: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
-    computed: {
-    },
 };
 </script>

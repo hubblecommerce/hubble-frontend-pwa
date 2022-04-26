@@ -11,12 +11,6 @@ export default {
 
     mixins: [slotMixins],
 
-    props: {
-        content: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
     computed: {
         getVideoUrl() {
             return `https://www.youtube-nocookie.com/embed/${this.content.config.videoID.value}?rel=0&${this.getAutoPlay}${this.getLoop}${this.getShowControls}${this.getStart}${this.getEnd}disablekb=1`;
@@ -45,3 +39,32 @@ export default {
     },
 };
 </script>
+
+<style lang="scss">
+.cms-element-youtube-video {
+    position: relative;
+    width: 100%;
+
+    &.is--streched {
+        height: 100%;
+    }
+
+    &::before {
+        display: block;
+        content: '';
+        width: 100%;
+        padding-top: calc((9 / 16) * 100%);
+    }
+
+    &__video {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        border: 0 none;
+    }
+}
+</style>

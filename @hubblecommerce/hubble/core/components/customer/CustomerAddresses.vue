@@ -1,13 +1,13 @@
 <template>
     <div v-if="!isLoading" class="customer-addresses-wrp">
         <div v-if="differentShippingAddress" class="d-flex justify-content-between">
-            <div class="headline headline-3" v-text="'Billing Address'" />
+            <div class="headline headline-5" v-text="'Billing Address'" />
             <hbl-button v-if="!isGuest" class="button" @click.native="createAddress('billing')" v-text="'Create new address'" />
         </div>
 
-        <div v-else class="d-flex justify-content-between">
-            <div class="headline headline-3" v-text="'Your Address'" />
-            <hbl-button class="button" @click.native="createAddress('shipping')" v-text="'Add different shipping address'" />
+        <div v-else class="billing-address-actions">
+            <div class="headline headline-5" v-text="'Your Address'" />
+            <hbl-button class="btn-address-create" @click.native="createAddress('shipping')" v-text="'Add different shipping address'" />
         </div>
 
         <div class="billing-address-wrp">
@@ -29,7 +29,7 @@
             <div>
                 <span v-text="getCountryById(activeBillingAddress.countryId)" />
             </div>
-            <hbl-button class="button edit-address" @click.native="updateAddress(activeBillingAddress, 'billing')" v-text="'Edit'" />
+            <hbl-button class="button-link edit-address" @click.native="updateAddress(activeBillingAddress, 'billing')" v-text="'Edit'" />
         </div>
 
         <template v-if="differentShippingAddress">
@@ -171,13 +171,13 @@ export default {
 
             return 'Add billing address';
         },
-        isGuest: function() {
+        isGuest: function () {
             if (this.context.data != null) {
                 return this.context.data.customer.guest;
             }
 
             return null;
-        }
+        },
     },
 
     created() {
@@ -384,8 +384,22 @@ export default {
 .customer-addresses-wrp {
     margin-bottom: 20px;
 
-    .headline {
-        margin-bottom: 20px;
+    .billing-address-actions {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+
+        .btn-address-create {
+            padding: 0px;
+            color: $blue;
+            background: transparent;
+            font-size: 14px;
+            text-decoration: underline;
+            text-transform: none;
+            font-weight: normal;
+        }
     }
 
     .billing-address-wrp,
@@ -441,8 +455,8 @@ export default {
 
     .edit-address {
         position: absolute;
-        top: 20px;
-        right: 20px;
+        top: 0px;
+        right: 0px;
     }
 
     .link {

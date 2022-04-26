@@ -9,12 +9,6 @@ import { slotMixins } from '../helper';
 
 export default {
     name: 'SidebarFilterSlot',
-    mixins: [slotMixins],
-    props: {
-        content: {
-            type: Object,
-            default: () => ({})
-        }
-    }
+    mixins: [slotMixins]
 };
 </script>

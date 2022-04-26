@@ -1,15 +1,15 @@
 <template>
     <div class="product-detail-service-info-wrp">
         <div class="service-wrp">
-            <svg-icon icon="check" />
+            <svg-icon icon="truck" type="nostyle"/>
             <span v-text="'Available immediately, delivery time 2-5 working days'" />
         </div>
         <div class="service-wrp">
-            <svg-icon icon="check" />
+            <svg-icon icon="package" type="nostyle"/>
             <span v-text="'Free shipping & returns'" />
         </div>
         <div class="service-wrp">
-            <svg-icon icon="check" />
+            <svg-icon icon="repeat" type="nostyle"/>
             <span v-text="'100 days right to return'" />
         </div>
     </div>
@@ -38,6 +38,10 @@ export default {
         padding: 12px;
 
         border-bottom: 1px solid $border-color;
+
+        svg{
+            margin-right: 14px;
+        }
 
         &:last-child {
             border-bottom: 0;

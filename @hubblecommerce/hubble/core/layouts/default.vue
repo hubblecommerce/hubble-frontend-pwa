@@ -1,7 +1,9 @@
 <template>
     <div class="app">
         <noscript>Please enable JavaScript and refresh this page, to use this application.</noscript>
-
+        
+        <plugin-slot name="global-before-header" />
+        
         <header>
             <div class="nav-wrp container">
                 <the-logo />
@@ -189,6 +191,7 @@ export default {
 @import '~assets/scss/hubble/typography';
 @import '~assets/scss/hubble/icons';
 @import '~assets/scss/hubble/bootstrap-essentials';
+@import '~assets/scss/hubble/utils';
 @import '~assets/scss/hubble/elevation';
 
 .app {
@@ -285,7 +288,7 @@ main {
     header {
         position: fixed;
         margin: 0 auto;
-        width: 100vw;
+        width: 100%;
         z-index: 100;
     }
 
@@ -310,7 +313,7 @@ main {
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                margin: 0 10px;
+                margin: 0 6px;
                 cursor: pointer;
 
                 &:last-child {

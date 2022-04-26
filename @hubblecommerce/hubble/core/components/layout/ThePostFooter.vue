@@ -8,12 +8,10 @@
                             <a href="" target="_blank" rel="noopener">
                                 <div class="hidden-link-name">Visit us on Facebook</div>
                                 <img src="~/assets/icons/facebook.svg" alt="Facebook" />
-                                <i class="icon icon-facebook" />
                             </a>
                             <a href="" target="_blank" rel="noopener">
                                 <div class="hidden-link-name">Follow us on Instagram</div>
                                 <img src="~/assets/icons/instagram.svg" alt="Facebook" />
-                                <i class="icon icon-instagram1" />
                             </a>
                         </div>
                     </div>

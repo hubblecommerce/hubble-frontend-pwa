@@ -1,0 +1,132 @@
+@use 'sass:map';
+
+/*
+  mixin for creating classes
+*/
+$breakpoints: (
+  sm: 576px,
+  md: 768px,
+  lg: 1024px,
+  xl: 1200px,
+);
+
+@mixin create-util($property, $class, $values, $responsive: false) {
+    @each $key, $val in $values {
+        .#{$class}-#{$key} {
+            #{$property}: $val;
+        }
+    }
+
+    @if $responsive {
+      @each $bpKey, $bpVal in $breakpoints {
+        @each $key, $val in $values {
+            .#{$class}-#{$bpKey}-#{$key} {
+              @media (min-width: #{$bpVal}) {
+                #{$property}: $val;
+              }
+            }
+        }
+      }
+    }
+}
+
+/*
+  opacity
+*/
+$values: (
+    0: 0,
+    25: 0.25,
+    50: 0.5,
+    75: 0.75,
+    100: 1,
+);
+
+@include create-util('opacity', 'opacity', $values);
+
+/*
+  text-transform
+*/
+$values: (
+    none: none,
+    uppercase: uppercase,
+);
+
+@include create-util('text-transform', 'text-transform', $values);
+
+/*
+  display
+*/
+$values: (
+    none: none,
+    inline: inline,
+    inline-block: inline-block,
+    block: block,
+    grid: grid,
+    flex: flex,
+    inline-flex: inline-flex,
+);
+
+@include create-util('display', 'd', $values, $responsive: true);
+
+/*
+  justify-content
+*/
+$values: (
+    start: flex-start,
+    end: flex-end,
+    center: center,
+    around: space-around,
+    between: space-between,
+);
+
+@include create-util('justify-content', 'justify-content', $values);
+
+/*
+  align-items
+*/
+$values: (
+    start: flex-start,
+    end: flex-end,
+    center: center,
+    stretch: stretch,
+);
+
+@include create-util('align-items', 'align-items', $values);
+
+/*
+  height / width
+*/
+$values: (
+    auto: auto,
+    sm: 16rem,
+    md: 32rem,
+    lg: 48rem,
+    25: 25%,
+    50: 50%,
+    75: 75%,
+    100: 100%,
+);
+
+@include create-util('height', 'h', $values);
+@include create-util('width', 'w', $values);
+
+/*
+  min-height
+*/
+$values: (
+    none: none,
+    sm: 16rem,
+    md: 32rem,
+    lg: 48rem,
+);
+
+@include create-util('min-height', 'min-h', $values, $responsive: true);
+
+$values: (
+    25: 25vh,
+    50: 50vh,
+    75: 75vh,
+    100: 100vh,
+);
+
+@include create-util('min-height', 'min-vh', $values, $responsive: true);

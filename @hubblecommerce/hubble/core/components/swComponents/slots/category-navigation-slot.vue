@@ -4,8 +4,8 @@
             <ul class="category-navigation level-0">
                 <lazy-product-listing-sidebar-nav
                     v-for="item in dataItems"
-                    :key="item.id"
                     :id="item.id"
+                    :key="item.id"
                     :url="item.request_path"
                     :children="item.children"
                     :label="item.name"
@@ -25,13 +25,6 @@ export default {
     name: 'CategoryNavigationSlot',
 
     mixins: [slotMixins],
-
-    props: {
-        content: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
 
     data() {
         return {
@@ -68,5 +61,4 @@ export default {
 };
 </script>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>

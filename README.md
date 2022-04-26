@@ -48,7 +48,7 @@ git clone https://github.com/<YOUR-ACCOUNT-NAME>/hubble-frontend-pwa.git
 
 ``` js
 // ~/nuxt.config.js
-buildModules: [
+modules: [
     ['@hubblecommerce/hubble']
 ]
 ```
@@ -65,7 +65,6 @@ npm install
 # possible source parameters are:
 # api = hubble Api based on elastic search
 # sw = official Shopware 6 API (headless Channel)
-API_TYPE          = 'sw | api'
 API_SW_ACCESS_KEY = ''
 API_BASE_URL      = ''
 ```
@@ -79,13 +78,13 @@ npm run dev
 **9**: Tracking the original repository as a remote fork <br>
 This is especially important to keep the fork up to date to the original repository (upstream).
  ``` bash
-git remote add --track master upstream https://github.com/hubblecommerce/hubble-frontend-pwa.git
+git remote add --track dev upstream https://github.com/hubblecommerce/hubble-frontend-pwa.git
 git fetch upstream
  ```
 
 **10**: Create a new branch for the issue based on the upstream master branch
 ``` bash
-git checkout -b issue#<NUM> upstream/master
+git checkout -b issue#<NUM> upstream/dev
 ```
 
 **11**: Push changes to the code to the fork repository (specify issue ID)
@@ -99,16 +98,6 @@ git push -u origin issue#<NUM>
 Visit [Pull requests von hubble](https://github.com/hubblecommerce/hubble-frontend-pwa/pulls).
 You should se an automatic suggestion from Github to make a new pull request from the created branch `issue#<NUM>`. <br>
 Important! Specify dev as base branch and NOT master.
-
-## Release History
-* 1.3.0
-    * Refactored app to improve performance
-* 1.2.0
-    * Specified API to Shopware 6 store-api
-* 1.1.0
-    * Extracted the hubble core to nuxt module
-* 1.0.0
-    * The first proper release
 
 ## Meta
 

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="row">
         <div class="col-md-4">
             <div class="image-text-gallery-card">
                 <component :is="leftImageSlot" :content="getContentByPosition(content.slots, 'left-image')" />
@@ -28,12 +28,6 @@ export default {
 
     mixins: [blockMixins],
 
-    props: {
-        content: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
     computed: {
         leftImageSlot() {
             return this.getSlotByPosition(this.content.slots, 'left-image');
@@ -57,4 +51,10 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style lang="scss">
+.cms-block-image-text-gallery {
+    .image-text-gallery-card {
+        box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.2);
+    }
+}
+</style>

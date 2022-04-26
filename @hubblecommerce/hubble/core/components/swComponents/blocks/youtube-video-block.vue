@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="row">
         <div class="col-12">
             <component :is="getSlot" :content="getContentByPosition(content.slots, 'video')" />
         </div>
@@ -13,13 +13,6 @@ export default {
     name: 'YoutubeVideoBlock',
 
     mixins: [blockMixins],
-
-    props: {
-        content: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
 
     computed: {
         getSlot() {

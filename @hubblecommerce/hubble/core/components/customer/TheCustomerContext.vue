@@ -1,5 +1,5 @@
 <template>
-    <div class="search-context-wrapper">
+    <div class="customer-context-wrapper">
         <div class="container expand-content">
             <div class="row overlay-header">
                 <hbl-button class="button-icon" @click.native="hideOffcanvasAction">
@@ -27,9 +27,8 @@
 
                     <div class="register-form-wrp">
                         <div class="register-form">
-                            <div class="headline headline-3" v-text="'I am not having an account yet'" />
-                            <div class="subline">{{ 'Simply create a customer account in a few simple steps.' }}</div>
-                            <hbl-button class="button-primary" @click.native="goToRegister">
+                            <div class="headline headline-5" v-text="'I am not having an account yet'" />
+                            <hbl-button @click.native="goToRegister">
                                 {{ 'Register' }}
                             </hbl-button>
                         </div>
@@ -119,6 +118,20 @@ export default {
 @import '~assets/scss/hubble/variables';
 @import '~assets/scss/hubble/typography';
 
+.customer-context-wrapper {
+    .customer-login-form-wrp {
+        padding: 30px 25px;
+    }
+
+    .register-form-wrp {
+        padding: 0px 25px;
+
+        .register-form {
+            padding-top: 0px;
+        }
+    }
+}
+
 .register-form-wrp {
     .register-form {
         max-width: $form-max-width;
@@ -127,7 +140,7 @@ export default {
     }
 
     .headline {
-        margin-bottom: 15px;
+        margin-bottom: 20px;
     }
 
     .subline {

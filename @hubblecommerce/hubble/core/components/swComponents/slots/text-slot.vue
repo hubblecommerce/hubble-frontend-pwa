@@ -1,5 +1,5 @@
 <template>
-    <div :class="[elementClass, { 'has-vertical-alignment': verticalAlign }]">
+    <div :class="[elementClass, { 'has-vertical-alignment': verticalAlign, 'is-mapped': isMapped }]">
         <template v-if="verticalAlign">
             <div class="cms-element-alignment" :class="verticalAlign" v-html="rawHtml" />
         </template>
@@ -16,13 +16,11 @@ import { slotMixins } from '../helper';
 export default {
     name: 'TextSlot',
     mixins: [slotMixins],
-    props: {
-        content: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
+
     computed: {
+        isMapped() {
+            return this.content && this.content.config && this.content.config.content && this.content.config.content.source === 'mapped';
+        },
         rawHtml() {
             return this.content && this.content.data && this.content.data.content;
         },
@@ -44,3 +42,49 @@ export default {
     },
 };
 </script>
+
+<style lang="scss">
+.cms-element-text {
+    h2, h3, h4, h5, h6 {
+        margin-bottom: 20px;
+    }
+
+    .cms-element-alignment {
+        flex-grow: 1;
+    }
+
+    .cms-block-text-on-image &.is-mapped {
+        color: white;
+        text-align: center;
+        font-size: 30px;
+    }
+
+    .cms-block-center-text & {
+        padding: 30px;
+    }
+
+    .cms-block-image-text-bubble &,
+    .cms-block-image-text-row & {
+        padding-top: 20px;
+    }
+
+    .cms-block-image-text-gallery & {
+        padding: 20px;
+    }
+
+    .cms-block-text-on-image & {
+        padding: 30px;
+        align-items: center;
+        min-height: 240px;
+    }
+
+    .cms-block-text-on-image.container & {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .cms-block-image-text-cover & {
+        padding-top: 30px;
+    }
+}
+</style>

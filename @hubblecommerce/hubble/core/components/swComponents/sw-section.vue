@@ -1,5 +1,5 @@
 <template>
-    <div :class="[sectionType, sectionPadding, background]" class="cms-section" :style="getBackgroundStyles">
+    <div :class="[cssClass, sectionType, sectionPadding, background]" class="cms-section" :style="getBackgroundStyles">
         <div :class="[sectionClasses, sectionType, mobileSidebarBehavior, sizingMode, { container: sizingMode.boxed }]">
             <div class="cms-section-sidebar-sidebar-content">
                 <client-only>
@@ -13,8 +13,10 @@
                 <intersection-wrapper
                     v-for="cmsSlot in elementsSlots"
                     :key="cmsSlot._uniqueIdentifier"
-                    :count="count" :cms-slot="cmsSlot"
-                    :sizing-mode="sizingMode" />
+                    :count="count"
+                    :cms-slot="cmsSlot"
+                    :sizing-mode="sizingMode"
+                />
             </div>
         </div>
     </div>
@@ -39,6 +41,9 @@ export default {
     computed: {
         isBlock() {
             return this.content.blocks && this.content.blocks.length;
+        },
+        cssClass() {
+            return this.content.cssClass;
         },
         cmsSlots() {
             const key = this.isBlock ? 'blocks' : 'slots';
@@ -100,7 +105,7 @@ export default {
         getBackgroundStyles() {
             return {
                 backgroundColor: this.getBackgroundColor ? this.getBackgroundColor : null,
-                backgroundImage: this.getBackgroundMediaUrl ? `url(${this.getBackgroundMediaUrl})` : null,
+                backgroundImage: this.getBackgroundMediaUrl ? `url('${this.getBackgroundMediaUrl}')` : null,
                 backgroundSize: this.getBackgroundMediaMode ? this.getBackgroundMediaMode : null,
             };
         },
@@ -163,7 +168,7 @@ General styling for cms sections
 @import '~assets/scss/hubble/variables';
 
 .cms-section {
-    &:first-child{
+    &:first-child {
         margin-top: -$cms-block-margin;
     }
 

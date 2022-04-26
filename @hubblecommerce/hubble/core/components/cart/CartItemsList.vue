@@ -106,16 +106,28 @@ export default {
             setCart: 'modCart/setCart',
         }),
         removeItem: async function (item) {
-            let response = await new ApiClient(this.$config).apiCall({
-                action: 'delete',
-                endpoint: 'store-api/checkout/cart/line-item',
-                contextToken: this.contextToken,
-                data: {
-                    ids: [item.id],
-                },
-            });
+            try {
+                let response = await new ApiClient(this.$config).apiCall({
+                    action: 'delete',
+                    endpoint: 'store-api/checkout/cart/line-item',
+                    contextToken: this.contextToken,
+                    data: {
+                        ids: [item.id],
+                    },
+                });
+                
+                $nuxt.$emit('product-remove-from-cart', { product: {
+                    name: item.name_orig != null ? item.name_orig : 'undefined',
+                    id: item.id,
+                    sku: item.sku != null ? item.sku : 'undefined',
+                    price: item.final_price_item.display_price_brutto,
+                    quantity: item.qty,
+                } });
 
-            return this.$emit('items-list-changed', response);
+                return this.$emit('items-list-changed', response);
+            } catch (e) {
+                console.log(e);
+            }
         },
         formatPrice: function (price) {
             const formatter = new Intl.NumberFormat('de-DE', {
@@ -215,6 +227,7 @@ $hbl-cart-item-image-size-md: 100px;
             text-align: right;
             margin-bottom: 45px;
             cursor: pointer;
+            font-size: 14px;
 
             &.promotion {
                 margin-bottom: 0;
@@ -250,22 +263,23 @@ $hbl-cart-item-image-size-md: 100px;
     }
 
     .img-minicart {
-        max-width: $hbl-cart-item-image-size !important;
-        max-height: $hbl-cart-item-image-size !important;
+        max-width: $hbl-cart-item-image-size;
+        max-height: $hbl-cart-item-image-size;
     }
 
     .product-name {
-        @include font-size($text-font-sizes);
+        @include font-size($small-text-font-sizes);
         margin-bottom: 10px;
     }
 
     .selected-variants-wrp {
         padding: 0;
+        margin-bottom: 8px;
     }
 
     .selected-variants {
         list-style: none;
-        @include font-size($text-font-sizes);
+        @include font-size($small-text-font-sizes);
     }
 
     .product-price {
@@ -292,8 +306,37 @@ $hbl-cart-item-image-size-md: 100px;
 /* Tablet */
 @media (min-width: 768px) {
     .cart-item {
-        padding: 25px 0;
+        padding: 12px 0;
         margin: 0;
+    }
+}
+
+@media (min-width: 1024px) {
+    .cart-item {
+        .img-minicart {
+            max-width: $hbl-cart-item-image-size-md;
+            max-height: $hbl-cart-item-image-size-md;
+        }
+    }
+
+    .checkout-overview-wrp {
+        .minicart-wrapper {
+            .cart-items-list-wrp {
+                padding-left: 0px;
+                padding-right: 0px;
+
+                
+
+                .col-8 {
+                    padding-left: 0px;
+                    padding-right: 0px;
+
+                    .product-name {
+                        margin-bottom: 20px;
+                    }
+                }
+            }
+        }
     }
 }
 </style>
