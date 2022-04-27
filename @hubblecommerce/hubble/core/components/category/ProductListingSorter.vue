@@ -103,12 +103,12 @@ export default {
     order: 30;
 
     .hbl-select {
-        width: 170px;
+        width: 225px;
         margin: 0;
 
         .select-text {
             line-height: 32px;
-            font-size: $font-size-sm;
+            color: $dark-gray;
         }
     }
 }

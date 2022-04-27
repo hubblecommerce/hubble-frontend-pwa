@@ -57,7 +57,7 @@ export default {
 .price-box {
     display: flex;
     flex-direction: column;
-    margin-bottom: 20px;
+    margin-bottom: 8px;
 
     .calculated-prices {
         width: 100%;
@@ -111,7 +111,8 @@ export default {
     }
 
     .info {
-        font-size: 12px;
+        font-size: 14px;
+        color: $dark-gray;
     }
 }
 

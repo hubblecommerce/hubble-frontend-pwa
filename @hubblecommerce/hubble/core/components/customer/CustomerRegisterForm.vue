@@ -250,6 +250,10 @@ export default {
                     postData = Object.assign(postData, { shippingAddress: this.shippingAddress });
                 }
 
+                if (this.contextToken === null) {
+                    await this.fetchContext();
+                }
+
                 let response = await new ApiClient(this.$config).apiCall({
                     action: 'post',
                     endpoint: 'store-api/account/register',
@@ -272,6 +276,14 @@ export default {
                 this.errors.push(e.detail);
                 this.isLoading = false;
             }
+        },
+        fetchContext: async function () {
+            let response = await new ApiClient(this.$config).apiCall({
+                action: 'get',
+                endpoint: 'store-api/context',
+            });
+
+            this.setContextToken(response.data['token']);
         },
     },
 };

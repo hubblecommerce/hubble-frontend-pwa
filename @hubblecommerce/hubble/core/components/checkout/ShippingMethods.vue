@@ -1,6 +1,6 @@
 <template>
     <div v-if="!loading && !apiError" class="shipping-methods-wrp">
-        <div class="headline headline-3" v-text="'Shipping methods'" />
+        <div class="headline headline-5" v-text="'Shipping methods'" />
 
         <hbl-checkbox v-for="method in shippingMethods" v-if="method.active" :key="method.id" class="method-wrp">
             <input :id="'shipping-option-' + method.id" v-model="currentMethod" type="radio" :value="method.id" :disabled="processingCheckout" />
@@ -123,12 +123,11 @@ export default {
     margin-bottom: 30px;
 
     .headline {
-        margin-bottom: 20px;
+        margin-bottom: 10px;
     }
 
     .method-wrp {
         padding: 0 15px;
-        background: $background-light;
         border: 1px solid $border-color;
         margin-bottom: 5px;
 

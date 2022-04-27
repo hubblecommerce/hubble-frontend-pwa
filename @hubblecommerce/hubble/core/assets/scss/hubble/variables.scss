@@ -35,7 +35,7 @@ $font-size-xs: 12px !default;
 
 $border-radius: 0 !default;
 $header-height-mobile: 56px !default;
-$header-height-desktop: 72px !default;
+$header-height-desktop: 78px !default;
 $header-navigation-height-desktop: 46px !default;
 
 $base-padding: 10px !default;
@@ -47,13 +47,13 @@ $base-padding-xxl: $base-padding * 5 !default;
 
 $cms-block-margin: 40px;
 
-$form-max-width: 450px !default;
+$form-max-width: 570px !default;
 
 /* Bootstrap scss variables start */
 $container-max-widths: (
     sm: 768px,
     md: 1024px,
-    lg: 1200px,
+    lg: 1240px,
 ) !default;
 
 $grid-breakpoints: (

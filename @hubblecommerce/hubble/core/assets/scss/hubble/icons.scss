@@ -21,6 +21,12 @@
             fill: currentColor;
         }
     }
+
+    &.no-fill {
+        > svg {
+            fill: none;
+        }
+    }
     &.is-xs {
         width: 10px;
         height: 10px;

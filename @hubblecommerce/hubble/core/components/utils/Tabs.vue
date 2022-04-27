@@ -177,7 +177,7 @@ $tab-active-color: $secondary;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 5px 15px;
+            padding: 15px 26px;
             width: 50%;
 
             span {
@@ -199,7 +199,6 @@ $tab-active-color: $secondary;
         .tabs-component-item {
             cursor: pointer;
             font-size: 14px;
-            padding: 10px 15px;
         }
     }
 
@@ -261,6 +260,7 @@ $tab-active-color: $secondary;
                 .tab-content {
                     font-size: 16px;
                     line-height: 26px;
+                    margin-top: 30px;
                 }
             }
         }
