@@ -179,6 +179,14 @@ $gallery-height: 270px;
             height: $gallery-height !important;
             width: $gallery-width;
         }
+
+        .hooper-prev {
+            left: 5px;
+        }
+
+        .hooper-next {
+            right: 5px;
+        }
     }
 }
 </style>

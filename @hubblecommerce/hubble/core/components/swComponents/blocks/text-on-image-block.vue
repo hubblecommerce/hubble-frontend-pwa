@@ -1,9 +1,5 @@
 <template>
-    <div class="row">
-        <div class="col-12">
-            <component :is="getSlot" :content="getContentByPosition(content.slots, 'content')" />
-        </div>
-    </div>
+    <component :is="getSlot" :content="getContentByPosition(content.slots, 'content')" />
 </template>
 
 <script>
