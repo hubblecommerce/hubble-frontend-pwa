@@ -14,7 +14,9 @@
                             :class="{ 'is-active': activeImageIndex === index }"
                             @click="changeActiveImageToSelected(index)"
                         >
-                            <img :src="image.media.url" />
+                            <plugin-slot name="product-gallery-slide-preview" :data="{hooperData, index, medium: image}">
+                                <img :src="image.media.url" />
+                            </plugin-slot>
                         </button>
                     </slide>
 
@@ -30,8 +32,10 @@
                     :style="{ minHeight: getMinHeight }"
                     @slide="onUpdateMainSlider"
                 >
-                    <slide v-for="image in images" :key="image.media.id">
-                        <img :src="image.media.url" />
+                    <slide v-for="(image, index) in images" :key="image.media.id">
+                        <plugin-slot name="product-gallery-slide" :data="{ hooperData, index, medium: image}">
+                            <img :src="image.media.url" />
+                        </plugin-slot>
                     </slide>
 
                     <navigation v-if="images.length > 1" slot="hooper-addons" />
@@ -58,6 +62,8 @@ export default {
     data() {
         return {
             images: [],
+
+            hooperData: null,
 
             sliderSettings: {
                 keysControl: false,
@@ -118,6 +124,7 @@ export default {
             const i = slider.currentSlide;
 
             this.activeImageIndex = i;
+            this.hooperData = slider;
 
             if (this.$refs.preview) this.$refs.preview.slideTo(this.activeImageIndex);
         },
@@ -125,7 +132,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import '~assets/scss/hubble/variables';
 
 .cms-element-image-gallery {
@@ -144,6 +151,10 @@ export default {
         width: 100%;
         height: 100%;
         object-fit: cover;
+    }
+
+    .plugin-slot, .plugin-slot-entries {
+        height: 100%;
     }
 
     &__preview {

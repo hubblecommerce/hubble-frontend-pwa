@@ -105,7 +105,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import apiClient from '@/utils/api-client';
+import ApiClient from '@/utils/api-client';
 
 export default {
     name: 'Reviews',
@@ -186,7 +186,7 @@ export default {
 
     methods: {
         async getCustomerContext() {
-            let response = await new apiClient().apiCall({
+            let response = await new ApiClient(this.$config).apiCall({
                 action: 'get',
                 endpoint: 'store-api/context',
                 contextToken: this.contextToken,
@@ -239,7 +239,7 @@ export default {
                 email: this.customer.email,
             });
 
-            const formPost = await new apiClient().apiCall({
+            const formPost = await new ApiClient(this.$config).apiCall({
                 action: 'post',
                 endpoint: `store-api/product/${this.productId}/review`,
                 contextToken: this.contextToken,

@@ -15,7 +15,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import apiClient from '@/utils/api-client';
+import ApiClient from '@/utils/api-client';
 import { slotMixins } from '../helper';
 import NewsletterForm from '../../utils/NewsletterForm';
 import ContactForm from '../../utils/ContactForm';
@@ -56,7 +56,7 @@ export default {
     },
 
     async mounted() {
-        const salutationResponse = await new apiClient().apiCall({
+        const salutationResponse = await new ApiClient(this.$config).apiCall({
             endpoint: 'store-api/salutation',
         });
 

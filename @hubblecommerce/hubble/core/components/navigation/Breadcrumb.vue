@@ -1,5 +1,5 @@
 <template>
-    <div class="breadcrumb-wrp">
+    <div class="breadcrumb-wrp" :class="{ container: boxed }">
         <div class="breadcrumb">
             <ul class="row">
                 <li class="breadcrumb-item">
@@ -21,6 +21,10 @@ export default {
     name: 'Breadcrumb',
 
     props: {
+        boxed: {
+            type: Boolean,
+            default: false
+        },
         path: {
             required: true,
             type: Array,

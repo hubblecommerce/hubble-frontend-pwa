@@ -16,8 +16,8 @@
                         type="radio"
                         :name="group.id"
                         :value="option.id"
-                        @change="onChange($event)"
                         :disabled="isLoading"
+                        @change="onChange($event)"
                     />
                     <label
                         :for="option.id"
