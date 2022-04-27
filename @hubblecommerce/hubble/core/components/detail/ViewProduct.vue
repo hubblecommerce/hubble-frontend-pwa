@@ -120,7 +120,7 @@ export default {
                 { hid: 'robots', name: 'robots', content: this.product.meta_robots },
                 { hid: 'og:type', name: 'og:type', content: 'product' },
             ],
-            script: [{ json: this.structuredDataProduct, type: 'application/ld+json' }],
+            script: [{ json: this.structuredData, type: 'application/ld+json' }],
         };
     },
 };
