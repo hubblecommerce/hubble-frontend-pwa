@@ -44,6 +44,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import '~assets/scss/hubble/links';
+
 .cms-element-text {
     h2, h3, h4, h5, h6 {
         margin-bottom: 20px;
@@ -51,6 +53,10 @@ export default {
 
     div + div {
         margin-top: 10px;
+    }
+
+    div > a {
+        @include text-link;
     }
 
     .cms-element-alignment {

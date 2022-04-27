@@ -70,6 +70,7 @@ export default {
 
 <style lang="scss">
 @import '~assets/scss/hubble/variables';
+@import '~assets/scss/hubble/links';
 
 /*
 CMS blocks
@@ -92,13 +93,8 @@ specific styling for elements dependent on their parent block
         }
     }
 
-    p a, div > a {
-        text-decoration: underline;
-
-        &:hover,
-        &:focus {
-            text-decoration: none;
-        }
+    p a {
+        @include text-link;
     }
 
     hr {
