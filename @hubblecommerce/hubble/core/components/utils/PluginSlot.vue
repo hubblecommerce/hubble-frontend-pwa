@@ -1,11 +1,17 @@
 <template>
-    <div v-if="slotEntries != null">
-        <div v-for="slotEntry in slotEntries">
-            <component :is="slotEntry.componentName" v-bind="data" v-on="events" />
-        </div>
-    </div>
+    <div class="plugin-slot">
+        <template v-if="slotEntries != null && slotEntries.length">
+            <div v-for="slotEntry in slotEntries" class="plugin-slot-entries">
+                <component
+                    :is="slotEntry.componentName"
+                    v-bind="data"
+                    v-on="events" />
+            </div>
+        </template>
 
-    <div v-else class="empty-slot" />
+        <slot v-else-if="hasSlotContent" />
+        <div v-else class="empty-slot" />
+    </div>
 </template>
 
 <script>
@@ -50,6 +56,12 @@ export default {
     data() {
         return {
             slotEntries: null
+        }
+    },
+
+    computed: {
+        hasSlotContent() {
+            return this.$slots && this.$slots.default;
         }
     },
 

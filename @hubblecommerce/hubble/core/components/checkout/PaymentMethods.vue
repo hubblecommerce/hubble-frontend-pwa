@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="!loading && !apiError" class="payment-methods-wrp">
-            <div class="headline headline-3" v-text="'Payment'" />
+            <div class="headline headline-5" v-text="'Payment'" />
 
             <!-- Dynamic payment methods from api -->
             <div v-for="method in paymentMethods" v-if="method.active" :key="method.id" class="method-wrp">
@@ -18,7 +18,7 @@
                         <span class="description" v-text="method.description" />
                     </label>
 
-                    <plugin-slot name="checkout-payment-methods-method" :data="{method: method, contextToken: contextToken, currentMethod: currentMethod, currentMethodObj: currentMethodObj, showModal: showModal}" />
+                    <plugin-slot name="checkout-payment-methods-method" :events="events" :data="{method: method, contextToken: contextToken, currentMethod: currentMethod, currentMethodObj: currentMethodObj, showModal: showModal}" />
                 </hbl-checkbox>
             </div>
 
@@ -100,6 +100,7 @@ export default {
         watch(currentMethod, async (id) => {
             if (id === '') {
                 paymentError.value = 'Please choose a payment method.';
+                context.emit('payment-changed', {});
                 context.emit('payment-error', true);
                 return;
             }
@@ -194,12 +195,11 @@ export default {
     margin-bottom: 30px;
 
     .headline {
-        margin-bottom: 20px;
+        margin-bottom: 10px;
     }
 
     .method-wrp {
         padding: 0 15px;
-        background: $background-light;
         border: 1px solid $border-color;
         margin-bottom: 5px;
 

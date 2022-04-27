@@ -2,9 +2,9 @@
     <div>
         <div
             v-if="count != null && count >= heroSectionNumbers"
+            :id="cmsSlot._uniqueIdentifier"
             class="intersection-wrp"
             :class="{ loading: !showBlock }"
-            :id="cmsSlot._uniqueIdentifier"
         >
             <lazy-block v-if="showBlock" :content="cmsSlot" :sizing-mode="sizingMode" />
         </div>

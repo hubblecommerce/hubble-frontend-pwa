@@ -25,7 +25,7 @@ export default {
 
 .footer {
     background-color: $white;
-    width: 100vw;
+    width: 100%;
 
     .newsletter-box {
         .newsletter-headline {
@@ -104,7 +104,7 @@ export default {
             display: flex;
 
             img {
-                width: 25px;
+                width: 18px;
                 margin: 0 10px;
             }
         }
@@ -152,7 +152,7 @@ export default {
 
             .newsletter-subline {
                 margin: 0;
-                font-size: 14px;
+                font-size: 16px;
             }
 
             .text-wrp {
@@ -186,14 +186,14 @@ export default {
 
             .title {
                 font-weight: $font-weight-bold;
-                margin-bottom: 15px;
+                margin-bottom: 16px;
             }
 
             .links {
                 a {
                     display: block;
-                    font-size: 14px;
-                    line-height: 26px;
+                    font-size: 16px;
+                    line-height: 32px;
 
                     &:hover {
                         text-decoration: none;
@@ -219,6 +219,10 @@ export default {
             .logo {
                 margin: 0 0 0 auto;
             }
+        }
+
+        .post-footer-wrp {
+            margin-bottom: 140px;
         }
 
         &.hubble-light {

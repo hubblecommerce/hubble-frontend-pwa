@@ -11,7 +11,7 @@
                     <div class="items-wrp">
                         <client-only>
                             <div class="headline">
-                                <div class="headline-2" v-text="'Your Cart'" />
+                                <div class="headline-5" v-text="'Your Cart'" />
                             </div>
                             <cart-context :recalculate-cart="cartKey" :interactive="false" />
                         </client-only>
@@ -35,28 +35,36 @@
                 <payment-methods
                     :processing-checkout="processingCheckout"
                     :session-payment-method="paymentMethod.id"
-                    v-on:payment-changed="recalculateCart()"
+                    v-on:payment-changed="onPaymentChanged($event)"
                     v-on:processing="processingCheckout = $event"
                     v-on:payment-error="paymentError = $event"
                 />
             </div>
 
             <div class="checkout-actions-wrp">
-                <hbl-button class="button-primary checkout-btn" :disabled="processingCheckout" @click.native="placeOrder()">
-                    <span v-if="!processingCheckout">{{ 'Place Order' }}</span>
-                    <loader v-if="processingCheckout" />
-                </hbl-button>
+                <handle-place-order
+                    :current-payment-method="currentPaymentMethod"
+                    :payment-error="paymentError"
+                    :shipping-error="shippingError"
+                    :processing-checkout="processingCheckout"
+                    v-on="placeOrderHandleEvents"
+                />
+                <plugin-slot
+                    name="checkout-index-place-order-handle"
+                    :data="{
+                        currentPaymentMethod: currentPaymentMethod,
+                        paymentError: paymentError,
+                        shippingError: shippingError,
+                        processingCheckout: processingCheckout
+                    }"
+                    :events="placeOrderHandleEvents"
+                />
             </div>
-
-            <template v-for="error in errors">
-                <div class="error-message" v-text="error" />
-            </template>
         </div>
     </div>
 </template>
 
 <script>
-import { mapMutations, mapState } from 'vuex';
 import ApiClient from '@/utils/api-client';
 
 export default {
@@ -106,139 +114,25 @@ export default {
             showCart: false,
             shippingError: false,
             paymentError: false,
+            currentPaymentMethod: {},
             cartKey: 0, // Raise on every config change to trigger recalculate cart
-            errors: [],
+            placeOrderHandleEvents: {
+                'processing': (bool) => { this.processingCheckout = bool; }
+            }
         };
     },
 
-    computed: {
-        ...mapState({
-            contextToken: (state) => state.modSession.contextToken,
-        }),
-    },
-
     methods: {
-        ...mapMutations({
-            resetCart: 'modCart/resetCart',
-        }),
         recalculateCart: function () {
             this.cartKey += 1;
         },
         toggleCart: function () {
             return (this.showCart = !this.showCart);
         },
-        historyBack: function () {
-            this.$router.go(-1);
-        },
-        placeOrderCall: async function () {
-            return await new ApiClient(this.$config).apiCall({
-                action: 'post',
-                endpoint: 'store-api/checkout/order',
-                contextToken: this.contextToken,
-            });
-        },
-        handlePayment: async function (payload) {
-            let requiredData = {
-                orderId: payload.orderId,
-                finishUrl: this.$config.swPaymentFinishUrl + '?orderId=' + payload.orderId,
-                errorUrl: this.$config.swPaymentErrorUrl + '?orderId=' + payload.orderId,
-            };
-
-            const requestData = Object.assign(requiredData, payload.dataBag);
-
-            return await new ApiClient(this.$config).apiCall({
-                action: 'post',
-                endpoint: 'store-api/handle-payment',
-                contextToken: this.contextToken,
-                data: requestData,
-            });
-        },
-        placeOrder: async function () {
-            if (this.paymentError || this.shippingError) {
-                return;
-            }
-
-            // Start loading animation
-            this.processingCheckout = true;
-
-            let order;
-            let paymentResponse;
-
-            try {
-                // Place order
-                order = await this.placeOrderCall();
-
-                // Clear cart
-                this.resetCart();
-            } catch (err) {
-                this.processingCheckout = false;
-                this.errors.push(err.detail);
-                return false;
-            }
-
-            try {
-                // Get params of current route, for extra payment info. E.g. used by paypal express etc.
-                let dataBag = this.$router.currentRoute.query;
-
-                // Init payment
-                paymentResponse = await this.handlePayment({ orderId: order.data.id, dataBag: dataBag });
-
-                let productsArray = [];
-                order.data.lineItems.forEach((product) => {
-                    productsArray.push({
-                        name: product.label != null ? product.label : 'undefined',
-                        id: product.id,
-                        sku: product.payload.productNumber != null ? product.payload.productNumber : 'undefined',
-                        price: product.priceDefinition.price,
-                        quantity: product.quantity,
-                    });
-                });
-
-                $nuxt.$emit('checkout-order-placed', {
-                    purchase: {
-                        actionField: {
-                            id: order.data.orderNumber, // Transaction ID. Required for purchases and refunds.
-                            affiliation: order.data.salesChannelId,
-                            revenue: order.data.amountTotal, // Total transaction value (incl. tax and shipping)
-                            tax: order.data.amountTotal - order.data.amountNet,
-                            shipping: order.data.shippingTotal,
-                        },
-                        products: productsArray,
-                    },
-                });
-
-                if (paymentResponse.data.redirectUrl !== null) {
-                    this.processingCheckout = false;
-                    window.open(paymentResponse.data.redirectUrl, '_self');
-                } else {
-                    this.$router.push(
-                        {
-                            name: 'checkout-success',
-                            params: {
-                                order: order,
-                            },
-                        },
-                        () => {
-                            this.processingCheckout = false;
-                        }
-                    );
-                }
-            } catch (err) {
-                console.log(err);
-                // Redirect to error page
-                this.$router.push(
-                    {
-                        name: 'checkout-error',
-                        query: {
-                            orderId: order.data.id,
-                        },
-                    },
-                    () => {
-                        this.processingCheckout = false;
-                    }
-                );
-            }
-        },
+        onPaymentChanged: function (paymentMethod) {
+            this.recalculateCart();
+            this.currentPaymentMethod = paymentMethod;
+        }
     },
 
     head() {
@@ -266,23 +160,6 @@ export default {
 
     .register-options-wrp {
         padding: 20px 0;
-    }
-
-    .checkout-btn {
-        width: 100%;
-
-        &:disabled,
-        &[disabled] {
-            color: $text-primary;
-        }
-
-        .loader-wrp {
-            .lds-ring {
-                div {
-                    border-color: $secondary transparent transparent transparent !important;
-                }
-            }
-        }
     }
 }
 
@@ -315,7 +192,7 @@ export default {
         .register-options-wrp {
             order: 10;
             width: 560px;
-            padding: 40px 10px 0 0;
+            padding: 20px 10px 0 0;
 
             .customer-register-wrp {
                 max-width: 560px;

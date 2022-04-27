@@ -16,8 +16,8 @@
                         type="radio"
                         :name="group.id"
                         :value="option.id"
-                        @change="onChange($event)"
                         :disabled="isLoading"
+                        @change="onChange($event)"
                     />
                     <label
                         :for="option.id"
@@ -199,8 +199,8 @@ export default {
         .option-label {
             font-size: 14px;
             text-transform: capitalize;
-            margin-bottom: 10px;
-            font-weight: $font-weight-bold;
+            margin-bottom: 2px;
+            font-weight: bold;
         }
 
         .option-val-wrp {
@@ -212,18 +212,29 @@ export default {
 
             .option-val {
                 font-size: 14px;
-                margin: 0 4px 10px;
+                margin: 0 2px 10px;
                 padding: 0;
                 border: 1px solid $border-color;
                 background: #fff;
+                width: 38px;
+                height: 38px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                border-radius: 2px;
 
                 &:first-child {
                     margin-left: 2px;
                 }
 
                 &.active {
-                    border: 1px solid transparent;
-                    box-shadow: 0 0 0 2px #000;
+                    border: 1px solid $secondary;
+                    color: $secondary;
+                    box-shadow: 0 2px 2px 0 rgba(62,62,77,0.1), 0 3px 1px -2px rgba(62,62,77,0.07), 0 1px 5px 0 rgba(62,62,77,0.15);
+                    font-weight: bold;
+                    // box-shadow: 0 0 0 2px #000;
                 }
 
                 input {
@@ -232,7 +243,6 @@ export default {
 
                 label {
                     cursor: pointer;
-                    padding: 5px 10px;
                     width: 100%;
                 }
 
@@ -474,6 +484,7 @@ export default {
                 font-size: 14px;
                 min-width: 100px;
                 padding: 5px 0;
+                font-weight: normal;
             }
 
             .option-val-wrp {

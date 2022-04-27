@@ -12,7 +12,7 @@
                         <span
                             v-if="itemData.isNew"
                             class="product-badge badge-secondary"
-                            v-text="'New'"
+                            v-text="'new'"
                         />
                         <span
                             v-if="itemData.markAsTopseller"
@@ -257,7 +257,7 @@ export default {
 
         .sale-price {
             color: $error-accent;
-            margin-right: 10px;
+            margin-right: 8px;
         }
 
         .unit-price-wrp {
@@ -304,7 +304,7 @@ export default {
     }
 
     .product-price {
-        @include font-size($text-font-sizes);
+        @include font-size($h5-font-sizes);
         font-weight: $font-weight-bold;
         color: $text-primary;
         margin-bottom: 10px;
@@ -351,7 +351,7 @@ export default {
             margin-bottom: 5px;
         }
         .product-name {
-            margin-bottom: 32px;
+            margin-bottom: 14px;
         }
     }
 }

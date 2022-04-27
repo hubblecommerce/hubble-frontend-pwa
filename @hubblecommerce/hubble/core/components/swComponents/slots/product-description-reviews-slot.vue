@@ -1,12 +1,12 @@
 <template>
     <div :class="elementClass">
-        <tabs v-if="product">
+        <tabs v-if="getProduct">
             <tab name="Description">
-                <h3 v-text="product.name" />
-                <div v-text="product.description" />
+                <h3 v-text="getProduct.name" />
+                <div v-text="getProduct.description" />
             </tab>
             <tab name="Reviews" class="tab-reviews">
-                <reviews :reviews="reviews.elements" :product-id="product.id" :rating-average="ratingAverage" />
+                <reviews :reviews="reviews.elements" :product-id="getProduct.id" :rating-average="ratingAverage" />
             </tab>
         </tabs>
     </div>
@@ -21,7 +21,9 @@ export default {
     mixins: [slotMixins],
 
     computed: {
-        product() {
+        getProduct() {
+            if (this.product) return this.product;
+            
             return this.content && this.content.data && this.content.data.product && mappingProduct({ product: this.content.data.product });
         },
         reviews() {

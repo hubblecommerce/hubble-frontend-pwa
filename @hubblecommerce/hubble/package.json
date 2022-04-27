@@ -1,6 +1,6 @@
 {
     "name": "@hubblecommerce/hubble",
-    "version": "1.5.3",
+    "version": "1.5.6",
     "description": "PWA for eCommerce frameworks based on NuxtJs",
     "author": "hubble commerce",
     "license": "MIT",

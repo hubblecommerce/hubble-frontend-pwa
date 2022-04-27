@@ -1,19 +1,17 @@
 <template>
-    <div class="container">
-        <div class="promotion-wrp">
-            <h5 class="promotion-headline">Gutschein</h5>
+    <div class="promotion-wrp">
+        <h5 class="promotion-headline">Coupon</h5>
 
-            <form @submit.prevent="addPromotionCode()">
-                <hbl-input>
-                    <input id="promotionCode" v-model="promotionCode" type="text" name="promotionCode" placeholder="Promotion Code" />
-                    <hbl-button @click="addPromotionCode()">Speichern</hbl-button>
-                </hbl-input>
-            </form>
+        <form @submit.prevent="addPromotionCode()">
+            <hbl-input>
+                <input id="promotionCode" v-model="promotionCode" type="text" name="promotionCode" placeholder="Promotion Code" />
+                <hbl-button @click="addPromotionCode()">Save</hbl-button>
+            </hbl-input>
+        </form>
 
-            <template v-if="promotionErrors.length > 0" v-for="error in promotionErrors">
-                <div class="promotion-error-message" v-text="error" />
-            </template>
-        </div>
+        <template v-if="promotionErrors.length > 0" v-for="error in promotionErrors">
+            <div class="promotion-error-message" v-text="error" />
+        </template>
     </div>
 </template>
 
@@ -25,8 +23,8 @@ export default {
     data() {
         return {
             promotionErrors: [],
-            promotionCode: ''
-        }
+            promotionCode: '',
+        };
     },
     computed: {
         ...mapState({
@@ -34,7 +32,7 @@ export default {
         }),
     },
     methods: {
-        addPromotionCode: async function() {
+        addPromotionCode: async function () {
             this.promotionErrors = [];
 
             try {
@@ -59,28 +57,36 @@ export default {
                     },
                 });
 
-                console.log(response)
+                console.log(response);
                 this.$emit('promotion-code-added', response);
             } catch (e) {
                 console.log(e);
                 this.promotionErrors.push(e.detail);
             }
-        }
-    }
-}
+        },
+    },
+};
 </script>
 
 <style lang="scss" scoped>
 @import '~assets/scss/hubble/variables';
 
-.promotion-wrp {
-    padding: 30px 0 10px;
+.transition-expand-wrp {
+    .promotion-wrp {
+        padding: 30px 40px 10px;
+    }
+}
 
+.promotion-wrp {
+    padding-top: 30px;
+    width: 100%;
     .hbl-input-group {
         display: flex;
+        flex-direction: column;
 
         input {
             margin-right: 10px;
+            margin-bottom: 5px;
         }
 
         button {
@@ -89,7 +95,20 @@ export default {
     }
 }
 
-.promotion-headline{
+@media (min-width: 1024px) {
+    .promotion-wrp {
+        .hbl-input-group {
+            display: flex;
+            flex-direction: row;
+
+            input {
+                margin-bottom: 0px;
+            }
+        }
+    }
+}
+
+.promotion-headline {
     margin-bottom: 15px;
 }
 

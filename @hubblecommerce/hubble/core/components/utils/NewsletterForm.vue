@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import apiClient from '@/utils/api-client';
+import ApiClient from '@/utils/api-client';
 
 export default {
     name: 'NewsletterForm',
@@ -99,7 +99,7 @@ export default {
             });
 
             try {
-                let formPost = await new apiClient().apiCall({
+                let formPost = await new ApiClient(this.$config).apiCall({
                     action: 'post',
                     endpoint: 'store-api/newsletter/subscribe',
                     data: postData,

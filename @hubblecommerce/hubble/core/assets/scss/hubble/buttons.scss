@@ -3,24 +3,28 @@ $button-background-color: $gray;
 $button-border: none;
 $button-border-radius: 2px;
 
-$button-primary-color: $white;
+$button-primary-color: $blue;
 $button-primary-background-color: $primary;
 $button-primary-border: none;
 
-$button-secondary-color: $secondary;
-$button-secondary-background-color: $border-color;
+$button-secondary-color: $primary;
+$button-secondary-background-color: $secondary;
 $button-secondary-border: none;
 
 $button-checkout-color: $white;
 $button-checkout-background-color: $checkout;
 $button-checkout-border: none;
 
+$button-link-color: $darkest-gray;
+$button-link-background-color: transparent;
+$button-link-border: none;
+
 $button-success-color: $white;
 $button-success-background-color: $success-accent;
 $button-success-border: none;
 
 $button-font-size: 14px;
-$button-font-weight: 500;
+$button-font-weight: 600;
 $button-text-transform: uppercase;
 
 $button-line-height: 1.215;
@@ -152,6 +156,14 @@ button,
         }
     }
 
+    &.btn-link,
+    &.button-link {
+        color: $button-link-color;
+        background-color: $button-link-background-color;
+        border: $button-link-border;
+        text-decoration: underline;
+    }
+
     &.btn-success,
     &.button-success {
         color: $button-success-color;
@@ -264,6 +276,14 @@ button,
         &.button-checkout {
             &:hover {
                 background-color: darken($button-checkout-background-color, 5%);
+            }
+        }
+
+        &.btn-link,
+        &.button-link {
+            &:hover {
+                background-color: transparent;
+                text-decoration: underline;
             }
         }
 

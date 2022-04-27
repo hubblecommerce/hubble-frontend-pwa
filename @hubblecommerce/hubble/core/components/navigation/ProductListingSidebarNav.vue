@@ -31,9 +31,29 @@ export default {
 </script>
 
 <style lang="scss">
+@import '~assets/scss/hubble/variables';
+
 .category-navigation {
+    background-color: $light-gray;
+    list-style: none;
+
+    &.level-0 {
+        padding: 30px;
+    }
+    .category-navigation-link {
+        color: $darkest-gray;
+        font-weight: bold;
+    }
+    .nuxt-link-active {
+        color: $blue;
+    }
+
     &.level-2 {
         display: none;
+        .category-navigation-link {
+            font-weight: unset;
+            padding-left: 5px;
+        }
     }
 }
 

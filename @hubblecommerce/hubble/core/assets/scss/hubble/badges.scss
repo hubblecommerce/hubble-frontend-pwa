@@ -1,14 +1,14 @@
-$badge-font-size: 14px !default;
+$badge-font-size: 12px !default;
 $badge-font-weight: 700 !default;
 $badge-line-height: 1.2 !default;
 $badge-color: $white !default;
 $badge-bg: $primary !default;
-$badge-border-radius: 12px !default;
+$badge-border-radius: 2px !default;
 
 .product-badge {
     display: inline-block;
     min-width: 10px;
-    padding: 3px 10px;
+    padding: 5px 8px;
     font-size: $badge-font-size;
     font-weight: $badge-font-weight;
     line-height: $badge-line-height;
@@ -18,6 +18,7 @@ $badge-border-radius: 12px !default;
     vertical-align: middle;
     background-color: $badge-bg;
     border-radius: $badge-border-radius;
+    text-transform: uppercase;
 
     &.badge-primary {
         background: $primary;

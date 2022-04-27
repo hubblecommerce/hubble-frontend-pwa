@@ -8,7 +8,7 @@
             </tab>
             <tab class="register-tab" :name="'Register'">
                 <div class="customer-register-wrp">
-                    <div class="headline headline-3" v-text="'I am not having an account yet'" />
+                    <div class="headline headline-5" v-text="'I am not having an account yet'" />
                     <customer-register-form v-on:register-success="goToCheckout" />
                 </div>
             </tab>
@@ -22,8 +22,8 @@
 
                 <div class="col-12">
                     <div class="customer-register-wrp">
-                        <div class="headline headline-3" v-text="'I am not having an account yet'" />
-                        <hbl-button v-if="!showRegisterForm" class="button-primary" @click.native="toggleRegisterForm()">
+                        <div class="headline headline-5" v-text="'I am not having an account yet'" />
+                        <hbl-button v-if="!showRegisterForm" @click.native="toggleRegisterForm()">
                             {{ 'Register' }}
                         </hbl-button>
                     </div>
@@ -36,7 +36,7 @@
                         {{ 'Back' }}
                     </hbl-button>
 
-                    <div class="headline headline-3" v-text="'I am not having an account yet'" />
+                    <div class="headline headline-5" v-text="'I am not having an account yet'" />
 
                     <hbl-button v-if="!showRegisterForm" class="button-primary" @click.native="toggleRegisterForm()">
                         {{ 'Register' }}
@@ -101,9 +101,10 @@ export default {
     max-width: $form-max-width;
     margin: 0 auto;
     padding: 20px 0;
+    padding-top: 10px;
 
     .headline {
-        margin-bottom: 15px;
+        margin-bottom: 20px;
     }
 
     button {
