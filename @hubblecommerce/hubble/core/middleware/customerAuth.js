@@ -16,7 +16,7 @@ export default async function ({ app, store, redirect }) {
 
     // Fetch context for current contextToken to verify customer is logged in and not a guest
     try {
-        let response = await new ApiClient(this.$config).apiCall({
+        let response = await new ApiClient(app.$config).apiCall({
             action: 'get',
             endpoint: 'store-api/context',
             contextToken: contextToken,
