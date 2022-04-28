@@ -358,6 +358,7 @@ export default {
 
                 await this.setActiveAddressToContext(payload);
                 this.closeModal();
+                this.$emit('address-changed');
 
                 this.isLoading = false;
             } catch (e) {

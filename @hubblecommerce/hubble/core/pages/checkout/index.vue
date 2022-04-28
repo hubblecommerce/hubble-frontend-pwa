@@ -22,7 +22,7 @@
 
         <div class="register-options-wrp">
             <div class="checkout-configs-wrp">
-                <customer-addresses />
+                <customer-addresses v-on:address-changed="refreshPayments();" />
 
                 <shipping-methods
                     :processing-checkout="processingCheckout"
@@ -33,6 +33,7 @@
                 />
 
                 <payment-methods
+                    :key="paymentMethodComponentKey"
                     :processing-checkout="processingCheckout"
                     :session-payment-method="paymentMethod.id"
                     v-on:payment-changed="onPaymentChanged($event)"
@@ -116,6 +117,7 @@ export default {
             paymentError: false,
             currentPaymentMethod: {},
             cartKey: 0, // Raise on every config change to trigger recalculate cart
+            paymentMethodComponentKey: 0,
             placeOrderHandleEvents: {
                 'processing': (bool) => { this.processingCheckout = bool; }
             }
@@ -132,7 +134,10 @@ export default {
         onPaymentChanged: function (paymentMethod) {
             this.recalculateCart();
             this.currentPaymentMethod = paymentMethod;
-        }
+        },
+        refreshPayments: async function () {
+            this.paymentMethodComponentKey += 1;
+        },
     },
 
     head() {
