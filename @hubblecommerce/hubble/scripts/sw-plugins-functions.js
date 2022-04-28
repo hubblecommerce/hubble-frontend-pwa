@@ -145,7 +145,7 @@ async function createPluginConfig(pluginConfigs) {
                 Object.keys(pluginConfigs[pluginName].configuration).forEach((config) => {
                     Object.keys(pluginConfigs[pluginName].configuration[config]).forEach((configName) => {
                         // Skip secret and private keys by name to prevent to expose them to frontend
-                        if (configName.toLowerCase().indexOf('secret') === -1 && configName.toLowerCase().indexOf('private') === -1) {
+                        if (configName.toLowerCase().indexOf('secret') === -1 && configName.toLowerCase().indexOf('private') === -1 && configName.toLowerCase().indexOf('password') === -1) {
                             let parsedObject = {
                                 [camelCase(pluginName) + capitalizeFirstLetter(configName)]: pluginConfigs[pluginName].configuration[config][configName]
                             };
