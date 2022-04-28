@@ -151,6 +151,10 @@ export default {
         width: 100%;
         height: 100%;
         object-fit: cover;
+
+        .detail-wrp & {
+            object-fit: contain;
+        }
     }
 
     .plugin-slot, .plugin-slot-entries {
@@ -172,6 +176,11 @@ export default {
         height: 100%;
         padding: 0;
         border: 2px solid white;
+        background: transparent;
+
+        &:hover, &:focus {
+            background: transparent;
+        }
 
         &.is-active {
             border-color: $green;
