@@ -17,6 +17,14 @@
 [Documentation](https://docs.hubblecommerce.io/pwa/what/overview.html#features) |
 [Website](https://www.hubblecommerce.io/de)
 
+## Table of contents
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Contributing](#contributing)
+- [Support](#support)
+- [Stay updated](#stay-updated)
+- [Meta](#meta)
+
 ## Requirements
 - [Shopware >= 6.4.0](https://developer.shopware.com/docs/guides/installation)
 - [Shopware 6 PWA Plugin](https://github.com/elkmod/SwagShopwarePwa)
