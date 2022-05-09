@@ -78,6 +78,15 @@ npm start
 
 Specific instructions for pull requests can be found [here](https://docs.hubblecommerce.io/pwa/contribution/contributionpwa.html).
 
+## Support
+
+If you like the hubble PWA, feel free to contribute and spread the word on social media.
+Also don't forget to give us a star on github. 
+
+## Stay updated
+
+If you like to receive updates about updates and the latest releases just click on "watch" and select the information 
+you like to get noticed about.
 
 ## Meta
 
