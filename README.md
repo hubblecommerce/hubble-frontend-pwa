@@ -1,5 +1,5 @@
-#  
-
+<br>
+<br>
 <img src="https://docs.hubblecommerce.io/assets/images/hubblelogo.svg" style="height:50px" />
 
 # Headless E-Commerce Interface
@@ -46,10 +46,7 @@ modules: [
 ],
 ```
 
-::: warning
 Module have to be registered in **modules**, not **buildModules** to make sure runtime configurations work.
-:::
-
 
 3. Edit configs in .env file
 ```sh
