@@ -71,7 +71,7 @@ npm start
 
 ## Contributing
 
-Specific instructions for pull requests can be found [here](pwa/contribution/contributionpwa.md).
+Specific instructions for pull requests can be found [here](https://docs.hubblecommerce.io/pwa/contribution/contributionpwa.html).
 
 
 ## Meta
