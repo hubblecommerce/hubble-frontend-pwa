@@ -1,65 +1,81 @@
-# PWA for headless e-commerce
-> High performant, intuitive and easy to develop progressive web app to connect with the api of your e-commerce systems API based on [Nuxt.js](https://nuxtjs.org/).
+#  
 
-![GitHub package.json version](https://img.shields.io/npm/dm/@hubblecommerce/hubble)
-![GitHub contributors](https://img.shields.io/github/contributors/hubblecommerce/hubble-frontend-pwa)
-![PWA Shields](https://www.pwa-shields.com/1.0.0/series/classic/solid/gray.svg)
+<img src="https://docs.hubblecommerce.io/assets/images/hubblelogo.svg" style="height:50px" />
 
+# Headless E-Commerce Interface
+> Progressive Web App for your online store based on [Nuxt.js](https://nuxtjs.org/)
 
-## Demo
+- [x] An open source project
+- [x] Installable as a Nuxt.js Module
+- [x] Compatible with Shopware 6
+- [x] Covers all common e-commerce features
+- [x] Excellent performance and usability
+- [x] Toolbox / framework for creating your own shop frontend
 
-[demo.hubblestudio.io](https://demo.hubblestudio.io/)
-
-## Documentation
-
-[docs.hubblecommerce.io](https://docs.hubblecommerce.io/)
-
-## Contribution Guide PWA
-
-**1**: Create issue <br>
-Every change to the code and every pull request must be assigned to an issue.
-The issue ID created is required for the following steps.
-
-**2**: [Fork](https://docs.github.com/en/free-pro-team@latest/github/getting-started-with-github/fork-a-repo)
-the [hubble Repository](https://github.com/hubblecommerce/hubble-frontend-pwa) with your Github account.
-
-✔ Integrated to Shopware 6 and possible with Magento, Magento 2, xt:Commerce, etc.  
-✔ Contains all common pagetypes like: Category, Product Detail, Cart, Checkout, ...)  
-✔ Excellent Google Lighthouse results in all audits  
-✔ Toolbox / Boilerplate to create your own frontend
+## Requirements
+- [Shopware >= 6.4.0](https://developer.shopware.com/docs/guides/installation)
+- [Shopware 6 PWA Plugin](https://github.com/elkmod/SwagShopwarePwa)
+- [API Credentials](https://docs.shopware.com/en/shopware-6-en/settings/saleschannel#api-access) to your online store
+- Node >= v14.18.1
 
 ## Installation
 
-OS X & Linux:
+### Install from scratch including fully configured Nuxt.js project
 
-1. Install [NuxtJS](https://nuxtjs.org/guides/get-started/installation)
-2. Install hubble NuxtJs Module 
+Install via npx so everything is set up correctly and ready to use. The script prompts you to enter the
+[access data](https://docs.shopware.com/en/shopware-6-en/settings/saleschannel#api-access) for the api:
 ```sh
-npm i @hubblecommerce/hubble --save-dev
+npx @hubblecommerce/launcher <project-name>
 ```
-3. Add module to nuxt.config.js
+or enter your API url and key directly as additional parameters:
+```sh
+npx @hubblecommerce/launcher <project-name> <api-url> <api-key>
+```
+
+### Install to existing Nuxt.js project
+
+1. Install hubble NuxtJs Module
+```sh
+npm i @hubblecommerce/hubble
+```
+
+2. Add module to nuxt.config.js
 ```js
-buildModules: [
+modules: [
     ['@hubblecommerce/hubble']
-]
+],
 ```
-4. Edit configs in .env file
+
+::: warning
+Module have to be registered in **modules**, not **buildModules** to make sure runtime configurations work.
+:::
+
+
+3. Edit configs in .env file
 ```sh
-# API
-# Define api type:
-# possible source parameters are:
-# api = hubble Api based on elastic search
-# sw = official Shopware 6 API (headless Channel)
-API_TYPE          = 'sw | api'
 API_SW_ACCESS_KEY = ''
 API_BASE_URL      = ''
 ```
 
-## Development setup
+## Build modes
+
+### Development
 
 ```sh
 npm run dev
 ```
+
+### Production
+
+```sh
+npm run build
+npm start
+```
+
+## Contributing
+
+Specific instructions for pull requests can be found [here](pwa/contribution/contributionpwa.md).
+
 
 ## Meta
 
@@ -68,9 +84,3 @@ digital.manufaktur GmbH – hallo@digitalmanufaktur.com
 Distributed under the MIT license. See [LICENSE](https://github.com/hubblecommerce/hubble-frontend-pwa/blob/master/LICENSE.txt) for more information.
 
 [https://github.com/hubblecommerce/hubble-frontend-pwa](https://github.com/hubblecommerce/hubble-frontend-pwa)
-
-## Contributing
-
-Detailed instructions to do pull requests can be found here:
-[hubble Contribution Guide](https://docs.hubblecommerce.io/pwa/contribution/contributionpwa.html)
-
