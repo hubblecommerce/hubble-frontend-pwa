@@ -1,6 +1,6 @@
-#  
+<br>
 
-<img src="/assets/images/hubblelogo.svg" style="height:50px" />
+<img src="https://docs.hubblecommerce.io/assets/images/hubblelogo.svg" style="height:50px" />
 
 # Headless E-Commerce Interface
 > Progressive Web App for your online store based on [Nuxt.js](https://nuxtjs.org/)
