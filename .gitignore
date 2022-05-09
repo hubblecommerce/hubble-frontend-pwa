@@ -1,1 +1,7 @@
-/.idea
+/node_modules
+
+# IDE / Editor
+.idea
+
+# macOS
+.DS_Store
