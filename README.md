@@ -18,7 +18,7 @@
 [Website](https://www.hubblecommerce.io/de)
 
 ## Table of contents
-- [Requirements](#requirements)
+- [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Features](#features)
 - [Performance](#performance)
@@ -31,11 +31,9 @@
 - [Stay updated](#stay-updated)
 - [Meta](#meta)
 
-## Requirements
-- [Shopware >= 6.4.0](https://developer.shopware.com/docs/guides/installation)
-- [Shopware 6 PWA Plugin](https://github.com/elkmod/SwagShopwarePwa)
-- [API Credentials](https://docs.shopware.com/en/shopware-6-en/settings/saleschannel#api-access) to your online store
-- Node >= v14.18.1
+## Prerequisites
+This guide focuses on installing hubble PWA as a Nuxt.js module only,
+so before moving on, make sure you meet the [requirements](https://docs.hubblecommerce.io/pwa/what/requirements.html) first.
 
 ## Installation
 
@@ -72,6 +70,8 @@ Module have to be registered in **modules**, not **buildModules** to make sure r
 API_SW_ACCESS_KEY = ''
 API_BASE_URL      = ''
 ```
+
+Read more about where to get the credentials in the [supported e-commerce platforms](https://docs.hubblecommerce.io/pwa/what/requirements.html#supported-e-commerce-platforms) section.
 
 ## Build modes
 
