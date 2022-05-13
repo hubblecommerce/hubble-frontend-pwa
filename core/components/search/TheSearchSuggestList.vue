@@ -2,16 +2,8 @@
     <div class="search-suggest-list-wrp container">
         <div class="row">
             <div class="col-12">
-                <div v-if="categories.length > 0">
-                    <div class="headline" v-text="'Categories'" />
-
-                    <div v-for="(category, key) in categories" :key="key" class="elements-wrp">
-                        <nuxt-link :to="'/' + category.url_path" class="element" v-text="category.heading_title" />
-                    </div>
-                </div>
-
                 <div v-if="products.length > 0">
-                    <div class="headline" v-text="`Products (${products.length})`" />
+                    <div class="headline" v-text="`Products (${total})`" />
 
                     <div v-for="(product, key) in products" :key="key" class="elements-wrp">
                         <nuxt-link :to="product.url_pds" class="element">
@@ -22,7 +14,7 @@
                     </div>
                 </div>
 
-                <div v-if="categories.length <= 0 && products.length <= 0">
+                <div v-else>
                     <div class="headline" v-text="'No results found'" />
 
                     <div class="elements-wrp">
@@ -39,16 +31,15 @@ export default {
     name: 'TheSearchSuggestList',
 
     props: {
-        categories: {
-            type: Array,
-            required: false,
-            default: () => [],
-        },
         products: {
             type: Array,
             required: false,
             default: () => [],
         },
+        total: {
+            type: Number,
+            required: true,
+        }
     },
 
     methods: {
