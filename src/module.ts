@@ -1,4 +1,4 @@
-import { resolve, join, basename } from 'path'
+import { resolve, join, basename, extname } from 'path'
 import { fileURLToPath } from 'url'
 import { defineNuxtModule } from '@nuxt/kit'
 import { globby } from 'globby'
@@ -31,18 +31,20 @@ const asyncCopyDirs = async (sourceDirs, targetDir, options = {}) => {
 
 async function setDefaultRuntimeConfigs (nuxt) {
     try {
+        const currentFileExt = extname(__filename);
+
         // Get configs of configured platform
         const {
             defaultPublicRuntimeConfig,
             defaultPrivateRuntimeConfig
-        } = await import(`./runtime/platforms/${process.env.PLATFORM}/config`)
+        } = await import(`./runtime/platforms/${process.env.PLATFORM}/config${currentFileExt}`)
 
         // Merge default configs with configs set in nuxt.config.js
         nuxt.options.runtimeConfig.public = defu(nuxt.options.publicRuntimeConfig.public, defaultPublicRuntimeConfig)
         nuxt.options.runtimeConfig = defu(nuxt.options.runtimeConfig, defaultPrivateRuntimeConfig)
     } catch (e) {
         // eslint-disable-next-line no-console
-        console.error('Error on setting runtime configs, please make sure you set the correct platform in your .env')
+        console.error(e)
         throw Error
     }
 }
