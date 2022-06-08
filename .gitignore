@@ -1,7 +1,56 @@
-/node_modules
+# Dependencies
+node_modules
 
-# IDE / Editor
+# Logs
+*.log*
+
+# Temp directories
+.temp
+.tmp
+.cache
+
+# Yarn
+**/.yarn/cache
+**/.yarn/*state*
+
+# Generated dirs
+dist
+
+# Nuxt
+.nuxt
+.output
+.vercel_build_output
+.build-*
+.env
+.netlify
+
+# Env
+.env
+!playground/.env
+!__tests__/module/fixture/.env
+
+# Testing
+reports
+coverage
+*.lcov
+.nyc_output
+
+# VSCode
+.vscode
+
+# Intellij idea
+*.iml
 .idea
 
-# macOS
+# OSX
 .DS_Store
+.AppleDouble
+.LSOverride
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# hubble
+.hubble

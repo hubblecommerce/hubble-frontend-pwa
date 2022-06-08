@@ -1,14 +1,17 @@
 #!/usr/bin/env node
 
-const args = process.argv.slice(2);
+const args = process.argv.slice(2)
 
 try {
-    require(`@hubblecommerce/hubble/scripts/${args[0]}.js`);
+    import(`@hubblecommerce/hubble/bin/${args[0]}.js`)
 } catch (e) {
-    if(e.code === 'MODULE_NOT_FOUND') {
-        console.log(`Invalid argument: ${args[0]}`);
-        console.log('Please provide one of the scripts inside @hubblecommerce/hubble/scripts');
+    if (e.code === 'MODULE_NOT_FOUND') {
+        // eslint-disable-next-line no-console
+        console.log(`Invalid argument: ${args[0]}`)
+        // eslint-disable-next-line no-console
+        console.log('Please provide one of the scripts inside @hubblecommerce/hubble/bin')
     } else {
-        console.log(e.code);
+        // eslint-disable-next-line no-console
+        console.log(e.code)
     }
 }
