@@ -4,7 +4,6 @@ import { defineNuxtModule } from '@nuxt/kit'
 import { globby } from 'globby'
 import fse from 'fs-extra'
 import { defu } from 'defu'
-// eslint-disable-next-line import/default
 import chokidar from 'chokidar'
 
 const listAllDirs = dir => globby(`${dir}/*`, { onlyDirectories: true })
