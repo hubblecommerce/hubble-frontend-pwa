@@ -1,5 +1,5 @@
 <template>
-    <div>Product Detail Component auto imported by nuxt 5</div>
+    <div>Product Detail Component auto imported by nuxt</div>
 </template>
 
 <script>
