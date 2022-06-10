@@ -10,7 +10,6 @@
 </template>
 
 <script setup>
-import { useFoo } from '@/composables/useFoo'
 const foo = useFoo()
 
 const config = useRuntimeConfig()

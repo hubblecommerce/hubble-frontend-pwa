@@ -25,4 +25,3 @@ describe('hubble Nuxt.js module setup', async () => {
         expect(html).toContain('RuntimeConfig | meta.category.title: Category - Hubble Demo')
     })
 })
-

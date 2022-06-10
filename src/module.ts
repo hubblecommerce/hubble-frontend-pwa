@@ -1,8 +1,9 @@
-import { join, extname } from 'path'
+import { join, extname, resolve } from 'path'
 import { fileURLToPath } from 'url'
 import { defineNuxtModule, loadNuxtConfig } from '@nuxt/kit'
 import fse from 'fs-extra'
 import { defu } from 'defu'
+import { Import } from 'unimport'
 
 async function setDefaultRuntimeConfigs (nuxt) {
     try {
@@ -34,11 +35,79 @@ async function setPluginRuntimeConfigs (nuxt, pluginsConfigPath) {
     }
 }
 
+function checkForDuplicates (imports: Import[]) {
+    const uniqueValues = new Set(imports.map(v => v.name))
+    return uniqueValues.size < imports.length
+}
+
+function normalizeImports (imports: Import[], runtimeDir: string, rootDir: string) {
+    if (!checkForDuplicates(imports)) {
+        return false
+    }
+
+    const importsSet = new Set()
+
+    imports.forEach((item) => {
+        // check if the current is a duplicate
+        const isDuplicate: boolean = importsSet.has(item.name)
+
+        // if it's a duplicate, get all indexes of this duplicate by name
+        if (isDuplicate) {
+            const indexesOfDuplicates = []
+
+            for (let i = 0; i < imports.length; i++) {
+                if (imports[i].name === item.name) {
+                    indexesOfDuplicates.push(i)
+                }
+            }
+
+            // Create array of indexes with position based on priority
+            const sortedIndexes = []
+            indexesOfDuplicates.forEach((indexOfDuplicate) => {
+                if (imports[indexOfDuplicate].from.includes(join(runtimeDir, 'src/composables'))) {
+                    sortedIndexes.push({ index: indexOfDuplicate, position: 0 })
+                    return
+                }
+
+                if (imports[indexOfDuplicate].from.includes(join(runtimeDir, `platforms/${process.env.PLATFORM}/composables`))) {
+                    sortedIndexes.push({ index: indexOfDuplicate, position: 1 })
+                    return
+                }
+
+                if (imports[indexOfDuplicate].from.includes(join(rootDir, 'composables'))) {
+                    sortedIndexes.push({ index: indexOfDuplicate, position: 2 })
+                }
+            })
+
+            // sort array of indexes by position
+            sortedIndexes.sort(function (a, b) {
+                return a.position - b.position
+            })
+
+            // remove last index of sorted array so the rest can be deleted
+            const indexesToBeDeleted = sortedIndexes.slice(0, -1)
+
+            indexesToBeDeleted.forEach((index) => {
+                imports.splice(index.index, 1)
+            })
+
+            return
+        }
+
+        // add the current item to the Set
+        importsSet.add(item.name)
+
+        return isDuplicate
+    })
+
+    if (checkForDuplicates(imports)) {
+        normalizeImports(imports, runtimeDir, rootDir)
+    }
+}
+
 export interface ModuleOptions {
-  targetDirName: string,
   pluginsDirName: string,
-  pluginsConfigFileName: string,
-  rootSubDirBlacklist: string[]
+  pluginsConfigFileName: string
 }
 
 export default defineNuxtModule<ModuleOptions>({
@@ -54,10 +123,8 @@ export default defineNuxtModule<ModuleOptions>({
         }
     },
     defaults: {
-        targetDirName: '.hubble',
         pluginsDirName: 'shop-plugins',
-        pluginsConfigFileName: 'pluginConfig.json',
-        rootSubDirBlacklist: ['node_modules', '.hubble', '.nuxt', '.idea']
+        pluginsConfigFileName: 'pluginConfig.json'
     },
     async setup (options, nuxt) {
         if (process.env.PLATFORM == null || process.env.PLATFORM === '') {
@@ -66,11 +133,22 @@ export default defineNuxtModule<ModuleOptions>({
             return
         }
 
-        /*
-         * Use Nuxt extends to provide file based inheritance
-         * https://v3.nuxtjs.org/api/configuration/nuxt.config#extends
-         */
+        // Transpile runtime
+        const runtimeDir = fileURLToPath(new URL('./runtime', import.meta.url))
+        nuxt.options.build.transpile.push(runtimeDir)
 
+        // Auto import composables
+        nuxt.hook('autoImports:dirs', (dirs) => {
+            dirs.push(resolve(join(runtimeDir, 'platforms', process.env.PLATFORM), 'composables'))
+        })
+
+        // Normalize auto imported composables in order to the priority: runtime/src -> runtime/src/platform -> rootDir
+        nuxt.hook('autoImports:extend', (imports) => {
+            normalizeImports(imports, runtimeDir, nuxt.options.rootDir)
+        })
+
+        // Use Nuxt extends to provide file based inheritance
+        // https://v3.nuxtjs.org/api/configuration/nuxt.config#extends
         // Create a nuxt config based on project configs and set module as cwd
         const nuxtConfig = await loadNuxtConfig({
             name: 'nuxt',
@@ -83,16 +161,13 @@ export default defineNuxtModule<ModuleOptions>({
             }
         })
 
-        // Set normalized layers to current nuxt.options
+        // Set layers to current nuxt.options
         for (const layer of nuxtConfig._layers) {
             nuxt.options._layers.push(layer)
         }
 
-        /*
-         * Set default configs
-         */
-        const rootDir = nuxt.options.rootDir
-        const pluginsDir = join(rootDir, options.pluginsDirName)
+        // Set default configs
+        const pluginsDir = join(nuxt.options.rootDir, options.pluginsDirName)
         const pluginsConfigPath = join(pluginsDir, options.pluginsConfigFileName)
 
         await setDefaultRuntimeConfigs(nuxt)

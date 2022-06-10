@@ -4,13 +4,8 @@ export const getCart = () => {
         lineItems: [
             {
                 id: 123,
-                name: 'Product Name 1',
+                name: 'From Platform',
                 qty: 1
-            },
-            {
-                id: 234,
-                name: 'Product Name 2',
-                qty: 3
             }
         ]
     }

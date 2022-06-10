@@ -10,8 +10,6 @@
 </template>
 
 <script>
-import { getCart } from '../composables/getCart'
-
 export default {
     name: 'TestComponent',
 

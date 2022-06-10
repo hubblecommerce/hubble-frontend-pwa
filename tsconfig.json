@@ -1,5 +1,9 @@
 {
     "extends": "./playground/.nuxt/tsconfig.json",
     "module": "es2022",
-    "moduleResolution": "Node"
+    "moduleResolution": "Node",
+    "include": [
+        "__tests__/**/*",
+        "src/**/*"
+    ]
 }
