@@ -10,6 +10,9 @@
 </template>
 
 <script>
+import { ref } from 'vue'
+import { getCart } from '#imports'
+
 export default {
     name: 'TestComponent',
 

@@ -8,6 +8,8 @@
 </template>
 
 <script setup>
+import { useRuntimeConfig } from '#imports'
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const config = useRuntimeConfig().public
 </script>
