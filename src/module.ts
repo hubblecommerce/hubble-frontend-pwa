@@ -7,13 +7,11 @@ import { Import } from 'unimport'
 
 async function setDefaultRuntimeConfigs (nuxt) {
     try {
-        const currentFileExt = extname(__filename)
-
         // Get configs of configured platform
         const {
             defaultPublicRuntimeConfig,
             defaultPrivateRuntimeConfig
-        } = await import(`./runtime/platforms/${process.env.PLATFORM}/config${currentFileExt}`)
+        } = await import(`./runtime/platforms/${process.env.PLATFORM}/config${extname(import.meta.url)}`)
 
         // Merge default configs with configs set in nuxt.config.js
         nuxt.options.runtimeConfig.public = defu(nuxt.options.publicRuntimeConfig.public, defaultPublicRuntimeConfig)
