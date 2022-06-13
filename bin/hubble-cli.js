@@ -3,7 +3,11 @@
 const args = process.argv.slice(2)
 
 try {
-    import(`@hubblecommerce/hubble/bin/${args[0]}.js`)
+    if (args[0] === 'dev:sw') {
+        import(`../src/runtime/platforms/shopware/bin/${args[1]}.js`)
+    } else {
+        import(`${args[0]}.js`)
+    }
 } catch (e) {
     if (e.code === 'MODULE_NOT_FOUND') {
         // eslint-disable-next-line no-console

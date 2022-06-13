@@ -5,7 +5,7 @@
             Get Cart
         </button>
 
-        {{ cartData }}
+        <div v-text="cartData" />
     </div>
 </template>
 
@@ -19,8 +19,8 @@ export default {
     setup () {
         const cartData = ref({})
 
-        const onBtnClick = function () {
-            cartData.value = getCart()
+        const onBtnClick = async function () {
+            cartData.value = await getCart()
         }
 
         return { onBtnClick, cartData }
