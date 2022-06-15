@@ -5,25 +5,24 @@
             Get Cart
         </button>
 
-        <div v-text="cartData" />
+        <div v-text="cart" />
     </div>
 </template>
 
 <script>
-import { ref } from 'vue'
-import { getCart } from '#imports'
+import { useCart } from '#imports'
 
 export default {
     name: 'TestComponent',
 
     setup () {
-        const cartData = ref({})
+        const { cart, getCart } = useCart()
 
         const onBtnClick = async function () {
-            cartData.value = await getCart()
+            cart.value = await getCart()
         }
 
-        return { onBtnClick, cartData }
+        return { onBtnClick, cart }
     }
 }
 </script>

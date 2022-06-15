@@ -10,5 +10,8 @@ export default defineNuxtConfig({
         plugins: [
             eslintPlugin()
         ]
-    }
+    },
+    buildModules: [
+        '@pinia/nuxt'
+    ]
 })

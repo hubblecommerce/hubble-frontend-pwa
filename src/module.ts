@@ -170,5 +170,9 @@ export default defineNuxtModule<ModuleOptions>({
 
         await setDefaultRuntimeConfigs(nuxt)
         await setPluginRuntimeConfigs(nuxt, pluginsConfigPath)
+
+        // Set module configs
+        // TODO: add plinia to nuxt modules
+        // nuxt.options.buildModules.push(['@pinia/nuxt', { disableVuex: true }])
     }
 })

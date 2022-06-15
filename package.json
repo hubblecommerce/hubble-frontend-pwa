@@ -24,6 +24,7 @@
         "prepack": "nuxt-module-build",
         "dev": "nuxi dev playground",
         "dev:build": "nuxi build playground",
+        "dev:build:analyze": "nuxi analyze playground",
         "dev:prepare": "nuxt-module-build --stub && nuxi prepare playground && husky install",
         "test": "nuxi prepare __tests__/module/fixture && vitest",
         "coverage": "vitest run --coverage",
@@ -33,7 +34,9 @@
         "*.{js,vue}": "eslint --fix"
     },
     "dependencies": {
-        "@nuxt/kit": "^3.0.0-rc.3"
+        "@nuxt/kit": "^3.0.0-rc.3",
+        "@pinia/nuxt": "^0.1.9",
+        "pinia": "^2.0.14"
     },
     "devDependencies": {
         "@nuxt/module-builder": "latest",

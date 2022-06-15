@@ -4,6 +4,8 @@
     "moduleResolution": "Node",
     "include": [
         "__tests__/**/*",
-        "src/**/*"
+        "src/**/*",
+        "@pinia/nuxt",
+        "pinia",
     ]
 }
