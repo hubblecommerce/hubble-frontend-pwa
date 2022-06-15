@@ -1,8 +1,8 @@
 import { ref } from 'vue'
+import { Cart } from '@hubblecommerce/hubble/runtime/commons'
+import { useCartStore } from '@hubblecommerce/hubble/runtime/src/store/cart'
 import type { Cart as CartSw } from '../api-client/generated'
 import { CartShopware } from '../api-client/generated'
-import { useCartStore } from '../../../src/store/cart'
-import { Cart } from '../../../commons'
 
 function mapCart (cart: CartSw): Cart {
     return {
