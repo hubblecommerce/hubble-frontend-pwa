@@ -82,7 +82,9 @@ class ShopwareClient {
 
         await generate({
             input: specTargetLocation,
-            output: genTargetLocation
+            output: genTargetLocation,
+            request: fileURLToPath(new URL('../api-client/request.ts', import.meta.url)),
+            postfix: 'Shopware'
         })
     }
 }
