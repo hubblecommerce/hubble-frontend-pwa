@@ -8,7 +8,7 @@ import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 
-export class PaymentShippingService {
+export class PaymentShippingShopware {
 
     /**
      * Initiate a payment for an order

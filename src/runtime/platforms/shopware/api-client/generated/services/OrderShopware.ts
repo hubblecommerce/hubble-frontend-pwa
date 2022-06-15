@@ -11,7 +11,7 @@ import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 
-export class OrderService {
+export class OrderShopware {
 
     /**
      * Create an order from a cart

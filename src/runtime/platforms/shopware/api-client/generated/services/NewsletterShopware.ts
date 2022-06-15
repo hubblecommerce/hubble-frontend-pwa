@@ -5,7 +5,7 @@ import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 
-export class NewsletterService {
+export class NewsletterShopware {
 
     /**
      * Confirm a newsletter registration

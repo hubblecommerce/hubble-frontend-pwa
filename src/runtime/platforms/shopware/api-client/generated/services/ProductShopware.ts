@@ -15,7 +15,7 @@ import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 
-export class ProductService {
+export class ProductShopware {
 
     /**
      * Fetch cross-selling groups of a product

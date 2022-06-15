@@ -7,7 +7,7 @@ import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 
-export class StripePaymentService {
+export class StripePaymentShopware {
 
     /**
      * @param contentType Content type of the request

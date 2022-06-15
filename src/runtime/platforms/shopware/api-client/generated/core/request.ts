@@ -1,12 +1,21 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+// @ts-ignore
 import { ApiError } from './ApiError';
+// @ts-ignore
 import type { ApiRequestOptions } from './ApiRequestOptions';
+// @ts-ignore
 import type { ApiResult } from './ApiResult';
+// @ts-ignore
 import { CancelablePromise } from './CancelablePromise';
+// @ts-ignore
 import type { OnCancel } from './CancelablePromise';
+// @ts-ignore
 import type { OpenAPIConfig } from './OpenAPI';
+import { useRuntimeConfig } from '#imports'
+// @ts-ignore
+import { OpenAPI } from './OpenAPI'
 
 const isDefined = <T>(value: T | null | undefined): value is Exclude<T, null | undefined> => {
     return value !== undefined && value !== null;
@@ -275,6 +284,16 @@ const catchErrorCodes = (options: ApiRequestOptions, result: ApiResult): void =>
  * @throws ApiError
  */
 export const request = <T>(config: OpenAPIConfig, options: ApiRequestOptions): CancelablePromise<T> => {
+    const runtimeConfig = useRuntimeConfig()
+
+    OpenAPI.BASE = runtimeConfig.apiBaseUrl
+    OpenAPI.HEADERS = {
+        'sw-access-key': runtimeConfig.apiSwAccessKey
+    }
+
+    // @TODO: add context token if isset in auth composable?
+    // @TODO: how to add includes and associations?
+
     return new CancelablePromise(async (resolve, reject, onCancel) => {
         try {
             const url = getUrl(config, options);
