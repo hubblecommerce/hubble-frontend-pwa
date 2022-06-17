@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { Cart } from '@hubblecommerce/hubble/runtime/commons'
-import { useCartStore } from '@hubblecommerce/hubble/runtime/src/store/cart'
+import { useCartStore } from '@hubblecommerce/hubble/runtime/src/store/useCartStore'
 import type { Cart as CartSw } from '../api-client/generated'
 import { CartShopware } from '../api-client/generated'
 
@@ -11,6 +11,16 @@ function mapCart (cart: CartSw): Cart {
     }
 }
 
+async function getCart (): Promise<Cart> {
+    const response = await CartShopware.readCart()
+    const cartStore = useCartStore()
+    const mappedData = mapCart(response)
+
+    cartStore.setCartData(mappedData)
+
+    return mapCart(mappedData)
+}
+
 export const useCart = function () {
     const cartStore = useCartStore()
     const cart = ref(cartStore.data)
@@ -19,14 +29,4 @@ export const useCart = function () {
         cart,
         getCart
     }
-}
-
-const getCart = async (): Promise<Cart> => {
-    const response = await CartShopware.readCart()
-    const cartStore = useCartStore()
-    const mappedData = mapCart(response)
-
-    cartStore.setCartData(mappedData)
-
-    return mapCart(mappedData)
 }

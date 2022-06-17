@@ -1,8 +1,6 @@
 import { defineStore } from 'pinia'
 import { Cart } from '@hubblecommerce/hubble/runtime/commons'
 
-// useStore could be anything like useUser, useCart
-// the first argument is a unique id of the store across your application
 export const useCartStore = defineStore('cartStore', {
     state: () => {
         return {

@@ -4,6 +4,7 @@ import { defineNuxtModule, loadNuxtConfig } from '@nuxt/kit'
 import fse from 'fs-extra'
 import { defu } from 'defu'
 import { Import } from 'unimport'
+import { CookieOptions } from '#app'
 
 async function setDefaultRuntimeConfigs (nuxt) {
     try {
@@ -63,17 +64,26 @@ function normalizeImports (imports: Import[], runtimeDir: string, rootDir: strin
             const sortedIndexes = []
             indexesOfDuplicates.forEach((indexOfDuplicate) => {
                 if (imports[indexOfDuplicate].from.includes(join(runtimeDir, 'src/composables'))) {
-                    sortedIndexes.push({ index: indexOfDuplicate, position: 0 })
+                    sortedIndexes.push({
+                        index: indexOfDuplicate,
+                        position: 0
+                    })
                     return
                 }
 
                 if (imports[indexOfDuplicate].from.includes(join(runtimeDir, `platforms/${process.env.PLATFORM}/composables`))) {
-                    sortedIndexes.push({ index: indexOfDuplicate, position: 1 })
+                    sortedIndexes.push({
+                        index: indexOfDuplicate,
+                        position: 1
+                    })
                     return
                 }
 
                 if (imports[indexOfDuplicate].from.includes(join(rootDir, 'composables'))) {
-                    sortedIndexes.push({ index: indexOfDuplicate, position: 2 })
+                    sortedIndexes.push({
+                        index: indexOfDuplicate,
+                        position: 2
+                    })
                 }
             })
 
@@ -103,9 +113,15 @@ function normalizeImports (imports: Import[], runtimeDir: string, rootDir: strin
     }
 }
 
+interface SessionCookie {
+    name: string,
+    options: CookieOptions
+}
+
 export interface ModuleOptions {
-  pluginsDirName: string,
-  pluginsConfigFileName: string
+    pluginsDirName: string,
+    pluginsConfigFileName: string,
+    sessionCookie: SessionCookie
 }
 
 export default defineNuxtModule<ModuleOptions>({
@@ -122,7 +138,15 @@ export default defineNuxtModule<ModuleOptions>({
     },
     defaults: {
         pluginsDirName: 'shop-plugins',
-        pluginsConfigFileName: 'pluginConfig.json'
+        pluginsConfigFileName: 'pluginConfig.json',
+        sessionCookie: {
+            name: 'hubble-session-token',
+            options: {
+                maxAge: 60 * 60 * 24 * 30,
+                sameSite: 'lax',
+                path: '/'
+            }
+        }
     },
     async setup (options, nuxt) {
         if (process.env.PLATFORM == null || process.env.PLATFORM === '') {
@@ -170,6 +194,12 @@ export default defineNuxtModule<ModuleOptions>({
 
         await setDefaultRuntimeConfigs(nuxt)
         await setPluginRuntimeConfigs(nuxt, pluginsConfigPath)
+
+        // Set configs from module options
+        nuxt.options.runtimeConfig.public.sessionCookie = {
+            name: options.sessionCookie.name,
+            options: options.sessionCookie.options
+        }
 
         // Set module configs
         // TODO: add plinia to nuxt modules
