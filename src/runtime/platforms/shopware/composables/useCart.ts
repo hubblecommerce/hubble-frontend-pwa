@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import { Cart } from '@hubblecommerce/hubble/runtime/commons'
+import { Cart, IUseCart } from '@hubblecommerce/hubble/runtime/commons'
 import { useCartStore } from '@hubblecommerce/hubble/runtime/src/store/useCartStore'
 import type { Cart as CartSw } from '../api-client/generated'
 import { CartShopware } from '../api-client/generated'
@@ -21,7 +21,7 @@ async function getCart (): Promise<Cart> {
     return mapCart(mappedData)
 }
 
-export const useCart = function () {
+export const useCart = function (): IUseCart {
     const cartStore = useCartStore()
     const cart = ref(cartStore.data)
 

@@ -1,14 +1,7 @@
-import { Ref } from 'vue'
+import { IUsePlatform } from '@hubblecommerce/hubble/runtime/commons'
 import { useRuntimeConfig } from '#imports'
 import { storeToRefs } from 'pinia'
 import { useSessionStore } from '@hubblecommerce/hubble/runtime/src/store/useSessionStore'
-
-interface IUsePlatform {
-    apiUrl: string,
-    apiAuthToken: string,
-    sessionToken: Ref<string> | null
-    setSessionToken(token: string): void
-}
 
 export const usePlatform = function (): IUsePlatform {
     const runtimeConfig = useRuntimeConfig()
