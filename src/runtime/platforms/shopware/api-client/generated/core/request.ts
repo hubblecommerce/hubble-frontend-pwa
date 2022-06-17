@@ -13,7 +13,7 @@ import { CancelablePromise } from './CancelablePromise';
 import type { OnCancel } from './CancelablePromise';
 // @ts-ignore
 import type { OpenAPIConfig } from './OpenAPI';
-import { useRuntimeConfig } from '#imports'
+import { usePlatform } from '@hubblecommerce/hubble/runtime/platforms/shopware/composables/usePlatform'
 // @ts-ignore
 import { OpenAPI } from './OpenAPI'
 
@@ -284,14 +284,19 @@ const catchErrorCodes = (options: ApiRequestOptions, result: ApiResult): void =>
  * @throws ApiError
  */
 export const request = <T>(config: OpenAPIConfig, options: ApiRequestOptions): CancelablePromise<T> => {
-    const runtimeConfig = useRuntimeConfig()
+    const { apiUrl, apiAuthToken, sessionToken, setSessionToken } = usePlatform()
 
-    OpenAPI.BASE = runtimeConfig.apiBaseUrl
-    OpenAPI.HEADERS = {
-        'sw-access-key': runtimeConfig.apiSwAccessKey
+    let platformHeaders = {
+        'sw-access-key': apiAuthToken
     }
 
-    // @TODO: add context token if isset in auth composable?
+    if(sessionToken.value !== null) {
+        platformHeaders['sw-context-token'] = sessionToken.value
+    }
+
+    OpenAPI.BASE = apiUrl
+    OpenAPI.HEADERS = platformHeaders
+
     // @TODO: how to add includes and associations?
 
     return new CancelablePromise(async (resolve, reject, onCancel) => {
@@ -313,6 +318,12 @@ export const request = <T>(config: OpenAPIConfig, options: ApiRequestOptions): C
                     statusText: response.statusText,
                     body: responseHeader ?? responseBody,
                 };
+
+                if(responseBody != null) {
+                    if(responseBody.token != null) {
+                        setSessionToken(responseBody.token)
+                    }
+                }
 
                 catchErrorCodes(options, result);
 
