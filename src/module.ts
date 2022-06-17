@@ -1,10 +1,11 @@
 import { join, extname, resolve } from 'path'
 import { fileURLToPath } from 'url'
-import { defineNuxtModule, loadNuxtConfig } from '@nuxt/kit'
+import { defineNuxtModule, installModule, loadNuxtConfig } from '@nuxt/kit'
 import fse from 'fs-extra'
 import { defu } from 'defu'
 import { Import } from 'unimport'
 import { CookieOptions } from '#app'
+import { PiniaNuxtOptions } from '@pinia/nuxt'
 
 async function setDefaultRuntimeConfigs (nuxt) {
     try {
@@ -121,7 +122,8 @@ interface SessionCookie {
 export interface ModuleOptions {
     pluginsDirName: string,
     pluginsConfigFileName: string,
-    sessionCookie: SessionCookie
+    sessionCookie: SessionCookie,
+    piniaOptions: PiniaNuxtOptions
 }
 
 export default defineNuxtModule<ModuleOptions>({
@@ -146,7 +148,8 @@ export default defineNuxtModule<ModuleOptions>({
                 sameSite: 'lax',
                 path: '/'
             }
-        }
+        },
+        piniaOptions: { disableVuex: true }
     },
     async setup (options, nuxt) {
         if (process.env.PLATFORM == null || process.env.PLATFORM === '') {
@@ -158,6 +161,9 @@ export default defineNuxtModule<ModuleOptions>({
         // Transpile runtime
         const runtimeDir = fileURLToPath(new URL('./runtime', import.meta.url))
         nuxt.options.build.transpile.push(runtimeDir)
+
+        // Install pinia for store management
+        await installModule('@pinia/nuxt', { disableVuex: true })
 
         // Auto import composables
         nuxt.hook('autoImports:dirs', (dirs) => {
@@ -200,9 +206,5 @@ export default defineNuxtModule<ModuleOptions>({
             name: options.sessionCookie.name,
             options: options.sessionCookie.options
         }
-
-        // Set module configs
-        // TODO: add plinia to nuxt modules
-        // nuxt.options.buildModules.push(['@pinia/nuxt', { disableVuex: true }])
     }
 })
