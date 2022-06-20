@@ -1,7 +1,7 @@
 import { defineBuildConfig } from 'unbuild'
 
 export default defineBuildConfig({
-    declaration: true,
+    declaration: false,
     rollup: { cjsBridge: true },
     entries: [
         './src/module',
