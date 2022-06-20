@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { Cart } from '@hubblecommerce/hubble/commons'
+import { Cart } from '../../commons'
 
 export const useCartStore = defineStore('cartStore', {
     state: () => {

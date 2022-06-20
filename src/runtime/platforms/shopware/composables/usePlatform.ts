@@ -1,6 +1,6 @@
-import { IUsePlatform } from '@hubblecommerce/hubble/commons'
 import { useRuntimeConfig } from '#imports'
 import { storeToRefs } from 'pinia'
+import { IUsePlatform } from '../../../commons'
 import { useSessionStore } from '../../../src/store/useSessionStore'
 
 export const usePlatform = function (): IUsePlatform {

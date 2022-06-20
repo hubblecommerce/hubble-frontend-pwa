@@ -42,7 +42,6 @@
         "pinia": "^2.0.14"
     },
     "devDependencies": {
-        "@hubblecommerce/hubble": "file:.",
         "@nuxt/module-builder": "latest",
         "@nuxt/test-utils-edge": "^3.0.0-rc.3-27567768.c1f728e",
         "@nuxtjs/eslint-config-typescript": "^10.0.0",
