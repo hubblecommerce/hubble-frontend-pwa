@@ -1,6 +1,6 @@
 import { ref } from 'vue'
-import { Cart, IUseCart } from '@hubblecommerce/hubble/dist/runtime/commons'
-import { useCartStore } from '@hubblecommerce/hubble/dist/runtime/src/store/useCartStore'
+import { Cart, IUseCart } from '@hubblecommerce/hubble/commons'
+import { useCartStore } from '../../../src/store/useCartStore'
 import type { Cart as CartSw } from '../api-client/generated'
 import { CartShopware } from '../api-client/generated'
 

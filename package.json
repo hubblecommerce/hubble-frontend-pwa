@@ -1,6 +1,6 @@
 {
     "name": "@hubblecommerce/hubble",
-    "version": "2.0.0-alpha.6",
+    "version": "2.0.0-alpha.7",
     "description": "PWA for eCommerce frameworks based on NuxtJs",
     "author": "hubble commerce",
     "license": "MIT",
@@ -9,6 +9,9 @@
         ".": {
             "import": "./dist/module.mjs",
             "require": "./dist/module.cjs"
+        },
+        "./commons": {
+            "import": "./dist/runtime/commons/index.mjs"
         }
     },
     "main": "./dist/module.cjs",

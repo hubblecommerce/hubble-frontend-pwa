@@ -13,7 +13,7 @@ import { CancelablePromise } from './CancelablePromise';
 import type { OnCancel } from './CancelablePromise';
 // @ts-ignore
 import type { OpenAPIConfig } from './OpenAPI';
-import { usePlatform } from '@hubblecommerce/hubble/dist/runtime/platforms/shopware/composables/usePlatform'
+import { usePlatform } from '#imports'
 // @ts-ignore
 import { OpenAPI } from './OpenAPI'
 
