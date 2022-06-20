@@ -4,6 +4,9 @@ import { useCartStore } from '@hubblecommerce/hubble/runtime/src/store/useCartSt
 import type { Cart as CartSw } from '../api-client/generated'
 import { CartShopware } from '../api-client/generated'
 
+const loading = ref(false)
+const error = ref(false)
+
 function mapCart (cart: CartSw): Cart {
     return {
         name: cart.name,
@@ -12,13 +15,23 @@ function mapCart (cart: CartSw): Cart {
 }
 
 async function getCart (): Promise<Cart> {
-    const response = await CartShopware.readCart()
-    const cartStore = useCartStore()
-    const mappedData = mapCart(response)
+    error.value = false
+    loading.value = true
 
-    cartStore.setCartData(mappedData)
+    try {
+        const response = await CartShopware.readCart()
+        const mappedData = mapCart(response)
 
-    return mapCart(mappedData)
+        const cartStore = useCartStore()
+        cartStore.setCartData(mappedData)
+
+        loading.value = false
+        return mappedData
+    } catch (e) {
+        loading.value = false
+        error.value = e
+        return e
+    }
 }
 
 export const useCart = function (): IUseCart {
@@ -27,6 +40,8 @@ export const useCart = function (): IUseCart {
 
     return {
         cart,
-        getCart
+        getCart,
+        loading,
+        error
     }
 }

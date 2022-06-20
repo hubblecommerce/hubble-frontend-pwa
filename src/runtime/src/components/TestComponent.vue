@@ -11,7 +11,13 @@
 
         <div v-text="`Current session token: ${sessionToken}`" />
 
-        <div v-text="cart" />
+        <div v-if="loading">
+            Loading...
+        </div>
+        <div v-else-if="error">
+            {{ error }}
+        </div>
+        <div v-else v-text="cart" />
     </div>
 </template>
 
@@ -22,7 +28,7 @@ export default {
     name: 'TestComponent',
 
     setup () {
-        const { cart, getCart } = useCart()
+        const { cart, getCart, loading, error } = useCart()
         const { sessionToken, setSessionToken } = usePlatform()
 
         const onClickGetCart = async function () {
@@ -33,7 +39,14 @@ export default {
             setSessionToken(null)
         }
 
-        return { onClickGetCart, cart, sessionToken, onClickClearSession }
+        return {
+            onClickGetCart,
+            cart,
+            sessionToken,
+            onClickClearSession,
+            loading,
+            error
+        }
     }
 }
 </script>

@@ -3,5 +3,7 @@ import { Cart } from './Cart'
 
 export interface IUseCart {
     cart: Ref<Cart>,
-    getCart(): Promise<Cart>
+    getCart(): Promise<Cart>,
+    loading: Ref<boolean>,
+    error: Ref<boolean>
 }
