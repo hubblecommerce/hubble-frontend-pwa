@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { Session } from '@hubblecommerce/hubble/runtime/commons'
+import { Session } from '@hubblecommerce/hubble/dist/runtime/commons'
 import { useCookie, useRuntimeConfig } from '#app'
 
 export const useSessionStore = defineStore('sessionStore', {
