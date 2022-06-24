@@ -1,11 +1,12 @@
-import { ref } from 'vue'
+import { Ref, ref } from 'vue'
+import { usePlatform } from '#imports'
 import { Cart, IUseCart } from '../../../commons'
-import { useCartStore } from '../../../src/store/useCartStore'
 import type { Cart as CartSw } from '../api-client/generated'
 import { CartShopware } from '../api-client/generated'
 
-const loading = ref(false)
-const error = ref(false)
+const cart: Ref<Cart | null> = ref(null)
+const error: Ref<boolean> = ref(false)
+const loading: Ref<boolean> = ref(false)
 
 function mapCart (cart: CartSw): Cart {
     return {
@@ -14,33 +15,52 @@ function mapCart (cart: CartSw): Cart {
     }
 }
 
-async function getCart (): Promise<Cart> {
-    error.value = false
-    loading.value = true
-
-    try {
-        const response = await CartShopware.readCart()
-        const mappedData = mapCart(response)
-
-        const cartStore = useCartStore()
-        cartStore.setCartData(mappedData)
-
-        loading.value = false
-        return mappedData
-    } catch (e) {
-        loading.value = false
-        error.value = e
-        return e
-    }
-}
-
 export const useCart = function (): IUseCart {
-    const cartStore = useCartStore()
-    const cart = ref(cartStore.data)
+    const { setSessionToken } = usePlatform()
+
+    async function getCart (): Promise<Cart> {
+        loading.value = true
+        error.value = false
+
+        try {
+            const response = await CartShopware.readCart()
+            const mappedData = mapCart(response)
+            cart.value = mappedData
+
+            if (response.token !== undefined) {
+                setSessionToken(response.token)
+            }
+
+            loading.value = false
+            return mappedData
+        } catch (e) {
+            loading.value = false
+            error.value = e
+            return e
+        }
+    }
+
+    async function deleteCart (): Promise<void> {
+        error.value = false
+        loading.value = true
+
+        try {
+            await CartShopware.deleteCart()
+
+            cart.value = null
+
+            loading.value = false
+        } catch (e) {
+            loading.value = false
+            error.value = e
+            return e
+        }
+    }
 
     return {
         cart,
         getCart,
+        deleteCart,
         loading,
         error
     }

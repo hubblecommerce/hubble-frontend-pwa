@@ -5,49 +5,34 @@
             Get Cart
         </button>
 
-        <button @click="onClickClearSession()">
-            Clear
+        <button @click="onClickDeleteCart()">
+            Delete Cart
         </button>
 
-        <div v-text="`Current session token: ${sessionToken}`" />
-
-        <div v-if="loading">
-            Loading...
-        </div>
-        <div v-else-if="error">
-            {{ error }}
-        </div>
-        <div v-else v-text="cart" />
+        {{ cart }}
     </div>
 </template>
 
-<script>
+<script setup>
 import { useCart, usePlatform } from '#imports'
 
-export default {
-    name: 'TestComponent',
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const { cart, getCart, deleteCart, loading, error } = useCart()
 
-    setup () {
-        const { cart, getCart, loading, error } = useCart()
-        const { sessionToken, setSessionToken } = usePlatform()
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const onClickGetCart = async function () {
+    await getCart()
+}
 
-        const onClickGetCart = async function () {
-            cart.value = await getCart()
-        }
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const onClickDeleteCart = async function () {
+    await deleteCart()
+}
 
-        const onClickClearSession = function () {
-            setSessionToken(null)
-        }
+const { sessionToken } = usePlatform()
 
-        return {
-            onClickGetCart,
-            cart,
-            sessionToken,
-            onClickClearSession,
-            loading,
-            error
-        }
-    }
+if (sessionToken.value) {
+    await getCart()
 }
 </script>
 
