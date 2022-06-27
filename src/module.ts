@@ -1,6 +1,6 @@
 import { join, extname, resolve } from 'path'
 import { fileURLToPath } from 'url'
-import { defineNuxtModule, installModule, loadNuxtConfig } from '@nuxt/kit'
+import { defineNuxtModule, findPath, installModule, loadNuxtConfig } from '@nuxt/kit'
 import fse from 'fs-extra'
 import { defu } from 'defu'
 import { Import } from 'unimport'
@@ -173,6 +173,11 @@ export default defineNuxtModule<ModuleOptions>({
         // Normalize auto imported composables in order to the priority: runtime/src -> runtime/src/platform -> rootDir
         nuxt.hook('autoImports:extend', (imports) => {
             normalizeImports(imports, runtimeDir, nuxt.options.rootDir)
+        })
+
+        // Add custom error page
+        nuxt.hook('app:resolve', (app) => {
+            app.errorComponent = resolve(join(runtimeDir, 'src/error.vue'))
         })
 
         // Use Nuxt extends to provide file based inheritance

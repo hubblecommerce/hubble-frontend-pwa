@@ -5,8 +5,6 @@ import type { Cart as CartSw } from '../api-client/generated'
 import { CartShopware } from '../api-client/generated'
 
 const cart: Ref<Cart | null> = ref(null)
-const error: Ref<boolean> = ref(false)
-const loading: Ref<boolean> = ref(false)
 
 function mapCart (cart: CartSw): Cart {
     return {
@@ -16,6 +14,8 @@ function mapCart (cart: CartSw): Cart {
 }
 
 export const useCart = function (): IUseCart {
+    const error: Ref<boolean> = ref(false)
+    const loading: Ref<boolean> = ref(false)
     const { setSessionToken } = usePlatform()
 
     async function getCart (): Promise<Cart> {

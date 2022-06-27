@@ -4,8 +4,6 @@ import { Customer, IUseCustomer } from '../../../commons'
 import { ProfileShopware, Customer as SwCustomer, LoginRegistrationShopware } from '../api-client/generated'
 
 const customer: Ref<Customer> = ref(null)
-const loading: Ref<boolean> = ref(false)
-const error: Ref<boolean> = ref(false)
 
 function mapCustomer (customer: SwCustomer): Customer {
     return {
@@ -16,6 +14,8 @@ function mapCustomer (customer: SwCustomer): Customer {
 }
 
 export const useCustomer = function (): IUseCustomer {
+    const loading: Ref<boolean> = ref(false)
+    const error: Ref<boolean> = ref(false)
     const { setSessionToken } = usePlatform()
 
     const isGuest = computed(() => {

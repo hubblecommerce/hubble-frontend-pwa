@@ -42,9 +42,9 @@ export type Category = {
     readonly updatedAt?: string;
     translated?: any;
     parent?: Category;
-    children?: Category;
+    children?: Array<Category>;
     media?: Media;
     cmsPage?: CmsPage;
-    seoUrls?: SeoUrl;
+    seoUrls?: Array<SeoUrl>;
 };
 
