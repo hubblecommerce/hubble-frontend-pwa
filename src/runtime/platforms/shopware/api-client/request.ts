@@ -16,6 +16,7 @@ import type { OpenAPIConfig } from './OpenAPI';
 import { usePlatform } from '#imports'
 // @ts-ignore
 import { OpenAPI } from './OpenAPI'
+import { throwError } from '#app'
 
 const isDefined = <T>(value: T | null | undefined): value is Exclude<T, null | undefined> => {
     return value !== undefined && value !== null;
@@ -222,7 +223,10 @@ export const sendRequest = async (
 
     onCancel(() => controller.abort());
 
-    return await fetch(url, request);
+    return await fetch(url, request).catch((error) => {
+        throwError('Network error')
+        return error
+    });
 };
 
 const getResponseHeader = (response: Response, responseHeader?: string): string | undefined => {
@@ -266,7 +270,13 @@ const catchErrorCodes = (options: ApiRequestOptions, result: ApiResult): void =>
         ...options.errors,
     }
 
-    const error = errors[result.status];
+    let error = errors[result.status];
+
+    const resultError = result.body?.errors?.find(element => element.status === result.status.toString())
+    if(resultError?.detail != null) {
+        error = resultError.detail
+    }
+
     if (error) {
         throw new ApiError(options, result, error);
     }
@@ -284,7 +294,7 @@ const catchErrorCodes = (options: ApiRequestOptions, result: ApiResult): void =>
  * @throws ApiError
  */
 export const request = <T>(config: OpenAPIConfig, options: ApiRequestOptions): CancelablePromise<T> => {
-    const { apiUrl, apiAuthToken, sessionToken, setSessionToken } = usePlatform()
+    const { apiUrl, apiAuthToken, sessionToken } = usePlatform()
 
     let platformHeaders = {
         'sw-access-key': apiAuthToken
@@ -296,8 +306,6 @@ export const request = <T>(config: OpenAPIConfig, options: ApiRequestOptions): C
 
     OpenAPI.BASE = apiUrl
     OpenAPI.HEADERS = platformHeaders
-
-    // @TODO: how to add includes and associations?
 
     return new CancelablePromise(async (resolve, reject, onCancel) => {
         try {
@@ -318,12 +326,6 @@ export const request = <T>(config: OpenAPIConfig, options: ApiRequestOptions): C
                     statusText: response.statusText,
                     body: responseHeader ?? responseBody,
                 };
-
-                if(responseBody != null) {
-                    if(responseBody.token != null) {
-                        setSessionToken(responseBody.token)
-                    }
-                }
 
                 catchErrorCodes(options, result);
 
