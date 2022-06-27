@@ -1,0 +1,55 @@
+From 42c0c725f0c73c22086175c4c8298c8337139e3c Mon Sep 17 00:00:00 2001
+From: Lukas Heinze <heinze@digitalmanufaktur.com>
+Date: Mon, 27 Jun 2022 14:15:23 +0200
+Subject: [PATCH] Created separated commit for changes to generated api client
+
+---
+ .../shopware/api-client/generated/core/ApiError.ts        | 8 ++++----
+ .../shopware/api-client/generated/models/Category.ts      | 4 ++--
+ 2 files changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/src/runtime/platforms/shopware/api-client/generated/core/ApiError.ts b/src/runtime/platforms/shopware/api-client/generated/core/ApiError.ts
+index 99d79299..c3da01fc 100644
+--- a/src/runtime/platforms/shopware/api-client/generated/core/ApiError.ts
++++ b/src/runtime/platforms/shopware/api-client/generated/core/ApiError.ts
+@@ -6,8 +6,8 @@ import type { ApiResult } from './ApiResult';
+ 
+ export class ApiError extends Error {
+     public readonly url: string;
+-    public readonly status: number;
+-    public readonly statusText: string;
++    public readonly statusCode: number;
++    public readonly statusMessage: string;
+     public readonly body: any;
+     public readonly request: ApiRequestOptions;
+ 
+@@ -16,8 +16,8 @@ export class ApiError extends Error {
+ 
+         this.name = 'ApiError';
+         this.url = response.url;
+-        this.status = response.status;
+-        this.statusText = response.statusText;
++        this.statusCode = response.status;
++        this.statusMessage = response.statusText;
+         this.body = response.body;
+         this.request = request;
+     }
+diff --git a/src/runtime/platforms/shopware/api-client/generated/models/Category.ts b/src/runtime/platforms/shopware/api-client/generated/models/Category.ts
+index 87f0428f..7cd10f08 100644
+--- a/src/runtime/platforms/shopware/api-client/generated/models/Category.ts
++++ b/src/runtime/platforms/shopware/api-client/generated/models/Category.ts
+@@ -42,9 +42,9 @@ export type Category = {
+     readonly updatedAt?: string;
+     translated?: any;
+     parent?: Category;
+-    children?: Category;
++    children?: Array<Category>;
+     media?: Media;
+     cmsPage?: CmsPage;
+-    seoUrls?: SeoUrl;
++    seoUrls?: Array<SeoUrl>;
+ };
+ 
+-- 
+2.33.1
+
