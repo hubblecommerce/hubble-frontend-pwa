@@ -63,5 +63,6 @@ export type Criteria = {
      * Perform groupings over certain fields
      */
     grouping?: Array<string>;
+    includes?: any;
 };
 
