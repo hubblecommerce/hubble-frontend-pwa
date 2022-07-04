@@ -6,7 +6,7 @@
 </template>
 
 <script setup lang="ts">
-import { throwError, useRoute } from '#app'
+import { throwError, clearError, useRoute } from '#app'
 import { usePage } from '#imports'
 
 const route = useRoute()

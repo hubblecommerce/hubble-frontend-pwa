@@ -25,6 +25,9 @@
                 <NuxtLink to="/customer/login">
                     Login
                 </NuxtLink>
+                <NuxtLink to="/navigation/19ca405790ff4f07aac8c599d43178686">
+                    404
+                </NuxtLink>
             </nav>
         </header>
         <main>

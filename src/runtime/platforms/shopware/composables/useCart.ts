@@ -23,12 +23,14 @@ export const useCart = function (): IUseCart {
         error.value = false
 
         try {
-            const response = await CartShopware.readCart()
-            const mappedData = mapCart(response)
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            const { data } = await CartShopware.readCart()
+            const mappedData = mapCart(data.value)
             cart.value = mappedData
 
-            if (response.token !== undefined) {
-                setSessionToken(response.token)
+            if (data.value.token !== undefined) {
+                setSessionToken(data.value.token)
             }
 
             loading.value = false

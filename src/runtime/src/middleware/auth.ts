@@ -1,18 +1,6 @@
-import { defineNuxtRouteMiddleware, NuxtApp, useNuxtApp, navigateTo } from '#app'
+import { defineNuxtRouteMiddleware, useNuxtApp, navigateTo } from '#app'
 import { usePlatform, useCustomer } from '#imports'
-
-function getRequestCookie (app: NuxtApp, cookieName: string): string | null {
-    const cookieHeader = app.ssrContext?.event.req.headers.cookie
-
-    let cookie = null
-    const value = `; ${cookieHeader}`
-    const parts = value.split(`; ${cookieName}=`)
-    if (parts.length === 2) {
-        cookie = parts.pop().split(';').shift()
-    }
-
-    return cookie
-}
+import { getRequestCookie } from '../../commons'
 
 export default defineNuxtRouteMiddleware(async () => {
     const app = useNuxtApp()
@@ -27,10 +15,15 @@ export default defineNuxtRouteMiddleware(async () => {
         return navigateTo('/customer/login')
     }
 
-    const { getCustomer, isGuest } = useCustomer()
+    const { getCustomer, isGuest, customer } = useCustomer()
 
     try {
-        await getCustomer()
+        // @ts-ignore
+        const { refresh } = await getCustomer()
+
+        if (customer !== null) {
+            refresh()
+        }
 
         if (isGuest.value) {
             throw new Error('Guests are not authorized')

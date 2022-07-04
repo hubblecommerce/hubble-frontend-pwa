@@ -47,6 +47,9 @@
         ],
         "no-trailing-spaces": [
             "off"
+        ],
+        "@typescript-eslint/ban-ts-comment": [
+            "off"
         ]
     }
 }

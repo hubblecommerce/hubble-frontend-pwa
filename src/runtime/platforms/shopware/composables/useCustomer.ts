@@ -1,5 +1,7 @@
 import { Ref, ref, computed } from 'vue'
 import { usePlatform } from '#imports'
+import { FetchResult } from '#app'
+import { FetchRequest } from 'ohmyfetch'
 import { Customer, IUseCustomer } from '../../../commons'
 import { ProfileShopware, Customer as SwCustomer, LoginRegistrationShopware } from '../api-client/generated'
 
@@ -25,17 +27,18 @@ export const useCustomer = function (): IUseCustomer {
         return true
     })
 
-    async function getCustomer (): Promise<Customer> {
+    async function getCustomer (): Promise<FetchResult<FetchRequest>> {
         loading.value = true
         error.value = false
 
         try {
-            const response = await ProfileShopware.readCustomer()
-            const mappedCustomer = mapCustomer(response)
+            // @ts-ignore
+            const { data, pending, refresh } = await ProfileShopware.readCustomer()
+            const mappedCustomer = mapCustomer(data.value)
             customer.value = mappedCustomer
 
             loading.value = false
-            return mappedCustomer
+            return { data, pending, refresh }
         } catch (e) {
             loading.value = false
             error.value = e
@@ -48,12 +51,13 @@ export const useCustomer = function (): IUseCustomer {
         error.value = false
 
         try {
-            const response = await LoginRegistrationShopware.loginCustomer({ username, password })
+            // @ts-ignore
+            const { data } = await LoginRegistrationShopware.loginCustomer({ username, password })
             loading.value = false
 
-            if (response.contextToken !== undefined) {
-                setSessionToken(response.contextToken)
-                return response.contextToken
+            if (data.value.contextToken !== undefined) {
+                setSessionToken(data.value.contextToken)
+                return data.value.contextToken
             }
 
             throw new Error('Something went wrong please try again')

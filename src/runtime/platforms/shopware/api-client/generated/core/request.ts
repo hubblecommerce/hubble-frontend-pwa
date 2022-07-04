@@ -16,7 +16,8 @@ import type { OpenAPIConfig } from './OpenAPI';
 import { usePlatform } from '#imports'
 // @ts-ignore
 import { OpenAPI } from './OpenAPI'
-import { throwError } from '#app'
+import { throwError, useFetch, useNuxtApp } from '#app'
+import { getRequestCookie } from '../../../commons'
 
 const isDefined = <T>(value: T | null | undefined): value is Exclude<T, null | undefined> => {
     return value !== undefined && value !== null;
@@ -145,11 +146,11 @@ const resolve = async <T>(options: ApiRequestOptions, resolver?: T | Resolver<T>
     return resolver;
 };
 
-const getHeaders = async (config: OpenAPIConfig, options: ApiRequestOptions): Promise<Headers> => {
-    const token = await resolve(options, config.TOKEN);
-    const username = await resolve(options, config.USERNAME);
-    const password = await resolve(options, config.PASSWORD);
-    const additionalHeaders = await resolve(options, config.HEADERS);
+const getHeaders = (config: OpenAPIConfig, options: ApiRequestOptions): Headers => {
+    const token = resolve(options, config.TOKEN);
+    const username = resolve(options, config.USERNAME);
+    const password = resolve(options, config.PASSWORD);
+    const additionalHeaders = resolve(options, config.HEADERS);
 
     const headers = Object.entries({
         Accept: 'application/json',
@@ -294,10 +295,16 @@ const catchErrorCodes = (options: ApiRequestOptions, result: ApiResult): void =>
  * @throws ApiError
  */
 export const request = <T>(config: OpenAPIConfig, options: ApiRequestOptions): CancelablePromise<T> => {
-    const { apiUrl, apiAuthToken, sessionToken } = usePlatform()
+    const app = useNuxtApp()
+    const { apiUrl, apiAuthToken, sessionToken, setSessionToken } = usePlatform()
 
     let platformHeaders = {
         'sw-access-key': apiAuthToken
+    }
+
+    if (process.server) {
+        const sessionCookie = getRequestCookie(app, app.$config.public.sessionCookie.name)
+        setSessionToken(sessionCookie)
     }
 
     if(sessionToken.value !== null) {
@@ -307,32 +314,35 @@ export const request = <T>(config: OpenAPIConfig, options: ApiRequestOptions): C
     OpenAPI.BASE = apiUrl
     OpenAPI.HEADERS = platformHeaders
 
-    return new CancelablePromise(async (resolve, reject, onCancel) => {
+    return new CancelablePromise(async (resolve, reject) => {
         try {
-            const url = getUrl(config, options);
-            const formData = getFormData(options);
-            const body = getRequestBody(options);
-            const headers = await getHeaders(config, options);
+            const headers = Object.assign(config.HEADERS, options.headers)
 
-            if (!onCancel.isCancelled) {
-                const response = await sendRequest(config, options, url, body, formData, headers, onCancel);
-                const responseBody = await getResponseBody(response);
-                const responseHeader = getResponseHeader(response, options.responseHeader);
+            const { data, pending, refresh, error } = await useFetch(
+                getUrl(config, options),
+                {
+                    method: options.method,
+                    body: options.body,
+                    headers: headers
+                }
+            )
 
-                const result: ApiResult = {
-                    url,
-                    ok: response.ok,
-                    status: response.status,
-                    statusText: response.statusText,
-                    body: responseHeader ?? responseBody,
-                };
-
-                catchErrorCodes(options, result);
-
-                resolve(result.body);
+            // Client side error is only boolean,
+            // so fetch again in case of client side and error to get response error code
+            // https://github.com/nuxt/framework/issues/2122#issuecomment-979073727
+            if (process.client && error.value) {
+                await refresh()
             }
-        } catch (error) {
-            reject(error);
+
+            if (error.value) {
+                // @ts-ignore
+                catchErrorCodes(options, error.value.response);
+            }
+
+            // @ts-ignore
+            resolve({ data, pending, refresh })
+        } catch (e) {
+            reject(e);
         }
-    });
+    })
 };
