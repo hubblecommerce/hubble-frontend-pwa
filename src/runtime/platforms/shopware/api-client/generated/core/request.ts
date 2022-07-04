@@ -17,7 +17,8 @@ import { usePlatform } from '#imports'
 // @ts-ignore
 import { OpenAPI } from './OpenAPI'
 import { throwError, useFetch, useNuxtApp } from '#app'
-import { getRequestCookie } from '../../../commons'
+// @ts-ignore
+import { getRequestCookie } from '../../../../../commons'
 
 const isDefined = <T>(value: T | null | undefined): value is Exclude<T, null | undefined> => {
     return value !== undefined && value !== null;
