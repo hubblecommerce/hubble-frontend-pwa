@@ -1,0 +1,64 @@
+From 8a6ddfe52cf49a2efbfda3a2cf9b80c9ae25ec9e Mon Sep 17 00:00:00 2001
+From: Lukas Heinze <heinze@digitalmanufaktur.com>
+Date: Tue, 5 Jul 2022 16:29:33 +0200
+Subject: [PATCH] SW API Client Patch for page data
+
+---
+ .../platforms/shopware/api-client/generated/models/CmsBlock.ts  | 2 +-
+ .../shopware/api-client/generated/models/CmsSection.ts          | 2 +-
+ .../platforms/shopware/api-client/generated/models/Media.ts     | 2 +-
+ .../platforms/shopware/api-client/generated/models/Product.ts   | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/src/runtime/platforms/shopware/api-client/generated/models/CmsBlock.ts b/src/runtime/platforms/shopware/api-client/generated/models/CmsBlock.ts
+index 105e1b55..8702092d 100644
+--- a/src/runtime/platforms/shopware/api-client/generated/models/CmsBlock.ts
++++ b/src/runtime/platforms/shopware/api-client/generated/models/CmsBlock.ts
+@@ -29,6 +29,6 @@ export type CmsBlock = {
+     readonly createdAt: string;
+     readonly updatedAt?: string;
+     backgroundMedia?: Media;
+-    slots?: CmsSlot;
++    slots?: CmsSlot[];
+ };
+ 
+diff --git a/src/runtime/platforms/shopware/api-client/generated/models/CmsSection.ts b/src/runtime/platforms/shopware/api-client/generated/models/CmsSection.ts
+index a0fe8c36..b910b88b 100644
+--- a/src/runtime/platforms/shopware/api-client/generated/models/CmsSection.ts
++++ b/src/runtime/platforms/shopware/api-client/generated/models/CmsSection.ts
+@@ -27,6 +27,6 @@ export type CmsSection = {
+     readonly updatedAt?: string;
+     page?: CmsPage;
+     backgroundMedia?: Media;
+-    blocks?: CmsBlock;
++    blocks?: CmsBlock[];
+ };
+ 
+diff --git a/src/runtime/platforms/shopware/api-client/generated/models/Media.ts b/src/runtime/platforms/shopware/api-client/generated/models/Media.ts
+index 263f616a..3016df5b 100644
+--- a/src/runtime/platforms/shopware/api-client/generated/models/Media.ts
++++ b/src/runtime/platforms/shopware/api-client/generated/models/Media.ts
+@@ -24,6 +24,6 @@ export type Media = {
+     readonly createdAt: string;
+     readonly updatedAt?: string;
+     translated?: any;
+-    thumbnails?: MediaThumbnail;
++    thumbnails?: Array<MediaThumbnail>;
+ };
+ 
+diff --git a/src/runtime/platforms/shopware/api-client/generated/models/Product.ts b/src/runtime/platforms/shopware/api-client/generated/models/Product.ts
+index b7464299..d5a4fd91 100644
+--- a/src/runtime/platforms/shopware/api-client/generated/models/Product.ts
++++ b/src/runtime/platforms/shopware/api-client/generated/models/Product.ts
+@@ -91,7 +91,7 @@ export type Product = {
+     cover?: ProductMedia;
+     cmsPage?: CmsPage;
+     canonicalProduct?: Product;
+-    media?: ProductMedia;
++    media?: Array<ProductMedia>;
+     crossSellings?: ProductCrossSelling;
+     configuratorSettings?: ProductConfiguratorSetting;
+     productReviews?: ProductReview;
+-- 
+2.33.1
+
