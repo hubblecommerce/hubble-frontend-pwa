@@ -29,6 +29,6 @@ export type CmsBlock = {
     readonly createdAt: string;
     readonly updatedAt?: string;
     backgroundMedia?: Media;
-    slots?: CmsSlot;
+    slots?: CmsSlot[];
 };
 

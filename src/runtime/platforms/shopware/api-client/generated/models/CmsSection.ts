@@ -27,6 +27,6 @@ export type CmsSection = {
     readonly updatedAt?: string;
     page?: CmsPage;
     backgroundMedia?: Media;
-    blocks?: CmsBlock;
+    blocks?: CmsBlock[];
 };
 

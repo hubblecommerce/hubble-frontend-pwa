@@ -91,7 +91,7 @@ export type Product = {
     cover?: ProductMedia;
     cmsPage?: CmsPage;
     canonicalProduct?: Product;
-    media?: ProductMedia;
+    media?: Array<ProductMedia>;
     crossSellings?: ProductCrossSelling;
     configuratorSettings?: ProductConfiguratorSetting;
     productReviews?: ProductReview;

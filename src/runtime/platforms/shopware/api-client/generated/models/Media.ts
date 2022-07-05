@@ -24,6 +24,6 @@ export type Media = {
     readonly createdAt: string;
     readonly updatedAt?: string;
     translated?: any;
-    thumbnails?: MediaThumbnail;
+    thumbnails?: Array<MediaThumbnail>;
 };
 
