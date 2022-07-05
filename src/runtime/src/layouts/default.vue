@@ -38,10 +38,15 @@
 
 <script setup lang="ts">
 import { useNavigation } from '#imports'
+import { throwError } from '#app'
 
 const { navigation, getNavigation } = useNavigation()
 
-await getNavigation()
+try {
+    await getNavigation()
+} catch (e) {
+    throwError(e)
+}
 </script>
 
 <style scoped>

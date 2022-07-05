@@ -53,7 +53,7 @@ export const useNavigation = function (): IUseNavigation {
         } catch (e) {
             loading.value = false
             error.value = e
-            return e
+            throw e
         }
     }
 
