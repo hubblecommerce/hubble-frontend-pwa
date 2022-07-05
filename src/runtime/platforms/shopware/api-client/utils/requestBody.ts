@@ -50,4 +50,8 @@ const includes = {
     category: ['active', 'id', 'name', 'description', 'metaTitle', 'metaDescription', 'keywords', 'breadcrumb', 'media', 'level', 'path', 'translated']
 }
 
-export { includes }
+const associations = {
+    media: {}
+}
+
+export { includes, associations }
