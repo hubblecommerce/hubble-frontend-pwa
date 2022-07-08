@@ -180,6 +180,17 @@ export default defineNuxtModule<ModuleOptions>({
             app.errorComponent = resolve(join(runtimeDir, 'src/error.vue'))
         })
 
+        // To make resolveComponent() with variable component name possible, set all structure components as global
+        nuxt.hook('components:extend', (components) => {
+            // eslint-disable-next-line array-callback-return
+            components.map((component) => {
+                // @ts-ignore
+                if (component.shortPath.includes('/components/structure')) {
+                    component.global = true
+                }
+            })
+        })
+
         // Use Nuxt extends to provide file based inheritance
         // https://v3.nuxtjs.org/api/configuration/nuxt.config#extends
         // Create a nuxt config based on project configs and set module as cwd

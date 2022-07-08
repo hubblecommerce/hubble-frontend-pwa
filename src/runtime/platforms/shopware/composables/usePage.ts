@@ -95,8 +95,14 @@ function mapSlots (swSlots: CmsSlot[]): Slot[] {
 function mapBlocks (swBlocks: CmsBlock[]): Block[] {
     return swBlocks.map((block) => {
         return {
-            id: block.id,
-            slots: mapSlots(block.slots)
+            id: block._uniqueIdentifier,
+            type: block.type,
+            cssClass: block.cssClass,
+            backgroundColor: block.backgroundColor,
+            backgroundMedia: mapMedia(block.backgroundMedia),
+            backgroundMediaMode: block.backgroundMediaMode,
+            slots: mapSlots(block.slots),
+            sectionPosition: block.sectionPosition
         }
     })
 }
@@ -104,7 +110,14 @@ function mapBlocks (swBlocks: CmsBlock[]): Block[] {
 function mapSections (swSections: CmsSection[]): Section[] {
     return swSections.map((section: CmsSection) => {
         return {
-            id: section.id,
+            type: section.type,
+            name: section.name,
+            cssClass: section.cssClass,
+            sizingMode: section.sizingMode,
+            backgroundColor: section.backgroundColor,
+            backgroundMedia: mapMedia(section.backgroundMedia),
+            backgroundMediaMode: section.backgroundMediaMode,
+            mobileSidebarBehavior: section.mobileBehavior,
             blocks: mapBlocks(section.blocks)
         }
     })
@@ -126,10 +139,13 @@ const defaultStructures = new Map<PageType, Section[]>()
 
 const defaultStructure: Section[] = [
     {
-        id: 'defaultSection',
+        type: 'default',
+        sizingMode: 'fullwidth',
         blocks: [
             {
                 id: 'defaultBlock',
+                type: 'default-block',
+                sectionPosition: 'main',
                 slots: [
                     {
                         data: 'This is a Fallback default Structure'

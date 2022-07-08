@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="default-layout">
         <header>
             <div v-for="entry in navigation" :key="entry.id">
                 <NuxtLink :to="entry.url">
@@ -30,9 +30,7 @@
                 </NuxtLink>
             </nav>
         </header>
-        <main>
-            <slot />
-        </main>
+        <slot />
     </div>
 </template>
 

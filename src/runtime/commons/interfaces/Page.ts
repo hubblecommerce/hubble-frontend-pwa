@@ -1,5 +1,6 @@
 import { Category } from './Category'
 import { Product } from './Product'
+import { Media } from './Media'
 
 export interface Slot {
     type?: string
@@ -9,15 +10,23 @@ export interface Slot {
 
 export interface Block {
     id: string
-    type?: string
-    cssClass?: string
+    sectionPosition: string | 'main' | 'sidebar'
+    type: string
+    cssClass?: string | null
+    backgroundColor?: string | null
+    backgroundMedia?: Media | null
+    backgroundMediaMode?: string | null
     slots: Slot[]
 }
 
 export interface Section {
-    id: string
-    type?: string
-    cssClass?: string
+    type: string | 'default' | 'sidebar'
+    sizingMode: string | 'boxed' | 'fullwidth'
+    cssClass?: string | null
+    backgroundColor?: string | null
+    backgroundMedia?: Media | null
+    backgroundMediaMode?: string | null
+    mobileSidebarBehavior?: string | 'wrap' | 'hidden'
     blocks: Block[]
 }
 

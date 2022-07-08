@@ -1,7 +1,6 @@
 <template>
-    <div v-if="page != null">
-        <div>ID: {{ page.id }}</div>
-        <div>Type: {{ page.type }}</div>
+    <main v-if="page != null" class="dynamic-page" style="border: 1px solid red;">
+        <div>Page: {{ page.id }} Type: {{ page.type }}</div>
 
         <StructureSection
             v-for="(section, index) in page.structure"
@@ -9,7 +8,7 @@
             :count="index"
             :content="section"
         />
-    </div>
+    </main>
 </template>
 
 <script setup lang="ts">
@@ -26,7 +25,3 @@ try {
     throwError(e)
 }
 </script>
-
-<style scoped>
-
-</style>
