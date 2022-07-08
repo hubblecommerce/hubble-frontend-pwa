@@ -1,0 +1,25 @@
+From 9d12b0961669c25a1f6348ada6a3b9c2de122329 Mon Sep 17 00:00:00 2001
+From: Lukas Heinze <heinze@digitalmanufaktur.com>
+Date: Fri, 8 Jul 2022 16:51:35 +0200
+Subject: [PATCH] SW API Client: added missing uniqueIdentifier to CmsBlock
+ interface
+
+---
+ .../platforms/shopware/api-client/generated/models/CmsBlock.ts   | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/runtime/platforms/shopware/api-client/generated/models/CmsBlock.ts b/src/runtime/platforms/shopware/api-client/generated/models/CmsBlock.ts
+index 8702092d..b46aadde 100644
+--- a/src/runtime/platforms/shopware/api-client/generated/models/CmsBlock.ts
++++ b/src/runtime/platforms/shopware/api-client/generated/models/CmsBlock.ts
+@@ -9,6 +9,7 @@ import type { Media } from './Media';
+  * Added since version: 6.0.0.0
+  */
+ export type CmsBlock = {
++    _uniqueIdentifier: string,
+     id?: string;
+     position: number;
+     type: string;
+-- 
+2.33.1
+
