@@ -1,33 +1,50 @@
 <template>
     <div class="default-layout">
         <header>
-            <div v-for="entry in navigation" :key="entry.id">
-                <NuxtLink :to="entry.url">
-                    {{ entry.name }}
-                </NuxtLink>
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container">
+                    <button
+                        class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#navbarTogglerDemo01"
+                        aria-controls="navbarTogglerDemo01"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation"
+                    >
+                        <span class="navbar-toggler-icon" />
+                    </button>
+                    <div id="navbarTogglerDemo01" class="collapse navbar-collapse">
+                        <nuxt-link to="/" class="navbar-brand">
+                            Home
+                        </nuxt-link>
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li v-for="entry in navigation" :key="entry.id" class="nav-item">
+                                <NuxtLink :to="entry.url" class="nav-link">
+                                    {{ entry.name }}
+                                </NuxtLink>
+                            </li>
+                        </ul>
 
-                <template v-if="entry.children.length > 0">
-                    <div v-for="subEntry in entry.children" :key="subEntry.id">
-                        <NuxtLink :to="subEntry.url">
-                            {{ subEntry.name }}
-                        </NuxtLink>
+                        <ul class="navbar-nav mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <NuxtLink to="/customer" class="nav-link">
+                                    Customer
+                                </NuxtLink>
+                            </li>
+                            <li class="nav-item">
+                                <NuxtLink to="/customer/login" class="nav-link">
+                                    Login
+                                </NuxtLink>
+                            </li>
+                            <li class="nav-item">
+                                <NuxtLink to="/navigation/19ca405790ff4f07aac8c599d43178686" class="nav-link">
+                                    404
+                                </NuxtLink>
+                            </li>
+                        </ul>
                     </div>
-                </template>
-            </div>
-
-            <nav>
-                <NuxtLink to="/">
-                    Index
-                </NuxtLink>
-                <NuxtLink to="/customer">
-                    Customer
-                </NuxtLink>
-                <NuxtLink to="/customer/login">
-                    Login
-                </NuxtLink>
-                <NuxtLink to="/navigation/19ca405790ff4f07aac8c599d43178686">
-                    404
-                </NuxtLink>
+                </div>
             </nav>
         </header>
         <slot />
@@ -38,7 +55,10 @@
 import { useNavigation } from '#imports'
 import { throwError } from '#app'
 
-const { navigation, getNavigation } = useNavigation()
+const {
+    navigation,
+    getNavigation
+} = useNavigation()
 
 try {
     await getNavigation()
