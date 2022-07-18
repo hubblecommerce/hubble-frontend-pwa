@@ -1,7 +1,11 @@
 <template>
-    Text
+    StructureSlotText
 </template>
 
-<script setup>
+<script setup lang="ts">
+import { Slot } from '../../../../commons'
 
+const props = defineProps<{
+    content: Slot
+}>()
 </script>

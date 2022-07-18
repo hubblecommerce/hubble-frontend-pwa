@@ -1,5 +1,5 @@
 <template>
-    StructureSlotImage
+    StructureSlotProductListing
 </template>
 
 <script setup lang="ts">

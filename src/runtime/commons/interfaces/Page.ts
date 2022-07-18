@@ -4,7 +4,7 @@ import { Media } from './Media'
 
 export interface Slot {
     type?: string
-    slot?: string
+    position?: string
     data: any
 }
 

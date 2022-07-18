@@ -23,30 +23,14 @@
 
 <script setup lang="ts">
 import { computed, Ref } from 'vue'
-import { Block, Section } from '../../../commons'
+import { Block, getStructureBackgroundStyles, Section } from '../../../commons'
 
 const props = defineProps<{
     count?: number
     content: Section
 }>()
 
-const backgroundStyles: Ref<string | null> = computed(() => {
-    let styles = null
-
-    if (props.content.backgroundColor !== null) {
-        styles = `background-color: ${props.content.backgroundColor}; `
-    }
-
-    if (props.content.backgroundMedia !== null) {
-        styles = `background: url('${props.content.backgroundMedia.url}'); `
-    }
-
-    if (props.content.backgroundMediaMode !== null) {
-        styles += `background-size: ${props.content.backgroundMediaMode}; `
-    }
-
-    return styles
-})
+const { backgroundStyles } = getStructureBackgroundStyles(props.content)
 
 const mainBlocks: Ref<Block[]> = computed(() => {
     return props.content.blocks.filter((block: Block) => block.sectionPosition === 'main')

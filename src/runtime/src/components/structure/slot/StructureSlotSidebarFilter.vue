@@ -1,5 +1,5 @@
 <template>
-    StructureSlotImage
+    StructureSlotSidebarFilter
 </template>
 
 <script setup lang="ts">

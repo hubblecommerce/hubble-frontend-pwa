@@ -1,8 +1,5 @@
 <template>
     <div ref="el" class="block" :class="content.cssClass" :style="backgroundStyles" style="border: 1px solid green; height: 600px;">
-        <div>Block: {{ content.id }} Type: {{ content.type }}</div>
-
-        <!-- If block contains only one slot, load slot directly -->
         <component :is="component" :content="content.slots.length === 1 ? content.slots[0] : content.slots" />
     </div>
 </template>
@@ -10,33 +7,17 @@
 <script setup lang="ts">
 import { computed, Ref, ref, shallowRef, defineAsyncComponent, resolveComponent, onMounted } from 'vue'
 import { StructureLoading, StructureNoComponent } from '#components'
-import { Block } from '../../../commons'
+import { Block, toUpperCamelCase, registerIntersectionObserver, getStructureBackgroundStyles } from '../../../commons'
 
 const props = defineProps<{
     count?: number,
     content: Block
 }>()
 
-const backgroundStyles: Ref<string | null> = computed(() => {
-    let styles = null
-
-    if (props.content.backgroundColor !== null) {
-        styles = `background-color: ${props.content.backgroundColor}; `
-    }
-
-    if (props.content.backgroundMedia !== null) {
-        styles = `background: url('${props.content.backgroundMedia.url}'); `
-    }
-
-    if (props.content.backgroundMediaMode !== null) {
-        styles += `background-size: ${props.content.backgroundMediaMode}; `
-    }
-
-    return styles
-})
+const { backgroundStyles } = getStructureBackgroundStyles(props.content)
 
 const component = shallowRef()
-// If more than one slots in block, directly load SLOT. If more than on slots then load BLOCK
+// If block contains exactly one slot, directly load SLOT. If more than one slots then load BLOCK
 const compName = computed(() => {
     let name = `StructureBlock${toUpperCamelCase(props.content.type)}`
 
@@ -46,14 +27,6 @@ const compName = computed(() => {
 
     return name
 })
-
-const toUpperCamelCase = function (string) {
-    return string
-        .toLowerCase()
-        .split('-')
-        .map(it => it.charAt(0).toUpperCase() + it.substring(1))
-        .join('')
-}
 
 // Render first section server side (SEO relevant hero elements)
 // TODO: find a more generic way to mark elements a SEO relevant
@@ -66,28 +39,9 @@ const el = ref()
 onMounted(() => {
     // TODO: find a more generic way to mark elements a SEO relevant
     if (props.count > 0) {
-        registerIntersectionObserver(el.value)
+        registerIntersectionObserver(el.value, loadComponent)
     }
 })
-
-const registerIntersectionObserver = function (targetElement) {
-    const options = {
-        rootMargin: '20px',
-        threshold: 0.01
-    }
-
-    const observer = new IntersectionObserver(intersectionCallback, options)
-    observer.observe(targetElement)
-}
-
-const intersectionCallback = function (entries, observer) {
-    entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-            loadComponent()
-            observer.disconnect()
-        }
-    })
-}
 
 // For lazy loaded components
 const loadComponent = function () {

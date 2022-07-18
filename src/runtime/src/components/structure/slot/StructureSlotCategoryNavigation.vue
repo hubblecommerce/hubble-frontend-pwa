@@ -1,5 +1,5 @@
 <template>
-    StructureSlotImage
+    StructureSlotCategoryNavigation
 </template>
 
 <script setup lang="ts">
