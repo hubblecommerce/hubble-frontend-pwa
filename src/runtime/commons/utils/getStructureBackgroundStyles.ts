@@ -5,15 +5,15 @@ export function getStructureBackgroundStyles (content: Section | Block): { backg
     const backgroundStyles: Ref<string> = computed(() => {
         let styles = ''
 
-        if (content.backgroundColor !== null) {
+        if (content.backgroundColor != null) {
             styles = `background-color: ${content.backgroundColor}; `
         }
 
-        if (content.backgroundMedia !== null) {
+        if (content.backgroundMedia != null) {
             styles = `background: url('${content.backgroundMedia.url}'); `
         }
 
-        if (content.backgroundMediaMode !== null) {
+        if (content.backgroundMediaMode != null) {
             styles += `background-size: ${content.backgroundMediaMode}; `
         }
 

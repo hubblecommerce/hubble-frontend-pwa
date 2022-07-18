@@ -45,7 +45,7 @@ export interface Page {
     id: string,
     canonicalUrl?: string,
     type: PageType,
-    structure: Section[],
+    structure: Section[] | null,
     breadcrumb?: Breadcrumb,
     product?: Product,
     category?: Category,

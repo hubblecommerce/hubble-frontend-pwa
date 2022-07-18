@@ -1,4 +1,14 @@
-import { Block, Breadcrumb, Category, Media, Page, Product, Section, Slot } from '../../../../commons'
+import {
+    Block,
+    Breadcrumb,
+    Category,
+    Media,
+    Page,
+    Product,
+    Section,
+    Slot,
+    useDefaultStructure
+} from '../../../../commons'
 import {
     Category as swCategory,
     Product as swProduct,
@@ -119,4 +129,43 @@ function mapCategory (swCategory: swCategory): Category {
     }
 }
 
-export { mapCategory, mapMedia, mapProductMedia, mapBreadcrumb, mapProduct, mapSections, mapSlots, mapBlocks }
+function mapPage (swPage): Page {
+    const obj = {
+        id: swPage.resourceIdentifier,
+        canonicalUrl: swPage.canonicalPathInfo,
+        type: swPage.resourceType,
+        structure: null
+    }
+
+    if (swPage.resourceType === 'frontend.navigation.page') {
+        Object.assign(obj, { type: 'category' })
+    }
+
+    if (swPage.resourceType === 'frontend.detail.page') {
+        Object.assign(obj, { type: 'detail' })
+    }
+
+    if (swPage.resourceType === 'frontend.landing.page') {
+        Object.assign(obj, { type: 'cms' })
+    }
+
+    if (swPage.cmsPage != null) {
+        obj.structure = mapSections(swPage.cmsPage?.sections)
+    }
+
+    if (swPage.breadcrumb !== undefined) {
+        Object.assign(obj, { breadcrumb: mapBreadcrumb(swPage.breadcrumb) })
+    }
+
+    if (swPage.product != null) {
+        Object.assign(obj, { product: mapProduct(swPage.product) })
+    }
+
+    if (swPage.category != null) {
+        Object.assign(obj, { category: mapCategory(swPage.category) })
+    }
+
+    return obj
+}
+
+export { mapCategory, mapMedia, mapProductMedia, mapBreadcrumb, mapProduct, mapSections, mapSlots, mapBlocks, mapPage }
