@@ -20,5 +20,7 @@ export interface Product {
     stock: number,
     price: Price,
     deliveryTime?: string,
-    manufacturer?: Manufacturer
+    manufacturer?: Manufacturer,
+    metaTitle?: string,
+    metaDescription?: string
 }

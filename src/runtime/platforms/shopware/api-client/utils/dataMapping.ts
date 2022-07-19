@@ -6,8 +6,7 @@ import {
     Page,
     Product,
     Section,
-    Slot,
-    useDefaultStructure
+    Slot
 } from '../../../../commons'
 import {
     Category as swCategory,
@@ -68,7 +67,9 @@ function mapProduct (swProduct: swProduct): Product {
         deliveryTime: swProduct.deliveryTime?.name,
         manufacturer: {
             id: swProduct.manufacturer?.id
-        }
+        },
+        metaTitle: swProduct.translated.metaTitle,
+        metaDescription: swProduct.translated.metaDescription
     }
 }
 
@@ -151,6 +152,8 @@ function mapPage (swPage): Page {
 
     if (swPage.cmsPage != null) {
         obj.structure = mapSections(swPage.cmsPage?.sections)
+
+        Object.assign(obj, { cms: { content: swPage.cmsPage.name } })
     }
 
     if (swPage.breadcrumb !== undefined) {
@@ -158,7 +161,7 @@ function mapPage (swPage): Page {
     }
 
     if (swPage.product != null) {
-        Object.assign(obj, { product: mapProduct(swPage.product) })
+        Object.assign(obj, { detail: mapProduct(swPage.product) })
     }
 
     if (swPage.category != null) {

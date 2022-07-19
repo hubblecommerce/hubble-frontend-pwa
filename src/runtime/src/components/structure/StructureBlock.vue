@@ -1,5 +1,5 @@
 <template>
-    <div ref="el" class="block" :class="content.cssClass" :style="backgroundStyles" style="border: 1px solid green; height: 600px;">
+    <div ref="el" class="structure-block" :class="content.cssClass" :style="backgroundStyles" style="border: 1px solid green; height: 600px;">
         <component :is="component" :content="content.slots.length === 1 ? content.slots[0] : content.slots" />
     </div>
 </template>

@@ -37,7 +37,9 @@ const includes = {
         'crossSellings',
         'childCount',
         'markAsTopseller',
-        'isNew'
+        'isNew',
+        'metaTitle',
+        'metaDescription'
     ],
     product_media: ['media', 'customFields', 'position'],
     calculated_price: ['unitPrice', 'quantity', 'listPrice'],

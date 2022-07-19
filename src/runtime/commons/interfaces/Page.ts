@@ -1,6 +1,7 @@
 import { Category } from './Category'
 import { Product } from './Product'
 import { Media } from './Media'
+import { Cms } from './Cms'
 
 export interface Slot {
     type?: string
@@ -47,6 +48,7 @@ export interface Page {
     type: PageType,
     structure: Section[] | null,
     breadcrumb?: Breadcrumb,
-    product?: Product,
+    detail?: Product,
     category?: Category,
+    cms?: Cms,
 }
