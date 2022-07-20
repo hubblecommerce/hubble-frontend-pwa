@@ -3,6 +3,7 @@
 </template>
 
 <script setup lang="ts">
+import { useHead } from '#app'
 import { Product } from '../../../commons'
 
 const props = defineProps<{
