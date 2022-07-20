@@ -2,11 +2,13 @@ import { Category } from './Category'
 import { Product } from './Product'
 import { Media } from './Media'
 import { Cms } from './Cms'
+import { ProductListing } from './ProductListing'
 
 export interface Slot {
     type?: string
     position?: string
-    data: any
+    data: any,
+    productListing: ProductListing | null
 }
 
 export interface Block {

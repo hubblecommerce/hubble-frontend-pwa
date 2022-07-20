@@ -1,5 +1,7 @@
 <template>
     StructureSlotProductListing
+
+    <ProductListing :data="content.productListing" />
 </template>
 
 <script setup lang="ts">

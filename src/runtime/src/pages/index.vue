@@ -3,7 +3,6 @@
         Hello
         {{ config.meta.category.title }}
         <TestComponent />
-        <ProductDetail />
     </div>
 </template>
 

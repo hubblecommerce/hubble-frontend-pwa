@@ -4,7 +4,7 @@ import {
     Category,
     Media,
     Page,
-    Product,
+    Product, ProductListing,
     Section,
     Slot
 } from '../../../../commons'
@@ -15,7 +15,7 @@ import {
     CmsBlock,
     CmsSlot,
     ProductMedia,
-    Media as swMedia
+    Media as swMedia, ProductListingResult
 } from '../generated'
 
 function mapMedia (swMedia: swMedia): Media {
@@ -51,18 +51,33 @@ function mapProductMedia (swMedia: ProductMedia[]): Media[] | null {
 }
 
 function mapProduct (swProduct: swProduct): Product {
+    let url = swProduct.seoUrls[0]?.pathInfo
+    if (swProduct.seoUrls[0]?.isCanonical) {
+        url = swProduct.seoUrls[0]?.seoPathInfo
+    }
+    if (!url.startsWith('/')) {
+        url = '/' + url
+    }
+
+    let media = null
+    if (swProduct.media !== null) {
+        media = mapProductMedia(swProduct.media)
+    } else if (swProduct.cover?.media !== null) {
+        media = mapMedia(swProduct.cover.media)
+    }
+
     return {
         id: swProduct.id,
         name: swProduct.translated.name,
         description: swProduct.translated.description,
         sku: swProduct.productNumber,
-        url: swProduct.seoUrls[0].seoPathInfo,
-        media: mapProductMedia(swProduct.media),
+        url,
+        media,
         active: swProduct.available,
         stock: swProduct.stock,
         price: {
-            regularPrice: swProduct.calculatedPrice.listPrice,
-            specialPrice: swProduct.calculatedPrice.listPrice
+            regularPrice: swProduct.calculatedPrice?.unitPrice,
+            specialPrice: swProduct.calculatedPrice?.listPrice?.price
         },
         deliveryTime: swProduct.deliveryTime?.name,
         manufacturer: {
@@ -73,16 +88,42 @@ function mapProduct (swProduct: swProduct): Product {
     }
 }
 
+function mapProducts (swProducts: swProduct[]): Product[] {
+    return swProducts.map((swProduct: swProduct) => {
+        return mapProduct(swProduct)
+    })
+}
+
 function mapBreadcrumb (swBreadcrumb): Breadcrumb {
     return swBreadcrumb
 }
 
+function mapProductListing (swProductListing: ProductListingResult): ProductListing {
+    return {
+        products: mapProducts(swProductListing.elements),
+        currentSorting: swProductListing.sorting,
+        availableSorting: swProductListing.availableSortings,
+        currentFilters: swProductListing.currentFilters,
+        availableFilters: swProductListing.aggregations,
+        total: swProductListing.total,
+        limit: swProductListing.limit,
+        page: swProductListing.page
+    }
+}
+
 function mapSlots (swSlots: CmsSlot[]): Slot[] {
+    let productListing = null
+
     return swSlots.map((slot: CmsSlot) => {
+        if (slot.data?.listing != null) {
+            productListing = mapProductListing(slot.data.listing)
+        }
+
         return {
             type: slot.type,
             position: slot.slot,
-            data: slot.data
+            data: slot.data,
+            productListing
         }
     })
 }

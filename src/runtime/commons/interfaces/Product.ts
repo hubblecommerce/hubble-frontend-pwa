@@ -6,7 +6,7 @@ export interface Manufacturer {
 
 export interface Price {
     regularPrice: number
-    specialPrice: number
+    specialPrice: number | null
 }
 
 export interface Product {
@@ -15,7 +15,7 @@ export interface Product {
     description?: string,
     sku: string,
     url: string,
-    media?: Media[],
+    media?: Media[] | Media,
     active: boolean,
     stock: number,
     price: Price,
