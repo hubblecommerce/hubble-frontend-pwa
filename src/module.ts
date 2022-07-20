@@ -1,11 +1,10 @@
 import { join, extname, resolve } from 'path'
 import { fileURLToPath } from 'url'
-import { defineNuxtModule, findPath, installModule, loadNuxtConfig } from '@nuxt/kit'
+import { defineNuxtModule, installModule, loadNuxtConfig } from '@nuxt/kit'
 import fse from 'fs-extra'
 import { defu } from 'defu'
 import { Import } from 'unimport'
 import { CookieOptions } from '#app'
-import { PiniaNuxtOptions } from '@pinia/nuxt'
 
 async function setDefaultRuntimeConfigs (nuxt) {
     try {
@@ -122,8 +121,7 @@ interface SessionCookie {
 export interface ModuleOptions {
     pluginsDirName: string,
     pluginsConfigFileName: string,
-    sessionCookie: SessionCookie,
-    piniaOptions: PiniaNuxtOptions
+    sessionCookie: SessionCookie
 }
 
 export default defineNuxtModule<ModuleOptions>({
@@ -148,8 +146,7 @@ export default defineNuxtModule<ModuleOptions>({
                 sameSite: 'lax',
                 path: '/'
             }
-        },
-        piniaOptions: { disableVuex: true }
+        }
     },
     async setup (options, nuxt) {
         if (process.env.PLATFORM == null || process.env.PLATFORM === '') {
