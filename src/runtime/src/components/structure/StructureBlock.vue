@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, Ref, ref, shallowRef, defineAsyncComponent, resolveComponent, onMounted } from 'vue'
+import { computed, ref, shallowRef, defineAsyncComponent, resolveComponent, onMounted } from 'vue'
 import { StructureLoading, StructureNoComponent } from '#components'
 import { Block, toUpperCamelCase, registerIntersectionObserver, getStructureBackgroundStyles } from '../../../commons'
 
@@ -47,7 +47,7 @@ onMounted(() => {
 const loadComponent = function () {
     component.value = defineAsyncComponent({
         // the loader function
-        loader: () => import(`./${props.content.slots.length === 1 ? 'slot' : 'block'}/${compName.value}.vue`),
+        loader: () => import(`./${props.content.slots.length === 1 ? 'slot' : 'block'}/${compName.value}`),
 
         // A component to use while the async component is loading
         loadingComponent: StructureLoading,
