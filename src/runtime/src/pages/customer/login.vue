@@ -21,6 +21,7 @@
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import { useCustomer } from '#imports'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
