@@ -1,6 +1,6 @@
 {
     "name": "@hubblecommerce/hubble",
-    "version": "2.0.0-alpha.10",
+    "version": "2.0.0-alpha.11",
     "description": "PWA for eCommerce frameworks based on NuxtJs",
     "author": "hubble commerce",
     "license": "MIT",
@@ -39,8 +39,7 @@
     },
     "dependencies": {
         "@nuxt/kit": "^3.0.0-rc.3",
-        "@pinia/nuxt": "^0.1.9",
-        "pinia": "^2.0.14"
+        "@pinia/nuxt": "^0.3.0"
     },
     "devDependencies": {
         "@nuxt/module-builder": "latest",
