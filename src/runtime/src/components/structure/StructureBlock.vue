@@ -47,7 +47,7 @@ onMounted(() => {
 const loadComponent = function () {
     component.value = defineAsyncComponent({
         // the loader function
-        loader: () => import(`./${props.content.slots.length === 1 ? 'slot' : 'block'}/${compName.value}`),
+        loader: () => import(`./${props.content.slots.length === 1 ? 'slot' : 'block'}/${compName.value}.vue`),
 
         // A component to use while the async component is loading
         loadingComponent: StructureLoading,
