@@ -219,5 +219,11 @@ export default defineNuxtModule<ModuleOptions>({
             name: options.sessionCookie.name,
             options: options.sessionCookie.options
         }
+
+        // Vite only: remove /node_modules/ from excluded dynamic import vars
+        // https://github.com/rollup/plugins/tree/master/packages/dynamic-import-vars#exclude
+        if (nuxt.options.vite) {
+            nuxt.options.vite.build.dynamicImportVarsOptions = { exclude: [] }
+        }
     }
 })
