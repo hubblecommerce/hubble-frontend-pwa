@@ -1,5 +1,5 @@
 <template>
-    Overridden component from project root
+    Component for testing purposes
 </template>
 
 <script setup></script>

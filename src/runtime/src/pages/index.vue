@@ -1,8 +1,10 @@
 <template>
-    <div>
-        Hello
-        {{ config.meta.category.title }}
-        <TestComponent />
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                Runtime config loaded: {{ config.meta.category.title }}
+            </div>
+        </div>
     </div>
 </template>
 

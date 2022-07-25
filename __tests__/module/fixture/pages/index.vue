@@ -3,14 +3,16 @@
         <Head>
             <Title>Module fixture</Title>
         </Head>
-        <div>Composable | foo: {{ foo }}</div>
+        <div>Load composable from appropriate platform: {{ apiUrl }}</div>
+        <div>Load overridden composable from project root: {{ cart }}</div>
         <div>RuntimeConfig | meta.category.title: {{ config.meta.category.title }}</div>
-        <TestComponent />
+        <MiscModuleTestComponent />
+        <ProductDetail />
     </div>
 </template>
 
 <script setup>
-const foo = useFoo()
-
+const { apiUrl } = usePlatform()
+const { cart } = useCart()
 const config = useRuntimeConfig()
 </script>
