@@ -146,7 +146,19 @@ export const request = <T>(config: OpenAPIConfig, options: ApiRequestOptions): C
                     method: options.method,
                     body: options.body,
                     headers: headers,
-                    key: hash(['api-fetch', getUrl(config, options), options.body])
+                    key: hash(['api-fetch', getUrl(config, options), options.body]),
+                    onRequest: async (ctx) => {
+                        app.$hblBus.$emit('onRequest', { data: ctx })
+                    },
+                    onRequestError: async (ctx) => {
+                        app.$hblBus.$emit('onRequestError', { data: ctx })
+                    },
+                    onResponse: async (ctx) => {
+                        app.$hblBus.$emit('onResponse', { data: ctx })
+                    },
+                    onResponseError: async (ctx) => {
+                        app.$hblBus.$emit('onResponseError', { data: ctx })
+                    }
                 }
             )
 

@@ -39,7 +39,8 @@
     },
     "dependencies": {
         "@nuxt/kit": "^3.0.0-rc.3",
-        "@pinia/nuxt": "^0.3.0"
+        "@pinia/nuxt": "^0.3.0",
+        "mitt": "^3.0.0"
     },
     "devDependencies": {
         "@nuxt/module-builder": "latest",
