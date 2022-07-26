@@ -31,7 +31,7 @@
         "dev:prepare": "nuxt-module-build --stub && nuxi prepare playground && husky install",
         "test": "nuxi prepare __tests__/module/fixture && vitest",
         "coverage": "vitest run --coverage",
-        "sw:dev:generate-api": "node bin/hubble-cli.js dev:sw open-api-generate && git apply src/runtime/platforms/shopware/api-client/*.patch",
+        "sw:dev:generate-api": "node bin/hubble-cli.js dev:sw open-api-generate $BASEURL $CLIENT_ID $CLIENT_SECRET && git apply src/runtime/platforms/shopware/api-client/*.patch",
         "sw:dev:patch-api": "git format-patch -1 $COMMIT -o src/runtime/platforms/shopware/api-client/"
     },
     "lint-staged": {

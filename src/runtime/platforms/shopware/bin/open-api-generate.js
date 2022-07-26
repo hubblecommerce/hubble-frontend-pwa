@@ -90,14 +90,21 @@ class ShopwareClient {
     }
 }
 
-(async () => {
-    const client = new ShopwareClient({
-        baseURL: 'http://localhost',
-        client_id: 'SWIAZKDRWJQYAFVBSXFPCNM5QG',
-        client_secret: 'S1ZVMkV5cnh6TFdWbmFkQmJMUDVraFlhSjFMOHdnbHZTdUtKeEg'
-    })
+const main = async function (args) {
+    try {
+        const client = new ShopwareClient({
+            baseURL: args[2], // 'http://localhost'
+            client_id: args[3], // 'SWIAZKDRWJQYAFVBSXFPCNM5QG'
+            client_secret: args[4] // 'S1ZVMkV5cnh6TFdWbmFkQmJMUDVraFlhSjFMOHdnbHZTdUtKeEg'
+        })
 
-    await client.auth()
-    await client.getClientDefinition()
-    await client.openApiGenerate()
-})()
+        await client.auth()
+        await client.getClientDefinition()
+        await client.openApiGenerate()
+    } catch (e) {
+        // eslint-disable-next-line no-console
+        console.log(e)
+    }
+}
+
+export default main
