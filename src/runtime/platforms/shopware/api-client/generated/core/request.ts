@@ -147,7 +147,7 @@ export const request = <T>(config: OpenAPIConfig, options: ApiRequestOptions): C
                     body: options.body,
                     headers: headers,
                     key: hash(['api-fetch', getUrl(config, options), options.body])
-                },
+                }
             )
 
             // Client side error is only boolean,
