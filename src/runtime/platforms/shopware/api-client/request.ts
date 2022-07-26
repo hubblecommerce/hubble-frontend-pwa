@@ -19,6 +19,7 @@ import { OpenAPI } from './OpenAPI'
 import { useFetch, useNuxtApp } from '#app'
 // @ts-ignore
 import { getRequestCookie } from '../../../../../commons'
+import { hash } from 'ohash'
 
 const isDefined = <T>(value: T | null | undefined): value is Exclude<T, null | undefined> => {
     return value !== undefined && value !== null;
@@ -144,7 +145,8 @@ export const request = <T>(config: OpenAPIConfig, options: ApiRequestOptions): C
                 {
                     method: options.method,
                     body: options.body,
-                    headers: headers
+                    headers: headers,
+                    key: hash(['api-fetch', getUrl(config, options), options.body])
                 }
             )
 
