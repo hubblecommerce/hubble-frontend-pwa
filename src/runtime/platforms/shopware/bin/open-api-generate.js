@@ -84,7 +84,8 @@ class ShopwareClient {
             input: specTargetLocation,
             output: genTargetLocation,
             request: fileURLToPath(new URL('../api-client/request.ts', import.meta.url)),
-            postfix: 'Shopware'
+            postfix: 'Shopware',
+            useUnionTypes: true
         })
     }
 }
