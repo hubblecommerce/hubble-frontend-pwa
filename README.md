@@ -15,14 +15,14 @@ version.
 - [x] Installable as a Nuxt.js Module (compatible with Nuxt 3)
 - [x] File-based inheritance mechanism
 - [x] Typescript Support
-- [x] Linting config (for dev purposed only)
-- [x] Tested (for dev purposed only)
+- [x] Linting config (for dev purposes only)
+- [x] Tested (for dev purposes only)
 - [ ] Supports multiple e-commerce platforms
 - [ ] Platform specific api clients 
-- [ ] Composables
+- [ ] Usage of platform agnostic composables
 - [ ] Integration path for installing platform plugins / modules
 - [ ] Components as a toolset to build the shop interface 
-- [ ] Integrated CSS framework
+- [ ] Included a famous CSS framework
 - [ ] SEO friendly interface
 - [ ] Multi-language support 
 
