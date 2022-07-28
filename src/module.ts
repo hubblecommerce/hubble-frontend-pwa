@@ -1,10 +1,11 @@
-import path, { join, extname, resolve } from 'path'
+import { join, extname, resolve, basename } from 'path'
 import { fileURLToPath } from 'url'
 import { defineNuxtModule, installModule } from '@nuxt/kit'
 import fse from 'fs-extra'
 import { defu } from 'defu'
 import { CookieOptions } from '#app'
 import { globby } from 'globby'
+import { watch } from 'chokidar'
 
 async function setDefaultRuntimeConfigs (nuxt) {
     try {
@@ -52,7 +53,7 @@ const getLastSectionOfPath = thePath => thePath.substring(thePath.lastIndexOf('/
 const asyncCopyDirs = async (sourceDirs, targetDir, options = {}) => {
     await Promise.all(
         sourceDirs.map(async (sourceDir) => {
-            await fse.copy(sourceDir, path.join(targetDir, path.basename(sourceDir)), options)
+            await fse.copy(sourceDir, join(targetDir, basename(sourceDir)), options)
         })
     )
 }
@@ -71,7 +72,7 @@ export default defineNuxtModule<ModuleOptions>({
     },
     defaults: {
         targetDirName: '.hubble/',
-        dirBlacklist: ['node_modules', 'hubble', '.nuxt', '.output', '.idea'],
+        dirBlacklist: ['node_modules', '.hubble', '.nuxt', '.output', '.idea', 'platform-plugins'],
         pluginsDirName: 'platform-plugins',
         pluginsConfigFileName: 'pluginConfig.json',
         sessionCookie: {
@@ -113,7 +114,7 @@ export default defineNuxtModule<ModuleOptions>({
 
         await fse.emptyDir(targetDir)
         await fse.copy(baseDir, targetDir)
-        await fse.copy(resolve(join(runtimeDir, 'platforms', process.env.PLATFORM, 'composables')), resolve(join(targetDir, 'composables')))
+        await fse.copy(resolve(join(platformDir, 'composables')), resolve(join(targetDir, 'composables')))
         // TODO: copy platform plugins dir to target
         await asyncCopyDirs(validRootDirs, targetDir)
 
@@ -159,6 +160,66 @@ export default defineNuxtModule<ModuleOptions>({
         // https://github.com/rollup/plugins/tree/master/packages/dynamic-import-vars#exclude
         if (nuxt.options.vite) {
             nuxt.options.vite.build.dynamicImportVarsOptions = { exclude: [] }
+        }
+
+        if (nuxt.options.dev) {
+            const excludedDirectories = [...options.dirBlacklist.map(__blacklistedDir => `${nuxt.options.rootDir}/${__blacklistedDir}/**`)]
+
+            const toTargetPath = oldPath => resolve(oldPath.replace(nuxt.options.rootDir, targetDir))
+
+            watch(nuxt.options.rootDir, { ignoreInitial: true, ignored: excludedDirectories }).on('all', async (event, filePath) => {
+                const newDestination = toTargetPath(filePath)
+
+                if (newDestination === '') {
+                    return false
+                }
+
+                if (event === 'add' || event === 'change') {
+                    await fse.copy(filePath, newDestination)
+                }
+
+                if (event === 'unlink') {
+                    const modulePath = filePath.replace(nuxt.options.rootDir, baseDir)
+
+                    fse.pathExists(modulePath, async (err, exists) => {
+                        if (exists) {
+                            // copy from module
+                            await fse.copy(modulePath, newDestination)
+                        } else if (!exists) {
+                            // path does not exist in module just remove from srcDir
+                            await fse.remove(newDestination)
+                        } else if (err) {
+                            // eslint-disable-next-line no-console
+                            console.log('err occurred: ', err)
+                        }
+                    })
+                }
+            })
+
+            watch(baseDir, { ignoreInitial: true, ignored: excludedDirectories }).on('all', async (event, filePath) => {
+                const newDestination = resolve(filePath.replace(baseDir, targetDir))
+
+                if (newDestination === '') {
+                    return false
+                }
+
+                const rootPath = filePath.replace(baseDir, nuxt.options.rootDir)
+
+                fse.pathExists(rootPath, async (err, exists) => {
+                    if (!exists) {
+                        if (event === 'add' || event === 'change') {
+                            fse.copy(filePath, newDestination)
+                        }
+
+                        if (event === 'unlink') {
+                            await fse.remove(newDestination)
+                        }
+                    } else if (err) {
+                        // eslint-disable-next-line no-console
+                        console.log('err occurred: ', err)
+                    }
+                })
+            })
         }
     }
 })
