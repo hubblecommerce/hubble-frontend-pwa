@@ -1,8 +1,8 @@
 import { Ref, ref } from 'vue'
 import { usePlatform } from '#imports'
-import { Cart, IUseCart } from '../../../commons'
-import type { Cart as CartSw } from '../api-client/generated'
-import { CartShopware } from '../api-client/generated'
+import { Cart, IUseCart } from '@hubblecommerce/hubble/commons'
+import type { Cart as CartSw } from '@hubblecommerce/hubble/platforms/shopware/api-client/generated'
+import { CartShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client/generated'
 
 const cart: Ref<Cart | null> = ref(null)
 

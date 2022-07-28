@@ -1,6 +1,6 @@
 import { defineNuxtRouteMiddleware, useNuxtApp, navigateTo } from '#app'
 import { usePlatform, useCustomer } from '#imports'
-import { getRequestCookie } from '../../commons'
+import { getRequestCookie } from '@hubblecommerce/hubble/commons'
 
 export default defineNuxtRouteMiddleware(async () => {
     const app = useNuxtApp()

@@ -1,9 +1,9 @@
 import { Ref, ref } from 'vue'
 import { FetchRequest } from 'ohmyfetch'
 import { FetchResult } from '#app'
-import { IUsePage, Page, useDefaultStructure } from '../../../commons'
-import { PwaShopware } from '../api-client/generated'
-import { includes, associations, mapPage } from '../api-client/utils'
+import { IUsePage, Page, useDefaultStructure } from '@hubblecommerce/hubble/commons'
+import { PwaShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client/generated'
+import { includes, associations, mapPage } from '@hubblecommerce/hubble/platforms/shopware/api-client/utils'
 
 export const usePage = function (): IUsePage {
     const loading: Ref<boolean> = ref(false)

@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { Cms } from '../../../commons'
+import { Cms } from '@hubblecommerce/hubble/commons'
 
 const props = defineProps<{
     data: Cms

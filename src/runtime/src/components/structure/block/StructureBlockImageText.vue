@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 import { computed, resolveComponent } from 'vue'
-import { Slot, toUpperCamelCase } from '../../../../commons'
+import { Slot, toUpperCamelCase } from '@hubblecommerce/hubble/commons'
 
 const props = defineProps<{
     content: Slot[]

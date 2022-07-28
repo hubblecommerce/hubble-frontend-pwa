@@ -1,9 +1,9 @@
 import { Ref, ref, computed } from 'vue'
-import { usePlatform } from '#imports'
 import { FetchResult } from '#app'
 import { FetchRequest } from 'ohmyfetch'
-import { Customer, IUseCustomer } from '../../../commons'
-import { ProfileShopware, Customer as SwCustomer, LoginRegistrationShopware } from '../api-client/generated'
+import { usePlatform } from '#imports'
+import { Customer, IUseCustomer } from '@hubblecommerce/hubble/commons'
+import { ProfileShopware, Customer as SwCustomer, LoginRegistrationShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client/generated'
 
 const customer: Ref<Customer> = ref(null)
 

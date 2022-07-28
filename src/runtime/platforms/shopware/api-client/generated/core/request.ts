@@ -18,7 +18,7 @@ import { usePlatform } from '#imports'
 import { OpenAPI } from './OpenAPI'
 import { useFetch, useNuxtApp } from '#app'
 // @ts-ignore
-import { getRequestCookie } from '../../../../../commons'
+import { getRequestCookie } from '@hubblecommerce/hubble/commons'
 import { hash } from 'ohash'
 
 const isDefined = <T>(value: T | null | undefined): value is Exclude<T, null | undefined> => {

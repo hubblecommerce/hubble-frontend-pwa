@@ -55,8 +55,8 @@
 </template>
 
 <script setup lang="ts">
-import { useNavigation } from '#imports'
 import { throwError } from '#app'
+import { useNavigation } from '#imports'
 
 const {
     navigation,
