@@ -1,6 +1,9 @@
 <template>
     <div class="default-layout">
         <header>
+            <misc-plugin-slot name="layouts-default-navbar-before" :events="{}" :data="{}">
+                This is a Fallback Text, in case there is no component matches this slot.
+            </misc-plugin-slot>
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <div class="container">
                     <button

@@ -1,0 +1,50 @@
+<template>
+    <div class="plugin-slot" style="border: 1px solid purple; min-height: 50px;">
+        Slot: {{ name }}
+        <template v-if="slotEntries != null && slotEntries.length">
+            <div v-for="(slotEntry, index) in slotEntries" :key="index" class="plugin-slot-entries">
+                <component
+                    :is="resolveComponent(slotEntry.componentName)"
+                    v-bind="data"
+                    v-on="events"
+                />
+            </div>
+        </template>
+
+        <slot v-else-if="hasSlotContent" />
+        <div v-else class="empty-slot" />
+    </div>
+</template>
+
+<script setup lang="ts">
+import { ref, useSlots, computed, resolveComponent } from 'vue'
+import pluginMapping from '@/platform-plugins/pluginMapping.json'
+
+const props = defineProps({
+    name: {
+        type: String,
+        required: true
+    },
+    data: {
+        type: Object,
+        required: false,
+        default: () => { return false }
+    },
+    events: {
+        type: Object,
+        required: false,
+        default: () => { return false }
+    }
+})
+
+const slotEntries = ref(null)
+
+const slots = useSlots()
+const hasSlotContent = computed(() => {
+    return slots && slots.default()
+})
+
+if (pluginMapping != null && pluginMapping.pluginSlots != null) {
+    slotEntries.value = pluginMapping.pluginSlots.filter(entry => entry.slot === props.name)
+}
+</script>

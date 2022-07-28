@@ -137,7 +137,7 @@ export default defineNuxtModule<ModuleOptions>({
         }
     },
     defaults: {
-        pluginsDirName: 'shop-plugins',
+        pluginsDirName: 'platform-plugins',
         pluginsConfigFileName: 'pluginConfig.json',
         sessionCookie: {
             name: 'hubble-session-token',
@@ -182,11 +182,28 @@ export default defineNuxtModule<ModuleOptions>({
             // eslint-disable-next-line array-callback-return
             components.map((component) => {
                 // @ts-ignore
-                if (component.shortPath.includes('/components/structure')) {
+                if (component.shortPath.includes('/components/structure') || component.shortPath.includes('plugin')) {
                     component.global = true
                 }
             })
         })
+
+        const pluginsDir = join(nuxt.options.rootDir, options.pluginsDirName)
+        const nuxtConfigPlugins = await loadNuxtConfig({
+            name: 'nuxt',
+            configFile: 'nuxt.config',
+            dotenv: true,
+            globalRc: true,
+            cwd: pluginsDir,
+            overrides: {
+                dev: true
+            }
+        })
+
+        // Set layers to current nuxt.options
+        for (const layer of nuxtConfigPlugins._layers) {
+            nuxt.options._layers.push(layer)
+        }
 
         // Use Nuxt extends to provide file based inheritance
         // https://v3.nuxtjs.org/api/configuration/nuxt.config#extends
@@ -208,7 +225,6 @@ export default defineNuxtModule<ModuleOptions>({
         }
 
         // Set default configs
-        const pluginsDir = join(nuxt.options.rootDir, options.pluginsDirName)
         const pluginsConfigPath = join(pluginsDir, options.pluginsConfigFileName)
 
         await setDefaultRuntimeConfigs(nuxt)

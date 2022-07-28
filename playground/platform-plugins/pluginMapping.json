@@ -1,0 +1,9 @@
+{
+    "pluginSlots": [
+        {
+            "slot": "layouts-default-navbar-before",
+            "componentName": "MyFirstPluginComponent",
+            "componentPath": "/components/my-first-plugin/MyFirstPluginComponent.vue"
+        }
+    ]
+}
