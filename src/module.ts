@@ -1,10 +1,10 @@
-import { join, extname, resolve } from 'path'
+import path, { join, extname, resolve } from 'path'
 import { fileURLToPath } from 'url'
-import { defineNuxtModule, installModule, loadNuxtConfig } from '@nuxt/kit'
+import { defineNuxtModule, installModule } from '@nuxt/kit'
 import fse from 'fs-extra'
 import { defu } from 'defu'
-import { Import } from 'unimport'
 import { CookieOptions } from '#app'
+import { globby } from 'globby'
 
 async function setDefaultRuntimeConfigs (nuxt) {
     try {
@@ -34,94 +34,27 @@ async function setPluginRuntimeConfigs (nuxt, pluginsConfigPath) {
     }
 }
 
-function checkForDuplicates (imports: Import[]) {
-    const uniqueValues = new Set(imports.map(v => v.name))
-    return uniqueValues.size < imports.length
-}
-
-function normalizeImports (imports: Import[], runtimeDir: string, rootDir: string) {
-    if (!checkForDuplicates(imports)) {
-        return false
-    }
-
-    const importsSet = new Set()
-
-    imports.forEach((item) => {
-        // check if the current is a duplicate
-        const isDuplicate: boolean = importsSet.has(item.name)
-
-        // if it's a duplicate, get all indexes of this duplicate by name
-        if (isDuplicate) {
-            const indexesOfDuplicates = []
-
-            for (let i = 0; i < imports.length; i++) {
-                if (imports[i].name === item.name) {
-                    indexesOfDuplicates.push(i)
-                }
-            }
-
-            // Create array of indexes with position based on priority
-            const sortedIndexes = []
-            indexesOfDuplicates.forEach((indexOfDuplicate) => {
-                if (imports[indexOfDuplicate].from.includes(join(runtimeDir, 'src/composables'))) {
-                    sortedIndexes.push({
-                        index: indexOfDuplicate,
-                        position: 0
-                    })
-                    return
-                }
-
-                if (imports[indexOfDuplicate].from.includes(join(runtimeDir, `platforms/${process.env.PLATFORM}/composables`))) {
-                    sortedIndexes.push({
-                        index: indexOfDuplicate,
-                        position: 1
-                    })
-                    return
-                }
-
-                if (imports[indexOfDuplicate].from.includes(join(rootDir, 'composables'))) {
-                    sortedIndexes.push({
-                        index: indexOfDuplicate,
-                        position: 2
-                    })
-                }
-            })
-
-            // sort array of indexes by position
-            sortedIndexes.sort(function (a, b) {
-                return a.position - b.position
-            })
-
-            // remove last index of sorted array so the rest can be deleted
-            const indexesToBeDeleted = sortedIndexes.slice(0, -1)
-
-            indexesToBeDeleted.forEach((index) => {
-                imports.splice(index.index, 1)
-            })
-
-            return
-        }
-
-        // add the current item to the Set
-        importsSet.add(item.name)
-
-        return isDuplicate
-    })
-
-    if (checkForDuplicates(imports)) {
-        normalizeImports(imports, runtimeDir, rootDir)
-    }
-}
-
 interface SessionCookie {
     name: string,
     options: CookieOptions
 }
 
 export interface ModuleOptions {
+    targetDirName: string,
+    dirBlacklist: string[],
     pluginsDirName: string,
     pluginsConfigFileName: string,
     sessionCookie: SessionCookie
+}
+
+const listAllDirs = dir => globby(`${dir}/*`, { onlyDirectories: true })
+const getLastSectionOfPath = thePath => thePath.substring(thePath.lastIndexOf('/') + 1)
+const asyncCopyDirs = async (sourceDirs, targetDir, options = {}) => {
+    await Promise.all(
+        sourceDirs.map(async (sourceDir) => {
+            await fse.copy(sourceDir, path.join(targetDir, path.basename(sourceDir)), options)
+        })
+    )
 }
 
 export default defineNuxtModule<ModuleOptions>({
@@ -137,6 +70,8 @@ export default defineNuxtModule<ModuleOptions>({
         }
     },
     defaults: {
+        targetDirName: '.hubble/',
+        dirBlacklist: ['node_modules', 'hubble', '.nuxt', '.output', '.idea'],
         pluginsDirName: 'platform-plugins',
         pluginsConfigFileName: 'pluginConfig.json',
         sessionCookie: {
@@ -159,23 +94,43 @@ export default defineNuxtModule<ModuleOptions>({
         const runtimeDir = fileURLToPath(new URL('./runtime', import.meta.url))
         nuxt.options.build.transpile.push(runtimeDir)
 
-        // Install pinia for store management
-        await installModule('@pinia/nuxt', { disableVuex: true })
+        /*
+         * File-based inheritance logic
+         */
+        const baseDir = resolve(join(runtimeDir, 'src'))
+        const targetDir = resolve(join(nuxt.options.rootDir, options.targetDirName))
+        const platformDir = resolve(join(runtimeDir, 'platforms', process.env.PLATFORM))
+        const platformPluginsDir = resolve(join(nuxt.options.rootDir, options.pluginsDirName))
+        const platformPluginsConfigPath = resolve(join(platformPluginsDir, options.pluginsConfigFileName))
 
-        // Auto import composables
-        nuxt.hook('autoImports:dirs', (dirs) => {
-            dirs.push(resolve(join(runtimeDir, 'platforms', process.env.PLATFORM), 'composables'))
+        const rootDirs = await listAllDirs(nuxt.options.rootDir)
+        const validRootDirs: string[] = []
+        rootDirs.forEach((dir) => {
+            if (!options.dirBlacklist.includes(getLastSectionOfPath(dir))) {
+                validRootDirs.push(dir)
+            }
         })
 
-        // Normalize auto imported composables in order to the priority: runtime/src -> runtime/src/platform -> rootDir
-        nuxt.hook('autoImports:extend', (imports) => {
-            normalizeImports(imports, runtimeDir, nuxt.options.rootDir)
-        })
+        await fse.emptyDir(targetDir)
+        await fse.copy(baseDir, targetDir)
+        await fse.copy(resolve(join(runtimeDir, 'platforms', process.env.PLATFORM, 'composables')), resolve(join(targetDir, 'composables')))
+        // TODO: copy platform plugins dir to target
+        await asyncCopyDirs(validRootDirs, targetDir)
+
+        // Set srcDir of nuxt base layer
+        for (const layer of nuxt.options._layers) {
+            if (layer.configFile === 'nuxt.config') {
+                layer.config.srcDir = resolve(join(layer.config.srcDir, options.targetDirName))
+            }
+        }
 
         // Add custom error page
         nuxt.hook('app:resolve', (app) => {
-            app.errorComponent = resolve(join(runtimeDir, 'src/error.vue'))
+            app.errorComponent = resolve(join(targetDir, 'components/misc/MiscError.vue'))
         })
+
+        // Install pinia for store management
+        await installModule('@pinia/nuxt', { disableVuex: true })
 
         // To make resolveComponent() with variable component name possible, set all structure components as global
         nuxt.hook('components:extend', (components) => {
@@ -188,47 +143,11 @@ export default defineNuxtModule<ModuleOptions>({
             })
         })
 
-        const pluginsDir = join(nuxt.options.rootDir, options.pluginsDirName)
-        const nuxtConfigPlugins = await loadNuxtConfig({
-            name: 'nuxt',
-            configFile: 'nuxt.config',
-            dotenv: true,
-            globalRc: true,
-            cwd: pluginsDir,
-            overrides: {
-                dev: true
-            }
-        })
-
-        // Set layers to current nuxt.options
-        for (const layer of nuxtConfigPlugins._layers) {
-            nuxt.options._layers.push(layer)
-        }
-
-        // Use Nuxt extends to provide file based inheritance
-        // https://v3.nuxtjs.org/api/configuration/nuxt.config#extends
-        // Create a nuxt config based on project configs and set module as cwd
-        const nuxtConfig = await loadNuxtConfig({
-            name: 'nuxt',
-            configFile: 'nuxt.config',
-            dotenv: true,
-            globalRc: true,
-            cwd: fileURLToPath(new URL('./runtime/src', import.meta.url)),
-            overrides: {
-                dev: true
-            }
-        })
-
-        // Set layers to current nuxt.options
-        for (const layer of nuxtConfig._layers) {
-            nuxt.options._layers.push(layer)
-        }
-
         // Set default configs
-        const pluginsConfigPath = join(pluginsDir, options.pluginsConfigFileName)
-
+        // const pluginsConfigPath = join(pluginsDir, options.pluginsConfigFileName)
+        //
         await setDefaultRuntimeConfigs(nuxt)
-        await setPluginRuntimeConfigs(nuxt, pluginsConfigPath)
+        // await setPluginRuntimeConfigs(nuxt, pluginsConfigPath)
 
         // Set configs from module options
         nuxt.options.runtimeConfig.public.sessionCookie = {

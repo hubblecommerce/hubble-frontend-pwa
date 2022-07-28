@@ -40,6 +40,7 @@
     "dependencies": {
         "@nuxt/kit": "^3.0.0-rc.3",
         "@pinia/nuxt": "^0.3.0",
+        "globby": "^13.1.2",
         "mitt": "^3.0.0"
     },
     "devDependencies": {
