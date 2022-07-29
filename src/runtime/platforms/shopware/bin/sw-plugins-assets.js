@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import * as swPlugins from './sw-plugins-functions.js'
+import * as swPlugins from './sw-plugins-functions'
 
 const main = async function () {
     const error = await swPlugins.ensurePluginsDir()
