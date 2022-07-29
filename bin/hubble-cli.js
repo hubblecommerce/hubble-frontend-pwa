@@ -5,7 +5,7 @@
 
     try {
         if (args[0] === 'dev:sw') {
-            const module = await import(`../src/runtime/platforms/shopware/bin/${args[1]}.js`)
+            const module = await import(`../dist/runtime/platforms/shopware/bin/${args[1]}.js`)
             module.default(args)
         } else {
             import(`${args[0]}.js`)
