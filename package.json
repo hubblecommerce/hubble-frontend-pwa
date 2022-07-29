@@ -32,7 +32,9 @@
         "test": "nuxi prepare __tests__/module/fixture && vitest",
         "coverage": "vitest run --coverage",
         "sw:dev:generate-api": "node bin/hubble-cli.js dev:sw open-api-generate $BASEURL $CLIENT_ID $CLIENT_SECRET && git apply src/runtime/platforms/shopware/api-client/*.patch",
-        "sw:dev:patch-api": "git format-patch -1 $COMMIT -o src/runtime/platforms/shopware/api-client/"
+        "sw:dev:patch-api": "git format-patch -1 $COMMIT -o src/runtime/platforms/shopware/api-client/",
+        "sw:install-plugins": "node bin/hubble-cli.js dev:sw sw-plugins-assets",
+        "sw:config-plugins": "node bin/hubble-cli.js dev:sw sw-plugins-config"
     },
     "lint-staged": {
         "*.{js,vue}": "eslint --fix"
@@ -41,7 +43,9 @@
         "@nuxt/kit": "^3.0.0-rc.3",
         "@pinia/nuxt": "^0.3.0",
         "globby": "^13.1.2",
-        "mitt": "^3.0.0"
+        "lmify": "^0.3.0",
+        "mitt": "^3.0.0",
+        "unzipper": "^0.10.11"
     },
     "devDependencies": {
         "@nuxt/module-builder": "latest",
