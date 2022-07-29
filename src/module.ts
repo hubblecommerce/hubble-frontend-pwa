@@ -7,9 +7,9 @@ import { CookieOptions } from '#app'
 import { globby } from 'globby'
 import { watch } from 'chokidar'
 
+// Set configs of configured platform
 async function setDefaultRuntimeConfigs (nuxt) {
     try {
-        // Get configs of configured platform
         const {
             defaultPublicRuntimeConfig,
             defaultPrivateRuntimeConfig
@@ -25,27 +25,14 @@ async function setDefaultRuntimeConfigs (nuxt) {
     }
 }
 
-async function setPluginRuntimeConfigs (nuxt, pluginsConfigPath) {
-    // Handle shopware plugin configurations
-    const swPluginsConfigExists = await fse.pathExists(pluginsConfigPath)
+// Set configs of installed platform plugins
+async function setPlatformPluginRuntimeConfigs (nuxt, pluginsConfigPath) {
+    const pluginsConfigExists = await fse.pathExists(pluginsConfigPath)
 
-    if (swPluginsConfigExists) {
+    if (pluginsConfigExists) {
         const pluginConfigs = await fse.readJson(pluginsConfigPath)
-        nuxt.options.publicRuntimeConfig = defu(nuxt.options.publicRuntimeConfig, pluginConfigs)
+        nuxt.options.runtimeConfig.public = defu(nuxt.options.runtimeConfig.public, pluginConfigs)
     }
-}
-
-interface SessionCookie {
-    name: string,
-    options: CookieOptions
-}
-
-export interface ModuleOptions {
-    targetDirName: string,
-    dirBlacklist: string[],
-    pluginsDirName: string,
-    pluginsConfigFileName: string,
-    sessionCookie: SessionCookie
 }
 
 const listAllDirs = dir => globby(`${dir}/*`, { onlyDirectories: true })
@@ -56,6 +43,19 @@ const asyncCopyDirs = async (sourceDirs, targetDir, options = {}) => {
             await fse.copy(sourceDir, join(targetDir, basename(sourceDir)), options)
         })
     )
+}
+
+export interface SessionCookie {
+    name: string,
+    options: CookieOptions
+}
+
+export interface ModuleOptions {
+    targetDirName: string,
+    dirBlacklist: string[],
+    pluginsDirName: string,
+    pluginsConfigFileName: string,
+    sessionCookie: SessionCookie
 }
 
 export default defineNuxtModule<ModuleOptions>({
@@ -95,6 +95,9 @@ export default defineNuxtModule<ModuleOptions>({
         const runtimeDir = fileURLToPath(new URL('./runtime', import.meta.url))
         nuxt.options.build.transpile.push(runtimeDir)
 
+        // Install pinia for store management
+        await installModule('@pinia/nuxt', { disableVuex: true })
+
         /*
          * File-based inheritance logic
          */
@@ -115,7 +118,15 @@ export default defineNuxtModule<ModuleOptions>({
         await fse.emptyDir(targetDir)
         await fse.copy(baseDir, targetDir)
         await fse.copy(resolve(join(platformDir, 'composables')), resolve(join(targetDir, 'composables')))
-        // TODO: copy platform plugins dir to target
+
+        const platformPluginsDirs = await listAllDirs(platformPluginsDir)
+        for (const pluginDir of platformPluginsDirs) {
+            const subDirs = await globby(`${pluginDir}/*`, { onlyDirectories: true })
+            // Platform plugins are not allowed to override hubble module files, to keep the inheritance order
+            // strict and readable. Use plugin-slot for injections.
+            await asyncCopyDirs(subDirs, targetDir, { overwrite: false, errorOnExist: true })
+        }
+
         await asyncCopyDirs(validRootDirs, targetDir)
 
         // Set srcDir of nuxt base layer
@@ -124,14 +135,6 @@ export default defineNuxtModule<ModuleOptions>({
                 layer.config.srcDir = resolve(join(layer.config.srcDir, options.targetDirName))
             }
         }
-
-        // Add custom error page
-        nuxt.hook('app:resolve', (app) => {
-            app.errorComponent = resolve(join(targetDir, 'components/misc/MiscError.vue'))
-        })
-
-        // Install pinia for store management
-        await installModule('@pinia/nuxt', { disableVuex: true })
 
         // To make resolveComponent() with variable component name possible, set all structure components as global
         nuxt.hook('components:extend', (components) => {
@@ -144,11 +147,9 @@ export default defineNuxtModule<ModuleOptions>({
             })
         })
 
-        // Set default configs
-        // const pluginsConfigPath = join(pluginsDir, options.pluginsConfigFileName)
-        //
+        // Set runtime configs
         await setDefaultRuntimeConfigs(nuxt)
-        // await setPluginRuntimeConfigs(nuxt, pluginsConfigPath)
+        await setPlatformPluginRuntimeConfigs(nuxt, platformPluginsConfigPath)
 
         // Set configs from module options
         nuxt.options.runtimeConfig.public.sessionCookie = {
@@ -162,9 +163,14 @@ export default defineNuxtModule<ModuleOptions>({
             nuxt.options.vite.build.dynamicImportVarsOptions = { exclude: [] }
         }
 
+        // Add custom error page
+        nuxt.hook('app:resolve', (app) => {
+            app.errorComponent = resolve(join(targetDir, 'components/misc/MiscError.vue'))
+        })
+
+        // Dev only: register new file-watcher based on file inheritance
         if (nuxt.options.dev) {
             const excludedDirectories = [...options.dirBlacklist.map(__blacklistedDir => `${nuxt.options.rootDir}/${__blacklistedDir}/**`)]
-
             const toTargetPath = oldPath => resolve(oldPath.replace(nuxt.options.rootDir, targetDir))
 
             watch(nuxt.options.rootDir, { ignoreInitial: true, ignored: excludedDirectories }).on('all', async (event, filePath) => {
@@ -178,6 +184,7 @@ export default defineNuxtModule<ModuleOptions>({
                     await fse.copy(filePath, newDestination)
                 }
 
+                // TODO: if deleted file was an override of platform plugin, copy platform plugin file
                 if (event === 'unlink') {
                     const modulePath = filePath.replace(nuxt.options.rootDir, baseDir)
 
@@ -196,7 +203,7 @@ export default defineNuxtModule<ModuleOptions>({
                 }
             })
 
-            watch(baseDir, { ignoreInitial: true, ignored: excludedDirectories }).on('all', async (event, filePath) => {
+            watch(baseDir, { ignoreInitial: true, ignored: excludedDirectories }).on('all', (event, filePath) => {
                 const newDestination = resolve(filePath.replace(baseDir, targetDir))
 
                 if (newDestination === '') {
