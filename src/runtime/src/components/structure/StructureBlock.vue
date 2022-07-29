@@ -7,7 +7,7 @@
 <script setup lang="ts">
 import { computed, ref, shallowRef, defineAsyncComponent, resolveComponent, onMounted } from 'vue'
 import { StructureLoading, StructureNoComponent } from '#components'
-import { Block, toUpperCamelCase, registerIntersectionObserver, getStructureBackgroundStyles } from '../../../commons'
+import { Block, toUpperCamelCase, registerIntersectionObserver, getStructureBackgroundStyles } from '@hubblecommerce/hubble/commons'
 
 const props = defineProps<{
     count?: number,

@@ -1,3 +1,4 @@
+import { fileURLToPath } from 'url'
 import { defineNuxtConfig } from 'nuxt'
 import eslintPlugin from 'vite-plugin-eslint'
 import hubble from '..'
@@ -9,7 +10,12 @@ export default defineNuxtConfig({
     vite: {
         plugins: [
             eslintPlugin()
-        ]
+        ],
+        resolve: {
+            alias: {
+                '@hubblecommerce/hubble': fileURLToPath(new URL('../src/runtime', import.meta.url))
+            }
+        }
     },
     app: {
         head: {

@@ -4,7 +4,7 @@
 
 <script setup lang="ts">
 import { useHead } from '#app'
-import { Category } from '../../../commons'
+import { Category } from '@hubblecommerce/hubble/commons'
 
 const props = defineProps<{
     data: Category

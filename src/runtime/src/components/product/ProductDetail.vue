@@ -25,7 +25,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { Product, useCurrency } from '../../../commons'
+import { Product, useCurrency } from '@hubblecommerce/hubble/commons'
 
 const props = defineProps<{
     data: Product

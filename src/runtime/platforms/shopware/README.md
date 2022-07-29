@@ -53,7 +53,7 @@ const { data, pending, refresh } = await CategoryShopware.readNavigation(
 - handles errors 
 
 ## bin
-Contains shopware specific cli helper like api client generation.
+Contains shopware specific cli helper like api client generation and plugin installation / configuration.
 
 ## composables
 Contains shopware specific composables. Mostly used to fetch data from api via 
@@ -61,3 +61,36 @@ platform specific api client and map them to types / interfaces defined in /runt
 
 ## .env_example
 Example file for shopware specific environment variables 
+
+## Plugins
+
+### Install Plugins from Shopware 
+
+Plugin data will be dumped from Shopware via API. The dumped zip file will be downloaded and unzipped in /platform-plugins 
+of projects rootDir. All plugin slot mapping files will be merged and placed as pluginMapping.json in /platform-plugins
+of projects rootDir. 
+
+```shell
+npm run hubble dev:sw sw-plugins-assets
+```
+
+### Load Plugin Configurations from Shopware
+
+Plugin data will be dumped from Shopware via API. The dumped plugin configuration will be flattened and merged into one
+single object, so it can be injected to Nuxt.js public runtimeConfiguration. Config file will be placed in /platform-plugins
+of projects rootDir. 
+
+Config values which contain "secret" or "private" or "password", will NOT be injected to avoid to leak sensitive
+information. 
+
+Schema of object property:
+
+```json
+{
+    "camelCasePluginNameConfigName": "some config value" 
+}
+```
+
+```shell
+npm run hubble dev:sw sw-plugins-config
+```

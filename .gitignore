@@ -26,8 +26,6 @@ dist
 
 # Env
 .env
-!playground/.env
-!__tests__/module/fixture/.env
 
 # Testing
 reports
@@ -54,3 +52,4 @@ Temporary Items
 
 # hubble
 .hubble
+platform-plugins

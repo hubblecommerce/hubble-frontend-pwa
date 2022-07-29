@@ -92,10 +92,11 @@ class ShopwareClient {
 
 const main = async function (args) {
     try {
+        // TODO: read params from .env file of playground
         const client = new ShopwareClient({
-            baseURL: args[2], // 'http://localhost'
-            client_id: args[3], // 'SWIAZKDRWJQYAFVBSXFPCNM5QG'
-            client_secret: args[4] // 'S1ZVMkV5cnh6TFdWbmFkQmJMUDVraFlhSjFMOHdnbHZTdUtKeEg'
+            baseURL: args[2],
+            client_id: args[3],
+            client_secret: args[4]
         })
 
         await client.auth()

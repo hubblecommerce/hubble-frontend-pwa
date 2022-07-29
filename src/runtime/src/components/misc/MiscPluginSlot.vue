@@ -17,6 +17,17 @@
 </template>
 
 <script setup lang="ts">
+/*
+* Naming convention for name property (Plugin Slot Naming Convention)
+* 1. Dash-cased string of directory path based on projects root directory e.g.: layouts-default-...
+* 2. Followed by dash-cased string consider the position of the slot within the component e.g.: navbar-before
+*
+* Examples:
+* layouts-default-navbar-before
+* pages-slug-dynamic-component-before
+* components-product-product-detail-add-to-cart-after
+*/
+
 import { ref, useSlots, computed, resolveComponent } from 'vue'
 import pluginMapping from '@/platform-plugins/pluginMapping.json'
 

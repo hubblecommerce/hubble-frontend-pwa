@@ -23,7 +23,7 @@
 
 <script setup lang="ts">
 import { computed, Ref } from 'vue'
-import { Block, getStructureBackgroundStyles, Section } from '../../../commons'
+import { Block, getStructureBackgroundStyles, Section } from '@hubblecommerce/hubble/commons'
 
 const props = defineProps<{
     count?: number

@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import { ProductListing } from '../../../commons'
+import { ProductListing } from '@hubblecommerce/hubble/commons'
 
 const props = defineProps<{
     data: ProductListing
