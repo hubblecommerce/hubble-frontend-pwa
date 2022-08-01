@@ -12,6 +12,15 @@
         },
         "./commons": {
             "import": "./dist/runtime/commons/index.mjs"
+        },
+        "./src/store": {
+            "import": "./dist/runtime/src/store/index.mjs"
+        },
+        "./platforms/shopware/api-client": {
+            "import": "./dist/runtime/platforms/shopware/api-client/generated/index.mjs"
+        },
+        "./platforms/shopware/api-client/utils": {
+            "import": "./dist/runtime/platforms/shopware/api-client/utils/index.mjs"
         }
     },
     "main": "./dist/module.cjs",

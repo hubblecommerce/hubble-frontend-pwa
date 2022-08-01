@@ -1,14 +1,4 @@
 import {
-    Block,
-    Breadcrumb,
-    Category,
-    Media,
-    Page,
-    Product, ProductListing,
-    Section,
-    Slot
-} from '../../../../commons'
-import {
     Category as swCategory,
     Product as swProduct,
     CmsSection,
@@ -17,6 +7,16 @@ import {
     ProductMedia,
     Media as swMedia, ProductListingResult
 } from '../generated'
+import {
+    Block,
+    Breadcrumb,
+    Category,
+    Media,
+    Page,
+    Product, ProductListing,
+    Section,
+    Slot
+} from '@hubblecommerce/hubble/commons'
 
 function mapMedia (swMedia: swMedia): Media {
     if (swMedia === null) {

@@ -1,6 +1,6 @@
 import { ref, Ref } from 'vue'
 import { Navigation, IUseNavigation } from '@hubblecommerce/hubble/commons'
-import { CategoryShopware, NavigationRouteResponse } from '@hubblecommerce/hubble/platforms/shopware/api-client/generated'
+import { CategoryShopware, NavigationRouteResponse } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 
 function mapNavigation (swNavigation: NavigationRouteResponse): Navigation {
     return swNavigation.map((item) => {

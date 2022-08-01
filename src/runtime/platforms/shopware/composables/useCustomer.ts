@@ -3,7 +3,7 @@ import { FetchResult } from '#app'
 import { FetchRequest } from 'ohmyfetch'
 import { usePlatform } from '#imports'
 import { Customer, IUseCustomer } from '@hubblecommerce/hubble/commons'
-import { ProfileShopware, Customer as SwCustomer, LoginRegistrationShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client/generated'
+import { ProfileShopware, Customer as SwCustomer, LoginRegistrationShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 
 const customer: Ref<Customer> = ref(null)
 

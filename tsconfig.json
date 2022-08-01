@@ -10,7 +10,10 @@
     ],
     "compilerOptions": {
         "paths": {
-            "@hubblecommerce/hubble/*": ["../src/runtime/*"],
+            "@hubblecommerce/hubble/commons": ["../src/runtime/commons/index"],
+            "@hubblecommerce/hubble/src/store": ["../src/runtime/src/store/index"],
+            "@hubblecommerce/hubble/platforms/shopware/api-client": ["../src/runtime/platforms/shopware/api-client/generated/index"],
+            "@hubblecommerce/hubble/platforms/shopware/api-client/utils": ["../src/runtime/platforms/shopware/api-client/utils/index"],
             "~~": [
                 "."
             ],

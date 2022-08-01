@@ -2,7 +2,7 @@ import { Ref, ref } from 'vue'
 import { FetchRequest } from 'ohmyfetch'
 import { FetchResult } from '#app'
 import { IUsePage, Page, useDefaultStructure } from '@hubblecommerce/hubble/commons'
-import { PwaShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client/generated'
+import { PwaShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 import { includes, associations, mapPage } from '@hubblecommerce/hubble/platforms/shopware/api-client/utils'
 
 export const usePage = function (): IUsePage {
