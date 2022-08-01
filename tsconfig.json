@@ -10,7 +10,7 @@
     ],
     "compilerOptions": {
         "paths": {
-            "@hubblecommerce/hubble/*": ["../src/runtime/*"],
+            "@hubblecommerce/hubble/dist*": ["../src/*"],
             "~~": [
                 "."
             ],

@@ -13,7 +13,7 @@ async function setDefaultRuntimeConfigs (nuxt) {
         const {
             defaultPublicRuntimeConfig,
             defaultPrivateRuntimeConfig
-        } = await import(`./runtime/platforms/${process.env.PLATFORM}/config${extname(import.meta.url)}`)
+        } = await import(`./platforms/${process.env.PLATFORM}/config${extname(import.meta.url)}`)
 
         // Merge default configs with configs set in nuxt.config.js
         nuxt.options.runtimeConfig.public = defu(nuxt.options.publicRuntimeConfig.public, defaultPublicRuntimeConfig)
@@ -92,7 +92,7 @@ export default defineNuxtModule<ModuleOptions>({
         }
 
         // Transpile runtime
-        const runtimeDir = fileURLToPath(new URL('./runtime', import.meta.url))
+        const runtimeDir = fileURLToPath(new URL('.', import.meta.url))
         nuxt.options.build.transpile.push(runtimeDir)
 
         // Install pinia for store management
