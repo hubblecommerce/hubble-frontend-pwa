@@ -5,8 +5,7 @@ export default defineBuildConfig({
     rollup: { cjsBridge: true },
     entries: [
         './src/module',
-        { input: 'src/commons/', outDir: 'dist/commons', declaration: true },
-        { input: 'src/platforms/', outDir: 'dist/platforms' },
-        { input: 'src/src/', outDir: 'dist/src' }
+        { input: 'src/runtime/', outDir: 'dist/runtime' },
+        { input: 'src/runtime/src/public/', outDir: 'dist/runtime/src/public', ext: 'js' }
     ]
 })

@@ -9,7 +9,7 @@ export default defineNuxtConfig({
     vite: {
         resolve: {
             alias: {
-                '@hubblecommerce/hubble/dist': fileURLToPath(new URL('../../../src', import.meta.url))
+                '@hubblecommerce/hubble': fileURLToPath(new URL('../../../src/runtime', import.meta.url))
             }
         }
     }
