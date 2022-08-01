@@ -30,4 +30,8 @@ version.
 
 - Create .env files in playground and __tests__/module/fixture
 - Run `npm run dev:prepare` to generate type stubs.
+- If there are any errors with symlinks after dev:prepare, reset / checkout files from git 
 - Use `npm run dev` to start [playground](./playground) in development mode.
+- Use `npm run dev:build` to build [playground](./playground) in production mode, then use `node playground/.output/server/index.mjs`
+to start node server. Server is listening on http://0.0.0.0:3000/, so you can also access it via localhost:3000 if
+you should get any CORS related errors. 
