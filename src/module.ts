@@ -157,10 +157,10 @@ export default defineNuxtModule<ModuleOptions>({
             options: options.sessionCookie.options
         }
 
-        // Vite only: remove /node_modules/ from excluded dynamic import vars
-        // https://github.com/rollup/plugins/tree/master/packages/dynamic-import-vars#exclude
+        // Vite only: exclude module from optimizeDeps to prevent vite from optimize #app and #import inside
+        // of module
         if (nuxt.options.vite) {
-            nuxt.options.vite.build.dynamicImportVarsOptions = { exclude: [] }
+            nuxt.options.vite.optimizeDeps.exclude.push('@hubblecommerce/hubble')
         }
 
         // Add custom error page
