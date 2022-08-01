@@ -37,7 +37,7 @@
         "dev": "nuxi dev playground",
         "dev:build": "nuxi build playground",
         "dev:build:analyze": "nuxi analyze playground",
-        "dev:prepare": "nuxt-module-build --stub && nuxi prepare playground && husky install",
+        "dev:prepare": "rm -rf ./playground/.hubble && nuxt-module-build --stub && nuxi prepare playground && husky install",
         "test": "nuxi prepare __tests__/module/fixture && vitest",
         "coverage": "vitest run --coverage",
         "sw:dev:generate-api": "node bin/hubble-cli.js dev:sw open-api-generate $BASEURL $CLIENT_ID $CLIENT_SECRET && git apply src/runtime/platforms/shopware/api-client/*.patch",
