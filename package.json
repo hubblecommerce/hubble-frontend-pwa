@@ -49,8 +49,12 @@
         "*.{js,vue}": "eslint --fix"
     },
     "dependencies": {
+        "@heroicons/vue": "^1.0.6",
         "@nuxt/kit": "^3.0.0-rc.3",
+        "@nuxtjs/color-mode": "^3.1.4",
+        "@nuxtjs/tailwindcss": "^5.3.1",
         "@pinia/nuxt": "^0.3.0",
+        "daisyui": "^2.20.0",
         "globby": "^13.1.2",
         "lmify": "^0.3.0",
         "mitt": "^3.0.0",

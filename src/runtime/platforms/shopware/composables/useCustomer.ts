@@ -1,7 +1,7 @@
 import { Ref, ref, computed } from 'vue'
-import { FetchResult } from '#app'
+import { FetchResult, navigateTo } from '#app'
 import { FetchRequest } from 'ohmyfetch'
-import { usePlatform } from '#imports'
+import { usePlatform, useCart } from '#imports'
 import { Customer, IUseCustomer } from '@hubblecommerce/hubble/commons'
 import { ProfileShopware, Customer as SwCustomer, LoginRegistrationShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 
@@ -51,6 +51,13 @@ export const useCustomer = function (): IUseCustomer {
         error.value = false
 
         try {
+            const { sessionToken } = usePlatform()
+            const { getCart } = useCart()
+
+            if (sessionToken.value === null) {
+                await getCart()
+            }
+
             // @ts-ignore
             const { data } = await LoginRegistrationShopware.loginCustomer({ username, password })
             loading.value = false
@@ -68,11 +75,18 @@ export const useCustomer = function (): IUseCustomer {
         }
     }
 
+    function logout (): void {
+        customer.value = null
+        setSessionToken(null)
+        navigateTo('/customer/login')
+    }
+
     return {
         customer,
         getCustomer,
         isGuest,
         login,
+        logout,
         loading,
         error
     }

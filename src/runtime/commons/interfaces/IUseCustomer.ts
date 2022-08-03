@@ -9,5 +9,6 @@ export interface IUseCustomer {
     error: Ref<boolean>,
     getCustomer(): Promise<FetchResult<FetchRequest>>,
     isGuest: ComputedRef<boolean>,
-    login(username: string, password: string): Promise<string>
+    login(username: string, password: string): Promise<string>,
+    logout(): void
 }

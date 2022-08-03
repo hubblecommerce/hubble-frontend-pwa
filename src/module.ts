@@ -1,4 +1,4 @@
-import { join, extname, resolve, basename } from 'path'
+import path, { join, extname, resolve, basename } from 'path'
 import { fileURLToPath } from 'url'
 import { defineNuxtModule, installModule } from '@nuxt/kit'
 import fse from 'fs-extra'
@@ -6,6 +6,8 @@ import { defu } from 'defu'
 import { CookieOptions } from '#app'
 import { globby } from 'globby'
 import { watch } from 'chokidar'
+import { Config } from 'tailwindcss'
+import daisyui from 'daisyui'
 
 // Set configs of configured platform
 async function setDefaultRuntimeConfigs (nuxt) {
@@ -166,6 +168,44 @@ export default defineNuxtModule<ModuleOptions>({
         // Add custom error page
         nuxt.hook('app:resolve', (app) => {
             app.errorComponent = resolve(join(targetDir, 'components/misc/MiscError.vue'))
+        })
+
+        /*
+         * Theming
+         */
+        // @ts-ignore
+        nuxt.hook('tailwindcss:config', (twConfig: Config) => {
+            let configOverrides: Config = {
+                content: [],
+                plugins: [
+                    daisyui
+                ]
+            }
+            configOverrides = defu(twConfig, configOverrides)
+
+            const contentOverrides = [
+                join(targetDir, 'components/**/*.{vue,js}'),
+                join(targetDir, 'layouts/**/*.vue'),
+                join(targetDir, 'pages/**/*.vue'),
+                join(targetDir, 'composables/**/*.{js,ts}'),
+                join(targetDir, 'plugins/**/*.{js,ts}'),
+                join(targetDir, 'App.{js,ts,vue}'),
+                join(targetDir, 'app.{js,ts,vue}')
+            ]
+            configOverrides.content = contentOverrides
+
+            // Need to set via Object.assign because we cannot update the reference of the object
+            Object.assign(twConfig, configOverrides)
+        })
+
+        await installModule('@nuxtjs/tailwindcss', {
+            configPath: join(nuxt.options.rootDir, 'tailwind.config.ts')
+        })
+
+        await installModule('@nuxtjs/color-mode', {
+            preference: 'system', // default theme
+            dataValue: 'theme', // activate data-theme in <html> tag
+            classSuffix: ''
         })
 
         // Dev only: register new file-watcher based on file inheritance
