@@ -1,17 +1,15 @@
 <template>
-    <div class="row">
-        <div class="col-auto me-auto">
+    <div class="flex justify-between">
+        <div>
             Total: {{ data.total }}
         </div>
-        <div class="col-auto">
+        <div>
             Page {{ data.page }} of {{ Math.ceil(data.total / data.limit) }}
         </div>
     </div>
 
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-        <div v-for="product in data.products" :key="product.id" class="col">
-            <ProductDetail :data="product" />
-        </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <ProductListingCard v-for="product in data.products" :key="product.id" :data="product" />
     </div>
 </template>
 

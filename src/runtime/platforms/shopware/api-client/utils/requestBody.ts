@@ -53,7 +53,13 @@ const includes = {
 }
 
 const associations = {
-    media: {}
+    media: {},
+    seoUrls: {},
+    manufacturer: {
+        associations: {
+            media: {}
+        }
+    }
 }
 
 export { includes, associations }

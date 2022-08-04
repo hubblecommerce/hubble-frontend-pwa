@@ -5,12 +5,14 @@ import {
     CmsBlock,
     CmsSlot,
     ProductMedia,
-    Media as swMedia, ProductListingResult
+    Media as swMedia,
+    ProductListingResult,
+    ProductManufacturer
 } from '../generated'
 import {
     Block,
     Breadcrumb,
-    Category,
+    Category, Manufacturer,
     Media,
     Page,
     Product, ProductListing,
@@ -50,6 +52,16 @@ function mapProductMedia (swMedia: ProductMedia[]): Media[] | null {
     return media
 }
 
+function mapManufacturer (swManufacturer: ProductManufacturer): Manufacturer {
+    return {
+        id: swManufacturer.id,
+        link: swManufacturer.link,
+        name: swManufacturer.translated.name,
+        description: swManufacturer.translated.description,
+        media: mapMedia(swManufacturer.media)
+    }
+}
+
 function mapProduct (swProduct: swProduct): Product {
     let url = swProduct.seoUrls[0]?.pathInfo
     if (swProduct.seoUrls[0]?.isCanonical) {
@@ -80,9 +92,7 @@ function mapProduct (swProduct: swProduct): Product {
             specialPrice: swProduct.calculatedPrice?.listPrice?.price
         },
         deliveryTime: swProduct.deliveryTime?.name,
-        manufacturer: {
-            id: swProduct.manufacturer?.id
-        },
+        manufacturer: mapManufacturer(swProduct.manufacturer),
         metaTitle: swProduct.translated.metaTitle,
         metaDescription: swProduct.translated.metaDescription
     }

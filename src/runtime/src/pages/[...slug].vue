@@ -1,6 +1,8 @@
 <template>
-    <main v-if="page != null" class="dynamic-page" style="border: 1px solid red;">
-        <div>Page: {{ page.id }} Type: {{ page.type }}</div>
+    <main v-if="page != null" class="dynamic-page border border-gray-400">
+        <div>
+            Page: {{ page.id }} Type: {{ page.type }}
+        </div>
 
         <component :is="pageComponent" v-if="pageComponent !== null" :data="pageData" />
 
@@ -14,9 +16,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, resolveComponent } from 'vue'
+import { computed, resolveComponent, provide, InjectionKey } from 'vue'
 import { throwError, useRoute } from '#app'
 import { usePage } from '#imports'
+import { Product, detailData } from '@hubblecommerce/hubble/commons'
 
 const route = useRoute()
 
@@ -59,4 +62,8 @@ const pageData = computed(() => {
 
     return null
 })
+
+if (page.value.type === 'detail' && page.value.detail !== undefined) {
+    provide(detailData, page.value.detail)
+}
 </script>

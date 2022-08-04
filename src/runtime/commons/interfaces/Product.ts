@@ -1,7 +1,11 @@
 import { Media } from './Media'
 
 export interface Manufacturer {
-    id: string
+    id: string,
+    link?: string,
+    name: string,
+    description?: string,
+    media?: Media
 }
 
 export interface Price {

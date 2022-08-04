@@ -12,7 +12,108 @@ const defaultStructure: Section[] = [
                 slots: [
                     {
                         data: 'This is a Fallback default Structure',
-                        type: 'text'
+                        type: 'text',
+                        productListing: null
+                    }
+                ]
+            }
+        ]
+    }
+]
+
+const defaultDetailStructure: Section[] = [
+    {
+        type: 'default',
+        sizingMode: 'boxed',
+        blocks: [
+            {
+                id: 'product-block-1',
+                type: 'product-heading',
+                sectionPosition: 'main',
+                slots: [
+                    {
+                        type: 'product-name',
+                        position: 'left',
+                        productListing: null,
+                        data: {
+                            content: 'Product Name'
+                        }
+                    },
+                    {
+                        type: 'manufacturer-logo',
+                        position: 'right',
+                        productListing: null,
+                        data: {
+                            manufacturer: null,
+                            mediaId: null,
+                            url: '',
+                            newTab: true,
+                            media: null
+                        }
+                    }
+                ]
+            },
+            {
+                id: 'product-block-2',
+                type: 'gallery-buybox',
+                sectionPosition: 'main',
+                slots: [
+                    {
+                        type: 'image-gallery',
+                        position: 'left',
+                        productListing: null,
+                        data: {
+                            sliderItems: [
+                                {
+                                    media: {
+                                        // media object
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        type: 'buy-box',
+                        position: 'right',
+                        productListing: null,
+                        data: {
+                            product: {
+                                // product object
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                id: 'product-block-3',
+                type: 'product-description-reviews',
+                sectionPosition: 'main',
+                slots: [
+                    {
+                        type: 'product-description-reviews',
+                        position: 'content',
+                        productListing: null,
+                        data: {
+                            reviews: 'Product Name',
+                            product: {
+                                // product object
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                id: 'product-block-4',
+                type: 'cross-selling',
+                sectionPosition: 'main',
+                slots: [
+                    {
+                        type: 'cross-selling',
+                        position: 'content',
+                        productListing: null,
+                        data: {
+                            crossSellings: null
+                        }
                     }
                 ]
             }
@@ -25,7 +126,7 @@ export function useDefaultStructure () {
 
     const setDefaultStructures = function () {
         defaultStructures.set('category', defaultStructure)
-        defaultStructures.set('detail', defaultStructure)
+        defaultStructures.set('detail', defaultDetailStructure)
         defaultStructures.set('cms', defaultStructure)
     }
 

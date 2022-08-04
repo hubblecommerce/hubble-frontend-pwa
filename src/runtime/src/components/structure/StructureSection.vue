@@ -1,20 +1,21 @@
 <template>
     <div
-        class="structure-section"
-        :class="{ [content.cssClass]: content.cssClass, 'container': content.sizingMode === 'boxed', 'container-fluid': content.sizingMode === 'fullwidth' }"
+        class="structure-section border border-gray-300"
+        :class="{ [content.cssClass]: content.cssClass, 'container m-auto px-6': content.sizingMode === 'boxed', 'w-full': content.sizingMode === 'fullwidth' }"
         :style="backgroundStyles"
-        style="border: 1px solid blue;"
     >
-        Section - Type {{ content.type }}
-        <div class="row">
+        <div>
+            Section - Type {{ content.type }}
+        </div>
+        <div class="grid grid-cols-12 gap-4">
             <div
                 v-if="content.type === 'sidebar'"
-                :class="{ 'col-12': content.mobileSidebarBehavior === 'wrap','d-none': content.mobileSidebarBehavior === 'hidden' }"
-                class="d-md-block col-md-3"
+                :class="{ 'col-span-12': content.mobileSidebarBehavior === 'wrap','hidden': content.mobileSidebarBehavior === 'hidden' }"
+                class="md:block md:col-span-3"
             >
                 <StructureBlock v-for="(sidebarBlock) in sidebarBlocks" :key="sidebarBlock.id" :content="sidebarBlock" :count="count" />
             </div>
-            <div :class="{ 'col-md-9': content.type === 'sidebar' }" class="col-12">
+            <div :class="{ 'md:col-span-9': content.type === 'sidebar' }" class="col-span-12">
                 <StructureBlock v-for="(mainBlock) in mainBlocks" :key="mainBlock.id" :content="mainBlock" :count="count" />
             </div>
         </div>
