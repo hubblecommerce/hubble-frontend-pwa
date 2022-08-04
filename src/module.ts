@@ -208,6 +208,8 @@ export default defineNuxtModule<ModuleOptions>({
             classSuffix: ''
         })
 
+        nuxt.options.build.transpile.push('@heroicons/vue')
+
         // Dev only: register new file-watcher based on file inheritance
         if (nuxt.options.dev) {
             const excludedDirectories = [...options.dirBlacklist.map(__blacklistedDir => `${nuxt.options.rootDir}/${__blacklistedDir}/**`)]
