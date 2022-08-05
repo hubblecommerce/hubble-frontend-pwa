@@ -1,5 +1,5 @@
 <template>
-    <div class="flex justify-between">
+    <div class="flex justify-between mb-4">
         <div>
             Total: {{ data.total }}
         </div>

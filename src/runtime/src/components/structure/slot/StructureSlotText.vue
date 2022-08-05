@@ -1,5 +1,5 @@
 <template>
-    StructureSlotText
+    <div v-if="content.data?.content != null" v-html="content.data.content" />
 </template>
 
 <script setup lang="ts">

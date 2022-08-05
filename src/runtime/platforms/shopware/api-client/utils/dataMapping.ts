@@ -72,9 +72,9 @@ function mapProduct (swProduct: swProduct): Product {
     }
 
     let media = null
-    if (swProduct.media !== null) {
+    if (swProduct.media != null) {
         media = mapProductMedia(swProduct.media)
-    } else if (swProduct.cover?.media !== null) {
+    } else if (swProduct.cover?.media != null) {
         media = mapMedia(swProduct.cover.media)
     }
 
@@ -123,17 +123,23 @@ function mapProductListing (swProductListing: ProductListingResult): ProductList
 
 function mapSlots (swSlots: CmsSlot[]): Slot[] {
     let productListing = null
+    let media = null
 
     return swSlots.map((slot: CmsSlot) => {
         if (slot.data?.listing != null) {
             productListing = mapProductListing(slot.data.listing)
         }
 
+        if (slot.data?.media != null) {
+            media = mapMedia(slot.data.media)
+        }
+
         return {
             type: slot.type,
             position: slot.slot,
             data: slot.data,
-            productListing
+            productListing,
+            media
         }
     })
 }

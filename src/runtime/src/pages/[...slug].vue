@@ -1,9 +1,5 @@
 <template>
-    <main v-if="page != null" class="dynamic-page border border-gray-400">
-        <div>
-            Page: {{ page.id }} Type: {{ page.type }}
-        </div>
-
+    <main v-if="page != null" class="dynamic-page">
         <component :is="pageComponent" v-if="pageComponent !== null" :data="pageData" />
 
         <StructureSection

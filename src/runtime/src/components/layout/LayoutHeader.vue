@@ -9,7 +9,7 @@
             <div class="navbar container m-auto px-6">
                 <div class="navbar-start">
                     <LayoutNavigationMobile :navigation="navigation" />
-                    <nuxt-link to="/" class="btn btn-ghost normal-case text-xl">
+                    <nuxt-link to="/" class="btn btn-ghost normal-case text-xl p-0">
                         hubble PWA
                     </nuxt-link>
                 </div>

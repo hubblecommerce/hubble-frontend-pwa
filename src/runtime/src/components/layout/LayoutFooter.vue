@@ -1,7 +1,7 @@
 <template>
     <footer>
         <div class="bg-base-200">
-            <div class="footer container m-auto p-10 text-base-content">
+            <div class="footer container m-auto px-6 py-10 text-base-content">
                 <div>
                     <span class="footer-title">Services</span>
                     <a class="link link-hover">Branding</a>
@@ -40,7 +40,7 @@
         </div>
 
         <div class="bg-neutral text-neutral-content">
-            <div class="footer container m-auto items-center py-4 px-10">
+            <div class="footer container m-auto items-center py-4 px-6">
                 <div class="items-center grid-flow-col">
                     <svg
                         width="36"

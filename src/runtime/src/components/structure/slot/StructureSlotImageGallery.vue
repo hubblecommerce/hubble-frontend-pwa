@@ -1,11 +1,14 @@
 <template>
-    Image Gallery
+    <ProductDetailMediaGallery :media="product.media" />
 </template>
 
 <script setup lang="ts">
-import { Slot } from '@hubblecommerce/hubble/commons'
+import { inject } from 'vue'
+import { detailData, Product, Slot } from '@hubblecommerce/hubble/commons'
 
 const props = defineProps<{
     content: Slot
 }>()
+
+const product = inject<Product>(detailData)
 </script>

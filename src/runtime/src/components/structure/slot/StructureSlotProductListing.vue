@@ -1,6 +1,4 @@
 <template>
-    StructureSlotProductListing
-
     <ProductListing :data="content.productListing" />
 </template>
 

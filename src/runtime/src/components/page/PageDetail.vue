@@ -1,5 +1,5 @@
 <template>
-    Detail Page
+    <div />
 </template>
 
 <script setup lang="ts">
