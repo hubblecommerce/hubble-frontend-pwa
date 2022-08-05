@@ -29,7 +29,7 @@
 */
 
 import { ref, useSlots, computed, resolveComponent } from 'vue'
-import pluginMapping from '@/platform-plugins/pluginMapping.json'
+import pluginMapping from '@@/platform-plugins/pluginMapping.json'
 
 const props = defineProps({
     name: {

@@ -138,6 +138,18 @@ export default defineNuxtModule<ModuleOptions>({
             }
         }
 
+        const baseAliases = {
+            '~~': nuxt.options.rootDir,
+            '@@': nuxt.options.rootDir,
+
+            '~': targetDir,
+            '@': targetDir,
+
+            assets: path.join(targetDir, 'assets'),
+            public: path.join(targetDir, 'public')
+        }
+        nuxt.options.alias = { ...nuxt.options.alias, ...baseAliases }
+
         // To make resolveComponent() with variable component name possible, set all structure components as global
         nuxt.hook('components:extend', (components) => {
             // eslint-disable-next-line array-callback-return
