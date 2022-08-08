@@ -1,5 +1,5 @@
 export interface Customer {
-    name: string
+    name: string,
     email: string,
     isGuest: boolean
 }

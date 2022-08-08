@@ -47,20 +47,25 @@
                         <label tabindex="0" class="btn btn-ghost btn-circle">
                             <div class="indicator">
                                 <ShoppingCartIcon class="h-5 w-5" fill="none" />
-                                <span class="badge badge-sm indicator-item">8</span>
+
+                                <client-only>
+                                    <span v-if="miniCart?.qty > 0" class="badge badge-sm indicator-item" v-text="miniCart.qty" />
+                                </client-only>
                             </div>
                         </label>
-                        <div tabindex="0" class="card card-compact dropdown-content w-52 bg-base-100 shadow">
-                            <div class="card-body">
-                                <span class="font-bold text-lg">8 Items</span>
-                                <span class="text-info">Subtotal: $999</span>
-                                <div class="card-actions">
-                                    <button class="btn btn-primary btn-block">
-                                        View cart
-                                    </button>
+                        <client-only>
+                            <div tabindex="0" class="card card-compact dropdown-content w-52 bg-base-100 shadow">
+                                <div class="card-body">
+                                    <span v-if="miniCart?.qty > 0" class="font-bold text-lg" v-text="`${miniCart.qty} items`" />
+                                    <span class="text-info">Subtotal: $999</span>
+                                    <div class="card-actions">
+                                        <button class="btn btn-primary btn-block">
+                                            View cart
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </client-only>
                     </div>
                     <div class="dropdown dropdown-end">
                         <client-only>
@@ -84,7 +89,7 @@
 <script setup lang="ts">
 import { ShoppingCartIcon, SearchIcon, ColorSwatchIcon, UserIcon } from '@heroicons/vue/outline'
 import { throwError } from '#app'
-import { useNavigation, useColorMode } from '#imports'
+import { useNavigation, useColorMode, useCart } from '#imports'
 
 const colorMode = useColorMode()
 const themes = [
@@ -130,4 +135,6 @@ try {
 } catch (e) {
     throwError(e)
 }
+
+const { miniCart } = useCart()
 </script>

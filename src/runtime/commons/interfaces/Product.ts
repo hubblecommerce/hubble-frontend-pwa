@@ -9,8 +9,8 @@ export interface Manufacturer {
 }
 
 export interface Price {
-    regularPrice: number
-    specialPrice: number | null
+    regularPrice: string,
+    specialPrice: string | null
 }
 
 export interface Product {

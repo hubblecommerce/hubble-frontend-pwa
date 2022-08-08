@@ -9,6 +9,10 @@
                 <p v-if="product.deliveryTime">
                     Delivery Time: {{ product.deliveryTime }}
                 </p>
+                <p>
+                    {{ formatPrice(product.price.regularPrice) }}
+                    {{ formatPrice(product.price.specialPrice) }}
+                </p>
                 <div class="card-actions justify-between items-end flex-nowrap">
                     <div class="form-control w-20">
                         <label for="quantity" class="label">
@@ -24,8 +28,8 @@
                         >
                     </div>
 
-                    <button class="btn btn-primary w-full flex-shrink">
-                        Add to cart
+                    <button :class="{'loading': cartLoading}" class="btn btn-primary w-full flex-shrink" @click="addToCart(qty, product.id)">
+                        <span v-if="!cartLoading">Add to cart</span>
                     </button>
                 </div>
             </template>
@@ -39,11 +43,14 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Product } from '@hubblecommerce/hubble/commons'
+import { Product, useCurrency } from '@hubblecommerce/hubble/commons'
+import { useCart } from '#imports'
 
 defineProps<{
     product: Product
 }>()
 
+const { formatPrice } = useCurrency()
 const qty = ref<number>(1)
+const { addToCart, loading: cartLoading, error: cartError } = useCart()
 </script>

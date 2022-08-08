@@ -1,19 +1,12 @@
-import { Ref, ref, computed } from 'vue'
+import { computed, ref, Ref } from 'vue'
 import { FetchResult, navigateTo } from '#app'
 import { FetchRequest } from 'ohmyfetch'
-import { usePlatform, useCart } from '#imports'
+import { useCart, usePlatform } from '#imports'
 import { Customer, IUseCustomer } from '@hubblecommerce/hubble/commons'
-import { ProfileShopware, Customer as SwCustomer, LoginRegistrationShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client'
+import { LoginRegistrationShopware, ProfileShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client'
+import { mapCustomer } from '@hubblecommerce/hubble/platforms/shopware/api-client/utils'
 
 const customer: Ref<Customer> = ref(null)
-
-function mapCustomer (customer: SwCustomer): Customer {
-    return {
-        name: customer.firstName,
-        email: customer.email,
-        isGuest: customer.guest
-    }
-}
 
 export const useCustomer = function (): IUseCustomer {
     const loading: Ref<boolean> = ref(false)
@@ -34,8 +27,7 @@ export const useCustomer = function (): IUseCustomer {
         try {
             // @ts-ignore
             const { data, pending, refresh } = await ProfileShopware.readCustomer()
-            const mappedCustomer = mapCustomer(data.value)
-            customer.value = mappedCustomer
+            customer.value = mapCustomer(data.value)
 
             loading.value = false
             return { data, pending, refresh }

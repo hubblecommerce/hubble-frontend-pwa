@@ -7,15 +7,23 @@ import {
     ProductMedia,
     Media as swMedia,
     ProductListingResult,
-    ProductManufacturer
+    ProductManufacturer,
+    SalesChannelContext, Customer as SwCustomer,
+    Cart as SwCart,
+    LineItem as SwLineItem
 } from '../generated'
 import {
     Block,
     Breadcrumb,
-    Category, Manufacturer,
-    Media,
+    Cart,
+    Category,
+    Customer, LineItem,
+    Manufacturer,
+    Media, MiniCart,
     Page,
-    Product, ProductListing,
+    Platform,
+    Product,
+    ProductListing,
     Section,
     Slot
 } from '@hubblecommerce/hubble/commons'
@@ -228,4 +236,85 @@ function mapPage (swPage): Page {
     return obj
 }
 
-export { mapCategory, mapMedia, mapProductMedia, mapBreadcrumb, mapProduct, mapSections, mapSlots, mapBlocks, mapPage }
+function mapPlatform (swPlatform: SalesChannelContext): Platform {
+    return {
+        currency: swPlatform.currency.isoCode,
+        language: swPlatform.salesChannel.languageId,
+        maintenance: swPlatform.salesChannel.maintenance
+    }
+}
+
+function mapCustomer (customer: SwCustomer): Customer {
+    return {
+        name: customer.firstName,
+        email: customer.email,
+        isGuest: customer.guest
+    }
+}
+
+function mapLineItem (lineItem: SwLineItem): LineItem {
+    return {
+        id: lineItem.id,
+        itemId: lineItem.referencedId,
+        name: lineItem.label,
+        quantity: lineItem.quantity,
+        type: lineItem.type
+    }
+}
+
+function mapLineItems (lineItems: SwLineItem[]): LineItem[] {
+    return lineItems.map((lineItem) => {
+        return mapLineItem(lineItem)
+    })
+}
+
+function mapCart (cart: SwCart): Cart {
+    return {
+        id: cart.token,
+        lineItems: mapLineItems(cart.lineItems),
+        price: {
+            nettoPrice: cart.price.netPrice,
+            bruttoPrice: cart.price.totalPrice,
+            tax: cart.price.calculatedTaxes[0].tax,
+            taxRate: cart.price.calculatedTaxes[0].taxRate
+        },
+        shippingCosts: cart.deliveries[0].shippingCosts.totalPrice,
+        comment: cart.customerComment
+    }
+}
+
+function mapMiniCart (cart: Cart): MiniCart {
+    let quantity = 0
+    const items = []
+    cart.lineItems.forEach((lineItem) => {
+        quantity = quantity + lineItem.quantity
+
+        items.push({
+            id: lineItem.id,
+            itemId: lineItem.itemId,
+            qty: lineItem.quantity
+        })
+    })
+
+    return {
+        id: cart.id,
+        items,
+        qty: quantity
+    }
+}
+
+export {
+    mapCategory,
+    mapMedia,
+    mapProductMedia,
+    mapBreadcrumb,
+    mapProduct,
+    mapSections,
+    mapSlots,
+    mapBlocks,
+    mapPage,
+    mapPlatform,
+    mapCustomer,
+    mapCart,
+    mapMiniCart
+}
