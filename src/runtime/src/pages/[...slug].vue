@@ -59,7 +59,7 @@ const pageData = computed(() => {
     return null
 })
 
-if (page.value.type === 'detail' && page.value.detail !== undefined) {
+if (page.value?.type === 'detail' && page.value?.detail !== undefined) {
     provide(detailData, page.value.detail)
 }
 </script>
