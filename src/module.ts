@@ -47,7 +47,7 @@ const asyncCopyDirs = async (sourceDirs, targetDir, options = {}) => {
     )
 }
 
-export interface SessionCookie {
+export interface Cookie {
     name: string,
     options: CookieOptions
 }
@@ -57,7 +57,8 @@ export interface ModuleOptions {
     dirBlacklist: string[],
     pluginsDirName: string,
     pluginsConfigFileName: string,
-    sessionCookie: SessionCookie
+    sessionCookie: Cookie,
+    cartCookie: Cookie
 }
 
 export default defineNuxtModule<ModuleOptions>({
@@ -79,6 +80,14 @@ export default defineNuxtModule<ModuleOptions>({
         pluginsConfigFileName: 'pluginConfig.json',
         sessionCookie: {
             name: 'hubble-session-token',
+            options: {
+                maxAge: 60 * 60 * 24 * 30,
+                sameSite: 'lax',
+                path: '/'
+            }
+        },
+        cartCookie: {
+            name: 'hubble-cart',
             options: {
                 maxAge: 60 * 60 * 24 * 30,
                 sameSite: 'lax',
@@ -171,6 +180,11 @@ export default defineNuxtModule<ModuleOptions>({
             options: options.sessionCookie.options
         }
 
+        nuxt.options.runtimeConfig.public.cartCookie = {
+            name: options.cartCookie.name,
+            options: options.cartCookie.options
+        }
+
         // Vite only: exclude module from optimizeDeps to prevent vite from optimize #app and #import inside
         // of module
         if (nuxt.options.vite) {
@@ -227,6 +241,7 @@ export default defineNuxtModule<ModuleOptions>({
             const excludedDirectories = [...options.dirBlacklist.map(__blacklistedDir => `${nuxt.options.rootDir}/${__blacklistedDir}/**`)]
             const toTargetPath = oldPath => resolve(oldPath.replace(nuxt.options.rootDir, targetDir))
 
+            // TODO: Write generic function for watchers
             watch(nuxt.options.rootDir, { ignoreInitial: true, ignored: excludedDirectories }).on('all', async (event, filePath) => {
                 const newDestination = toTargetPath(filePath)
 
@@ -280,6 +295,22 @@ export default defineNuxtModule<ModuleOptions>({
                         console.log('err occurred: ', err)
                     }
                 })
+            })
+
+            watch(join(platformDir, 'composables'), { ignoreInitial: true }).on('all', (event, filePath) => {
+                const newDestination = resolve(filePath.replace(join(platformDir, 'composables'), join(targetDir, 'composables')))
+
+                if (newDestination === '') {
+                    return false
+                }
+
+                if (event === 'add' || event === 'change') {
+                    fse.copy(filePath, newDestination)
+                }
+
+                if (event === 'unlink') {
+                    fse.remove(newDestination)
+                }
             })
         }
     }
