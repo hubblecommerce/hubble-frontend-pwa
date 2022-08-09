@@ -275,10 +275,10 @@ function mapCart (cart: SwCart): Cart {
         price: {
             nettoPrice: cart.price.netPrice,
             bruttoPrice: cart.price.totalPrice,
-            tax: cart.price.calculatedTaxes[0].tax,
-            taxRate: cart.price.calculatedTaxes[0].taxRate
+            tax: cart.price.calculatedTaxes.length > 0 ? cart.price.calculatedTaxes[0].tax : null,
+            taxRate: cart.price.calculatedTaxes.length > 0 ? cart.price.calculatedTaxes[0].taxRate : null
         },
-        shippingCosts: cart.deliveries[0].shippingCosts.totalPrice,
+        shippingCosts: cart.deliveries.length > 0 ? cart.deliveries[0].shippingCosts.totalPrice : null,
         comment: cart.customerComment
     }
 }
