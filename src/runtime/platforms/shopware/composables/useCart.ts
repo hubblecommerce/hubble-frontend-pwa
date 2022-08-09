@@ -1,9 +1,8 @@
-import { Ref, ref } from 'vue'
+import { Ref, ref, watch } from 'vue'
 import { useCookie, useRuntimeConfig } from '#app'
 import { useNotification, usePlatform } from '#imports'
 import { Cart, IUseCart, MiniCart } from '@hubblecommerce/hubble/commons'
-import type { CartItems } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { Cart as SwCart, CartShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client'
+import { CartShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 import { mapCart, mapMiniCart } from '@hubblecommerce/hubble/platforms/shopware/api-client/utils'
 
 const cart: Ref<Cart | null> = ref(null)
@@ -21,7 +20,6 @@ export const useCart = function (): IUseCart {
         error.value = false
 
         try {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             const { data } = await CartShopware.readCart()
 
@@ -29,8 +27,11 @@ export const useCart = function (): IUseCart {
                 setSessionToken(data.value.token)
             }
 
+            const mappedData = mapCart(data.value)
+            cart.value = mappedData
             loading.value = false
-            return updateCart(data.value)
+
+            return mappedData
         } catch (e) {
             loading.value = false
             error.value = e
@@ -44,15 +45,44 @@ export const useCart = function (): IUseCart {
 
         try {
             await CartShopware.deleteCart()
-
             cart.value = null
-
             loading.value = false
         } catch (e) {
             loading.value = false
             error.value = e
             return e
         }
+    }
+
+    function updateLineItem (lineItem, updatedQty) {
+        return CartShopware.updateLineItem(
+            'application/json',
+            'application/json',
+            {
+                items: [
+                    {
+                        id: lineItem.id,
+                        quantity: updatedQty
+                    }
+                ]
+            }
+        )
+    }
+
+    function addLineItem (itemId, qty) {
+        return CartShopware.addLineItem(
+            'application/json',
+            'application/json',
+            {
+                items: [
+                    {
+                        type: 'product',
+                        referencedId: itemId,
+                        quantity: qty
+                    }
+                ]
+            }
+        )
     }
 
     async function addToCart (qty: number, itemId: string): Promise<Cart> {
@@ -64,54 +94,21 @@ export const useCart = function (): IUseCart {
                 return item.itemId === itemId
             })
 
-            if (lineItem) {
-                const updatedQty = lineItem.qty + qty
+            const updatedQty = lineItem ? lineItem.qty + qty : null
 
-                const requestBody: CartItems = {
-                    items: [
-                        {
-                            id: lineItem.id,
-                            quantity: updatedQty
-                        }
-                    ]
-                }
+            // @ts-ignore
+            const { data } = lineItem ? await updateLineItem(lineItem, updatedQty) : await addLineItem(itemId, qty)
 
-                // @ts-ignore
-                const { data, pending, refresh } = await CartShopware.updateLineItem('application/json', 'application/json', requestBody)
-
-                if (data.value.token !== undefined) {
-                    setSessionToken(data.value.token)
-                }
-
-                loading.value = false
-
-                showNotification('Updated item in cart', 'success')
-
-                return updateCart(data.value)
-            } else {
-                const requestBody: CartItems = {
-                    items: [
-                        {
-                            type: 'product',
-                            referencedId: itemId,
-                            quantity: qty
-                        }
-                    ]
-                }
-
-                // @ts-ignore
-                const { data, pending, refresh } = await CartShopware.addLineItem('application/json', 'application/json', requestBody)
-
-                if (data.value.token !== undefined) {
-                    setSessionToken(data.value.token)
-                }
-
-                loading.value = false
-
-                showNotification('Product added to cart', 'success')
-
-                return updateCart(data.value)
+            if (data.value.token !== undefined) {
+                setSessionToken(data.value.token)
             }
+
+            const mappedData = mapCart(data.value)
+            cart.value = mappedData
+            showNotification('Product added to cart', 'success')
+            loading.value = false
+
+            return mappedData
         } catch (e) {
             loading.value = false
             error.value = e
@@ -119,16 +116,17 @@ export const useCart = function (): IUseCart {
         }
     }
 
-    function updateCart (swCart: SwCart): Cart {
-        cart.value = mapCart(swCart)
-        miniCart.value = mapMiniCart(cart.value)
+    function saveCart (): void {
+        miniCart.value = cart.value != null ? mapMiniCart(cart.value) : null
 
         const cookie = useCookie(cartCookie.name, cartCookie.options)
         // @ts-ignore
         cookie.value = miniCart.value
-
-        return cart.value
     }
+
+    watch(cart, (value, oldValue, onCleanup) => {
+        saveCart()
+    })
 
     return {
         cart,
