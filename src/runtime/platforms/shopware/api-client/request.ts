@@ -108,6 +108,11 @@ const catchErrorCodes = (options: ApiRequestOptions, result): void => {
     }
 };
 
+export const cachedRoutes = [
+    '/pwa/page',
+    '/navigation/'
+]
+
 /**
  * Request method
  * @param config The OpenAPI configuration object
@@ -146,7 +151,20 @@ export const request = <T>(config: OpenAPIConfig, options: ApiRequestOptions): C
                     method: options.method,
                     body: options.body,
                     headers: headers,
-                    key: hash(['api-fetch', getUrl(config, options), options.body])
+                    initialCache: cachedRoutes.includes(options.url),
+                    key: hash(['api-fetch', getUrl(config, options), options.body, options.method]),
+                    onRequest: async (ctx) => {
+                        app.$hblBus.$emit('onRequest', { data: ctx })
+                    },
+                    onRequestError: async (ctx) => {
+                        app.$hblBus.$emit('onRequestError', { data: ctx })
+                    },
+                    onResponse: async (ctx) => {
+                        app.$hblBus.$emit('onResponse', { data: ctx })
+                    },
+                    onResponseError: async (ctx) => {
+                        app.$hblBus.$emit('onResponseError', { data: ctx })
+                    }
                 }
             )
 
