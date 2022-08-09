@@ -3,6 +3,7 @@
         <LayoutHeader />
         <slot />
         <LayoutFooter />
+        <LayoutNotifications />
     </div>
 </template>
 

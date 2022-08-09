@@ -1,6 +1,6 @@
 import { Ref, ref } from 'vue'
 import { useCookie, useRuntimeConfig } from '#app'
-import { usePlatform } from '#imports'
+import { useNotification, usePlatform } from '#imports'
 import { Cart, IUseCart, MiniCart } from '@hubblecommerce/hubble/commons'
 import type { CartItems } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 import { Cart as SwCart, CartShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client'
@@ -11,9 +11,10 @@ const miniCart: Ref<MiniCart | null> = ref(null)
 
 export const useCart = function (): IUseCart {
     const { cartCookie } = useRuntimeConfig()
-    const error: Ref<boolean> = ref(false)
+    const error: Ref<boolean | string> = ref(false)
     const loading: Ref<boolean> = ref(false)
     const { setSessionToken } = usePlatform()
+    const { showNotification } = useNotification()
 
     async function getCart (): Promise<Cart> {
         loading.value = true
@@ -84,6 +85,8 @@ export const useCart = function (): IUseCart {
 
                 loading.value = false
 
+                showNotification('Updated item in cart', 'success')
+
                 return updateCart(data.value)
             } else {
                 const requestBody: CartItems = {
@@ -104,6 +107,8 @@ export const useCart = function (): IUseCart {
                 }
 
                 loading.value = false
+
+                showNotification('Product added to cart', 'success')
 
                 return updateCart(data.value)
             }

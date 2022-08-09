@@ -42,9 +42,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { Product, useCurrency } from '@hubblecommerce/hubble/commons'
-import { useCart } from '#imports'
+import { useCart, useNotification } from '#imports'
 
 defineProps<{
     product: Product
@@ -53,4 +53,11 @@ defineProps<{
 const { formatPrice } = useCurrency()
 const qty = ref<number>(1)
 const { addToCart, loading: cartLoading, error: cartError } = useCart()
+const { showNotification } = useNotification()
+
+watch(cartError, (value) => {
+    if (typeof value !== 'boolean') {
+        showNotification(value, 'error', true)
+    }
+})
 </script>

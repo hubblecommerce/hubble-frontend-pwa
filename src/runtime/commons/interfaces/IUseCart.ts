@@ -8,6 +8,6 @@ export interface IUseCart {
     getCart(): Promise<Cart>,
     deleteCart(): Promise<void>,
     loading: Ref<boolean>,
-    error: Ref<boolean>,
+    error: Ref<boolean | string>,
     addToCart(qty: number, productId: string): Promise<Cart>
 }
