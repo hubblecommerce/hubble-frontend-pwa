@@ -5,19 +5,8 @@
                 <img src="https://placeimg.com/80/80/people" alt="Me">
             </div>
         </label>
-        <ul tabindex="0" class="menu menu-compact dropdown-content p-2 shadow bg-base-100 rounded-box">
-            <li>
-                <NuxtLink to="/customer" class="justify-between">
-                    Profile
-                    <span class="badge">New</span>
-                </NuxtLink>
-            </li>
-            <li>
-                <div @click="logout()">
-                    Logout
-                </div>
-            </li>
-        </ul>
+
+        <CustomerNavigation />
     </template>
     <template v-else>
         <label tabindex="0" class="btn btn-ghost btn-circle">
@@ -37,7 +26,7 @@
 import { UserIcon } from '@heroicons/vue/outline'
 import { useCustomer } from '#imports'
 
-const { customer, logout, getCustomer } = useCustomer()
+const { customer, getCustomer } = useCustomer()
 
 if (customer.value !== null) {
     await getCustomer()

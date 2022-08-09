@@ -13,9 +13,11 @@
                         hubble PWA
                     </nuxt-link>
                 </div>
+
                 <div class="navbar-center hidden lg:flex">
                     <LayoutNavigationHorizontal :navigation="navigation" />
                 </div>
+
                 <div class="navbar-end">
                     <div class="dropdown dropdown-end hidden md:block">
                         <label tabindex="0" class="btn btn-ghost btn-circle">
@@ -36,49 +38,43 @@
                             </div>
                         </div>
                     </div>
-                    <div class="dropdown dropdown-end">
-                        <label tabindex="0" class="btn btn-ghost btn-circle">
-                            <div class="indicator">
-                                <SearchIcon class="h-5 w-5" fill="none" />
-                            </div>
-                        </label>
-                    </div>
-                    <div class="dropdown dropdown-end">
-                        <label tabindex="0" class="btn btn-ghost btn-circle">
-                            <div class="indicator">
-                                <ShoppingCartIcon class="h-5 w-5" fill="none" />
 
-                                <client-only>
-                                    <span v-if="miniCart?.qty > 0" class="badge badge-sm indicator-item" v-text="miniCart.qty" />
-                                </client-only>
-                            </div>
-                        </label>
-                        <client-only>
-                            <div tabindex="0" class="card card-compact dropdown-content w-52 bg-base-100 shadow">
-                                <div class="card-body">
-                                    <span v-if="miniCart?.qty > 0" class="font-bold text-lg" v-text="`${miniCart.qty} items`" />
-                                    <span class="text-info">Subtotal: $999</span>
-                                    <div class="card-actions">
-                                        <button class="btn btn-primary btn-block">
-                                            View cart
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </client-only>
+                    <div
+                        tabindex="0"
+                        class="btn btn-ghost btn-circle"
+                        @click="toggleDrawer('search', 'right')"
+                        @keydown.enter="toggleDrawer('search', 'right')"
+                    >
+                        <SearchIcon class="h-5 w-5" fill="none" />
                     </div>
+
                     <div class="dropdown dropdown-end">
                         <client-only>
                             <CustomerState />
 
                             <template #fallback>
-                                <label tabindex="0" class="btn btn-ghost btn-circle">
+                                <label class="btn btn-ghost btn-circle">
                                     <div class="indicator">
                                         <UserIcon class="h-5 w-5" />
                                     </div>
                                 </label>
                             </template>
                         </client-only>
+                    </div>
+
+                    <div
+                        tabindex="0"
+                        class="btn btn-ghost btn-circle"
+                        @click="toggleDrawer('cart', 'right')"
+                        @keydown.enter="toggleDrawer('cart', 'right')"
+                    >
+                        <div class="indicator">
+                            <ShoppingCartIcon class="h-5 w-5" fill="none" />
+
+                            <client-only>
+                                <span v-if="miniCart?.qty > 0" class="badge badge-sm indicator-item" v-text="miniCart.qty" />
+                            </client-only>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -89,7 +85,7 @@
 <script setup lang="ts">
 import { ShoppingCartIcon, SearchIcon, ColorSwatchIcon, UserIcon } from '@heroicons/vue/outline'
 import { throwError } from '#app'
-import { useNavigation, useColorMode, useCart } from '#imports'
+import { useNavigation, useColorMode, useCart, useDrawer } from '#imports'
 
 const colorMode = useColorMode()
 const themes = [
@@ -129,6 +125,8 @@ const {
     navigation,
     getNavigation
 } = useNavigation()
+
+const { toggleDrawer } = useDrawer()
 
 try {
     await getNavigation()
