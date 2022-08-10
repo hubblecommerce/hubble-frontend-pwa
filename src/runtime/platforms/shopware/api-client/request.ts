@@ -21,44 +21,6 @@ import { useFetch, useNuxtApp } from '#app'
 import { getRequestCookie } from '@hubblecommerce/hubble/commons'
 import { hash } from 'ohash'
 
-const isDefined = <T>(value: T | null | undefined): value is Exclude<T, null | undefined> => {
-    return value !== undefined && value !== null;
-};
-
-const getQueryString = (params: Record<string, any>): string => {
-    const qs: string[] = [];
-
-    const append = (key: string, value: any) => {
-        qs.push(`${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`);
-    };
-
-    const process = (key: string, value: any) => {
-        if (isDefined(value)) {
-            if (Array.isArray(value)) {
-                value.forEach(v => {
-                    process(key, v);
-                });
-            } else if (typeof value === 'object') {
-                Object.entries(value).forEach(([k, v]) => {
-                    process(`${key}[${k}]`, v);
-                });
-            } else {
-                append(key, value);
-            }
-        }
-    };
-
-    Object.entries(params).forEach(([key, value]) => {
-        process(key, value);
-    });
-
-    if (qs.length > 0) {
-        return `?${qs.join('&')}`;
-    }
-
-    return '';
-};
-
 const getUrl = (config: OpenAPIConfig, options: ApiRequestOptions): string => {
     const encoder = config.ENCODE_PATH || encodeURI;
 
@@ -72,9 +34,7 @@ const getUrl = (config: OpenAPIConfig, options: ApiRequestOptions): string => {
         });
 
     const url = `${config.BASE}${path}`;
-    if (options.query) {
-        return `${url}${getQueryString(options.query)}`;
-    }
+
     return url;
 };
 
@@ -149,8 +109,9 @@ export const request = <T>(config: OpenAPIConfig, options: ApiRequestOptions): C
                 getUrl(config, options),
                 {
                     method: options.method,
-                    body: options.body,
+                    body: options.query && options.method !== 'GET' ? options.query : options.body,
                     headers: headers,
+                    params: options.query && options.method === 'GET' ? options.query : null,
                     initialCache: cachedRoutes.includes(options.url),
                     key: hash(['api-fetch', getUrl(config, options), options.body, options.method]),
                     onRequest: async (ctx) => {
