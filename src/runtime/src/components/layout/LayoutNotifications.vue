@@ -1,5 +1,5 @@
 <template>
-    <div class="toast toast-top toast-end z-50">
+    <div class="toast toast-bottom toast-end z-50">
         <Transition name="fade">
             <TransitionGroup v-if="notifications.length > 0" name="list" tag="div">
                 <div v-for="notification in notifications" :key="notification.id" class="alert mb-2 relative" :class="parseTypeClass(notification.type)">
@@ -48,7 +48,7 @@ const parseTypeClass = function (type) {
 <style scoped>
 .fade-enter-active,
 .fade-leave-active {
-    transition: opacity 0.5s ease;
+    transition: opacity 0.2s ease;
 }
 
 .fade-enter-from,
@@ -56,13 +56,18 @@ const parseTypeClass = function (type) {
     opacity: 0;
 }
 
+.list-move,
 .list-enter-active,
 .list-leave-active {
-    transition: all 0.5s ease;
+    transition: all 0.2s ease;
 }
 .list-enter-from,
 .list-leave-to {
     opacity: 0;
     transform: translateX(30px);
+}
+
+.list-leave-active {
+    position: absolute;
 }
 </style>
