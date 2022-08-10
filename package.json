@@ -58,7 +58,9 @@
         "globby": "^13.1.2",
         "lmify": "^0.3.0",
         "mitt": "^3.0.0",
-        "unzipper": "^0.10.11"
+        "unzipper": "^0.10.11",
+        "@vueuse/core": "^9.1.0",
+        "@vueuse/nuxt": "^9.1.0"
     },
     "devDependencies": {
         "@nuxt/module-builder": "latest",

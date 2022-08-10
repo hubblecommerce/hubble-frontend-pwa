@@ -109,6 +109,9 @@ export default defineNuxtModule<ModuleOptions>({
         // Install pinia for store management
         await installModule('@pinia/nuxt', { disableVuex: true })
 
+        // Install VueUse for useful helper composables
+        await installModule('@vueuse/nuxt')
+
         /*
          * File-based inheritance logic
          */
