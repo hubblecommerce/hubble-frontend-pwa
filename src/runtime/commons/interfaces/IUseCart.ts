@@ -9,5 +9,6 @@ export interface IUseCart {
     deleteCart(): Promise<void>,
     loading: Ref<boolean>,
     error: Ref<boolean | string>,
-    addToCart(qty: number, productId: string): Promise<Cart>
+    addToCart(qty: number, productId: string): Promise<Cart>,
+    removeLineItem(id: string): Promise<Cart>
 }

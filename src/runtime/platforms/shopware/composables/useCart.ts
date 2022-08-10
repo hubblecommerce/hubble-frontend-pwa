@@ -54,6 +54,34 @@ export const useCart = function (): IUseCart {
         }
     }
 
+    async function removeLineItem (id: string): Promise<Cart> {
+        error.value = false
+        loading.value = true
+
+        try {
+            const items = []
+            items.push(id)
+
+            // @ts-ignore
+            const { data } = await CartShopware.removeLineItem(items)
+
+            if (data.value.token !== undefined) {
+                setSessionToken(data.value.token)
+            }
+
+            const mappedData = mapCart(data.value)
+            cart.value = mappedData
+            showNotification('Product removed from cart', 'success')
+            loading.value = false
+
+            return mappedData
+        } catch (e) {
+            loading.value = false
+            error.value = e
+            return e
+        }
+    }
+
     function updateLineItem (lineItem, updatedQty) {
         return CartShopware.updateLineItem(
             'application/json',
@@ -134,6 +162,7 @@ export const useCart = function (): IUseCart {
         getCart,
         deleteCart,
         addToCart,
+        removeLineItem,
         loading,
         error
     }

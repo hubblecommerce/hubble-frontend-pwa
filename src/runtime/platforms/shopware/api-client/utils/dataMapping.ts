@@ -22,6 +22,7 @@ import {
     Media, MiniCart,
     Page,
     Platform,
+    Price,
     Product,
     ProductListing,
     Section,
@@ -70,6 +71,14 @@ function mapManufacturer (swManufacturer: ProductManufacturer): Manufacturer {
     }
 }
 
+// TODO Patch api client: create calculated price type
+function mapPrice (calculatedPrice): Price {
+    return {
+        regularPrice: calculatedPrice?.unitPrice,
+        specialPrice: calculatedPrice?.listPrice?.price
+    }
+}
+
 function mapProduct (swProduct: swProduct): Product {
     let url = swProduct.seoUrls[0]?.pathInfo
     if (swProduct.seoUrls[0]?.isCanonical) {
@@ -95,10 +104,7 @@ function mapProduct (swProduct: swProduct): Product {
         media,
         active: swProduct.available,
         stock: swProduct.stock,
-        price: {
-            regularPrice: swProduct.calculatedPrice?.unitPrice,
-            specialPrice: swProduct.calculatedPrice?.listPrice?.price
-        },
+        price: swProduct.calculatedPrice != null ? mapPrice(swProduct.calculatedPrice) : null,
         deliveryTime: swProduct.deliveryTime?.name,
         manufacturer: mapManufacturer(swProduct.manufacturer),
         metaTitle: swProduct.translated.metaTitle,
@@ -258,7 +264,12 @@ function mapLineItem (lineItem: SwLineItem): LineItem {
         itemId: lineItem.referencedId,
         name: lineItem.label,
         quantity: lineItem.quantity,
-        type: lineItem.type
+        type: lineItem.type,
+        // @TODO Path api client
+        // @ts-ignore
+        media: mapMedia(lineItem.cover),
+        // @ts-ignore
+        price: mapPrice(lineItem.price)
     }
 }
 
@@ -273,11 +284,18 @@ function mapCart (cart: SwCart): Cart {
         id: cart.token,
         lineItems: mapLineItems(cart.lineItems),
         price: {
+            // @TODO: Patch api client, add missing calculatedTaxes types
+            // @ts-ignore
+            subTotal: cart.price.rawTotal,
             nettoPrice: cart.price.netPrice,
             bruttoPrice: cart.price.totalPrice,
+            // @ts-ignore
             tax: cart.price.calculatedTaxes.length > 0 ? cart.price.calculatedTaxes[0].tax : null,
+            // @ts-ignore
             taxRate: cart.price.calculatedTaxes.length > 0 ? cart.price.calculatedTaxes[0].taxRate : null
         },
+        // @TODO: Patch api client, add missing deliveries types
+        // @ts-ignore
         shippingCosts: cart.deliveries.length > 0 ? cart.deliveries[0].shippingCosts.totalPrice : null,
         comment: cart.customerComment
     }
