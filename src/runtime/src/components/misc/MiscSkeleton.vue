@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineProps } from 'vue'
+import { computed } from 'vue'
 import { ProductDetailManufacturerProps } from '../product/ProductDetailManufacturer.vue'
 
 interface Props {
