@@ -334,5 +334,6 @@ export {
     mapPlatform,
     mapCustomer,
     mapCart,
-    mapMiniCart
+    mapMiniCart,
+    mapProductListing
 }

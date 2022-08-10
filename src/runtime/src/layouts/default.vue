@@ -17,7 +17,7 @@
             <div class="drawer-overlay" @click="toggleDrawer()" />
             <div class="px-6 py-3 overflow-y-auto w-full md:w-96 bg-base-100 text-base-content">
                 <LazyDrawerContextCart v-if="drawerContext === 'cart'" />
-                <LazySearchQuick v-if="drawerContext === 'search'" />
+                <LazyDrawerContextSearch v-if="drawerContext === 'search'" />
             </div>
         </div>
     </div>
@@ -28,10 +28,11 @@ import { useNuxtApp } from '#app'
 import { useDrawer } from '#imports'
 
 const nuxtApp = useNuxtApp()
-const { drawerState, drawerContext, toggleDrawer, drawerDirection } = useDrawer()
+const { drawerState, drawerContext, toggleDrawer, drawerDirection, closeDrawer } = useDrawer()
 
 nuxtApp.hook('page:finish', () => {
     window.scrollTo(0, 0)
+    closeDrawer()
 })
 </script>
 
