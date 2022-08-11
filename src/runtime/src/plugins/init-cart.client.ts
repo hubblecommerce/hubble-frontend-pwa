@@ -1,5 +1,5 @@
 import { defineNuxtPlugin, useRuntimeConfig, useCookie } from '#app'
-import { useCart, usePlatform } from '#imports'
+import { useCart } from '#imports'
 
 export default defineNuxtPlugin(() => {
     const { cartCookie } = useRuntimeConfig()

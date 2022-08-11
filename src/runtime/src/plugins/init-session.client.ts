@@ -1,7 +1,7 @@
 import { defineNuxtPlugin, useRuntimeConfig, useCookie } from '#app'
-import { useCustomer, usePlatform } from '#imports'
+import { usePlatform } from '#imports'
 
-export default defineNuxtPlugin(() => {
+export default defineNuxtPlugin(async () => {
     const { sessionCookie } = useRuntimeConfig()
     const cookie = useCookie(sessionCookie.name)
 
@@ -12,5 +12,5 @@ export default defineNuxtPlugin(() => {
     const { setSessionToken, getSession } = usePlatform()
     setSessionToken(cookie.value)
 
-    getSession()
+    await getSession()
 })
