@@ -13,7 +13,7 @@
                         <div class="w-full">
                             {{ lineItem.name }}
                         </div>
-                        <div class="btn btn-ghost btn-circle btn-xs" @click="removeLineItem(lineItem.id)">
+                        <div v-if="isInteractive" class="btn btn-ghost btn-circle btn-xs" @click="removeLineItem(lineItem.id)">
                             <TrashIcon class="h-5 w-5" />
                         </div>
                     </div>
@@ -42,6 +42,14 @@ import { computed } from 'vue'
 import { TrashIcon } from '@heroicons/vue/solid'
 import { useCart } from '#imports'
 import { useCurrency } from '@hubblecommerce/hubble/commons'
+
+interface CartListProps {
+    isInteractive?: boolean
+}
+
+const props = withDefaults(defineProps<CartListProps>(), {
+    isInteractive: true
+})
 
 const { cart, loading, error, deleteCart, removeLineItem } = useCart()
 
