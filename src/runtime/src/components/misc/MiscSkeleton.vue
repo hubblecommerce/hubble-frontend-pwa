@@ -2,7 +2,6 @@
     <div
         v-for="index in repeat"
         :key="index"
-        class="bg-base-300"
         :class="classes"
         :style="styles"
     />
@@ -21,7 +20,8 @@ interface Props {
     size?: 'small' | 'medium' | 'large',
     repeat?: string | number,
     animated?: boolean,
-    sharp?: boolean
+    sharp?: boolean,
+    color?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -31,7 +31,8 @@ const props = withDefaults(defineProps<Props>(), {
     size: 'medium',
     repeat: 1,
     animated: true,
-    sharp: true
+    sharp: true,
+    color: 'bg-base-200'
 })
 
 const styles = computed(() => {
@@ -95,7 +96,8 @@ const classes = computed(() => {
 
     return [
         round,
-        animated
+        animated,
+        props.color
     ].join(' ')
 })
 
