@@ -34,18 +34,6 @@
                 </tr>
             </tbody>
         </table>
-
-        <div class="flex flex-col w-full">
-            <div class="btn btn-neutral">
-                Continue Shopping
-            </div>
-            <div class="divider">
-                OR
-            </div>
-            <div class="btn btn-primary">
-                Checkout
-            </div>
-        </div>
     </template>
 </template>
 
