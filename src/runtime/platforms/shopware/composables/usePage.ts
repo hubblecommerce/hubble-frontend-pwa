@@ -16,7 +16,7 @@ export const usePage = function (): IUsePage {
             error.value = false
 
             // @ts-ignore
-            const { data, pending, refresh } = await PwaShopware.pwaResolvePage(
+            const response = await PwaShopware.pwaResolvePage(
                 {
                     path,
                     includes,
@@ -24,7 +24,7 @@ export const usePage = function (): IUsePage {
                 }
             )
 
-            page.value = mapPage(data.value)
+            page.value = mapPage(response)
 
             if (page.value.structure === null) {
                 const { setDefaultStructures, getDefaultStructureByType } = useDefaultStructure()
@@ -33,7 +33,7 @@ export const usePage = function (): IUsePage {
             }
 
             loading.value = false
-            return { data, pending, refresh }
+            return
         } catch (e) {
             loading.value = false
             error.value = e

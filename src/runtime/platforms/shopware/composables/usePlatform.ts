@@ -1,12 +1,21 @@
 import { storeToRefs } from 'pinia'
 import { ref, Ref } from 'vue'
+import { useCookie } from '#app'
 import { useRuntimeConfig, useCustomer } from '#imports'
-import { IUsePlatform, Platform } from '@hubblecommerce/hubble/commons'
+import { IUsePlatform, Session, Salutation, Country } from '@hubblecommerce/hubble/commons'
 import { useSessionStore } from '@hubblecommerce/hubble/src/store'
 import { SystemContextShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { mapCustomer, mapPlatform } from '@hubblecommerce/hubble/platforms/shopware/api-client/utils'
+import {
+    mapSession,
+    mapSalutations,
+    mapCustomer,
+    mapCountries
+} from '@hubblecommerce/hubble/platforms/shopware/api-client/utils'
 
-const platform: Ref<Platform> = ref(null)
+const session: Ref<Session> = ref({
+    sessionToken: null,
+    isGuest: true
+})
 
 export const usePlatform = function (): IUsePlatform {
     const error: Ref<boolean> = ref(false)
@@ -20,25 +29,68 @@ export const usePlatform = function (): IUsePlatform {
     const { sessionToken } = storeToRefs(sessionStore)
     const { setSessionToken } = sessionStore
 
+    /*
+    Fetch session data from platform by session cookie
+    Shopware:
+    Context also contains customer data
+    Even guests have to register as customer, but has the customer.guest flag set to true
+     */
     async function getSession () {
         loading.value = true
         error.value = false
 
         try {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            const { data, pending, error } = await SystemContextShopware.readContext()
-            const mappedData = mapPlatform(data.value)
-            platform.value = mappedData
+            const { sessionCookie } = useRuntimeConfig()
+            const cookie = useCookie(sessionCookie.name)
 
-            // Set customer data to avoid redundant getCustomer call on init-session.client
-            if (data.value.customer != null) {
+            if (cookie.value === undefined) {
+                return
+            }
+
+            const { setSessionToken } = usePlatform()
+            setSessionToken(cookie.value)
+
+            const response = await SystemContextShopware.readContext()
+            const mappedData = mapSession(response)
+            session.value = mappedData
+
+            if (response.customer !== null) {
                 const { customer } = useCustomer()
-                customer.value = mapCustomer(data.value.customer)
+                customer.value = mapCustomer(response.customer)
             }
 
             loading.value = false
             return mappedData
+        } catch (e) {
+            loading.value = false
+            error.value = e
+            return e
+        }
+    }
+
+    async function getSalutations (): Promise<Salutation[]> {
+        loading.value = true
+        error.value = false
+
+        try {
+            const response = await SystemContextShopware.readSalutation()
+
+            return mapSalutations(response.elements)
+        } catch (e) {
+            loading.value = false
+            error.value = e
+            return e
+        }
+    }
+
+    async function getCountries (): Promise<Country[]> {
+        loading.value = true
+        error.value = false
+
+        try {
+            const response = await SystemContextShopware.readCountry()
+
+            return mapCountries(response.elements)
         } catch (e) {
             loading.value = false
             error.value = e
@@ -52,8 +104,10 @@ export const usePlatform = function (): IUsePlatform {
         sessionToken,
         setSessionToken,
         getSession,
+        getSalutations,
+        getCountries,
         error,
         loading,
-        platform
+        session
     }
 }

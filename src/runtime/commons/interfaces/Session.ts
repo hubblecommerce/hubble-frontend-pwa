@@ -1,3 +1,7 @@
 export interface Session {
-    sessionToken: string | null
+    sessionToken: string | null,
+    currency?: string,
+    language?: string,
+    maintenance?: boolean,
+    isGuest?: boolean
 }

@@ -36,15 +36,14 @@ export const useNavigation = function (): IUseNavigation {
         error.value = false
 
         try {
-            // @ts-ignore
-            const { data } = await CategoryShopware.readNavigation(
+            const response = await CategoryShopware.readNavigation(
                 'main-navigation',
                 'main-navigation',
                 {},
                 true
             )
 
-            const mappedData = mapNavigation(data.value)
+            const mappedData = mapNavigation(response)
 
             navigation.value = mappedData
 

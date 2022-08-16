@@ -15,15 +15,10 @@ export default defineNuxtRouteMiddleware(async () => {
         return navigateTo('/customer/login')
     }
 
-    const { getCustomer, isGuest, customer } = useCustomer()
+    const { getCustomer, isGuest } = useCustomer()
 
     try {
-        // @ts-ignore
-        const { refresh } = await getCustomer()
-
-        if (customer !== null) {
-            refresh()
-        }
+        await getCustomer()
 
         if (isGuest.value) {
             throw new Error('Guests are not authorized')

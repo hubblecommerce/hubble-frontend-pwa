@@ -21,18 +21,19 @@ export const useCart = function (): IUseCart {
 
         try {
             // @ts-ignore
-            const { data } = await CartShopware.readCart()
+            const response = await CartShopware.readCart()
 
-            if (data.value.token !== undefined) {
-                setSessionToken(data.value.token)
+            if (response.token !== undefined) {
+                setSessionToken(response.token)
             }
 
-            const mappedData = mapCart(data.value)
+            const mappedData = mapCart(response)
             cart.value = mappedData
             loading.value = false
 
             return mappedData
         } catch (e) {
+            console.log(e)
             loading.value = false
             error.value = e
             return e
@@ -62,14 +63,13 @@ export const useCart = function (): IUseCart {
             const items = []
             items.push(id)
 
-            // @ts-ignore
-            const { data } = await CartShopware.removeLineItem(items)
+            const response = await CartShopware.removeLineItem(items)
 
-            if (data.value.token !== undefined) {
-                setSessionToken(data.value.token)
+            if (response.token !== undefined) {
+                setSessionToken(response.token)
             }
 
-            const mappedData = mapCart(data.value)
+            const mappedData = mapCart(response)
             cart.value = mappedData
             showNotification('Product removed from cart', 'success')
             loading.value = false
@@ -124,14 +124,13 @@ export const useCart = function (): IUseCart {
 
             const updatedQty = lineItem ? lineItem.qty + qty : null
 
-            // @ts-ignore
-            const { data } = lineItem ? await updateLineItem(lineItem, updatedQty) : await addLineItem(itemId, qty)
+            const response = lineItem ? await updateLineItem(lineItem, updatedQty) : await addLineItem(itemId, qty)
 
-            if (data.value.token !== undefined) {
-                setSessionToken(data.value.token)
+            if (response.token !== undefined) {
+                setSessionToken(response.token)
             }
 
-            const mappedData = mapCart(data.value)
+            const mappedData = mapCart(response)
             cart.value = mappedData
             showNotification('Product added to cart', 'success')
             loading.value = false

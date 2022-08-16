@@ -16,10 +16,9 @@ import type { OpenAPIConfig } from './OpenAPI';
 import { usePlatform } from '#imports'
 // @ts-ignore
 import { OpenAPI } from './OpenAPI'
-import { useFetch, useNuxtApp } from '#app'
+import { useNuxtApp } from '#app'
 // @ts-ignore
 import { getRequestCookie } from '@hubblecommerce/hubble/commons'
-import { hash } from 'ohash'
 
 const getUrl = (config: OpenAPIConfig, options: ApiRequestOptions): string => {
     const encoder = config.ENCODE_PATH || encodeURI;
@@ -105,15 +104,13 @@ export const request = <T>(config: OpenAPIConfig, options: ApiRequestOptions): C
         try {
             const headers = Object.assign(config.HEADERS, options.headers)
 
-            const { data, pending, refresh, error } = await useFetch(
+            const response = await $fetch.raw(
                 getUrl(config, options),
                 {
                     method: options.method,
                     body: options.query && options.method !== 'GET' ? options.query : options.body,
                     headers: headers,
                     params: options.query && options.method === 'GET' ? options.query : null,
-                    initialCache: cachedRoutes.includes(options.url),
-                    key: hash(['api-fetch', getUrl(config, options), options.body, options.method]),
                     onRequest: async (ctx) => {
                         app.$hblBus.$emit('onRequest', { data: ctx })
                     },
@@ -129,20 +126,23 @@ export const request = <T>(config: OpenAPIConfig, options: ApiRequestOptions): C
                 }
             )
 
-            // Client side error is only boolean,
-            // so fetch again in case of client side and error to get response error code
-            // https://github.com/nuxt/framework/issues/2122#issuecomment-979073727
-            if (process.client && error.value) {
-                await refresh()
+            // Client side only, because setSessionToken saves token as a cookie
+            if (process.client) {
+                for(let entry of response.headers.entries()) {
+                    if (entry[0] === 'sw-context-token' && entry[1] != null) {
+                        setSessionToken(entry[1])
+                    }
+                }
             }
 
-            if (error.value) {
-                // @ts-ignore
-                catchErrorCodes(options, error.value);
-            }
+            // TODO: see if we should use this function anymore
+            // if (error.value) {
+            //     // @ts-ignore
+            //     catchErrorCodes(options, error.value);
+            // }
 
             // @ts-ignore
-            resolve({ data, pending, refresh })
+            resolve(response._data)
         } catch (e) {
             reject(e);
         }
