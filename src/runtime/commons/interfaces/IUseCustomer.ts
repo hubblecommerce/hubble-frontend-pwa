@@ -1,7 +1,8 @@
 import { ComputedRef, Ref } from 'vue'
 import { FetchResult } from '#app'
 import { FetchRequest } from 'ohmyfetch'
-import { Customer } from './Customer'
+import { Customer, CustomerShippingAddress, RegisterCustomerForm } from './Customer'
+import { CustomerAddress } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 
 export interface IUseCustomer {
     customer: Ref<Customer>,
@@ -10,5 +11,7 @@ export interface IUseCustomer {
     getCustomer(): Promise<FetchResult<FetchRequest>>,
     isGuest: ComputedRef<boolean>,
     login(username: string, password: string): Promise<string>,
-    logout(): void
+    logout(): void,
+    updateShippingAddress(shippingAddress: CustomerShippingAddress): Promise<CustomerAddress>,
+    register(formData: RegisterCustomerForm): Promise<Customer>
 }

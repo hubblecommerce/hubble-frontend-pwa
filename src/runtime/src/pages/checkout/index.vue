@@ -49,16 +49,91 @@
             </div>
         </div>
 
-        <div v-if="step === 'contact'">
+        <template v-if="step === 'contact'">
             <client-only>
-                <div v-if="customer && !customer.isGuest">
-                    Logged In: Address book
-                </div>
-                <div v-else>
-                    Guest: Express Checkout Login Register
-                </div>
+                <template v-if="customer">
+                    <template v-if="session.isGuest">
+                        <form ref="updateShippingAddressForm" class="flex flex-col gap-4" @submit.prevent="onUpdateShippingAddress()">
+                            <div class="flex flex-wrap justify-between items-center">
+                                <div class="text-xl pr-2">
+                                    Contact Information
+                                </div>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <div class="form-control w-full">
+                                    <label for="customer-email" class="label">
+                                        <span class="label-text">E-Mail</span>
+                                    </label>
+                                    <input
+                                        id="customer-email"
+                                        v-model="customer.email"
+                                        class="input input-bordered w-full"
+                                        disabled
+                                    >
+                                </div>
+                            </div>
+                            <div class="flex flex-wrap justify-between items-center">
+                                <div class="text-xl pr-2">
+                                    Shipping Address
+                                </div>
+                            </div>
+                            <CustomerAddressForm v-model="customer.shippingAddress" />
+                            <div class="navigation flex justify-between items-center">
+                                <div class="link link-hover link-accent">
+                                    Back to Cart
+                                </div>
+                                <button
+                                    class="btn btn-primary"
+                                    :class="{ 'loading': customerLoading }"
+                                    @click.prevent="onUpdateShippingAddress()"
+                                >
+                                    <span v-if="!customerLoading">Continue to Shipping</span>
+                                    <span v-if="customerLoading">Loading</span>
+                                </button>
+                            </div>
+                        </form>
+                    </template>
+
+                    <template v-else>
+                        Logged in customer
+                        Addressbook
+                    </template>
+                </template>
+
+                <template v-else>
+                    <Transition name="fade" appear>
+                        <CustomerRegisterForm>
+                            <template #actions="actionProps">
+                                <div class="navigation flex justify-between items-center">
+                                    <div v-if="step === 'contact'" class="link link-hover link-accent">
+                                        Back to Cart
+                                    </div>
+                                    <button
+                                        v-if="step === 'contact'"
+                                        class="btn btn-primary"
+                                        :class="{ 'loading': actionProps.loading }"
+                                        @click.prevent="onUpdateShippingAddress()"
+                                    >
+                                        <span v-if="!actionProps.loading">Continue to Shipping</span>
+                                        <span v-if="actionProps.loading">Loading</span>
+                                    </button>
+                                </div>
+                            </template>
+                        </CustomerRegisterForm>
+                    </Transition>
+                </template>
+
+                <template #placeholder>
+                    <div class="flex flex-col gap-4">
+                        <MiscSkeleton size="large" />
+                        <MiscSkeleton size="medium" />
+                        <MiscSkeleton size="medium" />
+                        <MiscSkeleton size="large" />
+                        <MiscSkeleton size="medium" :repeat="8" />
+                    </div>
+                </template>
             </client-only>
-        </div>
+        </template>
 
         <div v-if="step === 'shipping'">
             Shipping
@@ -73,13 +148,6 @@
         </div>
 
         <div class="navigation flex justify-between items-center">
-            <div v-if="step === 'contact'" class="link link-hover link-accent">
-                Back to Cart
-            </div>
-            <div v-if="step === 'contact'" class="btn btn-primary" @click="selectStep('shipping')">
-                Continue to Shipping
-            </div>
-
             <div v-if="step === 'shipping'" class="link link-hover link-accent" @click="selectStep('contact')">
                 Back to Contact
             </div>
@@ -106,7 +174,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { definePageMeta, useCustomer } from '#imports'
+import { definePageMeta, useCustomer, usePlatform } from '#imports'
 
 definePageMeta({
     layout: 'checkout',
@@ -114,7 +182,8 @@ definePageMeta({
 })
 
 const step = ref('contact')
-const { customer } = useCustomer()
+const { customer, loading: customerLoading, updateShippingAddress } = useCustomer()
+const { session } = usePlatform()
 const protectedSteps = [
     'shipping',
     'payment',
@@ -128,4 +197,33 @@ function selectStep (stepName: string): void {
 
     step.value = stepName
 }
+
+function afterContactSubmit () {
+    selectStep('shipping')
+}
+
+const updateShippingAddressForm = ref()
+async function onUpdateShippingAddress () {
+    const isValid = await updateShippingAddressForm.value.checkValidity()
+
+    if (!isValid) {
+        updateShippingAddressForm.value.reportValidity()
+        return
+    }
+
+    await updateShippingAddress(customer.value.shippingAddress)
+    afterContactSubmit()
+}
 </script>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+}
+</style>

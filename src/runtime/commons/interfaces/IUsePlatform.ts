@@ -1,5 +1,7 @@
 import { Ref } from 'vue'
-import { Platform } from './Platform'
+import { Salutation } from './Salutation'
+import { Session } from './Session'
+import { Country } from './Country'
 
 export interface IUsePlatform {
     loading: Ref<boolean>,
@@ -9,5 +11,7 @@ export interface IUsePlatform {
     sessionToken: Ref<string> | null
     setSessionToken(token: string): void,
     getSession(): void,
-    platform: Ref<Platform | null>
+    getSalutations(): Promise<Salutation[]>
+    getCountries(): Promise<Country[]>
+    session: Ref<Session | null>
 }

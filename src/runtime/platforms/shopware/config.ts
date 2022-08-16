@@ -18,6 +18,7 @@ export const defaultPublicRuntimeConfig = {
         }
     },
     appBaseUrl: process.env.APP_BASE_URL,
+    platformBaseUrl: process.env.PLATFORM_BASE_URL,
     apiBaseUrl: process.env.API_BASE_URL,
     apiSwAccessKey: process.env.API_SW_ACCESS_KEY,
     swPaymentFinishUrl: process.env.SW_PAYMENT_FINISH_URL,

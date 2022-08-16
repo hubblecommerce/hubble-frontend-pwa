@@ -8,25 +8,33 @@ import {
     Media as swMedia,
     ProductListingResult,
     ProductManufacturer,
-    SalesChannelContext, Customer as SwCustomer,
+    SalesChannelContext,
+    Customer as SwCustomer,
+    Country as SwCountry,
     Cart as SwCart,
-    LineItem as SwLineItem
+    LineItem as SwLineItem,
+    Salutation as SwSalutation,
+    CustomerAddress as SwCustomerAddress
 } from '../generated'
 import {
     Block,
     Breadcrumb,
     Cart,
     Category,
-    Customer, LineItem,
+    Customer,
+    LineItem,
     Manufacturer,
-    Media, MiniCart,
+    Media,
+    MiniCart,
     Page,
-    Platform,
+    Session,
     Price,
     Product,
     ProductListing,
+    Salutation,
+    Country,
     Section,
-    Slot
+    Slot, CustomerShippingAddress, CustomerBillingAddress
 } from '@hubblecommerce/hubble/commons'
 
 function mapMedia (swMedia: swMedia): Media {
@@ -242,20 +250,55 @@ function mapPage (swPage): Page {
     return obj
 }
 
-function mapPlatform (swPlatform: SalesChannelContext): Platform {
+function mapSession (swPlatform: SalesChannelContext): Session {
     return {
+        sessionToken: swPlatform.token,
         currency: swPlatform.currency.isoCode,
         language: swPlatform.salesChannel.languageId,
-        maintenance: swPlatform.salesChannel.maintenance
+        maintenance: swPlatform.salesChannel.maintenance,
+        isGuest: swPlatform.customer == null || swPlatform.customer.guest
     }
 }
 
-function mapCustomer (customer: SwCustomer): Customer {
+function mapCustomerAddress (swAddress: SwCustomerAddress): CustomerShippingAddress | CustomerBillingAddress {
     return {
+        id: swAddress.id,
+        salutation: swAddress.salutationId,
+        firstName: swAddress.firstName,
+        lastName: swAddress.lastName,
+        ...(swAddress.company != null && { company: swAddress.company }),
+        street: swAddress.street,
+        zipcode: swAddress.zipcode,
+        city: swAddress.city,
+        country: swAddress.countryId,
+        ...(swAddress.phoneNumber != null && { phone: swAddress.phoneNumber })
+    }
+}
+
+function mapCustomer (customer: SalesChannelContext['customer']): Customer {
+    const obj = {
         name: customer.firstName,
         email: customer.email,
         isGuest: customer.guest
     }
+
+    // Todo patch api client
+    // @ts-ignore
+    if (customer.activeShippingAddress != null) {
+        // Todo patch api client
+        // @ts-ignore
+        Object.assign(obj, { shippingAddress: mapCustomerAddress(customer.activeShippingAddress) })
+    }
+
+    // Todo patch api client
+    // @ts-ignore
+    if (customer.activeBillingAddress != null) {
+        // Todo patch api client
+        // @ts-ignore
+        Object.assign(obj, { billingAddress: mapCustomerAddress(customer.activeBillingAddress) })
+    }
+
+    return obj
 }
 
 function mapLineItem (lineItem: SwLineItem): LineItem {
@@ -321,6 +364,32 @@ function mapMiniCart (cart: Cart): MiniCart {
     }
 }
 
+function mapSalutation (salutation: SwSalutation): Salutation {
+    return {
+        id: salutation.id,
+        name: salutation.displayName
+    }
+}
+
+function mapSalutations (salutations: SwSalutation[]): Salutation[] {
+    return salutations.map((salutation) => {
+        return mapSalutation(salutation)
+    })
+}
+
+function mapCountry (country: SwCountry): Country {
+    return {
+        id: country.id,
+        name: country.name
+    }
+}
+
+function mapCountries (countries: SwCountry[]): Country[] {
+    return countries.map((country) => {
+        return mapCountry(country)
+    })
+}
+
 export {
     mapCategory,
     mapMedia,
@@ -331,9 +400,14 @@ export {
     mapSlots,
     mapBlocks,
     mapPage,
-    mapPlatform,
+    mapSession,
     mapCustomer,
+    mapCustomerAddress,
     mapCart,
     mapMiniCart,
-    mapProductListing
+    mapProductListing,
+    mapSalutations,
+    mapSalutation,
+    mapCountries,
+    mapCountry
 }
