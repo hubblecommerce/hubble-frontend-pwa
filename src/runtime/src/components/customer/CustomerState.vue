@@ -24,7 +24,12 @@
 
 <script setup lang="ts">
 import { UserIcon } from '@heroicons/vue/outline'
-import { useCustomer } from '#imports'
+import { useCustomer, usePlatform } from '#imports'
 
-const { customer } = useCustomer()
+const { getCustomer, customer } = useCustomer()
+const { session } = usePlatform()
+
+if (session.value != null && !session.value.isGuest) {
+    await getCustomer()
+}
 </script>
