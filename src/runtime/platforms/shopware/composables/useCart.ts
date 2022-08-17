@@ -33,7 +33,6 @@ export const useCart = function (): IUseCart {
 
             return mappedData
         } catch (e) {
-            console.log(e)
             loading.value = false
             error.value = e
             return e

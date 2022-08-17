@@ -55,7 +55,7 @@
             </div>
         </div>
 
-        <CustomerAddressForm :address="shippingAddress" />
+        <CustomerAddressForm v-model="shippingAddress" />
 
         <slot name="actions" :submit="onSubmit" :loading="loading" />
     </form>

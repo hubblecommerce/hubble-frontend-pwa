@@ -7,45 +7,65 @@
                         Cart
                     </NuxtLink>
                 </li>
-                <li
-                    class="link link-hover"
-                    :class="{ 'link-accent': step === 'contact'}"
-                    @click="selectStep('contact')"
-                >
+                <li class="link link-hover" :class="{ 'link-accent': step === 'contact'}" @click="selectStep('contact')">
                     Contact
                 </li>
-                <li
-                    class="link link-hover"
-                    :class="{ 'link-accent': step === 'shipping'}"
-                    @click="selectStep('shipping')"
-                >
+                <li class="link link-hover" :class="{ 'link-accent': step === 'shipping'}" @click="selectStep('shipping')">
                     Shipping
                 </li>
-                <li
-                    class="link link-hover"
-                    :class="{ 'link-accent': step === 'payment'}"
-                    @click="selectStep('payment')"
-                >
+                <li class="link link-hover" :class="{ 'link-accent': step === 'payment'}" @click="selectStep('payment')">
                     Payment
                 </li>
-                <li
-                    class="link link-hover"
-                    :class="{ 'link-accent': step === 'summary'}"
-                    @click="selectStep('summary')"
-                >
+                <li class="link link-hover" :class="{ 'link-accent': step === 'summary'}" @click="selectStep('summary')">
                     Summary
                 </li>
             </ul>
         </div>
 
-        <div v-if="step !== 'contact'">
-            <div>Contact:</div>
-            <div>Ship to:</div>
-            <div v-if="step === 'payment' || step === 'summary'">
-                Shipping
+        <div v-if="step !== 'contact'" class="flex flex-col p-4 mb-8 border border-base-300 text-sm">
+            <div class="grid grid-cols-12 gap-2">
+                <div class="col-span-6 md:col-span-3 order-1">
+                    Contact
+                </div>
+                <div class="col-span-12 md:col-span-6 order-3 md:order-2">
+                    {{ customer.email }}
+                </div>
+                <div class="col-span-6 md:col-span-3 order-2 md:order-3 place-self-end self-start">
+                    Edit
+                </div>
             </div>
-            <div v-if="step === 'summary'">
-                Payment
+            <div class="grid grid-cols-12 gap-2 pt-2 mt-2 border-t border-base-300">
+                <div class="col-span-6 md:col-span-3 order-1">
+                    Ship to
+                </div>
+                <div class="col-span-12 md:col-span-6 order-3 md:order-2">
+                    {{ customer.shippingAddress.firstName }}
+                    {{ customer.shippingAddress.lastName }}
+                    {{ customer.shippingAddress.street }}
+                    {{ customer.shippingAddress.zipcode }}
+                    {{ customer.shippingAddress.city }}
+                </div>
+                <div class="col-span-6 md:col-span-3 order-2 md:order-3 place-self-end self-start">
+                    Edit
+                </div>
+            </div>
+            <div v-if="step === 'payment' || step === 'summary'" class="grid grid-cols-12 gap-2 pt-2 mt-2 border-t border-base-300">
+                <div class="col-span-6 md:col-span-3 order-1">
+                    Shipping
+                </div>
+                <div class="col-span-12 md:col-span-6 order-3 md:order-2" />
+                <div class="col-span-6 md:col-span-3 order-2 md:order-3 place-self-end self-start">
+                    Edit
+                </div>
+            </div>
+            <div v-if="step === 'summary'" class="grid grid-cols-12 gap-2 pt-2 mt-2 border-t border-base-300">
+                <div class="col-span-6 md:col-span-3 order-1">
+                    Payment
+                </div>
+                <div class="col-span-12 md:col-span-6 order-3 md:order-2" />
+                <div class="col-span-6 md:col-span-3 order-2 md:order-3 place-self-end self-start">
+                    Edit
+                </div>
             </div>
         </div>
 
@@ -95,8 +115,7 @@
                     </template>
 
                     <template v-else>
-                        Logged in customer
-                        Addressbook
+                        <!-- TODO: implement addressbook component for logged in customer -->
                     </template>
                 </template>
 
@@ -112,7 +131,7 @@
                                         v-if="step === 'contact'"
                                         class="btn btn-primary"
                                         :class="{ 'loading': actionProps.loading }"
-                                        @click.prevent="onUpdateShippingAddress()"
+                                        @click.prevent="actionProps.submit(afterContactSubmit)"
                                     >
                                         <span v-if="!actionProps.loading">Continue to Shipping</span>
                                         <span v-if="actionProps.loading">Loading</span>
@@ -136,7 +155,7 @@
         </template>
 
         <div v-if="step === 'shipping'">
-            Shipping
+            <CheckoutShipping />
         </div>
 
         <div v-if="step === 'payment'">

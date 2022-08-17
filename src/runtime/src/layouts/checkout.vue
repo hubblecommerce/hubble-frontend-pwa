@@ -18,7 +18,7 @@
                     </div>
                 </div>
             </div>
-            <div class="content lg:col-span-7 order-2 lg:order-1 container mx-auto p-4 lg:p-16 bg-base-100">
+            <div class="content lg:col-span-7 order-2 lg:order-1 container mx-auto p-4 lg:p-16">
                 <div class="w-full lg:max-w-xl lg:ml-auto">
                     <slot />
                 </div>

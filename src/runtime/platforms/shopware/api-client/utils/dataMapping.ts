@@ -14,7 +14,8 @@ import {
     Cart as SwCart,
     LineItem as SwLineItem,
     Salutation as SwSalutation,
-    CustomerAddress as SwCustomerAddress
+    CustomerAddress as SwCustomerAddress,
+    ShippingMethod as SwShippingMethod
 } from '../generated'
 import {
     Block,
@@ -34,7 +35,7 @@ import {
     Salutation,
     Country,
     Section,
-    Slot, CustomerShippingAddress, CustomerBillingAddress
+    Slot, CustomerShippingAddress, CustomerBillingAddress, ShippingMethod
 } from '@hubblecommerce/hubble/commons'
 
 function mapMedia (swMedia: swMedia): Media {
@@ -390,6 +391,24 @@ function mapCountries (countries: SwCountry[]): Country[] {
     })
 }
 
+function mapShippingMethod (swShippingMethod: SwShippingMethod): ShippingMethod {
+    return {
+        id: swShippingMethod.id,
+        deliveryTime: swShippingMethod.deliveryTime?.translated.name,
+        description: swShippingMethod.translated.description,
+        media: mapMedia(swShippingMethod.media),
+        name: swShippingMethod.translated.name,
+        price: swShippingMethod.prices[0]?.currencyPrice,
+        tax: swShippingMethod.tax?.taxRate
+    }
+}
+
+function mapShippingMethods (swShippingMethods: SwShippingMethod[]): ShippingMethod[] {
+    return swShippingMethods.map((swShippingMethod) => {
+        return mapShippingMethod(swShippingMethod)
+    })
+}
+
 export {
     mapCategory,
     mapMedia,
@@ -409,5 +428,7 @@ export {
     mapSalutations,
     mapSalutation,
     mapCountries,
-    mapCountry
+    mapCountry,
+    mapShippingMethods,
+    mapShippingMethod
 }
