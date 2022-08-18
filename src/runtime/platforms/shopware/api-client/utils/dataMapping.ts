@@ -256,7 +256,13 @@ function mapSession (swPlatform: SalesChannelContext): Session {
         sessionToken: swPlatform.token,
         currency: swPlatform.currency.isoCode,
         language: swPlatform.salesChannel.languageId,
-        maintenance: swPlatform.salesChannel.maintenance
+        maintenance: swPlatform.salesChannel.maintenance,
+        // TODO: path api client
+        // @ts-ignore
+        shippingMethod: swPlatform.shippingMethod.id,
+        // TODO: path api client
+        // @ts-ignore
+        paymentMethod: swPlatform.paymentMethod.id
     }
 }
 
