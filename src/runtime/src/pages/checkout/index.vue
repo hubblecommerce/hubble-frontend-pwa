@@ -155,7 +155,7 @@
         </template>
 
         <div v-if="step === 'shipping'">
-            <CheckoutShipping />
+            <CheckoutShipping @update-after:shippingMethod="updateCart()" />
         </div>
 
         <div v-if="step === 'payment'">
@@ -193,7 +193,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { definePageMeta, useCustomer } from '#imports'
+import { definePageMeta, useCustomer, useCart } from '#imports'
 
 definePageMeta({
     layout: 'checkout',
@@ -202,6 +202,7 @@ definePageMeta({
 
 const step = ref('contact')
 const { customer, loading: customerLoading, updateShippingAddress } = useCustomer()
+const { getCart } = useCart()
 const protectedSteps = [
     'shipping',
     'payment',
@@ -231,6 +232,10 @@ async function onUpdateShippingAddress () {
 
     await updateShippingAddress(customer.value.shippingAddress)
     afterContactSubmit()
+}
+
+async function updateCart () {
+    await getCart()
 }
 </script>
 

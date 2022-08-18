@@ -1,4 +1,5 @@
 import { Media } from './Media'
+import { Price } from './Product'
 
 export interface ShippingMethod {
     id: string,
@@ -6,6 +7,6 @@ export interface ShippingMethod {
     description?: string,
     media?: Media,
     name: string,
-    price: string,
+    price: Price,
     tax?: number
 }

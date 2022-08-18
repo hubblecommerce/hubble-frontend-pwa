@@ -29,10 +29,10 @@ export const usePlatform = function (): IUsePlatform {
     const { setSessionToken } = sessionStore
 
     /*
-    Fetch session data from platform by session cookie
-    Shopware:
-    Context also contains customer data
-    Even guests have to register as customer, but has the customer.guest flag set to true
+     * Fetch session data from platform by session cookie
+     * Shopware:
+     * Context also contains customer data
+     * Even guests have to register as customer, but has the customer.guest flag set to true
      */
     async function getSession () {
         loading.value = true

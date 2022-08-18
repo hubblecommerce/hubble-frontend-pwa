@@ -20,8 +20,9 @@
                 </div>
             </div>
 
-            <div v-else-if="error">
+            <div v-else-if="error || updateError">
                 {{ error }}
+                {{ updateError }}
             </div>
 
             <div v-else-if="shippingMethods != null" class="flex flex-col border border-base-300">
@@ -38,9 +39,12 @@
                         :value="method.id"
                         type="radio"
                         class="radio checked:bg-primary w-6 mr-4"
+                        :disabled="updateLoading"
                     >
                     <div class="mr-auto">{{ method.name }}</div>
-                    <div class="whitespace-nowrap w-18 ml-4">{{ method.price }}</div>
+                    <div v-if="method.price != null" class="whitespace-nowrap w-18 ml-4">
+                        {{ method.price > 0 ? formatPrice(method.price) : 'free' }}
+                    </div>
                 </label>
             </div>
         </Transition>
@@ -48,12 +52,30 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, nextTick, ref } from 'vue'
-import { useCheckout } from '#imports'
+import { onMounted, nextTick, computed, watch, ref } from 'vue'
+import { useCheckout, usePlatform } from '#imports'
+import { useCurrency } from '@hubblecommerce/hubble/commons'
 
 const { loading, error, shippingMethods, getShippingMethods } = useCheckout()
+const { error: updateError, loading: updateLoading, setShippingMethod } = useCheckout()
+const { session } = usePlatform()
+const { formatPrice } = useCurrency()
 
-const selectedMethod = ref()
+// eslint-disable-next-line func-call-spacing
+const emit = defineEmits<{
+    (event: 'update-before:shippingMethod', id: string): void
+    (event: 'update-after:shippingMethod', id: string): void
+}>()
+
+const selectedMethod = ref(session.value.shippingMethod)
+
+watch(selectedMethod, async (value, oldValue) => {
+    if (value !== oldValue) {
+        emit('update-before:shippingMethod', value)
+        await setShippingMethod(value)
+        emit('update-after:shippingMethod', value)
+    }
+})
 
 onMounted(async () => {
     await nextTick(async () => {

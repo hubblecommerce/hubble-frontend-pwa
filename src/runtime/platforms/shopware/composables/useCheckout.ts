@@ -1,6 +1,6 @@
 import { ref, Ref } from 'vue'
 import { IUseCheckout, ShippingMethod } from '@hubblecommerce/hubble/commons'
-import { PaymentShippingShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client'
+import { PaymentShippingShopware, SystemContextShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 import { mapShippingMethods } from '@hubblecommerce/hubble/platforms/shopware/api-client/utils'
 
 export const useCheckout = function (): IUseCheckout {
@@ -16,7 +16,12 @@ export const useCheckout = function (): IUseCheckout {
             const response = await PaymentShippingShopware.readShippingMethod(
                 true,
                 'application/json',
-                'application/json'
+                'application/json',
+                {
+                    associations: {
+                        prices: {}
+                    }
+                }
             )
 
             const mappedData = mapShippingMethods(response?.elements)
@@ -31,10 +36,30 @@ export const useCheckout = function (): IUseCheckout {
         }
     }
 
+    async function setShippingMethod (id: string): Promise<void> {
+        loading.value = true
+        error.value = false
+
+        try {
+            await SystemContextShopware.updateContext(
+                {
+                    shippingMethodId: id
+                }
+            )
+
+            loading.value = false
+        } catch (e) {
+            loading.value = false
+            error.value = e
+            return e
+        }
+    }
+
     return {
         error,
         loading,
         getShippingMethods,
+        setShippingMethod,
         shippingMethods
     }
 }
