@@ -6,7 +6,7 @@ import { Customer, CustomerShippingAddress, IUseCustomer, RegisterCustomerForm }
 import {
     AddressShopware, CustomerAddress,
     LoginRegistrationShopware,
-    ProfileShopware
+    ProfileShopware, SystemContextShopware
 } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 import { mapCustomer, mapCustomerAddress } from '@hubblecommerce/hubble/platforms/shopware/api-client/utils'
 
@@ -31,8 +31,17 @@ export const useCustomer = function (): IUseCustomer {
         error.value = false
 
         try {
-            const response = await ProfileShopware.readCustomer()
-            customer.value = mapCustomer(response)
+            /*
+             * Get customer from context instead of ProfileShopware.readCustomer
+             * because activeShippingAddress and activeBillingAddress is only available in /context
+             * active addresses in session are mandatory for checkout contact step
+             */
+            const response = await SystemContextShopware.readContext()
+
+            if (response.customer !== null) {
+                const { customer } = useCustomer()
+                customer.value = mapCustomer(response.customer)
+            }
 
             loading.value = false
             return customer.value
