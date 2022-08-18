@@ -13,8 +13,7 @@ import {
 } from '@hubblecommerce/hubble/platforms/shopware/api-client/utils'
 
 const session: Ref<Session> = ref({
-    sessionToken: null,
-    isGuest: true
+    sessionToken: null
 })
 
 export const usePlatform = function (): IUsePlatform {

@@ -6,7 +6,8 @@
             </div>
         </label>
 
-        <CustomerNavigation />
+        <CustomerGuestNavigation v-if="customer.isGuest" />
+        <CustomerNavigation v-else />
     </template>
     <template v-else>
         <label tabindex="0" class="btn btn-ghost btn-circle">
@@ -24,12 +25,11 @@
 
 <script setup lang="ts">
 import { UserIcon } from '@heroicons/vue/outline'
-import { useCustomer, usePlatform } from '#imports'
+import { useCustomer } from '#imports'
 
 const { getCustomer, customer } = useCustomer()
-const { session } = usePlatform()
 
-if (session.value != null && !session.value.isGuest) {
+if (customer.value != null && !customer.value.isGuest) {
     await getCustomer()
 }
 </script>

@@ -72,7 +72,7 @@
         <template v-if="step === 'contact'">
             <client-only>
                 <template v-if="customer">
-                    <template v-if="session.isGuest">
+                    <template v-if="customer.isGuest">
                         <form ref="updateShippingAddressForm" class="flex flex-col gap-4" @submit.prevent="onUpdateShippingAddress()">
                             <div class="flex flex-wrap justify-between items-center">
                                 <div class="text-xl pr-2">
@@ -193,7 +193,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { definePageMeta, useCustomer, usePlatform } from '#imports'
+import { definePageMeta, useCustomer } from '#imports'
 
 definePageMeta({
     layout: 'checkout',
@@ -202,7 +202,6 @@ definePageMeta({
 
 const step = ref('contact')
 const { customer, loading: customerLoading, updateShippingAddress } = useCustomer()
-const { session } = usePlatform()
 const protectedSteps = [
     'shipping',
     'payment',

@@ -256,8 +256,7 @@ function mapSession (swPlatform: SalesChannelContext): Session {
         sessionToken: swPlatform.token,
         currency: swPlatform.currency.isoCode,
         language: swPlatform.salesChannel.languageId,
-        maintenance: swPlatform.salesChannel.maintenance,
-        isGuest: swPlatform.customer == null || swPlatform.customer.guest
+        maintenance: swPlatform.salesChannel.maintenance
     }
 }
 
@@ -398,7 +397,8 @@ function mapShippingMethod (swShippingMethod: SwShippingMethod): ShippingMethod 
         description: swShippingMethod.translated.description,
         media: mapMedia(swShippingMethod.media),
         name: swShippingMethod.translated.name,
-        price: swShippingMethod.prices[0]?.currencyPrice,
+        // TODO: Resolve shipping price consider rules and currencies
+        price: swShippingMethod.prices[0]?.currencyPrice[0]?.gross,
         tax: swShippingMethod.tax?.taxRate
     }
 }
