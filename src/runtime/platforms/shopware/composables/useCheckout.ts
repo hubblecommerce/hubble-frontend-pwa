@@ -25,6 +25,11 @@ export const useCheckout = function (): IUseCheckout {
             )
 
             const mappedData = mapShippingMethods(response?.elements)
+
+            mappedData.sort((a, b) => {
+                return a.position - b.position
+            })
+
             shippingMethods.value = mappedData
 
             loading.value = false

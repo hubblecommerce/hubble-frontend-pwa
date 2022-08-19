@@ -22,7 +22,7 @@
             </ul>
         </div>
 
-        <div v-if="step !== 'contact'" class="flex flex-col p-4 mb-8 border border-base-300 text-sm">
+        <div v-if="step !== 'contact'" class="flex flex-col p-2 mb-8 border border-base-300 text-sm">
             <div class="grid grid-cols-12 gap-2">
                 <div class="col-span-6 md:col-span-3 order-1">
                     Contact
@@ -30,20 +30,15 @@
                 <div class="col-span-12 md:col-span-6 order-3 md:order-2">
                     {{ customer.email }}
                 </div>
-                <div class="col-span-6 md:col-span-3 order-2 md:order-3 place-self-end self-start">
-                    Edit
-                </div>
             </div>
             <div class="grid grid-cols-12 gap-2 pt-2 mt-2 border-t border-base-300">
                 <div class="col-span-6 md:col-span-3 order-1">
                     Ship to
                 </div>
                 <div class="col-span-12 md:col-span-6 order-3 md:order-2">
-                    {{ customer.shippingAddress.firstName }}
-                    {{ customer.shippingAddress.lastName }}
-                    {{ customer.shippingAddress.street }}
-                    {{ customer.shippingAddress.zipcode }}
-                    {{ customer.shippingAddress.city }}
+                    {{ customer.shippingAddress.firstName }} {{ customer.shippingAddress.lastName }},
+                    {{ customer.shippingAddress.street }},
+                    {{ customer.shippingAddress.zipcode }} {{ customer.shippingAddress.city }}
                 </div>
                 <div class="col-span-6 md:col-span-3 order-2 md:order-3 place-self-end self-start">
                     Edit
@@ -53,7 +48,9 @@
                 <div class="col-span-6 md:col-span-3 order-1">
                     Shipping
                 </div>
-                <div class="col-span-12 md:col-span-6 order-3 md:order-2" />
+                <div class="col-span-12 md:col-span-6 order-3 md:order-2">
+                    {{ session.shippingMethod.name }}
+                </div>
                 <div class="col-span-6 md:col-span-3 order-2 md:order-3 place-self-end self-start">
                     Edit
                 </div>
@@ -155,7 +152,7 @@
         </template>
 
         <div v-if="step === 'shipping'">
-            <CheckoutShipping @update-after:shippingMethod="updateCart()" />
+            <CheckoutShipping @update-after:shippingMethod="onUpdateShippingMethod()" />
         </div>
 
         <div v-if="step === 'payment'">
@@ -193,16 +190,18 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { definePageMeta, useCustomer, useCart } from '#imports'
+import { definePageMeta, useCustomer, useCart, usePlatform } from '#imports'
 
 definePageMeta({
     layout: 'checkout',
     middleware: 'validate-cart'
 })
 
+/*
+ * Checkout Step Navigation
+ */
 const step = ref('contact')
 const { customer, loading: customerLoading, updateShippingAddress } = useCustomer()
-const { getCart } = useCart()
 const protectedSteps = [
     'shipping',
     'payment',
@@ -221,6 +220,9 @@ function afterContactSubmit () {
     selectStep('shipping')
 }
 
+/*
+ * Update Guest Shipping Address
+ */
 const updateShippingAddressForm = ref()
 async function onUpdateShippingAddress () {
     const isValid = await updateShippingAddressForm.value.checkValidity()
@@ -234,7 +236,14 @@ async function onUpdateShippingAddress () {
     afterContactSubmit()
 }
 
-async function updateCart () {
+/*
+ * Event handling (shipping)
+ */
+const { session, getSession } = usePlatform()
+const { getCart } = useCart()
+
+async function onUpdateShippingMethod () {
+    await getSession()
     await getCart()
 }
 </script>

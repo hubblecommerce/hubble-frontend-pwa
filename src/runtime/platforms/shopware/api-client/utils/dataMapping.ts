@@ -259,7 +259,7 @@ function mapSession (swPlatform: SalesChannelContext): Session {
         maintenance: swPlatform.salesChannel.maintenance,
         // TODO: path api client
         // @ts-ignore
-        shippingMethod: swPlatform.shippingMethod.id,
+        shippingMethod: mapShippingMethod(swPlatform.shippingMethod),
         // TODO: path api client
         // @ts-ignore
         paymentMethod: swPlatform.paymentMethod.id
@@ -335,7 +335,7 @@ function mapCart (cart: SwCart): Cart {
         price: {
             // @TODO: Patch api client, add missing calculatedTaxes types
             // @ts-ignore
-            subTotal: cart.price.rawTotal,
+            subTotal: cart.price.positionPrice,
             nettoPrice: cart.price.netPrice,
             bruttoPrice: cart.price.totalPrice,
             // @ts-ignore
@@ -403,9 +403,10 @@ function mapShippingMethod (swShippingMethod: SwShippingMethod): ShippingMethod 
         description: swShippingMethod.translated.description,
         media: mapMedia(swShippingMethod.media),
         name: swShippingMethod.translated.name,
-        // TODO: Resolve shipping price consider rules and currencies
         price: swShippingMethod.prices[0]?.currencyPrice[0]?.gross,
-        tax: swShippingMethod.tax?.taxRate
+        tax: swShippingMethod.tax?.taxRate,
+        // @ts-ignore
+        position: swShippingMethod.position != null ? swShippingMethod.position : 1
     }
 }
 

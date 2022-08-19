@@ -35,7 +35,7 @@
                 >
                     <input
                         :id="'shipping-option-' + method.id"
-                        v-model="selectedMethod"
+                        v-model="selectedMethodId"
                         :value="method.id"
                         type="radio"
                         class="radio checked:bg-primary w-6 mr-4"
@@ -52,7 +52,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, nextTick, computed, watch, ref } from 'vue'
+import { onMounted, nextTick, watch, ref } from 'vue'
 import { useCheckout, usePlatform } from '#imports'
 import { useCurrency } from '@hubblecommerce/hubble/commons'
 
@@ -67,9 +67,9 @@ const emit = defineEmits<{
     (event: 'update-after:shippingMethod', id: string): void
 }>()
 
-const selectedMethod = ref(session.value.shippingMethod)
+const selectedMethodId = ref(session.value.shippingMethod.id)
 
-watch(selectedMethod, async (value, oldValue) => {
+watch(selectedMethodId, async (value, oldValue) => {
     if (value !== oldValue) {
         emit('update-before:shippingMethod', value)
         await setShippingMethod(value)
