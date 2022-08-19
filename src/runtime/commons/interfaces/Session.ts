@@ -1,4 +1,5 @@
 import { ShippingMethod } from './ShippingMethod'
+import { PaymentMethod } from './PaymentMethod'
 
 export interface Session {
     sessionToken: string | null,
@@ -6,5 +7,5 @@ export interface Session {
     language?: string,
     maintenance?: boolean,
     shippingMethod?: ShippingMethod,
-    paymentMethod?: string
+    paymentMethod?: PaymentMethod
 }

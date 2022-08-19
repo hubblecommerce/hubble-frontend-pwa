@@ -9,13 +9,13 @@ import {
     ProductListingResult,
     ProductManufacturer,
     SalesChannelContext,
-    Customer as SwCustomer,
     Country as SwCountry,
     Cart as SwCart,
     LineItem as SwLineItem,
     Salutation as SwSalutation,
     CustomerAddress as SwCustomerAddress,
-    ShippingMethod as SwShippingMethod
+    ShippingMethod as SwShippingMethod,
+    PaymentMethod as SwPaymentMethod
 } from '../generated'
 import {
     Block,
@@ -35,7 +35,11 @@ import {
     Salutation,
     Country,
     Section,
-    Slot, CustomerShippingAddress, CustomerBillingAddress, ShippingMethod
+    Slot,
+    CustomerShippingAddress,
+    CustomerBillingAddress,
+    ShippingMethod,
+    PaymentMethod
 } from '@hubblecommerce/hubble/commons'
 
 function mapMedia (swMedia: swMedia): Media {
@@ -262,7 +266,7 @@ function mapSession (swPlatform: SalesChannelContext): Session {
         shippingMethod: mapShippingMethod(swPlatform.shippingMethod),
         // TODO: path api client
         // @ts-ignore
-        paymentMethod: swPlatform.paymentMethod.id
+        paymentMethod: mapPaymentMethod(swPlatform.paymentMethod)
     }
 }
 
@@ -416,6 +420,24 @@ function mapShippingMethods (swShippingMethods: SwShippingMethod[]): ShippingMet
     })
 }
 
+function mapPaymentMethod (swPaymentMethod: SwPaymentMethod): PaymentMethod {
+    return {
+        id: swPaymentMethod.id,
+        position: swPaymentMethod.position != null ? swPaymentMethod.position : 1,
+        name: swPaymentMethod.translated.name,
+        ...(swPaymentMethod.translated.description != null && { description: swPaymentMethod.translated.description }),
+        ...(swPaymentMethod.media != null && { media: mapMedia(swPaymentMethod.media) }),
+        ...(swPaymentMethod.synchronous != null && { synchronous: swPaymentMethod.synchronous }),
+        ...(swPaymentMethod.asynchronous != null && { asynchronous: swPaymentMethod.asynchronous })
+    }
+}
+
+function mapPaymentMethods (swPaymentMethods: SwPaymentMethod[]): PaymentMethod[] {
+    return swPaymentMethods.map((swPaymentMethod) => {
+        return mapPaymentMethod(swPaymentMethod)
+    })
+}
+
 export {
     mapCategory,
     mapMedia,
@@ -437,5 +459,7 @@ export {
     mapCountries,
     mapCountry,
     mapShippingMethods,
-    mapShippingMethod
+    mapShippingMethod,
+    mapPaymentMethods,
+    mapPaymentMethod
 }

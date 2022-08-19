@@ -59,7 +59,9 @@
                 <div class="col-span-6 md:col-span-3 order-1">
                     Payment
                 </div>
-                <div class="col-span-12 md:col-span-6 order-3 md:order-2" />
+                <div class="col-span-12 md:col-span-6 order-3 md:order-2">
+                    {{ session.paymentMethod.name }}
+                </div>
                 <div class="col-span-6 md:col-span-3 order-2 md:order-3 place-self-end self-start">
                     Edit
                 </div>
@@ -156,7 +158,7 @@
         </div>
 
         <div v-if="step === 'payment'">
-            Payment
+            <CheckoutPayment @update-after:paymentMethod="onUpdatePaymentMethod()" />
         </div>
 
         <div v-if="step === 'summary'">
@@ -245,6 +247,10 @@ const { getCart } = useCart()
 async function onUpdateShippingMethod () {
     await getSession()
     await getCart()
+}
+
+async function onUpdatePaymentMethod () {
+    await getSession()
 }
 </script>
 

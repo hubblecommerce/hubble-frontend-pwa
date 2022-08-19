@@ -2,11 +2,11 @@ import { Media } from './Media'
 
 export interface ShippingMethod {
     id: string,
+    position: number,
+    name: string,
     deliveryTime?: string,
     description?: string,
     media?: Media,
-    name: string,
     price: number,
-    tax?: number,
-    position?: number
+    tax?: number
 }
