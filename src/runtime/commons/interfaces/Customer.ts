@@ -40,5 +40,6 @@ export interface Customer {
     email: string,
     isGuest: boolean,
     shippingAddress?: CustomerShippingAddress
-    billingAddress?: CustomerBillingAddress
+    billingAddress?: CustomerBillingAddress,
+    billingSameAsShipping?: boolean
 }

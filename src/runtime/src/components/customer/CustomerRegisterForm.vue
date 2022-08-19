@@ -19,7 +19,7 @@
                 </label>
                 <input
                     id="register-email"
-                    v-model="form.email"
+                    v-model="email"
                     required
                     type="email"
                     placeholder="E-Mail"
@@ -29,18 +29,18 @@
 
             <div class="form-control">
                 <label class="label cursor-pointer">
-                    <input v-model="form.createAccount" type="checkbox" checked="checked" class="checkbox mr-2">
+                    <input v-model="createAccount" type="checkbox" checked="checked" class="checkbox mr-2">
                     <span class="label-text">Create a customer account</span>
                 </label>
             </div>
 
-            <div v-if="form.createAccount" class="form-control w-full">
+            <div v-if="createAccount" class="form-control w-full">
                 <label for="register-password" class="label">
                     <span class="label-text">Password</span>
                 </label>
                 <input
                     id="register-password"
-                    v-model="form.password"
+                    v-model="password"
                     required
                     type="password"
                     placeholder="Password"
@@ -57,17 +57,54 @@
 
         <CustomerAddressForm v-model="shippingAddress" />
 
+        <div class="flex flex-wrap justify-between items-center">
+            <div class="text-xl pr-2">
+                Billing Address
+            </div>
+        </div>
+
+        <div class="flex flex-col border border-base-300">
+            <div>
+                <label for="same-billing-address" class="flex justify-between items-center p-4 cursor-pointer border-b border-base-300">
+                    <input
+                        id="same-billing-address"
+                        v-model="billingSameAsShipping"
+                        :value="true"
+                        type="radio"
+                        class="radio checked:bg-primary w-6 mr-4"
+                    >
+                    <div class="mr-auto">Identical to shipping address</div>
+                </label>
+                <label for="different-billing-address" class="flex justify-between items-center p-4 cursor-pointer">
+                    <input
+                        id="different-billing-address"
+                        v-model="billingSameAsShipping"
+                        :value="false"
+                        type="radio"
+                        class="radio checked:bg-primary w-6 mr-4"
+                    >
+                    <div class="mr-auto">Use a different billing address</div>
+                </label>
+                <div v-if="!billingSameAsShipping" class="p-4 bg-base-200 border-t border-base-300">
+                    <CustomerAddressForm v-model="billingAddress" />
+                </div>
+            </div>
+        </div>
+
         <slot name="actions" :submit="onSubmit" :loading="loading" />
     </form>
 </template>
 
 <script setup lang="ts">
-import { ref, Ref, computed, ComputedRef } from 'vue'
+import { ref, Ref } from 'vue'
 import { useCustomer } from '#imports'
-import { CustomerBillingAddress, CustomerShippingAddress, RegisterCustomerForm } from '@hubblecommerce/hubble/commons'
+import { CustomerBillingAddress, CustomerShippingAddress } from '@hubblecommerce/hubble/commons'
 
 const registerForm = ref()
-
+const email = ref('')
+const password = ref('')
+const createAccount = ref(false)
+const billingSameAsShipping = ref(true)
 const shippingAddress: Ref<CustomerShippingAddress> = ref({
     id: '',
     salutation: '',
@@ -79,7 +116,6 @@ const shippingAddress: Ref<CustomerShippingAddress> = ref({
     city: '',
     country: ''
 })
-
 const billingAddress: Ref<CustomerBillingAddress> = ref({
     id: '',
     salutation: '',
@@ -90,16 +126,6 @@ const billingAddress: Ref<CustomerBillingAddress> = ref({
     zipcode: '',
     city: '',
     country: ''
-})
-
-const form: ComputedRef<RegisterCustomerForm> = computed(() => {
-    return {
-        email: '',
-        createAccount: false,
-        billingSameAsShipping: true,
-        shippingAddress,
-        billingAddress
-    }
 })
 
 const emit = defineEmits(['form-submitted'])
@@ -113,7 +139,14 @@ async function onSubmit (callback?): Promise<string> {
         return
     }
 
-    await register(form.value)
+    await register({
+        email: email.value,
+        ...(createAccount.value && { password: password.value }),
+        createAccount: createAccount.value,
+        billingSameAsShipping: billingSameAsShipping.value,
+        shippingAddress,
+        billingAddress
+    })
 
     emit('form-submitted')
     return callback()

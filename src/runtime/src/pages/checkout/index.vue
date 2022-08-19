@@ -22,7 +22,11 @@
             </ul>
         </div>
 
-        <div v-if="step !== 'contact'" class="flex flex-col p-2 mb-8 border border-base-300 text-sm">
+        <div v-if="step === 'summary'" class="text-xl pr-2">
+            Summary
+        </div>
+
+        <div v-if="step !== 'contact'" :class="{ 'mb-8': step !== 'summary' }" class="flex flex-col p-2 border border-base-300 text-sm">
             <div class="grid grid-cols-12 gap-2">
                 <div class="col-span-6 md:col-span-3 order-1">
                     Contact
@@ -33,12 +37,25 @@
             </div>
             <div class="grid grid-cols-12 gap-2 pt-2 mt-2 border-t border-base-300">
                 <div class="col-span-6 md:col-span-3 order-1">
-                    Ship to
+                    Ship to <span v-if="customer.billingSameAsShipping">/ Billing to</span>
                 </div>
                 <div class="col-span-12 md:col-span-6 order-3 md:order-2">
                     {{ customer.shippingAddress.firstName }} {{ customer.shippingAddress.lastName }},
                     {{ customer.shippingAddress.street }},
                     {{ customer.shippingAddress.zipcode }} {{ customer.shippingAddress.city }}
+                </div>
+                <div class="col-span-6 md:col-span-3 order-2 md:order-3 place-self-end self-start">
+                    Edit
+                </div>
+            </div>
+            <div v-if="!customer.billingSameAsShipping" class="grid grid-cols-12 gap-2 pt-2 mt-2 border-t border-base-300">
+                <div class="col-span-6 md:col-span-3 order-1">
+                    Billing to
+                </div>
+                <div class="col-span-12 md:col-span-6 order-3 md:order-2">
+                    {{ customer.billingAddress.firstName }} {{ customer.billingAddress.lastName }},
+                    {{ customer.billingAddress.street }},
+                    {{ customer.billingAddress.zipcode }} {{ customer.billingAddress.city }}
                 </div>
                 <div class="col-span-6 md:col-span-3 order-2 md:order-3 place-self-end self-start">
                     Edit
@@ -72,7 +89,7 @@
             <client-only>
                 <template v-if="customer">
                     <template v-if="customer.isGuest">
-                        <form ref="updateShippingAddressForm" class="flex flex-col gap-4" @submit.prevent="onUpdateShippingAddress()">
+                        <form ref="updateContactForm" class="flex flex-col gap-4" @submit.prevent="onUpdateContact()">
                             <div class="flex flex-wrap justify-between items-center">
                                 <div class="text-xl pr-2">
                                     Contact Information
@@ -91,12 +108,47 @@
                                     >
                                 </div>
                             </div>
+
                             <div class="flex flex-wrap justify-between items-center">
                                 <div class="text-xl pr-2">
                                     Shipping Address
                                 </div>
                             </div>
-                            <CustomerAddressForm v-model="customer.shippingAddress" />
+                            <CustomerAddressForm id="shipping-address" v-model="customer.shippingAddress" />
+
+                            <div class="flex flex-wrap justify-between items-center">
+                                <div class="text-xl pr-2">
+                                    Billing Address
+                                </div>
+                            </div>
+                            <div class="flex flex-col border border-base-300">
+                                <div>
+                                    <label for="same-billing-address" class="flex justify-between items-center p-4 cursor-pointer border-b border-base-300">
+                                        <input
+                                            id="same-billing-address"
+                                            v-model="billingSameAsShipping"
+                                            :value="true"
+                                            type="radio"
+                                            class="radio checked:bg-primary w-6 mr-4"
+                                        >
+                                        <div class="mr-auto">Identical to shipping address</div>
+                                    </label>
+                                    <label for="different-billing-address" class="flex justify-between items-center p-4 cursor-pointer">
+                                        <input
+                                            id="different-billing-address"
+                                            v-model="billingSameAsShipping"
+                                            :value="false"
+                                            type="radio"
+                                            class="radio checked:bg-primary w-6 mr-4"
+                                        >
+                                        <div class="mr-auto">Use a different billing address</div>
+                                    </label>
+                                    <div v-if="!billingSameAsShipping" class="p-4 bg-base-200 border-t border-base-300">
+                                        <CustomerAddressForm id="billing-address" v-model="customer.billingAddress" />
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="navigation flex justify-between items-center">
                                 <div class="link link-hover link-accent">
                                     Back to Cart
@@ -104,9 +156,9 @@
                                 <button
                                     class="btn btn-primary"
                                     :class="{ 'loading': customerLoading }"
-                                    @click.prevent="onUpdateShippingAddress()"
+                                    @click.prevent="onUpdateContact()"
                                 >
-                                    <span v-if="!customerLoading">Continue to Shipping</span>
+                                    <span v-if="!customerLoading">Save and continue to Shipping</span>
                                     <span v-if="customerLoading">Loading</span>
                                 </button>
                             </div>
@@ -153,17 +205,44 @@
             </client-only>
         </template>
 
-        <div v-if="step === 'shipping'">
+        <template v-if="step === 'shipping'">
             <CheckoutShipping @update-after:shippingMethod="onUpdateShippingMethod()" />
-        </div>
+        </template>
 
-        <div v-if="step === 'payment'">
+        <template v-if="step === 'payment'">
             <CheckoutPayment @update-after:paymentMethod="onUpdatePaymentMethod()" />
-        </div>
+        </template>
 
-        <div v-if="step === 'summary'">
-            Totals
-        </div>
+        <template v-if="step === 'summary'">
+            <div class="border border-base-300">
+                <CartTotals />
+            </div>
+
+            <CheckoutPlaceOrder>
+                <template #actions="actionProps">
+                    <form class="form-control gap-2" @submit.prevent="actionProps.placeOrder()">
+                        <label class="label cursor-pointer">
+                            <input type="checkbox" required class="checkbox checkbox-primary mr-4">
+                            <span class="label-text mr-auto">I agree to the terms and conditions as set out by the user agreement.</span>
+                        </label>
+
+                        <label class="label cursor-pointer">
+                            <input type="checkbox" required class="checkbox checkbox-primary mr-4">
+                            <span class="label-text mr-auto">I have read the privacy policy and I agree with them.</span>
+                        </label>
+
+                        <div class="navigation flex justify-between items-center">
+                            <div class="link link-hover link-accent" @click="selectStep('payment')">
+                                Back to Payment
+                            </div>
+                            <button type="submit" class="btn btn-primary" @click.prevent="actionProps.placeOrder()">
+                                Place Order
+                            </button>
+                        </div>
+                    </form>
+                </template>
+            </CheckoutPlaceOrder>
+        </template>
 
         <div class="navigation flex justify-between items-center">
             <div v-if="step === 'shipping'" class="link link-hover link-accent" @click="selectStep('contact')">
@@ -178,13 +257,6 @@
             </div>
             <div v-if="step === 'payment'" class="btn btn-primary" @click="selectStep('summary')">
                 Continue to Summary
-            </div>
-
-            <div v-if="step === 'summary'" class="link link-hover link-accent" @click="selectStep('payment')">
-                Back to Payment
-            </div>
-            <div v-if="step === 'summary'" class="btn btn-primary">
-                Place Order
             </div>
         </div>
     </div>
@@ -203,7 +275,7 @@ definePageMeta({
  * Checkout Step Navigation
  */
 const step = ref('contact')
-const { customer, loading: customerLoading, updateShippingAddress } = useCustomer()
+const { customer, loading: customerLoading, updateShippingAddress, updateBillingAddress } = useCustomer()
 const protectedSteps = [
     'shipping',
     'payment',
@@ -218,28 +290,41 @@ function selectStep (stepName: string): void {
     step.value = stepName
 }
 
-function afterContactSubmit () {
-    selectStep('shipping')
-}
-
 /*
  * Update Guest Shipping Address
  */
-const updateShippingAddressForm = ref()
-async function onUpdateShippingAddress () {
-    const isValid = await updateShippingAddressForm.value.checkValidity()
+const updateContactForm = ref()
+const billingSameAsShipping = ref(customer.value?.billingSameAsShipping)
+async function onUpdateContact () {
+    const isValid = await updateContactForm.value.checkValidity()
 
     if (!isValid) {
-        updateShippingAddressForm.value.reportValidity()
+        updateContactForm.value.reportValidity()
         return
     }
 
-    await updateShippingAddress(customer.value.shippingAddress)
-    afterContactSubmit()
+    if (billingSameAsShipping.value) {
+        await updateShippingAddress(customer.value.shippingAddress)
+
+        const { id: billingAddressId } = customer.value.billingAddress
+        const { id: shippingAddressId, ...shippingAddressData } = customer.value.shippingAddress
+
+        await updateBillingAddress({
+            id: billingAddressId,
+            ...shippingAddressData
+        })
+    }
+
+    if (!billingSameAsShipping.value) {
+        await updateShippingAddress(customer.value.shippingAddress)
+        await updateBillingAddress(customer.value.billingAddress)
+    }
+
+    await afterContactSubmit()
 }
 
 /*
- * Event handling (shipping)
+ * Event handling (contact, shipping, payment)
  */
 const { session, getSession } = usePlatform()
 const { getCart } = useCart()
@@ -251,6 +336,11 @@ async function onUpdateShippingMethod () {
 
 async function onUpdatePaymentMethod () {
     await getSession()
+}
+
+async function afterContactSubmit () {
+    await getSession()
+    selectStep('shipping')
 }
 </script>
 

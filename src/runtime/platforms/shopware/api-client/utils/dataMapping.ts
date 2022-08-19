@@ -286,7 +286,7 @@ function mapCustomerAddress (swAddress: SwCustomerAddress): CustomerShippingAddr
 }
 
 function mapCustomer (customer: SalesChannelContext['customer']): Customer {
-    const obj = {
+    const obj: Customer = {
         name: customer.firstName,
         email: customer.email,
         isGuest: customer.guest
@@ -306,6 +306,15 @@ function mapCustomer (customer: SalesChannelContext['customer']): Customer {
         // Todo patch api client
         // @ts-ignore
         Object.assign(obj, { billingAddress: mapCustomerAddress(customer.activeBillingAddress) })
+    }
+
+    /*
+     * Remove id and compare mapped shipping and billing address to tell if they are the same or not
+     */
+    if (obj.shippingAddress != null && obj.billingAddress != null) {
+        const { id: shippingId, ...cleanedShippingAddress } = obj.shippingAddress
+        const { id: billingId, ...cleanedBillingAddress } = obj.billingAddress
+        obj.billingSameAsShipping = JSON.stringify(cleanedShippingAddress) === JSON.stringify(cleanedBillingAddress)
     }
 
     return obj

@@ -1,11 +1,11 @@
 <template>
     <div class="grid grid-cols-12 gap-2">
         <div class="form-control col-span-12">
-            <label for="register-salutation" class="label">
+            <label :for="`${id}-salutation`" class="label">
                 <span class="label-text">Salutation</span>
             </label>
 
-            <select id="register-salutation" v-model="form.salutation" required class="select select-bordered w-full">
+            <select :id="`${id}-salutation`" v-model="form.salutation" required class="select select-bordered w-full">
                 <option v-for="salutation in salutations" :key="salutation.id" :value="salutation.id">
                     {{ salutation.name }}
                 </option>
@@ -13,11 +13,11 @@
         </div>
 
         <div class="form-control col-span-12 lg:col-span-6">
-            <label for="register-firstName" class="label">
+            <label :for="`${id}-firstName`" class="label">
                 <span class="label-text">Firstname</span>
             </label>
             <input
-                id="register-firstName"
+                :id="`${id}-firstName`"
                 v-model="form.firstName"
                 required
                 type="text"
@@ -27,11 +27,11 @@
         </div>
 
         <div class="form-control col-span-12 lg:col-span-6">
-            <label for="register-lastName" class="label">
+            <label :for="`${id}-lastName`" class="label">
                 <span class="label-text">Lastname</span>
             </label>
             <input
-                id="register-lastName"
+                :id="`${id}-lastName`"
                 v-model="form.lastName"
                 required
                 type="text"
@@ -41,11 +41,11 @@
         </div>
 
         <div class="form-control col-span-12">
-            <label for="register-company" class="label">
+            <label :for="`${id}-company`" class="label">
                 <span class="label-text">Company (optional)</span>
             </label>
             <input
-                id="register-company"
+                :id="`${id}-company`"
                 v-model="form.company"
                 type="text"
                 placeholder="Company (optional)"
@@ -54,11 +54,11 @@
         </div>
 
         <div class="form-control col-span-12">
-            <label for="register-street" class="label">
+            <label :for="`${id}-street`" class="label">
                 <span class="label-text">Street and Number</span>
             </label>
             <input
-                id="register-street"
+                :id="`${id}-street`"
                 v-model="form.street"
                 required
                 type="text"
@@ -68,11 +68,11 @@
         </div>
 
         <div class="form-control col-span-12 lg:col-span-4">
-            <label for="register-zipcode" class="label">
+            <label :for="`${id}-zipcode`" class="label">
                 <span class="label-text">Zipcode</span>
             </label>
             <input
-                id="register-zipcode"
+                :id="`${id}-zipcode`"
                 v-model="form.zipcode"
                 required
                 type="text"
@@ -82,11 +82,11 @@
         </div>
 
         <div class="form-control col-span-12 lg:col-span-8">
-            <label for="register-city" class="label">
+            <label :for="`${id}-city`" class="label">
                 <span class="label-text">City</span>
             </label>
             <input
-                id="register-city"
+                :id="`${id}-city`"
                 v-model="form.city"
                 required
                 type="text"
@@ -96,10 +96,10 @@
         </div>
 
         <div class="form-control col-span-12">
-            <label for="register-country" class="label">
+            <label :for="`${id}-country`" class="label">
                 <span class="label-text">Country</span>
             </label>
-            <select id="register-country" v-model="form.country" required class="select select-bordered w-full">
+            <select :id="`${id}-country`" v-model="form.country" required class="select select-bordered w-full">
                 <option v-for="country in countries" :key="country.id" :value="country.id">
                     {{ country.name }}
                 </option>
@@ -114,7 +114,8 @@ import { usePlatform } from '#imports'
 import { CustomerBillingAddress, CustomerShippingAddress } from '@hubblecommerce/hubble/commons'
 
 const props = defineProps<{
-    modelValue?: CustomerBillingAddress | CustomerShippingAddress
+    id?: string,
+    modelValue?: CustomerBillingAddress | CustomerShippingAddress,
 }>()
 const emit = defineEmits(['update:modelValue'])
 

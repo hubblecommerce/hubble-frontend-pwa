@@ -2,12 +2,8 @@ import { computed, ref, Ref } from 'vue'
 import { FetchResult, navigateTo } from '#app'
 import { FetchRequest } from 'ohmyfetch'
 import { useCart, useNotification, usePlatform, useRuntimeConfig } from '#imports'
-import { Customer, CustomerShippingAddress, IUseCustomer, RegisterCustomerForm } from '@hubblecommerce/hubble/commons'
-import {
-    AddressShopware, CustomerAddress,
-    LoginRegistrationShopware,
-    ProfileShopware, SystemContextShopware
-} from '@hubblecommerce/hubble/platforms/shopware/api-client'
+import { Customer, CustomerShippingAddress, CustomerBillingAddress, IUseCustomer, RegisterCustomerForm } from '@hubblecommerce/hubble/commons'
+import { AddressShopware, CustomerAddress, LoginRegistrationShopware, SystemContextShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 import { mapCustomer, mapCustomerAddress } from '@hubblecommerce/hubble/platforms/shopware/api-client/utils'
 
 const customer: Ref<Customer> = ref(null)
@@ -191,6 +187,41 @@ export const useCustomer = function (): IUseCustomer {
         }
     }
 
+    async function updateBillingAddress (billingAddress: CustomerBillingAddress): Promise<CustomerAddress> {
+        loading.value = true
+        error.value = false
+
+        try {
+            const response = await AddressShopware.updateCustomerAddress(
+                billingAddress.id,
+                'application/json',
+                'application/json',
+                // Todo: Patch api client
+                // @ts-ignore
+                {
+                    salutationId: billingAddress.salutation,
+                    firstName: billingAddress.firstName,
+                    lastName: billingAddress.lastName,
+                    ...(billingAddress.company != null && { company: billingAddress.company }),
+                    street: billingAddress.street,
+                    zipcode: billingAddress.zipcode,
+                    city: billingAddress.city,
+                    countryId: billingAddress.country,
+                    ...(billingAddress.phone != null && { phoneNumber: billingAddress.phone })
+                }
+            )
+
+            customer.value.billingAddress = mapCustomerAddress(response)
+
+            loading.value = false
+            return response
+        } catch (e) {
+            loading.value = false
+            error.value = e
+            throw e
+        }
+    }
+
     return {
         customer,
         getCustomer,
@@ -199,6 +230,7 @@ export const useCustomer = function (): IUseCustomer {
         logout,
         register,
         updateShippingAddress,
+        updateBillingAddress,
         loading,
         error
     }
