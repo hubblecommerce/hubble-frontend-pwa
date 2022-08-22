@@ -1,6 +1,6 @@
 {
     "name": "@hubblecommerce/hubble",
-    "version": "1.5.8",
+    "version": "1.5.9",
     "description": "PWA for eCommerce frameworks based on NuxtJs",
     "author": "hubble commerce",
     "license": "MIT",
@@ -16,7 +16,7 @@
     },
     "dependencies": {
         "@nuxtjs/axios": "^5.13.0",
-        "@nuxtjs/composition-api": "^0.24.7",
+        "@nuxtjs/composition-api": "^0.33.1",
         "cookie-universal-nuxt": "^2.1.4",
         "core-js": "^3.8.3",
         "hooper": "^0.3.4",
