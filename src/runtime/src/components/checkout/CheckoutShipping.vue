@@ -20,9 +20,8 @@
                 </div>
             </div>
 
-            <div v-else-if="error || updateError">
+            <div v-else-if="error">
                 {{ error }}
-                {{ updateError }}
             </div>
 
             <div v-else-if="shippingMethods != null" class="flex flex-col border border-base-300">
@@ -53,13 +52,14 @@
 
 <script setup lang="ts">
 import { onMounted, nextTick, watch, ref } from 'vue'
-import { useCheckout, usePlatform } from '#imports'
+import { useCheckout, useNotification, usePlatform } from '#imports'
 import { useCurrency } from '@hubblecommerce/hubble/commons'
 
 const { loading, error, shippingMethods, getShippingMethods } = useCheckout()
 const { error: updateError, loading: updateLoading, setShippingMethod } = useCheckout()
 const { session } = usePlatform()
 const { formatPrice } = useCurrency()
+const { showNotification } = useNotification()
 
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
@@ -70,10 +70,18 @@ const emit = defineEmits<{
 const selectedMethodId = ref(session.value.shippingMethod.id)
 
 watch(selectedMethodId, async (value, oldValue) => {
-    if (value !== oldValue) {
+    if (value !== oldValue && value !== null) {
         emit('update-before:shippingMethod', value)
         await setShippingMethod(value)
         emit('update-after:shippingMethod', value)
+    }
+})
+
+watch(updateError, (value) => {
+    if (value) {
+        // Unselect option
+        selectedMethodId.value = null
+        showNotification(value.toString(), 'error', true)
     }
 })
 

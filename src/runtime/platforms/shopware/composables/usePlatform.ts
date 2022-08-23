@@ -16,6 +16,9 @@ const session: Ref<Session> = ref({
     sessionToken: null
 })
 
+const salutations: Ref<Salutation[] | null> = ref(null)
+const countries: Ref<Country[] | null> = ref(null)
+
 export const usePlatform = function (): IUsePlatform {
     const error: Ref<boolean> = ref(false)
     const loading: Ref<boolean> = ref(false)
@@ -74,7 +77,11 @@ export const usePlatform = function (): IUsePlatform {
         try {
             const response = await SystemContextShopware.readSalutation()
 
-            return mapSalutations(response.elements)
+            const mappedData = mapSalutations(response.elements)
+            salutations.value = mappedData
+
+            loading.value = false
+            return mappedData
         } catch (e) {
             loading.value = false
             error.value = e
@@ -89,7 +96,11 @@ export const usePlatform = function (): IUsePlatform {
         try {
             const response = await SystemContextShopware.readCountry()
 
-            return mapCountries(response.elements)
+            const mappedData = mapCountries(response.elements)
+            countries.value = mappedData
+
+            loading.value = false
+            return mappedData
         } catch (e) {
             loading.value = false
             error.value = e
@@ -104,7 +115,9 @@ export const usePlatform = function (): IUsePlatform {
         setSessionToken,
         getSession,
         getSalutations,
+        salutations,
         getCountries,
+        countries,
         error,
         loading,
         session

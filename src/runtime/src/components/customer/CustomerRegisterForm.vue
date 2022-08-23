@@ -55,7 +55,7 @@
             </div>
         </div>
 
-        <CustomerAddressForm v-model="shippingAddress" />
+        <CustomerAddressForm id="registerShippingAddress" v-model="shippingAddress" />
 
         <div class="flex flex-wrap justify-between items-center">
             <div class="text-xl pr-2">
@@ -86,7 +86,7 @@
                     <div class="mr-auto">Use a different billing address</div>
                 </label>
                 <div v-if="!billingSameAsShipping" class="p-4 bg-base-200 border-t border-base-300">
-                    <CustomerAddressForm v-model="billingAddress" />
+                    <CustomerAddressForm id="registerBillingAddress" v-model="billingAddress" />
                 </div>
             </div>
         </div>
@@ -98,7 +98,7 @@
 <script setup lang="ts">
 import { ref, Ref } from 'vue'
 import { useCustomer } from '#imports'
-import { CustomerBillingAddress, CustomerShippingAddress } from '@hubblecommerce/hubble/commons'
+import { CustomerBillingAddress, CustomerShippingAddress, useForm } from '@hubblecommerce/hubble/commons'
 
 const registerForm = ref()
 const email = ref('')
@@ -130,12 +130,11 @@ const billingAddress: Ref<CustomerBillingAddress> = ref({
 
 const emit = defineEmits(['form-submitted'])
 const { register, loading, error } = useCustomer()
+const { validateForm } = useForm()
 
 async function onSubmit (callback?): Promise<string> {
-    const isValid = await registerForm.value.checkValidity()
-
+    const isValid = await validateForm(registerForm.value)
     if (!isValid) {
-        registerForm.value.reportValidity()
         return
     }
 

@@ -20,9 +20,8 @@
                 </div>
             </div>
 
-            <div v-else-if="error || updateError">
+            <div v-else-if="error">
                 {{ error }}
-                {{ updateError }}
             </div>
 
             <div v-else-if="paymentMethods != null" class="flex flex-col border border-base-300">
@@ -57,11 +56,12 @@
 
 <script setup lang="ts">
 import { onMounted, nextTick, watch, ref } from 'vue'
-import { useCheckout, usePlatform } from '#imports'
+import { useCheckout, useNotification, usePlatform } from '#imports'
 
 const { loading, error, paymentMethods, getPaymentMethods } = useCheckout()
 const { error: updateError, loading: updateLoading, setPaymentMethod } = useCheckout()
 const { session } = usePlatform()
+const { showNotification } = useNotification()
 
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
@@ -72,10 +72,18 @@ const emit = defineEmits<{
 const selectedMethodId = ref(session.value.paymentMethod.id)
 
 watch(selectedMethodId, async (value, oldValue) => {
-    if (value !== oldValue) {
+    if (value !== oldValue && value !== null) {
         emit('update-before:paymentMethod', value)
         await setPaymentMethod(value)
         emit('update-after:paymentMethod', value)
+    }
+})
+
+watch(updateError, (value) => {
+    if (value) {
+        // Unselect options
+        selectedMethodId.value = null
+        showNotification(value.toString(), 'error', true)
     }
 })
 

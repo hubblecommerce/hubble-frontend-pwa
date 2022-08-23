@@ -1,14 +1,18 @@
 <template>
     <Transition name="fade" mode="out-in">
         <div v-if="cart?.lineItems.length > 0" class="flex flex-col gap-4">
-            <div>Total: {{ totalQty }}</div>
             <div
                 v-for="lineItem in cart.lineItems"
                 :key="lineItem.index"
-                class="grid grid-cols-12 pb-4 border border-l-0 border-r-0 border-t-0"
+                class="flex pb-4 border border-l-0 border-r-0 border-t-0"
             >
-                <img :src="lineItem.media.url" class="col-span-4">
-                <div class="col-span-8 flex flex-col justify-between px-2">
+                <div class="avatar indicator mr-2">
+                    <span class="indicator-item indicator-bottom badge badge-secondary">{{ lineItem.quantity }}</span>
+                    <div class="w-20">
+                        <img :src="lineItem.media.url" :alt="lineItem.name">
+                    </div>
+                </div>
+                <div class="flex flex-col justify-between w-full px-2">
                     <div class="w-full flex justify-between gap-2">
                         <div class="w-full">
                             {{ lineItem.name }}
@@ -16,9 +20,6 @@
                         <div v-if="isInteractive" class="btn btn-ghost btn-circle btn-xs" @click="removeLineItem(lineItem.id)">
                             <TrashIcon class="h-5 w-5" />
                         </div>
-                    </div>
-                    <div class="w-full text-sm">
-                        <div>Quantity: {{ lineItem.quantity }}</div>
                     </div>
                     <div class="self-end w-full text-right text-sm">
                         <div :class="{'line-through text-xs': lineItem.price.specialPrice}">

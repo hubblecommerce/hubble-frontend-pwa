@@ -1,10 +1,6 @@
 <template>
     <Transition name="fade" mode="out-in">
         <div v-if="loading" class="flex flex-col gap-4">
-            <div class="flex justify-between items-center">
-                <MiscSkeleton size="large" width="40%" />
-                <MiscSkeleton size="large" circle />
-            </div>
             <MiscSkeleton size="large" :repeat="2" />
             <MiscSkeleton text size="small" :repeat="6" />
             <MiscSkeleton size="large" :repeat="3" />

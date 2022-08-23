@@ -8,10 +8,12 @@ export interface IUsePlatform {
     error: Ref<boolean>,
     apiUrl: string,
     apiAuthToken: string,
-    sessionToken: Ref<string> | null
+    sessionToken: Ref<string> | null,
     setSessionToken(token: string): void,
     getSession(): void,
-    getSalutations(): Promise<Salutation[]>
-    getCountries(): Promise<Country[]>
-    session: Ref<Session | null>
+    getSalutations(): Promise<Salutation[]>,
+    getCountries(): Promise<Country[]>,
+    session: Ref<Session | null>,
+    salutations: Ref<Salutation[] | null>,
+    countries: Ref<Country[] | null>
 }

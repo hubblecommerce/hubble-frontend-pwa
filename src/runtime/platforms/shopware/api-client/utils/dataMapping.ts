@@ -15,7 +15,10 @@ import {
     Salutation as SwSalutation,
     CustomerAddress as SwCustomerAddress,
     ShippingMethod as SwShippingMethod,
-    PaymentMethod as SwPaymentMethod
+    PaymentMethod as SwPaymentMethod,
+    Order as SwOrder,
+    OrderAddress,
+    OrderLineItem as SwOrderLineItem
 } from '../generated'
 import {
     Block,
@@ -39,7 +42,10 @@ import {
     CustomerShippingAddress,
     CustomerBillingAddress,
     ShippingMethod,
-    PaymentMethod
+    PaymentMethod,
+    Order,
+    Totals,
+    OrderLineItem
 } from '@hubblecommerce/hubble/commons'
 
 function mapMedia (swMedia: swMedia): Media {
@@ -270,10 +276,18 @@ function mapSession (swPlatform: SalesChannelContext): Session {
     }
 }
 
-function mapCustomerAddress (swAddress: SwCustomerAddress): CustomerShippingAddress | CustomerBillingAddress {
+function mapCustomerAddress (swAddress: SwCustomerAddress | OrderAddress): CustomerShippingAddress | CustomerBillingAddress {
+    let salutationId = null
+    if (Object.hasOwn(swAddress, 'salutationId')) {
+        // @ts-ignore
+        salutationId = swAddress.salutationId
+    } else {
+        salutationId = swAddress.salutation?.id
+    }
+
     return {
         id: swAddress.id,
-        salutation: swAddress.salutationId,
+        salutation: salutationId,
         firstName: swAddress.firstName,
         lastName: swAddress.lastName,
         ...(swAddress.company != null && { company: swAddress.company }),
@@ -327,7 +341,7 @@ function mapLineItem (lineItem: SwLineItem): LineItem {
         name: lineItem.label,
         quantity: lineItem.quantity,
         type: lineItem.type,
-        // @TODO Path api client
+        // @TODO Patch api client
         // @ts-ignore
         media: mapMedia(lineItem.cover),
         // @ts-ignore
@@ -341,21 +355,23 @@ function mapLineItems (lineItems: SwLineItem[]): LineItem[] {
     })
 }
 
+function mapTotals (price): Totals {
+    return {
+        subTotal: price.positionPrice,
+        nettoPrice: price.netPrice,
+        bruttoPrice: price.totalPrice,
+        // @ts-ignore
+        tax: price.calculatedTaxes.length > 0 ? price.calculatedTaxes[0].tax : null,
+        // @ts-ignore
+        taxRate: price.calculatedTaxes.length > 0 ? price.calculatedTaxes[0].taxRate : null
+    }
+}
+
 function mapCart (cart: SwCart): Cart {
     return {
         id: cart.token,
         lineItems: mapLineItems(cart.lineItems),
-        price: {
-            // @TODO: Patch api client, add missing calculatedTaxes types
-            // @ts-ignore
-            subTotal: cart.price.positionPrice,
-            nettoPrice: cart.price.netPrice,
-            bruttoPrice: cart.price.totalPrice,
-            // @ts-ignore
-            tax: cart.price.calculatedTaxes.length > 0 ? cart.price.calculatedTaxes[0].tax : null,
-            // @ts-ignore
-            taxRate: cart.price.calculatedTaxes.length > 0 ? cart.price.calculatedTaxes[0].taxRate : null
-        },
+        price: mapTotals(cart.price),
         // @TODO: Patch api client, add missing deliveries types
         // @ts-ignore
         shippingCosts: cart.deliveries.length > 0 ? cart.deliveries[0].shippingCosts.totalPrice : null,
@@ -447,6 +463,43 @@ function mapPaymentMethods (swPaymentMethods: SwPaymentMethod[]): PaymentMethod[
     })
 }
 
+function mapOrderLineItem (swOrderLineItem: SwOrderLineItem): OrderLineItem {
+    return {
+        id: swOrderLineItem.id,
+        name: swOrderLineItem.label,
+        media: mapMedia(swOrderLineItem.cover),
+        quantity: swOrderLineItem.quantity,
+        price: swOrderLineItem.totalPrice
+    }
+}
+
+function mapOrderLineItems (swOrderLineItem: SwOrderLineItem[]): OrderLineItem[] {
+    return swOrderLineItem.map((item) => {
+        return mapOrderLineItem(item)
+    })
+}
+
+function mapOrder (swOrder: SwOrder): Order {
+    return {
+        id: swOrder.orderNumber,
+        email: swOrder.orderCustomer.email,
+        shippingAddress: mapCustomerAddress(swOrder.deliveries[0].shippingOrderAddress),
+        billingAddress: mapCustomerAddress(swOrder.billingAddress),
+        shippingMethod: mapShippingMethod(swOrder.deliveries[0].shippingMethod),
+        paymentMethod: mapPaymentMethod(swOrder.transactions[0].paymentMethod),
+        // TODO: patch api client
+        // @ts-ignore
+        lineItems: mapOrderLineItems(swOrder.lineItems),
+        totals: mapTotals(swOrder.price)
+    }
+}
+
+function mapOrders (swOrders: SwOrder[]): Order[] {
+    return swOrders.map((order) => {
+        return mapOrder(order)
+    })
+}
+
 export {
     mapCategory,
     mapMedia,
@@ -470,5 +523,9 @@ export {
     mapShippingMethods,
     mapShippingMethod,
     mapPaymentMethods,
-    mapPaymentMethod
+    mapPaymentMethod,
+    mapOrders,
+    mapOrder,
+    mapOrderLineItems,
+    mapOrderLineItem
 }
