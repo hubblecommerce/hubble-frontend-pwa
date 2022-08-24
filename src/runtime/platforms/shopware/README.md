@@ -27,7 +27,7 @@ In this case you can patch missing or wrong code on your own:
 2. Commit your changes to git 
 3. Create patch:
 ```shell
-export $COMMIT=commit-hash-from-1
+export COMMIT=commit-hash-from-1
 npm run sw:dev:patch-api
 ```
 4. Commit generated path file to git 
