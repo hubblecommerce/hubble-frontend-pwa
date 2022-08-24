@@ -20,6 +20,7 @@ export type PaymentMethod = {
     readonly synchronous?: boolean;
     readonly asynchronous?: boolean;
     readonly prepared?: boolean;
+    readonly refundable?: boolean;
     readonly createdAt: string;
     readonly updatedAt?: string;
     translated?: any;

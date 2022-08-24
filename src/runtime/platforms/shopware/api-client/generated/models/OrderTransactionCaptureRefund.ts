@@ -3,18 +3,19 @@
 /* eslint-disable */
 
 import type { OrderTransactionCapture } from './OrderTransactionCapture';
-import type { PaymentMethod } from './PaymentMethod';
+import type { OrderTransactionCaptureRefundPosition } from './OrderTransactionCaptureRefundPosition';
 import type { StateMachineState } from './StateMachineState';
 
 /**
- * Added since version: 6.0.0.0
+ * Added since version: 6.4.12.0
  */
-export type OrderTransaction = {
+export type OrderTransactionCaptureRefund = {
     id?: string;
-    versionId?: string;
-    orderId: string;
-    orderVersionId?: string;
-    paymentMethodId: string;
+    captureId: string;
+    stateId: string;
+    externalReference?: string;
+    reason?: string;
+    totalAmount?: number;
     amount: {
         unitPrice: number;
         totalPrice: number;
@@ -31,12 +32,11 @@ export type OrderTransaction = {
             price?: number;
         };
     };
-    stateId: string;
     customFields?: any;
     readonly createdAt: string;
     readonly updatedAt?: string;
     stateMachineState?: StateMachineState;
-    paymentMethod?: PaymentMethod;
-    captures?: OrderTransactionCapture;
+    transactionCapture?: OrderTransactionCapture;
+    positions?: OrderTransactionCaptureRefundPosition;
 };
 

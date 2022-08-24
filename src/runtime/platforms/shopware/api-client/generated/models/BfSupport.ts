@@ -5,7 +5,7 @@
 /**
  * Added since version:
  */
-export type SwagAmazonPayPaymentNotification = {
+export type BfSupport = {
     id?: string;
     readonly createdAt: string;
     readonly updatedAt?: string;

@@ -15,6 +15,7 @@ export type CmsPage = {
     name?: string;
     type: string;
     entity?: string;
+    cssClass?: string;
     config?: {
         backgroundColor?: string;
     };

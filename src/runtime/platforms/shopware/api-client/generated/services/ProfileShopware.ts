@@ -3,6 +3,7 @@
 /* eslint-disable */
 import type { Criteria } from '../models/Criteria';
 import type { Customer } from '../models/Customer';
+import type { Struct } from '../models/Struct';
 import type { SuccessResponse } from '../models/SuccessResponse';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -110,6 +111,37 @@ export class ProfileShopware {
     }
 
     /**
+     * Change the customer's language.
+     * Changes the language of the logged in customer
+     * @param requestBody
+     * @param contentType Content type of the request
+     * @param accept Accepted response content types
+     * @returns SuccessResponse Returns a success response indicating a successful update
+     * @throws ApiError
+     */
+    public static changeLanguage(
+        requestBody: {
+            /**
+             * New languageId
+             */
+            language?: string;
+        },
+        contentType: string = 'application/json',
+        accept: string = 'application/json',
+    ): CancelablePromise<SuccessResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/account/change-language',
+            headers: {
+                'Content-Type': contentType,
+                'Accept': accept,
+            },
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+
+    /**
      * Change the customer's password
      * Changes a customer's password using their current password as a validation.
      * @param requestBody
@@ -176,6 +208,37 @@ export class ProfileShopware {
     }
 
     /**
+     * Checks if the customer recovery entry for a given hash is expired.
+     * This can be used to validate a provided hash has a valid and not expired customer recovery hash.
+     * @param requestBody
+     * @param contentType Content type of the request
+     * @param accept Accepted response content types
+     * @returns Struct Returns a CustomerRecoveryIsExpiredResponse that indicates if the hash is expired or not.
+     * @throws ApiError
+     */
+    public static getCustomerRecoveryIsExpired(
+        requestBody: {
+            /**
+             * Parameter from the link in the confirmation mail sent in Step 1
+             */
+            hash: string;
+        },
+        contentType: string = 'application/json',
+        accept: string = 'application/json',
+    ): CancelablePromise<Struct> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/account/customer-recovery-is-expired',
+            headers: {
+                'Content-Type': contentType,
+                'Accept': accept,
+            },
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+
+    /**
      * Get information about current customer
      * Returns information about the current customer.
      * @param contentType Content type of the request
@@ -225,9 +288,7 @@ export class ProfileShopware {
 
     /**
      * Reset a password with recovery credentials
-     * This operation is Step 2 of the password reset flow. It is required to conduct Step 1 "Send a password recovery mail" in order to obtain the required credentials for this step.
-     *
-     * Resets a customer's password using credentials from a password recovery mail as a validation.
+     * This operation is Step 2 of the password reset flow. It is required to conduct Step 1 "Send a password recovery mail" in order to obtain the required credentials for this step.Resets a customer's password using credentials from a password recovery mail as a validation.
      * @param requestBody
      * @param contentType Content type of the request
      * @param accept Accepted response content types
@@ -266,9 +327,7 @@ export class ProfileShopware {
 
     /**
      * Send a password recovery mail
-     * This operation is Step 1 of the password reset flow. Make sure to implement Step 2 "Reset password with recovery credentials" in order to allow for the complete flow in your application
-     *
-     * Sends a recovery mail containing a link with credentials that allows a customer to reset their password.
+     * This operation is Step 1 of the password reset flow. Make sure to implement Step 2 "Reset password with recovery credentials" in order to allow for the complete flow in your application. Sends a recovery mail containing a link with credentials that allows a customer to reset their password.
      * @param requestBody
      * @param contentType Content type of the request
      * @param accept Accepted response content types

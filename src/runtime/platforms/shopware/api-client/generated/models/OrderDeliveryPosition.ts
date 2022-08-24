@@ -24,6 +24,9 @@ export type OrderDeliveryPosition = {
             discount?: number;
             percentage?: number;
         };
+        regulationPrice?: {
+            price?: number;
+        };
     };
     unitPrice?: number;
     totalPrice?: number;

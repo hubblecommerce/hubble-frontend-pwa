@@ -5,7 +5,7 @@
 /**
  * Added since version:
  */
-export type KlarnaPaymentRequestLog = {
+export type BfCategoryMapping = {
     id?: string;
     readonly createdAt: string;
     readonly updatedAt?: string;

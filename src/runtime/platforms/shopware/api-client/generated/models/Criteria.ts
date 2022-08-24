@@ -63,6 +63,13 @@ export type Criteria = {
      * Perform groupings over certain fields
      */
     grouping?: Array<string>;
-    includes?: any;
+    /**
+     * Fields which should be returned in the search result.
+     */
+    fields?: Array<string>;
+    /**
+     * Whether the total for the total number of hits should be determined for the search query. 0 = disabled total count, 1 = calculate exact total amount (slow), 2 = calculate only for next page (fast)
+     */
+    'total-count-mode'?: 0 | 1 | 2;
 };
 

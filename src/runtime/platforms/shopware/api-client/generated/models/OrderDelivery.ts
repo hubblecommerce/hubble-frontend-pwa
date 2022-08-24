@@ -34,6 +34,9 @@ export type OrderDelivery = {
             discount?: number;
             percentage?: number;
         };
+        regulationPrice?: {
+            price?: number;
+        };
     };
     customFields?: any;
     readonly createdAt: string;

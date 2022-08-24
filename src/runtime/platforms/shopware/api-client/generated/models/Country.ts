@@ -12,10 +12,6 @@ export type Country = {
     name: string;
     iso?: string;
     position?: number;
-    /**
-     * @deprecated
-     */
-    taxFree?: boolean;
     active?: boolean;
     shippingAvailable?: boolean;
     iso3?: string;
@@ -27,6 +23,10 @@ export type Country = {
     companyTaxFree?: boolean;
     checkVatIdPattern?: boolean;
     vatIdRequired?: boolean;
+    /**
+     * @deprecated
+     */
+    taxFree?: boolean;
     vatIdPattern?: string;
     customFields?: any;
     customerTax?: {

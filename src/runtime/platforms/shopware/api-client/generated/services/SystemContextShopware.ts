@@ -3,6 +3,7 @@
 /* eslint-disable */
 import type { ContextTokenResponse } from '../models/ContextTokenResponse';
 import type { Country } from '../models/Country';
+import type { CountryState } from '../models/CountryState';
 import type { Criteria } from '../models/Criteria';
 import type { Currency } from '../models/Currency';
 import type { EntitySearchResult } from '../models/EntitySearchResult';
@@ -35,6 +36,34 @@ export class SystemContextShopware {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/country',
+            headers: {
+                'Content-Type': contentType,
+                'Accept': accept,
+            },
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+
+    /**
+     * Fetch the states of a country
+     * Perform a filtered search the states for a country
+     * @param contentType Content type of the request
+     * @param accept Accepted response content types
+     * @param requestBody
+     * @returns any Entity search result containing countries.
+     * @throws ApiError
+     */
+    public static readCountryState(
+        contentType: string = 'application/json',
+        accept: string = 'application/json',
+        requestBody?: Criteria,
+    ): CancelablePromise<({
+        elements?: Array<CountryState>;
+    } & EntitySearchResult)> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/country-state',
             headers: {
                 'Content-Type': contentType,
                 'Accept': accept,
@@ -128,7 +157,7 @@ export class SystemContextShopware {
      * @param requestBody
      * @param contentType Content type of the request
      * @param accept Accepted response content types
-     * @returns ContextTokenResponse Returns the context token. Use that as your `sw-context-token` header for subsequent requests.
+     * @returns ContextTokenResponse Returns the context token. Use that as your `sw-context-token` header for subsequent requests. Redirect if getRedirectUrl is set.
      * @throws ApiError
      */
     public static updateContext(

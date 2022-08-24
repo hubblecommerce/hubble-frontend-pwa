@@ -144,9 +144,7 @@ export class LoginRegistrationShopware {
 
     /**
      * Register a customer
-     * Registers a customer. Used both for normal customers and guest customers.
-     *
-     * See the Guide "Register a customer" for more information on customer registration.
+     * Registers a customer. Used both for normal customers and guest customers.See the Guide "Register a customer" for more information on customer registration.
      * @param requestBody
      * @param contentType Content type of the request
      * @param accept Accepted response content types

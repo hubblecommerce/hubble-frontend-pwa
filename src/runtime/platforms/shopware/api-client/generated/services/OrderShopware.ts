@@ -16,9 +16,11 @@ export class OrderShopware {
     /**
      * Create an order from a cart
      * Creates a new order from the current cart and deletes the cart.
+     *
+     * If you are using the [prepared payment flow](https://developer.shopware.com/docs/concepts/commerce/checkout-concept/payments#2.1-prepare-payment-optional), this endpoint also receives additional transaction details. The exact name of the parameters depends on the implementation of the corresponding *payment handler*.
      * @param contentType Content type of the request
      * @param accept Accepted response content types
-     * @param requestBody
+     * @param requestBody Contains additional metadata which is stored together with the order. It can also contain payment transaction details.
      * @returns Order Order
      * @throws ApiError
      */

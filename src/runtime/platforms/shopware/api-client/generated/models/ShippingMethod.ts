@@ -16,6 +16,7 @@ export type ShippingMethod = {
     id?: string;
     name: string;
     active?: boolean;
+    position?: number;
     customFields?: any;
     mediaId?: string;
     deliveryTimeId: string;

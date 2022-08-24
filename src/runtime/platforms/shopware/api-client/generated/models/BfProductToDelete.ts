@@ -5,7 +5,7 @@
 /**
  * Added since version:
  */
-export type SwagAmazonPaySignupToken = {
+export type BfProductToDelete = {
     id?: string;
     readonly createdAt: string;
     readonly updatedAt?: string;

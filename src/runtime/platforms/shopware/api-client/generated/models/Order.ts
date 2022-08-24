@@ -52,6 +52,9 @@ export type Order = {
             discount?: number;
             percentage?: number;
         };
+        regulationPrice?: {
+            price?: number;
+        };
     };
     readonly shippingTotal?: number;
     currencyFactor: number;
