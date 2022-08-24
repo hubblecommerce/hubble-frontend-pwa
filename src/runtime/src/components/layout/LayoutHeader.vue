@@ -22,7 +22,7 @@
                     <div class="dropdown dropdown-end hidden md:block">
                         <label tabindex="0" class="btn btn-ghost btn-circle">
                             <div class="indicator">
-                                <ColorSwatchIcon class="h-5 w-5" fill="none" />
+                                <SwatchIcon class="h-5 w-5" fill="none" />
                             </div>
                         </label>
                         <div tabindex="0" class="card card-compact dropdown-content w-52 bg-base-100 shadow">
@@ -45,7 +45,7 @@
                         @click="toggleDrawer('search', 'right')"
                         @keydown.enter="toggleDrawer('search', 'right')"
                     >
-                        <SearchIcon class="h-5 w-5" fill="none" />
+                        <MagnifyingGlassIcon class="h-5 w-5" fill="none" />
                     </div>
 
                     <div class="dropdown dropdown-end">
@@ -83,8 +83,8 @@
 </template>
 
 <script setup lang="ts">
-import { ShoppingCartIcon, SearchIcon, ColorSwatchIcon, UserIcon } from '@heroicons/vue/outline'
-import { throwError, useAsyncData } from '#app'
+import { ShoppingCartIcon, MagnifyingGlassIcon, SwatchIcon, UserIcon } from '@heroicons/vue/24/outline'
+import { showError, useAsyncData } from '#app'
 import { useNavigation, useColorMode, useCart, useDrawer } from '#imports'
 
 const colorMode = useColorMode()
@@ -132,6 +132,6 @@ const { data, error } = await useAsyncData(() => getNavigation(), { initialCache
 navigation.value = data.value
 
 if (error.value) {
-    throwError(error.value as Error)
+    showError(error.value as Error)
 }
 </script>

@@ -6,7 +6,7 @@
                     <div class="pr-12">
                         <span>{{ notification.message }}</span>
                         <span class="btn btn-ghost btn-circle absolute top-1 right-1" @click="closeNotification(notification.id)">
-                            <XIcon class="h-5 w-5" />
+                            <XMarkIcon class="h-5 w-5" />
                         </span>
                     </div>
                 </div>
@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import { XIcon } from '@heroicons/vue/outline'
+import { XMarkIcon } from '@heroicons/vue/24/outline'
 import { useNotification } from '#imports'
 
 const { notifications, closeNotification, setDefaultOptions } = useNotification()

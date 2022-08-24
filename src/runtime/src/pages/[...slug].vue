@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
 import { computed, resolveComponent, provide } from 'vue'
-import { throwError, useRoute, useAsyncData } from '#app'
+import { showError, useRoute, useAsyncData } from '#app'
 import { usePage } from '#imports'
 import { detailData } from '@hubblecommerce/hubble/commons'
 
@@ -24,7 +24,7 @@ const { data, error } = await useAsyncData(() => getPage(route.path), { initialC
 page.value = data.value
 
 if (error.value) {
-    throwError(error.value as Error)
+    showError(error.value as Error)
 }
 
 const pageComponent = computed(() => {

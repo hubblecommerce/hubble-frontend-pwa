@@ -6,7 +6,7 @@
             </div>
 
             <div class="btn btn-ghost btn-circle" @click="closeDrawer">
-                <XIcon class="w-5 h-5" />
+                <XMarkIcon class="w-5 h-5" />
             </div>
         </div>
         <form class="form-control" @submit.prevent="submitSearch()">
@@ -19,7 +19,7 @@
                     class="input input-bordered w-full focus:input-primary"
                 >
                 <button class="btn btn-square" :class="{'loading': loading}">
-                    <SearchIcon v-if="!loading" class="h-5 w-5" />
+                    <MagnifyingGlassIcon v-if="!loading" class="h-5 w-5" />
                 </button>
             </div>
         </form>
@@ -43,7 +43,7 @@
 <script setup lang="ts">
 import { watchDebounced } from '@vueuse/core'
 import { onMounted, ref } from 'vue'
-import { XIcon, SearchIcon } from '@heroicons/vue/outline'
+import { XMarkIcon, MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
 import { useDrawer, useSearch } from '#imports'
 
 const { closeDrawer } = useDrawer()

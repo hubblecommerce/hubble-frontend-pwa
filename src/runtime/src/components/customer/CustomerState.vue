@@ -24,7 +24,7 @@
 </template>
 
 <script setup lang="ts">
-import { UserIcon } from '@heroicons/vue/outline'
+import { UserIcon } from '@heroicons/vue/24/outline'
 import { useCustomer } from '#imports'
 
 const { getCustomer, customer } = useCustomer()

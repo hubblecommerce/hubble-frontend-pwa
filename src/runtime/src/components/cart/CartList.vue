@@ -40,7 +40,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { TrashIcon } from '@heroicons/vue/solid'
+import { TrashIcon } from '@heroicons/vue/20/solid'
 import { useCart } from '#imports'
 import { useCurrency } from '@hubblecommerce/hubble/commons'
 

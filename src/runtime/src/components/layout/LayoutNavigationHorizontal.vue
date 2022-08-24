@@ -4,7 +4,7 @@
             <template v-if="entry.children?.length > 0">
                 <NuxtLink :to="entry.url">
                     {{ entry.name }}
-                    <ChevronDownIcon class="fill-current h-6 w-6" />
+                    <ChevronDownIcon class="fill-current h-4 w-4" />
                 </NuxtLink>
                 <ul class="p-2 bg-base-100">
                     <li v-for="childEntry in entry.children" :key="childEntry.id">
@@ -30,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import { ChevronDownIcon } from '@heroicons/vue/solid'
+import { ChevronDownIcon } from '@heroicons/vue/20/solid'
 import { Navigation } from '@hubblecommerce/hubble/commons'
 
 const props = defineProps<{

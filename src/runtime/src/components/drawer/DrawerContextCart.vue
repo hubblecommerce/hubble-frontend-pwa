@@ -6,7 +6,7 @@
             </div>
 
             <div class="btn btn-ghost btn-circle" @click="closeDrawer">
-                <XIcon class="w-5 h-5" />
+                <XMarkIcon class="w-5 h-5" />
             </div>
         </div>
         <Cart />
@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import { XIcon } from '@heroicons/vue/outline'
+import { XMarkIcon } from '@heroicons/vue/24/outline'
 import { useDrawer } from '#imports'
 
 const { closeDrawer } = useDrawer()

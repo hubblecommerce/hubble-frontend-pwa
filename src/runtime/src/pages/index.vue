@@ -63,7 +63,7 @@
 </template>
 
 <script setup>
-import { CheckCircleIcon } from '@heroicons/vue/outline'
+import { CheckCircleIcon } from '@heroicons/vue/24/outline'
 import { useRuntimeConfig } from '#imports'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

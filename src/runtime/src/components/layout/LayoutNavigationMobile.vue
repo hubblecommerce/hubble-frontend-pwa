@@ -1,7 +1,7 @@
 <template>
     <div class="dropdown">
         <label tabindex="0" class="btn btn-ghost lg:hidden">
-            <MenuAlt1Icon class="h-5 w-5" />
+            <Bars3Icon class="h-5 w-5" />
         </label>
 
         <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
@@ -36,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-import { MenuAlt1Icon, ChevronRightIcon } from '@heroicons/vue/solid'
+import { Bars3Icon, ChevronRightIcon } from '@heroicons/vue/20/solid'
 import { Navigation } from '@hubblecommerce/hubble/commons'
 
 const props = defineProps<{
