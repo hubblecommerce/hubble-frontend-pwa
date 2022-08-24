@@ -26,7 +26,22 @@
         </main>
         <LayoutFooterLight />
         <LayoutNotifications />
+        <MiscLoadingBar ref="loading" />
     </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useNuxtApp } from '#app'
+
+const loading = ref(null)
+const nuxtApp = useNuxtApp()
+nuxtApp.hook('page:start', () => {
+    loading.value?.start()
+})
+
+nuxtApp.hook('page:finish', () => {
+    loading.value?.finish()
+    window.scrollTo(0, 0)
+})
+</script>

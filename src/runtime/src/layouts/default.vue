@@ -11,6 +11,7 @@
             <slot />
             <LayoutFooter />
             <LayoutNotifications />
+            <MiscLoadingBar ref="loading" />
         </div>
 
         <div class="drawer-side">
@@ -24,18 +25,36 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
 import { useNuxtApp } from '#app'
 import { useDrawer } from '#imports'
 
+const loading = ref(null)
 const nuxtApp = useNuxtApp()
 const { drawerState, drawerContext, toggleDrawer, drawerDirection, closeDrawer } = useDrawer()
 
+nuxtApp.hook('page:start', () => {
+    loading.value?.start()
+})
+
 nuxtApp.hook('page:finish', () => {
+    loading.value?.finish()
     window.scrollTo(0, 0)
     closeDrawer()
 })
 </script>
 
-<style scoped>
+<style>
+.page-enter-from{
+    opacity: 0;
+}
 
+.page-enter-active,
+.page-leave-active {
+    transition: all 100ms;
+}
+.page-enter,
+.page-leave-to {
+    opacity: 0;
+}
 </style>
