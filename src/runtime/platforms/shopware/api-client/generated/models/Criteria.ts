@@ -74,6 +74,6 @@ export type Criteria = {
     /**
      * Restricts the output to the defined fields
      */
-    includes: any
+    includes?: any
 };
 
