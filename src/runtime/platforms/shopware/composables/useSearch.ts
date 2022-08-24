@@ -12,7 +12,7 @@ export function useSearch (): IUseSearch {
             loading.value = true
 
             // @ts-ignore
-            const { data } = await ProductShopware.searchPage(
+            const response = await ProductShopware.searchPage(
                 'application/json',
                 'application/json',
                 {
@@ -21,7 +21,7 @@ export function useSearch (): IUseSearch {
             )
 
             loading.value = false
-            return mapProductListing(data.value)
+            return mapProductListing(response)
         } catch (e) {
             loading.value = false
             error.value = e

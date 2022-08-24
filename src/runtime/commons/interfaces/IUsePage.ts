@@ -6,6 +6,6 @@ import { Page } from './Page'
 export interface IUsePage {
     loading: Ref<boolean>,
     error: Ref<boolean>
-    getPage(path: string): Promise<FetchResult<FetchRequest>>,
+    getPage(path: string): Promise<Page>,
     page: Ref<Page>
 }

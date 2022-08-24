@@ -78,12 +78,12 @@ const getUrl = (config: OpenAPIConfig, options: ApiRequestOptions): string => {
     return url;
 };
 
-const catchErrorCodes = (options: ApiRequestOptions, result): void => {
+const catchErrorCodes = (options: ApiRequestOptions, result): ApiError => {
     const response = result.response
 
     if (!response) {
         // @ts-ignore
-        throw new Error(result);
+        return new Error(result);
     }
 
     const errors: Record<number, string> = {
@@ -100,11 +100,11 @@ const catchErrorCodes = (options: ApiRequestOptions, result): void => {
     let error = errors[response.status];
 
     if (error) {
-        throw new ApiError(options, response, error);
+        return new ApiError(options, response, error);
     }
 
     if (!response.ok) {
-        throw new ApiError(options, response, 'Generic Error');
+        return new ApiError(options, response, 'Generic Error');
     }
 };
 
@@ -175,16 +175,10 @@ export const request = <T>(config: OpenAPIConfig, options: ApiRequestOptions): C
                 }
             }
 
-            // TODO: see if we should use this function anymore
-            // if (error.value) {
-            //     // @ts-ignore
-            //     catchErrorCodes(options, error.value);
-            // }
-
             // @ts-ignore
             resolve(response._data)
         } catch (e) {
-            reject(e);
+            reject(catchErrorCodes(options, e))
         }
     })
 };

@@ -10,7 +10,7 @@ export const usePage = function (): IUsePage {
     const error: Ref<boolean> = ref(false)
     const page: Ref<Page> = ref(null)
 
-    const getPage = async (path: string): Promise<FetchResult<FetchRequest>> => {
+    const getPage = async (path: string): Promise<Page> => {
         try {
             loading.value = true
             error.value = false
@@ -24,16 +24,16 @@ export const usePage = function (): IUsePage {
                 }
             )
 
-            page.value = mapPage(response)
+            const mappedPage = mapPage(response)
 
-            if (page.value.structure === null) {
+            if (mappedPage.structure === null) {
                 const { setDefaultStructures, getDefaultStructureByType } = useDefaultStructure()
                 setDefaultStructures()
-                page.value.structure = getDefaultStructureByType(page.value.type)
+                mappedPage.structure = getDefaultStructureByType(mappedPage.type)
             }
 
             loading.value = false
-            return
+            return mappedPage
         } catch (e) {
             loading.value = false
             error.value = e

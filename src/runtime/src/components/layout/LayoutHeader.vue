@@ -84,7 +84,7 @@
 
 <script setup lang="ts">
 import { ShoppingCartIcon, SearchIcon, ColorSwatchIcon, UserIcon } from '@heroicons/vue/outline'
-import { throwError } from '#app'
+import { throwError, useAsyncData } from '#app'
 import { useNavigation, useColorMode, useCart, useDrawer } from '#imports'
 
 const colorMode = useColorMode()
@@ -125,14 +125,13 @@ const {
     navigation,
     getNavigation
 } = useNavigation()
-
 const { toggleDrawer } = useDrawer()
-
-try {
-    await getNavigation()
-} catch (e) {
-    throwError(e)
-}
-
 const { miniCart } = useCart()
+
+const { data, error } = await useAsyncData(() => getNavigation(), { initialCache: false })
+navigation.value = data.value
+
+if (error.value) {
+    throwError(error.value as Error)
+}
 </script>

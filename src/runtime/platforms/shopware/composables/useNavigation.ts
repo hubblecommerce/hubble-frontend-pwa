@@ -39,13 +39,10 @@ export const useNavigation = function (): IUseNavigation {
             const response = await CategoryShopware.readNavigation(
                 'main-navigation',
                 'main-navigation',
-                {},
-                true
+                {}
             )
 
             const mappedData = mapNavigation(response)
-
-            navigation.value = mappedData
 
             loading.value = false
             return mappedData

@@ -12,19 +12,19 @@
 </template>
 
 <script setup lang="ts">
-import { computed, resolveComponent, provide, InjectionKey } from 'vue'
-import { throwError, useRoute } from '#app'
+import { computed, resolveComponent, provide } from 'vue'
+import { throwError, useRoute, useAsyncData } from '#app'
 import { usePage } from '#imports'
-import { Product, detailData } from '@hubblecommerce/hubble/commons'
+import { detailData } from '@hubblecommerce/hubble/commons'
 
 const route = useRoute()
-
 const { page, getPage } = usePage()
 
-try {
-    await getPage(route.path)
-} catch (e) {
-    throwError(e)
+const { data, error } = await useAsyncData(() => getPage(route.path), { initialCache: false })
+page.value = data.value
+
+if (error.value) {
+    throwError(error.value as Error)
 }
 
 const pageComponent = computed(() => {
