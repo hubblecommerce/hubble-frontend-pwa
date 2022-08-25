@@ -131,7 +131,9 @@ export const request = <T>(config: OpenAPIConfig, options: ApiRequestOptions): C
 
     if (process.server) {
         const sessionCookie = getRequestCookie(app, app.$config.public.sessionCookie.name)
-        setSessionToken(sessionCookie)
+        if (sessionCookie != null) {
+            setSessionToken(sessionCookie)
+        }
     }
 
     if(sessionToken.value !== null) {
