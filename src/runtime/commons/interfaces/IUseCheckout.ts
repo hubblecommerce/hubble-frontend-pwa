@@ -19,5 +19,6 @@ export interface IUseCheckout {
     validateCheckout(): boolean,
     orderComment: Ref<string>,
     handlePayment (orderId: string, dataBag?: LocationQuery): Promise<void>,
-    getOrders (id?: string): Promise<Order>
+    getOrders (id?: string): Promise<Order>,
+    resetPayment (orderId, paymentMethodId): Promise<boolean>
 }

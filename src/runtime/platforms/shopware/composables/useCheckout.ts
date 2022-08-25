@@ -213,6 +213,7 @@ export const useCheckout = function (): IUseCheckout {
             // eslint-disable-next-line no-console
             console.log(e)
             loading.value = false
+            error.value = e
 
             // Redirect to error page
             navigateTo(
@@ -295,6 +296,35 @@ export const useCheckout = function (): IUseCheckout {
         }
     }
 
+    async function resetPayment (orderId, paymentMethodId): Promise<boolean> {
+        loading.value = true
+        error.value = false
+
+        try {
+            const response = await OrderShopware.orderSetPayment(
+                {
+                    paymentMethodId,
+                    orderId
+                },
+                'application/json',
+                'application/json'
+            )
+
+            loading.value = false
+
+            if (!response.success) {
+                error.value = true
+                return
+            }
+
+            return response.success
+        } catch (e) {
+            loading.value = false
+            error.value = e
+            return e
+        }
+    }
+
     return {
         error,
         loading,
@@ -310,6 +340,7 @@ export const useCheckout = function (): IUseCheckout {
         validateCheckout,
         orderComment,
         handlePayment,
-        getOrders
+        getOrders,
+        resetPayment
     }
 }
