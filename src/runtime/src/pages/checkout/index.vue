@@ -84,87 +84,81 @@
         <template v-if="step === 'contact'">
             <client-only>
                 <template v-if="customer">
-                    <template v-if="customer.isGuest">
-                        <form ref="updateContactForm" class="flex flex-col gap-4" @submit.prevent="onUpdateContact()">
-                            <div class="flex flex-wrap justify-between items-center">
-                                <div class="text-xl pr-2">
-                                    Contact Information
-                                </div>
+                    <form ref="updateContactForm" class="flex flex-col gap-4" @submit.prevent="onUpdateContact()">
+                        <div class="flex flex-wrap justify-between items-center">
+                            <div class="text-xl pr-2">
+                                Contact Information
                             </div>
-                            <div class="flex flex-wrap gap-2">
-                                <div class="form-control w-full">
-                                    <label for="customer-email" class="label">
-                                        <span class="label-text">E-Mail</span>
-                                    </label>
-                                    <input
-                                        id="customer-email"
-                                        v-model="customer.email"
-                                        class="input input-bordered w-full"
-                                        disabled
-                                    >
-                                </div>
-                            </div>
-
-                            <div class="flex flex-wrap justify-between items-center">
-                                <div class="text-xl pr-2">
-                                    Shipping Address
-                                </div>
-                            </div>
-                            <CustomerAddressForm id="shipping-address" v-model="customer.shippingAddress" />
-
-                            <div class="flex flex-wrap justify-between items-center">
-                                <div class="text-xl pr-2">
-                                    Billing Address
-                                </div>
-                            </div>
-
-                            <div class="flex flex-col border border-base-300">
-                                <div>
-                                    <label for="same-billing-address" class="flex justify-between items-center p-4 cursor-pointer border-b border-base-300">
-                                        <input
-                                            id="same-billing-address"
-                                            v-model="customer.billingSameAsShipping"
-                                            :value="true"
-                                            type="radio"
-                                            class="radio checked:bg-primary w-6 mr-4"
-                                        >
-                                        <div class="mr-auto">Identical to shipping address</div>
-                                    </label>
-                                    <label for="different-billing-address" class="flex justify-between items-center p-4 cursor-pointer">
-                                        <input
-                                            id="different-billing-address"
-                                            v-model="customer.billingSameAsShipping"
-                                            :value="false"
-                                            type="radio"
-                                            class="radio checked:bg-primary w-6 mr-4"
-                                        >
-                                        <div class="mr-auto">Use a different billing address</div>
-                                    </label>
-                                    <div v-if="!customer.billingSameAsShipping" class="p-4 bg-base-200 border-t border-base-300">
-                                        <CustomerAddressForm id="billing-address" v-model="customer.billingAddress" />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="navigation flex justify-between items-center">
-                                <div class="link link-hover link-accent">
-                                    Back to Cart
-                                </div>
-                                <button
-                                    class="btn btn-primary"
-                                    :class="{ 'loading': customerLoading }"
-                                    @click.prevent="onUpdateContact()"
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <div class="form-control w-full">
+                                <label for="customer-email" class="label">
+                                    <span class="label-text">E-Mail</span>
+                                </label>
+                                <input
+                                    id="customer-email"
+                                    v-model="customer.email"
+                                    class="input input-bordered w-full"
+                                    disabled
                                 >
-                                    <span v-if="!customerLoading">Save and continue to Shipping</span>
-                                    <span v-if="customerLoading">Loading</span>
-                                </button>
                             </div>
-                        </form>
-                    </template>
+                        </div>
 
-                    <template v-else>
-                        <!-- TODO: implement addressbook component for logged in customer -->
-                    </template>
+                        <div class="flex flex-wrap justify-between items-center">
+                            <div class="text-xl pr-2">
+                                Shipping Address
+                            </div>
+                        </div>
+                        <CustomerAddressForm id="shipping-address" v-model="customer.shippingAddress" />
+
+                        <div class="flex flex-wrap justify-between items-center">
+                            <div class="text-xl pr-2">
+                                Billing Address
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col border border-base-300">
+                            <div>
+                                <label for="same-billing-address" class="flex justify-between items-center p-4 cursor-pointer border-b border-base-300">
+                                    <input
+                                        id="same-billing-address"
+                                        v-model="customer.billingSameAsShipping"
+                                        :value="true"
+                                        type="radio"
+                                        class="radio checked:bg-primary w-6 mr-4"
+                                    >
+                                    <div class="mr-auto">Identical to shipping address</div>
+                                </label>
+                                <label for="different-billing-address" class="flex justify-between items-center p-4 cursor-pointer">
+                                    <input
+                                        id="different-billing-address"
+                                        v-model="customer.billingSameAsShipping"
+                                        :value="false"
+                                        type="radio"
+                                        class="radio checked:bg-primary w-6 mr-4"
+                                    >
+                                    <div class="mr-auto">Use a different billing address</div>
+                                </label>
+                                <div v-if="!customer.billingSameAsShipping" class="p-4 bg-base-200 border-t border-base-300">
+                                    <CustomerAddressForm id="billing-address" v-model="customer.billingAddress" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="navigation flex justify-between items-center">
+                            <div class="link link-hover link-accent">
+                                Back to Cart
+                            </div>
+                            <button
+                                class="btn btn-primary"
+                                :class="{ 'loading': customerLoading }"
+                                @click.prevent="onUpdateContact()"
+                            >
+                                <span v-if="!customerLoading">Save and continue to Shipping</span>
+                                <span v-if="customerLoading">Loading</span>
+                            </button>
+                        </div>
+                    </form>
                 </template>
 
                 <template v-else>
