@@ -30,6 +30,6 @@ import { useCustomer } from '#imports'
 const { getCustomer, customer } = useCustomer()
 
 if (customer.value != null && !customer.value.isGuest) {
-    await getCustomer()
+    customer.value = await getCustomer()
 }
 </script>

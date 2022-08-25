@@ -22,7 +22,7 @@ export const useCustomer = function (): IUseCustomer {
         return true
     })
 
-    async function getCustomer (): Promise<FetchResult<FetchRequest>> {
+    async function getCustomer (): Promise<Customer> {
         loading.value = true
         error.value = false
 
@@ -34,13 +34,8 @@ export const useCustomer = function (): IUseCustomer {
              */
             const response = await SystemContextShopware.readContext()
 
-            if (response.customer !== null) {
-                const { customer } = useCustomer()
-                customer.value = mapCustomer(response.customer)
-            }
-
             loading.value = false
-            return customer.value
+            return mapCustomer(response.customer)
         } catch (e) {
             loading.value = false
             error.value = e

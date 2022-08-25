@@ -278,7 +278,8 @@ function mapSession (swPlatform: SalesChannelContext): Session {
 
 function mapCustomerAddress (swAddress: SwCustomerAddress | OrderAddress): CustomerShippingAddress | CustomerBillingAddress {
     let salutationId = null
-    if (Object.hasOwn(swAddress, 'salutationId')) {
+    // @ts-ignore
+    if (swAddress.salutationId != null) {
         // @ts-ignore
         salutationId = swAddress.salutationId
     } else {
