@@ -6,7 +6,7 @@
         </misc-plugin-slot>
         -->
         <nav class="bg-base-100 shadow-md relative z-50">
-            <div class="navbar container m-auto px-6">
+            <div class="navbar container m-auto px-2 lg:px-6">
                 <div class="navbar-start">
                     <LayoutNavigationMobile :navigation="navigation" />
                     <nuxt-link to="/" class="btn btn-ghost normal-case text-xl p-0">
