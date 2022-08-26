@@ -1,10 +1,10 @@
 <template>
     <template v-if="loading">
         <div class="col-span-2 md:col-span-1 grid gap-2">
-            <MiscSkeleton size="small" :repeat="4" />
+            <MiscSkeleton size="small" :repeat="5" />
         </div>
         <div class="col-span-2 md:col-span-1 grid gap-2">
-            <MiscSkeleton size="small" :repeat="4" />
+            <MiscSkeleton size="small" :repeat="5" />
         </div>
     </template>
     <div
@@ -18,6 +18,9 @@
             <span class="link-secondary link-hover cursor-pointer" @click="onEditAddress(address.id)">Edit</span>
             <span class="link-secondary link-hover cursor-pointer" @click="onDeleteAddress(address.id)">Delete</span>
         </div>
+    </div>
+    <div v-else-if="error">
+        {{ error }}
     </div>
 
     <div class="col-span-2 md:col-span-1 btn btn-primary" @click="onAddAddress()">
@@ -59,11 +62,14 @@ import { useCustomer, useNotification } from '#imports'
  */
 const loading: Ref<boolean> = ref(true)
 const addresses: Ref<null | CustomerBillingAddress[] | CustomerShippingAddress[]> = ref(null)
-const { getCustomerAddresses } = useCustomer()
+const { getCustomerAddresses, error } = useCustomer()
 onMounted(async () => {
     await nextTick(async () => {
-        addresses.value = await getCustomerAddresses()
-        loading.value = false
+        try {
+            addresses.value = await getCustomerAddresses()
+        } catch (e) {} finally {
+            loading.value = false
+        }
     })
 })
 
