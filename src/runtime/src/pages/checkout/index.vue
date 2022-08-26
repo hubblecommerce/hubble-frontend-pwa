@@ -282,7 +282,7 @@ const placeOrderForm = ref()
  * Checkout Step Navigation
  */
 const step = ref('contact')
-const { customer, loading: customerLoading, updateShippingAddress, updateBillingAddress } = useCustomer()
+const { customer, loading: customerLoading, updateShippingAddress, updateBillingAddress, error } = useCustomer()
 const { shippingError, paymentError, orderComment } = useCheckout()
 const { showNotification } = useNotification()
 const protectedSteps = [
@@ -335,6 +335,11 @@ async function onUpdateContact () {
     if (!customer.value?.billingSameAsShipping) {
         await updateShippingAddress(customer.value.shippingAddress)
         await updateBillingAddress(customer.value.billingAddress)
+    }
+
+    if (error.value) {
+        showNotification(error.value as string, 'error', true)
+        return
     }
 
     await afterContactSubmit()
