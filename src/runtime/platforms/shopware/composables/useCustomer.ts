@@ -1,12 +1,27 @@
 import { computed, ref, Ref } from 'vue'
 import { navigateTo } from '#app'
 import { useCart, useNotification, usePlatform, useRuntimeConfig } from '#imports'
-import { Customer, CustomerShippingAddress, CustomerBillingAddress, IUseCustomer, RegisterCustomerForm } from '@hubblecommerce/hubble/commons'
-import { AddressShopware, LoginRegistrationShopware, SystemContextShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client'
+import {
+    Customer,
+    CustomerShippingAddress,
+    CustomerBillingAddress,
+    IUseCustomer,
+    RegisterCustomerForm,
+    Order
+} from '@hubblecommerce/hubble/commons'
+import {
+    AddressShopware,
+    LoginRegistrationShopware,
+    OrderShopware,
+    SystemContextShopware
+} from '@hubblecommerce/hubble/platforms/shopware/api-client'
 import {
     mapCustomer,
     mapCustomerAddress,
-    mapCustomerAddresses, reverseMapCustomerAddress
+    mapCustomerAddresses,
+    mapOrder,
+    mapOrders,
+    reverseMapCustomerAddress
 } from '@hubblecommerce/hubble/platforms/shopware/api-client/utils'
 
 const customer: Ref<Customer> = ref(null)
@@ -228,6 +243,75 @@ export const useCustomer = function (): IUseCustomer {
         }
     }
 
+    async function getOrders (id?: string): Promise<Order | Order[]> {
+        loading.value = true
+        error.value = false
+
+        let filter = null
+        if (id) {
+            filter = [
+                {
+                    type: 'equals',
+                    field: 'id',
+                    value: id
+                }
+            ]
+        }
+
+        try {
+            const response = await OrderShopware.readOrder({
+                associations: {
+                    deliveries: {
+                        associations: {
+                            shippingMethod: {
+                                associations: {
+                                    prices: {}
+                                }
+                            },
+                            shippingOrderAddress: {
+                                associations: {
+                                    salutation: {}
+                                }
+                            }
+                        }
+                    },
+                    transactions: {
+                        associations: {
+                            paymentMethod: {}
+                        }
+                    },
+                    lineItems: {
+                        associations: {
+                            cover: {}
+                        }
+                    },
+                    billingAddress: {
+                        associations: {
+                            salutation: {}
+                        }
+                    }
+                },
+                ...(filter != null && { filter })
+            })
+
+            let mappedData = null
+            if (response.orders?.elements.length > 1) {
+                mappedData = mapOrders(response.orders.elements)
+            }
+
+            if (response.orders?.elements.length === 1) {
+                mappedData = mapOrder(response.orders.elements[0])
+            }
+
+            loading.value = false
+            return mappedData
+        } catch (e) {
+            loading.value = false
+            error.value = e
+            throw new Error(e)
+        }
+    }
+
     return {
         customer,
         getCustomer,
@@ -241,6 +325,7 @@ export const useCustomer = function (): IUseCustomer {
         addCustomerAddress,
         updateCustomerAddress,
         deleteCustomerAddress,
+        getOrders,
         loading,
         error
     }

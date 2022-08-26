@@ -62,10 +62,10 @@
 <script setup lang="ts">
 import { ref, onMounted, nextTick } from 'vue'
 import { useRouter, navigateTo } from '#app'
-import { useCheckout } from '#imports'
+import { useCustomer } from '#imports'
 
 const loading = ref(true)
-const { getOrders, loading: loadingOrder, error } = useCheckout()
+const { getOrders, loading: loadingOrder, error } = useCustomer()
 const { currentRoute } = useRouter()
 const orderId = currentRoute.value.query.orderId.toString()
 const order = ref(null)

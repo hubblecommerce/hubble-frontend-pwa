@@ -2,7 +2,6 @@ import { Ref } from 'vue'
 import { LocationQuery } from 'vue-router'
 import { ShippingMethod } from './ShippingMethod'
 import { PaymentMethod } from './PaymentMethod'
-import { Order } from './Order'
 
 export interface IUseCheckout {
     loading: Ref<boolean>,
@@ -19,6 +18,5 @@ export interface IUseCheckout {
     validateCheckout(): boolean,
     orderComment: Ref<string>,
     handlePayment (orderId: string, dataBag?: LocationQuery): Promise<void>,
-    getOrders (id?: string): Promise<Order>,
     resetPayment (orderId, paymentMethodId): Promise<boolean>
 }

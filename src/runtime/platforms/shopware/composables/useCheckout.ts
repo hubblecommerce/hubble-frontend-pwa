@@ -1,7 +1,7 @@
 import { ref, Ref } from 'vue'
 import { LocationQuery } from 'vue-router'
 import { navigateTo, useRuntimeConfig } from '#app'
-import { IUseCheckout, Order, PaymentMethod, ShippingMethod } from '@hubblecommerce/hubble/commons'
+import { IUseCheckout, PaymentMethod, ShippingMethod } from '@hubblecommerce/hubble/commons'
 import {
     OrderShopware,
     PaymentMethodShopware,
@@ -9,8 +9,6 @@ import {
     SystemContextShopware
 } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 import {
-    mapOrder,
-    mapOrders,
     mapPaymentMethods,
     mapShippingMethods
 } from '@hubblecommerce/hubble/platforms/shopware/api-client/utils'
@@ -227,75 +225,6 @@ export const useCheckout = function (): IUseCheckout {
         }
     }
 
-    async function getOrders (id?: string): Promise<Order> {
-        loading.value = true
-        error.value = false
-
-        let filter = null
-        if (id) {
-            filter = [
-                {
-                    type: 'equals',
-                    field: 'id',
-                    value: id
-                }
-            ]
-        }
-
-        try {
-            const response = await OrderShopware.readOrder({
-                associations: {
-                    deliveries: {
-                        associations: {
-                            shippingMethod: {
-                                associations: {
-                                    prices: {}
-                                }
-                            },
-                            shippingOrderAddress: {
-                                associations: {
-                                    salutation: {}
-                                }
-                            }
-                        }
-                    },
-                    transactions: {
-                        associations: {
-                            paymentMethod: {}
-                        }
-                    },
-                    lineItems: {
-                        associations: {
-                            cover: {}
-                        }
-                    },
-                    billingAddress: {
-                        associations: {
-                            salutation: {}
-                        }
-                    }
-                },
-                ...(filter != null && { filter })
-            })
-
-            let mappedData = null
-            if (response.orders?.elements.length > 1) {
-                mappedData = mapOrders(response.orders.elements)
-            }
-
-            if (response.orders?.elements.length === 1) {
-                mappedData = mapOrder(response.orders.elements[0])
-            }
-
-            loading.value = false
-            return mappedData
-        } catch (e) {
-            loading.value = false
-            error.value = e
-            throw new Error(e)
-        }
-    }
-
     async function resetPayment (orderId, paymentMethodId): Promise<boolean> {
         loading.value = true
         error.value = false
@@ -340,7 +269,6 @@ export const useCheckout = function (): IUseCheckout {
         validateCheckout,
         orderComment,
         handlePayment,
-        getOrders,
         resetPayment
     }
 }

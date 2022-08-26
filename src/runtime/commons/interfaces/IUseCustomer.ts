@@ -2,6 +2,7 @@ import { ComputedRef, Ref } from 'vue'
 import { FetchResult } from '#app'
 import { FetchRequest } from 'ohmyfetch'
 import { Customer, CustomerBillingAddress, CustomerShippingAddress, RegisterCustomerForm } from './Customer'
+import { Order } from './Order'
 import { CustomerAddress } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 
 export interface IUseCustomer {
@@ -18,5 +19,6 @@ export interface IUseCustomer {
     getCustomerAddresses (): Promise<CustomerBillingAddress[] | CustomerShippingAddress[]>,
     addCustomerAddress (address: CustomerBillingAddress | CustomerShippingAddress): Promise<void>,
     updateCustomerAddress (address: CustomerBillingAddress | CustomerShippingAddress): Promise<CustomerBillingAddress | CustomerShippingAddress>,
-    deleteCustomerAddress (addressId: string): Promise<void>
+    deleteCustomerAddress (addressId: string): Promise<void>,
+    getOrders (id?: string): Promise<Order | Order[]>
 }
