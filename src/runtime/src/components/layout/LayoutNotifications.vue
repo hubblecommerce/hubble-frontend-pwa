@@ -1,5 +1,5 @@
 <template>
-    <div class="toast toast-bottom toast-end z-50">
+    <div class="toast toast-bottom toast-end w-full md:w-auto" style="z-index: 1000">
         <Transition name="fade">
             <TransitionGroup v-if="notifications.length > 0" name="list" tag="div">
                 <div v-for="notification in notifications" :key="notification.id" class="alert mb-2 relative" :class="parseTypeClass(notification.type)">
