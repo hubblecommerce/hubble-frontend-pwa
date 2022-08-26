@@ -27,9 +27,5 @@
 import { UserIcon } from '@heroicons/vue/24/outline'
 import { useCustomer } from '#imports'
 
-const { getCustomer, customer } = useCustomer()
-
-if (customer.value != null && !customer.value.isGuest) {
-    customer.value = await getCustomer()
-}
+const { customer } = useCustomer()
 </script>
