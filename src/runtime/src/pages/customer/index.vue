@@ -20,8 +20,12 @@
             <CustomerAddressBook />
         </div>
 
-        <div class="col-span-2 lg:col-span-1 text-2xl">
-            Orders
+        <div class="col-span-2 lg:col-span-1 flex flex-col gap-4">
+            <div class="col-span-2 w-full text-2xl">
+                Orders
+            </div>
+
+            <CustomerOrdersList />
         </div>
     </div>
 </template>
