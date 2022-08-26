@@ -1,10 +1,13 @@
 import { computed, ref, Ref } from 'vue'
-import { FetchResult, navigateTo } from '#app'
-import { FetchRequest } from 'ohmyfetch'
+import { navigateTo } from '#app'
 import { useCart, useNotification, usePlatform, useRuntimeConfig } from '#imports'
 import { Customer, CustomerShippingAddress, CustomerBillingAddress, IUseCustomer, RegisterCustomerForm } from '@hubblecommerce/hubble/commons'
-import { AddressShopware, CustomerAddress, LoginRegistrationShopware, SystemContextShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { mapCustomer, mapCustomerAddress } from '@hubblecommerce/hubble/platforms/shopware/api-client/utils'
+import { AddressShopware, LoginRegistrationShopware, SystemContextShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client'
+import {
+    mapCustomer,
+    mapCustomerAddress,
+    mapCustomerAddresses, reverseMapCustomerAddress
+} from '@hubblecommerce/hubble/platforms/shopware/api-client/utils'
 
 const customer: Ref<Customer> = ref(null)
 
@@ -87,29 +90,8 @@ export const useCustomer = function (): IUseCustomer {
         error.value = false
 
         try {
-            const shippingAddress = {
-                salutationId: formData.shippingAddress.value.salutation,
-                firstName: formData.shippingAddress.value.firstName,
-                lastName: formData.shippingAddress.value.lastName,
-                street: formData.shippingAddress.value.street,
-                zipcode: formData.shippingAddress.value.zipcode,
-                city: formData.shippingAddress.value.city,
-                countryId: formData.shippingAddress.value.country,
-                ...(formData.shippingAddress.value.company != null && { company: formData.shippingAddress.value.company }),
-                ...(formData.shippingAddress.value.phone != null && { phone: formData.shippingAddress.value.phone })
-            }
-
-            const billingAddress = {
-                salutationId: formData.billingAddress.value.salutation,
-                firstName: formData.billingAddress.value.firstName,
-                lastName: formData.billingAddress.value.lastName,
-                street: formData.billingAddress.value.street,
-                zipcode: formData.billingAddress.value.zipcode,
-                city: formData.billingAddress.value.city,
-                countryId: formData.billingAddress.value.country,
-                ...(formData.billingAddress.value.company != null && { company: formData.billingAddress.value.company }),
-                ...(formData.billingAddress.value.phone != null && { phone: formData.billingAddress.value.phone })
-            }
+            const shippingAddress = reverseMapCustomerAddress(formData.shippingAddress.value)
+            const billingAddress = reverseMapCustomerAddress(formData.billingAddress.value)
 
             const requestBody = {
                 email: formData.email,
@@ -147,34 +129,40 @@ export const useCustomer = function (): IUseCustomer {
         }
     }
 
-    async function updateShippingAddress (shippingAddress: CustomerShippingAddress): Promise<CustomerAddress> {
+    async function updateShippingAddress (shippingAddress: CustomerShippingAddress): Promise<CustomerShippingAddress> {
+        const mappedAddress = await updateCustomerAddress(shippingAddress)
+
+        if (error.value) {
+            return
+        }
+
+        customer.value.shippingAddress = mappedAddress
+        return mappedAddress
+    }
+
+    async function updateBillingAddress (billingAddress: CustomerBillingAddress): Promise<CustomerBillingAddress> {
+        const mappedAddress = await updateCustomerAddress(billingAddress)
+
+        if (error.value) {
+            return
+        }
+
+        customer.value.billingAddress = mappedAddress
+        return mappedAddress
+    }
+
+    async function getCustomerAddresses (): Promise<CustomerBillingAddress[] | CustomerShippingAddress[]> {
         loading.value = true
         error.value = false
 
         try {
-            const response = await AddressShopware.updateCustomerAddress(
-                shippingAddress.id,
-                'application/json',
-                'application/json',
-                // Todo: Patch api client
-                // @ts-ignore
-                {
-                    salutationId: shippingAddress.salutation,
-                    firstName: shippingAddress.firstName,
-                    lastName: shippingAddress.lastName,
-                    ...(shippingAddress.company != null && { company: shippingAddress.company }),
-                    street: shippingAddress.street,
-                    zipcode: shippingAddress.zipcode,
-                    city: shippingAddress.city,
-                    countryId: shippingAddress.country,
-                    ...(shippingAddress.phone != null && { phoneNumber: shippingAddress.phone })
-                }
-            )
-
-            customer.value.shippingAddress = mapCustomerAddress(response)
+            const response = await AddressShopware.listAddress()
 
             loading.value = false
-            return response
+
+            // Todo patch api client
+            // @ts-ignore
+            return mapCustomerAddresses(response.elements)
         } catch (e) {
             loading.value = false
             error.value = e
@@ -182,38 +170,61 @@ export const useCustomer = function (): IUseCustomer {
         }
     }
 
-    async function updateBillingAddress (billingAddress: CustomerBillingAddress): Promise<CustomerAddress> {
+    async function addCustomerAddress (address: CustomerBillingAddress | CustomerShippingAddress): Promise<void> {
+        loading.value = true
+        error.value = false
+
+        try {
+            await AddressShopware.createCustomerAddress(
+                'application/json',
+                'application/json',
+                reverseMapCustomerAddress(address)
+            )
+
+            loading.value = false
+            return
+        } catch (e) {
+            loading.value = false
+            error.value = e
+            return e
+        }
+    }
+
+    async function updateCustomerAddress (address: CustomerBillingAddress | CustomerShippingAddress): Promise<CustomerBillingAddress | CustomerShippingAddress> {
         loading.value = true
         error.value = false
 
         try {
             const response = await AddressShopware.updateCustomerAddress(
-                billingAddress.id,
+                address.id,
                 'application/json',
                 'application/json',
-                // Todo: Patch api client
-                // @ts-ignore
-                {
-                    salutationId: billingAddress.salutation,
-                    firstName: billingAddress.firstName,
-                    lastName: billingAddress.lastName,
-                    ...(billingAddress.company != null && { company: billingAddress.company }),
-                    street: billingAddress.street,
-                    zipcode: billingAddress.zipcode,
-                    city: billingAddress.city,
-                    countryId: billingAddress.country,
-                    ...(billingAddress.phone != null && { phoneNumber: billingAddress.phone })
-                }
+                reverseMapCustomerAddress(address)
             )
 
-            customer.value.billingAddress = mapCustomerAddress(response)
+            const mappedAddress = mapCustomerAddress(response)
 
             loading.value = false
-            return response
+            return mappedAddress
         } catch (e) {
             loading.value = false
             error.value = e
-            throw e
+            return e
+        }
+    }
+
+    async function deleteCustomerAddress (addressId: string): Promise<void> {
+        loading.value = true
+        error.value = false
+
+        try {
+            await AddressShopware.deleteCustomerAddress(addressId)
+            loading.value = false
+            return
+        } catch (e) {
+            loading.value = false
+            error.value = e
+            return e
         }
     }
 
@@ -226,6 +237,10 @@ export const useCustomer = function (): IUseCustomer {
         register,
         updateShippingAddress,
         updateBillingAddress,
+        getCustomerAddresses,
+        addCustomerAddress,
+        updateCustomerAddress,
+        deleteCustomerAddress,
         loading,
         error
     }

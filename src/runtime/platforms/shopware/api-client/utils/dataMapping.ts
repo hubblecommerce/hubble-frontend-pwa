@@ -276,6 +276,22 @@ function mapSession (swPlatform: SalesChannelContext): Session {
     }
 }
 
+function reverseMapCustomerAddress (address: CustomerShippingAddress | CustomerBillingAddress): SwCustomerAddress {
+    return {
+        createdAt: '',
+        customerId: '',
+        salutationId: address.salutation,
+        firstName: address.firstName,
+        lastName: address.lastName,
+        street: address.street,
+        zipcode: address.zipcode,
+        city: address.city,
+        countryId: address.country,
+        ...(address.company != null && { company: address.company }),
+        ...(address.phone != null && { phone: address.phone })
+    }
+}
+
 function mapCustomerAddress (swAddress: SwCustomerAddress | OrderAddress): CustomerShippingAddress | CustomerBillingAddress {
     let salutationId = null
     // @ts-ignore
@@ -298,6 +314,12 @@ function mapCustomerAddress (swAddress: SwCustomerAddress | OrderAddress): Custo
         country: swAddress.countryId,
         ...(swAddress.phoneNumber != null && { phone: swAddress.phoneNumber })
     }
+}
+
+function mapCustomerAddresses (swAddresses: SwCustomerAddress[]): CustomerShippingAddress[] | CustomerBillingAddress[] {
+    return swAddresses.map((swAddress) => {
+        return mapCustomerAddress(swAddress)
+    })
 }
 
 function mapCustomer (customer: SalesChannelContext['customer']): Customer {
@@ -514,6 +536,8 @@ export {
     mapSession,
     mapCustomer,
     mapCustomerAddress,
+    mapCustomerAddresses,
+    reverseMapCustomerAddress,
     mapCart,
     mapMiniCart,
     mapProductListing,

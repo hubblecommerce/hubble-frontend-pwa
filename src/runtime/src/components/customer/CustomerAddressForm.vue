@@ -128,13 +128,16 @@ const form = computed({
     }
 })
 
-const { getSalutations, getCountries } = usePlatform()
-const salutations = ref(null)
-const countries = ref(null)
+const { salutations, getSalutations, countries, getCountries } = usePlatform()
 onMounted(() => {
     return nextTick(async () => {
-        salutations.value = await getSalutations()
-        countries.value = await getCountries()
+        if (salutations.value == null) {
+            salutations.value = await getSalutations()
+        }
+
+        if (countries.value == null) {
+            countries.value = await getCountries()
+        }
     })
 })
 </script>
