@@ -1,7 +1,7 @@
 import { CustomerBillingAddress, CustomerShippingAddress } from './Customer'
 import { ShippingMethod } from './ShippingMethod'
 import { PaymentMethod } from './PaymentMethod'
-import { LineItem, Totals } from './Cart'
+import { Totals } from './Cart'
 import { Media } from './Media'
 
 export interface OrderLineItem {
@@ -20,5 +20,7 @@ export interface Order {
     shippingMethod: ShippingMethod,
     paymentMethod: PaymentMethod,
     lineItems: OrderLineItem[],
-    totals: Totals
+    totals: Totals,
+    orderDate: string,
+    status: string
 }

@@ -513,7 +513,9 @@ function mapOrder (swOrder: SwOrder): Order {
         // TODO: patch api client
         // @ts-ignore
         lineItems: mapOrderLineItems(swOrder.lineItems),
-        totals: mapTotals(swOrder.price)
+        totals: mapTotals(swOrder.price),
+        orderDate: swOrder.orderDate,
+        status: swOrder.stateMachineState.translated.name
     }
 }
 
