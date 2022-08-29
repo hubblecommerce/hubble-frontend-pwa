@@ -194,19 +194,19 @@ export const useCustomer = function (): IUseCustomer {
         }
     }
 
-    async function addCustomerAddress (address: CustomerBillingAddress | CustomerShippingAddress): Promise<void> {
+    async function addCustomerAddress (address: CustomerBillingAddress | CustomerShippingAddress): Promise<CustomerBillingAddress | CustomerShippingAddress> {
         loading.value = true
         error.value = false
 
         try {
-            await AddressShopware.createCustomerAddress(
+            const response = await AddressShopware.createCustomerAddress(
                 'application/json',
                 'application/json',
                 reverseMapCustomerAddress(address)
             )
 
             loading.value = false
-            return
+            return mapCustomerAddress(response)
         } catch (e) {
             loading.value = false
             error.value = e
@@ -321,6 +321,36 @@ export const useCustomer = function (): IUseCustomer {
         }
     }
 
+    async function setDefaultBilling (id: string): Promise<void> {
+        loading.value = true
+        error.value = false
+
+        try {
+            await AddressShopware.defaultBillingAddress(id)
+            loading.value = false
+            return
+        } catch (e) {
+            loading.value = false
+            error.value = e
+            return e
+        }
+    }
+
+    async function setDefaultShipping (id: string): Promise<void> {
+        loading.value = true
+        error.value = false
+
+        try {
+            await AddressShopware.defaultShippingAddress(id)
+            loading.value = false
+            return
+        } catch (e) {
+            loading.value = false
+            error.value = e
+            return e
+        }
+    }
+
     return {
         customer,
         getCustomer,
@@ -335,6 +365,8 @@ export const useCustomer = function (): IUseCustomer {
         updateCustomerAddress,
         deleteCustomerAddress,
         getOrders,
+        setDefaultBilling,
+        setDefaultShipping,
         loading,
         error
     }

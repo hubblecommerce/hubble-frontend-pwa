@@ -11,8 +11,14 @@
         v-for="address in addresses"
         v-else-if="addresses != null"
         :key="address.id"
-        class="col-span-2 md:col-span-1 border p-4"
+        class="relative col-span-2 md:col-span-1 border p-4"
     >
+        <div
+            v-if="address.id === customer.billingAddress?.id || address.id === customer.shippingAddress?.id"
+            class="absolute -top-2 badge badge-sm badge-primary"
+        >
+            Default {{ address.id === customer.billingAddress?.id ? 'Billing' : '' }} {{ address.id === customer.shippingAddress?.id ? 'Shipping' : '' }}
+        </div>
         <CustomerAddressRenderer :address="address" />
         <div class="flex space-x-2">
             <span class="link-secondary link-hover cursor-pointer" @click="onEditAddress(address.id)">Edit</span>
@@ -37,6 +43,18 @@
             <form ref="addressBookForm" class="w-full relative flex flex-col" @submit.prevent="onFormSubmit()">
                 <CustomerAddressForm v-if="formAction === 'Add' || formAction === 'Edit'" :model-value="formData" />
                 <CustomerAddressRenderer v-if="formAction === 'Delete'" :address="formData" />
+                <div v-if="formAction === 'Add' || formAction === 'Edit'" class="form-control mt-4">
+                    <label for="useDefaultBilling" class="label justify-start cursor-pointer">
+                        <input id="useDefaultBilling" v-model="useAsDefaultBilling" type="checkbox" class="checkbox mr-2">
+                        <span class="label-text">Use as default billing address</span>
+                    </label>
+                </div>
+                <div v-if="formAction === 'Add' || formAction === 'Edit'" class="form-control">
+                    <label for="useDefaultShipping" class="label justify-start cursor-pointer">
+                        <input id="useDefaultShipping" v-model="useAsDefaultShipping" type="checkbox" class="checkbox mr-2">
+                        <span class="label-text">Use as default shipping address</span>
+                    </label>
+                </div>
                 <button
                     type="submit"
                     :class="{ 'loading': addLoading | updateLoading | deleteLoading }"
@@ -62,7 +80,7 @@ import { useCustomer, useNotification } from '#imports'
  */
 const loading: Ref<boolean> = ref(true)
 const addresses: Ref<null | CustomerBillingAddress[] | CustomerShippingAddress[]> = ref(null)
-const { getCustomerAddresses, error } = useCustomer()
+const { customer, getCustomerAddresses, getCustomer, error } = useCustomer()
 onMounted(async () => {
     await nextTick(async () => {
         try {
@@ -82,6 +100,8 @@ const formAction: Ref<null | 'Add' | 'Edit' | 'Delete'> = ref(null)
 const { validateForm } = useForm()
 const addressBookForm = ref()
 const { showNotification } = useNotification()
+const useAsDefaultBilling = ref(false)
+const useAsDefaultShipping = ref(false)
 
 const { addCustomerAddress, loading: addLoading, error: addError } = useCustomer()
 function onAddAddress () {
@@ -104,12 +124,14 @@ function onDeleteAddress (id: string) {
     modalState.value = true
 }
 
+const { setDefaultBilling, setDefaultShipping, error: defaultError } = useCustomer()
 async function onFormSubmit () {
     const isValid = await validateForm(addressBookForm.value)
+    let response = null
 
     if (isValid) {
         if (formAction.value === 'Edit') {
-            await updateCustomerAddress(formData.value as CustomerShippingAddress | CustomerBillingAddress)
+            response = await updateCustomerAddress(formData.value as CustomerShippingAddress | CustomerBillingAddress)
 
             if (updateError.value) {
                 showNotification(updateError.value as string, 'error', true)
@@ -118,7 +140,7 @@ async function onFormSubmit () {
         }
 
         if (formAction.value === 'Add') {
-            await addCustomerAddress(formData.value as CustomerShippingAddress | CustomerBillingAddress)
+            response = await addCustomerAddress(formData.value as CustomerShippingAddress | CustomerBillingAddress)
 
             if (addError.value) {
                 showNotification(addError.value as string, 'error', true)
@@ -135,9 +157,23 @@ async function onFormSubmit () {
             }
         }
 
+        if (useAsDefaultBilling.value && response != null) {
+            await setDefaultBilling(response.id)
+        }
+
+        if (useAsDefaultShipping.value && response != null) {
+            await setDefaultShipping(response.id)
+        }
+
+        if (defaultError.value) {
+            showNotification(defaultError.value as string, 'error', true)
+            return
+        }
+
         modalState.value = false
         loading.value = true
         addresses.value = await getCustomerAddresses()
+        await getCustomer()
         loading.value = false
     }
 }
@@ -145,6 +181,8 @@ async function onFormSubmit () {
 watch(modalState, (value) => {
     if (!value) {
         formAction.value = null
+        useAsDefaultBilling.value = false
+        useAsDefaultShipping.value = false
         formData.value = {}
     }
 })

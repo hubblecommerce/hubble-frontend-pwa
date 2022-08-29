@@ -17,8 +17,10 @@ export interface IUseCustomer {
     updateBillingAddress (billingAddress: CustomerBillingAddress): Promise<CustomerBillingAddress>,
     register(formData: RegisterCustomerForm): Promise<Customer>,
     getCustomerAddresses (): Promise<CustomerBillingAddress[] | CustomerShippingAddress[]>,
-    addCustomerAddress (address: CustomerBillingAddress | CustomerShippingAddress): Promise<void>,
+    addCustomerAddress (address: CustomerBillingAddress | CustomerShippingAddress): Promise<CustomerBillingAddress | CustomerShippingAddress>,
     updateCustomerAddress (address: CustomerBillingAddress | CustomerShippingAddress): Promise<CustomerBillingAddress | CustomerShippingAddress>,
     deleteCustomerAddress (addressId: string): Promise<void>,
-    getOrders (id?: string): Promise<Order | Order[]>
+    getOrders (id?: string): Promise<Order | Order[]>,
+    setDefaultBilling (id: string): Promise<void>,
+    setDefaultShipping (id: string): Promise<void>
 }
