@@ -39,9 +39,10 @@ import { useCustomer } from '#imports'
  * Redirect to /customer/login if customer is not logged in
  */
 const { getCustomer, customer } = useCustomer()
-const { data } = await useAsyncData(() => getCustomer(), { initialCache: false })
-if (data.value == null || data.value?.isGuest) {
-    navigateTo('/customer/login')
+const { data, error } = await useAsyncData(() => getCustomer(), { initialCache: false })
+
+if (data.value == null || data.value?.isGuest || error.value != null) {
+    await navigateTo('/customer/login')
 }
 
 /*
