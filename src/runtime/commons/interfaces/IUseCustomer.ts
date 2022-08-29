@@ -1,9 +1,6 @@
 import { ComputedRef, Ref } from 'vue'
-import { FetchResult } from '#app'
-import { FetchRequest } from 'ohmyfetch'
 import { Customer, CustomerBillingAddress, CustomerShippingAddress, RegisterCustomerForm } from './Customer'
 import { Order } from './Order'
-import { CustomerAddress } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 
 export interface IUseCustomer {
     customer: Ref<Customer>,

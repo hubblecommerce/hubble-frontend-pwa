@@ -504,7 +504,8 @@ function mapOrderLineItems (swOrderLineItem: SwOrderLineItem[]): OrderLineItem[]
 
 function mapOrder (swOrder: SwOrder): Order {
     return {
-        id: swOrder.orderNumber,
+        id: swOrder.id,
+        orderNumber: swOrder.orderNumber,
         email: swOrder.orderCustomer.email,
         shippingAddress: mapCustomerAddress(swOrder.deliveries[0].shippingOrderAddress),
         billingAddress: mapCustomerAddress(swOrder.billingAddress),

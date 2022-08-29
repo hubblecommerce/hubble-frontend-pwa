@@ -1,17 +1,19 @@
 <template>
     <div class="container m-auto px-6 py-6 checkout-success lg:max-w-5xl">
-        <div class="p-6">
-            <div class="text-2xl text-center uppercase" v-text="'Thank you for your order at hubble!'" />
-        </div>
         <transition name="fade" mode="out-in">
             <div v-if="order != null && !loading" class="flex flex-col gap-12">
-                <div class="text-center">
-                    <span>We have sent you an order confirmation by e-mail at {{ order.email }}</span>
-                    <div v-text="'Your order number: ' + order.orderNumber" />
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="text-2xl">
+                        {{ 'Order number: ' + order.orderNumber }}
+                    </div>
+                    <!-- TODO: replace with date format from session -->
+                    <div v-text="new Date(order.orderDate).toLocaleDateString('en-US')" />
+                    <div v-text="'Status: ' + order.status" />
                 </div>
 
                 <CustomerOrder :order="order" />
             </div>
+
             <div v-else-if="loading" class="flex flex-col gap-12">
                 <div class="text-center">
                     <MiscSkeleton size="medium" :repeat="2" />
@@ -52,6 +54,7 @@
                     </div>
                 </div>
             </div>
+
             <div v-else-if="error" class="text-center">
                 {{ error }}
             </div>
@@ -60,27 +63,27 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, nextTick } from 'vue'
-import { useRouter, navigateTo } from '#app'
+import { navigateTo, useAsyncData, useRoute } from '#app'
+import { nextTick, onMounted, ref } from 'vue'
 import { useCustomer } from '#imports'
 
-const loading = ref(true)
-const { getOrders, loading: loadingOrder, error } = useCustomer()
-const { currentRoute } = useRouter()
-const orderId = currentRoute.value.query.orderId.toString()
-const order = ref(null)
+/*
+* Redirect to /customer/login if customer is not logged in
+*/
+const { getCustomer, customer, getOrders } = useCustomer()
+const { data, error } = await useAsyncData(() => getCustomer(), { initialCache: false })
+const route = useRoute()
 
+if (data.value == null || data.value?.isGuest || error.value != null) {
+    await navigateTo('/customer/login')
+}
+
+const loading = ref(true)
+const order = ref(null)
 onMounted(async () => {
     await nextTick(async () => {
-        if (orderId) {
-            try {
-                order.value = await getOrders(orderId)
-                loading.value = loadingOrder.value
-            } catch (e) {
-                loading.value = false
-                navigateTo('/')
-            }
-        }
+        order.value = await getOrders(route.params.id as string)
+        loading.value = false
     })
 })
 </script>

@@ -14,6 +14,7 @@ export interface OrderLineItem {
 
 export interface Order {
     id: string,
+    orderNumber: string,
     email: string,
     shippingAddress: CustomerShippingAddress,
     billingAddress: CustomerBillingAddress,

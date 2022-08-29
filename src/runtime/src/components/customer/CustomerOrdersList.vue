@@ -19,15 +19,15 @@
                 </thead>
                 <tbody>
                     <tr v-for="order in orders" :key="order.id">
-                        <th>{{ order.id }}</th>
+                        <th>{{ order.orderNumber }}</th>
                         <!-- TODO: replace with date format from session -->
                         <th>{{ new Date(order.orderDate).toLocaleDateString('en-US') }}</th>
                         <td>{{ formatPrice(order.totals.bruttoPrice) }}</td>
                         <td>{{ order.status }}</td>
                         <th class="text-right">
-                            <button class="btn btn-ghost btn-xs">
+                            <NuxtLink :to="`/customer/orders/${order.id}`" class="btn btn-ghost btn-xs">
                                 details
-                            </button>
+                            </NuxtLink>
                         </th>
                     </tr>
                 </tbody>
