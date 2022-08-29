@@ -51,10 +51,19 @@ export const useCustomer = function (): IUseCustomer {
              * active addresses in session are mandatory for checkout contact step
              */
             const response = await SystemContextShopware.readContext()
+            const mappedData = mapCustomer(response.customer)
+
+            // Only set customer data client side to prevent leaked states on server
+            if (process.client) {
+                customer.value = mappedData
+            }
 
             loading.value = false
-            return mapCustomer(response.customer)
+            return mappedData
         } catch (e) {
+            // Reset customer data in case of any error
+            customer.value = null
+
             loading.value = false
             error.value = e
             throw e
