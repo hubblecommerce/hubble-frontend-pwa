@@ -22,7 +22,7 @@
                         <th>{{ order.orderNumber }}</th>
                         <!-- TODO: replace with date format from session -->
                         <th>{{ new Date(order.orderDate).toLocaleDateString('en-US') }}</th>
-                        <td>{{ formatPrice(order.totals.bruttoPrice) }}</td>
+                        <td>{{ formatPrice(order.totals?.bruttoPrice) }}</td>
                         <td>{{ order.status }}</td>
                         <th class="text-right">
                             <NuxtLink :to="`/customer/orders/${order.id}`" class="btn btn-ghost btn-xs">

@@ -163,7 +163,7 @@
 
                 <template v-else>
                     <Transition name="fade" appear>
-                        <CustomerRegisterForm>
+                        <CustomerRegisterForm :guest-form="true">
                             <template #actions="actionProps">
                                 <div class="navigation flex justify-between items-center">
                                     <div v-if="step === 'contact'" class="link link-hover link-accent">

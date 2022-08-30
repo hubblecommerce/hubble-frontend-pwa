@@ -27,7 +27,7 @@
                 >
             </div>
 
-            <div class="form-control">
+            <div v-if="guestForm" class="form-control">
                 <label class="label cursor-pointer">
                     <input v-model="createAccount" type="checkbox" checked="checked" class="checkbox mr-2">
                     <span class="label-text">Create a customer account</span>
@@ -96,14 +96,22 @@
 </template>
 
 <script setup lang="ts">
-import { ref, Ref } from 'vue'
+import { ref, Ref, withDefaults } from 'vue'
 import { useCustomer } from '#imports'
 import { CustomerBillingAddress, CustomerShippingAddress, useForm } from '@hubblecommerce/hubble/commons'
+
+type CustomerRegisterFormProps = {
+    guestForm?: boolean
+}
+
+const props = withDefaults(defineProps<CustomerRegisterFormProps>(), {
+    guestForm: false
+})
 
 const registerForm = ref()
 const email = ref('')
 const password = ref('')
-const createAccount = ref(false)
+const createAccount = ref(!props.guestForm)
 const billingSameAsShipping = ref(true)
 const shippingAddress: Ref<CustomerShippingAddress> = ref({
     id: '',

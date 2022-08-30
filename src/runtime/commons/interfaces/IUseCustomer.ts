@@ -19,5 +19,7 @@ export interface IUseCustomer {
     deleteCustomerAddress (addressId: string): Promise<void>,
     getOrders (id?: string): Promise<Order | Order[]>,
     setDefaultBilling (id: string): Promise<void>,
-    setDefaultShipping (id: string): Promise<void>
+    setDefaultShipping (id: string): Promise<void>,
+    requireNewPassword (email: string): Promise<void>,
+    setNewPassword (hash: string, password: string, passwordRepeat: string): Promise<void>
 }

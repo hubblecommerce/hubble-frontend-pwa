@@ -12,7 +12,7 @@ import {
 import {
     AddressShopware,
     LoginRegistrationShopware,
-    OrderShopware,
+    OrderShopware, ProfileShopware,
     SystemContextShopware
 } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 import {
@@ -93,6 +93,12 @@ export const useCustomer = function (): IUseCustomer {
 
             throw new Error('Something went wrong please try again')
         } catch (e) {
+            if (e.body[0]?.detail != null) {
+                showNotification(e.body[0]?.detail, 'error', true)
+            } else {
+                showNotification(e, 'error', true)
+            }
+
             loading.value = false
             error.value = e
             throw e
@@ -146,7 +152,11 @@ export const useCustomer = function (): IUseCustomer {
             loading.value = false
             return customer.value
         } catch (e) {
-            showNotification(e, 'error', true)
+            if (e.body[0]?.detail != null) {
+                showNotification(e.body[0]?.detail, 'error', true)
+            } else {
+                showNotification(e, 'error', true)
+            }
             loading.value = false
             error.value = e
             throw e
@@ -304,12 +314,11 @@ export const useCustomer = function (): IUseCustomer {
             })
 
             let mappedData = null
-            if (response.orders?.elements.length > 1) {
-                mappedData = mapOrders(response.orders.elements)
-            }
 
-            if (response.orders?.elements.length === 1) {
+            if (id) {
                 mappedData = mapOrder(response.orders.elements[0])
+            } else {
+                mappedData = mapOrders(response.orders.elements)
             }
 
             loading.value = false
@@ -351,6 +360,45 @@ export const useCustomer = function (): IUseCustomer {
         }
     }
 
+    async function requireNewPassword (email: string): Promise<void> {
+        loading.value = true
+        error.value = false
+
+        try {
+            await ProfileShopware.sendRecoveryMail({
+                email,
+                storefrontUrl: platformBaseUrl
+            })
+
+            loading.value = false
+            return
+        } catch (e) {
+            loading.value = false
+            error.value = e
+            throw e
+        }
+    }
+
+    async function setNewPassword (hash: string, password: string, passwordRepeat: string): Promise<void> {
+        loading.value = true
+        error.value = false
+
+        try {
+            await ProfileShopware.recoveryPassword({
+                hash,
+                newPassword: password,
+                newPasswordConfirm: passwordRepeat
+            })
+
+            loading.value = false
+            return
+        } catch (e) {
+            loading.value = false
+            error.value = e
+            throw e
+        }
+    }
+
     return {
         customer,
         getCustomer,
@@ -367,6 +415,8 @@ export const useCustomer = function (): IUseCustomer {
         getOrders,
         setDefaultBilling,
         setDefaultShipping,
+        requireNewPassword,
+        setNewPassword,
         loading,
         error
     }

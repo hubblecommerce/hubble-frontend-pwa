@@ -12,7 +12,7 @@
             </div>
         </div>
 
-        <div class="col-span-2 lg:col-span-1 grid grid-cols-2 gap-4">
+        <div class="col-span-2 lg:col-span-1 grid grid-cols-2 gap-4" style="grid-template-rows: auto 1fr auto;">
             <div class="col-span-2 w-full text-2xl">
                 Address-book
             </div>

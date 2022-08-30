@@ -14,10 +14,10 @@
         class="relative col-span-2 md:col-span-1 border p-4"
     >
         <div
-            v-if="address.id === customer.billingAddress?.id || address.id === customer.shippingAddress?.id"
+            v-if="address.id === customer?.billingAddress?.id || address.id === customer?.shippingAddress?.id"
             class="absolute -top-2 badge badge-sm badge-primary"
         >
-            Default {{ address.id === customer.billingAddress?.id ? 'Billing' : '' }} {{ address.id === customer.shippingAddress?.id ? 'Shipping' : '' }}
+            Default {{ address.id === customer?.billingAddress?.id ? 'Billing' : '' }} {{ address.id === customer?.shippingAddress?.id ? 'Shipping' : '' }}
         </div>
         <CustomerAddressRenderer :address="address" />
         <div class="flex space-x-2">
