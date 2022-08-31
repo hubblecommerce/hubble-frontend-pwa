@@ -60,6 +60,7 @@
         "globby": "^13.1.2",
         "lmify": "^0.3.0",
         "mitt": "^3.0.0",
+        "portal-vue": "^3.0.0-beta.0",
         "unzipper": "^0.10.11"
     },
     "devDependencies": {
