@@ -1,5 +1,5 @@
 <template>
-    StructureSlotSidebarFilter
+    <portal-target name="productListingFilter" />
 </template>
 
 <script setup lang="ts">

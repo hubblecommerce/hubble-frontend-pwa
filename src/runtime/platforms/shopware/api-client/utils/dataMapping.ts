@@ -45,7 +45,11 @@ import {
     PaymentMethod,
     Order,
     Totals,
-    OrderLineItem
+    OrderLineItem,
+    ProductListingFilterMulti,
+    ProductListingFilterRange,
+    ProductListingFilterBoolean,
+    ProductListingFilterMixed, ProductListingFilterCurrent
 } from '@hubblecommerce/hubble/commons'
 
 function mapMedia (swMedia: swMedia): Media {
@@ -141,13 +145,121 @@ function mapBreadcrumb (swBreadcrumb): Breadcrumb {
     return swBreadcrumb
 }
 
+function mapFilters (swFilters: ProductListingResult['aggregations']): ProductListingFilterMixed[] {
+    const filters = []
+
+    const manufacturerFilter: ProductListingFilterMulti = {
+        id: 'manufacturer',
+        name: 'Manufacturer',
+        type: 'multi',
+        // TODO Patch api
+        // @ts-ignore
+        options: swFilters.manufacturer.entities.map((manufacturer) => {
+            return {
+                id: manufacturer.id,
+                name: manufacturer.translated.name
+            }
+        })
+    }
+
+    const priceFilter: ProductListingFilterRange = {
+        id: 'price',
+        type: 'range',
+        name: 'Price',
+        // TODO Patch api
+        // @ts-ignore
+        min: swFilters.price.min,
+        // @ts-ignore
+        max: swFilters.price.max,
+        // @ts-ignore
+        avg: swFilters.price.avg,
+        // @ts-ignore
+        sum: swFilters.price.sum
+    }
+
+    const ratingFilter: ProductListingFilterRange = {
+        id: 'rating',
+        type: 'range',
+        name: 'Rating',
+        // TODO Patch api
+        // @ts-ignore
+        max: swFilters.rating.max != null ? swFilters.rating.max : '0',
+        min: '0'
+    }
+
+    const shippingFilter: ProductListingFilterBoolean = {
+        id: 'shipping-free',
+        type: 'boolean',
+        name: 'Shipping free'
+    }
+
+    filters.push(manufacturerFilter, priceFilter, ratingFilter, shippingFilter)
+
+    // TODO Patch api
+    // @ts-ignore
+    swFilters.properties.entities.forEach((entity) => {
+        const filter: ProductListingFilterMulti = {
+            id: entity.id,
+            name: entity.translated.name,
+            type: 'multi',
+            options: entity.options.map((option) => {
+                return {
+                    id: option.id,
+                    name: option.name
+                }
+            })
+        }
+
+        filters.push(filter)
+    })
+
+    return filters
+}
+
+function mapCurrentFilters (swCurrentFilters: ProductListingResult['currentFilters'], swFilters): ProductListingFilterCurrent {
+    const obj: ProductListingFilterCurrent = {}
+
+    if (swCurrentFilters.navigationId != null) {
+        obj.navigationId = swCurrentFilters.navigationId
+    }
+
+    // TODO Patch api
+    // @ts-ignore
+    if (swCurrentFilters.search != null) {
+        // @ts-ignore
+        obj.search = swCurrentFilters.search
+    }
+
+    obj.manufacturer = swCurrentFilters.manufacturer
+
+    obj.price = {
+        min: swCurrentFilters.price.min !== 0 ? swCurrentFilters.price.min : '',
+        max: swCurrentFilters.price.max !== 0 ? swCurrentFilters.price.max : ''
+    }
+
+    obj.rating = {
+        min: '',
+        max: swCurrentFilters.rating !== null ? swCurrentFilters.rating : ''
+    }
+
+    obj['shipping-free'] = swCurrentFilters['shipping-free']
+
+    swFilters.properties.entities.forEach((entity) => {
+        obj[entity.id] = entity.options.filter((option) => {
+            return swCurrentFilters.properties.includes(option.id)
+        })
+    })
+
+    return obj
+}
+
 function mapProductListing (swProductListing: ProductListingResult): ProductListing {
     return {
         products: mapProducts(swProductListing.elements),
         currentSorting: swProductListing.sorting,
         availableSorting: swProductListing.availableSortings,
-        currentFilters: swProductListing.currentFilters,
-        availableFilters: swProductListing.aggregations,
+        currentFilters: mapCurrentFilters(swProductListing.currentFilters, swProductListing.aggregations),
+        availableFilters: mapFilters(swProductListing.aggregations),
         total: swProductListing.total,
         limit: swProductListing.limit,
         page: swProductListing.page

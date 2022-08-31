@@ -1,9 +1,22 @@
 import { Ref, ref } from 'vue'
-import { FetchRequest } from 'ohmyfetch'
-import { FetchResult } from '#app'
-import { IUsePage, Page, useDefaultStructure } from '@hubblecommerce/hubble/commons'
-import { PwaShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { includes, associations, mapPage } from '@hubblecommerce/hubble/platforms/shopware/api-client/utils'
+import {
+    IUsePage,
+    Page,
+    ProductListing,
+    ProductListingFilterCurrent,
+    useDefaultStructure
+} from '@hubblecommerce/hubble/commons'
+import {
+    ProductListingCriteria, ProductListingFlags,
+    ProductShopware,
+    PwaShopware
+} from '@hubblecommerce/hubble/platforms/shopware/api-client'
+import {
+    includes,
+    associations,
+    mapPage,
+    mapProductListing
+} from '@hubblecommerce/hubble/platforms/shopware/api-client/utils'
 
 export const usePage = function (): IUsePage {
     const loading: Ref<boolean> = ref(false)
@@ -15,7 +28,6 @@ export const usePage = function (): IUsePage {
             loading.value = true
             error.value = false
 
-            // @ts-ignore
             const response = await PwaShopware.pwaResolvePage(
                 {
                     path,
@@ -41,10 +53,66 @@ export const usePage = function (): IUsePage {
         }
     }
 
+    async function getProductListing (filters: ProductListingFilterCurrent, limit: number, sort: string, page?: number): Promise<ProductListing> {
+        try {
+            loading.value = true
+            error.value = false
+
+            const { navigationId, search, manufacturer, price, rating, 'shipping-free': shipping, ...properties } = filters
+
+            const cleanedProps = []
+            Object.keys(properties).forEach((key) => {
+                // @ts-ignore
+                properties[key].forEach((property) => {
+                    if (property !== '') {
+                        cleanedProps.push(property)
+                    }
+                })
+            })
+
+            const requestBody = {
+                includes,
+                associations,
+                order: sort,
+                limit,
+                ...(page != null && { p: page }),
+                // @ts-ignore
+                ...(manufacturer?.length > 0 && { manufacturer }),
+                // @ts-ignore
+                ...(price?.min !== '' && { 'min-price': price.min }),
+                // @ts-ignore
+                ...(price?.max !== '' && { 'max-price': price.max }),
+                // @ts-ignore
+                ...(rating?.min !== '' && { rating: rating.min }),
+                ...(shipping != null && { 'shipping-free': shipping }),
+                ...(cleanedProps.length > 0 && { properties: cleanedProps })
+            }
+
+            const response = await ProductShopware.readProductListing(
+                navigationId as string,
+                'application/json',
+                'application/json',
+                // TODO Patch api
+                // @ts-ignore
+                requestBody
+            )
+
+            const mappedListing = mapProductListing(response)
+
+            loading.value = false
+            return mappedListing
+        } catch (e) {
+            loading.value = false
+            error.value = e
+            throw e
+        }
+    }
+
     return {
         loading,
         error,
         getPage,
-        page
+        page,
+        getProductListing
     }
 }
