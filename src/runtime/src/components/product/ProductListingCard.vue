@@ -3,7 +3,7 @@
         <figure>
             <NuxtLink :to="data.url">
                 <img v-if="isLoading || data.media == null" src="~/assets/product/placeholder-image.png" class="d-block m-auto mw-100" height="300" :alt="data.name">
-                <img v-else :src="image.url" :alt="data.name">
+                <img v-else :src="image.src" :alt="data.name">
             </NuxtLink>
         </figure>
         <div class="card-body justify-between">
@@ -27,9 +27,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useImage } from '@vueuse/core'
-import { Product, useCurrency, Media } from '@hubblecommerce/hubble/commons'
+import { Product, useCurrency } from '@hubblecommerce/hubble/commons'
 
 const props = defineProps<{
     data: Product
@@ -41,6 +41,8 @@ const hasSpecialPrice = computed(() => {
     return props.data?.price?.specialPrice
 })
 
-const image = props.data.media as Media
-const { isLoading } = useImage({ src: image.url })
+const image = ref({
+    src: Array.isArray(props.data.media) ? props.data.media[0].url : props.data.media.url
+})
+const { isLoading } = useImage(image)
 </script>
