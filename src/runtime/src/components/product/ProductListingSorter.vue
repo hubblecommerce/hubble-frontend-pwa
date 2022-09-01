@@ -3,9 +3,9 @@
         <label for="sorter" class="label sr-only">
             <span class="label-text">Sort by</span>
         </label>
-        <div class="input-group">
+        <div class="input-group input-group-sm">
             <span>Sort by</span>
-            <select id="sorter" v-model="selectedSorting" class="select" @change="setSorting(selectedSorting)">
+            <select id="sorter" v-model="selectedSorting" class="select select-sm" @change="setSorting(selectedSorting)">
                 <option
                     v-for="item in availableSorting"
                     :key="item.id"

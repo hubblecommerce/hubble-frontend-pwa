@@ -54,7 +54,7 @@
                         class="toggle toggle-sm mr-2"
                         @change="applyFilter()"
                     >
-                    <span class="label-text">{{ availableFilter.name }}</span>
+                    <span>{{ availableFilter.name }}</span>
                 </label>
             </div>
         </template>

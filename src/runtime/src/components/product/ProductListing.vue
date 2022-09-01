@@ -1,6 +1,6 @@
 <template>
-    <div class="flex justify-between mb-4">
-        <div v-if="total">
+    <div class="flex flex-wrap items-center justify-between mb-2">
+        <div v-if="total" class="w-full md:w-auto flex justify-start mb-2">
             <ProductListingLimiter
                 :limit="listing.limit"
                 :sorting="listing.currentSorting"
@@ -9,7 +9,7 @@
                 @update:listing="listing = $event"
             />
         </div>
-        <div v-if="sorting">
+        <div v-if="sorting" class="w-full md:w-auto lg:mr-auto lg:ml-2 flex justify-start mb-2">
             <ProductListingSorter
                 :limit="listing.limit"
                 :sorting="listing.currentSorting"
@@ -18,7 +18,7 @@
                 @update:listing="listing = $event"
             />
         </div>
-        <div v-if="pagination">
+        <div v-if="pagination" class="w-full md:w-auto flex justify-start mb-2">
             <ProductListingPagination
                 :page="listing.page"
                 :limit="listing.limit"

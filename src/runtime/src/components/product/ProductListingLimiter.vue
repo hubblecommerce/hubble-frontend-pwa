@@ -3,9 +3,9 @@
         <label for="limiter" class="label sr-only">
             <span class="label-text">Show items per page</span>
         </label>
-        <div class="input-group">
+        <div class="input-group input-group-sm">
             <span>Show</span>
-            <select id="limiter" v-model="selectedLimit" class="select" @change="setLimit(selectedLimit)">
+            <select id="limiter" v-model="selectedLimit" class="select select-sm" @change="setLimit(selectedLimit)">
                 <option v-for="availableLimit in availableLimits" :key="availableLimit" :value="availableLimit" v-text="availableLimit" />
             </select>
             <span>from {{ total }}</span>
