@@ -53,6 +53,10 @@ async function selectPage (page: number): Promise<void> {
         const { productListing, params } = await getProductListing(props.currentFilters, props.limit, props.sorting, page)
         emit('update:listing', productListing)
         updateUri(params)
+
+        if (props.scrollTopOnChange) {
+            window.scrollTo(0, 0)
+        }
     } catch (e) {
         showError(e)
     }
