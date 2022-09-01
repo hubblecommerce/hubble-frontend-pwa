@@ -65,7 +65,7 @@
 import { ref } from 'vue'
 import { showError, useRouter } from '#app'
 import { ProductListing, ProductListingFilter, ProductListingFilterCurrent } from '@hubblecommerce/hubble/commons'
-import { usePage } from '#imports'
+import { usePage, useRuntimeConfig } from '#imports'
 
 const props = defineProps<{
     availableFilters: ProductListingFilter[]
@@ -78,6 +78,7 @@ const emit = defineEmits<{(event: 'update:listing', data: ProductListing): void}
 const selectedFilters = ref(Object.assign(props.currentFilters, {}))
 const { getProductListing } = usePage()
 const { currentRoute } = useRouter()
+const runtimeConfig = useRuntimeConfig()
 
 async function applyFilter (delay?: number) {
     if (delay) {
@@ -90,23 +91,21 @@ async function applyFilter (delay?: number) {
         }, delay)
     } else {
         try {
-            const filteredListing = await getProductListing(selectedFilters.value, props.limit, props.sorting)
+            const { productListing, params } = await getProductListing(selectedFilters.value, props.limit, props.sorting)
 
-            emit('update:listing', filteredListing)
+            emit('update:listing', productListing)
 
             // Write parameters to current url without reloading the page
+            const url = new URL(runtimeConfig.public.appBaseUrl + currentRoute.value.path)
+            url.search = new URLSearchParams(params).toString()
             window.history.pushState(
                 {},
                 null,
-                setUriParams(currentRoute, filteredListing)
+                url.href
             )
         } catch (e) {
             showError(e)
         }
     }
-}
-
-function setUriParams (route, postData): string | URL {
-    return ''
 }
 </script>

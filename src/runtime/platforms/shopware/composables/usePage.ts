@@ -1,4 +1,5 @@
 import { Ref, ref } from 'vue'
+import { RouteLocationNormalizedLoaded } from 'vue-router'
 import {
     IUsePage,
     Page,
@@ -23,18 +24,42 @@ export const usePage = function (): IUsePage {
     const error: Ref<boolean> = ref(false)
     const page: Ref<Page> = ref(null)
 
-    const getPage = async (path: string): Promise<Page> => {
+    const getPage = async (route: RouteLocationNormalizedLoaded): Promise<Page> => {
         try {
             loading.value = true
             error.value = false
 
-            const response = await PwaShopware.pwaResolvePage(
-                {
-                    path,
-                    includes,
-                    associations
-                }
-            )
+            const {
+                order,
+                limit,
+                manufacturer,
+                'min-price': minPrice,
+                'max-price': maxPrice,
+                rating,
+                'shipping-free': shipping,
+                properties,
+                ...unknown
+            } = route.query
+
+            const params = {
+                path: route.path,
+                ...(order != null && { order }),
+                ...(limit != null && typeof limit === 'number' && { limit }),
+                ...(manufacturer != null && typeof manufacturer === 'string' && { manufacturer: manufacturer.split(',') }),
+                ...(minPrice != null && { 'min-price': minPrice }),
+                ...(maxPrice != null && { 'max-price': maxPrice }),
+                ...(rating != null && { rating }),
+                ...(shipping != null && { 'shipping-free': (shipping === 'true') }),
+                ...(properties != null && typeof properties === 'string' && { properties: properties.split(',') })
+            }
+
+            const requestBody = {
+                includes,
+                associations,
+                ...params
+            }
+
+            const response = await PwaShopware.pwaResolvePage(requestBody)
 
             const mappedPage = mapPage(response)
 
@@ -53,7 +78,7 @@ export const usePage = function (): IUsePage {
         }
     }
 
-    async function getProductListing (filters: ProductListingFilterCurrent, limit: number, sort: string, page?: number): Promise<ProductListing> {
+    async function getProductListing (filters: ProductListingFilterCurrent, limit: number, sort: string, page?: number): Promise<{ productListing: ProductListing, params: any }> {
         try {
             loading.value = true
             error.value = false
@@ -70,9 +95,7 @@ export const usePage = function (): IUsePage {
                 })
             })
 
-            const requestBody = {
-                includes,
-                associations,
+            const params = {
                 order: sort,
                 limit,
                 ...(page != null && { p: page }),
@@ -88,6 +111,12 @@ export const usePage = function (): IUsePage {
                 ...(cleanedProps.length > 0 && { properties: cleanedProps })
             }
 
+            const requestBody = {
+                includes,
+                associations,
+                ...params
+            }
+
             const response = await ProductShopware.readProductListing(
                 navigationId as string,
                 'application/json',
@@ -100,7 +129,7 @@ export const usePage = function (): IUsePage {
             const mappedListing = mapProductListing(response)
 
             loading.value = false
-            return mappedListing
+            return { productListing: mappedListing, params }
         } catch (e) {
             loading.value = false
             error.value = e

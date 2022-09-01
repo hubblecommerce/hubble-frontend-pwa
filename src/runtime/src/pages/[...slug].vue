@@ -20,7 +20,7 @@ import { detailData } from '@hubblecommerce/hubble/commons'
 const route = useRoute()
 const { page, getPage } = usePage()
 
-const { data, error } = await useAsyncData(() => getPage(route.path), { initialCache: false })
+const { data, error } = await useAsyncData(() => getPage(route), { initialCache: false })
 page.value = data.value
 
 if (error.value) {

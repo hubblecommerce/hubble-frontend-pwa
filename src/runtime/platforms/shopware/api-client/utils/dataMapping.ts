@@ -245,9 +245,16 @@ function mapCurrentFilters (swCurrentFilters: ProductListingResult['currentFilte
     obj['shipping-free'] = swCurrentFilters['shipping-free']
 
     swFilters.properties.entities.forEach((entity) => {
-        obj[entity.id] = entity.options.filter((option) => {
+        const match = entity.options.filter((option) => {
             return swCurrentFilters.properties.includes(option.id)
         })
+
+        const arrayOfIds = []
+        match.forEach((option) => {
+            arrayOfIds.push(option.id)
+        })
+
+        obj[entity.id] = arrayOfIds
     })
 
     return obj
