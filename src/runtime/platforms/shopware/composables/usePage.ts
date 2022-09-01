@@ -1,5 +1,6 @@
 import { Ref, ref } from 'vue'
 import { RouteLocationNormalizedLoaded } from 'vue-router'
+import { useRouter } from '#app'
 import {
     IUsePage,
     Page,
@@ -18,11 +19,14 @@ import {
     mapPage,
     mapProductListing
 } from '@hubblecommerce/hubble/platforms/shopware/api-client/utils'
+import { useRuntimeConfig } from '#imports'
 
 export const usePage = function (): IUsePage {
     const loading: Ref<boolean> = ref(false)
     const error: Ref<boolean> = ref(false)
     const page: Ref<Page> = ref(null)
+    const runtimeConfig = useRuntimeConfig()
+    const { currentRoute } = useRouter()
 
     const getPage = async (route: RouteLocationNormalizedLoaded): Promise<Page> => {
         try {
@@ -32,6 +36,7 @@ export const usePage = function (): IUsePage {
             const {
                 order,
                 limit,
+                p,
                 manufacturer,
                 'min-price': minPrice,
                 'max-price': maxPrice,
@@ -44,7 +49,8 @@ export const usePage = function (): IUsePage {
             const params = {
                 path: route.path,
                 ...(order != null && { order }),
-                ...(limit != null && typeof limit === 'number' && { limit }),
+                ...(limit != null && typeof limit === 'string' && { limit: parseInt(limit) }),
+                ...(p != null && { p }),
                 ...(manufacturer != null && typeof manufacturer === 'string' && { manufacturer: manufacturer.split(',') }),
                 ...(minPrice != null && { 'min-price': minPrice }),
                 ...(maxPrice != null && { 'max-price': maxPrice }),
@@ -137,11 +143,23 @@ export const usePage = function (): IUsePage {
         }
     }
 
+    // Write parameters to current url without reloading the page
+    function updateUri (params): void {
+        const url = new URL(runtimeConfig.public.appBaseUrl + currentRoute.value.path)
+        url.search = new URLSearchParams(params).toString()
+        window.history.pushState(
+            {},
+            null,
+            url.href
+        )
+    }
+
     return {
         loading,
         error,
         getPage,
         page,
-        getProductListing
+        getProductListing,
+        updateUri
     }
 }

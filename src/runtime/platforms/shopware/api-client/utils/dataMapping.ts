@@ -49,7 +49,7 @@ import {
     ProductListingFilterMulti,
     ProductListingFilterRange,
     ProductListingFilterBoolean,
-    ProductListingFilterMixed, ProductListingFilterCurrent
+    ProductListingFilterMixed, ProductListingFilterCurrent, ProductListingSorting
 } from '@hubblecommerce/hubble/commons'
 
 function mapMedia (swMedia: swMedia): Media {
@@ -260,11 +260,24 @@ function mapCurrentFilters (swCurrentFilters: ProductListingResult['currentFilte
     return obj
 }
 
+function mapSorting (swSorting): ProductListingSorting {
+    return {
+        id: swSorting.key,
+        name: swSorting.translated.label
+    }
+}
+
+function mapSortings (swSortings: ProductListingResult['availableSortings']): ProductListingSorting[] {
+    return swSortings.map((swSorting) => {
+        return mapSorting(swSorting)
+    })
+}
+
 function mapProductListing (swProductListing: ProductListingResult): ProductListing {
     return {
         products: mapProducts(swProductListing.elements),
         currentSorting: swProductListing.sorting,
-        availableSorting: swProductListing.availableSortings,
+        availableSorting: mapSortings(swProductListing.availableSortings),
         currentFilters: mapCurrentFilters(swProductListing.currentFilters, swProductListing.aggregations),
         availableFilters: mapFilters(swProductListing.aggregations),
         total: swProductListing.total,

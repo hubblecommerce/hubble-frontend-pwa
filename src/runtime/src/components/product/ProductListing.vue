@@ -1,10 +1,33 @@
 <template>
     <div class="flex justify-between mb-4">
         <div v-if="total">
-            Total: {{ listing.total }}
+            <ProductListingLimiter
+                :limit="listing.limit"
+                :sorting="listing.currentSorting"
+                :total="listing.total"
+                :current-filters="listing.currentFilters"
+                @update:listing="listing = $event"
+            />
+        </div>
+        <div v-if="sorting">
+            <ProductListingSorter
+                :limit="listing.limit"
+                :sorting="listing.currentSorting"
+                :current-filters="listing.currentFilters"
+                :available-sorting="listing.availableSorting"
+                @update:listing="listing = $event"
+            />
         </div>
         <div v-if="pagination">
-            Page {{ listing.page }} of {{ Math.ceil(listing.total / listing.limit) }}
+            <ProductListingPagination
+                :page="listing.page"
+                :limit="listing.limit"
+                :sorting="listing.currentSorting"
+                :total="listing.total"
+                :current-filters="listing.currentFilters"
+                :scroll-top-on-change="true"
+                @update:listing="listing = $event"
+            />
         </div>
     </div>
 
@@ -36,12 +59,14 @@ interface ProductListingProps {
     data: ProductListing,
     total?: boolean,
     pagination?: boolean,
+    sorting?: boolean,
     gridClasses?: string
 }
 
 const props = withDefaults(defineProps<ProductListingProps>(), {
     total: true,
     pagination: true,
+    sorting: true,
     gridClasses: 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'
 })
 

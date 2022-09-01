@@ -1,0 +1,60 @@
+<template>
+    <div class="btn-group flex-nowrap">
+        <button :disabled="page === 1" class="btn" @click="selectPage(1)">
+            <ChevronDoubleLeftIcon class="h-5 w-5" />
+        </button>
+        <button :disabled="page - 1 < 1" class="btn" @click="selectPage(page - 1)">
+            <ChevronLeftIcon class="h-5 w-5" />
+        </button>
+        <button class="btn" v-text="`Page ${page} of ${maxPage}`" />
+        <button class="btn" :disabled="page + 1 > maxPage" @click="selectPage(page + 1)">
+            <ChevronRightIcon class="h-5 w-5" />
+        </button>
+        <button :disabled="page + 1 > maxPage" class="btn" @click="selectPage(maxPage)">
+            <ChevronDoubleRightIcon class="h-5 w-5" />
+        </button>
+    </div>
+</template>
+
+<script setup lang="ts">
+import { computed } from 'vue'
+import {
+    ChevronLeftIcon,
+    ChevronDoubleLeftIcon,
+    ChevronRightIcon,
+    ChevronDoubleRightIcon
+} from '@heroicons/vue/20/solid'
+import { showError } from '#app'
+import { usePage } from '#imports'
+import { ProductListing, ProductListingFilterCurrent } from '@hubblecommerce/hubble/commons'
+
+interface ProductListingPaginationProps {
+    page: number,
+    limit: number,
+    sorting: string,
+    total: number,
+    currentFilters: ProductListingFilterCurrent,
+    scrollTopOnChange?: boolean,
+}
+
+const props = withDefaults(defineProps<ProductListingPaginationProps>(), {
+    scrollTopOnChange: false
+})
+
+const maxPage = computed(() => {
+    return Math.ceil(props.total / props.limit)
+})
+
+const { getProductListing, updateUri } = usePage()
+const emit = defineEmits<{(event: 'update:listing', data: ProductListing): void}>()
+
+async function selectPage (page: number): Promise<void> {
+    try {
+        const { productListing, params } = await getProductListing(props.currentFilters, props.limit, props.sorting, page)
+        emit('update:listing', productListing)
+        updateUri(params)
+    } catch (e) {
+        showError(e)
+    }
+}
+</script>

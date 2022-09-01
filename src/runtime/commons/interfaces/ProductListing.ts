@@ -39,10 +39,15 @@ export type ProductListingFilterMixed = ProductListingFilterRange |
 
 export type ProductListingFilterCurrent = Record<string, string | Record<string, number | null | string> | string[] | boolean>
 
+export interface ProductListingSorting {
+    id: string,
+    name: string
+}
+
 export interface ProductListing {
     products: Product[]
     currentSorting?: string,
-    availableSorting?: any,
+    availableSorting?: ProductListingSorting[],
     currentFilters?: ProductListingFilterCurrent,
     availableFilters?: ProductListingFilterMixed[],
     total: number,

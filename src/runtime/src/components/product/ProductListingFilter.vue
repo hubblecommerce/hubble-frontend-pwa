@@ -76,7 +76,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{(event: 'update:listing', data: ProductListing): void}>()
 const selectedFilters = ref(Object.assign(props.currentFilters, {}))
-const { getProductListing } = usePage()
+const { getProductListing, updateUri } = usePage()
 const { currentRoute } = useRouter()
 const runtimeConfig = useRuntimeConfig()
 
@@ -92,17 +92,8 @@ async function applyFilter (delay?: number) {
     } else {
         try {
             const { productListing, params } = await getProductListing(selectedFilters.value, props.limit, props.sorting)
-
             emit('update:listing', productListing)
-
-            // Write parameters to current url without reloading the page
-            const url = new URL(runtimeConfig.public.appBaseUrl + currentRoute.value.path)
-            url.search = new URLSearchParams(params).toString()
-            window.history.pushState(
-                {},
-                null,
-                url.href
-            )
+            updateUri(params)
         } catch (e) {
             showError(e)
         }

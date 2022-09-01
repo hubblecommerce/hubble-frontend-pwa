@@ -8,5 +8,6 @@ export interface IUsePage {
     error: Ref<boolean>
     getPage (route: RouteLocationNormalizedLoaded): Promise<Page>,
     page: Ref<Page>,
-    getProductListing (filters: ProductListingFilterCurrent, limit: number, sort: string, page?: number): Promise<{ productListing: ProductListing, params: any }>
+    getProductListing (filters: ProductListingFilterCurrent, limit: number, sort: string, page?: number): Promise<{ productListing: ProductListing, params: any }>,
+    updateUri (params): void
 }
