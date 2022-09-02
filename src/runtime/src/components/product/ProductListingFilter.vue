@@ -26,7 +26,11 @@
                 </ul>
             </div>
 
-            <div v-if="availableFilter.type === 'range' && Math.round(availableFilter.min) !== Math.round(availableFilter.max)" :key="availableFilter.id" class="dropdown">
+            <div
+                v-if="availableFilter.type === 'range' && Math.round(availableFilter.min) !== Math.round(availableFilter.max)"
+                :key="availableFilter.id"
+                class="dropdown"
+            >
                 <div class="indicator">
                     <span
                         v-if="selectedFilters[availableFilter.id].max > 0"
@@ -123,15 +127,18 @@ const filterIsset = computed(() => {
 
     Object.keys(selectedFilters.value).forEach((key) => {
         if (Array.isArray(selectedFilters.value[key])) {
+            // @ts-ignore
             if (selectedFilters.value[key].length > 0) {
                 filterCount++
             }
         }
 
+        // @ts-ignore
         if (selectedFilters.value[key].min != null && selectedFilters.value[key].min !== '') {
             filterCount++
         }
 
+        // @ts-ignore
         if (selectedFilters.value[key].max != null && selectedFilters.value[key].max !== '') {
             filterCount++
         }
@@ -150,11 +157,15 @@ async function resetAllFilter (): Promise<void> {
             selectedFilters.value[key] = []
         }
 
+        // @ts-ignore
         if (selectedFilters.value[key].min != null) {
+            // @ts-ignore
             selectedFilters.value[key].min = ''
         }
 
+        // @ts-ignore
         if (selectedFilters.value[key].max != null) {
+            // @ts-ignore
             selectedFilters.value[key].max = ''
         }
 
