@@ -25,7 +25,7 @@
                         <div :class="{'line-through text-xs': lineItem.price.specialPrice}">
                             {{ formatPrice(lineItem.price.regularPrice) }}
                         </div>
-                        <div v-if="lineItem.price.specialPrice" class="text-accent">
+                        <div v-if="lineItem.price.specialPrice" class="text-secondary">
                             {{ formatPrice(lineItem.price.specialPrice) }}
                         </div>
                     </div>
