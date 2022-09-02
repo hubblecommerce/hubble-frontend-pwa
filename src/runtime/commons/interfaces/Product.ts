@@ -13,6 +13,19 @@ export interface Price {
     specialPrice: string | null
 }
 
+export interface VariantOption {
+    id: string,
+    name: string,
+    color?: string,
+    media?: Media
+}
+
+export interface VariantGroup {
+    id: string,
+    name: string,
+    options: VariantOption[]
+}
+
 export interface Product {
     id: string,
     name: string,
@@ -26,5 +39,8 @@ export interface Product {
     deliveryTime?: string,
     manufacturer?: Manufacturer,
     metaTitle?: string,
-    metaDescription?: string
+    metaDescription?: string,
+    variants?: VariantGroup[],
+    defaultOptions?: string[],
+    parentId?: string
 }

@@ -1,5 +1,5 @@
 <template>
-    <ProductDetailBuyBox :product="product" />
+    <ProductDetailBuyBox :product-data="product" />
 </template>
 
 <script setup lang="ts">

@@ -18,7 +18,7 @@ import {
     PaymentMethod as SwPaymentMethod,
     Order as SwOrder,
     OrderAddress,
-    OrderLineItem as SwOrderLineItem
+    OrderLineItem as SwOrderLineItem, PropertyGroup, PropertyGroupOption
 } from '../generated'
 import {
     Block,
@@ -49,7 +49,7 @@ import {
     ProductListingFilterMulti,
     ProductListingFilterRange,
     ProductListingFilterBoolean,
-    ProductListingFilterMixed, ProductListingFilterCurrent, ProductListingSorting
+    ProductListingFilterMixed, ProductListingFilterCurrent, ProductListingSorting, VariantGroup, VariantOption
 } from '@hubblecommerce/hubble/commons'
 
 function mapMedia (swMedia: swMedia): Media {
@@ -102,7 +102,38 @@ function mapPrice (calculatedPrice): Price {
     }
 }
 
-function mapProduct (swProduct: swProduct): Product {
+function mapVariantOption (swPropertyOption: PropertyGroupOption): VariantOption {
+    return {
+        id: swPropertyOption.id,
+        name: swPropertyOption.translated.name,
+        ...(swPropertyOption.colorHexCode != null && { color: swPropertyOption.colorHexCode }),
+        ...(swPropertyOption.media != null && { media: mapMedia(swPropertyOption.media) })
+    }
+}
+
+function mapPropertyOptions (swPropertyOptions: PropertyGroupOption[]): VariantOption[] {
+    return swPropertyOptions.map((swPropertyOption) => {
+        return mapVariantOption(swPropertyOption)
+    })
+}
+
+function mapVariantGroup (swPropertyGroup: PropertyGroup): VariantGroup {
+    return {
+        id: swPropertyGroup.id,
+        name: swPropertyGroup.translated.name,
+        // Todo patch api
+        // @ts-ignore
+        options: mapPropertyOptions(swPropertyGroup.options)
+    }
+}
+
+function mapVariantGroups (swPropertyGroups: PropertyGroup[]): VariantGroup[] {
+    return swPropertyGroups.map((swPropertyGroup) => {
+        return mapVariantGroup(swPropertyGroup)
+    })
+}
+
+function mapProduct (swProduct: swProduct, swProductConfigurator?: PropertyGroup[]): Product {
     let url = swProduct.seoUrls[0]?.pathInfo
     if (swProduct.seoUrls[0]?.isCanonical) {
         url = swProduct.seoUrls[0]?.seoPathInfo
@@ -118,6 +149,21 @@ function mapProduct (swProduct: swProduct): Product {
         media = mapMedia(swProduct.cover.media)
     }
 
+    let variants = null
+    if (swProductConfigurator != null && swProductConfigurator.length > 0) {
+        variants = mapVariantGroups(swProductConfigurator)
+    }
+
+    let defaultOptions = null
+    if (swProduct.optionIds != null) {
+        defaultOptions = swProduct.optionIds
+    }
+
+    let parentId = null
+    if (swProduct.parentId != null) {
+        parentId = swProduct.parentId
+    }
+
     return {
         id: swProduct.id,
         name: swProduct.translated.name,
@@ -131,7 +177,10 @@ function mapProduct (swProduct: swProduct): Product {
         deliveryTime: swProduct.deliveryTime?.name,
         manufacturer: mapManufacturer(swProduct.manufacturer),
         metaTitle: swProduct.translated.metaTitle,
-        metaDescription: swProduct.translated.metaDescription
+        metaDescription: swProduct.translated.metaDescription,
+        variants,
+        defaultOptions,
+        parentId
     }
 }
 
@@ -383,7 +432,12 @@ function mapPage (swPage): Page {
     }
 
     if (swPage.product != null) {
-        Object.assign(obj, { detail: mapProduct(swPage.product) })
+        Object.assign(obj, {
+            detail: mapProduct(
+                swPage.product,
+                swPage.configurator != null ? swPage.configurator : null
+            )
+        })
     }
 
     if (swPage.category != null) {

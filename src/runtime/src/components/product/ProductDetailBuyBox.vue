@@ -9,10 +9,24 @@
                 <p v-if="product.deliveryTime">
                     Delivery Time: {{ product.deliveryTime }}
                 </p>
-                <p>
-                    {{ formatPrice(product.price.regularPrice) }}
-                    {{ formatPrice(product.price.specialPrice) }}
-                </p>
+
+                <div class="flex gap-2 items-center">
+                    <div v-if="product.price.regularPrice" :class="{ 'text-secondary': product.price.specialPrice}">
+                        {{ formatPrice(product.price.regularPrice) }}
+                    </div>
+                    <div v-if="product.price.specialPrice" class="line-through text-sm">
+                        {{ formatPrice(product.price.specialPrice) }}
+                    </div>
+                </div>
+
+                <ProductDetailVariants
+                    v-if="product.variants != null"
+                    :variants="product.variants"
+                    :default-options="product.defaultOptions"
+                    :parent-id="product.parentId"
+                    @loading="variantLoading = $event"
+                />
+
                 <div class="card-actions justify-between items-end flex-nowrap">
                     <div class="form-control w-20">
                         <label for="quantity" class="label">
@@ -28,8 +42,8 @@
                         >
                     </div>
 
-                    <button :class="{'loading': cartLoading}" class="btn btn-primary w-full flex-shrink" @click="addToCart(qty, product.id)">
-                        <span v-if="!cartLoading">Add to cart</span>
+                    <button :class="{'loading': loading}" :disabled="loading" class="btn btn-primary w-full flex-shrink" @click="addToCart(qty, product.id)">
+                        <span v-if="!loading">Add to cart</span>
                     </button>
                 </div>
             </template>
@@ -42,22 +56,41 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch, computed, onBeforeUnmount } from 'vue'
+import { useNuxtApp } from '#app'
 import { Product, useCurrency } from '@hubblecommerce/hubble/commons'
 import { useCart, useNotification } from '#imports'
 
-defineProps<{
-    product: Product
+const props = defineProps<{
+    productData: Product
 }>()
 
+const product = ref(props.productData)
 const { formatPrice } = useCurrency()
 const qty = ref<number>(1)
 const { addToCart, loading: cartLoading, error: cartError } = useCart()
 const { showNotification } = useNotification()
+const variantLoading = ref(false)
+const loading = computed(() => {
+    return cartLoading.value || variantLoading.value
+})
 
 watch(cartError, (value) => {
     if (typeof value !== 'boolean') {
         showNotification(value, 'error', true)
     }
+})
+
+const { $hblBus } = useNuxtApp()
+$hblBus.$on('productVariantChanged', eventListenerBuyBox)
+
+function eventListenerBuyBox ({ data }) {
+    // Merge all data but the variants with the product data
+    const { variants, ...productData } = data
+    product.value = Object.assign(product.value, productData)
+}
+
+onBeforeUnmount(() => {
+    $hblBus.$off('productVariantChanged', eventListenerBuyBox)
 })
 </script>

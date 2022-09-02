@@ -3,7 +3,7 @@ import { RouteLocationNormalizedLoaded } from 'vue-router'
 import { useRouter } from '#app'
 import {
     IUsePage,
-    Page,
+    Page, Product,
     ProductListing,
     ProductListingFilterCurrent,
     useDefaultStructure
@@ -17,7 +17,7 @@ import {
     includes,
     associations,
     mapPage,
-    mapProductListing
+    mapProductListing, mapProduct
 } from '@hubblecommerce/hubble/platforms/shopware/api-client/utils'
 import { useRuntimeConfig } from '#imports'
 
@@ -154,12 +154,66 @@ export const usePage = function (): IUsePage {
         )
     }
 
+    async function getProductVariant (parentId: string, selectedOptions: Record<string, string>): Promise<Product> {
+        loading.value = true
+        error.value = false
+
+        try {
+            const queries = []
+            Object.keys(selectedOptions).forEach((key) => {
+                queries.push({
+                    type: 'contains',
+                    field: 'optionIds',
+                    value: selectedOptions[key]
+                })
+            })
+
+            const filter = [
+                {
+                    type: 'equals',
+                    field: 'parentId',
+                    value: parentId
+                },
+                {
+                    type: 'multi',
+                    operator: 'and',
+                    queries
+                }
+            ]
+
+            const response = await ProductShopware.readProduct(
+                'application/json',
+                'application/json',
+                {
+                    includes,
+                    associations,
+                    // Todo patch api
+                    // @ts-ignore
+                    filter
+                }
+            )
+
+            if (response.elements.length !== 1) {
+                loading.value = false
+                return
+            }
+
+            loading.value = false
+            return mapProduct(response.elements[0])
+        } catch (e) {
+            loading.value = false
+            error.value = e
+            return e
+        }
+    }
+
     return {
         loading,
         error,
         getPage,
         page,
         getProductListing,
-        updateUri
+        updateUri,
+        getProductVariant
     }
 }
