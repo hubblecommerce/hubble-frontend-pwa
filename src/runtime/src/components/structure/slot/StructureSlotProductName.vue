@@ -1,5 +1,5 @@
 <template>
-    <ProductDetailName :name="product.name" />
+    <ProductDetailName :name-data="product.name" />
 </template>
 
 <script setup lang="ts">

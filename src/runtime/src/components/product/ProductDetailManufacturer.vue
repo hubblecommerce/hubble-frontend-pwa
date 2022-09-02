@@ -5,14 +5,31 @@
 </template>
 
 <script setup lang="ts">
+import { onBeforeUnmount, ref, Ref } from 'vue'
+import { useNuxtApp } from '#app'
 import { Manufacturer } from '@hubblecommerce/hubble/commons'
 
-export interface ProductDetailManufacturerProps {
-    manufacturer: Manufacturer,
+interface ProductDetailManufacturerProps {
+    manufacturerData: Manufacturer,
     logoWidth?: number
 }
 
-withDefaults(defineProps<ProductDetailManufacturerProps>(), {
+const props = withDefaults(defineProps<ProductDetailManufacturerProps>(), {
     logoWidth: 80
+})
+
+const manufacturer: Ref<Manufacturer> = ref(props.manufacturerData)
+
+const { $hblBus } = useNuxtApp()
+$hblBus.$on('productVariantChanged', eventListenerManufacturer)
+
+function eventListenerManufacturer ({ data }) {
+    // Override manufacturer data
+    const { manufacturer: manufacturerData } = data
+    manufacturer.value = manufacturerData
+}
+
+onBeforeUnmount(() => {
+    $hblBus.$off('productVariantChanged', eventListenerManufacturer)
 })
 </script>

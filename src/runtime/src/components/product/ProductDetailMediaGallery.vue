@@ -17,15 +17,17 @@
 </template>
 
 <script setup lang="ts">
+import { onBeforeUnmount, ref, Ref } from 'vue'
+import { useNuxtApp } from '#app'
 import { Media } from '@hubblecommerce/hubble/commons'
 import placeholderImage from '@/assets/product/placeholder-image.png'
 
-export interface ProductDetailMediaGalleryProps {
-    media?: Media[] | Media
+interface ProductDetailMediaGalleryProps {
+    mediaData?: Media[] | Media
 }
 
-withDefaults(defineProps<ProductDetailMediaGalleryProps>(), {
-    media: () => {
+const props = withDefaults(defineProps<ProductDetailMediaGalleryProps>(), {
+    mediaData: () => {
         return {
             alt: 'Placeholder Image',
             title: 'Placeholder Image',
@@ -33,5 +35,20 @@ withDefaults(defineProps<ProductDetailMediaGalleryProps>(), {
             thumbnails: []
         }
     }
+})
+
+const media: Ref<Media[] | Media> = ref(props.mediaData)
+
+const { $hblBus } = useNuxtApp()
+$hblBus.$on('productVariantChanged', eventListenerMediaGallery)
+
+function eventListenerMediaGallery ({ data }) {
+    // Override media data
+    const { media: mediaData } = data
+    media.value = mediaData
+}
+
+onBeforeUnmount(() => {
+    $hblBus.$off('productVariantChanged', eventListenerMediaGallery)
 })
 </script>

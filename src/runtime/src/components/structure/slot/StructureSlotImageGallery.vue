@@ -1,5 +1,5 @@
 <template>
-    <ProductDetailMediaGallery :media="product.media" />
+    <ProductDetailMediaGallery :media-data="product.media" />
 </template>
 
 <script setup lang="ts">

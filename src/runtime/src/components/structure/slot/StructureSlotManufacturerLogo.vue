@@ -1,5 +1,5 @@
 <template>
-    <ProductDetailManufacturer :manufacturer="product.manufacturer" />
+    <ProductDetailManufacturer :manufacturer-data="product.manufacturer" />
 </template>
 
 <script setup lang="ts">
