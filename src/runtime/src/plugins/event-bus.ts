@@ -4,6 +4,8 @@ const emitter = mitt()
 
 /*
 Usage:
+const { $hblBus } = useNuxtApp()
+
 $hblBus.$emit('somethingHappened', { data: value })
 
 $hblBus.$on('somethingHappened', ({ data }) => {
