@@ -33,35 +33,12 @@ export const usePage = function (): IUsePage {
             loading.value = true
             error.value = false
 
-            const {
-                order,
-                limit,
-                p,
-                manufacturer,
-                'min-price': minPrice,
-                'max-price': maxPrice,
-                rating,
-                'shipping-free': shipping,
-                properties,
-                ...unknown
-            } = route.query
-
-            const params = {
-                path: route.path,
-                ...(order != null && { order }),
-                ...(limit != null && typeof limit === 'string' && { limit: parseInt(limit) }),
-                ...(p != null && { p }),
-                ...(manufacturer != null && typeof manufacturer === 'string' && { manufacturer: manufacturer.split(',') }),
-                ...(minPrice != null && { 'min-price': minPrice }),
-                ...(maxPrice != null && { 'max-price': maxPrice }),
-                ...(rating != null && { rating }),
-                ...(shipping != null && { 'shipping-free': (shipping === 'true') }),
-                ...(properties != null && typeof properties === 'string' && { properties: properties.split(',') })
-            }
+            const params = parseParamsFromQuery(route)
 
             const requestBody = {
                 includes,
                 associations,
+                path: route.path,
                 ...params
             }
 
@@ -104,6 +81,7 @@ export const usePage = function (): IUsePage {
             const params = {
                 order: sort,
                 limit,
+                ...(search != null && { search }),
                 ...(page != null && { p: page }),
                 // @ts-ignore
                 ...(manufacturer?.length > 0 && { manufacturer }),
@@ -123,14 +101,26 @@ export const usePage = function (): IUsePage {
                 ...params
             }
 
-            const response = await ProductShopware.readProductListing(
-                navigationId as string,
-                'application/json',
-                'application/json',
-                // TODO Patch api
-                // @ts-ignore
-                requestBody
-            )
+            let response
+
+            if (navigationId) {
+                response = await ProductShopware.readProductListing(
+                    navigationId as string,
+                    'application/json',
+                    'application/json',
+                    // TODO Patch api
+                    // @ts-ignore
+                    requestBody
+                )
+            } else {
+                response = await ProductShopware.searchPage(
+                    'application/json',
+                    'application/json',
+                    // TODO Patch api
+                    // @ts-ignore
+                    requestBody
+                )
+            }
 
             const mappedListing = mapProductListing(response)
 
@@ -207,6 +197,35 @@ export const usePage = function (): IUsePage {
         }
     }
 
+    function parseParamsFromQuery (route) {
+        const {
+            order,
+            limit,
+            p,
+            manufacturer,
+            'min-price': minPrice,
+            'max-price': maxPrice,
+            rating,
+            'shipping-free': shipping,
+            properties,
+            search,
+            ...unknown
+        } = route.query
+
+        return {
+            ...(order != null && { order }),
+            ...(limit != null && typeof limit === 'string' && { limit: parseInt(limit) }),
+            ...(p != null && { p }),
+            ...(manufacturer != null && typeof manufacturer === 'string' && { manufacturer: manufacturer.split(',') }),
+            ...(minPrice != null && { 'min-price': minPrice }),
+            ...(maxPrice != null && { 'max-price': maxPrice }),
+            ...(rating != null && { rating }),
+            ...(shipping != null && { 'shipping-free': (shipping === 'true') }),
+            ...(properties != null && typeof properties === 'string' && { properties: properties.split(',') }),
+            ...(search != null && { search })
+        }
+    }
+
     return {
         loading,
         error,
@@ -214,6 +233,7 @@ export const usePage = function (): IUsePage {
         page,
         getProductListing,
         updateUri,
-        getProductVariant
+        getProductVariant,
+        parseParamsFromQuery
     }
 }

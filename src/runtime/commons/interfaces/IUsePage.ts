@@ -10,5 +10,6 @@ export interface IUsePage {
     page: Ref<Page>,
     getProductListing (filters: ProductListingFilterCurrent, limit: number, sort: string, page?: number): Promise<{ productListing: ProductListing, params: any }>,
     updateUri (params): void,
-    getProductVariant (parentId: string, selectedOptions: Record<string, string>)
+    getProductVariant (parentId: string, selectedOptions: Record<string, string>),
+    parseParamsFromQuery (route)
 }
