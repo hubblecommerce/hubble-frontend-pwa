@@ -246,7 +246,7 @@ function mapFilters (swFilters: ProductListingResult['aggregations']): ProductLi
 
     // TODO Patch api
     // @ts-ignore
-    swFilters.properties.entities.forEach((entity) => {
+    swFilters.properties?.entities?.forEach((entity) => {
         const filter: ProductListingFilterMulti = {
             id: entity.id,
             name: entity.translated.name,
@@ -293,7 +293,7 @@ function mapCurrentFilters (swCurrentFilters: ProductListingResult['currentFilte
 
     obj['shipping-free'] = swCurrentFilters['shipping-free']
 
-    swFilters.properties.entities.forEach((entity) => {
+    swFilters.properties?.entities?.forEach((entity) => {
         const match = entity.options.filter((option) => {
             return swCurrentFilters.properties.includes(option.id)
         })
