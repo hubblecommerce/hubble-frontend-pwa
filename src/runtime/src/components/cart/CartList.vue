@@ -6,10 +6,10 @@
                 :key="lineItem.index"
                 class="flex pb-4 border border-l-0 border-r-0 border-t-0"
             >
-                <div class="avatar indicator mr-2">
+                <div v-if="lineItem.type !== 'promotion'" class="avatar indicator mr-2">
                     <span class="indicator-item indicator-bottom badge badge-secondary">{{ lineItem.quantity }}</span>
                     <div class="w-20">
-                        <img :src="lineItem.media.url" :alt="lineItem.name">
+                        <img :src="lineItem.media?.url" :alt="lineItem.name">
                     </div>
                 </div>
                 <div class="flex flex-col justify-between w-full px-2">
@@ -22,11 +22,11 @@
                         </div>
                     </div>
                     <div class="self-end w-full text-right text-sm">
-                        <div :class="{'line-through text-xs': lineItem.price.specialPrice}">
-                            {{ formatPrice(lineItem.price.regularPrice) }}
-                        </div>
-                        <div v-if="lineItem.price.specialPrice" class="text-secondary">
+                        <div v-if="lineItem.price.specialPrice" :class="{ 'line-through text-xs': lineItem.price.specialPrice }">
                             {{ formatPrice(lineItem.price.specialPrice) }}
+                        </div>
+                        <div :class="{ 'text-secondary': lineItem.price.specialPrice }">
+                            {{ formatPrice(lineItem.price.regularPrice) }}
                         </div>
                     </div>
                 </div>

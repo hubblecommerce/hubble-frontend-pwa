@@ -10,5 +10,6 @@ export interface IUseCart {
     loading: Ref<boolean>,
     error: Ref<boolean | string>,
     addToCart(qty: number, productId: string): Promise<Cart>,
-    removeLineItem(id: string): Promise<Cart>
+    removeLineItem(id: string): Promise<Cart>,
+    addCoupon (code: string): Promise<Cart>
 }

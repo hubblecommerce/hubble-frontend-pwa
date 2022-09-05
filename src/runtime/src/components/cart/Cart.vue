@@ -7,6 +7,7 @@
         </div>
         <div v-else-if="!loading" class="flex flex-col gap-4">
             <CartList :is-interactive="isInteractive" />
+            <CartCoupons />
             <CartTotals />
             <div v-if="cart?.lineItems.length > 0 && isInteractive" class="flex flex-col w-full">
                 <NuxtLink to="/checkout" class="btn btn-primary">

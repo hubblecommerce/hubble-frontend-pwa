@@ -150,6 +150,61 @@ export const useCart = function (): IUseCart {
         cookie.value = miniCart.value
     }
 
+    async function addCoupon (code: string): Promise<Cart> {
+        error.value = false
+        loading.value = true
+
+        try {
+            code = code.trim()
+
+            if (code === '') {
+                loading.value = false
+                return
+            }
+
+            const response = await CartShopware.addLineItem(
+                'application/json',
+                'application/json',
+                {
+                    items: [
+                        {
+                            type: 'promotion',
+                            referencedId: code
+                        }
+                    ]
+                }
+            )
+
+            if (response.errors != null) {
+                Object.keys(response.errors).forEach((key) => {
+                    if (!key.includes('promotion-discount-added')) {
+                        throw new Error(response.errors[key].message)
+                    }
+                })
+            }
+
+            if (response.token !== undefined) {
+                setSessionToken(response.token)
+            }
+
+            if (response.lineItems?.length === 0) {
+                loading.value = false
+                return
+            }
+
+            const mappedData = mapCart(response)
+            cart.value = mappedData
+            showNotification('Coupon added to cart', 'success')
+            loading.value = false
+
+            return mappedData
+        } catch (e) {
+            loading.value = false
+            error.value = e
+            return e
+        }
+    }
+
     watch(cart, (value, oldValue, onCleanup) => {
         saveCart()
     })
@@ -161,6 +216,7 @@ export const useCart = function (): IUseCart {
         deleteCart,
         addToCart,
         removeLineItem,
+        addCoupon,
         loading,
         error
     }
