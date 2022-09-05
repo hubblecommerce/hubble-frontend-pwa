@@ -24,10 +24,15 @@
             </div>
         </form>
         <div v-if="searchResult?.total > 0">
+            <NuxtLink :to="`/search?search=${term}`" class="w-full btn btn-sm btn-secondary mb-4">
+                View all results
+            </NuxtLink>
+
             <LazyProductListing
                 :data="searchResult"
-                :total="true"
+                :total="false"
                 :pagination="false"
+                :sorting="false"
                 grid-classes="grid grid-cols-2 gap-2"
             />
         </div>
@@ -72,7 +77,8 @@ watchDebounced(
 
 const submitSearch = async function () {
     if (term.value !== '') {
-        searchResult.value = await search(term.value)
+        const { productListing } = await search(term.value)
+        searchResult.value = productListing
     }
 }
 </script>

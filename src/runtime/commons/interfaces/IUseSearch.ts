@@ -4,5 +4,5 @@ import { ProductListing } from '@hubblecommerce/hubble/commons'
 export interface IUseSearch {
     loading: Ref<boolean>,
     error: Ref<boolean | string>,
-    search(term: string): Promise<ProductListing>
+    search (term: string, params?): Promise<{ productListing: ProductListing, params: any }>
 }

@@ -7,7 +7,7 @@ export function useSearch (): IUseSearch {
     const loading: Ref<boolean> = ref(false)
     const error: Ref<boolean | string> = ref(false)
 
-    async function search (term: string): Promise<ProductListing> {
+    async function search (term: string, params?): Promise<{ productListing: ProductListing, params: any }> {
         try {
             loading.value = true
 
@@ -16,15 +16,17 @@ export function useSearch (): IUseSearch {
                 'application/json',
                 'application/json',
                 {
-                    search: term
+                    search: term,
+                    ...params
                 }
             )
 
             loading.value = false
-            return mapProductListing(response)
+            return { productListing: mapProductListing(response), params }
         } catch (e) {
             loading.value = false
             error.value = e
+            console.log(e)
             return e
         }
     }
