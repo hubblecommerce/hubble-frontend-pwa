@@ -1,10 +1,5 @@
 <template>
     <header>
-        <!--
-        <misc-plugin-slot name="layouts-default-navbar-before" :events="{}" :data="{}">
-            This is a Fallback Text, in case there is no component matches this slot.
-        </misc-plugin-slot>
-        -->
         <nav class="bg-base-100 shadow-md relative z-50">
             <div class="navbar container m-auto px-2 lg:px-6">
                 <div class="navbar-start">
@@ -128,7 +123,7 @@ const {
 const { toggleDrawer } = useDrawer()
 const { miniCart } = useCart()
 
-const { data, error } = await useAsyncData(() => getNavigation(), { initialCache: false })
+const { data, error } = await useAsyncData(() => getNavigation())
 navigation.value = data.value
 
 if (error.value) {

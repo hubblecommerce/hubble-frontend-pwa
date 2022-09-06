@@ -7,9 +7,18 @@
         <input id="default-layout-drawer" v-model="drawerState" type="checkbox" class="drawer-toggle">
 
         <div class="drawer-content relative">
+            <misc-plugin-slot name="layouts-default-header-before" :events="{}" :data="{}" />
             <LayoutHeader />
+            <misc-plugin-slot name="layouts-default-header-after" :events="{}" :data="{}" />
+
+            <misc-plugin-slot name="layouts-default-content-before" :events="{}" :data="{}" />
             <slot />
+            <misc-plugin-slot name="layouts-default-content-after" :events="{}" :data="{}" />
+
+            <misc-plugin-slot name="layouts-default-footer-before" :events="{}" :data="{}" />
             <LayoutFooter />
+            <misc-plugin-slot name="layouts-default-footer-after" :events="{}" :data="{}" />
+
             <LayoutNotifications />
             <MiscLoadingBar ref="loading" />
         </div>
@@ -17,8 +26,10 @@
         <div class="drawer-side">
             <div class="drawer-overlay" @click="toggleDrawer()" />
             <div class="px-6 py-3 overflow-y-auto w-full md:w-96 bg-base-100 text-base-content">
+                <misc-plugin-slot name="layouts-default-drawer-overlay-before" :events="{}" :data="{}" />
                 <LazyDrawerContextCart v-if="drawerContext === 'cart'" />
                 <LazyDrawerContextSearch v-if="drawerContext === 'search'" />
+                <misc-plugin-slot name="layouts-default-drawer-overlay-after" :events="{}" :data="{}" />
             </div>
         </div>
     </div>

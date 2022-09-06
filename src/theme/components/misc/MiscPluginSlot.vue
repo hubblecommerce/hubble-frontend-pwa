@@ -1,6 +1,6 @@
 <template>
-    <div class="plugin-slot" style="border: 1px solid purple; min-height: 50px;">
-        Slot: {{ name }}
+    <div class="plugin-slot bg-gradient-to-r from-base-100 to-base-300 flex flex-col justify-center items-center">
+        <!--<div class="text-xs p-2">Slot: {{ name }}</div>-->
         <template v-if="slotEntries != null && slotEntries.length">
             <div v-for="(slotEntry, index) in slotEntries" :key="index" class="plugin-slot-entries">
                 <component
@@ -26,6 +26,8 @@
 * layouts-default-navbar-before
 * pages-slug-dynamic-component-before
 * components-product-product-detail-add-to-cart-after
+*
+* Component needs to be placed in a directory containing 'plugin' in path name
 */
 
 import { ref, useSlots, computed, resolveComponent } from 'vue'
@@ -52,7 +54,7 @@ const slotEntries = ref(null)
 
 const slots = useSlots()
 const hasSlotContent = computed(() => {
-    return slots && slots.default()
+    return slots && typeof slots.default === 'function' && slots.default()
 })
 
 if (pluginMapping != null && pluginMapping.pluginSlots != null) {
