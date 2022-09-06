@@ -33,13 +33,6 @@ export const useCustomer = function (): IUseCustomer {
     const { platformBaseUrl } = useRuntimeConfig()
     const { showNotification } = useNotification()
 
-    const isGuest = computed(() => {
-        if (customer.value?.isGuest !== undefined) {
-            return customer.value.isGuest
-        }
-        return true
-    })
-
     async function getCustomer (): Promise<Customer> {
         loading.value = true
         error.value = false
@@ -402,7 +395,6 @@ export const useCustomer = function (): IUseCustomer {
     return {
         customer,
         getCustomer,
-        isGuest,
         login,
         logout,
         register,

@@ -7,7 +7,6 @@ export interface IUseCustomer {
     loading: Ref<boolean>,
     error: Ref<boolean | string>,
     getCustomer(): Promise<Customer>,
-    isGuest: ComputedRef<boolean>,
     login(username: string, password: string): Promise<string>,
     logout(): void,
     updateShippingAddress (shippingAddress: CustomerShippingAddress): Promise<CustomerShippingAddress>,

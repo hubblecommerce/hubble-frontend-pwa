@@ -1,29 +1,7 @@
 import { ref, Ref } from 'vue'
 import { Navigation, IUseNavigation } from '@hubblecommerce/hubble/commons'
-import { CategoryShopware, NavigationRouteResponse } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-
-function mapNavigation (swNavigation: NavigationRouteResponse): Navigation {
-    return swNavigation.map((item) => {
-        let children = []
-        if (item.childCount > 0) {
-            children = mapNavigation(item.children)
-        }
-
-        let url = null
-        if (item.seoUrls.length > 0) {
-            if (item.seoUrls[0].pathInfo !== undefined) {
-                url = item.seoUrls[0].pathInfo
-            }
-        }
-
-        return {
-            id: item.id,
-            name: item.name,
-            url,
-            children
-        }
-    })
-}
+import { CategoryShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client'
+import { mapNavigation } from '@hubblecommerce/hubble/platforms/shopware/api-client/utils'
 
 const navigation: Ref<Navigation> = ref()
 

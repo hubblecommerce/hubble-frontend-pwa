@@ -18,7 +18,10 @@ import {
     PaymentMethod as SwPaymentMethod,
     Order as SwOrder,
     OrderAddress,
-    OrderLineItem as SwOrderLineItem, PropertyGroup, PropertyGroupOption
+    OrderLineItem as SwOrderLineItem,
+    PropertyGroup,
+    PropertyGroupOption,
+    NavigationRouteResponse
 } from '../generated'
 import {
     Block,
@@ -49,7 +52,12 @@ import {
     ProductListingFilterMulti,
     ProductListingFilterRange,
     ProductListingFilterBoolean,
-    ProductListingFilterMixed, ProductListingFilterCurrent, ProductListingSorting, VariantGroup, VariantOption
+    ProductListingFilterMixed,
+    ProductListingFilterCurrent,
+    ProductListingSorting,
+    VariantGroup,
+    VariantOption,
+    Navigation
 } from '@hubblecommerce/hubble/commons'
 
 function mapMedia (swMedia: swMedia): Media {
@@ -712,6 +720,29 @@ function mapOrders (swOrders: SwOrder[]): Order[] {
     })
 }
 
+function mapNavigation (swNavigation: NavigationRouteResponse): Navigation {
+    return swNavigation.map((item) => {
+        let children = []
+        if (item.childCount > 0) {
+            children = mapNavigation(item.children)
+        }
+
+        let url = null
+        if (item.seoUrls.length > 0) {
+            if (item.seoUrls[0].pathInfo !== undefined) {
+                url = item.seoUrls[0].pathInfo
+            }
+        }
+
+        return {
+            id: item.id,
+            name: item.name,
+            url,
+            children
+        }
+    })
+}
+
 export {
     mapCategory,
     mapMedia,
@@ -741,5 +772,6 @@ export {
     mapOrders,
     mapOrder,
     mapOrderLineItems,
-    mapOrderLineItem
+    mapOrderLineItem,
+    mapNavigation
 }
