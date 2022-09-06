@@ -13,14 +13,14 @@
         "./commons": {
             "import": "./dist/runtime/commons/index.mjs"
         },
-        "./src/store": {
-            "import": "./dist/runtime/src/store/index.mjs"
+        "./theme/store": {
+            "import": "./dist/theme/store/index.mjs"
         },
         "./platforms/shopware/api-client": {
-            "import": "./dist/runtime/platforms/shopware/api-client/generated/index.mjs"
+            "import": "./dist/platforms/shopware/api-client/generated/index.mjs"
         },
         "./platforms/shopware/api-client/utils": {
-            "import": "./dist/runtime/platforms/shopware/api-client/utils/index.mjs"
+            "import": "./dist/platforms/shopware/api-client/utils/index.mjs"
         }
     },
     "main": "./dist/module.cjs",
@@ -54,21 +54,23 @@
         "@nuxtjs/color-mode": "^3.1.4",
         "@nuxtjs/tailwindcss": "^5.3.2",
         "@pinia/nuxt": "^0.4.1",
-        "@vueuse/core": "^9.1.1",
-        "@vueuse/nuxt": "^9.1.1",
-        "daisyui": "^2.24.2",
+        "@vueuse/core": "^9.2.0",
+        "@vueuse/nuxt": "^9.2.0",
+        "daisyui": "^2.25.0",
         "globby": "^13.1.2",
         "lmify": "^0.3.0",
         "mitt": "^3.0.0",
         "portal-vue": "^3.0.0-beta.0",
+        "untyped": "^0.4.7",
         "unzipper": "^0.10.11"
     },
     "devDependencies": {
         "@nuxt/module-builder": "latest",
+        "@nuxt/schema": "^3.0.0-rc.9",
         "@nuxt/test-utils-edge": "^3.0.0-rc.9-27703329.537338f",
         "@nuxtjs/eslint-config-typescript": "^10.0.0",
-        "@typescript-eslint/eslint-plugin": "^5.36.1",
-        "@typescript-eslint/parser": "^5.36.1",
+        "@typescript-eslint/eslint-plugin": "^5.36.2",
+        "@typescript-eslint/parser": "^5.36.2",
         "eslint": "^8.23.0",
         "eslint-plugin-vue": "^9.4.0",
         "husky": "^8.0.1",

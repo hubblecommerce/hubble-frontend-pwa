@@ -3,7 +3,7 @@ import { ref, Ref } from 'vue'
 import { useCookie } from '#app'
 import { useRuntimeConfig, useCustomer } from '#imports'
 import { IUsePlatform, Session, Salutation, Country } from '@hubblecommerce/hubble/commons'
-import { useSessionStore } from '@hubblecommerce/hubble/src/store'
+import { useSessionStore } from '@hubblecommerce/hubble/theme/store'
 import { SystemContextShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 import {
     mapSession,
