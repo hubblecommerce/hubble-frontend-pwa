@@ -87,7 +87,7 @@
 import { ref, computed } from 'vue'
 import { showError, useRouter } from '#app'
 import { ProductListing, ProductListingFilter, ProductListingFilterCurrent } from '@hubblecommerce/hubble/commons'
-import { usePage, useRuntimeConfig } from '#imports'
+import { usePage } from '#imports'
 
 const props = defineProps<{
     availableFilters: ProductListingFilter[]
@@ -100,7 +100,6 @@ const emit = defineEmits<{(event: 'update:listing', data: ProductListing): void}
 const selectedFilters = ref(Object.assign(props.currentFilters, {}))
 const { getProductListing, updateUri } = usePage()
 const { currentRoute } = useRouter()
-const runtimeConfig = useRuntimeConfig()
 
 async function applyFilter (delay?: number) {
     if (delay) {
