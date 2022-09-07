@@ -5,7 +5,7 @@
             <MiscSkeleton text size="small" :repeat="6" />
             <MiscSkeleton size="large" :repeat="3" />
         </div>
-        <div v-else-if="!loading" class="flex flex-col gap-4">
+        <div v-else-if="!loading && !error" class="flex flex-col gap-4">
             <CartList :is-interactive="isInteractive" />
             <CartCoupons v-if="cart?.lineItems.length > 0" />
             <CartTotals />
@@ -15,7 +15,7 @@
                 </NuxtLink>
             </div>
         </div>
-        <div v-else-if="error">
+        <div v-else-if="error && !loading">
             {{ error }}
         </div>
     </Transition>
