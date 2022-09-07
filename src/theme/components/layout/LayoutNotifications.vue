@@ -1,7 +1,7 @@
 <template>
     <div class="toast toast-bottom toast-end w-full md:w-auto" style="z-index: 1000">
         <Transition name="fade">
-            <TransitionGroup v-if="notifications.length > 0" name="list" tag="div">
+            <TransitionGroup v-if="notifications.length > 0" name="list" tag="div" class="relative">
                 <div v-for="notification in notifications" :key="notification.id" class="alert mb-2 relative" :class="parseTypeClass(notification.type)">
                     <div class="pr-12">
                         <span>{{ notification.message }}</span>
@@ -22,7 +22,7 @@ import { useNotification } from '#imports'
 const { notifications, closeNotification, setDefaultOptions } = useNotification()
 
 setDefaultOptions({
-    displayTime: 7,
+    displayTime: 4,
     keepAlive: false
 })
 
@@ -64,7 +64,6 @@ const parseTypeClass = function (type) {
 .list-enter-from,
 .list-leave-to {
     opacity: 0;
-    transform: translateX(30px);
 }
 
 .list-leave-active {
