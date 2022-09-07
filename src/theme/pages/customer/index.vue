@@ -31,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, nextTick, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { navigateTo, useAsyncData } from '#app'
 import { useCustomer } from '#imports'
 
@@ -50,8 +50,6 @@ if (data.value == null || data.value?.isGuest || error.value != null) {
  */
 const loading = ref(true)
 onMounted(() => {
-    nextTick(() => {
-        loading.value = false
-    })
+    loading.value = false
 })
 </script>

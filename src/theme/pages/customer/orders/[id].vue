@@ -64,7 +64,7 @@
 
 <script setup lang="ts">
 import { navigateTo, useAsyncData, useRoute } from '#app'
-import { nextTick, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useCustomer } from '#imports'
 
 /*
@@ -81,9 +81,7 @@ if (data.value == null || data.value?.isGuest || error.value != null) {
 const loading = ref(true)
 const order = ref(null)
 onMounted(async () => {
-    await nextTick(async () => {
-        order.value = await getOrders(route.params.id as string)
-        loading.value = false
-    })
+    order.value = await getOrders(route.params.id as string)
+    loading.value = false
 })
 </script>

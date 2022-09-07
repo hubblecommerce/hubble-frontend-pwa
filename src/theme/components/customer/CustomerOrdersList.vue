@@ -40,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick, onMounted, ref, Ref } from 'vue'
+import { onMounted, ref, Ref } from 'vue'
 import { Order, useCurrency } from '@hubblecommerce/hubble/commons'
 import { useCustomer } from '#imports'
 
@@ -51,13 +51,11 @@ const loading: Ref<boolean> = ref(true)
 const orders: Ref<null | Order[]> = ref(null)
 const { getOrders, error } = useCustomer()
 onMounted(async () => {
-    await nextTick(async () => {
-        try {
-            orders.value = await getOrders() as Order[]
-        } catch (e) {} finally {
-            loading.value = false
-        }
-    })
+    try {
+        orders.value = await getOrders() as Order[]
+    } catch (e) {} finally {
+        loading.value = false
+    }
 })
 
 const { formatPrice } = useCurrency()

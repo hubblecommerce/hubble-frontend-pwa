@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick, onMounted } from 'vue'
+import { onMounted } from 'vue'
 import { useCart } from '#imports'
 
 interface CartProps {
@@ -39,10 +39,6 @@ const { getCart, cart, loading, error, deleteCart } = useCart()
 loading.value = true
 
 onMounted(async () => {
-    // onMounted bug: https://github.com/nuxt/framework/issues/2684
-    // use nextTick as a workaround
-    await nextTick(async () => {
-        await getCart()
-    })
+    await getCart()
 })
 </script>

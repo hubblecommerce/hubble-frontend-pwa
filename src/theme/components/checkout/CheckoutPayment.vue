@@ -55,7 +55,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, nextTick, watch, ref } from 'vue'
+import { onMounted, watch, ref } from 'vue'
 import { useCheckout, useNotification, usePlatform } from '#imports'
 
 const { loading, error, paymentMethods, getPaymentMethods } = useCheckout()
@@ -88,8 +88,6 @@ watch(updateError, (value) => {
 })
 
 onMounted(async () => {
-    await nextTick(async () => {
-        await getPaymentMethods()
-    })
+    await getPaymentMethods()
 })
 </script>

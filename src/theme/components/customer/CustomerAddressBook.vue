@@ -71,7 +71,7 @@
 
 <script setup lang="ts">
 import { XMarkIcon } from '@heroicons/vue/20/solid'
-import { onMounted, nextTick, ref, Ref, watch } from 'vue'
+import { onMounted, ref, Ref, watch } from 'vue'
 import { CustomerBillingAddress, CustomerShippingAddress, useForm } from '@hubblecommerce/hubble/commons'
 import { useCustomer, useNotification } from '#imports'
 
@@ -82,13 +82,11 @@ const loading: Ref<boolean> = ref(true)
 const addresses: Ref<null | CustomerBillingAddress[] | CustomerShippingAddress[]> = ref(null)
 const { customer, getCustomerAddresses, getCustomer, error } = useCustomer()
 onMounted(async () => {
-    await nextTick(async () => {
-        try {
-            addresses.value = await getCustomerAddresses()
-        } catch (e) {} finally {
-            loading.value = false
-        }
-    })
+    try {
+        addresses.value = await getCustomerAddresses()
+    } catch (e) {} finally {
+        loading.value = false
+    }
 })
 
 /*

@@ -51,7 +51,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, nextTick, watch, ref } from 'vue'
+import { onMounted, watch, ref } from 'vue'
 import { useCheckout, useNotification, usePlatform } from '#imports'
 import { useCurrency } from '@hubblecommerce/hubble/commons'
 
@@ -86,8 +86,6 @@ watch(updateError, (value) => {
 })
 
 onMounted(async () => {
-    await nextTick(async () => {
-        await getShippingMethods()
-    })
+    await getShippingMethods()
 })
 </script>

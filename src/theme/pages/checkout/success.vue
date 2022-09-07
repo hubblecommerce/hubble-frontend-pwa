@@ -60,7 +60,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, nextTick } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter, navigateTo } from '#app'
 import { useCustomer } from '#imports'
 
@@ -71,16 +71,14 @@ const orderId = currentRoute.value.query.orderId.toString()
 const order = ref(null)
 
 onMounted(async () => {
-    await nextTick(async () => {
-        if (orderId) {
-            try {
-                order.value = await getOrders(orderId)
-                loading.value = loadingOrder.value
-            } catch (e) {
-                loading.value = false
-                navigateTo('/')
-            }
+    if (orderId) {
+        try {
+            order.value = await getOrders(orderId)
+            loading.value = loadingOrder.value
+        } catch (e) {
+            loading.value = false
+            navigateTo('/')
         }
-    })
+    }
 })
 </script>

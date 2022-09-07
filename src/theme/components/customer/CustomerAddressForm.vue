@@ -109,7 +109,7 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick, onMounted, ref, computed } from 'vue'
+import { onMounted, computed } from 'vue'
 import { usePlatform } from '#imports'
 import { CustomerBillingAddress, CustomerShippingAddress } from '@hubblecommerce/hubble/commons'
 
@@ -129,15 +129,13 @@ const form = computed({
 })
 
 const { salutations, getSalutations, countries, getCountries } = usePlatform()
-onMounted(() => {
-    return nextTick(async () => {
-        if (salutations.value == null) {
-            salutations.value = await getSalutations()
-        }
+onMounted(async () => {
+    if (salutations.value == null) {
+        salutations.value = await getSalutations()
+    }
 
-        if (countries.value == null) {
-            countries.value = await getCountries()
-        }
-    })
+    if (countries.value == null) {
+        countries.value = await getCountries()
+    }
 })
 </script>
