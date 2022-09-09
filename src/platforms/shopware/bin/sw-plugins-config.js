@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import * as swPlugins from './sw-plugins-functions'
+import * as swPlugins from './sw-plugins-functions.js'
 
 const main = async function () {
     const error = await swPlugins.ensurePluginsDir()
@@ -12,14 +12,9 @@ const main = async function () {
         throw new Error(swPlugins.authErrorMsg)
     }
 
-    const [buildArtifact, buildError] = await swPlugins.dumpBundles(authResponse)
+    const [buildArtifact, bundleConfig, buildError] = await swPlugins.dumpBundles(authResponse)
     if (buildError) {
         throw new Error(buildError)
-    }
-
-    const [pluginConfigs, fetchPluginConfigError] = await swPlugins.fetchPluginConfig(buildArtifact.config)
-    if (fetchPluginConfigError) {
-        throw new Error(fetchPluginConfigError)
     }
 
     const [removeResponse, removeError] = await swPlugins.removeConfigFile()
@@ -27,7 +22,7 @@ const main = async function () {
         throw new Error(removeError)
     }
 
-    const [pluginConfigFile, createConfigError] = await swPlugins.createPluginConfig(pluginConfigs)
+    const [pluginConfigFile, createConfigError] = await swPlugins.createPluginConfig(bundleConfig)
     if (createConfigError) {
         throw new Error(createConfigError)
     }

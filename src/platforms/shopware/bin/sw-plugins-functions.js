@@ -20,7 +20,7 @@ const projectDir = playgroundExists ? playgroundPath : process.env.INIT_CWD
 const pluginsDirName = 'platform-plugins'
 const pluginsDir = path.join(projectDir, `/${pluginsDirName}`)
 const pluginConfigFile = 'pluginConfig.json'
-const apiBasePath = process.env.PLATFORM_BASE_URL
+const apiBasePath = process.env.API_BASE_URL.replace('/store-api', '')
 const authRoute = '/api/oauth/token'
 const authErrorMsg = 'Authorization failed, please check if your .env file provides the data API_CLIENT_ID ' +
     'and API_CLIENT_SECRET with values from your Shopware created integration ' +
@@ -114,7 +114,7 @@ async function dumpBundles (authResponse) {
             headers: { Authorization: `Bearer ${authResponse.access_token}` }
         })
 
-        return [response._data.buildArtifact, null]
+        return [response._data.buildArtifact, response._data.bundleConfig, null]
     } catch (e) {
         // eslint-disable-next-line no-console
         console.error(e)
