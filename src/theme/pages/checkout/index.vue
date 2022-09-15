@@ -196,13 +196,13 @@
             </client-only>
         </template>
 
-        <template v-if="step === 'shipping'">
-            <CheckoutShipping @update-after:shippingMethod="onUpdateShippingMethod()" />
-        </template>
+        <client-only>
+            <CheckoutShipping v-show="step === 'shipping'" @update-after:shipping-method="onUpdateShippingMethod()" />
+        </client-only>
 
-        <template v-if="step === 'payment'">
-            <CheckoutPayment @update-after:paymentMethod="onUpdatePaymentMethod()" />
-        </template>
+        <client-only>
+            <CheckoutPayment v-show="step === 'payment'" key="paymentMethods" @update-after:payment-method="onUpdatePaymentMethod()" />
+        </client-only>
 
         <template v-if="step === 'summary'">
             <div class="border border-base-300">
@@ -227,7 +227,13 @@
                     <span class="label-text mr-auto">I have read the privacy policy and I agree with them.</span>
                 </label>
 
-                <CheckoutPlaceOrder :form="placeOrderForm">
+                <MiscPluginSlot
+                    name="pages-checkout-place-order"
+                    :data="{ form: placeOrderForm }"
+                    :events="slotEvents"
+                />
+
+                <CheckoutPlaceOrder v-if="defaultPlaceOrder" :form="placeOrderForm">
                     <template #actions="actionProps">
                         <div class="navigation flex justify-between items-center">
                             <div class="link link-hover link-accent" @click="selectStep('payment')">
@@ -358,12 +364,23 @@ async function onUpdateShippingMethod () {
 
 async function onUpdatePaymentMethod () {
     await getSession()
+    defaultPlaceOrder.value = true
 }
 
 async function afterContactSubmit () {
     await getSession()
     selectStep('shipping')
 }
+
+/*
+ * Plugins
+ */
+const defaultPlaceOrder = ref(true)
+
+const slotEvents = ref({
+    'update:defaultPlaceOrder': (bool) => { defaultPlaceOrder.value = bool },
+    'update:selectStep': (string) => { step.value = string }
+})
 </script>
 
 <style scoped>
