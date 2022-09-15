@@ -665,6 +665,9 @@ function mapShippingMethods (swShippingMethods: SwShippingMethod[]): ShippingMet
 function mapPaymentMethod (swPaymentMethod: SwPaymentMethod): PaymentMethod {
     return {
         id: swPaymentMethod.id,
+        // Todo patch api
+        // @ts-ignore
+        code: swPaymentMethod.shortName,
         position: swPaymentMethod.position != null ? swPaymentMethod.position : 1,
         name: swPaymentMethod.translated.name,
         ...(swPaymentMethod.translated.description != null && { description: swPaymentMethod.translated.description }),

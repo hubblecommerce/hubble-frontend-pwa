@@ -2,6 +2,7 @@ import { Media } from './Media'
 
 export interface PaymentMethod {
     id: string,
+    code: string,
     name: string,
     position: number,
     description?: string,
