@@ -41,7 +41,7 @@
         "test": "nuxi prepare __tests__/module/fixture && vitest",
         "coverage": "vitest run --coverage",
         "sw:dev:generate-api": "node bin/hubble-cli.js dev:sw open-api-generate $BASEURL $CLIENT_ID $CLIENT_SECRET && git apply src/runtime/platforms/shopware/api-client/*.patch",
-        "sw:dev:patch-api": "git format-patch -1 $COMMIT -o src/runtime/platforms/shopware/api-client/",
+        "sw:dev:patch-api": "git format-patch -1 $COMMIT -o src/platforms/shopware/api-client/",
         "sw:install-plugins": "node bin/hubble-cli.js dev:sw sw-plugins-assets",
         "sw:config-plugins": "node bin/hubble-cli.js dev:sw sw-plugins-config"
     },
