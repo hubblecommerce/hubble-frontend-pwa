@@ -1,5 +1,5 @@
 <template>
-    <div class="plugin-slot bg-gradient-to-r from-base-100 to-base-300 flex flex-col justify-center items-center">
+    <div class="plugin-slot">
         <!--<div class="text-xs p-2">Slot: {{ name }}</div>-->
         <template v-if="slotEntries != null && slotEntries.length">
             <div v-for="(slotEntry, index) in slotEntries" :key="index" class="plugin-slot-entries">
