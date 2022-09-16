@@ -1,11 +1,15 @@
 import { Ref } from 'vue'
-import { FetchResult } from '#app'
-import { FetchRequest } from 'ohmyfetch'
+import { RouteLocationNormalizedLoaded } from 'vue-router'
 import { Page } from './Page'
+import { ProductListing, ProductListingFilterCurrent } from './ProductListing'
 
 export interface IUsePage {
     loading: Ref<boolean>,
     error: Ref<boolean>
-    getPage(path: string): Promise<FetchResult<FetchRequest>>,
-    page: Ref<Page>
+    getPage (route: RouteLocationNormalizedLoaded): Promise<Page>,
+    page: Ref<Page>,
+    getProductListing (filters: ProductListingFilterCurrent, limit: number, sort: string, page?: number): Promise<{ productListing: ProductListing, params: any }>,
+    updateUri (params): void,
+    getProductVariant (parentId: string, selectedOptions: Record<string, string>),
+    parseParamsFromQuery (route)
 }

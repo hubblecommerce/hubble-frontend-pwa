@@ -8,7 +8,8 @@ export interface Slot {
     type?: string
     position?: string
     data: any,
-    productListing: ProductListing | null
+    productListing?: ProductListing | null,
+    media?: Media | null
 }
 
 export interface Block {

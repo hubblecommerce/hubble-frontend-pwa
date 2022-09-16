@@ -1,12 +1,29 @@
 import { Media } from './Media'
 
 export interface Manufacturer {
-    id: string
+    id: string,
+    link?: string,
+    name: string,
+    description?: string,
+    media?: Media
 }
 
 export interface Price {
-    regularPrice: number
-    specialPrice: number | null
+    regularPrice: string,
+    specialPrice: string | null
+}
+
+export interface VariantOption {
+    id: string,
+    name: string,
+    color?: string,
+    media?: Media
+}
+
+export interface VariantGroup {
+    id: string,
+    name: string,
+    options: VariantOption[]
 }
 
 export interface Product {
@@ -22,5 +39,8 @@ export interface Product {
     deliveryTime?: string,
     manufacturer?: Manufacturer,
     metaTitle?: string,
-    metaDescription?: string
+    metaDescription?: string,
+    variants?: VariantGroup[],
+    defaultOptions?: string[],
+    parentId?: string
 }

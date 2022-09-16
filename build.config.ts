@@ -1,13 +1,38 @@
 import { defineBuildConfig } from 'unbuild'
 
 export default defineBuildConfig({
-    declaration: false,
     rollup: { cjsBridge: true },
     entries: [
         './src/module',
-        { input: 'src/runtime/commons/', outDir: 'dist/runtime/commons', declaration: true },
-        { input: 'src/runtime/platforms/shopware/api-client/generated/', outDir: 'dist/runtime/platforms/shopware/api-client/generated', declaration: true },
-        { input: 'src/runtime/platforms/shopware/bin/', outDir: 'dist/runtime/platforms/shopware/bin', declaration: false, ext: 'js' },
-        { input: 'src/runtime/src/public/', outDir: 'dist/runtime/src/public', ext: 'js' }
+        // Shopware
+        {
+            input: './src/platforms/shopware/api-client/',
+            outDir: './dist/platforms/shopware/api-client',
+            declaration: true
+        },
+        {
+            input: './src/platforms/shopware/bin/',
+            outDir: './dist/platforms/shopware/bin',
+            declaration: false,
+            ext: 'js'
+        },
+        {
+            input: './src/platforms/shopware/composables/',
+            outDir: './dist/platforms/shopware/composables',
+            declaration: false,
+            ext: 'ts'
+        },
+        {
+            builder: 'mkdist',
+            input: './src/platforms/shopware/config/',
+            outDir: './dist/platforms/shopware/config'
+        },
+        // Theme
+        {
+            input: './src/theme/',
+            outDir: './dist/theme',
+            declaration: false,
+            ext: 'ts'
+        }
     ]
 })

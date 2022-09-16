@@ -17,13 +17,13 @@ version.
 - [x] Typescript Support
 - [x] Linting config (for dev purposes only)
 - [x] Tested (for dev purposes only)
+- [x] Platform specific api clients
+- [x] Usage of platform agnostic composables
+- [x] Integration path for installing platform plugins / modules
+- [x] Components as a toolset to build the shop interface
+- [x] Included a famous CSS framework
+- [x] SEO friendly interface
 - [ ] Supports multiple e-commerce platforms
-- [ ] Platform specific api clients 
-- [ ] Usage of platform agnostic composables
-- [ ] Integration path for installing platform plugins / modules
-- [ ] Components as a toolset to build the shop interface 
-- [ ] Included a famous CSS framework
-- [ ] SEO friendly interface
 - [ ] Multi-language support 
 
 ## Development

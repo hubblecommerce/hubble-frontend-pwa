@@ -1,12 +1,28 @@
 import { fileURLToPath } from 'url'
-import { defineNuxtConfig } from 'nuxt'
 import eslintPlugin from 'vite-plugin-eslint'
 import hubble from '..'
 
+// @ts-ignore
 export default defineNuxtConfig({
     modules: [
         hubble
     ],
+    experimental: {
+        // https://github.com/nuxt/framework/issues/7517
+        treeshakeClientOnly: false,
+        // If components: global = true => all styles would be used inline. To avoid this use:
+        inlineSSRStyles: false
+    },
+    nitro: {
+        // https://github.com/unjs/nitro/pull/449
+        compressPublicAssets: true
+    },
+    components: {
+        // Register all your components globally, which will create async chunks for all your components
+        // and prevent global prefetching
+        global: true,
+        dirs: ['~/components']
+    },
     vite: {
         plugins: [
             eslintPlugin()
@@ -14,22 +30,10 @@ export default defineNuxtConfig({
         resolve: {
             alias: {
                 '@hubblecommerce/hubble/commons': fileURLToPath(new URL('../src/runtime/commons', import.meta.url)),
-                '@hubblecommerce/hubble/src/store': fileURLToPath(new URL('../src/runtime/src/store', import.meta.url)),
-                '@hubblecommerce/hubble/platforms/shopware/api-client/utils': fileURLToPath(new URL('../src/runtime/platforms/shopware/api-client/utils/index.ts', import.meta.url)),
-                '@hubblecommerce/hubble/platforms/shopware/api-client': fileURLToPath(new URL('../src/runtime/platforms/shopware/api-client/generated/index.ts', import.meta.url))
+                '@hubblecommerce/hubble/theme/store': fileURLToPath(new URL('../src/theme/store', import.meta.url)),
+                '@hubblecommerce/hubble/platforms/shopware/api-client/utils': fileURLToPath(new URL('../src/platforms/shopware/api-client/utils/index.ts', import.meta.url)),
+                '@hubblecommerce/hubble/platforms/shopware/api-client': fileURLToPath(new URL('../src/platforms/shopware/api-client/generated/index.ts', import.meta.url))
             }
-        }
-    },
-    app: {
-        head: {
-            link: [
-                {
-                    href: 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css',
-                    rel: 'stylesheet',
-                    integrity: 'sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor',
-                    crossorigin: 'anonymous'
-                }
-            ]
         }
     }
 })

@@ -1,11 +1,14 @@
-import { join, extname, resolve, basename } from 'path'
+import path, { join, extname, resolve, basename } from 'path'
 import { fileURLToPath } from 'url'
 import { defineNuxtModule, installModule } from '@nuxt/kit'
 import fse from 'fs-extra'
 import { defu } from 'defu'
-import { CookieOptions } from '#app'
+import { CookieOptions } from 'nuxt/app'
 import { globby } from 'globby'
 import { watch } from 'chokidar'
+import { Config } from 'tailwindcss'
+import daisyui from 'daisyui'
+import type { NuxtModule } from '@nuxt/schema'
 
 // Set configs of configured platform
 async function setDefaultRuntimeConfigs (nuxt) {
@@ -13,7 +16,7 @@ async function setDefaultRuntimeConfigs (nuxt) {
         const {
             defaultPublicRuntimeConfig,
             defaultPrivateRuntimeConfig
-        } = await import(`./runtime/platforms/${process.env.PLATFORM}/config${extname(import.meta.url)}`)
+        } = await import(`./platforms/${process.env.PLATFORM}/config/config${extname(import.meta.url)}`)
 
         // Merge default configs with configs set in nuxt.config.js
         nuxt.options.runtimeConfig.public = defu(nuxt.options.publicRuntimeConfig.public, defaultPublicRuntimeConfig)
@@ -45,7 +48,7 @@ const asyncCopyDirs = async (sourceDirs, targetDir, options = {}) => {
     )
 }
 
-export interface SessionCookie {
+export interface Cookie {
     name: string,
     options: CookieOptions
 }
@@ -55,7 +58,8 @@ export interface ModuleOptions {
     dirBlacklist: string[],
     pluginsDirName: string,
     pluginsConfigFileName: string,
-    sessionCookie: SessionCookie
+    sessionCookie: Cookie,
+    cartCookie: Cookie
 }
 
 export default defineNuxtModule<ModuleOptions>({
@@ -67,7 +71,7 @@ export default defineNuxtModule<ModuleOptions>({
         // Compatibility constraints
         compatibility: {
             // Semver version of supported nuxt versions
-            nuxt: '^3.0.0'
+            nuxt: '^3.0.0-rc.9'
         }
     },
     defaults: {
@@ -77,6 +81,14 @@ export default defineNuxtModule<ModuleOptions>({
         pluginsConfigFileName: 'pluginConfig.json',
         sessionCookie: {
             name: 'hubble-session-token',
+            options: {
+                maxAge: 60 * 60 * 24 * 30,
+                sameSite: 'lax',
+                path: '/'
+            }
+        },
+        cartCookie: {
+            name: 'hubble-cart',
             options: {
                 maxAge: 60 * 60 * 24 * 30,
                 sameSite: 'lax',
@@ -92,16 +104,19 @@ export default defineNuxtModule<ModuleOptions>({
         }
 
         // Transpile runtime
-        const runtimeDir = fileURLToPath(new URL('./runtime', import.meta.url))
+        const runtimeDir = fileURLToPath(new URL('./', import.meta.url))
         nuxt.options.build.transpile.push(runtimeDir)
 
         // Install pinia for store management
         await installModule('@pinia/nuxt', { disableVuex: true })
 
+        // Install VueUse for useful helper composables
+        await installModule('@vueuse/nuxt')
+
         /*
          * File-based inheritance logic
          */
-        const baseDir = resolve(join(runtimeDir, 'src'))
+        const baseDir = resolve(join(runtimeDir, 'theme'))
         const targetDir = resolve(join(nuxt.options.rootDir, options.targetDirName))
         const platformDir = resolve(join(runtimeDir, 'platforms', process.env.PLATFORM))
         const platformPluginsDir = resolve(join(nuxt.options.rootDir, options.pluginsDirName))
@@ -136,6 +151,18 @@ export default defineNuxtModule<ModuleOptions>({
             }
         }
 
+        const baseAliases = {
+            '~~': nuxt.options.rootDir,
+            '@@': nuxt.options.rootDir,
+
+            '~': targetDir,
+            '@': targetDir,
+
+            assets: path.join(targetDir, 'assets'),
+            public: path.join(targetDir, 'public')
+        }
+        nuxt.options.alias = { ...nuxt.options.alias, ...baseAliases }
+
         // To make resolveComponent() with variable component name possible, set all structure components as global
         nuxt.hook('components:extend', (components) => {
             // eslint-disable-next-line array-callback-return
@@ -157,6 +184,11 @@ export default defineNuxtModule<ModuleOptions>({
             options: options.sessionCookie.options
         }
 
+        nuxt.options.runtimeConfig.public.cartCookie = {
+            name: options.cartCookie.name,
+            options: options.cartCookie.options
+        }
+
         // Vite only: exclude module from optimizeDeps to prevent vite from optimize #app and #import inside
         // of module
         if (nuxt.options.vite) {
@@ -168,11 +200,52 @@ export default defineNuxtModule<ModuleOptions>({
             app.errorComponent = resolve(join(targetDir, 'components/misc/MiscError.vue'))
         })
 
+        /*
+         * Theming
+         */
+        // @ts-ignore
+        nuxt.hook('tailwindcss:config', (twConfig: Config) => {
+            let configOverrides: Config = {
+                content: [],
+                plugins: [
+                    daisyui
+                ]
+            }
+            configOverrides = defu(twConfig, configOverrides)
+
+            const contentOverrides = [
+                join(targetDir, 'components/**/*.{vue,js}'),
+                join(targetDir, 'layouts/**/*.vue'),
+                join(targetDir, 'pages/**/*.vue'),
+                join(targetDir, 'composables/**/*.{js,ts}'),
+                join(targetDir, 'plugins/**/*.{js,ts}'),
+                join(targetDir, 'App.{js,ts,vue}'),
+                join(targetDir, 'app.{js,ts,vue}')
+            ]
+            configOverrides.content = contentOverrides
+
+            // Need to set via Object.assign because we cannot update the reference of the object
+            Object.assign(twConfig, configOverrides)
+        })
+
+        await installModule('@nuxtjs/tailwindcss', {
+            configPath: join(nuxt.options.rootDir, 'tailwind.config.ts')
+        })
+
+        await installModule('@nuxtjs/color-mode', {
+            preference: 'system', // default theme
+            dataValue: 'theme', // activate data-theme in <html> tag
+            classSuffix: ''
+        })
+
+        nuxt.options.build.transpile.push('@heroicons/vue')
+
         // Dev only: register new file-watcher based on file inheritance
         if (nuxt.options.dev) {
             const excludedDirectories = [...options.dirBlacklist.map(__blacklistedDir => `${nuxt.options.rootDir}/${__blacklistedDir}/**`)]
             const toTargetPath = oldPath => resolve(oldPath.replace(nuxt.options.rootDir, targetDir))
 
+            // TODO: Write generic function for watchers
             watch(nuxt.options.rootDir, { ignoreInitial: true, ignored: excludedDirectories }).on('all', async (event, filePath) => {
                 const newDestination = toTargetPath(filePath)
 
@@ -226,6 +299,22 @@ export default defineNuxtModule<ModuleOptions>({
                         console.log('err occurred: ', err)
                     }
                 })
+            })
+
+            watch(join(platformDir, 'composables'), { ignoreInitial: true }).on('all', (event, filePath) => {
+                const newDestination = resolve(filePath.replace(join(platformDir, 'composables'), join(targetDir, 'composables')))
+
+                if (newDestination === '') {
+                    return false
+                }
+
+                if (event === 'add' || event === 'change') {
+                    fse.copy(filePath, newDestination)
+                }
+
+                if (event === 'unlink') {
+                    fse.remove(newDestination)
+                }
             })
         }
     }
