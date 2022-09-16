@@ -6,7 +6,7 @@
             </div>
             <div class="text-sm">
                 Already a customer?
-                <NuxtLink class="link link-accent link-hover" to="/customer/login">
+                <NuxtLink no-prefetch class="link link-accent link-hover" to="/customer/login">
                     Login here!
                 </NuxtLink>
             </div>

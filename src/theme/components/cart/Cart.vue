@@ -10,7 +10,7 @@
             <CartCoupons v-if="cart?.lineItems.length > 0" />
             <CartTotals />
             <div v-if="cart?.lineItems.length > 0 && isInteractive" class="flex flex-col w-full">
-                <NuxtLink to="/checkout" class="btn btn-primary">
+                <NuxtLink no-prefetch to="/checkout" class="btn btn-primary">
                     Checkout
                 </NuxtLink>
             </div>

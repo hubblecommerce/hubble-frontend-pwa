@@ -1,7 +1,7 @@
 <template>
     <div class="card card-compact bg-base-100 border border-base-200 shadow-md transition hover:shadow-xl">
         <figure>
-            <NuxtLink :to="data.url">
+            <NuxtLink no-prefetch :to="data.url">
                 <img v-if="isLoading || data.media == null" src="~/assets/product/placeholder-image.png" class="d-block m-auto mw-100" height="300" :alt="data.name">
                 <img v-else :src="image.src" :alt="data.name">
             </NuxtLink>
@@ -19,7 +19,7 @@
                 </div>
             </div>
             <div class="card-actions justify-center xl:justify-between">
-                <NuxtLink :to="data.url" class="btn btn-primary text-center" role="button">
+                <NuxtLink no-prefetch :to="data.url" class="btn btn-primary text-center" role="button">
                     Details
                 </NuxtLink>
                 <button

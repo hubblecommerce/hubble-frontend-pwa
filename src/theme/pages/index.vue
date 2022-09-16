@@ -39,10 +39,10 @@
                         </div>
                     </div>
                     <div class="mt-4 flex flex-1 justify-center space-x-2 lg:mt-6 lg:justify-start">
-                        <NuxtLink to="/navigation/a515ae260223466f8e37471d279e6406" class="btn btn-ghost btn-active lg:btn-lg normal-case">
+                        <NuxtLink no-prefetch to="/navigation/a515ae260223466f8e37471d279e6406" class="btn btn-ghost btn-active lg:btn-lg normal-case">
                             Shop cloths
                         </NuxtLink>
-                        <NuxtLink to="/customer/login" class="btn lg:btn-lg normal-case">
+                        <NuxtLink no-prefetch to="/customer/login" class="btn lg:btn-lg normal-case">
                             Login
                         </NuxtLink>
                     </div>

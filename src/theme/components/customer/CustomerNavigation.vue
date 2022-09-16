@@ -1,7 +1,7 @@
 <template>
     <ul tabindex="0" class="menu menu-compact dropdown-content p-2 shadow bg-base-100 rounded-box">
         <li>
-            <NuxtLink to="/customer" class="justify-between">
+            <NuxtLink no-prefetch to="/customer" class="justify-between">
                 Profile
                 <span class="badge">New</span>
             </NuxtLink>
