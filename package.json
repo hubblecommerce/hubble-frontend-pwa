@@ -14,7 +14,7 @@
             "import": "./dist/runtime/commons/index.mjs"
         },
         "./theme/store": {
-            "import": "./dist/theme/store/index.mjs"
+            "import": "./dist/theme/store/index"
         },
         "./platforms/shopware/api-client": {
             "import": "./dist/platforms/shopware/api-client/generated/index.mjs"
