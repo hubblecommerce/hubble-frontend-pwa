@@ -1,7 +1,7 @@
 import { fileURLToPath } from 'url'
-import { defineNuxtConfig } from 'nuxt'
 import hubble from '../../..'
 
+// @ts-ignore
 export default defineNuxtConfig({
     modules: [
         hubble
