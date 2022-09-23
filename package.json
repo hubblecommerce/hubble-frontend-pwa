@@ -5,6 +5,10 @@
     "author": "hubble commerce",
     "license": "MIT",
     "type": "module",
+    "engines" : {
+        "npm" : ">=6.14.15",
+        "node" : ">=14.18.1"
+    },
     "exports": {
         ".": {
             "import": "./dist/module.mjs",
