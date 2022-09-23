@@ -28,9 +28,9 @@ const compName = computed(() => {
     return name
 })
 
-// Render first section server side (SEO relevant hero elements)
+// Render first two section server side (SEO relevant hero elements)
 // TODO: find a more generic way to mark elements a SEO relevant
-if (props.count === 0) {
+if (props.count <= 1) {
     component.value = resolveComponent(`${compName.value}`)
 }
 
@@ -38,7 +38,7 @@ if (props.count === 0) {
 const el = ref()
 onMounted(() => {
     // TODO: find a more generic way to mark elements a SEO relevant
-    if (props.count > 0) {
+    if (props.count > 1) {
         registerIntersectionObserver(el.value, loadComponent)
     }
 })
