@@ -12,11 +12,14 @@
 </template>
 
 <script setup lang="ts">
-import { computed, resolveComponent, provide } from 'vue'
+import { computed, resolveComponent, provide, onBeforeUnmount, onMounted } from 'vue'
 import { showError, useRoute, useAsyncData } from '#app'
-import { usePage } from '#imports'
+import { useLocalisation, usePage } from '#imports'
 import { detailData } from '@hubblecommerce/hubble/commons'
 
+/*
+ * Page request and error handling
+ */
 const route = useRoute()
 const { page, getPage } = usePage()
 
@@ -27,6 +30,9 @@ if (error.value) {
     showError(error.value as Error)
 }
 
+/*
+ * Page components and data used for SEO / Head
+ */
 const pageComponent = computed(() => {
     if (page.value.type === 'category') {
         return resolveComponent('PageCategory')
@@ -59,7 +65,29 @@ const pageData = computed(() => {
     return null
 })
 
+/*
+ * Provide detail data to inject in detail structure (has no data)
+ */
 if (page.value?.type === 'detail' && page.value?.detail !== undefined) {
     provide(detailData, page.value.detail)
 }
+
+/*
+ * i18n
+ */
+const { entityPathInfo } = useLocalisation()
+
+onMounted(() => {
+    if (page.value?.type === 'category' && page.value.category !== undefined) {
+        entityPathInfo.value = page.value.category.pathInfo
+    }
+
+    if (page.value?.type === 'detail' && page.value?.detail !== undefined) {
+        entityPathInfo.value = page.value.detail.pathInfo
+    }
+})
+
+onBeforeUnmount(() => {
+    entityPathInfo.value = null
+})
 </script>

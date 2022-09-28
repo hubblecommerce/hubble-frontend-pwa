@@ -7,29 +7,29 @@
         <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
             <li v-for="entry in navigation" :key="entry.id">
                 <template v-if="entry.children?.length > 0">
-                    <NuxtLink no-prefetch :to="entry.url" class="justify-between">
+                    <MiscLink no-prefetch :to="entry.url" class="justify-between">
                         {{ entry.name }}
                         <ChevronRightIcon class="fill-current h-6 w-6" />
-                    </NuxtLink>
+                    </MiscLink>
                     <ul class="p-2 bg-base-100">
                         <li v-for="childEntry in entry.children" :key="childEntry.id">
-                            <NuxtLink no-prefetch :to="childEntry.url">
+                            <MiscLink no-prefetch :to="childEntry.url">
                                 {{ childEntry.name }}
-                            </NuxtLink>
+                            </MiscLink>
                         </li>
                     </ul>
                 </template>
 
                 <template v-else>
-                    <NuxtLink no-prefetch :to="entry.url">
+                    <MiscLink no-prefetch :to="entry.url">
                         {{ entry.name }}
-                    </NuxtLink>
+                    </MiscLink>
                 </template>
             </li>
             <li>
-                <NuxtLink no-prefetch to="/navigation/19ca405790ff4f07aac8c599d43178686" class="nav-link">
+                <MiscLink no-prefetch to="/navigation/19ca405790ff4f07aac8c599d43178686" class="nav-link">
                     404
-                </NuxtLink>
+                </MiscLink>
             </li>
         </ul>
     </div>

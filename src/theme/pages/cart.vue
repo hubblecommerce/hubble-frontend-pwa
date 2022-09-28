@@ -22,9 +22,9 @@
                     <CartCoupons v-if="cart?.lineItems.length > 0" />
                     <CartTotals />
                     <div v-if="cart?.lineItems.length > 0" class="flex flex-col w-full">
-                        <NuxtLink to="/checkout" class="btn btn-primary">
+                        <MiscLink to="/checkout" class="btn btn-primary">
                             Checkout
-                        </NuxtLink>
+                        </MiscLink>
                     </div>
                 </div>
             </div>

@@ -4,9 +4,9 @@
             <div class="navbar container m-auto px-2 lg:px-6">
                 <div class="navbar-start">
                     <LayoutNavigationMobile :navigation="navigation" />
-                    <nuxt-link to="/" class="btn btn-ghost normal-case text-xl p-0">
+                    <MiscLink to="/" class="btn btn-ghost normal-case text-xl p-0">
                         hubble PWA
-                    </nuxt-link>
+                    </MiscLink>
                 </div>
 
                 <div class="navbar-center hidden lg:flex">
@@ -14,6 +14,8 @@
                 </div>
 
                 <div class="navbar-end">
+                    <LayoutLanguageSwitch />
+
                     <div class="dropdown dropdown-end hidden md:block">
                         <label tabindex="0" class="btn btn-ghost btn-circle">
                             <div class="indicator">

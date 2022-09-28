@@ -25,9 +25,9 @@
                         <td>{{ formatPrice(order.totals?.bruttoPrice) }}</td>
                         <td>{{ order.status }}</td>
                         <th class="text-right">
-                            <NuxtLink :to="`/customer/orders/${order.id}`" class="btn btn-ghost btn-xs">
+                            <MiscLink :to="`/customer/orders/${order.id}`" class="btn btn-ghost btn-xs">
                                 details
-                            </NuxtLink>
+                            </MiscLink>
                         </th>
                     </tr>
                 </tbody>

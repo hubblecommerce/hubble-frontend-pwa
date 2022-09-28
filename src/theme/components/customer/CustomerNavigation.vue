@@ -1,10 +1,10 @@
 <template>
     <ul tabindex="0" class="menu menu-compact dropdown-content p-2 shadow bg-base-100 rounded-box">
         <li>
-            <NuxtLink no-prefetch to="/customer" class="justify-between">
+            <MiscLink no-prefetch to="/customer" class="justify-between">
                 Profile
                 <span class="badge">New</span>
-            </NuxtLink>
+            </MiscLink>
         </li>
         <li>
             <a href="#" @click="logout()">

@@ -5,7 +5,7 @@
                 <div class="lg:pl-10 lg:pb-64 lg:pt-16">
                     <div class="mb-2 py-4 text-center lg:py-10 lg:text-left">
                         <h1 class="font-title mb-2 text-4xl font-extrabold sm:text-5xl lg:text-7xl">
-                            hubble PWA
+                            {{ t('hubble PWA') }}
                         </h1>
                         <h2 class="font-title text-lg font-extrabold sm:text-2xl lg:text-3xl">
                             The interface for your headless E-Commerce Platform
@@ -39,12 +39,12 @@
                         </div>
                     </div>
                     <div class="mt-4 flex flex-1 justify-center space-x-2 lg:mt-6 lg:justify-start">
-                        <NuxtLink no-prefetch to="/navigation/a515ae260223466f8e37471d279e6406" class="btn btn-ghost btn-active lg:btn-lg normal-case">
+                        <MiscLink no-prefetch to="/navigation/a515ae260223466f8e37471d279e6406" class="btn btn-ghost btn-active lg:btn-lg normal-case">
                             Shop cloths
-                        </NuxtLink>
-                        <NuxtLink no-prefetch to="/customer/login" class="btn lg:btn-lg normal-case">
+                        </MiscLink>
+                        <MiscLink no-prefetch to="/customer/login" class="btn lg:btn-lg normal-case">
                             Login
-                        </NuxtLink>
+                        </MiscLink>
                     </div>
                 </div>
             </div>
@@ -63,13 +63,24 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { CheckCircleIcon } from '@heroicons/vue/24/outline'
 import { useRuntimeConfig } from '#imports'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const config = useRuntimeConfig().public
+
+const { t } = useI18n()
 </script>
 
 <style scoped>
 
 </style>
+
+<i18n>
+{
+    "en": {
+        "hubble PWA": "hubble PWA"
+    }
+}
+</i18n>

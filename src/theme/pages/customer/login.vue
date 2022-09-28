@@ -11,9 +11,9 @@
                 Don't have an account?
             </div>
 
-            <NuxtLink to="/customer/register" class="btn btn-secondary">
+            <MiscLink to="/customer/register" class="btn btn-secondary">
                 Create a new account
-            </NuxtLink>
+            </MiscLink>
         </div>
     </div>
 </template>

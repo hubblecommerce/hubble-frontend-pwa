@@ -3,9 +3,9 @@
         <main class="grid grid-cols-1 lg:grid-cols-12 lg:min-h-screen">
             <div class="sidebar lg:col-span-5 order-1 lg:order-2 p-2 lg:p-16 bg-base-300">
                 <div class="flex flex-col lg:gap-4 w-full lg:max-w-md">
-                    <nuxt-link to="/" class="btn btn-ghost normal-case text-xl p-0">
+                    <MiscLink to="/" class="btn btn-ghost normal-case text-xl p-0">
                         hubble PWA
-                    </nuxt-link>
+                    </MiscLink>
 
                     <div class="collapse collapse-arrow lg:collapse-open">
                         <input type="checkbox" class="lg:hidden">

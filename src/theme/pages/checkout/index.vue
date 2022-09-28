@@ -3,9 +3,9 @@
         <div class="w-full text-sm breadcrumbs">
             <ul>
                 <li>
-                    <NuxtLink to="/cart">
+                    <MiscLink to="/cart">
                         Cart
-                    </NuxtLink>
+                    </MiscLink>
                 </li>
                 <li class="link link-hover" :class="{ 'link-accent': step === 'contact'}" @click="selectStep('contact')">
                     Contact

@@ -1,10 +1,10 @@
 <template>
     <div class="card card-compact bg-base-100 border border-base-200 shadow-md transition hover:shadow-xl">
         <figure>
-            <NuxtLink no-prefetch :to="data.url">
+            <MiscLink no-prefetch :to="data.url">
                 <img v-if="isLoading || data.media == null" src="~/assets/product/placeholder-image.png" class="d-block m-auto mw-100" height="300" :alt="data.name">
                 <img v-else :src="image.src" :alt="data.name">
-            </NuxtLink>
+            </MiscLink>
         </figure>
         <div class="card-body justify-between gap-4">
             <h2 class="card-title items-start" v-text="data.name" />
@@ -19,9 +19,9 @@
                 </div>
             </div>
             <div class="card-actions justify-center xl:justify-between">
-                <NuxtLink no-prefetch :to="data.url" class="btn btn-primary text-center" role="button">
+                <MiscLink no-prefetch :to="data.url" class="btn btn-primary text-center" role="button">
                     Details
-                </NuxtLink>
+                </MiscLink>
                 <button
                     :class="{ 'loading': cartLoading }"
                     :disabled="cartLoading"

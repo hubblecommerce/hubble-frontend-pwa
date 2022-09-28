@@ -24,9 +24,9 @@
             </div>
         </form>
         <div v-if="searchResult?.total > 0">
-            <NuxtLink :to="`/search?search=${term}`" class="w-full btn btn-sm btn-secondary mb-4">
+            <MiscLink :to="`/search?search=${term}`" class="w-full btn btn-sm btn-secondary mb-4">
                 View all results
-            </NuxtLink>
+            </MiscLink>
 
             <LazyProductListing
                 :data="searchResult"
