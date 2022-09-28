@@ -1,6 +1,6 @@
 import path, { join, extname, resolve, basename } from 'path'
 import { fileURLToPath } from 'url'
-import { defineNuxtModule, installModule } from '@nuxt/kit'
+import { defineNuxtModule, installModule, createResolver, extendPages } from '@nuxt/kit'
 import fse from 'fs-extra'
 import { defu } from 'defu'
 import { CookieOptions } from 'nuxt/app'
@@ -8,7 +8,7 @@ import { globby } from 'globby'
 import { watch } from 'chokidar'
 import { Config } from 'tailwindcss'
 import daisyui from 'daisyui'
-import type { NuxtModule } from '@nuxt/schema'
+import type { NuxtPage } from '@nuxt/schema'
 
 // Set configs of configured platform
 async function setDefaultRuntimeConfigs (nuxt) {
@@ -59,7 +59,9 @@ export interface ModuleOptions {
     pluginsDirName: string,
     pluginsConfigFileName: string,
     sessionCookie: Cookie,
-    cartCookie: Cookie
+    cartCookie: Cookie,
+    redirectDefaultLanguage: boolean,
+    intlify: Record<string, Record<never, never>>
 }
 
 export default defineNuxtModule<ModuleOptions>({
@@ -94,7 +96,9 @@ export default defineNuxtModule<ModuleOptions>({
                 sameSite: 'lax',
                 path: '/'
             }
-        }
+        },
+        redirectDefaultLanguage: false,
+        intlify: {}
     },
     async setup (options, nuxt) {
         if (process.env.PLATFORM == null || process.env.PLATFORM === '') {
@@ -239,6 +243,50 @@ export default defineNuxtModule<ModuleOptions>({
         })
 
         nuxt.options.build.transpile.push('@heroicons/vue')
+
+        /*
+         * i18n
+         */
+        const availableLocales = await fse.readJson(targetDir + '/locales/availableLocales.json')
+        const platformLanguages = await fse.readJson(targetDir + '/locales/platformLanguages.json')
+
+        const defaultLocale = Object.keys(availableLocales)[0]
+        nuxt.options.runtimeConfig.public.redirectDefaultLanguage = options.redirectDefaultLanguage
+        nuxt.options.runtimeConfig.public.platformLanguages = platformLanguages
+
+        if (availableLocales) {
+            const intlifyDefaultOptions = {
+                localeDir: 'locales/langs',
+                vueI18n: {
+                    ...(defaultLocale !== undefined && { locale: defaultLocale }),
+                    ...(defaultLocale !== undefined && { fallbackLocale: defaultLocale }),
+                    ...(defaultLocale !== undefined && { messages: { ...availableLocales } })
+                }
+            }
+
+            const mergedIntlifyOptions = defu(options.intlify, intlifyDefaultOptions)
+
+            await installModule('@intlify/nuxt3', mergedIntlifyOptions)
+
+            extendPages(extendPagesHook)
+        } else {
+            throw new Error('Missing /locales/availableLocales file')
+        }
+
+        function extendPagesHook (pages: NuxtPage[]) {
+            const result: NuxtPage[] = []
+            for (const page of pages) {
+                for (const locale of Object.keys(availableLocales)) {
+                    result.push({
+                        name: `${locale}-${page.name}`,
+                        path: `/${locale}${page.path}`,
+                        file: page.file
+                    })
+                }
+            }
+
+            pages.push(...result)
+        }
 
         // Dev only: register new file-watcher based on file inheritance
         if (nuxt.options.dev) {

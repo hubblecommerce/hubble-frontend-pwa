@@ -5,9 +5,9 @@
     "author": "hubble commerce",
     "license": "MIT",
     "type": "module",
-    "engines" : {
-        "npm" : ">=6.14.15",
-        "node" : ">=14.18.1"
+    "engines": {
+        "npm": ">=6.14.15",
+        "node": ">=14.18.1"
     },
     "exports": {
         ".": {
@@ -47,13 +47,15 @@
         "sw:dev:generate-api": "node bin/hubble-cli.js dev:sw open-api-generate $BASEURL $CLIENT_ID $CLIENT_SECRET && git apply src/runtime/platforms/shopware/api-client/*.patch",
         "sw:dev:patch-api": "git format-patch -1 $COMMIT -o src/platforms/shopware/api-client/",
         "sw:install-plugins": "node bin/hubble-cli.js dev:sw sw-plugins-assets",
-        "sw:config-plugins": "node bin/hubble-cli.js dev:sw sw-plugins-config"
+        "sw:config-plugins": "node bin/hubble-cli.js dev:sw sw-plugins-config",
+        "sw:languages": "node bin/hubble-cli.js dev:sw sw-languages"
     },
     "lint-staged": {
         "*.{js,vue}": "eslint --fix"
     },
     "dependencies": {
         "@heroicons/vue": "^2.0.11",
+        "@intlify/nuxt3": "^0.2.4",
         "@nuxt/kit": "^3.0.0-rc.10",
         "@nuxtjs/color-mode": "^3.1.5",
         "@nuxtjs/tailwindcss": "^5.3.3",
