@@ -15,5 +15,11 @@ export interface IUsePlatform {
     getCountries(): Promise<Country[]>,
     session: Ref<Session | null>,
     salutations: Ref<Salutation[] | null>,
-    countries: Ref<Country[] | null>
+    countries: Ref<Country[] | null>,
+    platformLanguages?: {
+        route: string,
+        id: string,
+        key: string,
+        name: string
+    }[]
 }

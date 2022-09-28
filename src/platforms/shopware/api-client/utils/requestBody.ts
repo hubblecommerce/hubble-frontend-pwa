@@ -49,12 +49,11 @@ const includes = {
     product_listing: ['sorting', 'currentFilters', 'elements', 'page', 'limit', 'sortings', 'availableSortings', 'total', 'aggregations'],
     property_group: ['id', 'translated', 'options', 'filterable', 'name'],
     property_group_option: ['name', 'translated', 'id', 'colorHexCode', 'media', 'group'],
-    category: ['active', 'id', 'name', 'description', 'metaTitle', 'metaDescription', 'keywords', 'breadcrumb', 'media', 'level', 'path', 'translated']
+    category: ['active', 'id', 'name', 'description', 'metaTitle', 'metaDescription', 'keywords', 'breadcrumb', 'media', 'level', 'path', 'translated', 'seoUrls']
 }
 
 const associations = {
     media: {},
-    seoUrls: {},
     manufacturer: {
         associations: {
             media: {}

@@ -31,6 +31,8 @@ export const usePlatform = function (): IUsePlatform {
     const { sessionToken } = storeToRefs(sessionStore)
     const { setSessionToken } = sessionStore
 
+    const platformLanguages = runtimeConfig.public.platformLanguages
+
     /*
      * Fetch session data from platform by session cookie
      * Shopware:
@@ -120,6 +122,7 @@ export const usePlatform = function (): IUsePlatform {
         countries,
         error,
         loading,
-        session
+        session,
+        platformLanguages
     }
 }

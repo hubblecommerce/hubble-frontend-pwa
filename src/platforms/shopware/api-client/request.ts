@@ -122,7 +122,7 @@ export const cachedRoutes = [
  */
 export const request = <T>(config: OpenAPIConfig, options: ApiRequestOptions): CancelablePromise<T> => {
     const app = useNuxtApp()
-    const { apiUrl, apiAuthToken, sessionToken, setSessionToken } = usePlatform()
+    const { apiUrl, apiAuthToken, sessionToken, setSessionToken, platformLanguages } = usePlatform()
 
     let platformHeaders = {
         'sw-access-key': apiAuthToken,
@@ -138,6 +138,18 @@ export const request = <T>(config: OpenAPIConfig, options: ApiRequestOptions): C
 
     if(sessionToken.value !== null) {
         platformHeaders['sw-context-token'] = sessionToken.value
+    }
+
+    const locale = app.vueApp.config.globalProperties.$i18n?.locale
+
+    if(platformLanguages?.length > 0 && locale) {
+        const matchingLang = platformLanguages.find((lang) => {
+            return lang.route === locale
+        })
+
+        if (matchingLang) {
+            platformHeaders['sw-language-id'] = matchingLang.id
+        }
     }
 
     OpenAPI.BASE = apiUrl

@@ -143,6 +143,7 @@ function mapVariantGroups (swPropertyGroups: PropertyGroup[]): VariantGroup[] {
 
 function mapProduct (swProduct: swProduct, swProductConfigurator?: PropertyGroup[]): Product {
     let url = swProduct.seoUrls[0]?.pathInfo
+    const pathInfo = swProduct.seoUrls[0]?.pathInfo
     if (swProduct.seoUrls[0]?.isCanonical) {
         url = swProduct.seoUrls[0]?.seoPathInfo
     }
@@ -177,6 +178,7 @@ function mapProduct (swProduct: swProduct, swProductConfigurator?: PropertyGroup
         name: swProduct.translated.name,
         description: swProduct.translated.description,
         sku: swProduct.productNumber,
+        pathInfo,
         url,
         media,
         active: swProduct.available,
@@ -405,7 +407,9 @@ function mapCategory (swCategory: swCategory): Category {
         media: mapMedia(swCategory.media),
         description: swCategory.translated.description,
         metaTitle: swCategory.metaTitle,
-        metaDescription: swCategory.metaDescription
+        metaDescription: swCategory.metaDescription,
+        url: swCategory.seoUrls[0].seoPathInfo.startsWith('/') ? swCategory.seoUrls[0].seoPathInfo : '/' + swCategory.seoUrls[0].seoPathInfo,
+        pathInfo: `/navigation/${swCategory.id}`
     }
 }
 
@@ -732,8 +736,8 @@ function mapNavigation (swNavigation: NavigationRouteResponse): Navigation {
 
         let url = null
         if (item.seoUrls.length > 0) {
-            if (item.seoUrls[0].pathInfo !== undefined) {
-                url = item.seoUrls[0].pathInfo
+            if (item.seoUrls[0].seoPathInfo !== undefined) {
+                url = '/' + item.seoUrls[0].seoPathInfo
             }
         }
 

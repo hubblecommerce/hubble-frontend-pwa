@@ -302,6 +302,7 @@ async function setPluginMapping (pluginMapping) {
 }
 
 export {
+    projectDir,
     downloadFile,
     unzipFile,
     camelCase,

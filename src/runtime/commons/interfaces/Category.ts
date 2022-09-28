@@ -7,5 +7,7 @@ export interface Category {
     media: Media,
     description: string,
     metaTitle: string,
-    metaDescription: string
+    metaDescription: string,
+    url: string,
+    pathInfo: string
 }

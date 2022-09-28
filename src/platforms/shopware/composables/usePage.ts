@@ -9,7 +9,6 @@ import {
     useDefaultStructure
 } from '@hubblecommerce/hubble/commons'
 import {
-    ProductListingCriteria, ProductListingFlags,
     ProductShopware,
     PwaShopware
 } from '@hubblecommerce/hubble/platforms/shopware/api-client'
@@ -19,7 +18,7 @@ import {
     mapPage,
     mapProductListing, mapProduct
 } from '@hubblecommerce/hubble/platforms/shopware/api-client/utils'
-import { useRuntimeConfig } from '#imports'
+import { useLocalisation, useRuntimeConfig } from '#imports'
 
 export const usePage = function (): IUsePage {
     const loading: Ref<boolean> = ref(false)
@@ -27,18 +26,26 @@ export const usePage = function (): IUsePage {
     const page: Ref<Page> = ref(null)
     const runtimeConfig = useRuntimeConfig()
     const { currentRoute } = useRouter()
+    const { isLocalisedRoute } = useLocalisation()
 
     const getPage = async (route: RouteLocationNormalizedLoaded): Promise<Page> => {
         try {
             loading.value = true
             error.value = false
 
+            let path = route.path
             const params = parseParamsFromQuery(route)
+
+            // Remove localisation from route
+            const routeLocale = isLocalisedRoute(path)
+            if (routeLocale) {
+                path = path.replace('/' + routeLocale, '')
+            }
 
             const requestBody = {
                 includes,
                 associations,
-                path: route.path,
+                path,
                 ...params
             }
 

@@ -31,6 +31,7 @@ export interface Product {
     name: string,
     description?: string,
     sku: string,
+    pathInfo: string,
     url: string,
     media?: Media[] | Media,
     active: boolean,
