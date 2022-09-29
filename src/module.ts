@@ -1,6 +1,6 @@
-import path, { join, extname, resolve, basename } from 'path'
+import path, { basename, extname, join, resolve } from 'path'
 import { fileURLToPath } from 'url'
-import { defineNuxtModule, installModule, createResolver, extendPages } from '@nuxt/kit'
+import { defineNuxtModule, extendPages, installModule } from '@nuxt/kit'
 import fse from 'fs-extra'
 import { defu } from 'defu'
 import { CookieOptions } from 'nuxt/app'
@@ -19,7 +19,7 @@ async function setDefaultRuntimeConfigs (nuxt) {
         } = await import(`./platforms/${process.env.PLATFORM}/config/config${extname(import.meta.url)}`)
 
         // Merge default configs with configs set in nuxt.config.js
-        nuxt.options.runtimeConfig.public = defu(nuxt.options.publicRuntimeConfig.public, defaultPublicRuntimeConfig)
+        nuxt.options.runtimeConfig.public = defu(nuxt.options.runtimeConfig.public, defaultPublicRuntimeConfig)
         nuxt.options.runtimeConfig = defu(nuxt.options.runtimeConfig, defaultPrivateRuntimeConfig)
     } catch (e) {
         // eslint-disable-next-line no-console
@@ -217,7 +217,7 @@ export default defineNuxtModule<ModuleOptions>({
             }
             configOverrides = defu(twConfig, configOverrides)
 
-            const contentOverrides = [
+            configOverrides.content = [
                 join(targetDir, 'components/**/*.{vue,js}'),
                 join(targetDir, 'layouts/**/*.vue'),
                 join(targetDir, 'pages/**/*.vue'),
@@ -226,7 +226,6 @@ export default defineNuxtModule<ModuleOptions>({
                 join(targetDir, 'App.{js,ts,vue}'),
                 join(targetDir, 'app.{js,ts,vue}')
             ]
-            configOverrides.content = contentOverrides
 
             // Need to set via Object.assign because we cannot update the reference of the object
             Object.assign(twConfig, configOverrides)
