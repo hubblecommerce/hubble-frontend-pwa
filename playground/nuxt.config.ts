@@ -29,9 +29,13 @@ export default defineNuxtConfig({
         ],
         resolve: {
             alias: {
+                // @ts-ignore
                 '@hubblecommerce/hubble/commons': fileURLToPath(new URL('../src/runtime/commons', import.meta.url)),
+                // @ts-ignore
                 '@hubblecommerce/hubble/theme/store': fileURLToPath(new URL('../src/theme/store', import.meta.url)),
+                // @ts-ignore
                 '@hubblecommerce/hubble/platforms/shopware/api-client/utils': fileURLToPath(new URL('../src/platforms/shopware/api-client/utils/index.ts', import.meta.url)),
+                // @ts-ignore
                 '@hubblecommerce/hubble/platforms/shopware/api-client': fileURLToPath(new URL('../src/platforms/shopware/api-client/generated/index.ts', import.meta.url))
             }
         }

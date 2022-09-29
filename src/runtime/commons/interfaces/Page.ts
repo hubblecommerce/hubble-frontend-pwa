@@ -7,7 +7,7 @@ import { ProductListing } from './ProductListing'
 export interface Slot {
     type?: string
     position?: string
-    data: any,
+    data: Record<string, unknown>,
     productListing?: ProductListing | null,
     media?: Media | null
 }

@@ -68,7 +68,7 @@ export const usePage = function (): IUsePage {
         }
     }
 
-    async function getProductListing (filters: ProductListingFilterCurrent, limit: number, sort: string, page?: number): Promise<{ productListing: ProductListing, params: any }> {
+    async function getProductListing (filters: ProductListingFilterCurrent, limit: number, sort: string, page?: number): Promise<{ productListing: ProductListing, params: Record<string, unknown> }> {
         try {
             loading.value = true
             error.value = false
