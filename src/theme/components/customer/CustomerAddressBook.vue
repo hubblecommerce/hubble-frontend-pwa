@@ -1,5 +1,5 @@
 <template>
-    <template v-if="loading">
+    <template v-if="loading && addresses == null">
         <div class="col-span-2 md:col-span-1 grid gap-2">
             <MiscSkeleton size="small" :repeat="5" />
         </div>
@@ -57,8 +57,8 @@
                 </div>
                 <button
                     type="submit"
-                    :class="{ 'loading': addLoading | updateLoading | deleteLoading }"
-                    :disabled="(addLoading | updateLoading | deleteLoading)"
+                    :class="{ 'loading': loading }"
+                    :disabled="(loading)"
                     class="btn btn-primary text-right mt-4"
                     @click.prevent="onFormSubmit()"
                 >
@@ -71,23 +71,26 @@
 
 <script setup lang="ts">
 import { XMarkIcon } from '@heroicons/vue/20/solid'
-import { onMounted, ref, Ref, watch } from 'vue'
+import { ref, Ref, watch } from 'vue'
+import { storeToRefs } from 'pinia'
 import { CustomerBillingAddress, CustomerShippingAddress, useForm } from '@hubblecommerce/hubble/commons'
 import { useCustomer, useNotification } from '#imports'
 
 /*
  * Fetch Addresses
  */
-const loading: Ref<boolean> = ref(true)
-const addresses: Ref<null | CustomerBillingAddress[] | CustomerShippingAddress[]> = ref(null)
-const { customer, getCustomerAddresses, getCustomer, error } = useCustomer()
-onMounted(async () => {
-    try {
-        addresses.value = await getCustomerAddresses()
-    } catch (e) {} finally {
-        loading.value = false
-    }
-})
+const customerStore = useCustomer()
+const { customer, error, loading } = storeToRefs(customerStore)
+const {
+    getCustomerAddresses,
+    getCustomer,
+    addCustomerAddress,
+    updateCustomerAddress,
+    deleteCustomerAddress,
+    setDefaultBilling,
+    setDefaultShipping
+} = customerStore
+const addresses: Ref<null | CustomerBillingAddress[] | CustomerShippingAddress[]> = ref(await getCustomerAddresses())
 
 /*
  * Handle address actions
@@ -101,28 +104,24 @@ const { showNotification } = useNotification()
 const useAsDefaultBilling = ref(false)
 const useAsDefaultShipping = ref(false)
 
-const { addCustomerAddress, loading: addLoading, error: addError } = useCustomer()
 function onAddAddress () {
     formAction.value = 'Add'
     formData.value = {}
     modalState.value = true
 }
 
-const { updateCustomerAddress, loading: updateLoading, error: updateError } = useCustomer()
 function onEditAddress (id: string) {
     formAction.value = 'Edit'
     formData.value = Object.assign({}, addresses.value.find(address => address.id === id))
     modalState.value = true
 }
 
-const { deleteCustomerAddress, loading: deleteLoading, error: deleteError } = useCustomer()
 function onDeleteAddress (id: string) {
     formAction.value = 'Delete'
     formData.value = Object.assign({}, addresses.value.find(address => address.id === id))
     modalState.value = true
 }
 
-const { setDefaultBilling, setDefaultShipping, error: defaultError } = useCustomer()
 async function onFormSubmit () {
     const isValid = await validateForm(addressBookForm.value)
     let response = null
@@ -131,8 +130,8 @@ async function onFormSubmit () {
         if (formAction.value === 'Edit') {
             response = await updateCustomerAddress(formData.value as CustomerShippingAddress | CustomerBillingAddress)
 
-            if (updateError.value) {
-                showNotification(updateError.value as string, 'error', true)
+            if (error.value) {
+                showNotification(error.value as string, 'error', true)
                 return
             }
         }
@@ -140,8 +139,8 @@ async function onFormSubmit () {
         if (formAction.value === 'Add') {
             response = await addCustomerAddress(formData.value as CustomerShippingAddress | CustomerBillingAddress)
 
-            if (addError.value) {
-                showNotification(addError.value as string, 'error', true)
+            if (error.value) {
+                showNotification(error.value as string, 'error', true)
                 return
             }
         }
@@ -149,8 +148,8 @@ async function onFormSubmit () {
         if (formAction.value === 'Delete') {
             await deleteCustomerAddress(formData.value.id)
 
-            if (deleteError.value) {
-                showNotification(deleteError.value as string, 'error', true)
+            if (error.value) {
+                showNotification(error.value as string, 'error', true)
                 return
             }
         }
@@ -163,8 +162,8 @@ async function onFormSubmit () {
             await setDefaultShipping(response.id)
         }
 
-        if (defaultError.value) {
-            showNotification(defaultError.value as string, 'error', true)
+        if (error.value) {
+            showNotification(error.value as string, 'error', true)
             return
         }
 

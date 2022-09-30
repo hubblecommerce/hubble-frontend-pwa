@@ -1,9 +1,8 @@
-import { storeToRefs } from 'pinia'
+import { defineStore, storeToRefs } from 'pinia'
 import { ref, Ref } from 'vue'
 import { useCookie } from '#app'
 import { useRuntimeConfig, useCustomer } from '#imports'
 import { IUsePlatform, Session, Salutation, Country } from '@hubblecommerce/hubble/commons'
-import { useSessionStore } from '@hubblecommerce/hubble/theme/store'
 import { SystemContextShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 import {
     mapSession,
@@ -12,14 +11,14 @@ import {
     mapCountries
 } from '@hubblecommerce/hubble/platforms/shopware/api-client/utils'
 
-const session: Ref<Session> = ref({
-    sessionToken: null
-})
+export const usePlatform = defineStore('use-platform', (): IUsePlatform => {
+    const session: Ref<Session> = ref({
+        sessionToken: null
+    })
 
-const salutations: Ref<Salutation[] | null> = ref(null)
-const countries: Ref<Country[] | null> = ref(null)
+    const salutations: Ref<Salutation[] | null> = ref(null)
+    const countries: Ref<Country[] | null> = ref(null)
 
-export const usePlatform = function (): IUsePlatform {
     const error: Ref<boolean> = ref(false)
     const loading: Ref<boolean> = ref(false)
 
@@ -27,11 +26,17 @@ export const usePlatform = function (): IUsePlatform {
     const apiUrl = runtimeConfig.apiBaseUrl
     const apiAuthToken = runtimeConfig.apiSwAccessKey
 
-    const sessionStore = useSessionStore()
-    const { sessionToken } = storeToRefs(sessionStore)
-    const { setSessionToken } = sessionStore
-
     const platformLanguages = runtimeConfig.public.platformLanguages
+
+    function setSessionToken (token: string) {
+        session.value.sessionToken = token
+
+        const cookie = useCookie(runtimeConfig.sessionCookie.name, runtimeConfig.sessionCookie.options)
+
+        if (cookie.value !== token) {
+            cookie.value = token
+        }
+    }
 
     /*
      * Fetch session data from platform by session cookie
@@ -51,7 +56,6 @@ export const usePlatform = function (): IUsePlatform {
                 return
             }
 
-            const { setSessionToken } = usePlatform()
             setSessionToken(cookie.value)
 
             const response = await SystemContextShopware.readContext()
@@ -59,7 +63,8 @@ export const usePlatform = function (): IUsePlatform {
             session.value = mappedData
 
             if (response.customer !== null) {
-                const { customer } = useCustomer()
+                const customerStore = useCustomer()
+                const { customer } = storeToRefs(customerStore)
                 customer.value = mapCustomer(response.customer)
             }
 
@@ -113,7 +118,6 @@ export const usePlatform = function (): IUsePlatform {
     return {
         apiUrl,
         apiAuthToken,
-        sessionToken,
         setSessionToken,
         getSession,
         getSalutations,
@@ -125,4 +129,4 @@ export const usePlatform = function (): IUsePlatform {
         session,
         platformLanguages
     }
-}
+})

@@ -97,6 +97,7 @@
 
 <script setup lang="ts">
 import { ref, Ref, withDefaults } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useCustomer } from '#imports'
 import { CustomerBillingAddress, CustomerShippingAddress, useForm } from '@hubblecommerce/hubble/commons'
 
@@ -137,12 +138,17 @@ const billingAddress: Ref<CustomerBillingAddress> = ref({
 })
 
 const emit = defineEmits(['form-submitted'])
-const { register, loading, error } = useCustomer()
+const customerStore = useCustomer()
+const { error } = storeToRefs(customerStore)
+const { register } = customerStore
 const { validateForm } = useForm()
+const loading = ref(false)
 
 async function onSubmit (callback?): Promise<string> {
+    loading.value = true
     const isValid = await validateForm(registerForm.value)
     if (!isValid) {
+        loading.value = false
         return
     }
 
@@ -156,6 +162,8 @@ async function onSubmit (callback?): Promise<string> {
     })
 
     emit('form-submitted')
+
+    loading.value = false
     return callback()
 }
 </script>

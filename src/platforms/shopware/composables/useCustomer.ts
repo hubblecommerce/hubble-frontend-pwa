@@ -1,5 +1,6 @@
-import { computed, ref, Ref } from 'vue'
+import { ref, Ref } from 'vue'
 import { navigateTo } from '#app'
+import { defineStore, storeToRefs } from 'pinia'
 import { useCart, useNotification, usePlatform, useRuntimeConfig } from '#imports'
 import {
     Customer,
@@ -24,9 +25,8 @@ import {
     reverseMapCustomerAddress
 } from '@hubblecommerce/hubble/platforms/shopware/api-client/utils'
 
-const customer: Ref<Customer> = ref(null)
-
-export const useCustomer = function (): IUseCustomer {
+export const useCustomer = defineStore('use-customer', (): IUseCustomer => {
+    const customer: Ref<Customer> = ref(null)
     const loading: Ref<boolean> = ref(false)
     const error: Ref<boolean> = ref(false)
     const { setSessionToken, getSession } = usePlatform()
@@ -47,9 +47,7 @@ export const useCustomer = function (): IUseCustomer {
             const mappedData = mapCustomer(response.customer)
 
             // Only set customer data client side to prevent leaked states on server
-            if (process.client) {
-                customer.value = mappedData
-            }
+            customer.value = mappedData
 
             loading.value = false
             return mappedData
@@ -68,10 +66,11 @@ export const useCustomer = function (): IUseCustomer {
         error.value = false
 
         try {
-            const { sessionToken } = usePlatform()
+            const platformStore = usePlatform()
+            const { session } = storeToRefs(platformStore)
             const { getCart } = useCart()
 
-            if (sessionToken.value === null) {
+            if (session.value.sessionToken === null) {
                 await getCart()
             }
 
@@ -394,6 +393,8 @@ export const useCustomer = function (): IUseCustomer {
 
     return {
         customer,
+        loading,
+        error,
         getCustomer,
         login,
         logout,
@@ -408,8 +409,6 @@ export const useCustomer = function (): IUseCustomer {
         setDefaultBilling,
         setDefaultShipping,
         requireNewPassword,
-        setNewPassword,
-        loading,
-        error
+        setNewPassword
     }
-}
+})

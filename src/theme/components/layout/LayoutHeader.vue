@@ -82,6 +82,7 @@
 <script setup lang="ts">
 import { ShoppingCartIcon, MagnifyingGlassIcon, SwatchIcon, UserIcon } from '@heroicons/vue/24/outline'
 import { showError, useAsyncData } from '#app'
+import { storeToRefs } from 'pinia'
 import { useNavigation, useColorMode, useCart, useDrawer } from '#imports'
 
 const colorMode = useColorMode()
@@ -123,7 +124,9 @@ const {
     getNavigation
 } = useNavigation()
 const { toggleDrawer } = useDrawer()
-const { miniCart } = useCart()
+
+const cartStore = useCart()
+const { miniCart } = storeToRefs(cartStore)
 
 const { data, error } = await useAsyncData(() => getNavigation())
 navigation.value = data.value

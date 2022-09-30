@@ -23,6 +23,7 @@
 
 <script setup lang="ts">
 import { onMounted } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useCart } from '#imports'
 
 interface CartProps {
@@ -33,7 +34,9 @@ const props = withDefaults(defineProps<CartProps>(), {
     isInteractive: true
 })
 
-const { getCart, cart, loading, error, deleteCart } = useCart()
+const cartStore = useCart()
+const { cart, loading, error } = storeToRefs(cartStore)
+const { getCart, deleteCart } = cartStore
 
 // Set loading state to prevent flash old cart state before onMounted hook is finished
 loading.value = true

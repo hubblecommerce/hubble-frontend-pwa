@@ -40,6 +40,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { navigateTo } from '#app'
+import { storeToRefs } from 'pinia'
 import { useCustomer, useNotification } from '#imports'
 import { useForm } from '@hubblecommerce/hubble/commons'
 
@@ -48,17 +49,22 @@ const props = defineProps<{
 }>()
 
 const { validateForm } = useForm()
-const { setNewPassword, loading, error } = useCustomer()
+const customerStore = useCustomer()
+const { error } = storeToRefs(customerStore)
+const { setNewPassword } = customerStore
 const { showNotification } = useNotification()
+const loading = ref(false)
 
 const passwordResetForm = ref()
 const password = ref()
 const passwordRepeat = ref()
 
 async function onResetPasswordClick () {
+    loading.value = true
     const isValid = await validateForm(passwordResetForm.value)
 
     if (!isValid) {
+        loading.value = false
         return
     }
 
@@ -71,6 +77,8 @@ async function onResetPasswordClick () {
         showNotification('New Password set', 'success')
 
         await navigateTo('/customer/login')
-    } catch (e) {}
+    } catch (e) {
+        loading.value = false
+    }
 }
 </script>

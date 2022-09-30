@@ -52,12 +52,14 @@
 
 <script setup lang="ts">
 import { onMounted, watch, ref } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useCheckout, useNotification, usePlatform } from '#imports'
 import { useCurrency } from '@hubblecommerce/hubble/commons'
 
 const { loading, error, shippingMethods, getShippingMethods } = useCheckout()
 const { error: updateError, loading: updateLoading, setShippingMethod } = useCheckout()
-const { session } = usePlatform()
+const platformStore = usePlatform()
+const { session } = storeToRefs(platformStore)
 const { formatPrice } = useCurrency()
 const { showNotification } = useNotification()
 

@@ -1,11 +1,13 @@
 import destr from 'destr'
 import { defineNuxtRouteMiddleware, useNuxtApp, navigateTo } from '#app'
+import { storeToRefs } from 'pinia'
 import { useCart } from '#imports'
 import { getRequestCookie } from '@hubblecommerce/hubble/commons'
 
 export default defineNuxtRouteMiddleware(() => {
     const app = useNuxtApp()
-    const { miniCart } = useCart()
+    const cartStore = useCart()
+    const { miniCart } = storeToRefs(cartStore)
 
     if (process.server) {
         const cookie = getRequestCookie(app, app.$config.public.cartCookie.name)

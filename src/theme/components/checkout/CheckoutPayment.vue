@@ -86,11 +86,13 @@
 
 <script setup lang="ts">
 import { onMounted, watch, ref } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useCheckout, useNotification, usePlatform } from '#imports'
 
 const { loading, error, paymentMethods, getPaymentMethods } = useCheckout()
 const { error: updateError, loading: updateLoading, setPaymentMethod } = useCheckout()
-const { session } = usePlatform()
+const platformStore = usePlatform()
+const { session } = storeToRefs(platformStore)
 const { showNotification } = useNotification()
 
 const emit = defineEmits(['updateBefore:paymentMethod', 'updateAfter:paymentMethod'])

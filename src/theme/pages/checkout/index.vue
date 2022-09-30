@@ -274,6 +274,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { storeToRefs } from 'pinia'
 import { definePageMeta, useCustomer, useCart, usePlatform, useCheckout, useNotification } from '#imports'
 import { useForm } from '@hubblecommerce/hubble/commons'
 
@@ -288,7 +289,9 @@ const placeOrderForm = ref()
  * Checkout Step Navigation
  */
 const step = ref('contact')
-const { customer, loading: customerLoading, updateShippingAddress, updateBillingAddress, error } = useCustomer()
+const customerStore = useCustomer()
+const { customer, loading: customerLoading, error } = storeToRefs(customerStore)
+const { updateShippingAddress, updateBillingAddress } = customerStore
 const { shippingError, paymentError, orderComment } = useCheckout()
 const { showNotification } = useNotification()
 const protectedSteps = [
@@ -354,7 +357,10 @@ async function onUpdateContact () {
 /*
  * Event handling (contact, shipping, payment)
  */
-const { session, getSession } = usePlatform()
+
+const platformStore = usePlatform()
+const { session } = storeToRefs(platformStore)
+const { getSession } = platformStore
 const { getCart } = useCart()
 
 async function onUpdateShippingMethod () {

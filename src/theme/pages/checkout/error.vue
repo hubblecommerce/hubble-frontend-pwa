@@ -34,6 +34,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from '#app'
+import { storeToRefs } from 'pinia'
 import { useCheckout, usePlatform } from '#imports'
 
 const { currentRoute } = useRouter()
@@ -42,7 +43,8 @@ const { resetPayment, loading, error, handlePayment } = useCheckout()
 
 const paymentMethodId = ref(null)
 if (process.client) {
-    const { session } = usePlatform()
+    const platformStore = usePlatform()
+    const { session } = storeToRefs(platformStore)
     paymentMethodId.value = session.value.paymentMethod.id
 }
 

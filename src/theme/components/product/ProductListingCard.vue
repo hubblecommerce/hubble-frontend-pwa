@@ -40,6 +40,7 @@
 import { computed, ref, watch } from 'vue'
 import { useImage } from '@vueuse/core'
 import { navigateTo } from '#app'
+import { storeToRefs } from 'pinia'
 import { Product, useCurrency } from '@hubblecommerce/hubble/commons'
 import { useCart, useNotification } from '#imports'
 
@@ -58,7 +59,10 @@ const image = ref({
 })
 const { isLoading } = useImage(image)
 
-const { addToCart, loading: cartLoading, error: cartError } = useCart()
+const cartStore = useCart()
+const { loading: cartLoading, error: cartError } = storeToRefs(cartStore)
+const { addToCart } = cartStore
+
 async function onAddToCart () {
     if (props.data.parentId != null) {
         await navigateTo(props.data.url)

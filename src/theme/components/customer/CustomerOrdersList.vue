@@ -3,9 +3,6 @@
         <div v-if="error">
             {{ error }}
         </div>
-        <div v-else-if="loading" class="flex flex-col gap-2">
-            <MiscSkeleton size="medium" :repeat="4" />
-        </div>
         <div v-else-if="orders != null" class="overflow-x-auto">
             <table class="table table-compact w-full">
                 <thead>
@@ -40,23 +37,18 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, Ref } from 'vue'
+import { ref, Ref } from 'vue'
+import { storeToRefs } from 'pinia'
 import { Order, useCurrency } from '@hubblecommerce/hubble/commons'
 import { useCustomer } from '#imports'
 
 /*
  * Fetch Orders
  */
-const loading: Ref<boolean> = ref(true)
-const orders: Ref<null | Order[]> = ref(null)
-const { getOrders, error } = useCustomer()
-onMounted(async () => {
-    try {
-        orders.value = await getOrders() as Order[]
-    } catch (e) {} finally {
-        loading.value = false
-    }
-})
+const customerStore = useCustomer()
+const { error } = storeToRefs(customerStore)
+const { getOrders } = customerStore
+const orders: Ref<null | Order[]> = ref(await getOrders() as Order[])
 
 const { formatPrice } = useCurrency()
 </script>

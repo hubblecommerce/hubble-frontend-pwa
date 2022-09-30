@@ -19,9 +19,12 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useCart, useNotification } from '#imports'
 
-const { addCoupon, loading, error } = useCart()
+const cartStore = useCart()
+const { loading, error } = storeToRefs(cartStore)
+const { addCoupon } = cartStore
 const { showNotification } = useNotification()
 const code = ref('')
 

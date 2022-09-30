@@ -1,4 +1,5 @@
 import { defineNuxtPlugin, useRuntimeConfig, useCookie } from '#app'
+import { storeToRefs } from 'pinia'
 import { useCart } from '#imports'
 
 export default defineNuxtPlugin(() => {
@@ -9,7 +10,9 @@ export default defineNuxtPlugin(() => {
         return
     }
 
-    const { miniCart } = useCart()
+    const cartStore = useCart()
+    const { miniCart } = storeToRefs(cartStore)
+
     // @ts-ignore
     miniCart.value = cookie.value
 })

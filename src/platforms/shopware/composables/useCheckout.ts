@@ -1,6 +1,7 @@
 import { ref, Ref } from 'vue'
 import { LocationQuery } from 'vue-router'
 import { navigateTo, useRuntimeConfig } from '#app'
+import { defineStore, storeToRefs } from 'pinia'
 import { IUseCheckout, PaymentMethod, ShippingMethod } from '@hubblecommerce/hubble/commons'
 import {
     OrderShopware,
@@ -14,9 +15,17 @@ import {
 } from '@hubblecommerce/hubble/platforms/shopware/api-client/utils'
 import { useNotification, useCart, useRouter } from '#imports'
 
-const shippingError: Ref<string | boolean> = ref(false)
-const paymentError: Ref<string | boolean> = ref(false)
-const orderComment: Ref<string> = ref()
+export const useCheckoutStore = defineStore('use-checkout', () => {
+    const shippingError: Ref<string | boolean> = ref(false)
+    const paymentError: Ref<string | boolean> = ref(false)
+    const orderComment: Ref<string> = ref()
+
+    return {
+        shippingError,
+        paymentError,
+        orderComment
+    }
+})
 
 export const useCheckout = function (): IUseCheckout {
     const error: Ref<boolean | string> = ref(false)
@@ -27,6 +36,9 @@ export const useCheckout = function (): IUseCheckout {
     const { showNotification } = useNotification()
     const { currentRoute } = useRouter()
     const config = useRuntimeConfig()
+
+    const checkoutStore = useCheckoutStore()
+    const { shippingError, paymentError, orderComment } = storeToRefs(checkoutStore)
 
     async function getShippingMethods (): Promise<ShippingMethod[]> {
         loading.value = true

@@ -58,6 +58,7 @@
 <script setup lang="ts">
 import { ref, watch, computed, onBeforeUnmount } from 'vue'
 import { useNuxtApp } from '#app'
+import { storeToRefs } from 'pinia'
 import { Product, useCurrency } from '@hubblecommerce/hubble/commons'
 import { useCart, useNotification } from '#imports'
 
@@ -68,7 +69,9 @@ const props = defineProps<{
 const product = ref(props.productData)
 const { formatPrice } = useCurrency()
 const qty = ref<number>(1)
-const { addToCart, loading: cartLoading, error: cartError } = useCart()
+const cartStore = useCart()
+const { loading: cartLoading, error: cartError } = storeToRefs(cartStore)
+const { addToCart } = cartStore
 const { showNotification } = useNotification()
 const variantLoading = ref(false)
 const loading = computed(() => {

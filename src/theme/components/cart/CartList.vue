@@ -41,6 +41,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { TrashIcon } from '@heroicons/vue/20/solid'
+import { storeToRefs } from 'pinia'
 import { useCart } from '#imports'
 import { useCurrency } from '@hubblecommerce/hubble/commons'
 
@@ -52,7 +53,9 @@ const props = withDefaults(defineProps<CartListProps>(), {
     isInteractive: true
 })
 
-const { cart, loading, error, deleteCart, removeLineItem } = useCart()
+const cartStore = useCart()
+const { cart, loading, error } = storeToRefs(cartStore)
+const { deleteCart, removeLineItem } = cartStore
 
 const { formatPrice } = useCurrency()
 

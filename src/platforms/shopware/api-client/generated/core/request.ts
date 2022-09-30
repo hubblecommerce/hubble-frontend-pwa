@@ -19,6 +19,7 @@ import { OpenAPI } from './OpenAPI'
 import { useNuxtApp } from '#app'
 // @ts-ignore
 import { getRequestCookie } from '@hubblecommerce/hubble/commons'
+import { storeToRefs } from 'pinia'
 
 const isDefined = <T>(value: T | null | undefined): value is Exclude<T, null | undefined> => {
     return value !== undefined && value !== null;
@@ -122,7 +123,9 @@ export const cachedRoutes = [
  */
 export const request = <T>(config: OpenAPIConfig, options: ApiRequestOptions): CancelablePromise<T> => {
     const app = useNuxtApp()
-    const { apiUrl, apiAuthToken, sessionToken, setSessionToken, platformLanguages } = usePlatform()
+    const platformStore = usePlatform(app.$pinia)
+    const { session } = storeToRefs(platformStore)
+    const { apiUrl, apiAuthToken, platformLanguages, setSessionToken } = platformStore
 
     let platformHeaders = {
         'sw-access-key': apiAuthToken,
@@ -136,8 +139,8 @@ export const request = <T>(config: OpenAPIConfig, options: ApiRequestOptions): C
         }
     }
 
-    if(sessionToken.value !== null) {
-        platformHeaders['sw-context-token'] = sessionToken.value
+    if(session.value.sessionToken !== null) {
+        platformHeaders['sw-context-token'] = session.value.sessionToken
     }
 
     const locale = app.vueApp.config.globalProperties.$i18n?.locale

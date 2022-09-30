@@ -32,23 +32,20 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { navigateTo, useAsyncData } from '#app'
-import { useCustomer } from '#imports'
+import { storeToRefs } from 'pinia'
+import { definePageMeta, useCustomer } from '#imports'
 
-/*
- * Redirect to /customer/login if customer is not logged in
- */
-const { getCustomer, customer } = useCustomer()
-const { data, error } = await useAsyncData(() => getCustomer(), { initialCache: false })
+definePageMeta({
+    middleware: ['auth']
+})
 
-if (data.value == null || data.value?.isGuest || error.value != null) {
-    await navigateTo('/customer/login')
-}
+const customerStore = useCustomer()
+const { customer } = storeToRefs(customerStore)
 
 /*
  * Wait for init-session.client
  */
-const loading = ref(true)
+const loading = ref(false)
 onMounted(() => {
     loading.value = false
 })

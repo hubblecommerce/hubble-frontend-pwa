@@ -10,6 +10,7 @@
 
 <script setup lang="ts">
 import { computed, onMounted } from 'vue'
+import { storeToRefs } from 'pinia'
 import { usePlatform } from '#imports'
 import { CustomerBillingAddress, CustomerShippingAddress } from '@hubblecommerce/hubble/commons'
 
@@ -17,7 +18,9 @@ const props = defineProps<{
     address: CustomerBillingAddress | CustomerShippingAddress
 }>()
 
-const { salutations, getSalutations, countries, getCountries } = usePlatform()
+const platformStore = usePlatform()
+const { salutations, countries } = storeToRefs(platformStore)
+const { getSalutations, getCountries } = usePlatform()
 
 onMounted(async () => {
     if (salutations.value === null) {

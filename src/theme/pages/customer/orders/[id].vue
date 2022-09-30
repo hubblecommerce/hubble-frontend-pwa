@@ -70,7 +70,7 @@ import { useCustomer } from '#imports'
 /*
 * Redirect to /customer/login if customer is not logged in
 */
-const { getCustomer, customer, getOrders } = useCustomer()
+const { getCustomer, getOrders } = useCustomer()
 const { data, error } = await useAsyncData(() => getCustomer(), { initialCache: false })
 const route = useRoute()
 

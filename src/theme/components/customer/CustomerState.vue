@@ -25,7 +25,9 @@
 
 <script setup lang="ts">
 import { UserIcon } from '@heroicons/vue/24/outline'
+import { storeToRefs } from 'pinia'
 import { useCustomer } from '#imports'
 
-const { customer } = useCustomer()
+const customerStore = useCustomer()
+const { customer } = storeToRefs(customerStore)
 </script>

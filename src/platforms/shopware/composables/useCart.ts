@@ -1,14 +1,15 @@
 import { Ref, ref, watch } from 'vue'
 import { useCookie, useRuntimeConfig } from '#app'
+import { defineStore } from 'pinia'
 import { useNotification, usePlatform } from '#imports'
 import { Cart, IUseCart, MiniCart } from '@hubblecommerce/hubble/commons'
 import { CartShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 import { mapCart, mapMiniCart } from '@hubblecommerce/hubble/platforms/shopware/api-client/utils'
 
-const cart: Ref<Cart | null> = ref(null)
-const miniCart: Ref<MiniCart | null> = ref(null)
+export const useCart = defineStore('use-cart', (): IUseCart => {
+    const cart: Ref<Cart | null> = ref(null)
+    const miniCart: Ref<MiniCart | null> = ref(null)
 
-export const useCart = function (): IUseCart {
     const { cartCookie } = useRuntimeConfig()
     const error: Ref<boolean | string> = ref(false)
     const loading: Ref<boolean> = ref(false)
@@ -220,4 +221,4 @@ export const useCart = function (): IUseCart {
         loading,
         error
     }
-}
+})

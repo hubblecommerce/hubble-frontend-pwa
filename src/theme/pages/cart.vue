@@ -37,9 +37,12 @@
 
 <script setup lang="ts">
 import { onMounted } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useCart } from '#imports'
 
-const { getCart, cart, loading, error, deleteCart } = useCart()
+const cartStore = useCart()
+const { cart, loading, error } = storeToRefs(cartStore)
+const { getCart, deleteCart } = cartStore
 
 loading.value = true
 

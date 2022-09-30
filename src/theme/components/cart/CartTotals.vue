@@ -38,9 +38,12 @@
 </template>
 
 <script setup lang="ts">
+import { storeToRefs } from 'pinia'
 import { useCart } from '#imports'
 import { useCurrency } from '@hubblecommerce/hubble/commons'
 
-const { cart, loading, error, deleteCart } = useCart()
+const cartStore = useCart()
+const { cart, loading, error } = storeToRefs(cartStore)
+const { deleteCart } = cartStore
 const { formatPrice } = useCurrency()
 </script>

@@ -61,14 +61,17 @@ const username = ref()
 const password = ref()
 const loginForm = ref()
 
-const { login, loading, requireNewPassword } = useCustomer()
+const { login, requireNewPassword } = useCustomer()
 const resetPassword = ref(false)
+const loading = ref(false)
 
 async function onLoginClick () {
     try {
+        loading.value = true
         const isValid = await validateForm(loginForm.value)
 
         if (!isValid) {
+            loading.value = false
             return
         }
 
@@ -78,7 +81,9 @@ async function onLoginClick () {
         password.value = ''
 
         navigateTo('/customer')
-    } catch (e) {}
+    } catch (e) {
+        loading.value = false
+    }
 }
 
 async function onResetPasswordClick () {
@@ -98,7 +103,3 @@ async function onResetPasswordClick () {
     } catch (e) {}
 }
 </script>
-
-<style scoped>
-
-</style>
