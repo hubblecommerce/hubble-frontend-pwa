@@ -8,8 +8,15 @@ const { $hblBus } = useNuxtApp()
 
 $hblBus.$emit('somethingHappened', { data: value })
 
-$hblBus.$on('somethingHappened', ({ data }) => {
+$hblBus.$on('somethingHappened', eventListenerMediaGallery)
+
+function eventListener ({ data }) {
     console.log(data)
+}
+
+Don't forget to unsubscribe on unmount
+onBeforeUnmount(() => {
+    $hblBus.$off('somethingHappened', eventListener)
 })
 */
 
