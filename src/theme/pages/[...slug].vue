@@ -1,9 +1,9 @@
 <template>
-    <main v-if="page != null" class="dynamic-page">
+    <main class="dynamic-page">
         <component :is="pageComponent" v-if="pageComponent !== null" :data="pageData" />
 
         <StructureSection
-            v-for="(section, index) in page.structure"
+            v-for="(section, index) in page?.structure"
             :key="section.id"
             :count="index"
             :content="section"
@@ -34,15 +34,15 @@ if (error.value) {
  * Page components and data used for SEO / Head
  */
 const pageComponent = computed(() => {
-    if (page.value.type === 'category') {
+    if (page.value?.type === 'category') {
         return resolveComponent('PageCategory')
     }
 
-    if (page.value.type === 'detail') {
+    if (page.value?.type === 'detail') {
         return resolveComponent('PageDetail')
     }
 
-    if (page.value.type === 'cms') {
+    if (page.value?.type === 'cms') {
         return resolveComponent('PageCms')
     }
 
@@ -50,15 +50,15 @@ const pageComponent = computed(() => {
 })
 
 const pageData = computed(() => {
-    if (page.value.type === 'category') {
+    if (page.value?.type === 'category') {
         return page.value.category
     }
 
-    if (page.value.type === 'detail') {
+    if (page.value?.type === 'detail') {
         return page.value.detail
     }
 
-    if (page.value.type === 'cms') {
+    if (page.value?.type === 'cms') {
         return page.value.cms
     }
 
@@ -78,7 +78,7 @@ if (page.value?.type === 'detail' && page.value?.detail !== undefined) {
 const { entityPathInfo } = useLocalisation()
 
 onMounted(() => {
-    if (page.value?.type === 'category' && page.value.category !== undefined) {
+    if (page.value?.type === 'category' && page.value?.category !== undefined) {
         entityPathInfo.value = page.value.category.pathInfo
     }
 
