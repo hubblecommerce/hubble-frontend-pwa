@@ -743,7 +743,7 @@ function mapNavigation (swNavigation: NavigationRouteResponse): Navigation {
 
         return {
             id: item.id,
-            name: item.name,
+            name: item.translated.name,
             url,
             children
         }
