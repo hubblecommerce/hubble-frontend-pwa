@@ -73,10 +73,6 @@ const config = useRuntimeConfig().public
 const { t } = useI18n()
 </script>
 
-<style scoped>
-
-</style>
-
 <i18n>
 {
     "en": {

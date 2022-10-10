@@ -10,7 +10,7 @@ const props = defineProps<{
 }>()
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .structure-slot-image {
     min-height: 200px;
     max-height: 350px

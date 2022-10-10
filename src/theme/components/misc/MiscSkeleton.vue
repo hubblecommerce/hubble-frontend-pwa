@@ -102,7 +102,3 @@ const classes = computed(() => {
 })
 
 </script>
-
-<style>
-
-</style>

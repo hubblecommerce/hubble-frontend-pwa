@@ -68,7 +68,8 @@
         "mitt": "^3.0.0",
         "portal-vue": "^3.0.0-beta.0",
         "untyped": "^0.4.7",
-        "unzipper": "^0.10.11"
+        "unzipper": "^0.10.11",
+        "sass": "^1.55.0"
     },
     "devDependencies": {
         "@nuxt/module-builder": "latest",

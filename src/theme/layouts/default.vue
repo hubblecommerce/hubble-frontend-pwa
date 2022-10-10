@@ -55,7 +55,7 @@ nuxtApp.hook('page:finish', () => {
 })
 </script>
 
-<style>
+<style lang="scss">
 .page-enter-from{
     opacity: 0;
 }

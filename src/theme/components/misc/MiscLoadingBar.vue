@@ -147,7 +147,7 @@ export default {
         }"
     />
 </template>
-<style scoped>
+<style lang="scss" scoped>
 .nuxt-progress {
     position: fixed;
     top: 0;

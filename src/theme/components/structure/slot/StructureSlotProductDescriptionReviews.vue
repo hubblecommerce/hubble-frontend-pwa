@@ -31,7 +31,7 @@ const product = inject<Product>(detailData)
 const activeTab = ref('tab-1')
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .fade-enter-active,
 .fade-leave-active {
     transition: opacity 0.1s ease;

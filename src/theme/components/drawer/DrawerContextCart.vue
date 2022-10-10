@@ -20,7 +20,7 @@ import { useDrawer } from '#imports'
 const { closeDrawer } = useDrawer()
 </script>
 
-<style>
+<style lang="scss">
 .fade-enter-active,
 .fade-leave-active {
     transition: all 0.1s ease-in-out;
