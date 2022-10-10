@@ -10,6 +10,9 @@ This module is currently work in progress and not production ready.
 If you want to use a production ready version, please refer to the latest stable 1.x 
 version.
 
+## Documentation
+Run `npm run docs:dev` to see the developer documentation. It can be found in `/docs`.
+
 ## Roadmap
 - [x] An open source project
 - [x] Installable as a Nuxt.js Module (compatible with Nuxt 3)
@@ -23,11 +26,10 @@ version.
 - [x] Components as a toolset to build the shop interface
 - [x] Included a famous CSS framework
 - [x] SEO friendly interface
+- [x] Multi-language support
 - [ ] Supports multiple e-commerce platforms
-- [ ] Multi-language support 
 
-## Development
-
+## Module Development
 - Create .env files in playground and __tests__/module/fixture
 - Run `npm run dev:prepare` to generate type stubs.
 - If there are any errors with symlinks after dev:prepare, reset / checkout files from git 
