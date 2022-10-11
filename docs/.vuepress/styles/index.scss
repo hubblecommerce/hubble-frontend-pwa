@@ -1,0 +1,42 @@
+:root {
+  // brand colors
+  --c-brand: #A20158;
+  --c-brand-light: #c0026b;
+
+  --c-tip: #A20158;
+}
+
+html.dark {
+  // brand colors darkmode
+  --c-brand: #d00171;
+  --c-brand-light: #f60189;
+
+  --c-tip: #d00171;
+}
+
+// Handle darkmode logo inside contents
+.logo-bright {
+  display: block;
+}
+
+.logo-dark {
+  display: none;
+}
+
+html.dark {
+  .logo-bright {
+    display: none;
+  }
+
+  .logo-dark {
+    display: block;
+  }
+}
+
+.contains-task-list {
+  padding-left: 0;
+}
+
+.contains-task-list li {
+  list-style-type: none;
+}
