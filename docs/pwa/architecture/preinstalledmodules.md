@@ -1,0 +1,29 @@
+# Preinstalled Modules
+
+hubble PWA install a selection of awesome modules to your project to make development even easier.
+These modules are automatically installed and [configured](/pwa/configuration.html#modules) on setup:
+
+### Theme
+- @heroicons/vue
+- @nuxtjs/color-mode
+- @nuxtjs/tailwindcss
+- daisyui
+- portal-vue
+- sass
+
+### Multilanguage
+- @intlify/nuxt3
+
+### State Management
+- @pinia/nuxt
+
+### Useful helper composables
+- @vueuse/core
+- @vueuse/nuxt
+
+### Modularity
+- globby
+- lmify
+- mitt
+- untyped
+- unzipper

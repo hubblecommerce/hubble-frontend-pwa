@@ -1,6 +1,4 @@
-<br>
-
-<img src="https://docs.hubblecommerce.io/assets/images/hubblelogo.svg" style="height:50px" />
+# Overview
 
 # Headless E-Commerce Interface
 > Progressive Web App for your e-commerce platform based on [Nuxt.js](https://nuxtjs.org/)
@@ -11,9 +9,6 @@
 - [x] Covers all common e-commerce features
 - [x] Excellent performance and usability
 - [x] Toolbox / framework for creating your own shop frontend
-
-## Documentation
-Run `npm run docs:dev` to see the developer documentation or take a look at `/docs`.
 
 ## Links
 [Demo](https://hubble-next.herokuapp.com/) |
@@ -58,7 +53,7 @@ modules: [
 ]
 ```
 
-4. Create a .env file in project root and fill credentials
+4. Create a .env file in project root and fill credentials 
 ```sh
 API_SW_ACCESS_KEY = ''
 API_BASE_URL      = ''
@@ -85,7 +80,7 @@ node .output/server/index.mjs
 ## Features
 hubble PWA is a Nuxt.js module.
 That means it relies on all the great features of Nuxt.js like:
-- All benefits of Vue 3 and Nuxt 3
+- All benefits of Vue 3 and Nuxt 3 
 - Server Side Rendering
 - Dynamic Routing
 - Code-Splitting
@@ -160,3 +155,5 @@ you like to get noticed about.
 digital.manufaktur GmbH – hallo@digitalmanufaktur.com
 
 Distributed under the MIT license. See [LICENSE](https://github.com/hubblecommerce/hubble-frontend-pwa/blob/main/LICENSE) for more information.
+
+[https://github.com/hubblecommerce/hubble-frontend-pwa](https://github.com/hubblecommerce/hubble-frontend-pwa)

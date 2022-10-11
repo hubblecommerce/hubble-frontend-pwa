@@ -1,25 +1,13 @@
-# hubble PWA 
-> The interface for your headless E-Commerce Platform
+<div style="margin-top: -57.6px; display: flex; height: 100vh; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
 
-## Features
-- [x] An open source project
-- [x] Installable as a Nuxt.js Module (compatible with Nuxt 3)
-- [x] File-based inheritance mechanism
-- [x] Typescript Support
-- [x] Platform specific api clients
-- [x] Usage of platform agnostic composables
-- [x] Integration path for installing platform plugins / modules
-- [x] Components as a toolset to build the shop interface
-- [x] Uses Tailwind
-- [x] SEO friendly interface
-- [x] Multi-language support
+<img class="logo-bright" src="/assets/images/hubblelogo.svg" style="height:100px; text-align:center;" />
+<img class="logo-dark" src="/assets/images/hubblelogo-bright.svg" style="height:100px; text-align:center;" />
+<br>
+<br>
 
-## Requirements
-- E-Commerce Platform: See a list of supported Platforms here 
-- Node >= v14.18.1
-- Nuxt 3 (3.0.0-rc.11)
+# Welcome to the official hubblecommerce Documentation
 
-## Installation
-```
-npm i @hubblecommerce/hubble@next
-```
+### Please choose a product you are interested in:
+
+[hubble PWA](/pwa/what/overview.html)
+</div>
