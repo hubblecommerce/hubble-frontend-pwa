@@ -1,5 +1,5 @@
 <template>
-    <ProductDetailManufacturer :manufacturer-data="product.manufacturer" />
+    <ProductDetailManufacturer v-if="product.manufacturer" :manufacturer-data="product.manufacturer" />
 </template>
 
 <script setup lang="ts">

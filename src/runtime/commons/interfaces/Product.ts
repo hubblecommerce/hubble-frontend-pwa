@@ -38,7 +38,7 @@ export interface Product {
     stock: number,
     price: Price,
     deliveryTime?: string,
-    manufacturer?: Manufacturer,
+    manufacturer?: Manufacturer | null,
     metaTitle?: string,
     metaDescription?: string,
     variants?: VariantGroup[],

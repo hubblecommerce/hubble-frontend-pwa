@@ -11,11 +11,11 @@
                 </p>
 
                 <div class="flex gap-2 items-center">
-                    <div v-if="product.price.regularPrice" :class="{ 'text-secondary': product.price.specialPrice}">
-                        {{ formatPrice(product.price.regularPrice) }}
+                    <div v-if="product.price?.regularPrice" :class="{ 'text-secondary': product.price?.specialPrice}">
+                        {{ formatPrice(product.price?.regularPrice) }}
                     </div>
-                    <div v-if="product.price.specialPrice" class="line-through text-sm">
-                        {{ formatPrice(product.price.specialPrice) }}
+                    <div v-if="product.price?.specialPrice" class="line-through text-sm">
+                        {{ formatPrice(product.price?.specialPrice) }}
                     </div>
                 </div>
 

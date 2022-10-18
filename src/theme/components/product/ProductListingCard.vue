@@ -55,7 +55,7 @@ const hasSpecialPrice = computed(() => {
 })
 
 const image = ref({
-    src: Array.isArray(props.data.media) ? props.data.media[0].url : props.data.media.url
+    src: Array.isArray(props.data.media) ? props.data.media[0]?.url : props.data.media?.url
 })
 const { isLoading } = useImage(image)
 

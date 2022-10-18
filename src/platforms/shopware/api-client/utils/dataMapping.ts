@@ -185,7 +185,7 @@ function mapProduct (swProduct: swProduct, swProductConfigurator?: PropertyGroup
         stock: swProduct.stock,
         price: swProduct.calculatedPrice != null ? mapPrice(swProduct.calculatedPrice) : null,
         deliveryTime: swProduct.deliveryTime?.name,
-        manufacturer: mapManufacturer(swProduct.manufacturer),
+        manufacturer: swProduct.manufacturer != null ? mapManufacturer(swProduct.manufacturer) : null,
         metaTitle: swProduct.translated.metaTitle,
         metaDescription: swProduct.translated.metaDescription,
         variants,
@@ -623,7 +623,7 @@ function mapMiniCart (cart: Cart): MiniCart {
 function mapSalutation (salutation: SwSalutation): Salutation {
     return {
         id: salutation.id,
-        name: salutation.displayName
+        name: salutation.translated?.displayName
     }
 }
 
@@ -636,7 +636,7 @@ function mapSalutations (salutations: SwSalutation[]): Salutation[] {
 function mapCountry (country: SwCountry): Country {
     return {
         id: country.id,
-        name: country.name
+        name: country.translated?.name
     }
 }
 
