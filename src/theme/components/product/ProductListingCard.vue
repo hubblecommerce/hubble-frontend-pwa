@@ -10,11 +10,11 @@
             <h2 class="card-title items-start" v-text="data.name" />
             <div class="card-text">
                 <div class="flex gap-2 items-center text-base">
-                    <div v-if="data.price.regularPrice" :class="{ 'text-secondary': data.price.specialPrice}">
-                        {{ formatPrice(data.price.regularPrice) }}
+                    <div v-if="data.price?.regularPrice" :class="{ 'text-secondary': data.price?.specialPrice}">
+                        {{ formatPrice(data.price?.regularPrice) }}
                     </div>
-                    <div v-if="data.price.specialPrice" class="line-through text-sm">
-                        {{ formatPrice(data.price.specialPrice) }}
+                    <div v-if="data.price?.specialPrice" class="line-through text-sm">
+                        {{ formatPrice(data.price?.specialPrice) }}
                     </div>
                 </div>
             </div>
