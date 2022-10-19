@@ -201,7 +201,7 @@
         </client-only>
 
         <client-only>
-            <CheckoutPayment v-show="step === 'payment'" key="paymentMethods" @update-after:payment-method="onUpdatePaymentMethod()" />
+            <CheckoutPayment v-show="step === 'payment'" key="paymentMethods" @update-after:payment-method="onUpdatePaymentMethod($event)" />
         </client-only>
 
         <template v-if="step === 'summary'">
@@ -299,6 +299,7 @@ const protectedSteps = [
     'payment',
     'summary'
 ]
+const paymentEmpty = ref(false)
 
 function selectStep (stepName: string): void {
     if (protectedSteps.includes(stepName) && !customer.value) {
@@ -310,7 +311,7 @@ function selectStep (stepName: string): void {
         return
     }
 
-    if (stepName === 'summary' && paymentError.value) {
+    if (stepName === 'summary' && (paymentError.value || paymentEmpty.value)) {
         showNotification('Please select a valid payment method.', 'error')
         return
     }
@@ -368,7 +369,8 @@ async function onUpdateShippingMethod () {
     await getCart()
 }
 
-async function onUpdatePaymentMethod () {
+async function onUpdatePaymentMethod (value) {
+    paymentEmpty.value = value == null || value === ''
     await getSession()
     defaultPlaceOrder.value = true
 }
