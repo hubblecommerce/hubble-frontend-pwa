@@ -29,9 +29,8 @@
 *
 * Component needs to be placed in a directory containing 'plugin' in path name
 */
-
 import { ref, useSlots, computed, resolveComponent } from 'vue'
-import pluginMapping from '~/platform-plugins/pluginMapping.json'
+import { useRuntimeConfig } from '#app'
 
 const props = defineProps({
     name: {
@@ -56,6 +55,9 @@ const slots = useSlots()
 const hasSlotContent = computed(() => {
     return slots && typeof slots.default === 'function' && slots.default()
 })
+
+const config = useRuntimeConfig()
+const pluginMapping = config.public.pluginMapping
 
 if (pluginMapping != null && pluginMapping.pluginSlots != null) {
     slotEntries.value = pluginMapping.pluginSlots.filter(entry => entry.slot === props.name)

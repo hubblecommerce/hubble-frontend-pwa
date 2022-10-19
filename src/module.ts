@@ -139,12 +139,19 @@ export default defineNuxtModule<ModuleOptions>({
         await fse.copy(resolve(join(platformDir, 'composables')), resolve(join(targetDir, 'composables')))
 
         const platformPluginsDirs = await listAllDirs(platformPluginsDir)
+
+        // Platform plugins are not allowed to override hubble module files, to keep the inheritance order
+        // strict and readable. Use plugin-slot for injections.
         for (const pluginDir of platformPluginsDirs) {
             const subDirs = await globby(`${pluginDir}/*`, { onlyDirectories: true })
-            // Platform plugins are not allowed to override hubble module files, to keep the inheritance order
-            // strict and readable. Use plugin-slot for injections.
             await asyncCopyDirs(subDirs, targetDir, { overwrite: false, errorOnExist: true })
         }
+
+        // File inheritance for pluginMapping.json
+        // Set mapping to runtimeConfig, can be overridden via nuxt config file
+        await fse.copy(resolve(join(platformPluginsDir, 'pluginMapping.json')), resolve(join(targetDir, options.pluginsDirName, 'pluginMapping.json')))
+        const pluginMapping = await fse.readJson(resolve(join(targetDir, options.pluginsDirName, 'pluginMapping.json')))
+        nuxt.options.runtimeConfig.public.pluginMapping = defu(nuxt.options.runtimeConfig.public.pluginMapping, pluginMapping)
 
         await asyncCopyDirs(validRootDirs, targetDir)
 
