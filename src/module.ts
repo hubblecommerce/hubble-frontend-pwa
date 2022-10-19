@@ -149,7 +149,10 @@ export default defineNuxtModule<ModuleOptions>({
 
         // File inheritance for pluginMapping.json
         // Set mapping to runtimeConfig, can be overridden via nuxt config file
-        await fse.copy(resolve(join(platformPluginsDir, 'pluginMapping.json')), resolve(join(targetDir, options.pluginsDirName, 'pluginMapping.json')))
+        const pluginMappingExists = await fse.pathExists(resolve(join(platformPluginsDir, 'pluginMapping.json')))
+        if (pluginMappingExists) {
+            await fse.copy(resolve(join(platformPluginsDir, 'pluginMapping.json')), resolve(join(targetDir, options.pluginsDirName, 'pluginMapping.json')))
+        }
         const pluginMapping = await fse.readJson(resolve(join(targetDir, options.pluginsDirName, 'pluginMapping.json')))
         nuxt.options.runtimeConfig.public.pluginMapping = defu(nuxt.options.runtimeConfig.public.pluginMapping, pluginMapping)
 
