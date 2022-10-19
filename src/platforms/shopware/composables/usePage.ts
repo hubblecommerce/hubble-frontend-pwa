@@ -13,12 +13,19 @@ import {
     PwaShopware
 } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 import {
-    includes,
-    associations,
     mapPage,
     mapProductListing, mapProduct
 } from '@hubblecommerce/hubble/platforms/shopware/api-client/utils'
 import { useLocalisation, useRuntimeConfig } from '#imports'
+
+const associations = {
+    media: {},
+    manufacturer: {
+        associations: {
+            media: {}
+        }
+    }
+}
 
 export const usePage = function (): IUsePage {
     const loading: Ref<boolean> = ref(false)
@@ -43,7 +50,6 @@ export const usePage = function (): IUsePage {
             }
 
             const requestBody = {
-                includes,
                 associations,
                 path,
                 ...params
@@ -103,7 +109,6 @@ export const usePage = function (): IUsePage {
             }
 
             const requestBody = {
-                includes,
                 associations,
                 ...params
             }
@@ -182,7 +187,6 @@ export const usePage = function (): IUsePage {
                 'application/json',
                 'application/json',
                 {
-                    includes,
                     associations,
                     // Todo patch api
                     // @ts-ignore
