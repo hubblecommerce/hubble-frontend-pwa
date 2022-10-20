@@ -102,11 +102,12 @@ function mapManufacturer (swManufacturer: ProductManufacturer): Manufacturer {
     }
 }
 
-// TODO Patch api client: create calculated price type
 function mapPrice (calculatedPrice): Price {
     return {
         regularPrice: calculatedPrice?.unitPrice,
-        specialPrice: calculatedPrice?.listPrice?.price
+        specialPrice: calculatedPrice?.listPrice?.price,
+        tax: calculatedPrice?.calculatedTaxes[0].tax,
+        taxRate: calculatedPrice?.calculatedTaxes[0].taxRate
     }
 }
 
@@ -173,6 +174,15 @@ function mapProduct (swProduct: swProduct, swProductConfigurator?: PropertyGroup
         parentId = swProduct.parentId
     }
 
+    // calculatedPrice = price configured on settings base page of product
+    let price = swProduct.calculatedPrice != null ? mapPrice(swProduct.calculatedPrice) : null
+
+    // calculatedPrices = price based on advanced price rules
+    // is an array because you can have tier-prices (prices based on quantity)
+    if (swProduct.calculatedPrices?.length > 0) {
+        price = mapPrice(swProduct.calculatedPrices[0])
+    }
+
     return {
         id: swProduct.id,
         name: swProduct.translated.name,
@@ -183,7 +193,7 @@ function mapProduct (swProduct: swProduct, swProductConfigurator?: PropertyGroup
         media,
         active: swProduct.available,
         stock: swProduct.stock,
-        price: swProduct.calculatedPrice != null ? mapPrice(swProduct.calculatedPrice) : null,
+        price,
         deliveryTime: swProduct.deliveryTime?.name,
         manufacturer: swProduct.manufacturer != null ? mapManufacturer(swProduct.manufacturer) : null,
         metaTitle: swProduct.translated.metaTitle,

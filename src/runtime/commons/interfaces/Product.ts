@@ -10,7 +10,9 @@ export interface Manufacturer {
 
 export interface Price {
     regularPrice: string,
-    specialPrice: string | null
+    specialPrice: string | null,
+    tax: string,
+    taxRate: string,
 }
 
 export interface VariantOption {
