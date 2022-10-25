@@ -60,18 +60,18 @@
         "@intlify/nuxt3": "^0.2.4",
         "@nuxt/kit": "^3.0.0-rc.11",
         "@nuxtjs/color-mode": "^3.1.7",
-        "@nuxtjs/tailwindcss": "^5.3.3",
+        "@nuxtjs/tailwindcss": "^6.1.1",
         "@pinia/nuxt": "^0.4.1",
         "@vueuse/core": "^9.3.0",
         "@vueuse/nuxt": "^9.3.0",
-        "daisyui": "^2.31.0",
+        "daisyui": "^2.33.0",
         "globby": "^13.1.2",
         "lmify": "^0.3.0",
         "mitt": "^3.0.0",
         "portal-vue": "^3.0.0-beta.0",
+        "sass": "^1.55.0",
         "untyped": "^0.4.7",
-        "unzipper": "^0.10.11",
-        "sass": "^1.55.0"
+        "unzipper": "^0.10.11"
     },
     "devDependencies": {
         "@nuxt/module-builder": "latest",
