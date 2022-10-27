@@ -12,6 +12,7 @@ export interface Totals {
 export interface LineItem {
     id: string,
     itemId: string,
+    sku: string | null,
     name: string,
     quantity: number,
     type?: string

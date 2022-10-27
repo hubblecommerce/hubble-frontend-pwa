@@ -569,10 +569,12 @@ function mapLineItem (lineItem: SwLineItem): LineItem {
     return {
         id: lineItem.id,
         itemId: lineItem.referencedId,
+        // @TODO Patch api client
+        // @ts-ignore
+        sku: lineItem.payload?.productNumber,
         name: lineItem.label,
         quantity: lineItem.quantity,
         type: lineItem.type,
-        // @TODO Patch api client
         // @ts-ignore
         media: mapMedia(lineItem.cover),
         // @ts-ignore
@@ -790,5 +792,19 @@ export {
     mapOrder,
     mapOrderLineItems,
     mapOrderLineItem,
-    mapNavigation
+    mapNavigation,
+    mapLineItems,
+    mapLineItem,
+    mapTotals,
+    mapPrice,
+    mapManufacturer,
+    mapVariantOption,
+    mapPropertyOptions,
+    mapVariantGroup,
+    mapVariantGroups,
+    mapProducts,
+    mapFilters,
+    mapCurrentFilters,
+    mapSorting,
+    mapSortings,
 }
