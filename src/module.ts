@@ -1,6 +1,7 @@
 import path, { basename, extname, join, resolve } from 'path'
 import { fileURLToPath } from 'url'
 import { defineNuxtModule, extendPages, installModule } from '@nuxt/kit'
+import { Nuxt } from '@nuxt/schema'
 import fse from 'fs-extra'
 import { defu } from 'defu'
 import { CookieOptions } from 'nuxt/app'
@@ -11,7 +12,7 @@ import daisyui from 'daisyui'
 import type { NuxtPage } from '@nuxt/schema'
 
 // Set configs of configured platform
-async function setDefaultRuntimeConfigs (nuxt) {
+async function setDefaultRuntimeConfigs (nuxt: Nuxt) {
     try {
         const {
             defaultPublicRuntimeConfig,
@@ -29,7 +30,7 @@ async function setDefaultRuntimeConfigs (nuxt) {
 }
 
 // Set configs of installed platform plugins
-async function setPlatformPluginRuntimeConfigs (nuxt, pluginsConfigPath) {
+async function setPlatformPluginRuntimeConfigs (nuxt: Nuxt, pluginsConfigPath: string) {
     const pluginsConfigExists = await fse.pathExists(pluginsConfigPath)
 
     if (pluginsConfigExists) {
@@ -38,9 +39,15 @@ async function setPlatformPluginRuntimeConfigs (nuxt, pluginsConfigPath) {
     }
 }
 
-const listAllDirs = dir => globby(`${dir}/*`, { onlyDirectories: true })
-const getLastSectionOfPath = thePath => thePath.substring(thePath.lastIndexOf('/') + 1)
-const asyncCopyDirs = async (sourceDirs, targetDir, options = {}) => {
+const listAllDirs = (dir: string) => {
+    return globby(`${dir}/*`, { onlyDirectories: true })
+}
+
+const getLastSectionOfPath = (thePath: string) => {
+    return thePath.substring(thePath.lastIndexOf('/') + 1)
+}
+
+const asyncCopyDirs = async (sourceDirs: string[], targetDir: string, options: Record<any, any> = {}) => {
     await Promise.all(
         sourceDirs.map(async (sourceDir) => {
             await fse.copy(sourceDir, join(targetDir, basename(sourceDir)), options)
@@ -206,7 +213,7 @@ export default defineNuxtModule<ModuleOptions>({
         // Vite only: exclude module from optimizeDeps to prevent vite from optimize #app and #import inside
         // of module
         if (nuxt.options.vite) {
-            nuxt.options.vite.optimizeDeps.exclude.push('@hubblecommerce/hubble')
+            nuxt.options.vite.optimizeDeps?.exclude?.push('@hubblecommerce/hubble')
         }
 
         // Add custom error page
@@ -300,7 +307,10 @@ export default defineNuxtModule<ModuleOptions>({
         // Dev only: register new file-watcher based on file inheritance
         if (nuxt.options.dev) {
             const excludedDirectories = [...options.dirBlacklist.map(__blacklistedDir => `${nuxt.options.rootDir}/${__blacklistedDir}/**`)]
-            const toTargetPath = oldPath => resolve(oldPath.replace(nuxt.options.rootDir, targetDir))
+
+            const toTargetPath = (oldPath: string) => {
+                return resolve(oldPath.replace(nuxt.options.rootDir, targetDir))
+            }
 
             // TODO: Write generic function for watchers
             watch(nuxt.options.rootDir, { ignoreInitial: true, ignored: excludedDirectories }).on('all', async (event, filePath) => {
