@@ -79,7 +79,7 @@ const getUrl = (config: OpenAPIConfig, options: ApiRequestOptions): string => {
     return url;
 };
 
-const catchErrorCodes = (options: ApiRequestOptions, result): ApiError => {
+const catchErrorCodes = (options: ApiRequestOptions, result: any): ApiError | boolean => {
     const response = result.response
 
     if (!response) {
@@ -107,6 +107,8 @@ const catchErrorCodes = (options: ApiRequestOptions, result): ApiError => {
     if (!response.ok) {
         return new ApiError(options, response, 'Generic Error');
     }
+
+    return false
 };
 
 export const cachedRoutes = [
@@ -127,7 +129,7 @@ export const request = <T>(config: OpenAPIConfig, options: ApiRequestOptions): C
     const { session } = storeToRefs(platformStore)
     const { apiUrl, apiAuthToken, platformLanguages, setSessionToken } = platformStore
 
-    let platformHeaders = {
+    let platformHeaders: Record<string, string> = {
         'sw-access-key': apiAuthToken,
         'sw-include-seo-urls': 'true'
     }
@@ -146,7 +148,7 @@ export const request = <T>(config: OpenAPIConfig, options: ApiRequestOptions): C
     const locale = app.vueApp.config.globalProperties.$i18n?.locale
 
     if(platformLanguages?.length > 0 && locale) {
-        const matchingLang = platformLanguages.find((lang) => {
+        const matchingLang = platformLanguages.find((lang: any) => {
             return lang.route === locale
         })
 
@@ -158,8 +160,12 @@ export const request = <T>(config: OpenAPIConfig, options: ApiRequestOptions): C
     OpenAPI.BASE = apiUrl
     OpenAPI.HEADERS = platformHeaders
 
-    return new CancelablePromise(async (resolve, reject) => {
+    return new CancelablePromise(async (resolve: any, reject: any) => {
         try {
+            if (typeof config.HEADERS === 'undefined') {
+                return false
+            }
+
             const headers = Object.assign(config.HEADERS, options.headers)
 
             const response = await $fetch.raw(
