@@ -5,4 +5,4 @@ export interface NavigationItem {
     children?: Array<NavigationItem>
 }
 
-export type Navigation = Array<NavigationItem>
+export type Navigation = Array<NavigationItem> | null

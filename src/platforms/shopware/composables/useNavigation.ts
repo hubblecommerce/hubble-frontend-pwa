@@ -3,7 +3,7 @@ import { Navigation, IUseNavigation } from '@hubblecommerce/hubble/commons'
 import { CategoryShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 import { mapNavigation } from '@hubblecommerce/hubble/platforms/shopware/api-client/utils'
 
-const navigation: Ref<Navigation> = ref()
+const navigation: Ref<Navigation> = ref(null)
 
 export const useNavigation = function (): IUseNavigation {
     const loading: Ref<boolean> = ref(false)

@@ -28,6 +28,8 @@ export const useLocalisation = function (): IUseLocalisation {
         if (vueApp.config.globalProperties.$i18n?.availableLocales.includes(routeLocale)) {
             return routeLocale
         }
+
+        return false
     }
 
     function setLocale (locale: string): void {
