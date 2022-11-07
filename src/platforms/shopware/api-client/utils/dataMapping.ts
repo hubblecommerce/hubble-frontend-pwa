@@ -806,5 +806,5 @@ export {
     mapFilters,
     mapCurrentFilters,
     mapSorting,
-    mapSortings,
+    mapSortings
 }
