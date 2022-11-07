@@ -34,5 +34,10 @@ export default defineBuildConfig({
             declaration: false,
             ext: 'ts'
         }
+    ],
+    externals: [
+        'chokidar',
+        'fs-extra',
+        'defu'
     ]
 })
