@@ -33,7 +33,7 @@ export function useNotification (): IUseNotification {
         if (!notification.keepAlive) {
             setTimeout(() => {
                 closeNotification(notification.id)
-            }, notification.displayTime * 1000)
+            }, notification.displayTime != null ? notification.displayTime * 1000 : 1000)
         }
 
         notificationCounter++

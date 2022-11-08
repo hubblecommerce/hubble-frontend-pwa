@@ -57,19 +57,23 @@ import {
     ProductListingSorting,
     VariantGroup,
     VariantOption,
-    Navigation
+    Navigation, MiniCartItem
 } from '@hubblecommerce/hubble/commons'
 
-function mapMedia (swMedia: swMedia): Media {
+function mapMedia (swMedia: swMedia): Media | null {
     if (swMedia === null) {
         return null
     }
 
     return {
         id: swMedia.id,
+        // @ts-ignore
         url: swMedia.url,
+        // @ts-ignore
         thumbnails: swMedia.thumbnails,
+        // @ts-ignore
         alt: swMedia.alt,
+        // @ts-ignore
         title: swMedia.title
     }
 }
@@ -79,14 +83,19 @@ function mapProductMedia (swMedia: ProductMedia[]): Media[] | null {
         return null
     }
 
-    const media = []
+    const media: Media[] = []
 
     swMedia = swMedia.sort(function (a, b) {
+        // @ts-ignore
         return a.position - b.position
     })
 
     swMedia.forEach((element) => {
-        media.push(mapMedia(element.media))
+        // @ts-ignore
+        const mappedMedia = mapMedia(element?.media)
+        if (mappedMedia != null) {
+            media.push(mappedMedia)
+        }
     })
 
     return media
@@ -94,14 +103,17 @@ function mapProductMedia (swMedia: ProductMedia[]): Media[] | null {
 
 function mapManufacturer (swManufacturer: ProductManufacturer): Manufacturer {
     return {
+        // @ts-ignore
         id: swManufacturer.id,
         link: swManufacturer.link,
         name: swManufacturer.translated.name,
         description: swManufacturer.translated.description,
+        // @ts-ignore
         media: mapMedia(swManufacturer.media)
     }
 }
 
+// @ts-ignore
 function mapPrice (calculatedPrice): Price {
     return {
         regularPrice: calculatedPrice?.unitPrice,
@@ -113,6 +125,7 @@ function mapPrice (calculatedPrice): Price {
 
 function mapVariantOption (swPropertyOption: PropertyGroupOption): VariantOption {
     return {
+        // @ts-ignore
         id: swPropertyOption.id,
         name: swPropertyOption.translated.name,
         ...(swPropertyOption.colorHexCode != null && { color: swPropertyOption.colorHexCode }),
@@ -128,6 +141,7 @@ function mapPropertyOptions (swPropertyOptions: PropertyGroupOption[]): VariantO
 
 function mapVariantGroup (swPropertyGroup: PropertyGroup): VariantGroup {
     return {
+        // @ts-ignore
         id: swPropertyGroup.id,
         name: swPropertyGroup.translated.name,
         // Todo patch api
@@ -143,10 +157,16 @@ function mapVariantGroups (swPropertyGroups: PropertyGroup[]): VariantGroup[] {
 }
 
 function mapProduct (swProduct: swProduct, swProductConfigurator?: PropertyGroup[]): Product {
-    let url = swProduct.seoUrls[0]?.pathInfo
-    const pathInfo = swProduct.seoUrls[0]?.pathInfo
-    if (swProduct.seoUrls[0]?.isCanonical) {
-        url = swProduct.seoUrls[0]?.seoPathInfo
+    let firstUrl = null
+    if (swProduct?.seoUrls != null) {
+        // @ts-ignore
+        firstUrl = swProduct.seoUrls[0]
+    }
+
+    let url = firstUrl?.pathInfo
+    const pathInfo = firstUrl?.pathInfo
+    if (firstUrl?.isCanonical) {
+        url = firstUrl?.seoPathInfo
     }
     if (!url.startsWith('/')) {
         url = '/' + url
@@ -179,28 +199,33 @@ function mapProduct (swProduct: swProduct, swProductConfigurator?: PropertyGroup
 
     // calculatedPrices = price based on advanced price rules
     // is an array because you can have tier-prices (prices based on quantity)
+    // @ts-ignore
     if (swProduct.calculatedPrices?.length > 0) {
+        // @ts-ignore
         price = mapPrice(swProduct.calculatedPrices[0])
     }
 
     return {
+        // @ts-ignore
         id: swProduct.id,
         name: swProduct.translated.name,
         description: swProduct.translated.description,
         sku: swProduct.productNumber,
         pathInfo,
         url,
-        media,
+        // @ts-ignore
         active: swProduct.available,
         stock: swProduct.stock,
+        // @ts-ignore
         price,
         deliveryTime: swProduct.deliveryTime?.name,
         manufacturer: swProduct.manufacturer != null ? mapManufacturer(swProduct.manufacturer) : null,
         metaTitle: swProduct.translated.metaTitle,
         metaDescription: swProduct.translated.metaDescription,
-        variants,
-        defaultOptions,
-        parentId
+        ...(variants != null && { variants }),
+        ...(defaultOptions != null && { defaultOptions }),
+        ...(parentId != null && { parentId }),
+        ...(media != null && { media })
     }
 }
 
@@ -210,6 +235,7 @@ function mapProducts (swProducts: swProduct[]): Product[] {
     })
 }
 
+// @ts-ignore
 function mapBreadcrumb (swBreadcrumb): Breadcrumb {
     return swBreadcrumb
 }
@@ -271,6 +297,7 @@ function mapFilters (swFilters: ProductListingResult['aggregations']): ProductLi
             id: entity.id,
             name: entity.translated.name,
             type: 'multi',
+            // @ts-ignore
             options: entity.options.map((option) => {
                 return {
                     id: option.id,
@@ -285,10 +312,11 @@ function mapFilters (swFilters: ProductListingResult['aggregations']): ProductLi
     return filters
 }
 
+// @ts-ignore
 function mapCurrentFilters (swCurrentFilters: ProductListingResult['currentFilters'], swFilters): ProductListingFilterCurrent {
     const obj: ProductListingFilterCurrent = {}
 
-    if (swCurrentFilters.navigationId != null) {
+    if (swCurrentFilters?.navigationId != null) {
         obj.navigationId = swCurrentFilters.navigationId
     }
 
@@ -299,26 +327,37 @@ function mapCurrentFilters (swCurrentFilters: ProductListingResult['currentFilte
         obj.search = swCurrentFilters.search
     }
 
-    obj.manufacturer = swCurrentFilters.manufacturer
+    // @ts-ignore
+    obj.manufacturer = swCurrentFilters?.manufacturer
 
+    // @ts-ignore
     obj.price = {
+        // @ts-ignore
         min: swCurrentFilters.price.min !== 0 ? swCurrentFilters.price.min : '',
+        // @ts-ignore
         max: swCurrentFilters.price.max !== 0 ? swCurrentFilters.price.max : ''
     }
 
+    // @ts-ignore
     obj.rating = {
         min: '',
+        // @ts-ignore
         max: swCurrentFilters.rating !== null ? swCurrentFilters.rating : ''
     }
 
+    // @ts-ignore
     obj['shipping-free'] = swCurrentFilters['shipping-free']
 
+    // @ts-ignore
     swFilters.properties?.entities?.forEach((entity) => {
+        // @ts-ignore
         const match = entity.options.filter((option) => {
+            // @ts-ignore
             return swCurrentFilters.properties.includes(option.id)
         })
 
-        const arrayOfIds = []
+        const arrayOfIds: string[] = []
+        // @ts-ignore
         match.forEach((option) => {
             arrayOfIds.push(option.id)
         })
@@ -329,6 +368,7 @@ function mapCurrentFilters (swCurrentFilters: ProductListingResult['currentFilte
     return obj
 }
 
+// @ts-ignore
 function mapSorting (swSorting): ProductListingSorting {
     return {
         id: swSorting.key,
@@ -337,6 +377,7 @@ function mapSorting (swSorting): ProductListingSorting {
 }
 
 function mapSortings (swSortings: ProductListingResult['availableSortings']): ProductListingSorting[] {
+    // @ts-ignore
     return swSortings.map((swSorting) => {
         return mapSorting(swSorting)
     })
@@ -344,20 +385,24 @@ function mapSortings (swSortings: ProductListingResult['availableSortings']): Pr
 
 function mapProductListing (swProductListing: ProductListingResult): ProductListing {
     return {
+        // @ts-ignore
         products: mapProducts(swProductListing.elements),
         currentSorting: swProductListing.sorting,
         availableSorting: mapSortings(swProductListing.availableSortings),
         currentFilters: mapCurrentFilters(swProductListing.currentFilters, swProductListing.aggregations),
         availableFilters: mapFilters(swProductListing.aggregations),
+        // @ts-ignore
         total: swProductListing.total,
+        // @ts-ignore
         limit: swProductListing.limit,
+        // @ts-ignore
         page: swProductListing.page
     }
 }
 
 function mapSlots (swSlots: CmsSlot[]): Slot[] {
-    let productListing = null
-    let media = null
+    let productListing: ProductListing | null = null
+    let media: Media | null = null
 
     return swSlots.map((slot: CmsSlot) => {
         if (slot.data?.listing != null) {
@@ -372,23 +417,24 @@ function mapSlots (swSlots: CmsSlot[]): Slot[] {
             type: slot.type,
             position: slot.slot,
             data: slot.data,
-            productListing,
-            media
+            ...(productListing != null && { productListing }),
+            ...(media != null && { media })
         }
     })
 }
 
 function mapBlocks (swBlocks: CmsBlock[]): Block[] {
-    return swBlocks.map((block) => {
+    return swBlocks.map((block: CmsBlock) => {
         return {
             id: block._uniqueIdentifier,
             type: block.type,
-            cssClass: block.cssClass,
-            backgroundColor: block.backgroundColor,
-            backgroundMedia: mapMedia(block.backgroundMedia),
-            backgroundMediaMode: block.backgroundMediaMode,
+            // @ts-ignore
             slots: mapSlots(block.slots),
-            sectionPosition: block.sectionPosition
+            ...(block.cssClass != null && { cssClass: block.cssClass }),
+            ...(block.backgroundColor != null && { backgroundColor: block.backgroundColor }),
+            ...(block.backgroundMedia != null && { backgroundMedia: mapMedia(block.backgroundMedia) }),
+            ...(block.backgroundMediaMode != null && { backgroundMediaMode: block.backgroundMediaMode }),
+            ...(block.sectionPosition != null && { sectionPosition: block.sectionPosition })
         }
     })
 }
@@ -398,31 +444,39 @@ function mapSections (swSections: CmsSection[]): Section[] {
         return {
             type: section.type,
             name: section.name,
-            cssClass: section.cssClass,
-            sizingMode: section.sizingMode,
-            backgroundColor: section.backgroundColor,
-            backgroundMedia: mapMedia(section.backgroundMedia),
-            backgroundMediaMode: section.backgroundMediaMode,
-            mobileSidebarBehavior: section.mobileBehavior,
-            blocks: mapBlocks(section.blocks)
+            sizingMode: section.sizingMode != null ? section.sizingMode : 'boxed',
+            // @ts-ignore
+            blocks: mapBlocks(section.blocks),
+            ...(section.cssClass != null && { cssClass: section.cssClass }),
+            ...(section.backgroundColor != null && { backgroundColor: section.backgroundColor }),
+            ...(section.backgroundMedia != null && { backgroundMedia: mapMedia(section.backgroundMedia) }),
+            ...(section.backgroundMediaMode != null && { backgroundMediaMode: section.backgroundMediaMode }),
+            ...(section.mobileBehavior != null && { mobileSidebarBehavior: section.mobileBehavior })
         }
     })
 }
 
 function mapCategory (swCategory: swCategory): Category {
     return {
+        // @ts-ignore
         id: swCategory.id,
+        // @ts-ignore
         active: swCategory.active,
         name: swCategory.translated.name,
+        // @ts-ignore
         media: mapMedia(swCategory.media),
         description: swCategory.translated.description,
+        // @ts-ignore
         metaTitle: swCategory.metaTitle,
+        // @ts-ignore
         metaDescription: swCategory.metaDescription,
+        // @ts-ignore
         url: swCategory.seoUrls[0].seoPathInfo.startsWith('/') ? swCategory.seoUrls[0].seoPathInfo : '/' + swCategory.seoUrls[0].seoPathInfo,
         pathInfo: `/navigation/${swCategory.id}`
     }
 }
 
+// @ts-ignore
 function mapPage (swPage): Page {
     const obj = {
         id: swPage.resourceIdentifier,
@@ -444,6 +498,7 @@ function mapPage (swPage): Page {
     }
 
     if (swPage.cmsPage != null) {
+        // @ts-ignore
         obj.structure = mapSections(swPage.cmsPage?.sections)
 
         Object.assign(obj, { cms: { content: swPage.cmsPage.name } })
@@ -471,10 +526,11 @@ function mapPage (swPage): Page {
 
 function mapSession (swPlatform: SalesChannelContext): Session {
     return {
+        // @ts-ignore
         sessionToken: swPlatform.token,
-        currency: swPlatform.currency.isoCode,
-        language: swPlatform.salesChannel.languageId,
-        maintenance: swPlatform.salesChannel.maintenance,
+        currency: swPlatform?.currency?.isoCode,
+        language: swPlatform?.salesChannel?.languageId,
+        maintenance: swPlatform?.salesChannel?.maintenance,
         // TODO: path api client
         // @ts-ignore
         shippingMethod: mapShippingMethod(swPlatform.shippingMethod),
@@ -501,7 +557,7 @@ function reverseMapCustomerAddress (address: CustomerShippingAddress | CustomerB
 }
 
 function mapCustomerAddress (swAddress: SwCustomerAddress | OrderAddress): CustomerShippingAddress | CustomerBillingAddress {
-    let salutationId = null
+    let salutationId
     // @ts-ignore
     if (swAddress.salutationId != null) {
         // @ts-ignore
@@ -511,6 +567,7 @@ function mapCustomerAddress (swAddress: SwCustomerAddress | OrderAddress): Custo
     }
 
     return {
+        // @ts-ignore
         id: swAddress.id,
         salutation: salutationId,
         firstName: swAddress.firstName,
@@ -532,8 +589,11 @@ function mapCustomerAddresses (swAddresses: SwCustomerAddress[]): CustomerShippi
 
 function mapCustomer (customer: SalesChannelContext['customer']): Customer {
     const obj: Customer = {
+        // @ts-ignore
         name: customer.firstName,
+        // @ts-ignore
         email: customer.email,
+        // @ts-ignore
         isGuest: customer.guest
     }
 
@@ -567,12 +627,16 @@ function mapCustomer (customer: SalesChannelContext['customer']): Customer {
 
 function mapLineItem (lineItem: SwLineItem): LineItem {
     return {
+        // @ts-ignore
         id: lineItem.id,
+        // @ts-ignore
         itemId: lineItem.referencedId,
         // @TODO Patch api client
         // @ts-ignore
         sku: lineItem.payload?.productNumber,
+        // @ts-ignore
         name: lineItem.label,
+        // @ts-ignore
         quantity: lineItem.quantity,
         type: lineItem.type,
         // @ts-ignore
@@ -588,6 +652,7 @@ function mapLineItems (lineItems: SwLineItem[]): LineItem[] {
     })
 }
 
+// @ts-ignore
 function mapTotals (price): Totals {
     return {
         subTotal: price.positionPrice,
@@ -602,7 +667,9 @@ function mapTotals (price): Totals {
 
 function mapCart (cart: SwCart): Cart {
     return {
+        // @ts-ignore
         id: cart.token,
+        // @ts-ignore
         lineItems: mapLineItems(cart.lineItems),
         price: mapTotals(cart.price),
         // @TODO: Patch api client, add missing deliveries types
@@ -614,7 +681,7 @@ function mapCart (cart: SwCart): Cart {
 
 function mapMiniCart (cart: Cart): MiniCart {
     let quantity = 0
-    const items = []
+    const items: MiniCartItem[] = []
     cart.lineItems.forEach((lineItem) => {
         quantity = quantity + lineItem.quantity
 
@@ -634,6 +701,7 @@ function mapMiniCart (cart: Cart): MiniCart {
 
 function mapSalutation (salutation: SwSalutation): Salutation {
     return {
+        // @ts-ignore
         id: salutation.id,
         name: salutation.translated?.displayName
     }
@@ -647,6 +715,7 @@ function mapSalutations (salutations: SwSalutation[]): Salutation[] {
 
 function mapCountry (country: SwCountry): Country {
     return {
+        // @ts-ignore
         id: country.id,
         name: country.translated?.name
     }
@@ -660,11 +729,14 @@ function mapCountries (countries: SwCountry[]): Country[] {
 
 function mapShippingMethod (swShippingMethod: SwShippingMethod): ShippingMethod {
     return {
+        // @ts-ignore
         id: swShippingMethod.id,
         deliveryTime: swShippingMethod.deliveryTime?.translated.name,
         description: swShippingMethod.translated.description,
+        // @ts-ignore
         media: mapMedia(swShippingMethod.media),
         name: swShippingMethod.translated.name,
+        // @ts-ignore
         price: swShippingMethod.prices[0]?.currencyPrice[0]?.gross,
         tax: swShippingMethod.tax?.taxRate,
         // @ts-ignore
@@ -680,6 +752,7 @@ function mapShippingMethods (swShippingMethods: SwShippingMethod[]): ShippingMet
 
 function mapPaymentMethod (swPaymentMethod: SwPaymentMethod): PaymentMethod {
     return {
+        // @ts-ignore
         id: swPaymentMethod.id,
         // Todo patch api
         // @ts-ignore
@@ -701,10 +774,13 @@ function mapPaymentMethods (swPaymentMethods: SwPaymentMethod[]): PaymentMethod[
 
 function mapOrderLineItem (swOrderLineItem: SwOrderLineItem): OrderLineItem {
     return {
+        // @ts-ignore
         id: swOrderLineItem.id,
         name: swOrderLineItem.label,
+        // @ts-ignore
         media: mapMedia(swOrderLineItem.cover),
         quantity: swOrderLineItem.quantity,
+        // @ts-ignore
         price: swOrderLineItem.totalPrice
     }
 }
@@ -717,18 +793,27 @@ function mapOrderLineItems (swOrderLineItem: SwOrderLineItem[]): OrderLineItem[]
 
 function mapOrder (swOrder: SwOrder): Order {
     return {
+        // @ts-ignore
         id: swOrder.id,
+        // @ts-ignore
         orderNumber: swOrder.orderNumber,
+        // @ts-ignore
         email: swOrder.orderCustomer.email,
+        // @ts-ignore
         shippingAddress: mapCustomerAddress(swOrder.deliveries[0].shippingOrderAddress),
+        // @ts-ignore
         billingAddress: mapCustomerAddress(swOrder.billingAddress),
+        // @ts-ignore
         shippingMethod: mapShippingMethod(swOrder.deliveries[0].shippingMethod),
+        // @ts-ignore
         paymentMethod: mapPaymentMethod(swOrder.transactions[0].paymentMethod),
         // TODO: patch api client
         // @ts-ignore
         lineItems: mapOrderLineItems(swOrder.lineItems),
         totals: mapTotals(swOrder.price),
+        // @ts-ignore
         orderDate: swOrder.orderDate,
+        // @ts-ignore
         status: swOrder.stateMachineState.translated.name
     }
 }
@@ -740,15 +825,20 @@ function mapOrders (swOrders: SwOrder[]): Order[] {
 }
 
 function mapNavigation (swNavigation: NavigationRouteResponse): Navigation {
+    // @ts-ignore
     return swNavigation.map((item) => {
-        let children = []
-        if (item.childCount > 0) {
+        let children: Navigation = []
+        if (item.childCount != null && item.childCount > 0) {
+            // @ts-ignore
             children = mapNavigation(item.children)
         }
 
         let url = null
+        // @ts-ignore
         if (item.seoUrls.length > 0) {
+            // @ts-ignore
             if (item.seoUrls[0].seoPathInfo !== undefined) {
+                // @ts-ignore
                 url = '/' + item.seoUrls[0].seoPathInfo
             }
         }

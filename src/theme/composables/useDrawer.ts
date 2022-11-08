@@ -6,7 +6,7 @@ const drawerContext: Ref<string> = ref('')
 const drawerDirection: Ref<'left' | 'right'> = ref('right')
 
 export function useDrawer (): IUseDrawer {
-    const toggleDrawer = function (context, direction) {
+    const toggleDrawer = function (context: string, direction: 'left' | 'right') {
         if (direction) {
             drawerDirection.value = direction
         }

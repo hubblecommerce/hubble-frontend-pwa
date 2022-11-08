@@ -26,9 +26,9 @@ import {
 } from '@hubblecommerce/hubble/platforms/shopware/api-client/utils'
 
 export const useCustomer = defineStore('use-customer', (): IUseCustomer => {
-    const customer: Ref<Customer> = ref(null)
+    const customer: Ref<Customer | null> = ref(null)
     const loading: Ref<boolean> = ref(false)
-    const error: Ref<boolean> = ref(false)
+    const error: Ref = ref(false)
     const { setSessionToken, getSession } = usePlatform()
     const { platformBaseUrl } = useRuntimeConfig()
     const { showNotification } = useNotification()
@@ -70,7 +70,7 @@ export const useCustomer = defineStore('use-customer', (): IUseCustomer => {
             const { session } = storeToRefs(platformStore)
             const { getCart } = useCart()
 
-            if (session.value.sessionToken === null) {
+            if (session?.value?.sessionToken === null) {
                 await getCart()
             }
 
@@ -85,10 +85,12 @@ export const useCustomer = defineStore('use-customer', (): IUseCustomer => {
 
             throw new Error('Something went wrong please try again')
         } catch (e) {
-            if (e.body[0]?.detail != null) {
-                showNotification(e.body[0]?.detail, 'error', true)
+            const error = e as any
+
+            if (error.body[0]?.detail != null) {
+                showNotification(error.body[0]?.detail, 'error', true)
             } else {
-                showNotification(e, 'error', true)
+                showNotification(error, 'error', true)
             }
 
             loading.value = false
@@ -107,7 +109,7 @@ export const useCustomer = defineStore('use-customer', (): IUseCustomer => {
         navigateTo('/customer/login')
     }
 
-    async function register (formData: RegisterCustomerForm): Promise<Customer> {
+    async function register (formData: RegisterCustomerForm): Promise<Customer | void> {
         loading.value = true
         error.value = false
 
@@ -142,12 +144,13 @@ export const useCustomer = defineStore('use-customer', (): IUseCustomer => {
             await getSession()
 
             loading.value = false
-            return customer.value
         } catch (e) {
-            if (e.body[0]?.detail != null) {
-                showNotification(e.body[0]?.detail, 'error', true)
+            const error = e as any
+
+            if (error.body[0]?.detail != null) {
+                showNotification(error.body[0]?.detail, 'error', true)
             } else {
-                showNotification(e, 'error', true)
+                showNotification(error, 'error', true)
             }
             loading.value = false
             error.value = e
@@ -155,25 +158,27 @@ export const useCustomer = defineStore('use-customer', (): IUseCustomer => {
         }
     }
 
-    async function updateShippingAddress (shippingAddress: CustomerShippingAddress): Promise<CustomerShippingAddress> {
+    async function updateShippingAddress (shippingAddress: CustomerShippingAddress): Promise<CustomerShippingAddress | void> {
         const mappedAddress = await updateCustomerAddress(shippingAddress)
 
-        if (error.value) {
+        if (error.value || customer?.value == null || mappedAddress == null) {
             return
         }
 
         customer.value.shippingAddress = mappedAddress
+
         return mappedAddress
     }
 
-    async function updateBillingAddress (billingAddress: CustomerBillingAddress): Promise<CustomerBillingAddress> {
+    async function updateBillingAddress (billingAddress: CustomerBillingAddress): Promise<CustomerBillingAddress | void> {
         const mappedAddress = await updateCustomerAddress(billingAddress)
 
-        if (error.value) {
+        if (error.value || customer?.value == null || mappedAddress == null) {
             return
         }
 
         customer.value.billingAddress = mappedAddress
+
         return mappedAddress
     }
 
@@ -196,7 +201,7 @@ export const useCustomer = defineStore('use-customer', (): IUseCustomer => {
         }
     }
 
-    async function addCustomerAddress (address: CustomerBillingAddress | CustomerShippingAddress): Promise<CustomerBillingAddress | CustomerShippingAddress> {
+    async function addCustomerAddress (address: CustomerBillingAddress | CustomerShippingAddress): Promise<CustomerBillingAddress | CustomerShippingAddress | void> {
         loading.value = true
         error.value = false
 
@@ -212,11 +217,10 @@ export const useCustomer = defineStore('use-customer', (): IUseCustomer => {
         } catch (e) {
             loading.value = false
             error.value = e
-            return e
         }
     }
 
-    async function updateCustomerAddress (address: CustomerBillingAddress | CustomerShippingAddress): Promise<CustomerBillingAddress | CustomerShippingAddress> {
+    async function updateCustomerAddress (address: CustomerBillingAddress | CustomerShippingAddress): Promise<CustomerBillingAddress | CustomerShippingAddress | void> {
         loading.value = true
         error.value = false
 
@@ -235,7 +239,6 @@ export const useCustomer = defineStore('use-customer', (): IUseCustomer => {
         } catch (e) {
             loading.value = false
             error.value = e
-            return e
         }
     }
 
@@ -250,7 +253,6 @@ export const useCustomer = defineStore('use-customer', (): IUseCustomer => {
         } catch (e) {
             loading.value = false
             error.value = e
-            return e
         }
     }
 
@@ -318,7 +320,7 @@ export const useCustomer = defineStore('use-customer', (): IUseCustomer => {
         } catch (e) {
             loading.value = false
             error.value = e
-            throw new Error(e)
+            throw new Error(e as string)
         }
     }
 
@@ -333,7 +335,6 @@ export const useCustomer = defineStore('use-customer', (): IUseCustomer => {
         } catch (e) {
             loading.value = false
             error.value = e
-            return e
         }
     }
 
@@ -348,7 +349,6 @@ export const useCustomer = defineStore('use-customer', (): IUseCustomer => {
         } catch (e) {
             loading.value = false
             error.value = e
-            return e
         }
     }
 

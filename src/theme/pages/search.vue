@@ -23,21 +23,28 @@
 import { ref, Ref, onMounted } from 'vue'
 import { showError, useRouter } from '#app'
 import { MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
-import { usePage, useSearch } from '#imports'
+import { usePage, useSearch, useNotification } from '#imports'
+import { ProductListing as ProductListingType } from '@hubblecommerce/hubble/commons'
 
 const { currentRoute } = useRouter()
 const { updateUri, loading, error, parseParamsFromQuery } = usePage()
-const { search } = useSearch()
+const { search, error: searchError } = useSearch()
+const { showNotification } = useNotification()
 
 const term: Ref<string> = ref(currentRoute.value.query.search as string)
-const searchResult = ref(null)
+const searchResult: Ref<ProductListingType | null> = ref(null)
 const resultKey = ref(0)
 
 onMounted(async () => {
     if (term.value != null) {
         const paramsFromQuery = parseParamsFromQuery(currentRoute.value)
-        const { productListing } = await search(term.value, paramsFromQuery)
-        searchResult.value = productListing
+
+        try {
+            const { productListing } = await search(term.value, paramsFromQuery)
+            searchResult.value = productListing
+        } catch (e) {
+            showNotification(e as string, 'error', true)
+        }
     }
 })
 
@@ -48,7 +55,7 @@ const submitSearch = async function () {
         resultKey.value++
         updateUri({ term: term.value })
     } catch (e) {
-        showError(e)
+        showError(e as string)
     }
 }
 </script>

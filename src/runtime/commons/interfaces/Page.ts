@@ -14,7 +14,7 @@ export interface Slot {
 
 export interface Block {
     id: string
-    sectionPosition: string | 'main' | 'sidebar'
+    sectionPosition?: string | 'main' | 'sidebar'
     type: string
     cssClass?: string | null
     backgroundColor?: string | null

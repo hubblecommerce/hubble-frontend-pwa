@@ -5,9 +5,10 @@ import { mapProductListing } from '@hubblecommerce/hubble/platforms/shopware/api
 
 export function useSearch (): IUseSearch {
     const loading: Ref<boolean> = ref(false)
-    const error: Ref<boolean | string> = ref(false)
+    const error: Ref = ref(false)
 
-    async function search (term: string, params?): Promise<{ productListing: ProductListing, params: any }> {
+    // @ts-ignore
+    async function search (term: string, params?: any): Promise<{ productListing: ProductListing, params: any }> {
         try {
             loading.value = true
 
@@ -26,8 +27,7 @@ export function useSearch (): IUseSearch {
         } catch (e) {
             loading.value = false
             error.value = e
-            console.log(e)
-            return e
+            throw (e)
         }
     }
 

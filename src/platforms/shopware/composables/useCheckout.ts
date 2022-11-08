@@ -16,9 +16,9 @@ import {
 import { useNotification, useCart, useRouter } from '#imports'
 
 export const useCheckoutStore = defineStore('use-checkout', () => {
-    const shippingError: Ref<string | boolean> = ref(false)
-    const paymentError: Ref<string | boolean> = ref(false)
-    const orderComment: Ref<string> = ref()
+    const shippingError: Ref = ref(false)
+    const paymentError: Ref = ref(false)
+    const orderComment: Ref<string> = ref('')
 
     return {
         shippingError,
@@ -28,7 +28,7 @@ export const useCheckoutStore = defineStore('use-checkout', () => {
 })
 
 export const useCheckout = function (): IUseCheckout {
-    const error: Ref<boolean | string> = ref(false)
+    const error: Ref = ref(false)
     const loading: Ref<boolean> = ref(false)
     const shippingMethods: Ref<null | ShippingMethod[]> = ref(null)
     const paymentMethods: Ref<null | PaymentMethod[]> = ref(null)
@@ -40,7 +40,7 @@ export const useCheckout = function (): IUseCheckout {
     const checkoutStore = useCheckoutStore()
     const { shippingError, paymentError, orderComment } = storeToRefs(checkoutStore)
 
-    async function getShippingMethods (): Promise<ShippingMethod[]> {
+    async function getShippingMethods (): Promise<ShippingMethod[] | void> {
         loading.value = true
         error.value = false
         shippingError.value = false
@@ -57,6 +57,10 @@ export const useCheckout = function (): IUseCheckout {
                 }
             )
 
+            if (typeof response?.elements === 'undefined') {
+                return
+            }
+
             const mappedData = mapShippingMethods(response?.elements)
 
             mappedData.sort((a, b) => {
@@ -71,7 +75,6 @@ export const useCheckout = function (): IUseCheckout {
             loading.value = false
             error.value = e
             shippingError.value = e
-            return e
         }
     }
 
@@ -92,11 +95,10 @@ export const useCheckout = function (): IUseCheckout {
             loading.value = false
             error.value = e
             shippingError.value = e
-            return e
         }
     }
 
-    async function getPaymentMethods (): Promise<PaymentMethod[]> {
+    async function getPaymentMethods (): Promise<PaymentMethod[] | void> {
         loading.value = true
         error.value = false
         paymentError.value = false
@@ -107,6 +109,10 @@ export const useCheckout = function (): IUseCheckout {
                     onlyAvailable: true
                 }
             )
+
+            if (typeof response?.elements === 'undefined') {
+                return
+            }
 
             const mappedData = mapPaymentMethods(response?.elements)
 
@@ -122,7 +128,6 @@ export const useCheckout = function (): IUseCheckout {
             loading.value = false
             error.value = e
             paymentError.value = e
-            return e
         }
     }
 
@@ -143,7 +148,6 @@ export const useCheckout = function (): IUseCheckout {
             loading.value = false
             error.value = e
             paymentError.value = e
-            return e
         }
     }
 
@@ -174,6 +178,10 @@ export const useCheckout = function (): IUseCheckout {
                 }
             )
 
+            if (typeof response?.id === 'undefined') {
+                return false
+            }
+
             await deleteCart()
 
             loading.value = false
@@ -181,11 +189,11 @@ export const useCheckout = function (): IUseCheckout {
         } catch (e) {
             loading.value = false
             error.value = true
-            return e
+            return false
         }
     }
 
-    async function handlePayment (orderId: string, dataBag: LocationQuery = null): Promise<void> {
+    async function handlePayment (orderId: string, dataBag?: LocationQuery): Promise<void> {
         loading.value = true
         error.value = false
 
@@ -237,7 +245,7 @@ export const useCheckout = function (): IUseCheckout {
         }
     }
 
-    async function resetPayment (orderId, paymentMethodId): Promise<boolean> {
+    async function resetPayment (orderId: string, paymentMethodId: string): Promise<boolean | void> {
         loading.value = true
         error.value = false
 
@@ -255,14 +263,13 @@ export const useCheckout = function (): IUseCheckout {
 
             if (!response.success) {
                 error.value = true
-                return
+                return false
             }
 
             return response.success
         } catch (e) {
             loading.value = false
             error.value = e
-            return e
         }
     }
 

@@ -2,7 +2,7 @@ import { Ref, ref, watch } from 'vue'
 import { useCookie, useRuntimeConfig } from '#app'
 import { defineStore } from 'pinia'
 import { useNotification, usePlatform } from '#imports'
-import { Cart, IUseCart, MiniCart } from '@hubblecommerce/hubble/commons'
+import { Cart, IUseCart, MiniCart, LineItem, MiniCartItem } from '@hubblecommerce/hubble/commons'
 import { CartShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 import { mapCart, mapMiniCart } from '@hubblecommerce/hubble/platforms/shopware/api-client/utils'
 
@@ -11,12 +11,12 @@ export const useCart = defineStore('use-cart', (): IUseCart => {
     const miniCart: Ref<MiniCart | null> = ref(null)
 
     const { cartCookie } = useRuntimeConfig()
-    const error: Ref<boolean | string> = ref(false)
+    const error: Ref = ref(false)
     const loading: Ref<boolean> = ref(false)
     const { setSessionToken } = usePlatform()
     const { showNotification } = useNotification()
 
-    async function getCart (): Promise<Cart> {
+    async function getCart (): Promise<Cart | void> {
         loading.value = true
         error.value = false
 
@@ -36,7 +36,6 @@ export const useCart = defineStore('use-cart', (): IUseCart => {
         } catch (e) {
             loading.value = false
             error.value = e
-            return e
         }
     }
 
@@ -51,11 +50,10 @@ export const useCart = defineStore('use-cart', (): IUseCart => {
         } catch (e) {
             loading.value = false
             error.value = e
-            return e
         }
     }
 
-    async function removeLineItem (id: string): Promise<Cart> {
+    async function removeLineItem (id: string): Promise<Cart | void> {
         error.value = false
         loading.value = true
 
@@ -78,11 +76,10 @@ export const useCart = defineStore('use-cart', (): IUseCart => {
         } catch (e) {
             loading.value = false
             error.value = e
-            return e
         }
     }
 
-    function updateLineItem (lineItem, updatedQty) {
+    function updateLineItem (lineItem: LineItem | MiniCartItem, updatedQty: number) {
         return CartShopware.updateLineItem(
             'application/json',
             'application/json',
@@ -97,7 +94,7 @@ export const useCart = defineStore('use-cart', (): IUseCart => {
         )
     }
 
-    function addLineItem (itemId, qty) {
+    function addLineItem (itemId: string, qty: number) {
         return CartShopware.addLineItem(
             'application/json',
             'application/json',
@@ -113,7 +110,7 @@ export const useCart = defineStore('use-cart', (): IUseCart => {
         )
     }
 
-    async function addToCart (qty: number, itemId: string): Promise<Cart> {
+    async function addToCart (qty: number, itemId: string): Promise<Cart | void> {
         error.value = false
         loading.value = true
 
@@ -123,6 +120,10 @@ export const useCart = defineStore('use-cart', (): IUseCart => {
             })
 
             const updatedQty = lineItem ? lineItem.qty + qty : null
+
+            if (updatedQty === null) {
+                return
+            }
 
             const response = lineItem ? await updateLineItem(lineItem, updatedQty) : await addLineItem(itemId, qty)
 
@@ -139,7 +140,6 @@ export const useCart = defineStore('use-cart', (): IUseCart => {
         } catch (e) {
             loading.value = false
             error.value = e
-            return e
         }
     }
 
@@ -151,7 +151,7 @@ export const useCart = defineStore('use-cart', (): IUseCart => {
         cookie.value = miniCart.value
     }
 
-    async function addCoupon (code: string): Promise<Cart> {
+    async function addCoupon (code: string): Promise<Cart | void> {
         error.value = false
         loading.value = true
 
@@ -179,7 +179,8 @@ export const useCart = defineStore('use-cart', (): IUseCart => {
             if (response.errors != null) {
                 Object.keys(response.errors).forEach((key) => {
                     if (!key.includes('promotion-discount-added')) {
-                        throw new Error(response.errors[key].message)
+                        // @ts-ignore
+                        throw new Error(response?.errors[key].message)
                     }
                 })
             }
@@ -202,7 +203,6 @@ export const useCart = defineStore('use-cart', (): IUseCart => {
         } catch (e) {
             loading.value = false
             error.value = e
-            return e
         }
     }
 

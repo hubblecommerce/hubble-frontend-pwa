@@ -5,7 +5,7 @@ import {
     IUsePage,
     Page, Product,
     ProductListing,
-    ProductListingFilterCurrent,
+    ProductListingFilterCurrent, ProductListingFilterMixed,
     useDefaultStructure
 } from '@hubblecommerce/hubble/commons'
 import {
@@ -29,8 +29,8 @@ const associations = {
 
 export const usePage = function (): IUsePage {
     const loading: Ref<boolean> = ref(false)
-    const error: Ref<boolean> = ref(false)
-    const page: Ref<Page> = ref(null)
+    const error: Ref = ref(false)
+    const page: Ref<Page | null> = ref(null)
     const runtimeConfig = useRuntimeConfig()
     const { currentRoute } = useRouter()
     const { isLocalisedRoute } = useLocalisation()
@@ -81,7 +81,7 @@ export const usePage = function (): IUsePage {
 
             const { navigationId, search, manufacturer, price, rating, 'shipping-free': shipping, ...properties } = filters
 
-            const cleanedProps = []
+            const cleanedProps: any[] = []
             Object.keys(properties).forEach((key) => {
                 // @ts-ignore
                 properties[key].forEach((property) => {
@@ -146,22 +146,22 @@ export const usePage = function (): IUsePage {
     }
 
     // Write parameters to current url without reloading the page
-    function updateUri (params): void {
+    function updateUri (params: any): void {
         const url = new URL(runtimeConfig.public.appBaseUrl + currentRoute.value.path)
         url.search = new URLSearchParams(params).toString()
         window.history.pushState(
             {},
-            null,
+            '',
             url.href
         )
     }
 
-    async function getProductVariant (parentId: string, selectedOptions: Record<string, string>): Promise<Product> {
+    async function getProductVariant (parentId: string, selectedOptions: Record<string, string>): Promise<Product | void> {
         loading.value = true
         error.value = false
 
         try {
-            const queries = []
+            const queries: { type: string, field: string, value: string }[] = []
             Object.keys(selectedOptions).forEach((key) => {
                 queries.push({
                     type: 'contains',
@@ -194,7 +194,7 @@ export const usePage = function (): IUsePage {
                 }
             )
 
-            if (response.elements.length !== 1) {
+            if (typeof response?.elements === 'undefined' || response.elements.length !== 1) {
                 loading.value = false
                 return
             }
@@ -204,11 +204,10 @@ export const usePage = function (): IUsePage {
         } catch (e) {
             loading.value = false
             error.value = e
-            return e
         }
     }
 
-    function parseParamsFromQuery (route) {
+    function parseParamsFromQuery (route: RouteLocationNormalizedLoaded): any {
         const {
             order,
             limit,

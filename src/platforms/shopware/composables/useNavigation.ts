@@ -7,9 +7,9 @@ const navigation: Ref<Navigation> = ref(null)
 
 export const useNavigation = function (): IUseNavigation {
     const loading: Ref<boolean> = ref(false)
-    const error: Ref<boolean> = ref(false)
+    const error: Ref = ref(false)
 
-    const getNavigation = async (): Promise<Navigation> => {
+    const getNavigation = async (): Promise<Navigation | void> => {
         loading.value = true
         error.value = false
 

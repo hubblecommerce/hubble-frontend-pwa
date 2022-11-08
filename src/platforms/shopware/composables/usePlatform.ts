@@ -19,7 +19,7 @@ export const usePlatform = defineStore('use-platform', (): IUsePlatform => {
     const salutations: Ref<Salutation[] | null> = ref(null)
     const countries: Ref<Country[] | null> = ref(null)
 
-    const error: Ref<boolean> = ref(false)
+    const error: Ref = ref(false)
     const loading: Ref<boolean> = ref(false)
 
     const runtimeConfig = useRuntimeConfig()
@@ -28,7 +28,11 @@ export const usePlatform = defineStore('use-platform', (): IUsePlatform => {
 
     const platformLanguages = runtimeConfig.public.platformLanguages
 
-    function setSessionToken (token: string) {
+    function setSessionToken (token: string | null): void {
+        if (token === null) {
+            return
+        }
+
         session.value.sessionToken = token
 
         const cookie = useCookie(runtimeConfig.sessionCookie.name, runtimeConfig.sessionCookie.options)
@@ -44,7 +48,7 @@ export const usePlatform = defineStore('use-platform', (): IUsePlatform => {
      * Context also contains customer data
      * Even guests have to register as customer, but has the customer.guest flag set to true
      */
-    async function getSession () {
+    async function getSession (): Promise<Session | void> {
         loading.value = true
         error.value = false
 
@@ -72,17 +76,20 @@ export const usePlatform = defineStore('use-platform', (): IUsePlatform => {
             return mappedData
         } catch (e) {
             loading.value = false
-            error.value = e
-            return e
+            error.value = e as string
         }
     }
 
-    async function getSalutations (): Promise<Salutation[]> {
+    async function getSalutations (): Promise<Salutation[] | void> {
         loading.value = true
         error.value = false
 
         try {
             const response = await SystemContextShopware.readSalutation()
+
+            if (typeof response?.elements === 'undefined') {
+                return
+            }
 
             const mappedData = mapSalutations(response.elements)
             salutations.value = mappedData
@@ -92,16 +99,19 @@ export const usePlatform = defineStore('use-platform', (): IUsePlatform => {
         } catch (e) {
             loading.value = false
             error.value = e
-            return e
         }
     }
 
-    async function getCountries (): Promise<Country[]> {
+    async function getCountries (): Promise<Country[] | void> {
         loading.value = true
         error.value = false
 
         try {
             const response = await SystemContextShopware.readCountry()
+
+            if (typeof response?.elements === 'undefined') {
+                return
+            }
 
             const mappedData = mapCountries(response.elements)
             countries.value = mappedData
@@ -111,7 +121,6 @@ export const usePlatform = defineStore('use-platform', (): IUsePlatform => {
         } catch (e) {
             loading.value = false
             error.value = e
-            return e
         }
     }
 

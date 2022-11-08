@@ -1,4 +1,5 @@
 export const useForm = function () {
+    // @ts-ignore
     async function validateForm (form) {
         const isValid = await form.checkValidity()
 

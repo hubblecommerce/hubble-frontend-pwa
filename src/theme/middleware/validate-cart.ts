@@ -12,10 +12,12 @@ export default defineNuxtRouteMiddleware(() => {
     if (process.server) {
         const cookie = getRequestCookie(app, app.$config.public.cartCookie.name)
         // https://v3.nuxtjs.org/api/composables/use-cookie/#decode
-        miniCart.value = destr(decodeURIComponent(cookie))
+        if (cookie != null) {
+            miniCart.value = destr(decodeURIComponent(cookie))
+        }
     }
 
-    if (miniCart.value?.qty > 0) {
+    if (miniCart.value?.qty != null && miniCart.value?.qty > 0) {
         return true
     }
 

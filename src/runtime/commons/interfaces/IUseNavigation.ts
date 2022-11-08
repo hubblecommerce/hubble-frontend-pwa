@@ -3,7 +3,7 @@ import { Navigation } from './Navigation'
 
 export interface IUseNavigation {
     loading: Ref<boolean>,
-    error: Ref<boolean>
+    error: Ref,
     navigation: Ref<Navigation>,
-    getNavigation(): Promise<Navigation>
+    getNavigation(): Promise<Navigation | void>
 }

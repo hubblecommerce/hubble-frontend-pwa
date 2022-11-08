@@ -141,14 +141,14 @@ export const request = <T>(config: OpenAPIConfig, options: ApiRequestOptions): C
         }
     }
 
-    if(session.value.sessionToken !== null) {
-        platformHeaders['sw-context-token'] = session.value.sessionToken
+    if(session.value?.sessionToken != null) {
+        platformHeaders['sw-context-token'] = session.value?.sessionToken
     }
 
     const locale = app.vueApp.config.globalProperties.$i18n?.locale
 
-    if(platformLanguages?.length > 0 && locale) {
-        const matchingLang = platformLanguages.find((lang: any) => {
+    if(typeof platformLanguages !== 'undefined' && platformLanguages.length > 0 && locale) {
+        const matchingLang = platformLanguages?.find((lang: any) => {
             return lang.route === locale
         })
 

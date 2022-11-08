@@ -7,7 +7,11 @@ export function getRequestCookie (app: NuxtApp, cookieName: string): string | nu
     const value = `; ${cookieHeader}`
     const parts = value.split(`; ${cookieName}=`)
     if (parts.length === 2) {
-        cookie = parts.pop().split(';').shift()
+        cookie = parts.pop()?.split(';').shift()
+    }
+
+    if (typeof cookie === 'undefined') {
+        return null
     }
 
     return cookie

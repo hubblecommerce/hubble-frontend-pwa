@@ -51,7 +51,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, watch, ref } from 'vue'
+import { onMounted, watch, ref, Ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useCheckout, useNotification, usePlatform } from '#imports'
 import { useCurrency } from '@hubblecommerce/hubble/commons'
@@ -69,7 +69,7 @@ const emit = defineEmits<{
     (event: 'update-after:shippingMethod', id: string): void
 }>()
 
-const selectedMethodId = ref(session.value.shippingMethod.id)
+const selectedMethodId: Ref<string | null> = ref(session?.value?.shippingMethod?.id != null ? session?.value?.shippingMethod?.id : null)
 
 watch(selectedMethodId, async (value, oldValue) => {
     if (value !== oldValue && value !== null) {

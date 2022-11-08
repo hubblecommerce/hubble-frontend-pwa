@@ -131,6 +131,7 @@ export function useDefaultStructure () {
     }
 
     const getDefaultStructureByType = function (type: PageType): Section[] {
+        // @ts-ignore
         return defaultStructures.get(type)
     }
 

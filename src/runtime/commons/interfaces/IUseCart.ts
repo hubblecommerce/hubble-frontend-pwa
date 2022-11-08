@@ -5,11 +5,11 @@ import { MiniCart } from './MiniCart'
 export interface IUseCart {
     cart: Ref<Cart | null>,
     miniCart: Ref<MiniCart | null>,
-    getCart(): Promise<Cart>,
+    getCart(): Promise<Cart | void>,
     deleteCart(): Promise<void>,
     loading: Ref<boolean>,
-    error: Ref<boolean | string>,
-    addToCart(qty: number, productId: string): Promise<Cart>,
-    removeLineItem(id: string): Promise<Cart>,
-    addCoupon (code: string): Promise<Cart>
+    error: Ref,
+    addToCart(qty: number, productId: string): Promise<Cart | void>,
+    removeLineItem(id: string): Promise<Cart | void>,
+    addCoupon (code: string): Promise<Cart | void>
 }
