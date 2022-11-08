@@ -121,10 +121,7 @@ export const useCart = defineStore('use-cart', (): IUseCart => {
 
             const updatedQty = lineItem ? lineItem.qty + qty : null
 
-            if (updatedQty === null) {
-                return
-            }
-
+            // @ts-ignore
             const response = lineItem ? await updateLineItem(lineItem, updatedQty) : await addLineItem(itemId, qty)
 
             if (response.token !== undefined) {
