@@ -1,5 +1,6 @@
 import path from 'path'
 import unzipper from 'unzipper'
+// eslint-disable-next-line import/default
 import fse from 'fs-extra'
 import { config } from 'dotenv'
 import lmify from 'lmify'
@@ -30,6 +31,7 @@ const clientSecret = process.env.API_CLIENT_SECRET
 const dumpBundlesRoute = '/api/_action/pwa/dump-bundles'
 const assetsZipPath = [pluginsDir, 'assets.zip'].join('/')
 const mappingFileName = 'pluginMapping.json'
+const configWhiteListFileName = 'pluginConfigWhitelist.json'
 
 function downloadFile (fileUrl, outputLocationPath) {
     const writer = fse.createWriteStream(outputLocationPath)
@@ -143,16 +145,30 @@ async function createPluginConfig (pluginConfigs) {
     try {
         const obj = {}
 
+        let whiteList = null
+        try {
+            whiteList = await fse.readJson([pluginsDir, configWhiteListFileName].join('/'))
+        } catch (e) {}
+
         Object.keys(pluginConfigs).forEach((pluginName) => {
             if (Object.keys(pluginConfigs[pluginName].configuration).length > 0) {
                 Object.keys(pluginConfigs[pluginName].configuration).forEach((config) => {
                     Object.keys(pluginConfigs[pluginName].configuration[config]).forEach((configName) => {
-                        // Skip secret and private keys by name to prevent to expose them to frontend
-                        if (!configName.toLowerCase().includes('secret') &&
-                            !configName.toLowerCase().includes('private') &&
-                            !configName.toLowerCase().includes('password')) {
+                        const configKey = camelCase(pluginName) + capitalizeFirstLetter(configName)
+
+                        if (whiteList != null) {
+                            if (whiteList.includes(configKey)) {
+                                const parsedObject = {
+                                    [configKey]: pluginConfigs[pluginName].configuration[config][configName]
+                                }
+
+                                Object.assign(obj, parsedObject)
+                            }
+                        } else if (!configKey.toLowerCase().includes('secret') &&
+                            !configKey.toLowerCase().includes('private') &&
+                            !configKey.toLowerCase().includes('password')) {
                             const parsedObject = {
-                                [camelCase(pluginName) + capitalizeFirstLetter(configName)]: pluginConfigs[pluginName].configuration[config][configName]
+                                [configKey]: pluginConfigs[pluginName].configuration[config][configName]
                             }
 
                             Object.assign(obj, parsedObject)
