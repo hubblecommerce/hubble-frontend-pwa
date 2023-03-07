@@ -2,7 +2,8 @@ import path, { basename, extname, join, resolve } from 'path'
 import { fileURLToPath } from 'url'
 import { defineNuxtModule, extendPages, installModule } from '@nuxt/kit'
 import { Nuxt } from '@nuxt/schema'
-import fse from 'fs-extra'
+// @ts-ignore
+import fs from 'fs-extra'
 import { defu } from 'defu'
 import { CookieOptions } from 'nuxt/app'
 import { globby } from 'globby'
@@ -31,10 +32,10 @@ async function setDefaultRuntimeConfigs (nuxt: Nuxt) {
 
 // Set configs of installed platform plugins
 async function setPlatformPluginRuntimeConfigs (nuxt: Nuxt, pluginsConfigPath: string) {
-    const pluginsConfigExists = await fse.pathExists(pluginsConfigPath)
+    const pluginsConfigExists = await fs.pathExists(pluginsConfigPath)
 
     if (pluginsConfigExists) {
-        const pluginConfigs = await fse.readJson(pluginsConfigPath)
+        const pluginConfigs = await fs.readJson(pluginsConfigPath)
         nuxt.options.runtimeConfig.public = defu(nuxt.options.runtimeConfig.public, pluginConfigs)
     }
 }
@@ -50,7 +51,7 @@ const getLastSectionOfPath = (thePath: string) => {
 const asyncCopyDirs = async (sourceDirs: string[], targetDir: string, options: Record<any, any> = {}) => {
     await Promise.all(
         sourceDirs.map(async (sourceDir) => {
-            await fse.copy(sourceDir, join(targetDir, basename(sourceDir)), options)
+            await fs.copy(sourceDir, join(targetDir, basename(sourceDir)), options)
         })
     )
 }
@@ -141,9 +142,9 @@ export default defineNuxtModule<ModuleOptions>({
             }
         })
 
-        await fse.emptyDir(targetDir)
-        await fse.copy(baseDir, targetDir)
-        await fse.copy(resolve(join(platformDir, 'composables')), resolve(join(targetDir, 'composables')))
+        await fs.emptyDir(targetDir)
+        await fs.copy(baseDir, targetDir)
+        await fs.copy(resolve(join(platformDir, 'composables')), resolve(join(targetDir, 'composables')))
 
         const platformPluginsDirs = await listAllDirs(platformPluginsDir)
 
@@ -156,11 +157,11 @@ export default defineNuxtModule<ModuleOptions>({
 
         // File inheritance for pluginMapping.json
         // Set mapping to runtimeConfig, can be overridden via nuxt config file
-        const pluginMappingExists = await fse.pathExists(resolve(join(platformPluginsDir, 'pluginMapping.json')))
+        const pluginMappingExists = await fs.pathExists(resolve(join(platformPluginsDir, 'pluginMapping.json')))
         if (pluginMappingExists) {
-            await fse.copy(resolve(join(platformPluginsDir, 'pluginMapping.json')), resolve(join(targetDir, options.pluginsDirName, 'pluginMapping.json')))
+            await fs.copy(resolve(join(platformPluginsDir, 'pluginMapping.json')), resolve(join(targetDir, options.pluginsDirName, 'pluginMapping.json')))
         }
-        const pluginMapping = await fse.readJson(resolve(join(targetDir, options.pluginsDirName, 'pluginMapping.json')))
+        const pluginMapping = await fs.readJson(resolve(join(targetDir, options.pluginsDirName, 'pluginMapping.json')))
         nuxt.options.runtimeConfig.public.pluginMapping = defu(nuxt.options.runtimeConfig.public.pluginMapping, pluginMapping)
 
         await asyncCopyDirs(validRootDirs, targetDir)
@@ -258,13 +259,11 @@ export default defineNuxtModule<ModuleOptions>({
             classSuffix: ''
         })
 
-        nuxt.options.build.transpile.push('@heroicons/vue')
-
         /*
          * i18n
          */
-        const availableLocales = await fse.readJson(targetDir + '/locales/availableLocales.json')
-        const platformLanguages = await fse.readJson(targetDir + '/locales/platformLanguages.json')
+        const availableLocales = await fs.readJson(targetDir + '/locales/availableLocales.json')
+        const platformLanguages = await fs.readJson(targetDir + '/locales/platformLanguages.json')
 
         const defaultLocale = Object.keys(availableLocales)[0]
         nuxt.options.runtimeConfig.public.redirectDefaultLanguage = options.redirectDefaultLanguage
@@ -321,20 +320,21 @@ export default defineNuxtModule<ModuleOptions>({
                 }
 
                 if (event === 'add' || event === 'change') {
-                    await fse.copy(filePath, newDestination)
+                    await fs.copy(filePath, newDestination)
                 }
 
                 // TODO: if deleted file was an override of platform plugin, copy platform plugin file
                 if (event === 'unlink') {
                     const modulePath = filePath.replace(nuxt.options.rootDir, baseDir)
 
-                    fse.pathExists(modulePath, async (err, exists) => {
+                    // @ts-ignore
+                    fs.pathExists(modulePath, async (err, exists) => {
                         if (exists) {
                             // copy from module
-                            await fse.copy(modulePath, newDestination)
+                            await fs.copy(modulePath, newDestination)
                         } else if (!exists) {
                             // path does not exist in module just remove from srcDir
-                            await fse.remove(newDestination)
+                            await fs.remove(newDestination)
                         } else if (err) {
                             // eslint-disable-next-line no-console
                             console.log('err occurred: ', err)
@@ -352,14 +352,15 @@ export default defineNuxtModule<ModuleOptions>({
 
                 const rootPath = filePath.replace(baseDir, nuxt.options.rootDir)
 
-                fse.pathExists(rootPath, async (err, exists) => {
+                // @ts-ignore
+                fs.pathExists(rootPath, async (err, exists) => {
                     if (!exists) {
                         if (event === 'add' || event === 'change') {
-                            fse.copy(filePath, newDestination)
+                            fs.copy(filePath, newDestination)
                         }
 
                         if (event === 'unlink') {
-                            await fse.remove(newDestination)
+                            await fs.remove(newDestination)
                         }
                     } else if (err) {
                         // eslint-disable-next-line no-console
@@ -376,11 +377,11 @@ export default defineNuxtModule<ModuleOptions>({
                 }
 
                 if (event === 'add' || event === 'change') {
-                    fse.copy(filePath, newDestination)
+                    fs.copy(filePath, newDestination)
                 }
 
                 if (event === 'unlink') {
-                    fse.remove(newDestination)
+                    fs.remove(newDestination)
                 }
             })
         }
