@@ -29,10 +29,6 @@ export const usePlatform = defineStore('use-platform', (): IUsePlatform => {
     const platformLanguages = runtimeConfig.public.platformLanguages
 
     function setSessionToken (token: string | null): void {
-        if (token === null) {
-            return
-        }
-
         session.value.sessionToken = token
 
         const cookie = useCookie(runtimeConfig.sessionCookie.name, runtimeConfig.sessionCookie.options)

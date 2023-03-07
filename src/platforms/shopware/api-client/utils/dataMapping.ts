@@ -590,11 +590,23 @@ function mapCustomerAddresses (swAddresses: SwCustomerAddress[]): CustomerShippi
 function mapCustomer (customer: SalesChannelContext['customer']): Customer {
     const obj: Customer = {
         // @ts-ignore
-        name: customer.firstName,
+        salutationId: customer.salutationId,
+        // @ts-ignore
+        name: `${customer.firstName} ${customer.lastName}`,
+        // @ts-ignore
+        firstName: customer.firstName,
+        // @ts-ignore
+        lastName: customer.lastName,
+        // @ts-ignore
+        dateOfBirth: customer.birthday,
         // @ts-ignore
         email: customer.email,
         // @ts-ignore
-        isGuest: customer.guest
+        isGuest: customer.guest,
+        // @ts-ignore
+        newsletter: customer.newsletter,
+        // @ts-ignore
+        defaultPayment: customer.defaultPaymentMethodId
     }
 
     // Todo patch api client

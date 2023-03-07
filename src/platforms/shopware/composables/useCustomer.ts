@@ -12,7 +12,7 @@ import {
 } from '@hubblecommerce/hubble/commons'
 import {
     AddressShopware,
-    LoginRegistrationShopware,
+    LoginRegistrationShopware, NewsletterShopware,
     OrderShopware, ProfileShopware,
     SystemContextShopware
 } from '@hubblecommerce/hubble/platforms/shopware/api-client'
@@ -391,6 +391,99 @@ export const useCustomer = defineStore('use-customer', (): IUseCustomer => {
         }
     }
 
+    async function editCustomerInfo (formData: { dateOfBirth: string, salutationId: string, firstName: string, lastName: string }): Promise<void> {
+        loading.value = true
+        error.value = false
+
+        try {
+            let dateOfBirth = null
+            if (formData.dateOfBirth != null) {
+                dateOfBirth = new Date(formData.dateOfBirth)
+            }
+
+            await ProfileShopware.changeProfile({
+                salutationId: formData.salutationId,
+                firstName: formData.firstName,
+                lastName: formData.lastName,
+                ...(dateOfBirth != null && {
+                    birthdayDay: dateOfBirth.getDate(),
+                    birthdayMonth: dateOfBirth.getMonth() + 1,
+                    birthdayYear: dateOfBirth.getFullYear(),
+                })
+            })
+
+            loading.value = false
+            return
+        } catch (e) {
+            loading.value = false
+            error.value = e
+            throw e
+        }
+    }
+
+    async function editCustomerEmail (formData: { email: string, emailConfirmation: string, password: string }): Promise<void> {
+        loading.value = true
+        error.value = false
+
+        try {
+            await ProfileShopware.changeEmail(formData)
+
+            loading.value = false
+            return
+        } catch (e) {
+            loading.value = false
+            error.value = e
+            throw e
+        }
+    }
+
+    async function editCustomerPassword (formData: { password: string, newPassword: string, newPasswordConfirm: string }): Promise<void> {
+        loading.value = true
+        error.value = false
+
+        try {
+            await ProfileShopware.changePassword(formData)
+
+            loading.value = false
+            return
+        } catch (e) {
+            loading.value = false
+            error.value = e
+            throw e
+        }
+    }
+
+    async function editCustomerNewsletter (formData: { email: string, option: string, storefrontUrl: string }): Promise<void> {
+        loading.value = true
+        error.value = false
+
+        if (formData.option === 'direct') {
+            try {
+                await NewsletterShopware.subscribeToNewsletter(formData)
+
+                loading.value = false
+                return
+            } catch (e) {
+                loading.value = false
+                error.value = e
+                throw e
+            }
+        }
+
+        if (formData.option === 'unsubscribe') {
+            try {
+                await NewsletterShopware.unsubscribeToNewsletter({ email: formData.email })
+
+                loading.value = false
+                return
+            } catch (e) {
+                loading.value = false
+                error.value = e
+                throw e
+            }
+        }
+    }
+
     return {
         customer,
         loading,
@@ -409,6 +502,10 @@ export const useCustomer = defineStore('use-customer', (): IUseCustomer => {
         setDefaultBilling,
         setDefaultShipping,
         requireNewPassword,
-        setNewPassword
+        setNewPassword,
+        editCustomerInfo,
+        editCustomerEmail,
+        editCustomerPassword,
+        editCustomerNewsletter
     }
 })

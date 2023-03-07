@@ -1,52 +1,40 @@
 <template>
-    <div class="container lg:max-w-5xl m-auto grid grid-cols-2 gap-6 p-6 mb-20">
-        <div class="col-span-2 flex flex-col md:flex-row justify-between items-center space-x-4 pb-4 border-b">
-            <div class="text-4xl">
-                My Account
-            </div>
-            <div v-if="loading">
-                <MiscSkeleton size="small" width="150px" />
-            </div>
-            <div v-else-if="customer != null">
-                Welcome {{ customer.name }}
-            </div>
+    <div class="customer-orders-overview container mx-auto p-4 pb-12 lg:py-12">
+        <div class="flex lg:items-center lg:mb-14">
+            <h1 class="lg:mb-0 lg:mr-12">
+                {{ t('customer.account.title') }}
+            </h1>
         </div>
 
-        <div class="col-span-2 lg:col-span-1 grid grid-cols-2 gap-4" style="grid-template-rows: auto 1fr auto;">
-            <div class="col-span-2 w-full text-2xl">
-                Address-book
-            </div>
-
-            <CustomerAddressBook />
-        </div>
-
-        <div class="col-span-2 lg:col-span-1 flex flex-col gap-4">
-            <div class="col-span-2 w-full text-2xl">
-                Orders
-            </div>
-
+        <div class="lg:border lg:rounded lg:bg-base-100 lg:pt-4 lg:px-6 lg:pb-7">
+            <h3 class="mb-4 lg:text-lg lg:font-medium lg:mb-0">
+                {{ t('customer.orders.title') }}
+            </h3>
             <CustomerOrdersList />
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import { storeToRefs } from 'pinia'
-import { definePageMeta, useCustomer } from '#imports'
+import { useI18n } from 'vue-i18n'
+import { definePageMeta } from '#imports'
+
+const { t } = useI18n()
 
 definePageMeta({
     middleware: ['auth']
 })
-
-const customerStore = useCustomer()
-const { customer } = storeToRefs(customerStore)
-
-/*
- * Wait for init-session.client
- */
-const loading = ref(false)
-onMounted(() => {
-    loading.value = false
-})
 </script>
+
+<i18n>
+{
+    "en": {
+        "customer.account.title": "Account",
+        "customer.orders.title": "Orders"
+    },
+    "de": {
+        "customer.account.title": "Accountverwaltung",
+        "customer.orders.title": "Bestellungen"
+    }
+}
+</i18n>

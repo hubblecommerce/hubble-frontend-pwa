@@ -20,5 +20,9 @@ export interface IUseCustomer {
     setDefaultBilling (id: string): Promise<void>,
     setDefaultShipping (id: string): Promise<void>,
     requireNewPassword (email: string): Promise<void>,
-    setNewPassword (hash: string, password: string, passwordRepeat: string): Promise<void>
+    setNewPassword (hash: string, password: string, passwordRepeat: string): Promise<void>,
+    editCustomerInfo (formData: { dateOfBirth: string | null, salutationId: string, firstName: string, lastName: string }): Promise<void>,
+    editCustomerEmail (formData: { email: string, emailConfirmation: string, password: string }): Promise<void>,
+    editCustomerPassword (formData: { password: string, newPassword: string, newPasswordConfirm: string }): Promise<void>,
+    editCustomerNewsletter (formData: { email: string, option: string, storefrontUrl: string }): Promise<void>,
 }

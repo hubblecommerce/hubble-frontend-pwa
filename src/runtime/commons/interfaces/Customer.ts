@@ -41,5 +41,11 @@ export interface Customer {
     isGuest: boolean,
     shippingAddress?: CustomerShippingAddress
     billingAddress?: CustomerBillingAddress,
-    billingSameAsShipping?: boolean
+    billingSameAsShipping?: boolean,
+    salutationId?: string,
+    firstName?: string,
+    lastName?: string,
+    dateOfBirth?: string | null,
+    newsletter?: boolean,
+    defaultPayment?: string
 }

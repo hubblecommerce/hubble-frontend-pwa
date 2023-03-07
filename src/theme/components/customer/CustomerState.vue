@@ -1,30 +1,32 @@
 <template>
     <template v-if="customer != null">
-        <label tabindex="0" class="btn btn-ghost btn-circle avatar">
-            <div class="w-10 rounded-full">
-                <img src="https://placeimg.com/80/80/people" alt="Me">
-            </div>
+        <label tabindex="0" class="btn btn-ghost btn-circle">
+            <span class="relative">
+                <UserIcon class="h-5 w-5" />
+
+                <client-only>
+                    <span class="absolute text-success -right-1 -bottom-1 bg-success rounded-full">
+                        <CheckIcon class="h-3 w-3 text-success-content" />
+                    </span>
+                </client-only>
+            </span>
         </label>
 
         <CustomerGuestNavigation v-if="customer.isGuest" />
         <CustomerNavigation v-else />
     </template>
-    <template v-else>
-        <label tabindex="0" class="btn btn-ghost btn-circle">
-            <div class="indicator">
-                <UserIcon class="h-5 w-5" />
-            </div>
-        </label>
-        <div tabindex="0" class="card card-compact dropdown-content p-2 shadow bg-base-100 rounded-box">
-            <div class="card-body">
-                <CustomerLoginForm />
-            </div>
-        </div>
-    </template>
+    <MiscLink
+        v-else
+        to="/customer"
+        tabindex="0"
+        class="btn btn-ghost btn-circle h-auto relative"
+    >
+        <UserIcon class="h-5 w-5" />
+    </MiscLink>
 </template>
 
 <script setup lang="ts">
-import { UserIcon } from '@heroicons/vue/24/outline'
+import { UserIcon, CheckIcon } from '@heroicons/vue/24/outline'
 import { storeToRefs } from 'pinia'
 import { useCustomer } from '#imports'
 
