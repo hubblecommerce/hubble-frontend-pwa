@@ -64,14 +64,15 @@
 
 <script setup lang="ts">
 import { navigateTo, useAsyncData, useRoute } from '#app'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, Ref } from 'vue'
 import { useCustomer } from '#imports'
+import { Order } from '@hubblecommerce/hubble/commons'
 
 /*
 * Redirect to /customer/login if customer is not logged in
 */
 const { getCustomer, getOrders } = useCustomer()
-const { data, error } = await useAsyncData(() => getCustomer(), { initialCache: false })
+const { data, error } = await useAsyncData(() => getCustomer())
 const route = useRoute()
 
 if (data.value == null || data.value?.isGuest || error.value != null) {
@@ -79,9 +80,9 @@ if (data.value == null || data.value?.isGuest || error.value != null) {
 }
 
 const loading = ref(true)
-const order = ref(null)
+const order: Ref<Order | undefined> = ref()
 onMounted(async () => {
-    order.value = await getOrders(route.params.id as string)
+    order.value = await getOrders({ id: route.params.id as string }).then(res => res.data) as Order
     loading.value = false
 })
 </script>

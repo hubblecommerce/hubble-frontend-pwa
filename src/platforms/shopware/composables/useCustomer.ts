@@ -256,23 +256,26 @@ export const useCustomer = defineStore('use-customer', (): IUseCustomer => {
         }
     }
 
-    async function getOrders (id?: string): Promise<Order | Order[]> {
+    async function getOrders (params?: { id?: string, page?: number }): Promise<{ data: Order | Order[], total: number, page: number, limit: number }> {
         loading.value = true
         error.value = false
 
         let filter = null
-        if (id) {
+        if (params?.id != null) {
             filter = [
                 {
                     type: 'equals',
                     field: 'id',
-                    value: id
+                    value: params?.id
                 }
             ]
         }
 
         try {
             const response = await OrderShopware.readOrder({
+                limit: 10,
+                ['total-count-mode']: 2,
+                ...(params?.page != null && { page: params?.page }),
                 associations: {
                     deliveries: {
                         associations: {
@@ -307,12 +310,11 @@ export const useCustomer = defineStore('use-customer', (): IUseCustomer => {
                 ...(filter != null && { filter })
             })
 
-            let mappedData = null
-
-            if (id) {
-                mappedData = mapOrder(response.orders.elements[0])
-            } else {
-                mappedData = mapOrders(response.orders.elements)
+            let mappedData = {
+                limit: response.orders?.limit,
+                page: response.orders?.page,
+                total: response.orders?.total,
+                data: params?.id != null ? mapOrder(response.orders.elements[0]) : mapOrders(response.orders.elements)
             }
 
             loading.value = false
@@ -484,6 +486,22 @@ export const useCustomer = defineStore('use-customer', (): IUseCustomer => {
         }
     }
 
+    async function editCustomerPayment (paymentId: string): Promise<void> {
+        loading.value = true
+        error.value = false
+
+        try {
+            await ProfileShopware.changePaymentMethod(paymentId)
+
+            loading.value = false
+            return
+        } catch (e) {
+            loading.value = false
+            error.value = e
+            throw e
+        }
+    }
+
     return {
         customer,
         loading,
@@ -506,6 +524,7 @@ export const useCustomer = defineStore('use-customer', (): IUseCustomer => {
         editCustomerInfo,
         editCustomerEmail,
         editCustomerPassword,
-        editCustomerNewsletter
+        editCustomerNewsletter,
+        editCustomerPayment
     }
 })

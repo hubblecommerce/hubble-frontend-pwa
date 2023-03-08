@@ -1,36 +1,36 @@
 <template>
-    <template v-if="loading && addresses == null">
-        <div class="col-span-2 md:col-span-1 grid gap-2">
-            <MiscSkeleton size="small" :repeat="5" />
-        </div>
-        <div class="col-span-2 md:col-span-1 grid gap-2">
-            <MiscSkeleton size="small" :repeat="5" />
-        </div>
-    </template>
-    <div
-        v-for="address in addresses"
-        v-else-if="addresses != null"
-        :key="address.id"
-        class="relative col-span-2 md:col-span-1 border p-4"
-    >
-        <div
-            v-if="address.id === customer?.billingAddress?.id || address.id === customer?.shippingAddress?.id"
-            class="absolute -top-2 badge badge-sm badge-primary"
-        >
-            Default {{ address.id === customer?.billingAddress?.id ? 'Billing' : '' }} {{ address.id === customer?.shippingAddress?.id ? 'Shipping' : '' }}
-        </div>
-        <CustomerAddressRenderer :address="address" />
-        <div class="flex space-x-2">
-            <span class="link-secondary link-hover cursor-pointer" @click="onEditAddress(address.id)">Edit</span>
-            <span class="link-secondary link-hover cursor-pointer" @click="onDeleteAddress(address.id)">Delete</span>
-        </div>
-    </div>
-    <div v-else-if="error">
-        {{ error }}
-    </div>
+    <slot name="actions" :on-add-address="onAddAddress" />
 
-    <div class="col-span-2 md:col-span-1 btn btn-primary" @click="onAddAddress()">
-        Add new Address
+    <div class="grid gird-cols-1 lg:grid-cols-4 gap-2 lg:gap-6">
+        <template v-if="loading && addresses == null">
+            <div class="col-span-2 md:col-span-1 grid gap-2">
+                <MiscSkeleton size="small" :repeat="5" />
+            </div>
+            <div class="col-span-2 md:col-span-1 grid gap-2">
+                <MiscSkeleton size="small" :repeat="5" />
+            </div>
+        </template>
+        <div
+            v-for="address in addresses"
+            v-else-if="addresses != null"
+            :key="address.id"
+            class="relative col-span-2 md:col-span-1 border p-4"
+        >
+            <div
+                v-if="address.id === customer?.billingAddress?.id || address.id === customer?.shippingAddress?.id"
+                class="absolute -top-2 badge badge-sm badge-primary"
+            >
+                Default {{ address.id === customer?.billingAddress?.id ? 'Billing' : '' }} {{ address.id === customer?.shippingAddress?.id ? 'Shipping' : '' }}
+            </div>
+            <CustomerAddressRenderer :address="address" />
+            <div class="flex space-x-2">
+                <span class="link-secondary link-hover cursor-pointer" @click="onEditAddress(address.id)">Edit</span>
+                <span class="link-secondary link-hover cursor-pointer" @click="onDeleteAddress(address.id)">Delete</span>
+            </div>
+        </div>
+        <div v-else-if="error">
+            {{ error }}
+        </div>
     </div>
 
     <input id="address-form-modal" v-model="modalState" type="checkbox" class="modal-toggle">
@@ -112,13 +112,13 @@ function onAddAddress () {
 
 function onEditAddress (id: string) {
     formAction.value = 'Edit'
-    formData.value = Object.assign({}, addresses.value.find(address => address.id === id))
+    formData.value = Object.assign({}, addresses?.value?.find(address => address.id === id))
     modalState.value = true
 }
 
 function onDeleteAddress (id: string) {
     formAction.value = 'Delete'
-    formData.value = Object.assign({}, addresses.value.find(address => address.id === id))
+    formData.value = Object.assign({}, addresses?.value?.find(address => address.id === id))
     modalState.value = true
 }
 

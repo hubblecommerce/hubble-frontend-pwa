@@ -3,32 +3,51 @@
         <div v-if="error">
             {{ error }}
         </div>
-        <div v-else-if="orders != null" class="overflow-x-auto">
-            <table class="table table-compact w-full">
-                <thead>
-                    <tr>
-                        <th>No.</th>
-                        <th>Date</th>
-                        <th>Price</th>
-                        <th>Status</th>
-                        <th />
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="order in orders" :key="order.id">
-                        <th>{{ order.orderNumber }}</th>
-                        <!-- TODO: replace with date format from session -->
-                        <th>{{ new Date(order.orderDate).toLocaleDateString('en-US') }}</th>
-                        <td>{{ formatPrice(order.totals?.bruttoPrice) }}</td>
-                        <td>{{ order.status }}</td>
-                        <th class="text-right">
-                            <MiscLink :to="`/customer/orders/${order.id}`" class="btn btn-ghost btn-xs">
-                                details
-                            </MiscLink>
-                        </th>
-                    </tr>
-                </tbody>
-            </table>
+        <div v-else-if="orders != null" class="space-y-4">
+            <div class="flex justify-center">
+                <div class="btn-group flex-nowrap">
+                    <button :disabled="orderListing.page === 1" class="btn btn-sm" @click="selectPage(1)">
+                        <ChevronDoubleLeftIcon class="h-5 w-5" />
+                    </button>
+                    <button :disabled="orderListing.page - 1 < 1" class="btn btn-sm" @click="selectPage(orderListing.page - 1)">
+                        <ChevronLeftIcon class="h-5 w-5" />
+                    </button>
+                    <button class="btn btn-sm btn-ghost normal-case" v-text="`Page ${orderListing.page} of ${maxPage}`" />
+                    <button class="btn btn-sm" :disabled="orderListing.page + 1 > maxPage" @click="selectPage(orderListing.page + 1)">
+                        <ChevronRightIcon class="h-5 w-5" />
+                    </button>
+                    <button :disabled="orderListing.page + 1 > maxPage" class="btn btn-sm" @click="selectPage(maxPage)">
+                        <ChevronDoubleRightIcon class="h-5 w-5" />
+                    </button>
+                </div>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="table table-compact w-full">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Date</th>
+                            <th>Price</th>
+                            <th>Status</th>
+                            <th />
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="order in orders" :key="order.id">
+                            <th>{{ order.orderNumber }}</th>
+                            <!-- TODO: replace with date format from session -->
+                            <th>{{ new Date(order.orderDate).toLocaleDateString('en-US') }}</th>
+                            <td>{{ formatPrice(order.totals?.bruttoPrice) }}</td>
+                            <td>{{ order.status }}</td>
+                            <th class="text-right">
+                                <MiscLink :to="`/customer/orders/${order.id}`" class="btn btn-ghost btn-xs">
+                                    details
+                                </MiscLink>
+                            </th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
         <div v-else>
             No orders placed yet
@@ -37,8 +56,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, Ref } from 'vue'
+import { computed, ref, Ref, reactive } from 'vue'
 import { storeToRefs } from 'pinia'
+import { showError } from '#app'
+import {
+    ChevronLeftIcon,
+    ChevronDoubleLeftIcon,
+    ChevronRightIcon,
+    ChevronDoubleRightIcon
+} from '@heroicons/vue/20/solid'
 import { Order, useCurrency } from '@hubblecommerce/hubble/commons'
 import { useCustomer } from '#imports'
 
@@ -48,7 +74,22 @@ import { useCustomer } from '#imports'
 const customerStore = useCustomer()
 const { error } = storeToRefs(customerStore)
 const { getOrders } = customerStore
-const orders: Ref<null | Order[]> = ref(await getOrders() as Order[])
+let orderListing = reactive(await getOrders())
+const orders: Ref<null | Order[]> = ref(orderListing.data as Order[])
 
 const { formatPrice } = useCurrency()
+
+const maxPage = computed(() => {
+    return Math.ceil(orderListing.total / orderListing.limit)
+})
+
+async function selectPage (page: number): Promise<void> {
+    try {
+        orderListing = await getOrders({ page })
+        orders.value = orderListing.data as Order[]
+    } catch (e) {
+        // @ts-ignore
+        showError(e)
+    }
+}
 </script>

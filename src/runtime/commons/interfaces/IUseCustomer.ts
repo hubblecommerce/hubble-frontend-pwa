@@ -16,7 +16,7 @@ export interface IUseCustomer {
     addCustomerAddress (address: CustomerBillingAddress | CustomerShippingAddress): Promise<CustomerBillingAddress | CustomerShippingAddress | void>,
     updateCustomerAddress (address: CustomerBillingAddress | CustomerShippingAddress): Promise<CustomerBillingAddress | CustomerShippingAddress | void>,
     deleteCustomerAddress (addressId: string): Promise<void>,
-    getOrders (id?: string): Promise<Order | Order[]>,
+    getOrders (params?: { id?: string, page?: number }): Promise<{ data: Order | Order[], total: number, page: number, limit: number }>,
     setDefaultBilling (id: string): Promise<void>,
     setDefaultShipping (id: string): Promise<void>,
     requireNewPassword (email: string): Promise<void>,
@@ -25,4 +25,5 @@ export interface IUseCustomer {
     editCustomerEmail (formData: { email: string, emailConfirmation: string, password: string }): Promise<void>,
     editCustomerPassword (formData: { password: string, newPassword: string, newPasswordConfirm: string }): Promise<void>,
     editCustomerNewsletter (formData: { email: string, option: string, storefrontUrl: string }): Promise<void>,
+    editCustomerPayment (paymentId: string): Promise<void>
 }

@@ -1,13 +1,13 @@
 <template>
     <div class="customer-orders-overview container mx-auto p-4 pb-12 lg:py-12">
         <div class="flex lg:items-center lg:mb-14">
-            <h1 class="lg:mb-0 lg:mr-12">
+            <h1 class="hidden text-4xl mb-4 lg:block lg:mb-0 lg:mr-12">
                 {{ t('customer.account.title') }}
             </h1>
         </div>
 
         <div class="lg:border lg:rounded lg:bg-base-100 lg:pt-4 lg:px-6 lg:pb-7">
-            <h3 class="mb-4 lg:text-lg lg:font-medium lg:mb-0">
+            <h3 class="text-xl mb-4 lg:text-xl lg:font-medium lg:mb-0">
                 {{ t('customer.orders.title') }}
             </h3>
             <CustomerOrdersList />
