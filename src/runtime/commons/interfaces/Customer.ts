@@ -29,6 +29,7 @@ export interface CustomerBillingAddress {
 export interface RegisterCustomerForm {
     email: string,
     createAccount: boolean,
+    dateOfBirth?: string,
     password?: string,
     shippingAddress: Ref<CustomerShippingAddress>,
     billingAddress: Ref<CustomerBillingAddress>,

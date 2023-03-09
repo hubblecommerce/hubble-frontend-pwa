@@ -113,11 +113,19 @@ export const useCustomer = defineStore('use-customer', (): IUseCustomer => {
         loading.value = true
         error.value = false
 
+        let dobObject = null
+        if (formData.dateOfBirth != null && formData.dateOfBirth !== '') {
+            dobObject = new Date(formData.dateOfBirth)
+        }
+
         try {
             const shippingAddress = reverseMapCustomerAddress(formData.shippingAddress.value)
             const billingAddress = reverseMapCustomerAddress(formData.billingAddress.value)
 
             const requestBody = {
+                ...(dobObject != null && { birthdayDay: dobObject.getDate() }),
+                ...(dobObject != null && { birthdayMonth: dobObject.getMonth() + 1 }),
+                ...(dobObject != null && { birthdayYear: dobObject.getFullYear() }),
                 email: formData.email,
                 password: formData.password,
                 salutationId: formData.shippingAddress.value.salutation,

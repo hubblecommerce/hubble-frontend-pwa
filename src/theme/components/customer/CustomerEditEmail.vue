@@ -25,7 +25,7 @@
     <input id="editEmailModal" v-model="showEmailEditModal" type="checkbox" class="modal-toggle">
     <label for="editEmailModal" class="modal cursor-pointer">
         <label class="modal-box relative w-11/12 max-w-4xl pt-4 px-6 pb-8" for="">
-            <div class="flex justify-between items-center pt-3 pb-5 border-b border-base-400 mb-6">
+            <div class="flex justify-between items-center pt-3 pb-5 border-b border-base-300 mb-6">
                 <h4>{{ t('customer.edit.email.modalTitle') }}</h4>
                 <label for="editEmailModal" class="btn btn-ghost text-error">
                     <XCircleIcon class="w-5 h-5 lg:mr-2" />

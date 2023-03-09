@@ -7,8 +7,8 @@
         </div>
 
         <div class="m-auto flex flex-col items-start lg:flex-row gap-5 lg:gap-6 mb-5 lg:mb-16">
-            <div class="w-full lg:border lg:rounded lg:bg-base-100 lg:pt-4 lg:px-6 lg:pb-7">
-                <h3 class="mb-4 text-xl lg:font-medium lg:pt-3 lg:pb-5 lg:border-b lg:border-base-400 lg:mb-6">
+            <div class="w-full lg:border lg:border-base-300 lg:rounded lg:bg-base-100 lg:pt-4 lg:px-6 lg:pb-7">
+                <h3 class="mb-4 text-xl lg:font-medium lg:pt-3 lg:pb-5 lg:border-b lg:border-base-300 lg:mb-6">
                     {{ t('customer.account.paymentsTitle') }}
                 </h3>
                 <CustomerEditPayment />

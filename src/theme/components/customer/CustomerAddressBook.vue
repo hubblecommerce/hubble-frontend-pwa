@@ -14,7 +14,7 @@
             v-for="address in addresses"
             v-else-if="addresses != null"
             :key="address.id"
-            class="relative col-span-2 md:col-span-1 border p-4"
+            class="relative col-span-2 md:col-span-1 border border-base-300 p-4"
         >
             <div
                 v-if="address.id === customer?.billingAddress?.id || address.id === customer?.shippingAddress?.id"

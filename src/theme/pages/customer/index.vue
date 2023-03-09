@@ -6,7 +6,7 @@
             </h1>
         </div>
 
-        <div class="lg:border lg:rounded lg:bg-base-100 lg:pt-4 lg:px-6 lg:pb-7">
+        <div class="lg:border lg:border-base-300 lg:rounded lg:bg-base-100 lg:pt-4 lg:px-6 lg:pb-7">
             <h3 class="text-xl mb-4 lg:text-xl lg:font-medium lg:mb-0">
                 {{ t('customer.orders.title') }}
             </h3>
