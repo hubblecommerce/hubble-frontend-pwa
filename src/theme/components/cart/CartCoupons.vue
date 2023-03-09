@@ -1,17 +1,18 @@
 <template>
     <form class="w-full form-control" @submit.prevent="onSubmit()">
+        <label for="applyCoupon" class="sr-only">{{ t('cart.cartCoupons.label') }}</label>
         <div class="w-full input-group">
-            <label for="applyCoupon" class="sr-only">Apply Coupon</label>
             <input
                 id="applyCoupon"
                 v-model="code"
                 :disabled="loading"
+                required
                 type="text"
-                placeholder="Giftcard or Couponcode"
+                :placeholder="t('cart.cartCoupons.placeholder')"
                 class="w-full input input-bordered"
             >
             <button :class="{ 'loading': loading }" class="btn">
-                Apply Coupon
+                {{ t('cart.cartCoupons.label') }}
             </button>
         </div>
     </form>
@@ -20,8 +21,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
+import { useI18n } from 'vue-i18n'
 import { useCart, useNotification } from '#imports'
 
+const { t } = useI18n()
 const cartStore = useCart()
 const { loading, error } = storeToRefs(cartStore)
 const { addCoupon } = cartStore
@@ -36,3 +39,16 @@ async function onSubmit () {
     }
 }
 </script>
+
+<i18n>
+{
+    "en": {
+        "cart.cartCoupons.label": "Apply",
+        "cart.cartCoupons.placeholder": "Enter coupon code"
+    },
+    "de": {
+        "cart.cartCoupons.label": "Einlösen",
+        "cart.cartCoupons.placeholder": "Gutscheincode eingeben"
+    }
+}
+</i18n>

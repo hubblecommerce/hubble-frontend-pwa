@@ -32,20 +32,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useRouter } from '#app'
+import { ref, Ref } from 'vue'
+import { useRouter, navigateTo } from '#app'
 import { storeToRefs } from 'pinia'
 import { useCheckout, usePlatform } from '#imports'
 
 const { currentRoute } = useRouter()
-const orderId = currentRoute.value.query.orderId.toString()
+const orderId = currentRoute?.value?.query?.orderId?.toString()
 const { resetPayment, loading, error, handlePayment } = useCheckout()
 
-const paymentMethodId = ref(null)
+const paymentMethodId: Ref<string | null> = ref(null)
 if (process.client) {
     const platformStore = usePlatform()
     const { session } = storeToRefs(platformStore)
-    paymentMethodId.value = session.value.paymentMethod.id
+    paymentMethodId.value = session?.value?.paymentMethod?.id != null ? session?.value?.paymentMethod?.id : null
 }
 
 async function onSubmit () {
@@ -53,7 +53,22 @@ async function onSubmit () {
         await resetPayment(orderId, paymentMethodId.value)
 
         if (!error.value) {
-            await handlePayment(orderId)
+            const payment = await handlePayment(orderId)
+
+            if (typeof payment === 'string') {
+                window.open(payment, '_self')
+            }
+
+            if (typeof payment === 'boolean') {
+                navigateTo(
+                    {
+                        name: 'checkout-success',
+                        query: {
+                            orderId
+                        }
+                    }
+                )
+            }
         }
     }
 }

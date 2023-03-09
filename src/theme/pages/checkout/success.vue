@@ -6,8 +6,8 @@
         <transition name="fade" mode="out-in">
             <div v-if="order != null && !loading" class="flex flex-col gap-12">
                 <div class="text-center">
-                    <span>We have sent you an order confirmation by e-mail at {{ order.email }}</span>
-                    <div v-text="'Your order number: ' + order.orderNumber" />
+                    <span>We have sent you an order confirmation by e-mail at {{ order?.email }}</span>
+                    <div v-text="'Your order number: ' + order?.orderNumber" />
                 </div>
 
                 <CustomerOrder :order="order" />
@@ -60,23 +60,25 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, Ref } from 'vue'
 import { useRouter, navigateTo } from '#app'
 import { storeToRefs } from 'pinia'
 import { useCustomer } from '#imports'
+import { Order } from '@hubblecommerce/hubble/commons'
 
 const loading = ref(true)
 const customerStore = useCustomer()
 const { loading: loadingOrder, error } = storeToRefs(customerStore)
 const { getOrders } = customerStore
 const { currentRoute } = useRouter()
-const orderId = currentRoute.value.query.orderId.toString()
-const order = ref(null)
+const orderId = currentRoute?.value?.query?.orderId?.toString()
+const order: Ref<Order | null> = ref(null)
 
 onMounted(async () => {
-    if (orderId) {
+    if (orderId != null) {
         try {
-            order.value = await getOrders(orderId)
+            const { data } = await getOrders({ id: orderId })
+            order.value = data as Order
             loading.value = loadingOrder.value
         } catch (e) {
             loading.value = false

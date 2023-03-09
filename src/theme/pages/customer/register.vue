@@ -12,7 +12,7 @@
             </div>
             <CustomerRegisterForm :guest-form="false">
                 <template #actions="actionProps">
-                    <div class="navigation flex justify-between items-center py-6">
+                    <div class="navigation flex justify-between items-center">
                         <button
                             class="btn btn-primary btn-block"
                             :class="{ 'loading': actionProps.loading }"

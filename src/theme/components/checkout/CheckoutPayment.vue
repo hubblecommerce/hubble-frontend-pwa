@@ -2,7 +2,7 @@
     <div>
         <div class="flex flex-col gap-4">
             <div class="text-xl">
-                Payment
+                {{ t('checkout.payment.headline') }}
             </div>
 
             <Transition name="fade" mode="out-in">
@@ -45,7 +45,7 @@
                         <div
                             v-show="selectedMethodId === method.id"
                             :class="index < paymentMethods.length - 1 ? 'border-b' : 'border-t'"
-                            class="p-4 text-center bg-base-200 border-base-300"
+                            class="p-4 bg-base-200 border-base-300"
                         >
                             <div>{{ method.description }}</div>
 
@@ -85,10 +85,14 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, watch, ref } from 'vue'
+import { onMounted, watch, ref, Ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
+import { useNuxtApp } from '#app'
 import { useCheckout, useNotification, usePlatform } from '#imports'
 
+const { t } = useI18n()
+const { $hblBus } = useNuxtApp()
 const { loading, error, paymentMethods, getPaymentMethods } = useCheckout()
 const { error: updateError, loading: updateLoading, setPaymentMethod } = useCheckout()
 const platformStore = usePlatform()
@@ -97,19 +101,26 @@ const { showNotification } = useNotification()
 
 const emit = defineEmits(['updateBefore:paymentMethod', 'updateAfter:paymentMethod'])
 
-const selectedMethodId = ref(session.value.paymentMethod.id)
+const props = defineProps({
+    currentStep: String
+})
+
+const selectedMethodId: Ref<string | null> = session?.value?.paymentMethod?.id != null ? ref(session?.value?.paymentMethod?.id) : ref(null)
 const showModal = ref(false)
 
 const slotEvents = ref({
-    'update:showModal': (bool) => { showModal.value = bool },
-    'update:currentMethod': (data) => { selectedMethodId.value = data },
-    'on:paymentError': (error) => { error.value = error }
+    'update:showModal': (bool: boolean) => { showModal.value = bool },
+    'update:currentMethod': (data: string) => { selectedMethodId.value = data },
+    'on:paymentError': (error: any) => { error.value = error }
 })
 
 watch(selectedMethodId, async (value, oldValue) => {
-    if (value !== oldValue && value !== null) {
+    if (value !== oldValue && value != null) {
         emit('updateBefore:paymentMethod', value)
         await setPaymentMethod(value)
+        if (!updateError.value) {
+            $hblBus.$emit('selectPaymentMethod', { payment: paymentMethods?.value?.find(method => method.id === value) })
+        }
         emit('updateAfter:paymentMethod', value)
     }
 })
@@ -122,7 +133,24 @@ watch(updateError, (value) => {
     }
 })
 
+watch(() => props.currentStep, (value) => {
+    if (value === 'payment') {
+        $hblBus.$emit('selectPaymentMethod', { payment: paymentMethods?.value?.find(method => method.id === selectedMethodId.value) })
+    }
+})
+
 onMounted(async () => {
     await getPaymentMethods()
 })
 </script>
+
+<i18n>
+{
+    "en": {
+        "checkout.payment.headline": "Payment"
+    },
+    "de": {
+        "checkout.payment.headline": "Bezahlung"
+    }
+}
+</i18n>

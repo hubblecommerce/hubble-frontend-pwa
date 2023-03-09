@@ -1,6 +1,6 @@
 <template>
-    <form ref="registerForm" class="customer-register-form flex flex-col" @submit.prevent="onSubmit">
-        <div class="flex flex-wrap gap-3 py-6">
+    <form ref="registerForm" class="customer-register-form flex flex-col gap-8" @submit.prevent="onSubmit">
+        <div class="flex flex-wrap gap-3">
             <h4>{{ t('customer.register.form.contactTitle') }}</h4>
 
             <div class="form-control w-full">
@@ -92,14 +92,14 @@
         </div>
 
         <div class="flex flex-col">
-            <div class="flex flex-wrap gap-3 py-6">
+            <div class="flex flex-wrap gap-3">
                 <h4>{{ t('customer.register.form.shippingTitle') }}</h4>
                 <CustomerAddressForm id="registerShippingAddress" v-model="shippingAddress" class="w-full" />
             </div>
         </div>
 
         <div v-show="alternateBillingAddress" class="flex flex-col">
-            <div class="flex flex-wrap gap-6 py-6">
+            <div class="flex flex-wrap gap-6">
                 <h4>{{ t('customer.register.form.billingTitle') }}</h4>
                 <div class="w-full flex flex-col gap-3">
                     <label for="same-billing-address" class="flex justify-between items-center cursor-pointer">
@@ -244,7 +244,7 @@ async function onSubmit (callback: CallableFunction): Promise<void> {
         "customer.register.form.password.placeholder": "Enter password",
         "customer.register.form.passwordRepeat.label": "Repeat password",
         "customer.register.form.passwordRepeat.placeholder": "Repeat password",
-        "customer.register.form.dob.label": "Date of birth",
+        "customer.register.form.dob.label": "Date of birth (optional)",
         "customer.register.form.shippingTitle": "Shipping address",
         "customer.register.form.billingTitle": "Billing address",
         "customer.register.form.billingSameAsShipping.label": "The billing address corresponds to the delivery address.",

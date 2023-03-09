@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col gap-4">
         <div class="text-xl">
-            Shipping
+            {{ t('checkout.shipping.headline') }}
         </div>
 
         <Transition name="fade" mode="out-in">
@@ -52,10 +52,14 @@
 
 <script setup lang="ts">
 import { onMounted, watch, ref, Ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
+import { useNuxtApp } from '#app'
 import { useCheckout, useNotification, usePlatform } from '#imports'
 import { useCurrency } from '@hubblecommerce/hubble/commons'
 
+const { t } = useI18n()
+const { $hblBus } = useNuxtApp()
 const { loading, error, shippingMethods, getShippingMethods } = useCheckout()
 const { error: updateError, loading: updateLoading, setShippingMethod } = useCheckout()
 const platformStore = usePlatform()
@@ -69,12 +73,19 @@ const emit = defineEmits<{
     (event: 'update-after:shippingMethod', id: string): void
 }>()
 
+const props = defineProps({
+    currentStep: String
+})
+
 const selectedMethodId: Ref<string | null> = ref(session?.value?.shippingMethod?.id != null ? session?.value?.shippingMethod?.id : null)
 
 watch(selectedMethodId, async (value, oldValue) => {
     if (value !== oldValue && value !== null) {
         emit('update-before:shippingMethod', value)
         await setShippingMethod(value)
+        if (!updateError.value) {
+            $hblBus.$emit('selectShippingMethod', { shipping: shippingMethods?.value?.find(method => method.id === value) })
+        }
         emit('update-after:shippingMethod', value)
     }
 })
@@ -87,7 +98,24 @@ watch(updateError, (value) => {
     }
 })
 
+watch(() => props.currentStep, (value) => {
+    if (value === 'shipping') {
+        $hblBus.$emit('selectShippingMethod', { shipping: shippingMethods?.value?.find(method => method.id === selectedMethodId.value) })
+    }
+})
+
 onMounted(async () => {
     await getShippingMethods()
 })
 </script>
+
+<i18n>
+{
+    "en": {
+        "checkout.shipping.headline": "Shipping"
+    },
+    "de": {
+        "checkout.shipping.headline": "Lieferung"
+    }
+}
+</i18n>

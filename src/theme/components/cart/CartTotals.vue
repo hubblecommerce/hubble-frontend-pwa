@@ -1,49 +1,71 @@
 <template>
     <template v-if="cart?.lineItems.length > 0">
-        <table class="table table-compact table-zebra w-full">
-            <tbody>
-                <tr>
-                    <td>Subtotal</td>
-                    <td class="text-right">
-                        {{ formatPrice(cart.price?.subTotal) }}
-                    </td>
-                </tr>
-                <tr>
-                    <td>Shipping</td>
-                    <td class="text-right">
-                        {{ formatPrice(cart.shippingCosts) }}
-                    </td>
-                </tr>
-                <tr>
-                    <td>Total (netto)</td>
-                    <td class="text-right">
-                        {{ formatPrice(cart.price?.nettoPrice) }}
-                    </td>
-                </tr>
-                <tr>
-                    <td>Tax {{ cart.price.taxRate }}%</td>
-                    <td class="text-right">
-                        {{ formatPrice(cart.price?.tax) }}
-                    </td>
-                </tr>
-                <tr>
-                    <td>Total (brutto)</td>
-                    <td class="text-right">
-                        {{ formatPrice(cart.price?.bruttoPrice) }}
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="w-full p-3 border rounded border-base-300 bg-base-100 text-sm text-gray-500 font-light">
+            <div class="flex justify-between items-center pb-3 border-b border-base-300">
+                <div>{{ t('cart.cartTotals.total') }}</div>
+                <div>
+                    {{ formatPrice(cart.price?.subTotal) }}
+                </div>
+            </div>
+            <div class="flex justify-between items-center py-3 border-b border-base-300">
+                <div>{{ t('cart.cartTotals.shipping') }}</div>
+                <div>{{ formatPrice(cart.shippingCosts) }}</div>
+            </div>
+            <div class="flex justify-between items-center py-3 border-b border-base-300">
+                <div>{{ t('cart.cartTotals.totalCost') }} ({{ t('cart.cartTotals.net') }})</div>
+                <div>
+                    {{ formatPrice(cart.price?.nettoPrice) }}
+                </div>
+            </div>
+            <div class="flex justify-between items-center py-3 border-b border-base-300">
+                <div>{{ t('cart.cartTotals.excl') }} {{ cart.price.taxRate }}% {{ t('cart.cartTotals.tax') }}</div>
+                <div>
+                    {{ formatPrice(cart.price?.tax) }}
+                </div>
+            </div>
+            <div class="flex justify-between items-center pt-3 text-base font-bold text-base-content">
+                <div>{{ t('cart.cartTotals.totalCost') }}</div>
+                <div>
+                    {{ formatPrice(cart.price?.bruttoPrice) }}
+                </div>
+            </div>
+        </div>
     </template>
 </template>
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { useCart } from '#imports'
-import { useCurrency } from '@hubblecommerce/hubble/commons'
+import { useI18n } from 'vue-i18n'
+import { useCart, useCurrency } from '#imports'
 
 const cartStore = useCart()
 const { cart, loading, error } = storeToRefs(cartStore)
-const { deleteCart } = cartStore
 const { formatPrice } = useCurrency()
+
+const { t } = useI18n()
 </script>
+
+<i18n>
+{
+    "en": {
+        "cart.cartTotals.total": "Total",
+        "cart.cartTotals.shipping": "Shipping",
+        "cart.cartTotals.totalCost": "Total Cost",
+        "cart.cartTotals.net": "net",
+        "cart.cartTotals.gross": "gross",
+        "cart.cartTotals.excl": "plus",
+        "cart.cartTotals.tax": "tax",
+        "cart.cartTotals.forFree": "for free"
+    },
+    "de": {
+        "cart.cartTotals.total": "Summe",
+        "cart.cartTotals.shipping": "Versandkosten",
+        "cart.cartTotals.totalCost": "Gesamtsumme",
+        "cart.cartTotals.net": "netto",
+        "cart.cartTotals.gross": "brutto",
+        "cart.cartTotals.excl": "zzgl.",
+        "cart.cartTotals.tax": "Mwst.",
+        "cart.cartTotals.forFree": "kostenlos"
+    }
+}
+</i18n>

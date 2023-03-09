@@ -4,6 +4,7 @@
 
 <script setup lang="ts">
 import { Ref } from 'vue'
+import { navigateTo } from '#app'
 import { useForm } from '@hubblecommerce/hubble/commons'
 import { useCheckout, useNotification } from '#imports'
 
@@ -33,7 +34,22 @@ async function onSubmit () {
     }
 
     if (typeof order === 'string') {
-        await handlePayment(order)
+        const payment = await handlePayment(order)
+
+        if (typeof payment === 'string') {
+            window.open(payment, '_self')
+        }
+
+        if (typeof payment === 'boolean' && payment) {
+            navigateTo(
+                {
+                    name: 'checkout-success',
+                    query: {
+                        orderId: order
+                    }
+                }
+            )
+        }
     }
 }
 </script>

@@ -45,10 +45,12 @@ const nuxtApp = useNuxtApp()
 const { drawerState, drawerContext, toggleDrawer, drawerDirection, closeDrawer } = useDrawer()
 
 nuxtApp.hook('page:start', () => {
+    // @ts-ignore
     loading.value?.start()
 })
 
 nuxtApp.hook('page:finish', () => {
+    // @ts-ignore
     loading.value?.finish()
     window.scrollTo(0, 0)
     closeDrawer()
