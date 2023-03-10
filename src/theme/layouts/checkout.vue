@@ -36,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useNuxtApp } from '#app'
 
@@ -53,6 +53,10 @@ nuxtApp.hook('page:finish', () => {
     // @ts-ignore
     loading.value?.finish()
     window.scrollTo(0, 0)
+})
+
+onMounted(() => {
+    nuxtApp.$hblBus.$emit('viewCheckout')
 })
 </script>
 

@@ -33,7 +33,7 @@
 
     <div :class="gridClasses">
         <template v-if="listing.products.length > 0">
-            <ProductListingCard v-for="product in listing.products" :key="product.id" :data="product" />
+            <ProductListingCard v-for="(product, index) in listing.products" :key="product.id" :data="product" @click="onListingCardClick(product, index)" />
         </template>
         <template v-else>
             No Products found
@@ -53,7 +53,8 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { ProductListing } from '@hubblecommerce/hubble/commons'
+import { useNuxtApp } from '#app'
+import { Product, ProductListing } from '@hubblecommerce/hubble/commons'
 
 interface ProductListingProps {
     data: ProductListing,
@@ -71,4 +72,13 @@ const props = withDefaults(defineProps<ProductListingProps>(), {
 })
 
 const listing = ref(props.data)
+
+const { $hblBus } = useNuxtApp()
+if (listing.value.products.length > 0) {
+    $hblBus.$emit('viewProductListing', { id: 'category', name: 'Category', products: listing.value.products })
+}
+
+function onListingCardClick (product: Product, index: number) {
+    $hblBus.$emit('clickProductListingCard', { id: 'category', name: 'Category', product, index })
+}
 </script>

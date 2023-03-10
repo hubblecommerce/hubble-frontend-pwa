@@ -42,7 +42,7 @@
                         >
                     </div>
 
-                    <button :class="{'loading': loading}" :disabled="loading" class="btn btn-primary w-full flex-shrink" @click="addToCart(qty, product.id)">
+                    <button :class="{'loading': loading}" :disabled="loading" class="btn btn-primary w-full flex-shrink" @click="onClickAddToCart(qty, product.id)">
                         <span v-if="!loading">Add to cart</span>
                     </button>
                 </div>
@@ -78,16 +78,22 @@ const loading = computed(() => {
     return cartLoading.value || variantLoading.value
 })
 
-watch(cartError, (value) => {
-    if (typeof value !== 'boolean') {
-        showNotification(value, 'error', true)
+async function onClickAddToCart (qty: number, id: string) {
+    await addToCart(qty, id)
+
+    if (!cartError.value) {
+        $hblBus.$emit('addToCart', { qty, product: product.value })
     }
+}
+
+watch(cartError, (value) => {
+    showNotification(value, 'error', true)
 })
 
 const { $hblBus } = useNuxtApp()
 $hblBus.$on('productVariantChanged', eventListenerBuyBox)
 
-function eventListenerBuyBox ({ data }) {
+function eventListenerBuyBox ({ data }: { data: Product }) {
     // Merge all data but the variants with the product data
     const { variants, ...productData } = data
     product.value = Object.assign(product.value, productData)

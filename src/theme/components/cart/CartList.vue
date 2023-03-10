@@ -31,7 +31,7 @@
                                 {{ `${t('cart.lineItem.articleNumber')} ${lineItem.sku}` }}
                             </div>
                         </div>
-                        <div v-if="isInteractive" class="absolute right-0 top-0 btn btn-ghost w-13 h-13" @click="removeLineItem(lineItem.id)">
+                        <div v-if="isInteractive" class="absolute right-0 top-0 btn btn-ghost w-13 h-13" @click="onRemoveLineItem(lineItem)">
                             <TrashIcon class="w-5 h-5" />
                         </div>
                     </div>
@@ -62,7 +62,9 @@
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
 import { BanknotesIcon, TrashIcon } from '@heroicons/vue/24/outline'
+import { useNuxtApp } from '#app'
 import { useCart, useCurrency } from '#imports'
+import { LineItem } from '@hubblecommerce/hubble/commons'
 
 const { t } = useI18n()
 
@@ -79,6 +81,15 @@ const { cart, loading, error } = storeToRefs(cartStore)
 const { removeLineItem } = cartStore
 
 const { formatPrice } = useCurrency()
+
+const { $hblBus } = useNuxtApp()
+async function onRemoveLineItem (lineItem: LineItem) {
+    await removeLineItem(lineItem.id)
+
+    if (!error.value) {
+        $hblBus.$emit('removeFromCart', { product: lineItem })
+    }
+}
 </script>
 
 <style lang="scss" scoped>

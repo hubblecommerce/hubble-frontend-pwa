@@ -38,15 +38,18 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
+import { useNuxtApp } from '#app'
 import { useCart } from '#imports'
 
 const cartStore = useCart()
 const { cart, loading, error } = storeToRefs(cartStore)
 const { getCart, deleteCart } = cartStore
+const { $hblBus } = useNuxtApp()
 
 loading.value = true
 
 onMounted(async () => {
     await getCart()
+    $hblBus.$emit('viewCart', { cart: cart.value })
 })
 </script>
