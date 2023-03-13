@@ -20,12 +20,12 @@
                 v-if="address.id === customer?.billingAddress?.id || address.id === customer?.shippingAddress?.id"
                 class="absolute -top-2 badge badge-sm badge-primary"
             >
-                Default {{ address.id === customer?.billingAddress?.id ? 'Billing' : '' }} {{ address.id === customer?.shippingAddress?.id ? 'Shipping' : '' }}
+                {{ t('customer.address.book.default') }} {{ address.id === customer?.billingAddress?.id ? t('customer.address.book.billing') : '' }} {{ address.id === customer?.shippingAddress?.id ? t('customer.address.book.shipping') : '' }}
             </div>
             <CustomerAddressRenderer :address="address" />
             <div class="flex space-x-2">
-                <span class="link-secondary link-hover cursor-pointer" @click="onEditAddress(address.id)">Edit</span>
-                <span class="link-secondary link-hover cursor-pointer" @click="onDeleteAddress(address.id)">Delete</span>
+                <span class="link-secondary link-hover cursor-pointer" @click="onEditAddress(address.id)">{{ t('customer.address.book.edit') }}</span>
+                <span class="link-secondary link-hover cursor-pointer" @click="onDeleteAddress(address.id)">{{ t('customer.address.book.delete') }}</span>
             </div>
         </div>
         <div v-else-if="error">
@@ -39,20 +39,20 @@
             <div class="btn btn-sm btn-circle absolute right-2 top-2" @click="modalState = false">
                 <XMarkIcon class="h-4 w-4" />
             </div>
-            <div class="text-2xl mb-2">{{ formAction }} Address</div>
+            <div class="text-2xl mb-2">{{ t(`customer.address.book.action${formAction}`) }} {{ t('customer.address.book.address') }}</div>
             <form ref="addressBookForm" class="w-full relative flex flex-col" @submit.prevent="onFormSubmit()">
                 <CustomerAddressForm v-if="formAction === 'Add' || formAction === 'Edit'" :model-value="formData" />
                 <CustomerAddressRenderer v-if="formAction === 'Delete'" :address="formData" />
                 <div v-if="formAction === 'Add' || formAction === 'Edit'" class="form-control mt-4">
                     <label for="useDefaultBilling" class="label justify-start cursor-pointer">
                         <input id="useDefaultBilling" v-model="useAsDefaultBilling" type="checkbox" class="checkbox mr-2">
-                        <span class="label-text">Use as default billing address</span>
+                        <span class="label-text">{{ t('customer.address.book.defaultBillingAction') }}</span>
                     </label>
                 </div>
                 <div v-if="formAction === 'Add' || formAction === 'Edit'" class="form-control">
                     <label for="useDefaultShipping" class="label justify-start cursor-pointer">
                         <input id="useDefaultShipping" v-model="useAsDefaultShipping" type="checkbox" class="checkbox mr-2">
-                        <span class="label-text">Use as default shipping address</span>
+                        <span class="label-text">{{ t('customer.address.book.defaultShippingAction') }}</span>
                     </label>
                 </div>
                 <button
@@ -62,7 +62,7 @@
                     class="btn btn-primary text-right mt-4"
                     @click.prevent="onFormSubmit()"
                 >
-                    {{ formAction }} Address
+                    {{ t(`customer.address.book.action${formAction}`) }} {{ t('customer.address.book.address') }}
                 </button>
             </form>
         </label>
@@ -73,8 +73,11 @@
 import { XMarkIcon } from '@heroicons/vue/20/solid'
 import { ref, Ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
+import { useI18n } from 'vue-i18n'
 import { CustomerBillingAddress, CustomerShippingAddress, useForm } from '@hubblecommerce/hubble/commons'
 import { useCustomer, useNotification } from '#imports'
+
+const { t } = useI18n()
 
 /*
  * Fetch Addresses
@@ -184,3 +187,36 @@ watch(modalState, (value) => {
     }
 })
 </script>
+
+<i18n>
+{
+    "en": {
+        "customer.address.book.default": "Default",
+        "customer.address.book.billing": "Billing",
+        "customer.address.book.shipping": "Shipping",
+        "customer.address.book.edit": "Edit",
+        "customer.address.book.delete": "Delete",
+        "customer.address.book.address": "Address",
+        "customer.address.book.defaultBillingAction": "Use as default billing address",
+        "customer.address.book.defaultShippingAction": "Use as default shipping address",
+        "customer.address.book.actionAdd": "Add",
+        "customer.address.book.actionEdit": "Edit",
+        "customer.address.book.actionDelete": "Delete",
+        "customer.address.book.actionnull": ""
+    },
+    "de": {
+        "customer.address.book.default": "Standard",
+        "customer.address.book.billing": "Rechnungsadresse",
+        "customer.address.book.shipping": "Versandadresse",
+        "customer.address.book.edit": "Bearbeiten",
+        "customer.address.book.delete": "Löschen",
+        "customer.address.book.address": "Adresse",
+        "customer.address.book.defaultBillingAction": "Als standard Rechnungsadresse verwenden",
+        "customer.address.book.defaultShippingAction": "Als standard Versandadresse verwenden",
+        "customer.address.book.actionAdd": "Hinzufügen",
+        "customer.address.book.actionEdit": "Bearbeiten",
+        "customer.address.book.actionDelete": "Löschen",
+        "customer.address.book.actionnull": ""
+    }
+}
+</i18n>
