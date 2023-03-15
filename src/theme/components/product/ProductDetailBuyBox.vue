@@ -59,8 +59,8 @@
 import { ref, watch, computed, onBeforeUnmount } from 'vue'
 import { useNuxtApp } from '#app'
 import { storeToRefs } from 'pinia'
-import { Product, useCurrency } from '@hubblecommerce/hubble/commons'
-import { useCart, useNotification } from '#imports'
+import { Product } from '@hubblecommerce/hubble/commons'
+import { useCart, useNotification, useCurrency } from '#imports'
 
 const props = defineProps<{
     productData: Product

@@ -65,8 +65,8 @@ import {
     ChevronRightIcon,
     ChevronDoubleRightIcon
 } from '@heroicons/vue/20/solid'
-import { Order, useCurrency } from '@hubblecommerce/hubble/commons'
-import { useCustomer } from '#imports'
+import { Order } from '@hubblecommerce/hubble/commons'
+import { useCustomer, useCurrency } from '#imports'
 
 /*
  * Fetch Orders

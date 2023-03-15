@@ -1,7 +1,7 @@
 import { ref, Ref } from 'vue'
 import { IUseSearch, ProductListing } from '@hubblecommerce/hubble/commons'
 import { ProductShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { mapProductListing } from '@hubblecommerce/hubble/platforms/shopware/api-client/utils'
+import { hblMapProductListing } from '#imports'
 
 export function useSearch (): IUseSearch {
     const loading: Ref<boolean> = ref(false)
@@ -23,7 +23,7 @@ export function useSearch (): IUseSearch {
             )
 
             loading.value = false
-            return { productListing: mapProductListing(response), params }
+            return { productListing: hblMapProductListing(response), params }
         } catch (e) {
             loading.value = false
             error.value = e

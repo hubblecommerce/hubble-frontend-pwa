@@ -1,7 +1,18 @@
 import { ref, Ref } from 'vue'
 import { navigateTo } from '#app'
 import { defineStore, storeToRefs } from 'pinia'
-import { useCart, useNotification, usePlatform, useRuntimeConfig } from '#imports'
+import {
+    useCart,
+    useNotification,
+    usePlatform,
+    useRuntimeConfig,
+    hblMapCustomer,
+    hblMapCustomerAddress,
+    hblMapCustomerAddresses,
+    hblMapOrder,
+    hblMapOrders,
+    swMapCustomerAddress
+} from '#imports'
 import {
     Customer,
     CustomerShippingAddress,
@@ -16,14 +27,6 @@ import {
     OrderShopware, ProfileShopware,
     SystemContextShopware
 } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import {
-    mapCustomer,
-    mapCustomerAddress,
-    mapCustomerAddresses,
-    mapOrder,
-    mapOrders,
-    reverseMapCustomerAddress
-} from '@hubblecommerce/hubble/platforms/shopware/api-client/utils'
 
 export const useCustomer = defineStore('use-customer', (): IUseCustomer => {
     const customer: Ref<Customer | null> = ref(null)
@@ -44,7 +47,7 @@ export const useCustomer = defineStore('use-customer', (): IUseCustomer => {
              * active addresses in session are mandatory for checkout contact step
              */
             const response = await SystemContextShopware.readContext()
-            const mappedData = mapCustomer(response.customer)
+            const mappedData = hblMapCustomer(response.customer)
 
             // Only set customer data client side to prevent leaked states on server
             customer.value = mappedData
@@ -119,8 +122,8 @@ export const useCustomer = defineStore('use-customer', (): IUseCustomer => {
         }
 
         try {
-            const shippingAddress = reverseMapCustomerAddress(formData.shippingAddress.value)
-            const billingAddress = reverseMapCustomerAddress(formData.billingAddress.value)
+            const shippingAddress = swMapCustomerAddress(formData.shippingAddress.value)
+            const billingAddress = swMapCustomerAddress(formData.billingAddress.value)
 
             const requestBody = {
                 ...(dobObject != null && { birthdayDay: dobObject.getDate() }),
@@ -201,7 +204,7 @@ export const useCustomer = defineStore('use-customer', (): IUseCustomer => {
 
             // Todo patch api client
             // @ts-ignore
-            return mapCustomerAddresses(response.elements)
+            return hblMapCustomerAddresses(response.elements)
         } catch (e) {
             loading.value = false
             error.value = e
@@ -217,11 +220,11 @@ export const useCustomer = defineStore('use-customer', (): IUseCustomer => {
             const response = await AddressShopware.createCustomerAddress(
                 'application/json',
                 'application/json',
-                reverseMapCustomerAddress(address)
+                swMapCustomerAddress(address)
             )
 
             loading.value = false
-            return mapCustomerAddress(response)
+            return hblMapCustomerAddress(response)
         } catch (e) {
             loading.value = false
             error.value = e
@@ -237,10 +240,10 @@ export const useCustomer = defineStore('use-customer', (): IUseCustomer => {
                 address.id,
                 'application/json',
                 'application/json',
-                reverseMapCustomerAddress(address)
+                swMapCustomerAddress(address)
             )
 
-            const mappedAddress = mapCustomerAddress(response)
+            const mappedAddress = hblMapCustomerAddress(response)
 
             loading.value = false
             return mappedAddress
@@ -322,7 +325,7 @@ export const useCustomer = defineStore('use-customer', (): IUseCustomer => {
                 limit: response.orders?.limit,
                 page: response.orders?.page,
                 total: response.orders?.total,
-                data: params?.id != null ? mapOrder(response.orders.elements[0]) : mapOrders(response.orders.elements)
+                data: params?.id != null ? hblMapOrder(response.orders.elements[0]) : hblMapOrders(response.orders.elements)
             }
 
             loading.value = false

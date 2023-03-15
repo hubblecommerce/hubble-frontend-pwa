@@ -1,7 +1,7 @@
 import { ref, Ref } from 'vue'
 import { Navigation, IUseNavigation } from '@hubblecommerce/hubble/commons'
 import { CategoryShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { mapNavigation } from '@hubblecommerce/hubble/platforms/shopware/api-client/utils'
+import { hblMapNavigation } from '#imports'
 
 const navigation: Ref<Navigation> = ref(null)
 
@@ -20,7 +20,7 @@ export const useNavigation = function (): IUseNavigation {
                 {}
             )
 
-            const mappedData = mapNavigation(response)
+            const mappedData = hblMapNavigation(response)
 
             loading.value = false
             return mappedData

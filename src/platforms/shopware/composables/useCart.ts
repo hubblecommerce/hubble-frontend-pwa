@@ -1,10 +1,9 @@
 import { Ref, ref, watch } from 'vue'
 import { useCookie, useRuntimeConfig } from '#app'
 import { defineStore } from 'pinia'
-import { useNotification, usePlatform } from '#imports'
+import { useNotification, usePlatform, hblMapCart, hblMapMiniCart } from '#imports'
 import { Cart, IUseCart, MiniCart, LineItem, MiniCartItem } from '@hubblecommerce/hubble/commons'
 import { CartShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { mapCart, mapMiniCart } from '@hubblecommerce/hubble/platforms/shopware/api-client/utils'
 
 export const useCart = defineStore('use-cart', (): IUseCart => {
     const cart: Ref<Cart | null> = ref(null)
@@ -28,7 +27,7 @@ export const useCart = defineStore('use-cart', (): IUseCart => {
                 setSessionToken(response.token)
             }
 
-            const mappedData = mapCart(response)
+            const mappedData = hblMapCart(response)
             cart.value = mappedData
             loading.value = false
 
@@ -67,7 +66,7 @@ export const useCart = defineStore('use-cart', (): IUseCart => {
                 setSessionToken(response.token)
             }
 
-            const mappedData = mapCart(response)
+            const mappedData = hblMapCart(response)
             cart.value = mappedData
             showNotification('Product removed from cart', 'success')
             loading.value = false
@@ -128,7 +127,7 @@ export const useCart = defineStore('use-cart', (): IUseCart => {
                 setSessionToken(response.token)
             }
 
-            const mappedData = mapCart(response)
+            const mappedData = hblMapCart(response)
             cart.value = mappedData
             showNotification('Product added to cart', 'success')
             loading.value = false
@@ -141,7 +140,7 @@ export const useCart = defineStore('use-cart', (): IUseCart => {
     }
 
     function saveCart (): void {
-        miniCart.value = cart.value != null ? mapMiniCart(cart.value) : null
+        miniCart.value = cart.value != null ? hblMapMiniCart(cart.value) : null
 
         const cookie = useCookie(cartCookie.name, cartCookie.options)
         // @ts-ignore
@@ -191,7 +190,7 @@ export const useCart = defineStore('use-cart', (): IUseCart => {
                 return
             }
 
-            const mappedData = mapCart(response)
+            const mappedData = hblMapCart(response)
             cart.value = mappedData
             showNotification('Coupon added to cart', 'success')
             loading.value = false

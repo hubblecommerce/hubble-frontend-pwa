@@ -3,20 +3,14 @@ import { RouteLocationNormalizedLoaded } from 'vue-router'
 import { useRouter } from '#app'
 import {
     IUsePage,
-    Page, Product,
+    Page,
+    Product,
     ProductListing,
-    ProductListingFilterCurrent, ProductListingFilterMixed,
+    ProductListingFilterCurrent,
     useDefaultStructure
 } from '@hubblecommerce/hubble/commons'
-import {
-    ProductShopware,
-    PwaShopware
-} from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import {
-    mapPage,
-    mapProductListing, mapProduct
-} from '@hubblecommerce/hubble/platforms/shopware/api-client/utils'
-import { useLocalisation, useRuntimeConfig } from '#imports'
+import { ProductShopware, PwaShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client'
+import { useLocalisation, useRuntimeConfig, hblMapPage, hblMapProductListing, hblMapProduct } from '#imports'
 
 const associations = {
     media: {},
@@ -57,7 +51,7 @@ export const usePage = function (): IUsePage {
 
             const response = await PwaShopware.pwaResolvePage(requestBody)
 
-            const mappedPage = mapPage(response)
+            const mappedPage = hblMapPage(response)
 
             if (mappedPage.structure === null) {
                 const { setDefaultStructures, getDefaultStructureByType } = useDefaultStructure()
@@ -134,7 +128,7 @@ export const usePage = function (): IUsePage {
                 )
             }
 
-            const mappedListing = mapProductListing(response)
+            const mappedListing = hblMapProductListing(response)
 
             loading.value = false
             return { productListing: mappedListing, params }
@@ -200,7 +194,7 @@ export const usePage = function (): IUsePage {
             }
 
             loading.value = false
-            return mapProduct(response.elements[0])
+            return hblMapProduct(response.elements[0])
         } catch (e) {
             loading.value = false
             error.value = e

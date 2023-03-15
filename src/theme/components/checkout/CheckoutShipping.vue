@@ -55,8 +55,7 @@ import { onMounted, watch, ref, Ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { useNuxtApp } from '#app'
-import { useCheckout, useNotification, usePlatform } from '#imports'
-import { useCurrency } from '@hubblecommerce/hubble/commons'
+import { useCheckout, useNotification, usePlatform, useCurrency } from '#imports'
 
 const { t } = useI18n()
 const { $hblBus } = useNuxtApp()

@@ -9,11 +9,7 @@ import {
     PaymentShippingShopware,
     SystemContextShopware
 } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import {
-    mapPaymentMethods,
-    mapShippingMethods
-} from '@hubblecommerce/hubble/platforms/shopware/api-client/utils'
-import { useNotification, useCart, useRouter } from '#imports'
+import { useNotification, useCart, useRouter, hblMapPaymentMethods, hblMapShippingMethods } from '#imports'
 
 export const useCheckoutStore = defineStore('use-checkout', () => {
     const shippingError: Ref = ref(false)
@@ -61,7 +57,7 @@ export const useCheckout = function (): IUseCheckout {
                 return
             }
 
-            const mappedData = mapShippingMethods(response?.elements)
+            const mappedData = hblMapShippingMethods(response?.elements)
 
             mappedData.sort((a, b) => {
                 return a.position - b.position
@@ -114,7 +110,7 @@ export const useCheckout = function (): IUseCheckout {
                 return
             }
 
-            const mappedData = mapPaymentMethods(response?.elements)
+            const mappedData = hblMapPaymentMethods(response?.elements)
 
             mappedData.sort((a, b) => {
                 return a.position - b.position

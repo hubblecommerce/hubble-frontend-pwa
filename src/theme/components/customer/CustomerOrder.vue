@@ -101,7 +101,8 @@
 </template>
 
 <script setup lang="ts">
-import { Order, useCurrency } from '@hubblecommerce/hubble/commons'
+import { useCurrency } from '#imports'
+import { Order } from '@hubblecommerce/hubble/commons'
 
 const props = defineProps<{
     order: Order

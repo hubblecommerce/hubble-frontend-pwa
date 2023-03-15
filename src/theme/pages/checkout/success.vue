@@ -75,6 +75,10 @@ const orderId = currentRoute?.value?.query?.orderId?.toString()
 const order: Ref<Order | null> = ref(null)
 const { $hblBus } = useNuxtApp()
 
+if (!orderId) {
+    await navigateTo('/')
+}
+
 onMounted(async () => {
     if (orderId != null) {
         try {

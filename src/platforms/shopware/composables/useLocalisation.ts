@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { ref, Ref } from 'vue'
 import { useNuxtApp } from '#app'
 import { IUseLocalisation } from '@hubblecommerce/hubble/commons'
 
@@ -7,7 +7,7 @@ const entityPathInfo = ref(null)
 export const useLocalisation = function (): IUseLocalisation {
     const { vueApp } = useNuxtApp()
 
-    const defaultLocale = ref(vueApp.config.globalProperties.$i18n?.fallbackLocale)
+    const defaultLocale = ref(vueApp.config.globalProperties.$i18n?.fallbackLocale) as Ref<string>
 
     /*
      * Function to check, if a path is a possible translated route

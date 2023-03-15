@@ -1,15 +1,16 @@
 import { defineStore, storeToRefs } from 'pinia'
 import { ref, Ref } from 'vue'
 import { useCookie } from '#app'
-import { useRuntimeConfig, useCustomer } from '#imports'
+import {
+    useRuntimeConfig,
+    useCustomer,
+    hblMapSession,
+    hblMapSalutations,
+    hblMapCustomer,
+    hblMapCountries
+} from '#imports'
 import { IUsePlatform, Session, Salutation, Country } from '@hubblecommerce/hubble/commons'
 import { SystemContextShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import {
-    mapSession,
-    mapSalutations,
-    mapCustomer,
-    mapCountries
-} from '@hubblecommerce/hubble/platforms/shopware/api-client/utils'
 
 export const usePlatform = defineStore('use-platform', (): IUsePlatform => {
     const session: Ref<Session> = ref({
@@ -59,13 +60,13 @@ export const usePlatform = defineStore('use-platform', (): IUsePlatform => {
             setSessionToken(cookie.value)
 
             const response = await SystemContextShopware.readContext()
-            const mappedData = mapSession(response)
+            const mappedData = hblMapSession(response)
             session.value = mappedData
 
             if (response.customer !== null) {
                 const customerStore = useCustomer()
                 const { customer } = storeToRefs(customerStore)
-                customer.value = mapCustomer(response.customer)
+                customer.value = hblMapCustomer(response.customer)
             }
 
             loading.value = false
@@ -87,7 +88,7 @@ export const usePlatform = defineStore('use-platform', (): IUsePlatform => {
                 return
             }
 
-            const mappedData = mapSalutations(response.elements)
+            const mappedData = hblMapSalutations(response.elements)
             salutations.value = mappedData
 
             loading.value = false
@@ -109,7 +110,7 @@ export const usePlatform = defineStore('use-platform', (): IUsePlatform => {
                 return
             }
 
-            const mappedData = mapCountries(response.elements)
+            const mappedData = hblMapCountries(response.elements)
             countries.value = mappedData
 
             loading.value = false

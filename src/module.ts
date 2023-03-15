@@ -145,6 +145,7 @@ export default defineNuxtModule<ModuleOptions>({
         await fs.emptyDir(targetDir)
         await fs.copy(baseDir, targetDir)
         await fs.copy(resolve(join(platformDir, 'composables')), resolve(join(targetDir, 'composables')))
+        await fs.copy(resolve(join(platformDir, 'utils')), resolve(join(targetDir, 'utils')))
 
         const platformPluginsDirs = await listAllDirs(platformPluginsDir)
 
@@ -194,6 +195,11 @@ export default defineNuxtModule<ModuleOptions>({
                     component.global = true
                 }
             })
+        })
+
+        // Add utils/mapping to auto imports to be able to override mapping functions on project level
+        nuxt.hook("imports:dirs", (dirs) => {
+            dirs.push(resolve(join(targetDir, 'utils/mapping')))
         })
 
         // Set runtime configs

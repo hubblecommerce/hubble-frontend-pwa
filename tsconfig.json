@@ -13,7 +13,6 @@
             "@hubblecommerce/hubble/commons": ["../src/runtime/commons/index"],
             "@hubblecommerce/hubble/theme/store": ["../src/theme/store/index"],
             "@hubblecommerce/hubble/platforms/shopware/api-client": ["../src/platforms/shopware/api-client/generated/index"],
-            "@hubblecommerce/hubble/platforms/shopware/api-client/utils": ["../src/platforms/shopware/api-client/utils/index"],
             "~~": [
                 "."
             ],
