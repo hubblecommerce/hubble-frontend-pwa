@@ -19,9 +19,6 @@
         },
         "./platforms/shopware/api-client": {
             "import": "./dist/platforms/shopware/api-client/generated/index.mjs"
-        },
-        "./platforms/shopware/api-client/utils": {
-            "import": "./dist/platforms/shopware/api-client/utils/index.mjs"
         }
     },
     "main": "./dist/module.cjs",

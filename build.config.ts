@@ -23,6 +23,12 @@ export default defineBuildConfig({
             ext: 'ts'
         },
         {
+            input: './src/platforms/shopware/utils/',
+            outDir: './dist/platforms/shopware/utils',
+            declaration: false,
+            ext: 'ts'
+        },
+        {
             builder: 'mkdist',
             input: './src/platforms/shopware/config/',
             outDir: './dist/platforms/shopware/config'
