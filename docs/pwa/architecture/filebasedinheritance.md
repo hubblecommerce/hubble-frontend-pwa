@@ -21,8 +21,11 @@ _node_modules/@hubblecommerce/hubble/dist/platforms/[PLATFORM]/composables_ and 
 
 ## Overwriting files
 To customize a specific component provided by hubble PWA you just have to:
-1. find the component or file you want to edit in 
-_node_modules/@hubblecommerce/hubble/dist/theme_ or _node_modules/@hubblecommerce/hubble/dist/platforms/[PLATFORM]/composables_
+1. find the component or file you want to edit in:
+    - Components: _node_modules/@hubblecommerce/hubble/dist/theme_
+    - Composables: _node_modules/@hubblecommerce/hubble/dist/platforms/[PLATFORM]/composables_
+    - Mappings: _node_modules/@hubblecommerce/hubble/dist/platforms/[PLATFORM]/utils/mapping_
+    - Types: _node_modules/@hubblecommerce/hubble/dist/commons/utils/types_
 2. copy the file to your projects root directory, make sure the path stays the same 
 
 ```

@@ -65,8 +65,8 @@ To simply fetch data from the api is not enough because our components expect a 
 Therefore, the response data need to be mapped first. 
 
 Every api client provides its specific mapping helper functions:
-_node_modules/@hubblecommerce/hubble/dist/platforms/[PLATFORM]/api-client/utils/dataMapping.ts_
+_node_modules/@hubblecommerce/hubble/dist/platforms/[PLATFORM]/utils/mapping/dataMapping.ts_
 
 They map the api responses to the common types our components expect:
-_node_modules/@hubblecommerce/hubble/dist/runtime/commons/interfaces_
+_node_modules/@hubblecommerce/hubble/dist/commons/utils/types_
 
