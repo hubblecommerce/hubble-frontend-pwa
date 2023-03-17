@@ -8,22 +8,22 @@
 import { computed, ref, shallowRef, defineAsyncComponent, resolveComponent, onMounted } from 'vue'
 import { StructureLoading, StructureNoComponent } from '#components'
 import { HblBlock } from '@/utils/types'
-import { toUpperCamelCase, registerIntersectionObserver, getStructureBackgroundStyles } from '@hubblecommerce/hubble/commons'
+import { hblToUpperCamelCase, hblRegisterIntersectionObserver, hblGetStructureBackgroundStyles } from '@/utils/helper'
 
 const props = defineProps<{
     count?: number,
     content: HblBlock
 }>()
 
-const { backgroundStyles } = getStructureBackgroundStyles(props.content)
+const { backgroundStyles } = hblGetStructureBackgroundStyles(props.content)
 
 const component = shallowRef()
 // If block contains exactly one slot, directly load SLOT. If more than one slots then load BLOCK
 const compName = computed(() => {
-    let name = `StructureBlock${toUpperCamelCase(props.content.type)}`
+    let name = `StructureBlock${hblToUpperCamelCase(props.content.type)}`
 
     if (props.content.slots.length === 1) {
-        name = `StructureSlot${toUpperCamelCase(props.content.slots[0].type)}`
+        name = `StructureSlot${hblToUpperCamelCase(props.content.slots[0].type)}`
     }
 
     return name
@@ -40,7 +40,7 @@ const el = ref()
 onMounted(() => {
     // TODO: find a more generic way to mark elements a SEO relevant
     if (props.count > 1) {
-        registerIntersectionObserver(el.value, loadComponent)
+        hblRegisterIntersectionObserver(el.value, loadComponent)
     }
 })
 

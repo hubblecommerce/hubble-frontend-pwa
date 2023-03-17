@@ -14,9 +14,6 @@
             "import": "./dist/module.mjs",
             "require": "./dist/module.cjs"
         },
-        "./commons": {
-            "import": "./dist/runtime/commons/index.mjs"
-        },
         "./platforms/shopware/api-client": {
             "import": "./dist/platforms/shopware/api-client/generated/index.mjs"
         }

@@ -75,7 +75,7 @@ import { ref, Ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
 import { HblCustomerBillingAddress, HblCustomerShippingAddress } from '@/utils/types'
-import { useForm } from '@hubblecommerce/hubble/commons'
+import { hblUseForm } from '@/utils/helper'
 import { useCustomer, useNotification } from '#imports'
 
 const { t } = useI18n()
@@ -102,7 +102,7 @@ const addresses: Ref<null | HblCustomerBillingAddress[] | HblCustomerShippingAdd
 const modalState: Ref<boolean> = ref(false)
 const formData: Ref<HblCustomerBillingAddress | HblCustomerShippingAddress | Record<string, never>> = ref({})
 const formAction: Ref<null | 'Add' | 'Edit' | 'Delete'> = ref(null)
-const { validateForm } = useForm()
+const { validateForm } = hblUseForm()
 const addressBookForm = ref()
 const { showNotification } = useNotification()
 const useAsDefaultBilling = ref(false)

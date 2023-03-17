@@ -1,4 +1,4 @@
-export function toUpperCamelCase (string:string): string {
+export function hblToUpperCamelCase (string:string): string {
     return string
         .toLowerCase()
         .split('-')

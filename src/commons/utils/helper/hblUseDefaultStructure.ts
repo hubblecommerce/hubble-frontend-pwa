@@ -1,6 +1,6 @@
 import { HblPageType, HblSection } from '@/utils/types'
 
-const defaultStructure: HblSection[] = [
+const hblDefaultStructure: HblSection[] = [
     {
         type: 'default',
         sizingMode: 'boxed',
@@ -21,7 +21,7 @@ const defaultStructure: HblSection[] = [
     }
 ]
 
-const defaultDetailStructure: HblSection[] = [
+const hblDefaultDetailStructure: HblSection[] = [
     {
         type: 'default',
         sizingMode: 'boxed',
@@ -121,13 +121,13 @@ const defaultDetailStructure: HblSection[] = [
     }
 ]
 
-export function useDefaultStructure () {
+export function hblUseDefaultStructure () {
     const defaultStructures = new Map<HblPageType, HblSection[]>()
 
     const setDefaultStructures = function () {
-        defaultStructures.set('category', defaultStructure)
-        defaultStructures.set('detail', defaultDetailStructure)
-        defaultStructures.set('cms', defaultStructure)
+        defaultStructures.set('category', hblDefaultStructure)
+        defaultStructures.set('detail', hblDefaultDetailStructure)
+        defaultStructures.set('cms', hblDefaultStructure)
     }
 
     const getDefaultStructureByType = function (type: HblPageType): HblSection[] {

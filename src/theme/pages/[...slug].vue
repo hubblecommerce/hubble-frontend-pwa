@@ -15,7 +15,7 @@
 import { computed, resolveComponent, provide, onBeforeUnmount, onMounted } from 'vue'
 import { showError, useRoute, useAsyncData } from '#app'
 import { useLocalisation, usePage } from '#imports'
-import { detailData } from '@hubblecommerce/hubble/commons'
+import { hblDetailData } from '@/utils/helper'
 
 /*
  * Page request and error handling
@@ -69,7 +69,7 @@ const pageData = computed(() => {
  * Provide detail data to inject in detail structure (has no data)
  */
 if (page.value?.type === 'detail' && page.value?.detail !== undefined) {
-    provide(detailData, page.value.detail)
+    provide(hblDetailData, page.value.detail)
 }
 
 /*

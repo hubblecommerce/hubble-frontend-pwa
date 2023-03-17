@@ -69,12 +69,12 @@ import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useNuxtApp } from '#app'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/vue/24/outline'
-import { useForm } from '@hubblecommerce/hubble/commons'
+import { hblUseForm } from '@/utils/helper'
 import { useCustomer, useNotification } from '#imports'
 
 const { t } = useI18n()
 
-const { validateForm } = useForm()
+const { validateForm } = hblUseForm()
 const { showNotification } = useNotification()
 const username = ref()
 const password = ref()

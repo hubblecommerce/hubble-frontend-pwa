@@ -39,6 +39,13 @@ export default defineBuildConfig({
             outDir: './dist/theme',
             declaration: false,
             ext: 'ts'
+        },
+        // Commons
+        {
+            input: './src/commons/',
+            outDir: './dist/commons',
+            declaration: false,
+            ext: 'ts'
         }
     ],
     externals: [

@@ -39,10 +39,14 @@ structural data for requested pages and only response entities' data, hubble com
 for the most common page types.
 
 #### Example for set default structure entity / page type:
+
 ```js
 if (mappedPage.structure === null) {
-    const { setDefaultStructures, getDefaultStructureByType } = useDefaultStructure()
-    setDefaultStructures()
-    mappedPage.structure = getDefaultStructureByType(mappedPage.type)
+    const {
+        hblSetDefaultStructures,
+        hblGetDefaultStructureByType
+    } = hblUseDefaultStructure()
+    hblSetDefaultStructures()
+    mappedPage.structure = hblGetDefaultStructureByType(mappedPage.type)
 }
 ```

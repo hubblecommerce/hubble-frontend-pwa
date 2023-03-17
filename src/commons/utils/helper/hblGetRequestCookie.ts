@@ -1,6 +1,6 @@
 import { NuxtApp } from '#app'
 
-export function getRequestCookie (app: NuxtApp, cookieName: string): string | null {
+export function hblGetRequestCookie (app: NuxtApp, cookieName: string): string | null {
     const cookieHeader = app.ssrContext?.event.req.headers.cookie
 
     let cookie = null

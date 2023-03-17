@@ -1,4 +1,4 @@
-export const useForm = function () {
+export const hblUseForm = function () {
     // @ts-ignore
     async function validateForm (form) {
         const isValid = await form.checkValidity()

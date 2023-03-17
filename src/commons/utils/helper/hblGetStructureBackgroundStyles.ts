@@ -1,7 +1,7 @@
 import { computed, Ref } from 'vue'
 import { HblSection, HblBlock } from '@/utils/types'
 
-export function getStructureBackgroundStyles (content: HblSection | HblBlock): { backgroundStyles: Ref<string> } {
+export function hblGetStructureBackgroundStyles (content: HblSection | HblBlock): { backgroundStyles: Ref<string> } {
     const backgroundStyles: Ref<string> = computed(() => {
         let styles = ''
 

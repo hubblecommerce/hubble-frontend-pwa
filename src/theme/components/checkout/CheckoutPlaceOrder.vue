@@ -5,14 +5,14 @@
 <script setup lang="ts">
 import { Ref } from 'vue'
 import { navigateTo } from '#app'
-import { useForm } from '@hubblecommerce/hubble/commons'
+import { hblUseForm } from '@/utils/helper'
 import { useCheckout, useNotification } from '#imports'
 
 const props = defineProps<{
     form: Ref
 }>()
 
-const { validateForm } = useForm()
+const { validateForm } = hblUseForm()
 const { validateCheckout, placeOrder, handlePayment, error, loading } = useCheckout()
 const { showNotification } = useNotification()
 

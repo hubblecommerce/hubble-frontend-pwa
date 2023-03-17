@@ -5,11 +5,11 @@
 <script setup lang="ts">
 import { inject } from 'vue'
 import { HblProduct, HblSlot } from '@/utils/types'
-import { detailData } from '@hubblecommerce/hubble/commons'
+import { hblDetailData } from '@/utils/helper'
 
 const props = defineProps<{
     content: HblSlot
 }>()
 
-const product = inject<HblProduct>(detailData)
+const product = inject<HblProduct>(hblDetailData)
 </script>

@@ -272,7 +272,7 @@ import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { definePageMeta, useCustomer, useCart, usePlatform, useCheckout, useNotification } from '#imports'
-import { useForm } from '@hubblecommerce/hubble/commons'
+import { hblUseForm } from '@/utils/helper'
 
 definePageMeta({
     layout: 'checkout',
@@ -320,7 +320,7 @@ function selectStep (stepName: string): void {
 /*
  * Update Guest Shipping Address
  */
-const { validateForm } = useForm()
+const { validateForm } = hblUseForm()
 const updateContactForm = ref()
 async function onUpdateContact () {
     const isValid = await validateForm(updateContactForm.value)

@@ -9,7 +9,7 @@ import {
     HblProductListingFilterCurrent,
 
 } from '@/utils/types'
-import { useDefaultStructure } from '@hubblecommerce/hubble/commons'
+import { hblUseDefaultStructure } from '@/utils/helper'
 import { ProductShopware, PwaShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 import { useLocalisation, useRuntimeConfig, hblMapPage, hblMapProductListing, hblMapProduct } from '#imports'
 
@@ -55,7 +55,7 @@ export const usePage = function (): HblIUsePage {
             const mappedPage = hblMapPage(response)
 
             if (mappedPage.structure === null) {
-                const { setDefaultStructures, getDefaultStructureByType } = useDefaultStructure()
+                const { setDefaultStructures, getDefaultStructureByType } = hblUseDefaultStructure()
                 setDefaultStructures()
                 mappedPage.structure = getDefaultStructureByType(mappedPage.type)
             }

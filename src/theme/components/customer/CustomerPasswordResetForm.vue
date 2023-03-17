@@ -42,13 +42,13 @@ import { ref } from 'vue'
 import { navigateTo } from '#app'
 import { storeToRefs } from 'pinia'
 import { useCustomer, useNotification } from '#imports'
-import { useForm } from '@hubblecommerce/hubble/commons'
+import { hblUseForm } from '@/utils/helper'
 
 const props = defineProps<{
     hash: string
 }>()
 
-const { validateForm } = useForm()
+const { validateForm } = hblUseForm()
 const customerStore = useCustomer()
 const { error } = storeToRefs(customerStore)
 const { setNewPassword } = customerStore

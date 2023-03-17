@@ -75,7 +75,7 @@ import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { onMounted, ref, reactive } from 'vue'
 import { CalendarIcon } from '@heroicons/vue/24/outline'
-import { useForm } from '@hubblecommerce/hubble/commons'
+import { hblUseForm } from '@/utils/helper'
 import { usePlatform, useCustomer, useNotification } from '#imports'
 
 const { t } = useI18n()
@@ -128,7 +128,7 @@ fillPersonalForm()
 const personalForm = ref()
 const { editCustomerInfo } = customerStore
 const loadingPersonalForm = ref(false)
-const { validateForm } = useForm()
+const { validateForm } = hblUseForm()
 const { showNotification } = useNotification()
 async function onSubmitPersonalForm () {
     loadingPersonalForm.value = true

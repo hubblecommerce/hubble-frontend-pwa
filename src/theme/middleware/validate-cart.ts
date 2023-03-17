@@ -2,7 +2,7 @@ import destr from 'destr'
 import { defineNuxtRouteMiddleware, useNuxtApp, navigateTo } from '#app'
 import { storeToRefs } from 'pinia'
 import { useCart } from '#imports'
-import { getRequestCookie } from '@hubblecommerce/hubble/commons'
+import { hblGetRequestCookie } from '@/utils/helper'
 
 export default defineNuxtRouteMiddleware(() => {
     const app = useNuxtApp()
@@ -10,7 +10,7 @@ export default defineNuxtRouteMiddleware(() => {
     const { miniCart } = storeToRefs(cartStore)
 
     if (process.server) {
-        const cookie = getRequestCookie(app, app.$config.public.cartCookie.name)
+        const cookie = hblGetRequestCookie(app, app.$config.public.cartCookie.name)
         // https://v3.nuxtjs.org/api/composables/use-cookie/#decode
         if (cookie != null) {
             miniCart.value = destr(decodeURIComponent(cookie))

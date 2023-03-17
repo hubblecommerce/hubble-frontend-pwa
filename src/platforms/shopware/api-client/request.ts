@@ -18,7 +18,7 @@ import { usePlatform } from '#imports'
 import { OpenAPI } from './OpenAPI'
 import { useNuxtApp } from '#app'
 // @ts-ignore
-import { getRequestCookie } from '@hubblecommerce/hubble/commons'
+import { hblGetRequestCookie } from '@/utils/helper'
 import { storeToRefs } from 'pinia'
 
 const isDefined = <T>(value: T | null | undefined): value is Exclude<T, null | undefined> => {
@@ -135,7 +135,7 @@ export const request = <T>(config: OpenAPIConfig, options: ApiRequestOptions): C
     }
 
     if (process.server) {
-        const sessionCookie = getRequestCookie(app, app.$config.public.sessionCookie.name)
+        const sessionCookie = hblGetRequestCookie(app, app.$config.public.sessionCookie.name)
         if (sessionCookie != null) {
             setSessionToken(sessionCookie)
         }

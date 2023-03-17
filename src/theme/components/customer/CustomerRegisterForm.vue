@@ -131,7 +131,7 @@ import { useI18n } from 'vue-i18n'
 import { useNuxtApp } from '#app'
 import { EyeIcon, EyeSlashIcon, CalendarIcon } from '@heroicons/vue/24/outline'
 import { HblCustomerBillingAddress, HblCustomerShippingAddress } from '@/utils/types'
-import { useForm } from '@hubblecommerce/hubble/commons'
+import { hblUseForm } from '@/utils/helper'
 import { useCustomer } from '#imports'
 
 const { t } = useI18n()
@@ -182,7 +182,7 @@ const emit = defineEmits(['form-submitted'])
 const customerStore = useCustomer()
 const { error } = storeToRefs(customerStore)
 const { register } = customerStore
-const { validateForm } = useForm()
+const { validateForm } = hblUseForm()
 const loading = ref(false)
 const showPassword = ref(false)
 const { $hblBus } = useNuxtApp()
