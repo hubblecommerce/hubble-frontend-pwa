@@ -1,8 +1,8 @@
 import { CmsSection } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { Section } from '@hubblecommerce/hubble/commons'
+import { HblSection } from '@/utils/types'
 import { hblMapMedia, hblMapBlocks } from '#imports'
 
-export function hblMapSections (swSections: CmsSection[]): Section[] {
+export function hblMapSections (swSections: CmsSection[]): HblSection[] {
     return swSections.map((section: CmsSection) => {
         return {
             type: section.type,

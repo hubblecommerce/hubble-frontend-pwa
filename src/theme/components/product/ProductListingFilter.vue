@@ -86,17 +86,17 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { showError, useRouter } from '#app'
-import { ProductListing, ProductListingFilter, ProductListingFilterCurrent } from '@hubblecommerce/hubble/commons'
+import { HblProductListing, HblProductListingFilter, HblProductListingFilterCurrent } from '@/utils/types'
 import { usePage } from '#imports'
 
 const props = defineProps<{
-    availableFilters: ProductListingFilter[]
-    currentFilters: ProductListingFilterCurrent,
+    availableFilters: HblProductListingFilter[]
+    currentFilters: HblProductListingFilterCurrent,
     limit: number,
     sorting: string
 }>()
 
-const emit = defineEmits<{(event: 'update:listing', data: ProductListing): void}>()
+const emit = defineEmits<{(event: 'update:listing', data: HblProductListing): void}>()
 const selectedFilters = ref(Object.assign(props.currentFilters, {}))
 const { getProductListing, updateUri } = usePage()
 const { currentRoute } = useRouter()

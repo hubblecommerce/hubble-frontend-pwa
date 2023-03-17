@@ -1,6 +1,6 @@
-import { Totals } from '@hubblecommerce/hubble/commons'
+import { HblTotals } from '@/utils/types'
 
-export function hblMapTotals (price: any): Totals {
+export function hblMapTotals (price: any): HblTotals {
     return {
         subTotal: price.positionPrice,
         nettoPrice: price.netPrice,

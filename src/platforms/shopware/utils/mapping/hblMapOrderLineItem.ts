@@ -1,8 +1,8 @@
 import { OrderLineItem as SwOrderLineItem } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { OrderLineItem } from '@hubblecommerce/hubble/commons'
+import { HblOrderLineItem } from '@/utils/types'
 import { hblMapMedia } from '#imports'
 
-export function hblMapOrderLineItem (swOrderLineItem: SwOrderLineItem): OrderLineItem {
+export function hblMapOrderLineItem (swOrderLineItem: SwOrderLineItem): HblOrderLineItem {
     return {
         // @ts-ignore
         id: swOrderLineItem.id,

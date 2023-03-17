@@ -1,4 +1,4 @@
-export interface Country {
+export interface HblSalutation {
     id: string,
     name: string
 }

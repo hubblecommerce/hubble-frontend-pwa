@@ -2,12 +2,12 @@ import { Ref, ref, watch } from 'vue'
 import { useCookie, useRuntimeConfig } from '#app'
 import { defineStore } from 'pinia'
 import { useNotification, usePlatform, hblMapCart, hblMapMiniCart } from '#imports'
-import { Cart, IUseCart, MiniCart, LineItem, MiniCartItem } from '@hubblecommerce/hubble/commons'
+import { HblCart, HblIUseCart, HblMiniCart, HblLineItem, MiniCartItem } from '@/utils/types'
 import { CartShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 
-export const useCart = defineStore('use-cart', (): IUseCart => {
-    const cart: Ref<Cart | null> = ref(null)
-    const miniCart: Ref<MiniCart | null> = ref(null)
+export const useCart = defineStore('use-cart', (): HblIUseCart => {
+    const cart: Ref<HblCart | null> = ref(null)
+    const miniCart: Ref<HblMiniCart | null> = ref(null)
 
     const { cartCookie } = useRuntimeConfig()
     const error: Ref = ref(false)
@@ -15,7 +15,7 @@ export const useCart = defineStore('use-cart', (): IUseCart => {
     const { setSessionToken } = usePlatform()
     const { showNotification } = useNotification()
 
-    async function getCart (): Promise<Cart | void> {
+    async function getCart (): Promise<HblCart | void> {
         loading.value = true
         error.value = false
 
@@ -52,7 +52,7 @@ export const useCart = defineStore('use-cart', (): IUseCart => {
         }
     }
 
-    async function removeLineItem (id: string): Promise<Cart | void> {
+    async function removeLineItem (id: string): Promise<HblCart | void> {
         error.value = false
         loading.value = true
 
@@ -78,7 +78,7 @@ export const useCart = defineStore('use-cart', (): IUseCart => {
         }
     }
 
-    function updateLineItem (lineItem: LineItem | MiniCartItem, updatedQty: number) {
+    function updateLineItem (lineItem: HblLineItem | MiniCartItem, updatedQty: number) {
         return CartShopware.updateLineItem(
             'application/json',
             'application/json',
@@ -109,7 +109,7 @@ export const useCart = defineStore('use-cart', (): IUseCart => {
         )
     }
 
-    async function addToCart (qty: number, itemId: string): Promise<Cart | void> {
+    async function addToCart (qty: number, itemId: string): Promise<HblCart | void> {
         error.value = false
         loading.value = true
 
@@ -147,7 +147,7 @@ export const useCart = defineStore('use-cart', (): IUseCart => {
         cookie.value = miniCart.value
     }
 
-    async function addCoupon (code: string): Promise<Cart | void> {
+    async function addCoupon (code: string): Promise<HblCart | void> {
         error.value = false
         loading.value = true
 

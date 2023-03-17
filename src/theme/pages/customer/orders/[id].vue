@@ -66,7 +66,7 @@
 import { navigateTo, useAsyncData, useRoute } from '#app'
 import { onMounted, ref, Ref } from 'vue'
 import { useCustomer } from '#imports'
-import { Order } from '@hubblecommerce/hubble/commons'
+import { HblOrder } from '@/utils/types'
 
 /*
 * Redirect to /customer/login if customer is not logged in
@@ -80,9 +80,9 @@ if (data.value == null || data.value?.isGuest || error.value != null) {
 }
 
 const loading = ref(true)
-const order: Ref<Order | undefined> = ref()
+const order: Ref<HblOrder | undefined> = ref()
 onMounted(async () => {
-    order.value = await getOrders({ id: route.params.id as string }).then(res => res.data) as Order
+    order.value = await getOrders({ id: route.params.id as string }).then(res => res.data) as HblOrder
     loading.value = false
 })
 </script>

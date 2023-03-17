@@ -5,10 +5,10 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useHead, useNuxtApp } from '#app'
-import { Product } from '@hubblecommerce/hubble/commons'
+import { HblProduct } from '@/utils/types'
 
 const props = defineProps<{
-    data: Product
+    data: HblProduct
 }>()
 
 useHead({

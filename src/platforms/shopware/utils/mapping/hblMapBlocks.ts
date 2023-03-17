@@ -1,8 +1,8 @@
 import { CmsBlock } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { Block } from '@hubblecommerce/hubble/commons'
+import { HblBlock } from '@/utils/types'
 import { hblMapMedia, hblMapSlots } from '#imports'
 
-export function hblMapBlocks (swBlocks: CmsBlock[]): Block[] {
+export function hblMapBlocks (swBlocks: CmsBlock[]): HblBlock[] {
     return swBlocks.map((block: CmsBlock) => {
         return {
             id: block._uniqueIdentifier,

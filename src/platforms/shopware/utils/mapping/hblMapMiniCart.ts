@@ -1,6 +1,6 @@
-import { Cart, MiniCart, MiniCartItem } from '@hubblecommerce/hubble/commons'
+import { HblCart, HblMiniCart, MiniCartItem } from '@/utils/types'
 
-export function hblMapMiniCart (cart: Cart): MiniCart {
+export function hblMapMiniCart (cart: HblCart): HblMiniCart {
     let quantity = 0
     const items: MiniCartItem[] = []
     cart.lineItems.forEach((lineItem) => {

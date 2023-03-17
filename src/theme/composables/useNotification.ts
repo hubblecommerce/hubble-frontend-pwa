@@ -1,14 +1,14 @@
 import { ref, Ref } from 'vue'
-import { IUseNotification, NotificationOptions, Notification } from '@hubblecommerce/hubble/commons'
+import { HblIUseNotification, HblNotificationOptions, HblNotification } from '@/utils/types'
 
-const notifications: Ref<Notification[]> = ref([])
+const notifications: Ref<HblNotification[]> = ref([])
 let notificationDefaultDisplayTime = 5
 let notificationsDefaultKeepAlive = false
 let notificationsDefaultType = 'info'
 let notificationCounter = 0
 
-export function useNotification (): IUseNotification {
-    function setDefaultOptions (options: NotificationOptions) {
+export function useNotification (): HblIUseNotification {
+    function setDefaultOptions (options: HblNotificationOptions) {
         notificationDefaultDisplayTime = options.displayTime != null ? options.displayTime : notificationDefaultDisplayTime
         notificationsDefaultKeepAlive = options.keepAlive != null ? options.keepAlive : notificationsDefaultKeepAlive
         notificationsDefaultType = options.type != null ? options.type : notificationsDefaultType
@@ -20,7 +20,7 @@ export function useNotification (): IUseNotification {
         keepAlive = notificationsDefaultKeepAlive,
         displayTime = notificationDefaultDisplayTime
     ): void {
-        const notification: Notification = {
+        const notification: HblNotification = {
             id: notificationCounter,
             message,
             displayTime,

@@ -133,6 +133,7 @@ export default defineNuxtModule<ModuleOptions>({
         const platformDir = resolve(join(runtimeDir, 'platforms', process.env.PLATFORM))
         const platformPluginsDir = resolve(join(nuxt.options.rootDir, options.pluginsDirName))
         const platformPluginsConfigPath = resolve(join(platformPluginsDir, options.pluginsConfigFileName))
+        const commonsDir = resolve(join(runtimeDir, 'commons'))
 
         const rootDirs = await listAllDirs(nuxt.options.rootDir)
         const validRootDirs: string[] = []
@@ -143,6 +144,7 @@ export default defineNuxtModule<ModuleOptions>({
         })
 
         await fs.emptyDir(targetDir)
+        await fs.copy(resolve(join(commonsDir, 'utils')), resolve(join(targetDir, 'utils')))
         await fs.copy(baseDir, targetDir)
         await fs.copy(resolve(join(platformDir, 'composables')), resolve(join(targetDir, 'composables')))
         await fs.copy(resolve(join(platformDir, 'utils')), resolve(join(targetDir, 'utils')))

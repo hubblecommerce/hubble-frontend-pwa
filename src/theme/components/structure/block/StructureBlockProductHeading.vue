@@ -7,10 +7,11 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { Slot, toUpperCamelCase } from '@hubblecommerce/hubble/commons'
+import { HblSlot } from '@/utils/types'
+import { toUpperCamelCase } from '@hubblecommerce/hubble/commons'
 
 const props = defineProps<{
-    content: Slot[]
+    content: HblSlot[]
 }>()
 
 const leftSlot = computed(() => {

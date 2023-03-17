@@ -1,8 +1,8 @@
 import { PropertyGroupOption } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { VariantOption } from '@hubblecommerce/hubble/commons'
+import { HblVariantOption } from '@/utils/types'
 import { hblMapMedia } from '#imports'
 
-export function hblMapVariantOption (swPropertyOption: PropertyGroupOption): VariantOption {
+export function hblMapVariantOption (swPropertyOption: PropertyGroupOption): HblVariantOption {
     return {
         // @ts-ignore
         id: swPropertyOption.id,

@@ -1,15 +1,15 @@
 import { ProductListingResult } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 import {
-    ProductListingFilterBoolean,
-    ProductListingFilterMixed,
-    ProductListingFilterMulti,
-    ProductListingFilterRange
-} from '@hubblecommerce/hubble/commons'
+    HblProductListingFilterBoolean,
+    HblProductListingFilterMixed,
+    HblProductListingFilterMulti,
+    HblProductListingFilterRange
+} from '@/utils/types'
 
-export function hblMapFilters (swFilters: ProductListingResult['aggregations']): ProductListingFilterMixed[] {
+export function hblMapFilters (swFilters: ProductListingResult['aggregations']): HblProductListingFilterMixed[] {
     const filters = []
 
-    const manufacturerFilter: ProductListingFilterMulti = {
+    const manufacturerFilter: HblProductListingFilterMulti = {
         id: 'manufacturer',
         name: 'Manufacturer',
         type: 'multi',
@@ -23,10 +23,10 @@ export function hblMapFilters (swFilters: ProductListingResult['aggregations']):
         })
     }
 
-    const priceFilter: ProductListingFilterRange = {
+    const priceFilter: HblProductListingFilterRange = {
         id: 'price',
         type: 'range',
-        name: 'Price',
+        name: 'HblPrice',
         // TODO Patch api
         // @ts-ignore
         min: swFilters.price.min,
@@ -38,7 +38,7 @@ export function hblMapFilters (swFilters: ProductListingResult['aggregations']):
         sum: swFilters.price.sum
     }
 
-    const ratingFilter: ProductListingFilterRange = {
+    const ratingFilter: HblProductListingFilterRange = {
         id: 'rating',
         type: 'range',
         name: 'Rating',
@@ -48,7 +48,7 @@ export function hblMapFilters (swFilters: ProductListingResult['aggregations']):
         min: '0'
     }
 
-    const shippingFilter: ProductListingFilterBoolean = {
+    const shippingFilter: HblProductListingFilterBoolean = {
         id: 'shipping-free',
         type: 'boolean',
         name: 'Shipping free'
@@ -59,7 +59,7 @@ export function hblMapFilters (swFilters: ProductListingResult['aggregations']):
     // TODO Patch api
     // @ts-ignore
     swFilters.properties?.entities?.forEach((entity) => {
-        const filter: ProductListingFilterMulti = {
+        const filter: HblProductListingFilterMulti = {
             id: entity.id,
             name: entity.translated.name,
             type: 'multi',

@@ -1,8 +1,8 @@
 import { Order as SwOrder } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { Order } from '@hubblecommerce/hubble/commons'
+import { HblOrder } from '@/utils/types'
 import { hblMapOrderLineItems, hblMapCustomerAddress, hblMapShippingMethod, hblMapPaymentMethod, hblMapTotals } from '#imports'
 
-export function hblMapOrder (swOrder: SwOrder): Order {
+export function hblMapOrder (swOrder: SwOrder): HblOrder {
     return {
         // @ts-ignore
         id: swOrder.id,

@@ -1,49 +1,49 @@
-import { Media } from './Media'
+import { HblMedia } from '@/utils/types/HblMedia'
 
-export interface Manufacturer {
+export interface HblManufacturer {
     id: string,
     link?: string,
     name: string,
     description?: string,
-    media?: Media
+    media?: HblMedia
 }
 
-export interface Price {
+export interface HblPrice {
     regularPrice: string,
     specialPrice: string | null,
     tax: string,
     taxRate: string,
 }
 
-export interface VariantOption {
+export interface HblVariantOption {
     id: string,
     name: string,
     color?: string,
-    media?: Media
+    media?: HblMedia
 }
 
-export interface VariantGroup {
+export interface HblVariantGroup {
     id: string,
     name: string,
-    options: VariantOption[]
+    options: HblVariantOption[]
 }
 
-export interface Product {
+export interface HblProduct {
     id: string,
     name: string,
     description?: string,
     sku: string,
     pathInfo: string,
     url: string,
-    media?: Media[] | Media,
+    media?: HblMedia[] | HblMedia,
     active: boolean,
     stock: number,
-    price: Price,
+    price: HblPrice,
     deliveryTime?: string,
-    manufacturer?: Manufacturer | null,
+    manufacturer?: HblManufacturer | null,
     metaTitle?: string,
     metaDescription?: string,
-    variants?: VariantGroup[],
+    variants?: HblVariantGroup[],
     defaultOptions?: string[],
     parentId?: string
 }

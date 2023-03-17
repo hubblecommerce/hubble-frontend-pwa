@@ -1,7 +1,7 @@
 import { Country as SwCountry } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { Country } from '@hubblecommerce/hubble/commons'
+import { HblCountry } from '@/utils/types'
 
-export function hblMapCountry (country: SwCountry): Country {
+export function hblMapCountry (country: SwCountry): HblCountry {
     return {
         // @ts-ignore
         id: country.id,

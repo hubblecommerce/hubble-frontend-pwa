@@ -1,8 +1,8 @@
 import { PropertyGroup } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { VariantGroup } from '@hubblecommerce/hubble/commons'
+import { HblVariantGroup } from '@/utils/types'
 import { hblMapPropertyOptions } from '#imports'
 
-export function hblMapVariantGroup (swPropertyGroup: PropertyGroup): VariantGroup {
+export function hblMapVariantGroup (swPropertyGroup: PropertyGroup): HblVariantGroup {
     return {
         // @ts-ignore
         id: swPropertyGroup.id,

@@ -19,11 +19,11 @@
 <script setup lang="ts">
 import { onBeforeUnmount, ref, Ref } from 'vue'
 import { useNuxtApp } from '#app'
-import { Media } from '@hubblecommerce/hubble/commons'
+import { HblMedia } from '@/utils/types'
 import placeholderImage from '@/assets/product/placeholder-image.png'
 
 interface ProductDetailMediaGalleryProps {
-    mediaData?: Media[] | Media
+    mediaData?: HblMedia[] | HblMedia
 }
 
 const props = withDefaults(defineProps<ProductDetailMediaGalleryProps>(), {
@@ -37,7 +37,7 @@ const props = withDefaults(defineProps<ProductDetailMediaGalleryProps>(), {
     }
 })
 
-const media: Ref<Media[] | Media> = ref(props.mediaData)
+const media: Ref<HblMedia[] | HblMedia> = ref(props.mediaData)
 
 const { $hblBus } = useNuxtApp()
 $hblBus.$on('productVariantChanged', eventListenerMediaGallery)

@@ -1,6 +1,6 @@
 import { Ref } from 'vue'
 
-export interface IUseDrawer {
+export interface HblIUseDrawer {
     drawerState: Ref<boolean>,
     drawerContext: Ref<string>,
     drawerDirection: Ref<'left' | 'right'>,

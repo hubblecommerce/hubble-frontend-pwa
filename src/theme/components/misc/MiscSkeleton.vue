@@ -9,7 +9,6 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { ProductDetailManufacturerProps } from '../product/ProductDetailManufacturer.vue'
 
 interface Props {
     text?: boolean,

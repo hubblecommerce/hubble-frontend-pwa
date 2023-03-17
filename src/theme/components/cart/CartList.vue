@@ -64,7 +64,7 @@ import { useI18n } from 'vue-i18n'
 import { BanknotesIcon, TrashIcon } from '@heroicons/vue/24/outline'
 import { useNuxtApp } from '#app'
 import { useCart, useCurrency } from '#imports'
-import { LineItem } from '@hubblecommerce/hubble/commons'
+import { HblLineItem } from '@/utils/types'
 
 const { t } = useI18n()
 
@@ -83,7 +83,7 @@ const { removeLineItem } = cartStore
 const { formatPrice } = useCurrency()
 
 const { $hblBus } = useNuxtApp()
-async function onRemoveLineItem (lineItem: LineItem) {
+async function onRemoveLineItem (lineItem: HblLineItem) {
     await removeLineItem(lineItem.id)
 
     if (!error.value) {

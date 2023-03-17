@@ -1,6 +1,6 @@
 import { Ref } from 'vue'
 
-export interface CustomerShippingAddress {
+export interface HblCustomerShippingAddress {
     id: string,
     salutation: string,
     firstName: string,
@@ -13,7 +13,7 @@ export interface CustomerShippingAddress {
     phone?: string,
 }
 
-export interface CustomerBillingAddress {
+export interface HblCustomerBillingAddress {
     id: string,
     salutation: string,
     firstName: string,
@@ -26,22 +26,22 @@ export interface CustomerBillingAddress {
     phone?: string,
 }
 
-export interface RegisterCustomerForm {
+export interface HblRegisterCustomerForm {
     email: string,
     createAccount: boolean,
     dateOfBirth?: string,
     password?: string,
-    shippingAddress: Ref<CustomerShippingAddress>,
-    billingAddress: Ref<CustomerBillingAddress>,
+    shippingAddress: Ref<HblCustomerShippingAddress>,
+    billingAddress: Ref<HblCustomerBillingAddress>,
     billingSameAsShipping: boolean
 }
 
-export interface Customer {
+export interface HblCustomer {
     name: string,
     email: string,
     isGuest: boolean,
-    shippingAddress?: CustomerShippingAddress
-    billingAddress?: CustomerBillingAddress,
+    shippingAddress?: HblCustomerShippingAddress
+    billingAddress?: HblCustomerBillingAddress,
     billingSameAsShipping?: boolean,
     salutationId?: string,
     firstName?: string,

@@ -3,9 +3,9 @@
 </template>
 
 <script setup lang="ts">
-import { Cms } from '@hubblecommerce/hubble/commons'
+import { HblCms } from '@/utils/types'
 
 const props = defineProps<{
-    data: Cms
+    data: HblCms
 }>()
 </script>

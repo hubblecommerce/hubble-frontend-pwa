@@ -11,10 +11,10 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { Slot } from '@hubblecommerce/hubble/commons'
+import { HblSlot } from '@/utils/types'
 
 const props = defineProps<{
-    content: Slot
+    content: HblSlot
 }>()
 
 const mounted = ref(false)

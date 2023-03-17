@@ -1,8 +1,8 @@
 import { SalesChannelContext } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { Session } from '@hubblecommerce/hubble/commons'
+import { HblSession } from '@/utils/types'
 import { hblMapShippingMethod, hblMapPaymentMethod } from '#imports'
 
-export function hblMapSession (swPlatform: SalesChannelContext): Session {
+export function hblMapSession (swPlatform: SalesChannelContext): HblSession {
     return {
         // @ts-ignore
         sessionToken: swPlatform.token,

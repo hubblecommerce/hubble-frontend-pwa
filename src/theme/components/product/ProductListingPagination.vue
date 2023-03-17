@@ -26,14 +26,14 @@ import {
 } from '@heroicons/vue/20/solid'
 import { showError } from '#app'
 import { usePage } from '#imports'
-import { ProductListing, ProductListingFilterCurrent } from '@hubblecommerce/hubble/commons'
+import { HblProductListing, HblProductListingFilterCurrent } from '@/utils/types'
 
 interface ProductListingPaginationProps {
     page: number,
     limit: number,
     sorting: string,
     total: number,
-    currentFilters: ProductListingFilterCurrent,
+    currentFilters: HblProductListingFilterCurrent,
     scrollTopOnChange?: boolean,
 }
 
@@ -46,7 +46,7 @@ const maxPage = computed(() => {
 })
 
 const { getProductListing, updateUri } = usePage()
-const emit = defineEmits<{(event: 'update:listing', data: ProductListing): void}>()
+const emit = defineEmits<{(event: 'update:listing', data: HblProductListing): void}>()
 
 async function selectPage (page: number): Promise<void> {
     try {

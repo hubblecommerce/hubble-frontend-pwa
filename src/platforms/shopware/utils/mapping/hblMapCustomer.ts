@@ -1,9 +1,9 @@
 import { SalesChannelContext } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { Customer } from '@hubblecommerce/hubble/commons'
+import { HblCustomer } from '@/utils/types'
 import { hblMapCustomerAddress } from '#imports'
 
-export function hblMapCustomer (customer: SalesChannelContext['customer']): Customer {
-    const obj: Customer = {
+export function hblMapCustomer (customer: SalesChannelContext['customer']): HblCustomer {
+    const obj: HblCustomer = {
         // @ts-ignore
         salutationId: customer.salutationId,
         // @ts-ignore

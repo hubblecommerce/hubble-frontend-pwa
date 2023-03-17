@@ -1,4 +1,4 @@
 import { InjectionKey } from 'vue'
-import { Product } from '@hubblecommerce/hubble/commons'
+import { HblProduct } from '@/utils/types'
 
-export const detailData = Symbol('detailData') as InjectionKey<Product>
+export const detailData = Symbol('detailData') as InjectionKey<HblProduct>

@@ -1,7 +1,7 @@
 import { Media as SwMedia } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { Media } from '@hubblecommerce/hubble/commons'
+import { HblMedia } from '@/utils/types'
 
-export function hblMapMedia (swMedia: SwMedia): Media | null {
+export function hblMapMedia (swMedia: SwMedia): HblMedia | null {
     if (swMedia === null) {
         return null
     }

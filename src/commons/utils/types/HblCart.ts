@@ -1,7 +1,7 @@
-import { Media } from './Media'
-import { Price } from './Product'
+import { HblMedia } from '@/utils/types/HblMedia'
+import { HblPrice } from '@/utils/types/HblProduct'
 
-export interface Totals {
+export interface HblTotals {
     subTotal: number,
     nettoPrice: number,
     bruttoPrice: number,
@@ -9,21 +9,21 @@ export interface Totals {
     taxRate: number | null,
 }
 
-export interface LineItem {
+export interface HblLineItem {
     id: string,
     itemId: string,
     sku: string | null,
     name: string,
     quantity: number,
     type?: string
-    media?: Media,
-    price?: Price
+    media?: HblMedia,
+    price?: HblPrice
 }
 
-export interface Cart {
+export interface HblCart {
     id: string,
-    lineItems: LineItem[],
-    price: Totals,
+    lineItems: HblLineItem[],
+    price: HblTotals,
     shippingCosts?: number,
     comment?: string
 }

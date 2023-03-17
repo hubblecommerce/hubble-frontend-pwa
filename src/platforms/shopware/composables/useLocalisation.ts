@@ -1,10 +1,10 @@
 import { ref, Ref } from 'vue'
 import { useNuxtApp } from '#app'
-import { IUseLocalisation } from '@hubblecommerce/hubble/commons'
+import { HblIUseLocalisation } from '@/utils/types'
 
 const entityPathInfo = ref(null)
 
-export const useLocalisation = function (): IUseLocalisation {
+export const useLocalisation = function (): HblIUseLocalisation {
     const { vueApp } = useNuxtApp()
 
     const defaultLocale = ref(vueApp.config.globalProperties.$i18n?.fallbackLocale) as Ref<string>

@@ -2,7 +2,7 @@ import { ref, Ref } from 'vue'
 import { LocationQuery } from 'vue-router'
 import { navigateTo, useRuntimeConfig } from '#app'
 import { defineStore, storeToRefs } from 'pinia'
-import { IUseCheckout, PaymentMethod, ShippingMethod } from '@hubblecommerce/hubble/commons'
+import { HblIUseCheckout, HblPaymentMethod, HblShippingMethod } from '@/utils/types'
 import {
     OrderShopware,
     PaymentMethodShopware,
@@ -23,11 +23,11 @@ export const useCheckoutStore = defineStore('use-checkout', () => {
     }
 })
 
-export const useCheckout = function (): IUseCheckout {
+export const useCheckout = function (): HblIUseCheckout {
     const error: Ref = ref(false)
     const loading: Ref<boolean> = ref(false)
-    const shippingMethods: Ref<null | ShippingMethod[]> = ref(null)
-    const paymentMethods: Ref<null | PaymentMethod[]> = ref(null)
+    const shippingMethods: Ref<null | HblShippingMethod[]> = ref(null)
+    const paymentMethods: Ref<null | HblPaymentMethod[]> = ref(null)
     const { deleteCart } = useCart()
     const { showNotification } = useNotification()
     const { currentRoute } = useRouter()
@@ -36,7 +36,7 @@ export const useCheckout = function (): IUseCheckout {
     const checkoutStore = useCheckoutStore()
     const { shippingError, paymentError, orderComment } = storeToRefs(checkoutStore)
 
-    async function getShippingMethods (): Promise<ShippingMethod[] | void> {
+    async function getShippingMethods (): Promise<HblShippingMethod[] | void> {
         loading.value = true
         error.value = false
         shippingError.value = false
@@ -94,7 +94,7 @@ export const useCheckout = function (): IUseCheckout {
         }
     }
 
-    async function getPaymentMethods (): Promise<PaymentMethod[] | void> {
+    async function getPaymentMethods (): Promise<HblPaymentMethod[] | void> {
         loading.value = true
         error.value = false
         paymentError.value = false

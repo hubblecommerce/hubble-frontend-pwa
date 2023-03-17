@@ -1,7 +1,7 @@
-import { Page } from '@hubblecommerce/hubble/commons'
+import { HblPage } from '@/utils/types'
 import { hblMapCategory, hblMapBreadcrumb, hblMapProduct, hblMapSections } from '#imports'
 
-export function hblMapPage (swPage: any): Page {
+export function hblMapPage (swPage: any): HblPage {
     const obj = {
         id: swPage.resourceIdentifier,
         canonicalUrl: swPage.canonicalPathInfo,

@@ -64,7 +64,7 @@ import { ref, onMounted, Ref } from 'vue'
 import { useRouter, navigateTo, useNuxtApp } from '#app'
 import { storeToRefs } from 'pinia'
 import { useCustomer } from '#imports'
-import { Order } from '@hubblecommerce/hubble/commons'
+import { HblOrder } from '@/utils/types'
 
 const loading = ref(true)
 const customerStore = useCustomer()
@@ -72,7 +72,7 @@ const { loading: loadingOrder, error } = storeToRefs(customerStore)
 const { getOrders } = customerStore
 const { currentRoute, replace } = useRouter()
 const orderId = currentRoute?.value?.query?.orderId?.toString()
-const order: Ref<Order | null> = ref(null)
+const order: Ref<HblOrder | null> = ref(null)
 const { $hblBus } = useNuxtApp()
 
 if (!orderId) {
@@ -83,7 +83,7 @@ onMounted(async () => {
     if (orderId != null) {
         try {
             const { data } = await getOrders({ id: orderId })
-            order.value = data as Order
+            order.value = data as HblOrder
             loading.value = loadingOrder.value
 
             // Make sure to emit placeOrder event only once by removing query param orderId

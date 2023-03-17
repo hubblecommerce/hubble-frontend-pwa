@@ -1,6 +1,6 @@
-import { Price } from '@hubblecommerce/hubble/commons'
+import { HblPrice } from '@/utils/types'
 
-export function hblMapPrice (calculatedPrice: any): Price {
+export function hblMapPrice (calculatedPrice: any): HblPrice {
     return {
         regularPrice: calculatedPrice?.unitPrice,
         specialPrice: calculatedPrice?.listPrice?.price,

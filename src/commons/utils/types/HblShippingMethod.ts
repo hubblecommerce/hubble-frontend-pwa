@@ -1,12 +1,12 @@
-import { Media } from './Media'
+import { HblMedia } from '@/utils/types/HblMedia'
 
-export interface ShippingMethod {
+export interface HblShippingMethod {
     id: string,
     position: number,
     name: string,
     deliveryTime?: string,
     description?: string,
-    media?: Media,
+    media?: HblMedia,
     price: number,
     tax?: number
 }

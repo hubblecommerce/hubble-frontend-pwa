@@ -2,13 +2,14 @@ import { Ref, ref } from 'vue'
 import { RouteLocationNormalizedLoaded } from 'vue-router'
 import { useRouter } from '#app'
 import {
-    IUsePage,
-    Page,
-    Product,
-    ProductListing,
-    ProductListingFilterCurrent,
-    useDefaultStructure
-} from '@hubblecommerce/hubble/commons'
+    HblIUsePage,
+    HblPage,
+    HblProduct,
+    HblProductListing,
+    HblProductListingFilterCurrent,
+
+} from '@/utils/types'
+import { useDefaultStructure } from '@hubblecommerce/hubble/commons'
 import { ProductShopware, PwaShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 import { useLocalisation, useRuntimeConfig, hblMapPage, hblMapProductListing, hblMapProduct } from '#imports'
 
@@ -21,15 +22,15 @@ const associations = {
     }
 }
 
-export const usePage = function (): IUsePage {
+export const usePage = function (): HblIUsePage {
     const loading: Ref<boolean> = ref(false)
     const error: Ref = ref(false)
-    const page: Ref<Page | null> = ref(null)
+    const page: Ref<HblPage | null> = ref(null)
     const runtimeConfig = useRuntimeConfig()
     const { currentRoute } = useRouter()
     const { isLocalisedRoute } = useLocalisation()
 
-    const getPage = async (route: RouteLocationNormalizedLoaded): Promise<Page> => {
+    const getPage = async (route: RouteLocationNormalizedLoaded): Promise<HblPage> => {
         try {
             loading.value = true
             error.value = false
@@ -68,7 +69,7 @@ export const usePage = function (): IUsePage {
         }
     }
 
-    async function getProductListing (filters: ProductListingFilterCurrent, limit: number, sort: string, page?: number): Promise<{ productListing: ProductListing, params: Record<string, unknown> }> {
+    async function getProductListing (filters: HblProductListingFilterCurrent, limit: number, sort: string, page?: number): Promise<{ productListing: HblProductListing, params: Record<string, unknown> }> {
         try {
             loading.value = true
             error.value = false
@@ -150,7 +151,7 @@ export const usePage = function (): IUsePage {
         )
     }
 
-    async function getProductVariant (parentId: string, selectedOptions: Record<string, string>): Promise<Product | void> {
+    async function getProductVariant (parentId: string, selectedOptions: Record<string, string>): Promise<HblProduct | void> {
         loading.value = true
         error.value = false
 

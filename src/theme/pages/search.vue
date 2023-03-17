@@ -24,7 +24,7 @@ import { ref, Ref, onMounted } from 'vue'
 import { showError, useRouter } from '#app'
 import { MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
 import { usePage, useSearch, useNotification } from '#imports'
-import { ProductListing as ProductListingType } from '@hubblecommerce/hubble/commons'
+import { HblProductListing as ProductListingType } from '@/utils/types'
 
 const { currentRoute } = useRouter()
 const { updateUri, loading, error, parseParamsFromQuery } = usePage()

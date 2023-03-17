@@ -1,8 +1,8 @@
 import { Salutation as SwSalutation } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { Salutation } from '@hubblecommerce/hubble/commons'
+import { HblSalutation } from '@/utils/types'
 import { hblMapSalutation } from '#imports'
 
-export function hblMapSalutations (salutations: SwSalutation[]): Salutation[] {
+export function hblMapSalutations (salutations: SwSalutation[]): HblSalutation[] {
     return salutations.map((salutation) => {
         return hblMapSalutation(salutation)
     })

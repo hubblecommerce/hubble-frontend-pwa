@@ -1,5 +1,5 @@
-import { Breadcrumb } from '@hubblecommerce/hubble/commons'
+import { HblBreadcrumb } from '@/utils/types'
 
-export function hblMapBreadcrumb (swBreadcrumb: any): Breadcrumb {
+export function hblMapBreadcrumb (swBreadcrumb: any): HblBreadcrumb {
     return swBreadcrumb
 }

@@ -4,7 +4,7 @@ export interface MiniCartItem {
     qty: number
 }
 
-export interface MiniCart {
+export interface HblMiniCart {
     id: string,
     items: MiniCartItem[]
     qty: number

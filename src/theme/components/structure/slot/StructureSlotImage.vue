@@ -3,10 +3,10 @@
 </template>
 
 <script setup lang="ts">
-import { Slot } from '@hubblecommerce/hubble/commons'
+import { HblSlot } from '@/utils/types'
 
 const props = defineProps<{
-    content: Slot
+    content: HblSlot
 }>()
 </script>
 

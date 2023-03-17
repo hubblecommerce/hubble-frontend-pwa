@@ -1,14 +1,14 @@
 import { ref, Ref } from 'vue'
-import { IUseSearch, ProductListing } from '@hubblecommerce/hubble/commons'
+import { HblIUseSearch, HblProductListing } from '@/utils/types'
 import { ProductShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 import { hblMapProductListing } from '#imports'
 
-export function useSearch (): IUseSearch {
+export function useSearch (): HblIUseSearch {
     const loading: Ref<boolean> = ref(false)
     const error: Ref = ref(false)
 
     // @ts-ignore
-    async function search (term: string, params?: any): Promise<{ productListing: ProductListing, params: any }> {
+    async function search (term: string, params?: any): Promise<{ productListing: HblProductListing, params: any }> {
         try {
             loading.value = true
 

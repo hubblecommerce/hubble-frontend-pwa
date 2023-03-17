@@ -1,8 +1,8 @@
 import { PaymentMethod as SwPaymentMethod } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { PaymentMethod } from '@hubblecommerce/hubble/commons'
+import { HblPaymentMethod } from '@/utils/types'
 import { hblMapMedia } from '#imports'
 
-export function hblMapPaymentMethod (swPaymentMethod: SwPaymentMethod): PaymentMethod {
+export function hblMapPaymentMethod (swPaymentMethod: SwPaymentMethod): HblPaymentMethod {
     return {
         // @ts-ignore
         id: swPaymentMethod.id,

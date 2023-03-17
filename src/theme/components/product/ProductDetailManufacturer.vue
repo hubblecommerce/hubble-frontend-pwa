@@ -7,10 +7,10 @@
 <script setup lang="ts">
 import { onBeforeUnmount, ref, Ref } from 'vue'
 import { useNuxtApp } from '#app'
-import { Manufacturer } from '@hubblecommerce/hubble/commons'
+import { HblManufacturer } from '@/utils/types'
 
 interface ProductDetailManufacturerProps {
-    manufacturerData: Manufacturer,
+    manufacturerData: HblManufacturer,
     logoWidth?: number
 }
 
@@ -18,7 +18,7 @@ const props = withDefaults(defineProps<ProductDetailManufacturerProps>(), {
     logoWidth: 80
 })
 
-const manufacturer: Ref<Manufacturer> = ref(props.manufacturerData)
+const manufacturer: Ref<HblManufacturer> = ref(props.manufacturerData)
 
 const { $hblBus } = useNuxtApp()
 $hblBus.$on('productVariantChanged', eventListenerManufacturer)

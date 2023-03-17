@@ -54,10 +54,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useNuxtApp } from '#app'
-import { Product, ProductListing } from '@hubblecommerce/hubble/commons'
+import { HblProduct, HblProductListing } from '@/utils/types'
 
 interface ProductListingProps {
-    data: ProductListing,
+    data: HblProductListing,
     total?: boolean,
     pagination?: boolean,
     sorting?: boolean,
@@ -78,7 +78,7 @@ if (listing.value.products.length > 0) {
     $hblBus.$emit('viewProductListing', { id: 'category', name: 'Category', products: listing.value.products })
 }
 
-function onListingCardClick (product: Product, index: number) {
+function onListingCardClick (product: HblProduct, index: number) {
     $hblBus.$emit('clickProductListingCard', { id: 'category', name: 'Category', product, index })
 }
 </script>

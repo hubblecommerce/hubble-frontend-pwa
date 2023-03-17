@@ -1,4 +1,4 @@
-export interface Salutation {
+export interface HblCountry {
     id: string,
     name: string
 }

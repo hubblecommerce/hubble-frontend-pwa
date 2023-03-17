@@ -1,11 +1,11 @@
 import { ref, Ref } from 'vue'
-import { IUseDrawer } from '@hubblecommerce/hubble/commons'
+import { HblIUseDrawer } from '@/utils/types'
 
 const drawerState: Ref<boolean> = ref(false)
 const drawerContext: Ref<string> = ref('')
 const drawerDirection: Ref<'left' | 'right'> = ref('right')
 
-export function useDrawer (): IUseDrawer {
+export function useDrawer (): HblIUseDrawer {
     const toggleDrawer = function (context: string, direction: 'left' | 'right') {
         if (direction) {
             drawerDirection.value = direction

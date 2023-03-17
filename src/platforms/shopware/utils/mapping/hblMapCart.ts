@@ -1,8 +1,8 @@
 import { Cart as SwCart } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { Cart } from '@hubblecommerce/hubble/commons'
+import { HblCart } from '@/utils/types'
 import { hblMapLineItems, hblMapTotals } from '#imports'
 
-export function hblMapCart (cart: SwCart): Cart {
+export function hblMapCart (cart: SwCart): HblCart {
     return {
         // @ts-ignore
         id: cart.token,

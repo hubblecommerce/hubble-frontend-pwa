@@ -1,8 +1,8 @@
 import { ProductManufacturer } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { Manufacturer } from '@hubblecommerce/hubble/commons'
+import { HblManufacturer } from '@/utils/types'
 import { hblMapMedia } from '#imports'
 
-export function hblMapManufacturer (swManufacturer: ProductManufacturer): Manufacturer {
+export function hblMapManufacturer (swManufacturer: ProductManufacturer): HblManufacturer {
     return {
         // @ts-ignore
         id: swManufacturer.id,

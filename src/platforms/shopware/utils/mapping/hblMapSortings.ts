@@ -1,8 +1,8 @@
 import { ProductListingResult } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { ProductListingSorting } from '@hubblecommerce/hubble/commons'
+import { HblProductListingSorting } from '@/utils/types'
 import { hblMapSorting } from '#imports'
 
-export function hblMapSortings (swSortings: ProductListingResult['availableSortings']): ProductListingSorting[] {
+export function hblMapSortings (swSortings: ProductListingResult['availableSortings']): HblProductListingSorting[] {
     // @ts-ignore
     return swSortings.map((swSorting) => {
         return hblMapSorting(swSorting)

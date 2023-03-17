@@ -1,15 +1,15 @@
 import { ref, Ref } from 'vue'
-import { Navigation, IUseNavigation } from '@hubblecommerce/hubble/commons'
+import { HblNavigation, HblIUseNavigation } from '@/utils/types'
 import { CategoryShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 import { hblMapNavigation } from '#imports'
 
-const navigation: Ref<Navigation> = ref(null)
+const navigation: Ref<HblNavigation> = ref(null)
 
-export const useNavigation = function (): IUseNavigation {
+export const useNavigation = function (): HblIUseNavigation {
     const loading: Ref<boolean> = ref(false)
     const error: Ref = ref(false)
 
-    const getNavigation = async (): Promise<Navigation | void> => {
+    const getNavigation = async (): Promise<HblNavigation | void> => {
         loading.value = true
         error.value = false
 

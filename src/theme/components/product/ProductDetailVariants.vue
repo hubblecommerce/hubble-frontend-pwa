@@ -40,12 +40,12 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useNuxtApp } from '#app'
-import { Product, VariantGroup } from '@hubblecommerce/hubble/commons'
+import { HblProduct, HblVariantGroup } from '@/utils/types'
 import { useNotification, usePage } from '#imports'
 
 const props = defineProps<{
-    variants: VariantGroup[],
-    defaultOptions: Product['defaultOptions'],
+    variants: HblVariantGroup[],
+    defaultOptions: HblProduct['defaultOptions'],
     parentId: string
 }>()
 

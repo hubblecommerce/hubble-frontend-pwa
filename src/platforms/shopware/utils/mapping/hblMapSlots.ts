@@ -1,10 +1,10 @@
 import { CmsSlot } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { Media, ProductListing, Slot } from '@hubblecommerce/hubble/commons'
+import { HblMedia, HblProductListing, HblSlot } from '@/utils/types'
 import { hblMapMedia, hblMapProductListing } from '#imports'
 
-export function hblMapSlots (swSlots: CmsSlot[]): Slot[] {
-    let productListing: ProductListing | null = null
-    let media: Media | null = null
+export function hblMapSlots (swSlots: CmsSlot[]): HblSlot[] {
+    let productListing: HblProductListing | null = null
+    let media: HblMedia | null = null
 
     return swSlots.map((slot: CmsSlot) => {
         if (slot.data?.listing != null) {

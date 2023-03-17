@@ -14,13 +14,13 @@ import {
     swMapCustomerAddress
 } from '#imports'
 import {
-    Customer,
-    CustomerShippingAddress,
-    CustomerBillingAddress,
-    IUseCustomer,
-    RegisterCustomerForm,
-    Order
-} from '@hubblecommerce/hubble/commons'
+    HblCustomer,
+    HblCustomerShippingAddress,
+    HblCustomerBillingAddress,
+    HblIUseCustomer,
+    HblRegisterCustomerForm,
+    HblOrder
+} from '@/utils/types'
 import {
     AddressShopware,
     LoginRegistrationShopware, NewsletterShopware,
@@ -28,15 +28,15 @@ import {
     SystemContextShopware
 } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 
-export const useCustomer = defineStore('use-customer', (): IUseCustomer => {
-    const customer: Ref<Customer | null> = ref(null)
+export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
+    const customer: Ref<HblCustomer | null> = ref(null)
     const loading: Ref<boolean> = ref(false)
     const error: Ref = ref(false)
     const { setSessionToken, getSession } = usePlatform()
     const { platformBaseUrl } = useRuntimeConfig()
     const { showNotification } = useNotification()
 
-    async function getCustomer (): Promise<Customer> {
+    async function getCustomer (): Promise<HblCustomer> {
         loading.value = true
         error.value = false
 
@@ -112,7 +112,7 @@ export const useCustomer = defineStore('use-customer', (): IUseCustomer => {
         navigateTo('/customer/login')
     }
 
-    async function register (formData: RegisterCustomerForm): Promise<Customer | void> {
+    async function register (formData: HblRegisterCustomerForm): Promise<HblCustomer | void> {
         loading.value = true
         error.value = false
 
@@ -169,7 +169,7 @@ export const useCustomer = defineStore('use-customer', (): IUseCustomer => {
         }
     }
 
-    async function updateShippingAddress (shippingAddress: CustomerShippingAddress): Promise<CustomerShippingAddress | void> {
+    async function updateShippingAddress (shippingAddress: HblCustomerShippingAddress): Promise<HblCustomerShippingAddress | void> {
         const mappedAddress = await updateCustomerAddress(shippingAddress)
 
         if (error.value || customer?.value == null || mappedAddress == null) {
@@ -181,7 +181,7 @@ export const useCustomer = defineStore('use-customer', (): IUseCustomer => {
         return mappedAddress
     }
 
-    async function updateBillingAddress (billingAddress: CustomerBillingAddress): Promise<CustomerBillingAddress | void> {
+    async function updateBillingAddress (billingAddress: HblCustomerBillingAddress): Promise<HblCustomerBillingAddress | void> {
         const mappedAddress = await updateCustomerAddress(billingAddress)
 
         if (error.value || customer?.value == null || mappedAddress == null) {
@@ -193,7 +193,7 @@ export const useCustomer = defineStore('use-customer', (): IUseCustomer => {
         return mappedAddress
     }
 
-    async function getCustomerAddresses (): Promise<CustomerBillingAddress[] | CustomerShippingAddress[]> {
+    async function getCustomerAddresses (): Promise<HblCustomerBillingAddress[] | HblCustomerShippingAddress[]> {
         loading.value = true
         error.value = false
 
@@ -212,7 +212,7 @@ export const useCustomer = defineStore('use-customer', (): IUseCustomer => {
         }
     }
 
-    async function addCustomerAddress (address: CustomerBillingAddress | CustomerShippingAddress): Promise<CustomerBillingAddress | CustomerShippingAddress | void> {
+    async function addCustomerAddress (address: HblCustomerBillingAddress | HblCustomerShippingAddress): Promise<HblCustomerBillingAddress | HblCustomerShippingAddress | void> {
         loading.value = true
         error.value = false
 
@@ -231,7 +231,7 @@ export const useCustomer = defineStore('use-customer', (): IUseCustomer => {
         }
     }
 
-    async function updateCustomerAddress (address: CustomerBillingAddress | CustomerShippingAddress): Promise<CustomerBillingAddress | CustomerShippingAddress | void> {
+    async function updateCustomerAddress (address: HblCustomerBillingAddress | HblCustomerShippingAddress): Promise<HblCustomerBillingAddress | HblCustomerShippingAddress | void> {
         loading.value = true
         error.value = false
 
@@ -267,7 +267,7 @@ export const useCustomer = defineStore('use-customer', (): IUseCustomer => {
         }
     }
 
-    async function getOrders (params?: { id?: string, page?: number }): Promise<{ data: Order | Order[], total: number, page: number, limit: number }> {
+    async function getOrders (params?: { id?: string, page?: number }): Promise<{ data: HblOrder | HblOrder[], total: number, page: number, limit: number }> {
         loading.value = true
         error.value = false
 

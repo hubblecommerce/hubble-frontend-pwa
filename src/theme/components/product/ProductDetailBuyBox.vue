@@ -59,11 +59,11 @@
 import { ref, watch, computed, onBeforeUnmount } from 'vue'
 import { useNuxtApp } from '#app'
 import { storeToRefs } from 'pinia'
-import { Product } from '@hubblecommerce/hubble/commons'
+import { HblProduct } from '@/utils/types'
 import { useCart, useNotification, useCurrency } from '#imports'
 
 const props = defineProps<{
-    productData: Product
+    productData: HblProduct
 }>()
 
 const product = ref(props.productData)
@@ -93,7 +93,7 @@ watch(cartError, (value) => {
 const { $hblBus } = useNuxtApp()
 $hblBus.$on('productVariantChanged', eventListenerBuyBox)
 
-function eventListenerBuyBox ({ data }: { data: Product }) {
+function eventListenerBuyBox ({ data }: { data: HblProduct }) {
     // Merge all data but the variants with the product data
     const { variants, ...productData } = data
     product.value = Object.assign(product.value, productData)

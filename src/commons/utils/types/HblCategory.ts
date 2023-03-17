@@ -1,10 +1,10 @@
-import { Media } from './Media'
+import { HblMedia } from '@/utils/types/HblMedia'
 
-export interface Category {
+export interface HblCategory {
     id: string,
     active: boolean,
     name: string,
-    media: Media,
+    media: HblMedia,
     description: string,
     metaTitle: string,
     metaDescription: string,

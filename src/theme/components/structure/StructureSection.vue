@@ -21,20 +21,21 @@
 
 <script setup lang="ts">
 import { computed, Ref } from 'vue'
-import { Block, getStructureBackgroundStyles, Section } from '@hubblecommerce/hubble/commons'
+import { HblBlock, HblSection } from '@/utils/types'
+import { getStructureBackgroundStyles } from '@hubblecommerce/hubble/commons'
 
 const props = defineProps<{
     count?: number
-    content: Section
+    content: HblSection
 }>()
 
 const { backgroundStyles } = getStructureBackgroundStyles(props.content)
 
-const mainBlocks: Ref<Block[]> = computed(() => {
-    return props.content.blocks.filter((block: Block) => block.sectionPosition === 'main')
+const mainBlocks: Ref<HblBlock[]> = computed(() => {
+    return props.content.blocks.filter((block: HblBlock) => block.sectionPosition === 'main')
 })
 
-const sidebarBlocks: Ref<Block[]> = computed(() => {
-    return props.content.blocks.filter((block: Block) => block.sectionPosition === 'sidebar')
+const sidebarBlocks: Ref<HblBlock[]> = computed(() => {
+    return props.content.blocks.filter((block: HblBlock) => block.sectionPosition === 'sidebar')
 })
 </script>

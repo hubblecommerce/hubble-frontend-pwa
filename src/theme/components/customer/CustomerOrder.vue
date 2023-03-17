@@ -102,10 +102,10 @@
 
 <script setup lang="ts">
 import { useCurrency } from '#imports'
-import { Order } from '@hubblecommerce/hubble/commons'
+import { HblOrder } from '@/utils/types'
 
 const props = defineProps<{
-    order: Order
+    order: HblOrder
 }>()
 
 const { formatPrice } = useCurrency()

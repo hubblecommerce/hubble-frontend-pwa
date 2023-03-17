@@ -1,9 +1,9 @@
 import { Product as SwProduct } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 import { PropertyGroup } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { Product } from '@hubblecommerce/hubble/commons'
+import { HblProduct } from '@/utils/types'
 import { hblMapMedia, hblMapManufacturer, hblMapPrice, hblMapProductMedia, hblMapVariantGroups } from '#imports'
 
-export function hblMapProduct (swProduct: SwProduct, swProductConfigurator?: PropertyGroup[]): Product {
+export function hblMapProduct (swProduct: SwProduct, swProductConfigurator?: PropertyGroup[]): HblProduct {
     let firstUrl = null
     if (swProduct?.seoUrls != null) {
         // @ts-ignore

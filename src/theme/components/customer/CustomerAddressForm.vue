@@ -112,11 +112,11 @@
 import { onMounted, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { usePlatform } from '#imports'
-import { CustomerBillingAddress, CustomerShippingAddress } from '@hubblecommerce/hubble/commons'
+import { HblCustomerBillingAddress, HblCustomerShippingAddress } from '@/utils/types'
 
 const props = defineProps<{
     id?: string,
-    modelValue?: CustomerBillingAddress | CustomerShippingAddress,
+    modelValue?: HblCustomerBillingAddress | HblCustomerShippingAddress,
 }>()
 const emit = defineEmits(['update:modelValue'])
 

@@ -130,7 +130,8 @@ import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
 import { useNuxtApp } from '#app'
 import { EyeIcon, EyeSlashIcon, CalendarIcon } from '@heroicons/vue/24/outline'
-import { CustomerBillingAddress, CustomerShippingAddress, useForm } from '@hubblecommerce/hubble/commons'
+import { HblCustomerBillingAddress, HblCustomerShippingAddress } from '@/utils/types'
+import { useForm } from '@hubblecommerce/hubble/commons'
 import { useCustomer } from '#imports'
 
 const { t } = useI18n()
@@ -154,7 +155,7 @@ const dobInput = ref()
 const dateOfBirth = ref('')
 const createAccount = ref(!props.guestForm)
 const billingSameAsShipping = ref(true)
-const shippingAddress: Ref<CustomerShippingAddress> = ref({
+const shippingAddress: Ref<HblCustomerShippingAddress> = ref({
     id: '',
     salutation: '',
     firstName: '',
@@ -165,7 +166,7 @@ const shippingAddress: Ref<CustomerShippingAddress> = ref({
     country: '',
     phone: ''
 })
-const billingAddress: Ref<CustomerBillingAddress> = ref({
+const billingAddress: Ref<HblCustomerBillingAddress> = ref({
     id: '',
     salutation: '',
     firstName: '',

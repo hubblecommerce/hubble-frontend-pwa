@@ -65,7 +65,7 @@ import {
     ChevronRightIcon,
     ChevronDoubleRightIcon
 } from '@heroicons/vue/20/solid'
-import { Order } from '@hubblecommerce/hubble/commons'
+import { HblOrder } from '@/utils/types'
 import { useCustomer, useCurrency } from '#imports'
 
 /*
@@ -75,7 +75,7 @@ const customerStore = useCustomer()
 const { error } = storeToRefs(customerStore)
 const { getOrders } = customerStore
 let orderListing = reactive(await getOrders())
-const orders: Ref<null | Order[]> = ref(orderListing.data as Order[])
+const orders: Ref<null | HblOrder[]> = ref(orderListing.data as HblOrder[])
 
 const { formatPrice } = useCurrency()
 
@@ -86,7 +86,7 @@ const maxPage = computed(() => {
 async function selectPage (page: number): Promise<void> {
     try {
         orderListing = await getOrders({ page })
-        orders.value = orderListing.data as Order[]
+        orders.value = orderListing.data as HblOrder[]
     } catch (e) {
         // @ts-ignore
         showError(e)

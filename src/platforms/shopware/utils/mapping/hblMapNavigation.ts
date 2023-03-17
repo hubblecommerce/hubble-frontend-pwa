@@ -1,10 +1,10 @@
 import { NavigationRouteResponse } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { Navigation } from '@hubblecommerce/hubble/commons'
+import { HblNavigation } from '@/utils/types'
 
-export function hblMapNavigation (swNavigation: NavigationRouteResponse): Navigation {
+export function hblMapNavigation (swNavigation: NavigationRouteResponse): HblNavigation {
     // @ts-ignore
     return swNavigation.map((item) => {
-        let children: Navigation = []
+        let children: HblNavigation = []
         if (item.childCount != null && item.childCount > 0) {
             // @ts-ignore
             children = hblMapNavigation(item.children)

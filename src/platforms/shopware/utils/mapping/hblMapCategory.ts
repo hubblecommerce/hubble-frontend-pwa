@@ -1,8 +1,8 @@
 import { Category as SwCategory } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { Category } from '@hubblecommerce/hubble/commons'
+import { HblCategory } from '@/utils/types'
 import { hblMapMedia } from '#imports'
 
-export function hblMapCategory (swCategory: SwCategory): Category {
+export function hblMapCategory (swCategory: SwCategory): HblCategory {
     return {
         // @ts-ignore
         id: swCategory.id,

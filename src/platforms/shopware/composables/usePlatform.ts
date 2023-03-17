@@ -9,16 +9,16 @@ import {
     hblMapCustomer,
     hblMapCountries
 } from '#imports'
-import { IUsePlatform, Session, Salutation, Country } from '@hubblecommerce/hubble/commons'
+import { HblIUsePlatform, HblSession, HblSalutation, HblCountry } from '@/utils/types'
 import { SystemContextShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 
-export const usePlatform = defineStore('use-platform', (): IUsePlatform => {
-    const session: Ref<Session> = ref({
+export const usePlatform = defineStore('use-platform', (): HblIUsePlatform => {
+    const session: Ref<HblSession> = ref({
         sessionToken: null
     })
 
-    const salutations: Ref<Salutation[] | null> = ref(null)
-    const countries: Ref<Country[] | null> = ref(null)
+    const salutations: Ref<HblSalutation[] | null> = ref(null)
+    const countries: Ref<HblCountry[] | null> = ref(null)
 
     const error: Ref = ref(false)
     const loading: Ref<boolean> = ref(false)
@@ -45,7 +45,7 @@ export const usePlatform = defineStore('use-platform', (): IUsePlatform => {
      * Context also contains customer data
      * Even guests have to register as customer, but has the customer.guest flag set to true
      */
-    async function getSession (): Promise<Session | void> {
+    async function getSession (): Promise<HblSession | void> {
         loading.value = true
         error.value = false
 
@@ -77,7 +77,7 @@ export const usePlatform = defineStore('use-platform', (): IUsePlatform => {
         }
     }
 
-    async function getSalutations (): Promise<Salutation[] | void> {
+    async function getSalutations (): Promise<HblSalutation[] | void> {
         loading.value = true
         error.value = false
 
@@ -99,7 +99,7 @@ export const usePlatform = defineStore('use-platform', (): IUsePlatform => {
         }
     }
 
-    async function getCountries (): Promise<Country[] | void> {
+    async function getCountries (): Promise<HblCountry[] | void> {
         loading.value = true
         error.value = false
 

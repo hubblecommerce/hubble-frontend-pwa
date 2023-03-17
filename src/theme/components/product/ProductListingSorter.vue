@@ -20,19 +20,19 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { showError } from '#app'
-import { ProductListing, ProductListingFilterCurrent } from '@hubblecommerce/hubble/commons'
+import { HblProductListing, HblProductListingFilterCurrent } from '@/utils/types'
 import { usePage } from '#imports'
 
 const props = defineProps<{
     limit: number
     sorting: string,
-    currentFilters: ProductListingFilterCurrent,
+    currentFilters: HblProductListingFilterCurrent,
     availableSorting: string[]
 }>()
 
 const selectedSorting = ref(props.sorting)
 const { getProductListing, updateUri } = usePage()
-const emit = defineEmits<{(event: 'update:listing', data: ProductListing): void}>()
+const emit = defineEmits<{(event: 'update:listing', data: HblProductListing): void}>()
 
 async function setSorting (sorting: string): Promise<void> {
     try {

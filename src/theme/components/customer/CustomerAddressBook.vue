@@ -74,7 +74,8 @@ import { XMarkIcon } from '@heroicons/vue/20/solid'
 import { ref, Ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
-import { CustomerBillingAddress, CustomerShippingAddress, useForm } from '@hubblecommerce/hubble/commons'
+import { HblCustomerBillingAddress, HblCustomerShippingAddress } from '@/utils/types'
+import { useForm } from '@hubblecommerce/hubble/commons'
 import { useCustomer, useNotification } from '#imports'
 
 const { t } = useI18n()
@@ -93,13 +94,13 @@ const {
     setDefaultBilling,
     setDefaultShipping
 } = customerStore
-const addresses: Ref<null | CustomerBillingAddress[] | CustomerShippingAddress[]> = ref(await getCustomerAddresses())
+const addresses: Ref<null | HblCustomerBillingAddress[] | HblCustomerShippingAddress[]> = ref(await getCustomerAddresses())
 
 /*
  * Handle address actions
  */
 const modalState: Ref<boolean> = ref(false)
-const formData: Ref<CustomerBillingAddress | CustomerShippingAddress | Record<string, never>> = ref({})
+const formData: Ref<HblCustomerBillingAddress | HblCustomerShippingAddress | Record<string, never>> = ref({})
 const formAction: Ref<null | 'Add' | 'Edit' | 'Delete'> = ref(null)
 const { validateForm } = useForm()
 const addressBookForm = ref()
@@ -131,7 +132,7 @@ async function onFormSubmit () {
 
     if (isValid) {
         if (formAction.value === 'Edit') {
-            response = await updateCustomerAddress(formData.value as CustomerShippingAddress | CustomerBillingAddress)
+            response = await updateCustomerAddress(formData.value as HblCustomerShippingAddress | HblCustomerBillingAddress)
 
             if (error.value) {
                 showNotification(error.value as string, 'error', true)
@@ -140,7 +141,7 @@ async function onFormSubmit () {
         }
 
         if (formAction.value === 'Add') {
-            response = await addCustomerAddress(formData.value as CustomerShippingAddress | CustomerBillingAddress)
+            response = await addCustomerAddress(formData.value as HblCustomerShippingAddress | HblCustomerBillingAddress)
 
             if (error.value) {
                 showNotification(error.value as string, 'error', true)

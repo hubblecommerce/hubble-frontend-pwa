@@ -1,8 +1,8 @@
 import { LineItem as SwLineItem } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { LineItem } from '@hubblecommerce/hubble/commons'
+import { HblLineItem } from '@/utils/types'
 import { hblMapMedia, hblMapPrice } from '#imports'
 
-export function hblMapLineItem (lineItem: SwLineItem): LineItem {
+export function hblMapLineItem (lineItem: SwLineItem): HblLineItem {
     return {
         // @ts-ignore
         id: lineItem.id,

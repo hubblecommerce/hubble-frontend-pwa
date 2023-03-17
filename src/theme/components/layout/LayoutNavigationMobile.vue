@@ -37,9 +37,9 @@
 
 <script setup lang="ts">
 import { Bars3Icon, ChevronRightIcon } from '@heroicons/vue/20/solid'
-import { Navigation } from '@hubblecommerce/hubble/commons'
+import { HblNavigation } from '@/utils/types'
 
 const props = defineProps<{
-    navigation: Navigation
+    navigation: HblNavigation
 }>()
 </script>

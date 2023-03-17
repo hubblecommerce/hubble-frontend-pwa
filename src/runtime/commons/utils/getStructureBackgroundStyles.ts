@@ -1,7 +1,7 @@
 import { computed, Ref } from 'vue'
-import { Section, Block } from '../interfaces'
+import { HblSection, HblBlock } from '@/utils/types'
 
-export function getStructureBackgroundStyles (content: Section | Block): { backgroundStyles: Ref<string> } {
+export function getStructureBackgroundStyles (content: HblSection | HblBlock): { backgroundStyles: Ref<string> } {
     const backgroundStyles: Ref<string> = computed(() => {
         let styles = ''
 

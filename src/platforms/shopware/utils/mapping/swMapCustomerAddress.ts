@@ -1,7 +1,7 @@
-import { CustomerBillingAddress, CustomerShippingAddress } from '@hubblecommerce/hubble/commons'
+import { HblCustomerBillingAddress, HblCustomerShippingAddress } from '@/utils/types'
 import { CustomerAddress as SwCustomerAddress } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 
-export function swMapCustomerAddress (address: CustomerShippingAddress | CustomerBillingAddress): SwCustomerAddress {
+export function swMapCustomerAddress (address: HblCustomerShippingAddress | HblCustomerBillingAddress): SwCustomerAddress {
     return {
         createdAt: '',
         customerId: '',

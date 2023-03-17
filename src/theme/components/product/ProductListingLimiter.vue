@@ -16,20 +16,20 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { showError } from '#app'
-import { ProductListing, ProductListingFilterCurrent } from '@hubblecommerce/hubble/commons'
+import { HblProductListing, HblProductListingFilterCurrent } from '@/utils/types'
 import { usePage } from '#imports'
 
 const props = defineProps<{
     limit: number,
     sorting: string,
     total: number,
-    currentFilters: ProductListingFilterCurrent
+    currentFilters: HblProductListingFilterCurrent
 }>()
 
 const availableLimits = ref([1, 12, 24, 48, 96]) // Default = 24, values have to match layout of 1, 3 and 4 products per row
 const selectedLimit = ref(props.limit)
 const { getProductListing, updateUri } = usePage()
-const emit = defineEmits<{(event: 'update:listing', data: ProductListing): void}>()
+const emit = defineEmits<{(event: 'update:listing', data: HblProductListing): void}>()
 
 async function setLimit (limit: number): Promise<void> {
     try {

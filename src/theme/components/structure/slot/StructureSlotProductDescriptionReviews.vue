@@ -20,13 +20,14 @@
 
 <script setup lang="ts">
 import { inject, ref } from 'vue'
-import { detailData, Product, Slot } from '@hubblecommerce/hubble/commons'
+import { HblProduct, HblSlot } from '@/utils/types'
+import { detailData } from '@hubblecommerce/hubble/commons'
 
 const props = defineProps<{
-    content: Slot
+    content: HblSlot
 }>()
 
-const product = inject<Product>(detailData)
+const product = inject<HblProduct>(detailData)
 
 const activeTab = ref('tab-1')
 </script>

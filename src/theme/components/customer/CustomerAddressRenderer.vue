@@ -12,10 +12,10 @@
 import { computed, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { usePlatform } from '#imports'
-import { CustomerBillingAddress, CustomerShippingAddress } from '@hubblecommerce/hubble/commons'
+import { HblCustomerBillingAddress, HblCustomerShippingAddress } from '@/utils/types'
 
 const props = defineProps<{
-    address: CustomerBillingAddress | CustomerShippingAddress
+    address: HblCustomerBillingAddress | HblCustomerShippingAddress
 }>()
 
 const platformStore = usePlatform()

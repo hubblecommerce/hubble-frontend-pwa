@@ -4,10 +4,10 @@
 
 <script setup lang="ts">
 import { useHead } from '#app'
-import { Category } from '@hubblecommerce/hubble/commons'
+import { HblCategory } from '@/utils/types'
 
 const props = defineProps<{
-    data: Category
+    data: HblCategory
 }>()
 
 useHead({

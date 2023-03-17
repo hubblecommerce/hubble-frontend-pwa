@@ -41,11 +41,11 @@ import { computed, ref, watch } from 'vue'
 import { useImage } from '@vueuse/core'
 import { navigateTo } from '#app'
 import { storeToRefs } from 'pinia'
-import { Product } from '@hubblecommerce/hubble/commons'
+import { HblProduct } from '@/utils/types'
 import { useCart, useNotification, useCurrency } from '#imports'
 
 const props = defineProps<{
-    data: Product
+    data: HblProduct
 }>()
 
 const { formatPrice } = useCurrency()
