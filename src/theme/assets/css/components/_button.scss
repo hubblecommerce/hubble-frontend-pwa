@@ -1,0 +1,7 @@
+.btn {
+    border-radius: 0;
+
+    &.btn-primary {
+        @apply text-secondary;
+    }
+}
