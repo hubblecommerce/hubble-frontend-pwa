@@ -230,6 +230,13 @@ export default defineNuxtModule<ModuleOptions>({
             app.errorComponent = resolve(join(targetDir, 'components/misc/MiscError.vue'))
         })
 
+        // Performance: Remove dynamic import prefetching
+        nuxt.hook('build:manifest', (manifest) => {
+            for (const key in manifest) {
+                manifest[key].dynamicImports = []
+            }
+        })
+
         /*
          * Theming
          */

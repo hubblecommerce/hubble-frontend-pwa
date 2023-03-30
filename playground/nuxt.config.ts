@@ -11,12 +11,6 @@ export default defineNuxtConfig({
         // https://github.com/unjs/nitro/pull/449
         compressPublicAssets: true
     },
-    components: {
-        // Register all your components globally, which will create async chunks for all your components
-        // and prevent global prefetching
-        global: true,
-        dirs: ['~/components']
-    },
     vite: {
         plugins: [
             eslintPlugin()
