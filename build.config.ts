@@ -1,8 +1,31 @@
 import { defineBuildConfig } from 'unbuild'
+import copy from 'rollup-plugin-copy'
 
 export default defineBuildConfig({
-    rollup: { cjsBridge: true },
+    hooks: {
+        'rollup:options': (ctx, options) => {
+            // @ts-ignore
+            options.plugins.push(
+                copy({
+                    targets: [
+                        {
+                            src: [ './src/theme/', './src/commons/' ],
+                            dest: './dist'
+                        },
+                        {
+                            src: [ './src/platforms/shopware/composables/', './src/platforms/shopware/utils/' ],
+                            dest: './dist/platforms/shopware'
+                        }
+                    ]
+                })
+            )
+        }
+    },
+    rollup: {
+        cjsBridge: true
+    },
     entries: [
+        // Module
         './src/module',
         // Shopware
         {
@@ -17,35 +40,9 @@ export default defineBuildConfig({
             ext: 'js'
         },
         {
-            input: './src/platforms/shopware/composables/',
-            outDir: './dist/platforms/shopware/composables',
-            declaration: false,
-            ext: 'ts'
-        },
-        {
-            input: './src/platforms/shopware/utils/',
-            outDir: './dist/platforms/shopware/utils',
-            declaration: false,
-            ext: 'ts'
-        },
-        {
             builder: 'mkdist',
             input: './src/platforms/shopware/config/',
             outDir: './dist/platforms/shopware/config'
-        },
-        // Theme
-        {
-            input: './src/theme/',
-            outDir: './dist/theme',
-            declaration: false,
-            ext: 'ts'
-        },
-        // Commons
-        {
-            input: './src/commons/',
-            outDir: './dist/commons',
-            declaration: false,
-            ext: 'ts'
         }
     ],
     externals: [
