@@ -6,7 +6,6 @@
 
 <script setup lang="ts">
 import { computed, ref, shallowRef, defineAsyncComponent, resolveComponent, onMounted } from 'vue'
-import { StructureLoading, StructureNoComponent } from '#components'
 import { HblBlock } from '@/utils/types'
 import { hblToUpperCamelCase, hblRegisterIntersectionObserver, hblGetStructureBackgroundStyles } from '@/utils/helper'
 
@@ -48,20 +47,7 @@ onMounted(() => {
 const loadComponent = function () {
     component.value = defineAsyncComponent({
         // the loader function
-        loader: () => import(`./${props.content.slots.length === 1 ? 'slot' : 'block'}/${compName.value}.vue`),
-
-        // A component to use while the async component is loading
-        loadingComponent: StructureLoading,
-
-        // Delay before showing the loading component. Default: 200ms.
-        delay: 200,
-
-        // A component to use if the load fails
-        errorComponent: StructureNoComponent,
-
-        // The error component will be displayed if a timeout is
-        // provided and exceeded. Default: Infinity.
-        timeout: 3000
+        loader: () => import(`./${props.content.slots.length === 1 ? 'slot' : 'block'}/${compName.value}.vue`)
     })
 }
 </script>
