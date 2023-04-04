@@ -1,7 +1,8 @@
 #!/usr/bin/env node
+/* eslint-disable */
 import { fileURLToPath } from 'url'
 import fse from 'fs-extra'
-import { $fetch } from 'ohmyfetch'
+import { $fetch } from 'ofetch'
 import { generate } from 'openapi-typescript-codegen'
 
 class ShopwareClient {
@@ -14,7 +15,7 @@ class ShopwareClient {
     }
 
     async auth () {
-        // eslint-disable-next-line no-useless-catch
+         
         try {
             const response = await this.apiFetch('/api/oauth/token', {
                 method: 'POST',
@@ -36,7 +37,7 @@ class ShopwareClient {
     }
 
     async getClientDefinition () {
-        // eslint-disable-next-line no-useless-catch
+         
         try {
             const spec = await this.apiFetch('/store-api/_info/openapi3.json', {
                 headers: { Authorization: `Bearer ${this.access_token}` }
@@ -103,7 +104,7 @@ const main = async function (args) {
         await client.getClientDefinition()
         await client.openApiGenerate()
     } catch (e) {
-        // eslint-disable-next-line no-console
+         
         console.log(e)
     }
 }

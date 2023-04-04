@@ -1,7 +1,8 @@
 #!/usr/bin/env node
+/* eslint-disable */
 import path from 'path'
 import fse from 'fs-extra'
-import { $fetch } from 'ohmyfetch'
+import { $fetch } from 'ofetch'
 import { projectDir } from './sw-plugins-functions.js'
 
 const languagesDirName = 'locales'

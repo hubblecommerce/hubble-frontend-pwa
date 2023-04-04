@@ -1,10 +1,10 @@
+/* eslint-disable */
 import path from 'path'
 import unzipper from 'unzipper'
-// eslint-disable-next-line import/default
 import fse from 'fs-extra'
 import { config } from 'dotenv'
 import lmify from 'lmify'
-import { $fetch } from 'ohmyfetch'
+import { $fetch } from 'ofetch'
 import { fetch } from 'node-fetch-native'
 
 const playgroundPath = path.resolve(path.join(process.env.INIT_CWD, 'playground'))
@@ -118,7 +118,7 @@ async function dumpBundles (authResponse) {
 
         return [response._data.buildArtifact, response._data.bundleConfig, null]
     } catch (e) {
-        // eslint-disable-next-line no-console
+         
         console.error(e)
     }
 }
