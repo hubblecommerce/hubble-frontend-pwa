@@ -8,9 +8,11 @@
             const module = await import(`../dist/platforms/shopware/bin/${args[1]}.js`)
             module.default(args)
         } else {
-            import(`${args[0]}.js`)
+            const module = await import(`./${args[0]}.js`)
+            module.default(args)
         }
     } catch (e) {
+        console.log(e)
         if (e.code === 'MODULE_NOT_FOUND') {
             // eslint-disable-next-line no-console
             console.log(`Invalid argument: ${args[0]}`)
