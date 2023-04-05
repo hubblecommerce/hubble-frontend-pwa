@@ -87,12 +87,18 @@ async function transformToCsv (obj, path) {
     return arr
 }
 
-function mergeObjectsOfArray (array, key) {
+function mergeObjectsOfArray (array, keys) {
     let output = [];
 
     array.map(function(item) {
         const existing = output.filter(function(v, i) {
-            return v[key] === item[key]
+            let count = 0
+            keys.map((key) => {
+                if (v[key] === item[key]) {
+                    count++
+                }
+            })
+            return count === keys.length;
         })
 
         if (existing.length) {
@@ -131,7 +137,7 @@ const main = async function (args) {
         }
     }
 
-    const mergedArray = mergeObjectsOfArray(array, 'key')
+    const mergedArray = mergeObjectsOfArray(array, ['key', 'path'])
 
     if (mergedArray.length) {
         const parser = new AsyncParser()
