@@ -27,6 +27,9 @@
     "bin": {
         "hubble": "./bin/hubble-cli.js"
     },
+    "overrides": {
+        "vue": "latest"
+    },
     "scripts": {
         "prepack": "nuxt-module-build",
         "dev": "nuxi dev playground",
