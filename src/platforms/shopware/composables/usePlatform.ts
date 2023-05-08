@@ -24,15 +24,15 @@ export const usePlatform = defineStore('use-platform', (): HblIUsePlatform => {
     const loading: Ref<boolean> = ref(false)
 
     const runtimeConfig = useRuntimeConfig()
-    const apiUrl = runtimeConfig.apiBaseUrl
-    const apiAuthToken = runtimeConfig.apiSwAccessKey
+    const apiUrl = runtimeConfig.public.apiBaseUrl
+    const apiAuthToken = runtimeConfig.public.apiSwAccessKey
 
     const platformLanguages = runtimeConfig.public.platformLanguages
 
     function setSessionToken (token: string | null): void {
         session.value.sessionToken = token
 
-        const cookie = useCookie(runtimeConfig.sessionCookie.name, runtimeConfig.sessionCookie.options)
+        const cookie = useCookie(runtimeConfig.public.sessionCookie.name, runtimeConfig.public.sessionCookie.options)
 
         if (cookie.value !== token) {
             cookie.value = token
@@ -50,7 +50,7 @@ export const usePlatform = defineStore('use-platform', (): HblIUsePlatform => {
         error.value = false
 
         try {
-            const { sessionCookie } = useRuntimeConfig()
+            const { sessionCookie } = useRuntimeConfig().public
             const cookie = useCookie(sessionCookie.name)
 
             if (cookie.value === undefined) {

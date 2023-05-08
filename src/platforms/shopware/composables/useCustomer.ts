@@ -33,7 +33,7 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
     const loading: Ref<boolean> = ref(false)
     const error: Ref = ref(false)
     const { setSessionToken, getSession } = usePlatform()
-    const { platformBaseUrl } = useRuntimeConfig()
+    const { platformBaseUrl } = useRuntimeConfig().public
     const { showNotification } = useNotification()
 
     async function getCustomer (): Promise<HblCustomer> {

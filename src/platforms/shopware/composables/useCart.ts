@@ -9,7 +9,7 @@ export const useCart = defineStore('use-cart', (): HblIUseCart => {
     const cart: Ref<HblCart | null> = ref(null)
     const miniCart: Ref<HblMiniCart | null> = ref(null)
 
-    const { cartCookie } = useRuntimeConfig()
+    const { cartCookie } = useRuntimeConfig().public
     const error: Ref = ref(false)
     const loading: Ref<boolean> = ref(false)
     const { setSessionToken } = usePlatform()

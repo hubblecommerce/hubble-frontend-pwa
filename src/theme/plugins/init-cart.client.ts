@@ -3,7 +3,7 @@ import { storeToRefs } from 'pinia'
 import { useCart } from '#imports'
 
 export default defineNuxtPlugin(() => {
-    const { cartCookie } = useRuntimeConfig()
+    const { cartCookie } = useRuntimeConfig().public
     const cookie = useCookie(cartCookie.name)
 
     if (cookie.value === undefined) {
