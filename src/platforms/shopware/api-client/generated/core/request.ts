@@ -19,7 +19,7 @@ import { OpenAPI } from './OpenAPI'
 import { useNuxtApp } from '#app'
 // @ts-ignore
 import { hblGetRequestCookie } from '@/utils/helper'
-import { storeToRefs } from 'pinia'
+import { Pinia, storeToRefs } from 'pinia'
 
 const isDefined = <T>(value: T | null | undefined): value is Exclude<T, null | undefined> => {
     return value !== undefined && value !== null;
@@ -125,7 +125,7 @@ export const cachedRoutes = [
  */
 export const request = <T>(config: OpenAPIConfig, options: ApiRequestOptions): CancelablePromise<T> => {
     const app = useNuxtApp()
-    const platformStore = usePlatform(app.$pinia)
+    const platformStore = usePlatform(app.$pinia as Pinia)
     const { session } = storeToRefs(platformStore)
     const { apiUrl, apiAuthToken, platformLanguages, setSessionToken } = platformStore
 
@@ -175,15 +175,19 @@ export const request = <T>(config: OpenAPIConfig, options: ApiRequestOptions): C
                     body: options.body,
                     headers: headers,
                     onRequest: async (ctx) => {
+                        // @ts-ignore
                         app.$hblBus.$emit('onRequest', { data: ctx })
                     },
                     onRequestError: async (ctx) => {
+                        // @ts-ignore
                         app.$hblBus.$emit('onRequestError', { data: ctx })
                     },
                     onResponse: async (ctx) => {
+                        // @ts-ignore
                         app.$hblBus.$emit('onResponse', { data: ctx })
                     },
                     onResponseError: async (ctx) => {
+                        // @ts-ignore
                         app.$hblBus.$emit('onResponseError', { data: ctx })
                     }
                 }
