@@ -1,5 +1,5 @@
-import { ref, Ref } from 'vue'
-import { navigateTo } from '#app'
+import { ref, Ref, watch } from 'vue'
+import { navigateTo, useCookie } from '#app'
 import { defineStore, storeToRefs } from 'pinia'
 import {
     useCart,
@@ -35,6 +35,23 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
     const { setSessionToken, getSession } = usePlatform()
     const { platformBaseUrl } = useRuntimeConfig().public
     const { showNotification } = useNotification()
+    const runtimeConfig = useRuntimeConfig()
+
+    // Set cookie if user is logged in to differ between session isset (context-token exists) and session
+    // is related to a customer
+    if (process.client) {
+        watch(customer, (newVal) => {
+            const cookie = useCookie(runtimeConfig.public.customerCookie.name, runtimeConfig.public.customerCookie.options)
+
+            if (newVal != null) {
+                if (cookie.value !== '1') {
+                    cookie.value = '1'
+                }
+            } else {
+                cookie.value = null
+            }
+        })
+    }
 
     async function getCustomer (): Promise<HblCustomer> {
         loading.value = true

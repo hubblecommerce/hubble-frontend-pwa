@@ -68,6 +68,8 @@ export interface ModuleOptions {
     pluginsConfigFileName: string,
     sessionCookie: Cookie,
     cartCookie: Cookie,
+    customerCookie: Cookie,
+    setCustomerLoggedInHeader: boolean,
     redirectDefaultLanguage: boolean,
     intlify: Record<string, Record<never, never>>
 }
@@ -105,6 +107,15 @@ export default defineNuxtModule<ModuleOptions>({
                 path: '/'
             }
         },
+        customerCookie: {
+            name: 'hubble-customer',
+            options: {
+                maxAge: 60 * 24,
+                sameSite: 'lax',
+                path: '/'
+            }
+        },
+        setCustomerLoggedInHeader: false,
         redirectDefaultLanguage: false,
         intlify: {}
     },
@@ -218,6 +229,13 @@ export default defineNuxtModule<ModuleOptions>({
             name: options.cartCookie.name,
             options: options.cartCookie.options
         }
+
+        nuxt.options.runtimeConfig.public.customerCookie = {
+            name: options.customerCookie.name,
+            options: options.customerCookie.options
+        }
+
+        nuxt.options.runtimeConfig.public.setCustomerLoggedInHeader = options.setCustomerLoggedInHeader
 
         // Vite only: exclude module from optimizeDeps to prevent vite from optimize #app and #import inside
         // of module
