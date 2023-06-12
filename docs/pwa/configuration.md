@@ -3,7 +3,7 @@
 ## Nuxt.js Configuration
 
 ### Environment / Runtime Variables 
-Environment specific variables are provides via 
+Environment specific variables are provided via 
 [nuxts runtime configuration](https://v3.nuxtjs.org/api/composables/use-runtime-config#useruntimeconfig) based on the 
 dotenv module.
 
