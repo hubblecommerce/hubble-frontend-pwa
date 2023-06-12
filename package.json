@@ -36,7 +36,6 @@
         "dev:build": "nuxi build playground",
         "dev:build:analyze": "nuxi analyze playground",
         "dev:prepare": "rm -rf ./playground/.hubble && nuxt-module-build --stub && nuxi prepare playground && husky install",
-        "postinstall": "npm i pinia -f",
         "test": "nuxi prepare __tests__/module/fixture && vitest",
         "upgrade": "nuxi upgrade --force",
         "coverage": "vitest run --coverage",
