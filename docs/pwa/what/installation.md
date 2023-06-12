@@ -11,6 +11,9 @@ so before moving on, make sure you meet the [requirements](/pwa/what/requirement
 npx nuxi init nuxt-app
 cd nuxt-app
 npm install
+
+# Resolve pinia dependency issue 
+npm i pinia -f
 ```
 
 2. Install the hubble Nuxt module
