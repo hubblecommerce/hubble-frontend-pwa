@@ -39,6 +39,9 @@ so before moving on, make sure you meet the [requirements](/pwa/what/requirement
 npx nuxi init nuxt-app
 cd nuxt-app
 npm install
+
+# Resolve pinia dependency issue 
+npm install pinia -f
 ```
 
 2. Install the hubble Nuxt module
@@ -55,8 +58,18 @@ modules: [
 
 4. Create a .env file in project root and fill credentials 
 ```sh
-API_SW_ACCESS_KEY = ''
-API_BASE_URL      = ''
+APP_BASE_URL            = 'http://localhost:3000'
+
+PLATFORM                = 'shopware'
+PLATFORM_BASE_URL       = ''
+API_BASE_URL            = ''
+API_SW_ACCESS_KEY       = ''
+API_CLIENT_ID           = ''
+API_CLIENT_SECRET       = ''
+
+# Shopware Config
+SW_PAYMENT_FINISH_URL   = 'http://localhost:3000/checkout/success'
+SW_PAYMENT_ERROR_URL    = 'http://localhost:3000/checkout/error'
 ```
 ::: tip
 Read more about where to get the credentials in the [supported e-commerce platforms](/pwa/what/requirements.html#supported-e-commerce-platforms) section.
