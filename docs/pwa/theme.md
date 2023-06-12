@@ -46,57 +46,23 @@ export default {
 
 ```
 
-## SCSS
-If Tailwind and daisyUI is not enough for you because you want to style a component individually or want to use 
-scss variables, [sass](https://github.com/sass/dart-sass) is preinstalled for you. 
+## Custom Styles / PostCSS
+If you want to override a daisyUI component or even write your own component and provide it via a semantic class name,
+you can use the assets/css directory. Start at the tailwind entry point `assets/css/tailwind.css`, where we already
+created a `custom.pcss` file for you in which you can import all your custom written CSS.
 
-### Enable SCSS
-To use it with Nuxt 3 you can simply enhance your vite configuration in your `nuxt.config.ts` like:
-```js
-...
-vite: {
-    css: {
-        preprocessorOptions: {
-            scss: {
-                additionalData: '@import "@/assets/scss";'
-            }
-        }
-    }
-}
-...
+### assets/css/tailwind.css
+```css
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+
+@import './custom.pcss';
+
+@import 'tailwindcss/utilities';
 ```
 
-### Create SCSS files
-Create `assets/scss/_index.scss` file and include some SCSS like variables:
-
-```scss
-// Add your own variables
-$primary: #D00171;
-
-// Add custom styling
-.custom-element {
-  .custom-child {
-    color: $primary;
-  }
-}
-
-// Override daisyUI components
-.btn {
-  @apply rounded-full;
-}
-```
-
-### Usage in .vue components
-You can use all the scss in your components without the need of import them.
-
-::: tip
-Don't forget to set `lang="scss"` to the style tag to make the scss compiler work.
-:::
-
-```vue
-<style lang="scss">
-.some-component-element {
-    color: $primary;
-}
-</style>
+### assets/css/custom.pcss
+```postcss
+/* Custom CSS Files */
+@import './components/myCustomComponent.pcss';
 ```
