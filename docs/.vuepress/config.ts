@@ -9,7 +9,7 @@ export default defineUserConfig({
         lastUpdated: false,
         navbar: [
             { text: 'PWA', link: '/pwa/what/overview' },
-            { text: 'Demo', link: 'https://hubble-next.herokuapp.com/' },
+            { text: 'Demo', link: 'https://hubble-pwa-demo.vercel.app/' },
             { text: 'Website', link: 'https://www.hubblecommerce.io/' },
             { text: 'Github', link: 'https://github.com/hubblecommerce/hubble-frontend-pwa/tree/hubble-next' },
         ],
