@@ -10,11 +10,13 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter, navigateTo } from '#app'
+import { useRouter } from '#app'
+import { useLocalisation } from '#imports'
 const { currentRoute } = useRouter()
 const hash = currentRoute.value.query?.hash
+const { navigateToI18n } = useLocalisation()
 
 if (hash == null || hash === '') {
-    await navigateTo('/customer/login')
+    await navigateToI18n('/customer/login')
 }
 </script>

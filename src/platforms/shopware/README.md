@@ -127,6 +127,18 @@ Following files are related to the translation process:
 hubble sets some default configuration for intlify and vueI18n, to override them, they
 have to be set via hubble module options. 
 
+```js
+export default defineNuxtConfig({
+    hubble: {
+        intlify: { // <= Override intlify module options
+            vueI18n: { // <= Override vueI18n module options
+                ...
+            }
+        }
+    },
+})
+```
+
 #### redirectDefaultLanguage
 If set true, all requests to the localised default route will redirect to the non localised route. 
 Default isset to false.
@@ -136,12 +148,7 @@ e.g.: default locale is 'de'. Requested page: domain.com/de/my-page will redirec
 ```js
 export default defineNuxtConfig({
     hubble: {
-        redirectDefaultLanguage: true,
-        intlify: { // <= Override intlify module options
-            vueI18n: { // <= Override vueI18n module options
-                ...
-            }
-        }
+        redirectDefaultLanguage: true
     },
 })
 ```
@@ -184,6 +191,32 @@ To connect a localised route to a platform language, add a "route" to the object
 IMPORTANT: Make sure you set the languages in the saleschannels settings and created a domain
 which uses the language, otherwise Shopware won't generate the seo urls for the requested language id.
 
+## Usage in Components
+
+To translate a string inside a component, make use of the useI18n composable and a `<i18n>` node to provide translations:
+
+```vue
+<template>
+    {{ t('custom.component.headline') }}
+</template>
+
+<script setup>
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
+</script>
+
+<i18n>
+{
+    "en": {
+        "custom.component.headline": "Title"
+    },
+    "de": {
+        "custom.component.headline": "Überschrift"
+    }
+}
+</i18n>
+```
+
 ## How to Multilanguage 
 1. Add the required language in Admin -> Settings -> Languages
 2. Add the new language to your Sales-Channel in Sales-Channel -> Base Settings -> Languages
@@ -195,3 +228,24 @@ npm run hubble dev:sw sw-languages
 ```
 6. Edit the created `locales/platformLanguages.json` file and assign an available locale to
 a downloaded language by adding a "route" key and the language key as a value. 
+
+## Translation CSV export / import
+
+Sometimes you may want to change many translations at one time or add / remove a language from the translations inside
+the components. So that you don't have to edit them in every of your files, we build a CSV Import / Export.
+
+Add helper scripts to your `package.json`:
+```json
+...
+"scripts": {
+    "i18n:export": "node bin/hubble-cli.js i18n-export",
+    "i18n:import": "node bin/hubble-cli.js i18n-import"
+}
+...
+```
+
+Export / Import:
+```shell
+npm run i18n:export ./i18n.csv
+npm run i18n:import ./i18n.csv
+```

@@ -1,6 +1,6 @@
 import { ref, Ref } from 'vue'
 import { LocationQuery } from 'vue-router'
-import { navigateTo, useRuntimeConfig } from '#app'
+import { useRuntimeConfig } from '#app'
 import { defineStore, storeToRefs } from 'pinia'
 import { HblIUseCheckout, HblPaymentMethod, HblShippingMethod } from '@/utils/types'
 import {
@@ -9,7 +9,14 @@ import {
     PaymentShippingShopware,
     SystemContextShopware
 } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { useNotification, useCart, useRouter, hblMapPaymentMethods, hblMapShippingMethods } from '#imports'
+import {
+    useNotification,
+    useCart,
+    useRouter,
+    hblMapPaymentMethods,
+    hblMapShippingMethods,
+    useLocalisation
+} from '#imports'
 
 export const useCheckoutStore = defineStore('use-checkout', () => {
     const shippingError: Ref = ref(false)
@@ -32,6 +39,7 @@ export const useCheckout = function (): HblIUseCheckout {
     const { showNotification } = useNotification()
     const { currentRoute } = useRouter()
     const config = useRuntimeConfig()
+    const { navigateToI18n } = useLocalisation()
 
     const checkoutStore = useCheckoutStore()
     const { shippingError, paymentError, orderComment } = storeToRefs(checkoutStore)
@@ -214,9 +222,9 @@ export const useCheckout = function (): HblIUseCheckout {
                 window.open(response.redirectUrl, '_self')
             } else {
                 loading.value = false
-                navigateTo(
+                navigateToI18n(
                     {
-                        name: 'checkout-success',
+                        path: '/checkout/success',
                         query: {
                             orderId
                         }
@@ -230,9 +238,9 @@ export const useCheckout = function (): HblIUseCheckout {
             error.value = e
 
             // Redirect to error page
-            navigateTo(
+            navigateToI18n(
                 {
-                    name: 'checkout-error',
+                    path: '/checkout/error',
                     query: {
                         orderId
                     }

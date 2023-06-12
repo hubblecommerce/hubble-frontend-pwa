@@ -63,9 +63,9 @@
 </template>
 
 <script setup lang="ts">
-import { navigateTo, useAsyncData, useRoute } from '#app'
+import { useAsyncData, useRoute } from '#app'
 import { onMounted, ref, Ref } from 'vue'
-import { useCustomer } from '#imports'
+import { useCustomer, useLocalisation } from '#imports'
 import { HblOrder } from '@/utils/types'
 
 /*
@@ -74,9 +74,10 @@ import { HblOrder } from '@/utils/types'
 const { getCustomer, getOrders } = useCustomer()
 const { data, error } = await useAsyncData(() => getCustomer())
 const route = useRoute()
+const { navigateToI18n } = useLocalisation()
 
 if (data.value == null || data.value?.isGuest || error.value != null) {
-    await navigateTo('/customer/login')
+    await navigateToI18n('/customer/login')
 }
 
 const loading = ref(true)

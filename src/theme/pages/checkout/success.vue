@@ -61,9 +61,9 @@
 
 <script setup lang="ts">
 import { ref, onMounted, Ref } from 'vue'
-import { useRouter, navigateTo, useNuxtApp } from '#app'
+import { useRouter, useNuxtApp } from '#app'
 import { storeToRefs } from 'pinia'
-import { useCustomer } from '#imports'
+import { useCustomer, useLocalisation } from '#imports'
 import { HblOrder } from '@/utils/types'
 
 const loading = ref(true)
@@ -74,9 +74,10 @@ const { currentRoute, replace } = useRouter()
 const orderId = currentRoute?.value?.query?.orderId?.toString()
 const order: Ref<HblOrder | null> = ref(null)
 const { $hblBus } = useNuxtApp()
+const { navigateToI18n } = useLocalisation()
 
 if (!orderId) {
-    await navigateTo('/')
+    await navigateToI18n('/')
 }
 
 onMounted(async () => {
@@ -91,7 +92,7 @@ onMounted(async () => {
             $hblBus.$emit('placeOrder', { order: order.value })
         } catch (e) {
             loading.value = false
-            navigateTo('/')
+            navigateToI18n('/')
         }
     }
 })

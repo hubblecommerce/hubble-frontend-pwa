@@ -39,9 +39,8 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { navigateTo } from '#app'
 import { storeToRefs } from 'pinia'
-import { useCustomer, useNotification } from '#imports'
+import { useCustomer, useNotification, useLocalisation } from '#imports'
 import { hblUseForm } from '@/utils/helper'
 
 const props = defineProps<{
@@ -54,6 +53,7 @@ const { error } = storeToRefs(customerStore)
 const { setNewPassword } = customerStore
 const { showNotification } = useNotification()
 const loading = ref(false)
+const { navigateToI18n } = useLocalisation()
 
 const passwordResetForm = ref()
 const password = ref()
@@ -76,7 +76,7 @@ async function onResetPasswordClick () {
 
         showNotification('New Password set', 'success')
 
-        await navigateTo('/customer/login')
+        await navigateToI18n('/customer/login')
     } catch (e) {
         loading.value = false
     }

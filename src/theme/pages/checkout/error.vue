@@ -33,13 +33,14 @@
 
 <script setup lang="ts">
 import { ref, Ref } from 'vue'
-import { useRouter, navigateTo } from '#app'
+import { useRouter } from '#app'
 import { storeToRefs } from 'pinia'
-import { useCheckout, usePlatform } from '#imports'
+import { useCheckout, usePlatform, useLocalisation } from '#imports'
 
 const { currentRoute } = useRouter()
 const orderId = currentRoute?.value?.query?.orderId?.toString()
 const { resetPayment, loading, error, handlePayment } = useCheckout()
+const { navigateToI18n } = useLocalisation()
 
 const paymentMethodId: Ref<string | null> = ref(null)
 if (process.client) {
@@ -60,9 +61,9 @@ async function onSubmit () {
             }
 
             if (typeof payment === 'boolean') {
-                navigateTo(
+                navigateToI18n(
                     {
-                        name: 'checkout-success',
+                        path: '/checkout/success',
                         query: {
                             orderId
                         }

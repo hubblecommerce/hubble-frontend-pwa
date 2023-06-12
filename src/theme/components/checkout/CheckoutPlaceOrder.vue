@@ -4,9 +4,8 @@
 
 <script setup lang="ts">
 import { Ref } from 'vue'
-import { navigateTo } from '#app'
 import { hblUseForm } from '@/utils/helper'
-import { useCheckout, useNotification } from '#imports'
+import { useCheckout, useNotification, useLocalisation } from '#imports'
 
 const props = defineProps<{
     form: Ref
@@ -15,6 +14,7 @@ const props = defineProps<{
 const { validateForm } = hblUseForm()
 const { validateCheckout, placeOrder, handlePayment, error, loading } = useCheckout()
 const { showNotification } = useNotification()
+const { navigateToI18n } = useLocalisation()
 
 async function onSubmit () {
     const isValid = await validateForm(props.form)
@@ -41,9 +41,9 @@ async function onSubmit () {
         }
 
         if (typeof payment === 'boolean' && payment) {
-            navigateTo(
+            navigateToI18n(
                 {
-                    name: 'checkout-success',
+                    path: '/checkout/success',
                     query: {
                         orderId: order
                     }

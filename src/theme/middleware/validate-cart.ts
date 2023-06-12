@@ -1,13 +1,14 @@
 import destr from 'destr'
 import { defineNuxtRouteMiddleware, useNuxtApp, navigateTo } from '#app'
 import { storeToRefs } from 'pinia'
-import { useCart } from '#imports'
+import { useCart, useLocalisation } from '#imports'
 import { hblGetRequestCookie } from '@/utils/helper'
 
-export default defineNuxtRouteMiddleware(() => {
+export default defineNuxtRouteMiddleware((to, from) => {
     const app = useNuxtApp()
     const cartStore = useCart()
     const { miniCart } = storeToRefs(cartStore)
+    const { navigateToI18n } = useLocalisation(to)
 
     if (process.server) {
         const cookie = hblGetRequestCookie(app, app.$config.public.cartCookie.name)
@@ -21,5 +22,5 @@ export default defineNuxtRouteMiddleware(() => {
         return true
     }
 
-    return navigateTo('/cart')
+    return navigateToI18n('/cart')
 })

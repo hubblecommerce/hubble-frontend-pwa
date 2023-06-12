@@ -39,16 +39,16 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { useImage } from '@vueuse/core'
-import { navigateTo } from '#app'
 import { storeToRefs } from 'pinia'
 import { HblProduct } from '@/utils/types'
-import { useCart, useNotification, useCurrency } from '#imports'
+import { useCart, useNotification, useCurrency, useLocalisation } from '#imports'
 
 const props = defineProps<{
     data: HblProduct
 }>()
 
 const { formatPrice } = useCurrency()
+const { navigateToI18n } = useLocalisation()
 
 const hasSpecialPrice = computed(() => {
     return props.data?.price?.specialPrice
@@ -65,7 +65,7 @@ const { addToCart } = cartStore
 
 async function onAddToCart () {
     if (props.data.parentId != null) {
-        await navigateTo(props.data.url)
+        await navigateToI18n(props.data.url)
         return
     }
 

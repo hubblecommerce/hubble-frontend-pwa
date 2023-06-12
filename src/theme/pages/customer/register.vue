@@ -29,16 +29,16 @@
 </template>
 
 <script setup lang="ts">
-import { navigateTo } from '#app'
 import { useI18n } from 'vue-i18n'
-import { usePlatform } from '#imports'
+import { usePlatform, useLocalisation } from '#imports'
 
 const { t } = useI18n()
+const { navigateToI18n } = useLocalisation()
 
 const { getSession } = usePlatform()
 async function afterRegisterSubmit () {
     await getSession()
-    await navigateTo('/customer')
+    await navigateToI18n('/customer')
 }
 </script>
 

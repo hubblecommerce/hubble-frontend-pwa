@@ -4,7 +4,7 @@ import { useLocalisation } from '#imports'
 export default defineNuxtRouteMiddleware((to) => {
     const config = useRuntimeConfig()
 
-    const { isLocalisedRoute, setLocale, defaultLocale } = useLocalisation()
+    const { isLocalisedRoute, setLocale, defaultLocale } = useLocalisation(to)
     const routeLocale = isLocalisedRoute(to.path)
 
     if (routeLocale) {

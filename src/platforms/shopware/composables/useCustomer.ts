@@ -1,5 +1,5 @@
 import { ref, Ref, watch } from 'vue'
-import { navigateTo, useCookie } from '#app'
+import { useCookie } from '#app'
 import { defineStore, storeToRefs } from 'pinia'
 import {
     useCart,
@@ -11,7 +11,8 @@ import {
     hblMapCustomerAddresses,
     hblMapOrder,
     hblMapOrders,
-    swMapCustomerAddress
+    swMapCustomerAddress,
+    useLocalisation
 } from '#imports'
 import {
     HblCustomer,
@@ -36,6 +37,7 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
     const { platformBaseUrl } = useRuntimeConfig().public
     const { showNotification } = useNotification()
     const runtimeConfig = useRuntimeConfig()
+    const { navigateToI18n } = useLocalisation()
 
     // Set cookie if user is logged in to differ between session isset (context-token exists) and session
     // is related to a customer
@@ -126,7 +128,7 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
         const { getCart } = useCart()
         await getCart()
 
-        navigateTo('/customer/login')
+        navigateToI18n('/customer/login')
     }
 
     async function register (formData: HblRegisterCustomerForm): Promise<HblCustomer | void> {
