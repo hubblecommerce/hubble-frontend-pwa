@@ -1,0 +1,26 @@
+From f4574bd810aaafc4751ee4a1f5105eb465343293 Mon Sep 17 00:00:00 2001
+From: Lukas Heinze <heinze@digitalmanufaktur.com>
+Date: Tue, 13 Jun 2023 12:23:39 +0200
+Subject: [PATCH] SW API Client: patch criteria model: added includes
+
+---
+ .../shopware/api-client/generated/models/Criteria.ts          | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/src/platforms/shopware/api-client/generated/models/Criteria.ts b/src/platforms/shopware/api-client/generated/models/Criteria.ts
+index a5f0589a..d9912185 100644
+--- a/src/platforms/shopware/api-client/generated/models/Criteria.ts
++++ b/src/platforms/shopware/api-client/generated/models/Criteria.ts
+@@ -71,5 +71,9 @@ export type Criteria = {
+      * Whether the total for the total number of hits should be determined for the search query. 0 = disabled total count, 1 = calculate exact total amount (slow), 2 = calculate only for next page (fast)
+      */
+     'total-count-mode'?: 0 | 1 | 2;
++    /**
++     * Restricts the output to the defined fields
++     */
++    includes?: any
+ };
+ 
+-- 
+2.37.2
+
