@@ -9,6 +9,7 @@ import type { Media } from './Media';
  * Added since version: 6.0.0.0
  */
 export type CmsBlock = {
+    _uniqueIdentifier: string,
     id?: string;
     position: number;
     type: string;
