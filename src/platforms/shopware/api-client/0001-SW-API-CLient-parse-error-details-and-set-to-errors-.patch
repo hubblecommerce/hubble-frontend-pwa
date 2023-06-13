@@ -8,10 +8,10 @@ Subject: [PATCH] SW API CLient: parse error details and set to errors body
  .../platforms/shopware/api-client/generated/core/ApiResult.ts   | 1 +
  2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/src/runtime/platforms/shopware/api-client/generated/core/ApiError.ts b/src/runtime/platforms/shopware/api-client/generated/core/ApiError.ts
+diff --git a/src/platforms/shopware/api-client/generated/core/ApiError.ts b/src/platforms/shopware/api-client/generated/core/ApiError.ts
 index c3da01fc..d81d1dd5 100644
---- a/src/runtime/platforms/shopware/api-client/generated/core/ApiError.ts
-+++ b/src/runtime/platforms/shopware/api-client/generated/core/ApiError.ts
+--- a/src/platforms/shopware/api-client/generated/core/ApiError.ts
++++ b/src/platforms/shopware/api-client/generated/core/ApiError.ts
 @@ -18,7 +18,7 @@ export class ApiError extends Error {
          this.url = response.url;
          this.statusCode = response.status;
@@ -21,10 +21,10 @@ index c3da01fc..d81d1dd5 100644
          this.request = request;
      }
  }
-diff --git a/src/runtime/platforms/shopware/api-client/generated/core/ApiResult.ts b/src/runtime/platforms/shopware/api-client/generated/core/ApiResult.ts
+diff --git a/src/platforms/shopware/api-client/generated/core/ApiResult.ts b/src/platforms/shopware/api-client/generated/core/ApiResult.ts
 index b095dc77..13b051c1 100644
---- a/src/runtime/platforms/shopware/api-client/generated/core/ApiResult.ts
-+++ b/src/runtime/platforms/shopware/api-client/generated/core/ApiResult.ts
+--- a/src/platforms/shopware/api-client/generated/core/ApiResult.ts
++++ b/src/platforms/shopware/api-client/generated/core/ApiResult.ts
 @@ -2,6 +2,7 @@
  /* tslint:disable */
  /* eslint-disable */
@@ -33,6 +33,6 @@ index b095dc77..13b051c1 100644
      readonly url: string;
      readonly ok: boolean;
      readonly status: number;
--- 
+--
 2.37.2
 

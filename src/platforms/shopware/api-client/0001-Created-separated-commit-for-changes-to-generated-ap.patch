@@ -8,12 +8,12 @@ Subject: [PATCH] Created separated commit for changes to generated api client
  .../shopware/api-client/generated/models/Category.ts      | 4 ++--
  2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/src/runtime/platforms/shopware/api-client/generated/core/ApiError.ts b/src/runtime/platforms/shopware/api-client/generated/core/ApiError.ts
+diff --git a/src/platforms/shopware/api-client/generated/core/ApiError.ts b/src/platforms/shopware/api-client/generated/core/ApiError.ts
 index 99d79299..c3da01fc 100644
---- a/src/runtime/platforms/shopware/api-client/generated/core/ApiError.ts
-+++ b/src/runtime/platforms/shopware/api-client/generated/core/ApiError.ts
+--- a/src/platforms/shopware/api-client/generated/core/ApiError.ts
++++ b/src/platforms/shopware/api-client/generated/core/ApiError.ts
 @@ -6,8 +6,8 @@ import type { ApiResult } from './ApiResult';
- 
+
  export class ApiError extends Error {
      public readonly url: string;
 -    public readonly status: number;
@@ -22,9 +22,9 @@ index 99d79299..c3da01fc 100644
 +    public readonly statusMessage: string;
      public readonly body: any;
      public readonly request: ApiRequestOptions;
- 
+
 @@ -16,8 +16,8 @@ export class ApiError extends Error {
- 
+
          this.name = 'ApiError';
          this.url = response.url;
 -        this.status = response.status;
@@ -34,10 +34,10 @@ index 99d79299..c3da01fc 100644
          this.body = response.body;
          this.request = request;
      }
-diff --git a/src/runtime/platforms/shopware/api-client/generated/models/Category.ts b/src/runtime/platforms/shopware/api-client/generated/models/Category.ts
+diff --git a/src/platforms/shopware/api-client/generated/models/Category.ts b/src/platforms/shopware/api-client/generated/models/Category.ts
 index 87f0428f..7cd10f08 100644
---- a/src/runtime/platforms/shopware/api-client/generated/models/Category.ts
-+++ b/src/runtime/platforms/shopware/api-client/generated/models/Category.ts
+--- a/src/platforms/shopware/api-client/generated/models/Category.ts
++++ b/src/platforms/shopware/api-client/generated/models/Category.ts
 @@ -42,9 +42,9 @@ export type Category = {
      readonly updatedAt?: string;
      translated?: any;
@@ -49,7 +49,7 @@ index 87f0428f..7cd10f08 100644
 -    seoUrls?: SeoUrl;
 +    seoUrls?: Array<SeoUrl>;
  };
- 
--- 
+
+--
 2.33.1
 

@@ -8,10 +8,10 @@ Subject: [PATCH] SW API Client: added missing uniqueIdentifier to CmsBlock
  .../platforms/shopware/api-client/generated/models/CmsBlock.ts   | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/src/runtime/platforms/shopware/api-client/generated/models/CmsBlock.ts b/src/runtime/platforms/shopware/api-client/generated/models/CmsBlock.ts
+diff --git a/src/platforms/shopware/api-client/generated/models/CmsBlock.ts b/src/platforms/shopware/api-client/generated/models/CmsBlock.ts
 index 8702092d..b46aadde 100644
---- a/src/runtime/platforms/shopware/api-client/generated/models/CmsBlock.ts
-+++ b/src/runtime/platforms/shopware/api-client/generated/models/CmsBlock.ts
+--- a/src/platforms/shopware/api-client/generated/models/CmsBlock.ts
++++ b/src/platforms/shopware/api-client/generated/models/CmsBlock.ts
 @@ -9,6 +9,7 @@ import type { Media } from './Media';
   * Added since version: 6.0.0.0
   */
@@ -20,6 +20,6 @@ index 8702092d..b46aadde 100644
      id?: string;
      position: number;
      type: string;
--- 
+--
 2.33.1
 
