@@ -29,7 +29,7 @@
                         :name="variantGroup.id"
                         :value="variantOption.id"
                         class="sr-only radio"
-                        @change="onVariantChange()"
+                        @change="onVariantChange(variantGroup.id, variantOption.id)"
                     >
                 </label>
             </div>
@@ -67,9 +67,9 @@ const { $hblBus } = useNuxtApp()
 const { showNotification } = useNotification()
 const emit = defineEmits<{(e: 'loading', loading: boolean): void }>()
 
-async function onVariantChange () {
+async function onVariantChange (switchedOption: string, switchedGroup: string) {
     emit('loading', true)
-    const variant = await getProductVariant(props.parentId, selectedOptions.value)
+    const variant = await getProductVariant(props.parentId, selectedOptions.value, switchedOption, switchedGroup)
     emit('loading', false)
 
     if (error.value) {

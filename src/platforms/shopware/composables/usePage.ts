@@ -6,11 +6,17 @@ import {
     HblPage,
     HblProduct,
     HblProductListing,
-    HblProductListingFilterCurrent,
-
+    HblProductListingFilterCurrent
 } from '@/utils/types'
 import { hblUseDefaultStructure } from '@/utils/helper'
-import { ProductShopware, PwaShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client'
+import {
+    ProductShopware,
+    PwaShopware,
+    request as __request,
+    OpenAPI,
+    PropertyGroup,
+    Product as swProduct
+} from '@hubblecommerce/hubble/platforms/shopware/api-client'
 import { useLocalisation, useRuntimeConfig, hblMapPage, hblMapProductListing, hblMapProduct } from '#imports'
 
 const associations = {
@@ -113,16 +119,12 @@ export const usePage = function (): HblIUsePage {
             if (navigationId) {
                 response = await ProductShopware.readProductListing(
                     navigationId as string,
-                    'application/json',
-                    'application/json',
                     // TODO Patch api
                     // @ts-ignore
                     requestBody
                 )
             } else {
                 response = await ProductShopware.searchPage(
-                    'application/json',
-                    'application/json',
                     // TODO Patch api
                     // @ts-ignore
                     requestBody
@@ -151,51 +153,57 @@ export const usePage = function (): HblIUsePage {
         )
     }
 
-    async function getProductVariant (parentId: string, selectedOptions: Record<string, string>): Promise<HblProduct | void> {
+    async function getProductVariant (parentId: string, selectedOptions: Record<string, string>, switchedOption: string, switchedGroup: string): Promise<HblProduct | void> {
         loading.value = true
         error.value = false
 
         try {
-            const queries: { type: string, field: string, value: string }[] = []
+            let options: any = []
             Object.keys(selectedOptions).forEach((key) => {
-                queries.push({
-                    type: 'contains',
-                    field: 'optionIds',
-                    value: selectedOptions[key]
-                })
+                options.push(selectedOptions[key])
             })
 
-            const filter = [
-                {
-                    type: 'equals',
-                    field: 'parentId',
-                    value: parentId
-                },
-                {
-                    type: 'multi',
-                    operator: 'and',
-                    queries
-                }
-            ]
+            // Set selected option to end of array, to force shopware to respond with a matching variant
+            // even the selected option is not available
+            options.push(options.splice(options.indexOf(switchedOption), 1)[0]);
 
-            const response = await ProductShopware.readProduct(
-                'application/json',
-                'application/json',
-                {
-                    associations,
-                    // Todo patch api
-                    // @ts-ignore
-                    filter
-                }
-            )
+            const matchingVariant = await ProductShopware.searchProductVariantIds(parentId, {
+                options,
+                switchedGroup
+            })
 
-            if (typeof response?.elements === 'undefined' || response.elements.length !== 1) {
+            // @ts-ignore
+            if (matchingVariant?.variantId == null) {
                 loading.value = false
+                // @ts-ignore
+                error.value = 'No matching variant found'
+                return
+            }
+
+            const response = await __request(OpenAPI, {
+                method: "POST",
+                url: "/product/{productId}",
+                path: {
+                    // @ts-ignore
+                    "productId": matchingVariant?.variantId
+                },
+                body: {
+                    associations: {
+                        ...associations,
+                        crossSellings: {},
+                    }
+                }
+            }) as { product: swProduct, configurator: Array<PropertyGroup> }
+
+            if (response.product == null) {
+                loading.value = false
+                // @ts-ignore
+                error.value = 'No matching variant found'
                 return
             }
 
             loading.value = false
-            return hblMapProduct(response.elements[0])
+            return hblMapProduct(response.product, response.configurator)
         } catch (e) {
             loading.value = false
             error.value = e

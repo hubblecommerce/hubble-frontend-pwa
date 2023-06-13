@@ -12,7 +12,7 @@ export interface HblIUsePage {
     getProductListing (filters: HblProductListingFilterCurrent, limit: number, sort: string, page?: number): Promise<{ productListing: HblProductListing, params: Record<string, unknown> }>,
     // @ts-ignore
     updateUri (params): void,
-    getProductVariant (parentId: string, selectedOptions: Record<string, string>): Promise<HblProduct | void>,
+    getProductVariant (parentId: string, selectedOptions: Record<string, string>, switchedOption: string, switchedGroup: string): Promise<HblProduct | void>,
     // @ts-ignore
     parseParamsFromQuery (route: RouteLocationNormalizedLoaded)
 }

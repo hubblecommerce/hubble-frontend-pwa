@@ -237,8 +237,6 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
 
         try {
             const response = await AddressShopware.createCustomerAddress(
-                'application/json',
-                'application/json',
                 swMapCustomerAddress(address)
             )
 
@@ -257,8 +255,6 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
         try {
             const response = await AddressShopware.updateCustomerAddress(
                 address.id,
-                'application/json',
-                'application/json',
                 swMapCustomerAddress(address)
             )
 

@@ -14,8 +14,6 @@ export function useSearch (): HblIUseSearch {
 
             // @ts-ignore
             const response = await ProductShopware.searchPage(
-                'application/json',
-                'application/json',
                 {
                     search: term,
                     ...params

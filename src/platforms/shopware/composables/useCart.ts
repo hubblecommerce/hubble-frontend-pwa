@@ -80,8 +80,6 @@ export const useCart = defineStore('use-cart', (): HblIUseCart => {
 
     function updateLineItem (lineItem: HblLineItem | MiniCartItem, updatedQty: number) {
         return CartShopware.updateLineItem(
-            'application/json',
-            'application/json',
             {
                 items: [
                     {
@@ -95,8 +93,6 @@ export const useCart = defineStore('use-cart', (): HblIUseCart => {
 
     function addLineItem (itemId: string, qty: number) {
         return CartShopware.addLineItem(
-            'application/json',
-            'application/json',
             {
                 items: [
                     {
@@ -160,8 +156,6 @@ export const useCart = defineStore('use-cart', (): HblIUseCart => {
             }
 
             const response = await CartShopware.addLineItem(
-                'application/json',
-                'application/json',
                 {
                     items: [
                         {

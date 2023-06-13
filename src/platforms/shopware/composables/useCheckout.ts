@@ -52,8 +52,6 @@ export const useCheckout = function (): HblIUseCheckout {
         try {
             const response = await PaymentShippingShopware.readShippingMethod(
                 true,
-                'application/json',
-                'application/json',
                 {
                     associations: {
                         prices: {}
@@ -175,8 +173,6 @@ export const useCheckout = function (): HblIUseCheckout {
 
         try {
             const response = await OrderShopware.createOrder(
-                'application/json',
-                'application/json',
                 {
                     customerComment: orderComment.value
                 }
@@ -258,9 +254,7 @@ export const useCheckout = function (): HblIUseCheckout {
                 {
                     paymentMethodId,
                     orderId
-                },
-                'application/json',
-                'application/json'
+                }
             )
 
             loading.value = false
