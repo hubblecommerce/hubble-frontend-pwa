@@ -3,10 +3,13 @@
 /* eslint-disable */
 
 /**
- * Added since version:
+ * Added since version: 6.4.15.0
  */
-export type BfSupport = {
+export type AppAdministrationSnippet = {
     id?: string;
+    value: string;
+    appId: string;
+    localeId: string;
     readonly createdAt: string;
     readonly updatedAt?: string;
 };

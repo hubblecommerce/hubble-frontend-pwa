@@ -18,6 +18,9 @@ export type SeoUrlJsonApi = (resource & {
     isCanonical?: boolean;
     isModified?: boolean;
     isDeleted?: boolean;
+    /**
+     * Runtime field, cannot be used as part of the criteria.
+     */
     url?: string;
     customFields?: any;
     readonly createdAt: string;

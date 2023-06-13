@@ -32,6 +32,9 @@ export type OrderTransactionCaptureRefundPosition = {
             price?: number;
         };
     };
+    /**
+     * Runtime field, cannot be used as part of the criteria.
+     */
     refundPrice?: number;
     customFields?: any;
     readonly createdAt: string;

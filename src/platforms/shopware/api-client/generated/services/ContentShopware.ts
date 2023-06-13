@@ -20,16 +20,12 @@ export class ContentShopware {
      *
      * The criteria passed with this route also affects the listing, if there is one within the cms page.
      * @param id Identifier of the CMS page to be resolved
-     * @param contentType Content type of the request
-     * @param accept Accepted response content types
      * @param requestBody
      * @returns CmsPage The loaded cms page
      * @throws ApiError
      */
     public static readCms(
         id: string,
-        contentType: string = 'application/json',
-        accept: string = 'application/json',
         requestBody?: ({
             /**
              * Resolves only the given slot identifiers. The identifiers have to be seperated by a `|` character.
@@ -43,10 +39,6 @@ export class ContentShopware {
             path: {
                 'id': id,
             },
-            headers: {
-                'Content-Type': contentType,
-                'Accept': accept,
-            },
             body: requestBody,
             mediaType: 'application/json',
             errors: {
@@ -59,8 +51,6 @@ export class ContentShopware {
      * Submit a contact form message
      * Used for submitting contact forms. Be aware that there can be more required fields, depending on the system settings.
      * @param requestBody
-     * @param contentType Content type of the request
-     * @param accept Accepted response content types
      * @returns any Message sent successful.
      * @throws ApiError
      */
@@ -112,16 +102,10 @@ export class ContentShopware {
              */
             entityName?: string;
         },
-        contentType: string = 'application/json',
-        accept: string = 'application/json',
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/contact-form',
-            headers: {
-                'Content-Type': contentType,
-                'Accept': accept,
-            },
             body: requestBody,
             mediaType: 'application/json',
         });
@@ -135,16 +119,12 @@ export class ContentShopware {
      *
      * The criteria passed with this route also affects the listing, if there is one within the cms page.
      * @param landingPageId Identifier of the landing page.
-     * @param contentType Content type of the request
-     * @param accept Accepted response content types
      * @param requestBody
      * @returns LandingPage The loaded landing page with cms page
      * @throws ApiError
      */
     public static readLandingPage(
         landingPageId: string,
-        contentType: string = 'application/json',
-        accept: string = 'application/json',
         requestBody?: (Criteria & ({
             /**
              * Resolves only the given slot identifiers. The identifiers have to be seperated by a `|` character.
@@ -157,10 +137,6 @@ export class ContentShopware {
             url: '/landing-page/{landingPageId}',
             path: {
                 'landingPageId': landingPageId,
-            },
-            headers: {
-                'Content-Type': contentType,
-                'Accept': accept,
             },
             body: requestBody,
             mediaType: 'application/json',

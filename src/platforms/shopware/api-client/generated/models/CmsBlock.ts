@@ -9,7 +9,6 @@ import type { Media } from './Media';
  * Added since version: 6.0.0.0
  */
 export type CmsBlock = {
-    _uniqueIdentifier: string,
     id?: string;
     position: number;
     type: string;
@@ -23,6 +22,11 @@ export type CmsBlock = {
     backgroundMediaId?: string;
     backgroundMediaMode?: string;
     cssClass?: string;
+    visibility?: {
+        mobile?: boolean;
+        desktop?: boolean;
+        tablet?: boolean;
+    };
     sectionId: string;
     customFields?: any;
     versionId?: string;

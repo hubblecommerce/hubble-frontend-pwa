@@ -30,6 +30,9 @@ export type ProductJsonApi = (resource & {
     readonly available?: boolean;
     isCloseout?: boolean;
     readonly displayGroup?: string;
+    /**
+     * @deprecated
+     */
     mainVariantId?: string;
     manufacturerNumber?: string;
     ean?: string;
@@ -53,6 +56,7 @@ export type ProductJsonApi = (resource & {
     readonly categoryIds?: Array<string>;
     readonly childCount?: number;
     readonly sales?: number;
+    readonly states?: Array<string>;
     metaDescription?: string;
     name: string;
     keywords?: string;
@@ -63,8 +67,14 @@ export type ProductJsonApi = (resource & {
     customFields?: any;
     calculatedPrice?: any;
     calculatedPrices?: Array<any>;
+    /**
+     * Runtime field, cannot be used as part of the criteria.
+     */
     calculatedMaxPurchase?: number;
     calculatedCheapestPrice?: any;
+    /**
+     * Runtime field, cannot be used as part of the criteria.
+     */
     isNew?: boolean;
     readonly createdAt: string;
     readonly updatedAt?: string;

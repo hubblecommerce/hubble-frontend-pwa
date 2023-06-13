@@ -17,7 +17,7 @@ export type OrderAddress = {
     firstName: string;
     lastName: string;
     street: string;
-    zipcode: string;
+    zipcode?: string;
     city: string;
     company?: string;
     department?: string;

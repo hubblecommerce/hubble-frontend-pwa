@@ -10,6 +10,9 @@ export type MediaThumbnail = {
     mediaId: string;
     readonly width: number;
     readonly height: number;
+    /**
+     * Runtime field, cannot be used as part of the criteria.
+     */
     url?: string;
     customFields?: any;
     readonly createdAt: string;

@@ -16,15 +16,11 @@ export class CategoryShopware {
     /**
      * Fetch a list of categories
      * Perform a filtered search for categories.
-     * @param contentType Content type of the request
-     * @param accept Accepted response content types
      * @param requestBody
      * @returns any Entity search result containing categories.
      * @throws ApiError
      */
     public static readCategoryList(
-        contentType: string = 'application/json',
-        accept: string = 'application/json',
         requestBody?: Criteria,
     ): CancelablePromise<({
         elements?: Array<Category>;
@@ -32,10 +28,6 @@ export class CategoryShopware {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/category',
-            headers: {
-                'Content-Type': contentType,
-                'Accept': accept,
-            },
             body: requestBody,
             mediaType: 'application/json',
         });
@@ -44,30 +36,22 @@ export class CategoryShopware {
     /**
      * Fetch a single category
      * This endpoint returns information about the category, as well as a fully resolved (hydrated with mapping values) CMS page, if one is assigned to the category. You can pass slots which should be resolved exclusively.
-     * @param categoryId Identifier of the category to be fetched
+     * @param navigationId Identifier of the category to be fetched
      * @param slots Resolves only the given slot identifiers. The identifiers have to be seperated by a '|' character
-     * @param contentType Content type of the request
-     * @param accept Accepted response content types
      * @param requestBody
      * @returns Category The loaded category with cms page
      * @throws ApiError
      */
     public static readCategory(
-        categoryId: string,
+        navigationId: string,
         slots?: string,
-        contentType: string = 'application/json',
-        accept: string = 'application/json',
         requestBody?: (Criteria & ProductListingCriteria),
     ): CancelablePromise<Category> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/category/{categoryId}',
+            url: '/category/{navigationId}',
             path: {
-                'categoryId': categoryId,
-            },
-            headers: {
-                'Content-Type': contentType,
-                'Accept': accept,
+                'navigationId': navigationId,
             },
             query: {
                 'slots': slots,
@@ -86,18 +70,16 @@ export class CategoryShopware {
      * * main-navigation
      * * service-navigation
      * * footer-navigation
-     * @param requestActiveId Identifier of the active category in the navigation tree (if not used, just set to the same as rootId).
-     * @param requestRootId Identifier of the root category for your desired navigation tree. You can use it to fetch sub-trees of your navigation tree.
+     * @param activeId Identifier of the active category in the navigation tree (if not used, just set to the same as rootId).
+     * @param rootId Identifier of the root category for your desired navigation tree. You can use it to fetch sub-trees of your navigation tree.
      * @param requestBody
      * @param swIncludeSeoUrls Instructs Shopware to try and resolve SEO URLs for the given navigation item
-     * @param contentType Content type of the request
-     * @param accept Accepted response content types
      * @returns NavigationRouteResponse All available navigations
      * @throws ApiError
      */
     public static readNavigation(
-        requestActiveId: string,
-        requestRootId: string,
+        activeId: string,
+        rootId: string,
         requestBody: (Criteria & {
             /**
              * Determines the depth of fetched navigation levels.
@@ -109,20 +91,16 @@ export class CategoryShopware {
             buildTree?: any;
         }),
         swIncludeSeoUrls?: boolean,
-        contentType: string = 'application/json',
-        accept: string = 'application/json',
     ): CancelablePromise<NavigationRouteResponse> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/navigation/{requestActiveId}/{requestRootId}',
+            url: '/navigation/{activeId}/{rootId}',
             path: {
-                'requestActiveId': requestActiveId,
-                'requestRootId': requestRootId,
+                'activeId': activeId,
+                'rootId': rootId,
             },
             headers: {
                 'sw-include-seo-urls': swIncludeSeoUrls,
-                'Content-Type': contentType,
-                'Accept': accept,
             },
             body: requestBody,
             mediaType: 'application/json',

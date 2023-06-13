@@ -16,8 +16,6 @@ export class PaymentShippingShopware {
      *
      * The endpoint internally calls the payment handler of the payment method currently set for the order.
      * @param requestBody
-     * @param contentType Content type of the request
-     * @param accept Accepted response content types
      * @returns any Redirect to external payment provider
      * @throws ApiError
      */
@@ -36,16 +34,10 @@ export class PaymentShippingShopware {
              */
             errorUrl?: string;
         },
-        contentType: string = 'application/json',
-        accept: string = 'application/json',
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/handle-payment',
-            headers: {
-                'Content-Type': contentType,
-                'Accept': accept,
-            },
             body: requestBody,
             mediaType: 'application/json',
         });
@@ -55,16 +47,12 @@ export class PaymentShippingShopware {
      * Fetch shipping methods
      * Perform a filtered search for shipping methods.
      * @param onlyAvailable List only available shipping methods. This filters shipping methods methods which can not be used in the actual context because of their availability rule.
-     * @param contentType Content type of the request
-     * @param accept Accepted response content types
      * @param requestBody
      * @returns any
      * @throws ApiError
      */
     public static readShippingMethod(
         onlyAvailable?: boolean,
-        contentType: string = 'application/json',
-        accept: string = 'application/json',
         requestBody?: Criteria,
     ): CancelablePromise<{
         /**
@@ -80,10 +68,6 @@ export class PaymentShippingShopware {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/shipping-method',
-            headers: {
-                'Content-Type': contentType,
-                'Accept': accept,
-            },
             query: {
                 'onlyAvailable': onlyAvailable,
             },

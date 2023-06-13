@@ -45,6 +45,8 @@ export type Customer = {
     readonly orderTotalAmount?: number;
     customFields?: any;
     readonly tagIds?: Array<string>;
+    createdById?: string;
+    updatedById?: string;
     readonly createdAt: string;
     readonly updatedAt?: string;
     group?: CustomerGroup;

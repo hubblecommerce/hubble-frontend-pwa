@@ -10,7 +10,7 @@ export type Tax = {
     taxRate: number;
     name: string;
     /**
-     * Added since version: 6.4.0.0
+     * Added since version: 6.4.0.0.
      */
     position: number;
     customFields?: any;

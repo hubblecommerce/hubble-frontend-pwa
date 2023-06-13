@@ -17,7 +17,13 @@ export type Media = {
     readonly metaData?: any;
     alt?: string;
     title?: string;
+    /**
+     * Runtime field, cannot be used as part of the criteria.
+     */
     url?: string;
+    /**
+     * Runtime field, cannot be used as part of the criteria.
+     */
     hasFile?: boolean;
     private?: boolean;
     customFields?: any;

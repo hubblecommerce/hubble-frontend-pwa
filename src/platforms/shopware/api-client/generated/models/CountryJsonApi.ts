@@ -39,6 +39,12 @@ export type CountryJsonApi = (resource & {
         currencyId: string;
         amount: number;
     };
+    postalCodeRequired?: boolean;
+    checkPostalCodePattern?: boolean;
+    checkAdvancedPostalCodePattern?: boolean;
+    advancedPostalCodePattern?: string;
+    addressFormat: any;
+    defaultPostalCodePattern?: string;
     readonly createdAt: string;
     readonly updatedAt?: string;
     translated?: any;

@@ -21,6 +21,11 @@ export type CmsSection = {
     backgroundMediaMode?: string;
     cssClass?: string;
     pageId: string;
+    visibility?: {
+        mobile?: boolean;
+        desktop?: boolean;
+        tablet?: boolean;
+    };
     customFields?: any;
     cmsPageVersionId?: string;
     readonly createdAt: string;

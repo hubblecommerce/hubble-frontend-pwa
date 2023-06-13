@@ -17,9 +17,21 @@ export type PaymentMethodJsonApi = (resource & {
     afterOrderEnabled?: boolean;
     customFields?: any;
     mediaId?: string;
+    /**
+     * Runtime field, cannot be used as part of the criteria.
+     */
     readonly synchronous?: boolean;
+    /**
+     * Runtime field, cannot be used as part of the criteria.
+     */
     readonly asynchronous?: boolean;
+    /**
+     * Runtime field, cannot be used as part of the criteria.
+     */
     readonly prepared?: boolean;
+    /**
+     * Runtime field, cannot be used as part of the criteria.
+     */
     readonly refundable?: boolean;
     readonly createdAt: string;
     readonly updatedAt?: string;

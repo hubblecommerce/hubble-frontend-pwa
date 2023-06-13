@@ -15,6 +15,9 @@ export type OrderTransactionCapture = {
     orderTransactionVersionId?: string;
     stateId: string;
     externalReference?: string;
+    /**
+     * Runtime field, cannot be used as part of the criteria.
+     */
     totalAmount?: number;
     amount: {
         unitPrice: number;

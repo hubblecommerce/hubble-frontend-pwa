@@ -15,6 +15,9 @@ export type OrderTransactionCaptureRefund = {
     stateId: string;
     externalReference?: string;
     reason?: string;
+    /**
+     * Runtime field, cannot be used as part of the criteria.
+     */
     totalAmount?: number;
     amount: {
         unitPrice: number;

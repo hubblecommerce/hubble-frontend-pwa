@@ -18,15 +18,11 @@ export class OrderShopware {
      * Creates a new order from the current cart and deletes the cart.
      *
      * If you are using the [prepared payment flow](https://developer.shopware.com/docs/concepts/commerce/checkout-concept/payments#2.1-prepare-payment-optional), this endpoint also receives additional transaction details. The exact name of the parameters depends on the implementation of the corresponding *payment handler*.
-     * @param contentType Content type of the request
-     * @param accept Accepted response content types
      * @param requestBody Contains additional metadata which is stored together with the order. It can also contain payment transaction details.
      * @returns Order Order
      * @throws ApiError
      */
     public static createOrder(
-        contentType: string = 'application/json',
-        accept: string = 'application/json',
         requestBody?: {
             /**
              * Adds a comment from the customer to the order.
@@ -45,10 +41,6 @@ export class OrderShopware {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/checkout/order',
-            headers: {
-                'Content-Type': contentType,
-                'Accept': accept,
-            },
             body: requestBody,
             mediaType: 'application/json',
         });
@@ -58,8 +50,6 @@ export class OrderShopware {
      * Cancel an order
      * Cancels an order. The order state will be set to 'cancelled'.
      * @param requestBody
-     * @param contentType Content type of the request
-     * @param accept Accepted response content types
      * @returns StateMachineState Returns the state of the state machine
      *
      * example: More information about the state machine can be found in the corresponding guide: [Using the state machine](https://developer.shopware.com/docs/guides/plugins/plugins/checkout/order/using-the-state-machine)
@@ -72,16 +62,10 @@ export class OrderShopware {
              */
             orderId?: string;
         },
-        contentType: string = 'application/json',
-        accept: string = 'application/json',
     ): CancelablePromise<StateMachineState> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/order/state/cancel',
-            headers: {
-                'Content-Type': contentType,
-                'Accept': accept,
-            },
             body: requestBody,
             mediaType: 'application/json',
         });
@@ -91,8 +75,6 @@ export class OrderShopware {
      * Fetch a list of orders
      * List orders of a customer.
      * @param requestBody
-     * @param contentType Content type of the request
-     * @param accept Accepted response content types
      * @returns OrderRouteResponse An array of orders and an indicator if the payment of the order can be changed.
      * @throws ApiError
      */
@@ -103,16 +85,10 @@ export class OrderShopware {
              */
             checkPromotion?: boolean;
         }),
-        contentType: string = 'application/json',
-        accept: string = 'application/json',
     ): CancelablePromise<OrderRouteResponse> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/order',
-            headers: {
-                'Content-Type': contentType,
-                'Accept': accept,
-            },
             body: requestBody,
             mediaType: 'application/json',
         });
@@ -122,8 +98,6 @@ export class OrderShopware {
      * Update the payment method of an order
      * Changes the payment method of a specific order. You can use the /order route to find out if the payment method of an order can be changed - take a look at the `paymentChangeable`- array in the response.
      * @param requestBody
-     * @param contentType Content type of the request
-     * @param accept Accepted response content types
      * @returns SuccessResponse Successfully updated the payment method of the order.
      * @throws ApiError
      */
@@ -138,18 +112,34 @@ export class OrderShopware {
              */
             orderId: string;
         },
-        contentType: string = 'application/json',
-        accept: string = 'application/json',
     ): CancelablePromise<SuccessResponse> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/order/payment',
-            headers: {
-                'Content-Type': contentType,
-                'Accept': accept,
-            },
             body: requestBody,
             mediaType: 'application/json',
+        });
+    }
+
+    /**
+     * Download a purchased file
+     * Download a file included in the given order and with the given id. Access must be granted.
+     * @param orderId
+     * @param downloadId
+     * @returns any An arbitrary binary file.
+     * @throws ApiError
+     */
+    public static orderDownloadFile(
+        orderId: string,
+        downloadId: string,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/order/download/{orderId}/{downloadId}',
+            path: {
+                'orderId': orderId,
+                'downloadId': downloadId,
+            },
         });
     }
 

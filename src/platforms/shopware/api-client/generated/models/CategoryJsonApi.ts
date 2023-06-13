@@ -16,7 +16,7 @@ export type CategoryJsonApi = (resource & {
     afterCategoryVersionId?: string;
     mediaId?: string;
     displayNestedProducts: boolean;
-    readonly breadcrumb?: any;
+    readonly breadcrumb?: Array<any>;
     readonly level?: number;
     readonly path?: string;
     readonly childCount?: number;

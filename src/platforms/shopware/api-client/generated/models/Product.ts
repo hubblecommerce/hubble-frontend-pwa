@@ -8,6 +8,7 @@ import type { DeliveryTime } from './DeliveryTime';
 import type { MainCategory } from './MainCategory';
 import type { ProductConfiguratorSetting } from './ProductConfiguratorSetting';
 import type { ProductCrossSelling } from './ProductCrossSelling';
+import type { ProductDownload } from './ProductDownload';
 import type { ProductManufacturer } from './ProductManufacturer';
 import type { ProductMedia } from './ProductMedia';
 import type { ProductReview } from './ProductReview';
@@ -43,6 +44,9 @@ export type Product = {
     readonly available?: boolean;
     isCloseout?: boolean;
     readonly displayGroup?: string;
+    /**
+     * @deprecated
+     */
     mainVariantId?: string;
     manufacturerNumber?: string;
     ean?: string;
@@ -66,6 +70,7 @@ export type Product = {
     readonly categoryIds?: Array<string>;
     readonly childCount?: number;
     readonly sales?: number;
+    readonly states?: Array<string>;
     metaDescription?: string;
     name: string;
     keywords?: string;
@@ -76,12 +81,19 @@ export type Product = {
     customFields?: any;
     calculatedPrice?: any;
     calculatedPrices?: Array<any>;
+    /**
+     * Runtime field, cannot be used as part of the criteria.
+     */
     calculatedMaxPurchase?: number;
     calculatedCheapestPrice?: any;
+    /**
+     * Runtime field, cannot be used as part of the criteria.
+     */
     isNew?: boolean;
     readonly createdAt: string;
     readonly updatedAt?: string;
     translated?: any;
+    downloads?: ProductDownload;
     parent?: Product;
     children?: Product;
     deliveryTime?: DeliveryTime;

@@ -4,6 +4,7 @@
 
 import type { Media } from './Media';
 import type { OrderDeliveryPosition } from './OrderDeliveryPosition';
+import type { OrderLineItemDownload } from './OrderLineItemDownload';
 
 /**
  * Added since version: 6.0.0.0
@@ -27,6 +28,7 @@ export type OrderLineItem = {
     removable?: boolean;
     stackable?: boolean;
     position: number;
+    states: Array<string>;
     priceDefinition?: any;
     unitPrice?: number;
     totalPrice?: number;
@@ -37,6 +39,7 @@ export type OrderLineItem = {
     readonly updatedAt?: string;
     cover?: Media;
     orderDeliveryPositions?: OrderDeliveryPosition;
+    downloads?: OrderLineItemDownload;
     parent?: OrderLineItem;
     children: OrderLineItem;
 };

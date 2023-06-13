@@ -16,7 +16,7 @@ import type { OpenAPIConfig } from './OpenAPI';
 import { usePlatform } from '#imports'
 // @ts-ignore
 import { OpenAPI } from './OpenAPI'
-import { useNuxtApp } from '#app'
+import { useCookie, useNuxtApp } from '#app'
 // @ts-ignore
 import { hblGetRequestCookie } from '@/utils/helper'
 import { Pinia, storeToRefs } from 'pinia'
@@ -143,6 +143,19 @@ export const request = <T>(config: OpenAPIConfig, options: ApiRequestOptions): C
 
     if(session?.value?.sessionToken != null) {
         platformHeaders['sw-context-token'] = session?.value?.sessionToken
+    }
+
+    let customerCookie = null
+    if (process.server) {
+        customerCookie = hblGetRequestCookie(app, app.$config.public.customerCookie.name)
+    }
+
+    if (process.client) {
+        customerCookie = useCookie(app.$config.public.customerCookie.name).value
+    }
+
+    if (customerCookie != null && app.$config.public.setCustomerLoggedInHeader) {
+        platformHeaders['sw-customer'] = '1'
     }
 
     const locale = app.vueApp.config.globalProperties.$i18n?.locale

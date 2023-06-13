@@ -1,6 +1,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { Criteria } from '../models/Criteria';
+
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
@@ -8,11 +10,27 @@ import { request as __request } from '../core/request';
 export class NewsletterShopware {
 
     /**
+     * Fetch newsletter recipients
+     * Perform a filtered search for newsletter recipients.
+     * @param requestBody
+     * @returns any
+     * @throws ApiError
+     */
+    public static readNewsletterRecipient(
+        requestBody?: Criteria,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/account/newsletter-recipient',
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+
+    /**
      * Confirm a newsletter registration
      * You have to use the hash from the link sent out via email to confirm the user registration.
      * @param requestBody
-     * @param contentType Content type of the request
-     * @param accept Accepted response content types
      * @returns any The newsletter confirmation was successful.
      * @throws ApiError
      */
@@ -27,16 +45,10 @@ export class NewsletterShopware {
              */
             em: string;
         },
-        contentType: string = 'application/json',
-        accept: string = 'application/json',
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/newsletter/confirm',
-            headers: {
-                'Content-Type': contentType,
-                'Accept': accept,
-            },
             body: requestBody,
             mediaType: 'application/json',
         });
@@ -53,8 +65,6 @@ export class NewsletterShopware {
      * * `unsubscribe`: The email address will be removed from the newsletter subscriptions.
      * * `confirmSubscribe`: Confirmes the newsletter subscription for the provided email address.
      * @param requestBody
-     * @param contentType Content type of the request
-     * @param accept Accepted response content types
      * @returns any Success
      * @throws ApiError
      */
@@ -109,16 +119,10 @@ export class NewsletterShopware {
              */
             customFields?: string;
         },
-        contentType: string = 'application/json',
-        accept: string = 'application/json',
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/newsletter/subscribe',
-            headers: {
-                'Content-Type': contentType,
-                'Accept': accept,
-            },
             body: requestBody,
             mediaType: 'application/json',
         });
@@ -128,8 +132,6 @@ export class NewsletterShopware {
      * Remove a newsletter subscription
      * Removes a newsletter recipient from the mailing lists.
      * @param requestBody
-     * @param contentType Content type of the request
-     * @param accept Accepted response content types
      * @returns any Unsubscribing was successful.
      * @throws ApiError
      */
@@ -140,16 +142,10 @@ export class NewsletterShopware {
              */
             email: string;
         },
-        contentType: string = 'application/json',
-        accept: string = 'application/json',
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/newsletter/unsubscribe',
-            headers: {
-                'Content-Type': contentType,
-                'Accept': accept,
-            },
             body: requestBody,
             mediaType: 'application/json',
         });

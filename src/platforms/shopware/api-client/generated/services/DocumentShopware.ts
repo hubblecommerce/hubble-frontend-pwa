@@ -13,23 +13,23 @@ export class DocumentShopware {
     /**
      * Download generated document
      * Returns blob file of a generated document to download.
-     * @param contentType Content type of the request
-     * @param accept Accepted response content types
+     * @param documentId
+     * @param deepLinkCode
      * @param requestBody
      * @returns Document Returns the document information and blob to download.
      * @throws ApiError
      */
     public static download(
-        contentType: string = 'application/json',
-        accept: string = 'application/json',
+        documentId: string,
+        deepLinkCode: string,
         requestBody?: Criteria,
     ): CancelablePromise<Document> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/document/download',
-            headers: {
-                'Content-Type': contentType,
-                'Accept': accept,
+            url: '/document/download/{documentId}/{deepLinkCode}',
+            path: {
+                'documentId': documentId,
+                'deepLinkCode': deepLinkCode,
             },
             body: requestBody,
             mediaType: 'application/json',

@@ -3,9 +3,9 @@
 /* eslint-disable */
 
 /**
- * Added since version:
+ * Added since version: 6.4.18.0
  */
-export type BfCategoryMapping = {
+export type FlowTemplate = {
     id?: string;
     readonly createdAt: string;
     readonly updatedAt?: string;

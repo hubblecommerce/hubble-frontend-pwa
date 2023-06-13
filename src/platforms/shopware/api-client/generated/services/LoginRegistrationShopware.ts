@@ -13,37 +13,9 @@ import { request as __request } from '../core/request';
 export class LoginRegistrationShopware {
 
     /**
-     * Fetch registration settings for customer group
-     * @param customerGroupId Customer group id
-     * @param contentType Content type of the request
-     * @param accept Accepted response content types
-     * @returns CustomerGroup Returns the customer group including registration settings.
-     * @throws ApiError
-     */
-    public static getCustomerGroupRegistrationInfo(
-        customerGroupId: string,
-        contentType: string = 'application/json',
-        accept: string = 'application/json',
-    ): CancelablePromise<CustomerGroup> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/customer-group-registration/config/{customerGroupId}',
-            path: {
-                'customerGroupId': customerGroupId,
-            },
-            headers: {
-                'Content-Type': contentType,
-                'Accept': accept,
-            },
-        });
-    }
-
-    /**
      * Log in a customer
      * Logs in customers given their credentials.
      * @param requestBody
-     * @param contentType Content type of the request
-     * @param accept Accepted response content types
      * @returns ContextTokenResponse A successful login returns a context token which is associated with the logged in user. Use that as your `sw-context-token` header for subsequent requests.
      * @throws ApiError
      */
@@ -58,16 +30,10 @@ export class LoginRegistrationShopware {
              */
             password: string;
         },
-        contentType: string = 'application/json',
-        accept: string = 'application/json',
     ): CancelablePromise<ContextTokenResponse> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/account/login',
-            headers: {
-                'Content-Type': contentType,
-                'Accept': accept,
-            },
             body: requestBody,
             mediaType: 'application/json',
             errors: {
@@ -79,22 +45,13 @@ export class LoginRegistrationShopware {
     /**
      * Log out a customer
      * Logs out a customer.
-     * @param contentType Content type of the request
-     * @param accept Accepted response content types
      * @returns ContextTokenResponse A successful logout returns a context token for the anonymous user. Use that as your `sw-context-token` header for subsequent requests.
      * @throws ApiError
      */
-    public static logoutCustomer(
-        contentType: string = 'application/json',
-        accept: string = 'application/json',
-    ): CancelablePromise<ContextTokenResponse> {
+    public static logoutCustomer(): CancelablePromise<ContextTokenResponse> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/account/logout',
-            headers: {
-                'Content-Type': contentType,
-                'Accept': accept,
-            },
             errors: {
                 403: `Forbidden`,
             },
@@ -107,8 +64,6 @@ export class LoginRegistrationShopware {
      *
      * Learn more about double opt-in registration in our guide "Register a customer".
      * @param requestBody
-     * @param contentType Content type of the request
-     * @param accept Accepted response content types
      * @returns any Returns the logged in customer. The customer is automatically logged in with the `sw-context-token` header provided, which can be reused for subsequent requests.
      * @throws ApiError
      */
@@ -123,16 +78,10 @@ export class LoginRegistrationShopware {
              */
             em: string;
         },
-        contentType: string = 'application/json',
-        accept: string = 'application/json',
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/account/register-confirm',
-            headers: {
-                'Content-Type': contentType,
-                'Accept': accept,
-            },
             body: requestBody,
             mediaType: 'application/json',
             errors: {
@@ -146,8 +95,6 @@ export class LoginRegistrationShopware {
      * Register a customer
      * Registers a customer. Used both for normal customers and guest customers.See the Guide "Register a customer" for more information on customer registration.
      * @param requestBody
-     * @param contentType Content type of the request
-     * @param accept Accepted response content types
      * @returns Customer Success
      * @throws ApiError
      */
@@ -216,18 +163,30 @@ export class LoginRegistrationShopware {
              */
             campaignCode?: string;
         },
-        contentType: string = 'application/json',
-        accept: string = 'application/json',
     ): CancelablePromise<Customer> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/account/register',
-            headers: {
-                'Content-Type': contentType,
-                'Accept': accept,
-            },
             body: requestBody,
             mediaType: 'application/json',
+        });
+    }
+
+    /**
+     * Fetch registration settings for customer group
+     * @param customerGroupId Customer group id
+     * @returns CustomerGroup Returns the customer group including registration settings.
+     * @throws ApiError
+     */
+    public static getCustomerGroupRegistrationInfo(
+        customerGroupId: string,
+    ): CancelablePromise<CustomerGroup> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/customer-group-registration/config/{customerGroupId}',
+            path: {
+                'customerGroupId': customerGroupId,
+            },
         });
     }
 

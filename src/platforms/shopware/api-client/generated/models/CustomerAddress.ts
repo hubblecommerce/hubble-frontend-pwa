@@ -17,7 +17,7 @@ export type CustomerAddress = {
     salutationId?: string;
     firstName: string;
     lastName: string;
-    zipcode: string;
+    zipcode?: string;
     city: string;
     company?: string;
     street: string;

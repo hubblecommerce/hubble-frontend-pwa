@@ -18,136 +18,15 @@ import { request as __request } from '../core/request';
 export class SystemContextShopware {
 
     /**
-     * Fetch countries
-     * Perform a filtered search for countries
-     * @param contentType Content type of the request
-     * @param accept Accepted response content types
-     * @param requestBody
-     * @returns any Entity search result containing countries.
-     * @throws ApiError
-     */
-    public static readCountry(
-        contentType: string = 'application/json',
-        accept: string = 'application/json',
-        requestBody?: Criteria,
-    ): CancelablePromise<({
-        elements?: Array<Country>;
-    } & EntitySearchResult)> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/country',
-            headers: {
-                'Content-Type': contentType,
-                'Accept': accept,
-            },
-            body: requestBody,
-            mediaType: 'application/json',
-        });
-    }
-
-    /**
-     * Fetch the states of a country
-     * Perform a filtered search the states for a country
-     * @param contentType Content type of the request
-     * @param accept Accepted response content types
-     * @param requestBody
-     * @returns any Entity search result containing countries.
-     * @throws ApiError
-     */
-    public static readCountryState(
-        contentType: string = 'application/json',
-        accept: string = 'application/json',
-        requestBody?: Criteria,
-    ): CancelablePromise<({
-        elements?: Array<CountryState>;
-    } & EntitySearchResult)> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/country-state',
-            headers: {
-                'Content-Type': contentType,
-                'Accept': accept,
-            },
-            body: requestBody,
-            mediaType: 'application/json',
-        });
-    }
-
-    /**
-     * Fetch currencies
-     * Perform a filtered search for currencies.
-     * @param contentType Content type of the request
-     * @param accept Accepted response content types
-     * @param requestBody
-     * @returns any Entity search result containing currencies.
-     * @throws ApiError
-     */
-    public static readCurrency(
-        contentType: string = 'application/json',
-        accept: string = 'application/json',
-        requestBody?: Criteria,
-    ): CancelablePromise<({
-        elements?: Array<Currency>;
-    } & EntitySearchResult)> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/currency',
-            headers: {
-                'Content-Type': contentType,
-                'Accept': accept,
-            },
-            body: requestBody,
-            mediaType: 'application/json',
-        });
-    }
-
-    /**
-     * Fetch languages
-     * Perform a filtered search for languages.
-     * @param contentType Content type of the request
-     * @param accept Accepted response content types
-     * @param requestBody
-     * @returns any Entity search result containing languages.
-     * @throws ApiError
-     */
-    public static readLanguages(
-        contentType: string = 'application/json',
-        accept: string = 'application/json',
-        requestBody?: Criteria,
-    ): CancelablePromise<({
-        elements?: Array<Language>;
-    } & EntitySearchResult)> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/language',
-            headers: {
-                'Content-Type': contentType,
-                'Accept': accept,
-            },
-            body: requestBody,
-            mediaType: 'application/json',
-        });
-    }
-
-    /**
      * Fetch the current context
      * Fetches the current context. This includes for example the `customerGroup`, `currency`, `taxRules` and many more.
-     * @param contentType Content type of the request
-     * @param accept Accepted response content types
      * @returns SalesChannelContext Returns the current context.
      * @throws ApiError
      */
-    public static readContext(
-        contentType: string = 'application/json',
-        accept: string = 'application/json',
-    ): CancelablePromise<SalesChannelContext> {
+    public static readContext(): CancelablePromise<SalesChannelContext> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/context',
-            headers: {
-                'Content-Type': contentType,
-                'Accept': accept,
-            },
         });
     }
 
@@ -155,8 +34,6 @@ export class SystemContextShopware {
      * Modify the current context
      * Used for switching the context. A typical example would be changing the language or changing the currency.
      * @param requestBody
-     * @param contentType Content type of the request
-     * @param accept Accepted response content types
      * @returns ContextTokenResponse Returns the context token. Use that as your `sw-context-token` header for subsequent requests. Redirect if getRedirectUrl is set.
      * @throws ApiError
      */
@@ -195,16 +72,95 @@ export class SystemContextShopware {
              */
             countryStateId?: string;
         },
-        contentType: string = 'application/json',
-        accept: string = 'application/json',
     ): CancelablePromise<ContextTokenResponse> {
         return __request(OpenAPI, {
             method: 'PATCH',
             url: '/context',
-            headers: {
-                'Content-Type': contentType,
-                'Accept': accept,
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+
+    /**
+     * Fetch the states of a country
+     * Perform a filtered search the states for a country
+     * @param countryId
+     * @param requestBody
+     * @returns any Entity search result containing countries.
+     * @throws ApiError
+     */
+    public static readCountryState(
+        countryId: string,
+        requestBody?: Criteria,
+    ): CancelablePromise<({
+        elements?: Array<CountryState>;
+    } & EntitySearchResult)> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/country-state/{countryId}',
+            path: {
+                'countryId': countryId,
             },
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+
+    /**
+     * Fetch countries
+     * Perform a filtered search for countries
+     * @param requestBody
+     * @returns any Entity search result containing countries.
+     * @throws ApiError
+     */
+    public static readCountry(
+        requestBody?: Criteria,
+    ): CancelablePromise<({
+        elements?: Array<Country>;
+    } & EntitySearchResult)> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/country',
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+
+    /**
+     * Fetch currencies
+     * Perform a filtered search for currencies.
+     * @param requestBody
+     * @returns any Entity search result containing currencies.
+     * @throws ApiError
+     */
+    public static readCurrency(
+        requestBody?: Criteria,
+    ): CancelablePromise<({
+        elements?: Array<Currency>;
+    } & EntitySearchResult)> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/currency',
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+
+    /**
+     * Fetch languages
+     * Perform a filtered search for languages.
+     * @param requestBody
+     * @returns any Entity search result containing languages.
+     * @throws ApiError
+     */
+    public static readLanguages(
+        requestBody?: Criteria,
+    ): CancelablePromise<({
+        elements?: Array<Language>;
+    } & EntitySearchResult)> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/language',
             body: requestBody,
             mediaType: 'application/json',
         });
@@ -213,15 +169,11 @@ export class SystemContextShopware {
     /**
      * Fetch salutations
      * Perform a filtered search for salutations.
-     * @param contentType Content type of the request
-     * @param accept Accepted response content types
      * @param requestBody
      * @returns any Entity search result containing salutations.
      * @throws ApiError
      */
     public static readSalutation(
-        contentType: string = 'application/json',
-        accept: string = 'application/json',
         requestBody?: Criteria,
     ): CancelablePromise<({
         elements?: Array<Salutation>;
@@ -229,10 +181,6 @@ export class SystemContextShopware {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/salutation',
-            headers: {
-                'Content-Type': contentType,
-                'Accept': accept,
-            },
             body: requestBody,
             mediaType: 'application/json',
         });
