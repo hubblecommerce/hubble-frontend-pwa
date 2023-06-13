@@ -13,9 +13,9 @@ To generate / update the client:
 1. Create a Shopware Integration (required only once per setup) https://docs.shopware.com/en/shopware-6-en/settings/system/integrationen
 2. Set credentials as cli env variables
 ```shell
-export BASEURL=http://localhost
-export CLIENT_ID=your-shopware-client-id
-export CLIENT_SECRET=your-shopware-client-secret
+export PLATFORM_BASE_URL=http://localhost
+export API_CLIENT_ID=your-shopware-client-id
+export API_CLIENT_SECRET=your-shopware-client-secret
 ```
 3. Run helper cli script
 ```shell
