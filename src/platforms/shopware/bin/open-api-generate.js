@@ -4,18 +4,29 @@ import { fileURLToPath } from 'url'
 import fse from 'fs-extra'
 import { $fetch } from 'ofetch'
 import { generate } from 'openapi-typescript-codegen'
+import { config } from 'dotenv'
+import path from 'path'
+
+const playgroundPath = path.resolve(path.join(process.env.INIT_CWD, 'playground'))
+const playgroundExists = await fse.pathExists(playgroundPath)
+
+if (playgroundExists) {
+    config({ path: `${playgroundPath}/.env` })
+} else {
+    config()
+}
 
 class ShopwareClient {
     constructor (options) {
         this.baseURL = options.baseURL
         this.client_id = options.client_id
         this.client_secret = options.client_secret
+        this.access_key = options.access_key
         this.apiFetch = $fetch.create({ baseURL: this.baseURL })
         this.accessToken = null
     }
 
     async auth () {
-         
         try {
             const response = await this.apiFetch('/api/oauth/token', {
                 method: 'POST',
@@ -37,10 +48,12 @@ class ShopwareClient {
     }
 
     async getClientDefinition () {
-         
         try {
             const spec = await this.apiFetch('/store-api/_info/openapi3.json', {
-                headers: { Authorization: `Bearer ${this.access_token}` }
+                headers: {
+                    Authorization: `Bearer ${this.access_token}`,
+                    'sw-access-key': this.access_key
+                }
             })
 
             /*
@@ -95,16 +108,16 @@ const main = async function (args) {
     try {
         // TODO: read params from .env file of playground
         const client = new ShopwareClient({
-            baseURL: args[2],
-            client_id: args[3],
-            client_secret: args[4]
+            baseURL: process.env.PLATFORM_BASE_URL,
+            client_id: process.env.API_CLIENT_ID,
+            client_secret: process.env.API_CLIENT_SECRET,
+            access_key: process.env.API_SW_ACCESS_KEY
         })
 
         await client.auth()
         await client.getClientDefinition()
         await client.openApiGenerate()
     } catch (e) {
-         
         console.log(e)
     }
 }
