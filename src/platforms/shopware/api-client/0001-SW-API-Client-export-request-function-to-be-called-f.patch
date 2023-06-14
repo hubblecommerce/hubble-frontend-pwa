@@ -1,0 +1,25 @@
+From 4ac07e0de143b53ba6004d2c2350839a3d72ed87 Mon Sep 17 00:00:00 2001
+From: Lukas Heinze <heinze@digitalmanufaktur.com>
+Date: Thu, 15 Sep 2022 15:18:03 +0200
+Subject: [PATCH] SW API Client: export request function to be called from
+ outside the client
+
+---
+ src/platforms/shopware/api-client/generated/index.ts | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/platforms/shopware/api-client/generated/index.ts b/src/platforms/shopware/api-client/generated/index.ts
+index 7d42a8a6..8f5f3f69 100644
+--- a/src/platforms/shopware/api-client/generated/index.ts
++++ b/src/platforms/shopware/api-client/generated/index.ts
+@@ -5,6 +5,7 @@ export { ApiError } from './core/ApiError';
+ export { CancelablePromise, CancelError } from './core/CancelablePromise';
+ export { OpenAPI } from './core/OpenAPI';
+ export type { OpenAPIConfig } from './core/OpenAPI';
++export { request } from './core/request';
+ 
+ export type { AccountNewsletterRecipientResult } from './models/AccountNewsletterRecipientResult';
+ export type { AclRole } from './models/AclRole';
+-- 
+2.37.2
+

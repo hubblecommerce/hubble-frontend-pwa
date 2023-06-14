@@ -1,0 +1,1 @@
+# Shopware bin helper scripts

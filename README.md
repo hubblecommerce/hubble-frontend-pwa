@@ -3,7 +3,7 @@
 <img src="https://docs.hubblecommerce.io/assets/images/hubblelogo.svg" style="height:50px" />
 
 # Headless E-Commerce Interface
-> Progressive Web App for your online store based on [Nuxt.js](https://nuxtjs.org/)
+> Progressive Web App for your e-commerce platform based on [Nuxt.js](https://nuxtjs.org/)
 
 - [x] An open source project
 - [x] Installable as a Nuxt.js Module
@@ -12,9 +12,11 @@
 - [x] Excellent performance and usability
 - [x] Toolbox / framework for creating your own shop frontend
 
+## Documentation
+Run `npm run docs:dev` to see the developer documentation or take a look at `/docs`.
+
 ## Links
-[Demo](https://demo.hubblestudio.io/) |
-[Documentation](https://docs.hubblecommerce.io/pwa/what/overview.html#features) |
+[Demo](https://hubble-next.herokuapp.com/) |
 [Website](https://www.hubblecommerce.io/de)
 
 ## Table of contents
@@ -33,77 +35,69 @@
 
 ## Prerequisites
 This guide focuses on installing hubble PWA as a Nuxt.js module only,
-so before moving on, make sure you meet the [requirements](https://docs.hubblecommerce.io/pwa/what/requirements.html) first.
+so before moving on, make sure you meet the [requirements](/pwa/what/requirements.html) first.
 
 ## Installation
 
-### Install from scratch including fully configured Nuxt.js project
-
-Install via npx so everything is set up correctly and ready to use. The script prompts you to enter the
-[access data](https://docs.shopware.com/en/shopware-6-en/settings/saleschannel#api-access) for the api:
+1. Create a new Nuxt 3 Project
 ```sh
-npx @hubblecommerce/launcher <project-name>
-```
-or enter your API url and key directly as additional parameters:
-```sh
-npx @hubblecommerce/launcher <project-name> <api-url> <api-key>
+npx nuxi init nuxt-app
+cd nuxt-app
+npm install
 ```
 
-### Install to existing Nuxt.js project
-
-1. Install hubble NuxtJs Module
+2. Install the hubble Nuxt module
 ```sh
 npm i @hubblecommerce/hubble
 ```
 
-2. Add module to nuxt.config.js
+3. Add the module to nuxt.config.ts
 ```js
 modules: [
     ['@hubblecommerce/hubble']
-],
+]
 ```
 
-Module have to be registered in **modules**, not **buildModules** to make sure runtime configurations work.
-
-3. Edit configs in .env file
+4. Create a .env file in project root and fill credentials
 ```sh
 API_SW_ACCESS_KEY = ''
 API_BASE_URL      = ''
 ```
+::: tip
+Read more about where to get the credentials in the [supported e-commerce platforms](/pwa/what/requirements.html#supported-e-commerce-platforms) section.
+:::
 
-Read more about where to get the credentials in the [supported e-commerce platforms](https://docs.hubblecommerce.io/pwa/what/requirements.html#supported-e-commerce-platforms) section.
+### Build modes
 
-## Build modes
-
-### Development
+#### Development
 
 ```sh
 npm run dev
 ```
 
-### Production
+#### Production
 
 ```sh
 npm run build
-npm start
+node .output/server/index.mjs
 ```
 
 ## Features
 hubble PWA is a Nuxt.js module.
 That means it relies on all the great features of Nuxt.js like:
-- All benefits of Vue.js
+- All benefits of Vue 3 and Nuxt 3
 - Server Side Rendering
 - Dynamic Routing
 - Code-Splitting
-- Module Ecosystem
+- Module Ecosystem (Composables)
 - Intuitive Developer Experience
 - Runtime Configuration
 
 and enriches them to meet the demanding requirements of an e-commerce interface like:
-- [Shop connector](https://docs.hubblecommerce.io/pwa/architecture/shop-connection.html) including an API client and data mapping (headless)
-- [File-based inheritance (Theming)](https://docs.hubblecommerce.io/pwa/architecture/filebasedinheritance.html)
-- [E-commerce optimized components](https://docs.hubblecommerce.io/pwa/architecture/components.html) like catalog, customer, checkout etc.
-- [Integration path for shop-plugins (Compatibility Plugins)](https://docs.hubblecommerce.io/pwa/shopware/shopwareplugins.html)
+- [Shop connector](/pwa/architecture/shop-connection.html) including an API client and data mapping (headless)
+- [File-based inheritance (Theming)](/pwa/architecture/filebasedinheritance.html)
+- [E-commerce optimized components](/pwa/architecture/components.html) like catalog, customer, checkout etc.
+- [Integration path for shop-plugins (Compatibility Plugins)](/pwa/shopware/shopwareplugins.html)
 
 This way hubble PWA can always be up-to-date to the fast-growing Nuxt.js ecosystem.
 
@@ -112,8 +106,7 @@ We aim for an intuitive and smooth interface experience no matter how many featu
 How we do it:
 - everything that's not necessary for SEO purposes will be loaded lazily via chunking and dynamic imports
 - uses as less global code as possible, everything is a Single-File-Component
-- uses only relevant parts of a CSS framework (Bootstrap)
-- stores only a few small data in state-management
+- uses only relevant parts of a CSS framework (Tailwind CSS)
 - measure performance with Google Lighthouse
 
 ## SEO friendly
@@ -139,23 +132,23 @@ using the [official Nuxt.js PWA Module](https://pwa.nuxtjs.org/).
 
 ## Specialized in Shopware 6
 Because hubble PWA was built for Shopware 6 primarily, it supports features like:
-- [Emotion Worlds](https://docs.hubblecommerce.io/pwa/shopware/shopwareemotion.html)
-- [Shopware Plugins via Compatibility Plugins](https://docs.hubblecommerce.io/pwa/shopware/shopwareplugins.html)
-- [Shop configuration](https://docs.hubblecommerce.io/pwa/shopware/shopwareplugins.html#how-do-i-access-my-plugin-configurations)
+- [Emotion Worlds](/pwa/shopware/shopwareemotion.html)
+- [Shopware Plugins via Compatibility Plugins](/pwa/shopware/shopwareplugins.html)
+- [Shop configuration](/pwa/shopware/shopwareplugins.html#how-do-i-access-my-plugin-configurations)
 
 ## Roadmap
 Thanks to the headless approach hubble is not tied to Shopware only,
 so we are constantly working on connecting other e-commerce frameworks.
-See our detailed [roadmap](https://docs.hubblecommerce.io/pwa/what/roadmap.html) for further information.
+See our detailed [roadmap](/pwa/what/roadmap.html) for further information.
 
 ## Contributing
 
-Specific instructions for pull requests can be found [here](https://docs.hubblecommerce.io/pwa/contribution/contributionpwa.md).
+Specific instructions for pull requests can be found [here](pwa/contribution/contributionpwa.md).
 
 ## Support
 
 If you like the hubble PWA, feel free to contribute and spread the word on social media.
-Also don't forget to give us a star on github.
+Also don't forget to give us a star on Github.
 
 ## Stay updated
 
@@ -167,5 +160,3 @@ you like to get noticed about.
 digital.manufaktur GmbH – hallo@digitalmanufaktur.com
 
 Distributed under the MIT license. See [LICENSE](https://github.com/hubblecommerce/hubble-frontend-pwa/blob/main/LICENSE) for more information.
-
-[https://github.com/hubblecommerce/hubble-frontend-pwa](https://github.com/hubblecommerce/hubble-frontend-pwa)

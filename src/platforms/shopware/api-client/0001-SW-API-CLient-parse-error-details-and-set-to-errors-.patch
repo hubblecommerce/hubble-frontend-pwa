@@ -1,0 +1,38 @@
+From 93aa0910bcacd5e7013cfe963ddd51b99d21b193 Mon Sep 17 00:00:00 2001
+From: Lukas Heinze <heinze@digitalmanufaktur.com>
+Date: Tue, 30 Aug 2022 11:40:51 +0200
+Subject: [PATCH] SW API CLient: parse error details and set to errors body
+
+---
+ .../platforms/shopware/api-client/generated/core/ApiError.ts    | 2 +-
+ .../platforms/shopware/api-client/generated/core/ApiResult.ts   | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/src/platforms/shopware/api-client/generated/core/ApiError.ts b/src/platforms/shopware/api-client/generated/core/ApiError.ts
+index c3da01fc..d81d1dd5 100644
+--- a/src/platforms/shopware/api-client/generated/core/ApiError.ts
++++ b/src/platforms/shopware/api-client/generated/core/ApiError.ts
+@@ -18,7 +18,7 @@ export class ApiError extends Error {
+         this.url = response.url;
+         this.statusCode = response.status;
+         this.statusMessage = response.statusText;
+-        this.body = response.body;
++        this.body = response._data.errors;
+         this.request = request;
+     }
+ }
+diff --git a/src/platforms/shopware/api-client/generated/core/ApiResult.ts b/src/platforms/shopware/api-client/generated/core/ApiResult.ts
+index b095dc77..13b051c1 100644
+--- a/src/platforms/shopware/api-client/generated/core/ApiResult.ts
++++ b/src/platforms/shopware/api-client/generated/core/ApiResult.ts
+@@ -2,6 +2,7 @@
+ /* tslint:disable */
+ /* eslint-disable */
+ export type ApiResult = {
++    readonly _data: any
+     readonly url: string;
+     readonly ok: boolean;
+     readonly status: number;
+--
+2.37.2
+
