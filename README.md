@@ -16,7 +16,7 @@
 Run `npm run docs:dev` to see the developer documentation or take a look at `/docs`.
 
 ## Links
-[Demo](https://hubble-next.herokuapp.com/) |
+[Demo](https://hubble-pwa-demo.vercel.app/) |
 [Website](https://www.hubblecommerce.io/de)
 
 ## Table of contents

@@ -11,7 +11,7 @@
 - [x] Toolbox / framework for creating your own shop frontend
 
 ## Links
-[Demo](https://hubble-next.herokuapp.com/) |
+[Demo](https://hubble-pwa-demo.vercel.app/) |
 [Website](https://www.hubblecommerce.io/de)
 
 ## Table of contents
