@@ -12,7 +12,9 @@
 </template>
 
 <script setup>
+import { useCart, usePlatform } from '#imports'
+
 const { apiUrl } = usePlatform()
 const { cart } = useCart()
-const config = useRuntimeConfig()
+const config = useRuntimeConfig().public
 </script>
