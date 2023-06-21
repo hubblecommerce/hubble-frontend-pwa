@@ -11,11 +11,17 @@
         <MiscModuleTestComponent />
         <ProductDetail />
         <ProductDetailPlugin />
-        <div id="text" class="text-black">
-            This text is supposed to be black
-        </div>
         <div>{{ t('index.translationTest') }}</div>
         <MiscPluginSlot name="test-plugin-slot" />
+        <div id="tailwind-utility" class="text-black">
+            TailwindCSS Test
+        </div>
+        <div id="daisyui-utility" class="btn">
+            DaisyUI Component
+        </div>
+        <div id="overridden-daisyui-utility" class="btn text-black">
+            Overridden DaisyUI Component
+        </div>
     </div>
 </template>
 
