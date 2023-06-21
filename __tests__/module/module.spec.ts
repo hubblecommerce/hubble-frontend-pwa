@@ -1,6 +1,6 @@
 import { fileURLToPath } from 'node:url'
 import { describe, expect, it } from 'vitest'
-import { setup, $fetch, fetch } from '@nuxt/test-utils-edge'
+import { setup, $fetch, fetch } from '@nuxt/test-utils'
 
 async function throw404 () {
     return await $fetch('/this-route-not-exists')
