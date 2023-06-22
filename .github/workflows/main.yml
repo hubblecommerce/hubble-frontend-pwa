@@ -21,7 +21,7 @@ jobs:
         run: npm ci
 
       - name: Run integration tests
-        run: npm run test:integration
+        run: rm ./tsconfig.json && npm run test:integration
         env:
           PLATFORM: ${{ vars.HUBBLE_DEMO_PLATFORM }}
           PLATFORM_BASE_URL: ${{ vars.HUBBLE_DEMO_PLATFORM_BASE_URL }}
