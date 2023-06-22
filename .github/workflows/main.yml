@@ -11,7 +11,7 @@ env:
   API_SW_ACCESS_KEY: ${{ vars.HUBBLE_DEMO_API_SW_ACCESS_KEY }}
 jobs:
   test:
-    name: Module Integration Tests 
+    name: Module Integration Tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -20,4 +20,4 @@ jobs:
         with:
           node-version: '16.x'
       - run: npm ci
-      - run: npm test:integration
+      - run: npm run test:integration
