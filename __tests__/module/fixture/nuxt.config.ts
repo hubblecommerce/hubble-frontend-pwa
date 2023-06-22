@@ -6,6 +6,14 @@ export default defineNuxtConfig({
     modules: [
         hubble
     ],
+    hubble: {
+        redirectDefaultLanguage: true
+    },
+    runtimeConfig: {
+        public: {
+            testPluginConfig2: 'Plugin config 2 overridden by nuxt.config'
+        }
+    },
     vite: {
         resolve: {
             alias: {

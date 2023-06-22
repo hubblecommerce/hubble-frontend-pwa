@@ -64,6 +64,7 @@ export default defineUserConfig({
                     link: '/pwa/module/contributionpwa',
                     children: [
                         '/pwa/module/contributionpwa',
+                        '/pwa/module/tests',
                         '/pwa/module/codinguidelines',
                         '/pwa/module/apiclients'
                     ]
