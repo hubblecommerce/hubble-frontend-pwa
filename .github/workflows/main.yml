@@ -4,20 +4,27 @@ on:
     branches:
       - main
       - 'rc**'
-env:
-  PLATFORM: ${{ vars.HUBBLE_DEMO_PLATFORM }}
-  PLATFORM_BASE_URL: ${{ vars.HUBBLE_DEMO_PLATFORM_BASE_URL }}
-  API_BASE_URL: ${{ vars.HUBBLE_DEMO_API_BASE_URL }}
-  API_SW_ACCESS_KEY: ${{ vars.HUBBLE_DEMO_API_SW_ACCESS_KEY }}
 jobs:
   test:
     name: Module Integration Tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
+
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '16.x'
-      - run: npm ci
-      - run: npm run test:integration
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run integration tests
+        run: npm run test:integration
+        env:
+            PLATFORM: ${{ vars.HUBBLE_DEMO_PLATFORM }}
+            PLATFORM_BASE_URL: ${{ vars.HUBBLE_DEMO_PLATFORM_BASE_URL }}
+            API_BASE_URL: ${{ vars.HUBBLE_DEMO_API_BASE_URL }}
+            API_SW_ACCESS_KEY: ${{ vars.HUBBLE_DEMO_API_SW_ACCESS_KEY }}
+
