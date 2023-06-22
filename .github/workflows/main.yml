@@ -23,8 +23,8 @@ jobs:
       - name: Run integration tests
         run: npm run test:integration
         env:
-          PLATFORM: ${{ var.HUBBLE_DEMO_PLATFORM }}
-          PLATFORM_BASE_URL: ${{ var.HUBBLE_DEMO_PLATFORM_BASE_URL }}
-          API_BASE_URL: ${{ var.HUBBLE_DEMO_API_BASE_URL }}
-          API_SW_ACCESS_KEY: ${{ var.HUBBLE_DEMO_API_SW_ACCESS_KEY }}
+          PLATFORM: ${{ vars.HUBBLE_DEMO_PLATFORM }}
+          PLATFORM_BASE_URL: ${{ vars.HUBBLE_DEMO_PLATFORM_BASE_URL }}
+          API_BASE_URL: ${{ vars.HUBBLE_DEMO_API_BASE_URL }}
+          API_SW_ACCESS_KEY: ${{ vars.HUBBLE_DEMO_API_SW_ACCESS_KEY }}
 
