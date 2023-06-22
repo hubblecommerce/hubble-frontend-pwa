@@ -12,11 +12,11 @@ import { hblUseDefaultStructure } from '@/utils/helper'
 import {
     ProductShopware,
     PwaShopware,
-    request as __request,
     OpenAPI,
     PropertyGroup,
     Product as swProduct
 } from '@hubblecommerce/hubble/platforms/shopware/api-client'
+import { request as __request } from '@hubblecommerce/hubble/platforms/shopware/request'
 import { useLocalisation, useRuntimeConfig, hblMapPage, hblMapProductListing, hblMapProduct } from '#imports'
 
 const associations = {
