@@ -83,10 +83,6 @@ describe('hubble Nuxt.js module setup', async () => {
     /*
      * Error handling
      */
-    it('throws 404 correctly', async () => {
-        await expect(throw404()).rejects.toThrow('404')
-    })
-
     it('adds custom error page and override it', async () => {
         try {
             await throw404()

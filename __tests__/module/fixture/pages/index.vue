@@ -12,7 +12,7 @@
         <ProductDetail />
         <ProductDetailPlugin />
         <div>{{ t('index.translationTest') }}</div>
-        <MiscPluginSlot name="test-plugin-slot" />
+        <MiscPluginSlot name="test-plugin-slot" :data="{}" :events="{}" />
         <div id="tailwind-utility" class="text-black">
             TailwindCSS Test
         </div>

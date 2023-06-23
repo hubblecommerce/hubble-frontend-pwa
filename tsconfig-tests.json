@@ -1,0 +1,80 @@
+{
+    "extends": "./__tests__/module/fixture/.nuxt/tsconfig.json",
+    "module": "es2022",
+    "moduleResolution": "Node",
+    "include": [
+        "__tests__/**/*",
+        "src/**/*",
+        "@pinia/nuxt",
+        "pinia",
+    ],
+    "compilerOptions": {
+        "paths": {
+            "@hubblecommerce/hubble/platforms/shopware/api-client": ["../../../src/platforms/shopware/api-client/generated/index"],
+            "@hubblecommerce/hubble/platforms/shopware/request": ["../../../src/platforms/shopware/api-client/generated/core/request"],
+            "~~": [
+                "."
+            ],
+            "~~/*": [
+                "./*"
+            ],
+            "@@": [
+                "."
+            ],
+            "@@/*": [
+                "./*"
+            ],
+            "~": [
+                ".hubble"
+            ],
+            "~/*": [
+                ".hubble/*"
+            ],
+            "@": [
+                ".hubble"
+            ],
+            "@/*": [
+                ".hubble/*"
+            ],
+            "assets": [
+                ".hubble/assets"
+            ],
+            "assets/*": [
+                ".hubble/assets/*"
+            ],
+            "public": [
+                ".hubble/public"
+            ],
+            "#app": [
+                "../../../node_modules/nuxt/dist/app"
+            ],
+            "#app/*": [
+                "../../../node_modules/nuxt/dist/app/*"
+            ],
+            "vue-demi": [
+                "../../../node_modules/nuxt/dist/app/compat/vue-demi"
+            ],
+            "pinia": [
+                "pinia/dist/pinia"
+            ],
+            "#head": [
+                "../../../node_modules/nuxt/dist/head/runtime"
+            ],
+            "#head/*": [
+                "../../../node_modules/nuxt/dist/head/runtime/*"
+            ],
+            "#components": [
+                ".nuxt/components"
+            ],
+            "#imports": [
+                ".nuxt/imports"
+            ],
+            "#build": [
+                ".nuxt"
+            ],
+            "#build/*": [
+                ".nuxt/*"
+            ]
+        }
+    },
+}
