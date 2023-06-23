@@ -1,6 +1,6 @@
 import { Ref, ref } from 'vue'
 import { RouteLocationNormalizedLoaded } from 'vue-router'
-import { useRouter } from '#app'
+import { useRouter, useRequestURL } from '#app'
 import {
     HblIUsePage,
     HblPage,
@@ -17,7 +17,7 @@ import {
     Product as swProduct
 } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 import { request as __request } from '@hubblecommerce/hubble/platforms/shopware/request'
-import { useLocalisation, useRuntimeConfig, hblMapPage, hblMapProductListing, hblMapProduct } from '#imports'
+import { useLocalisation, hblMapPage, hblMapProductListing, hblMapProduct } from '#imports'
 
 const associations = {
     media: {},
@@ -32,7 +32,6 @@ export const usePage = function (): HblIUsePage {
     const loading: Ref<boolean> = ref(false)
     const error: Ref = ref(false)
     const page: Ref<HblPage | null> = ref(null)
-    const runtimeConfig = useRuntimeConfig()
     const { currentRoute } = useRouter()
     const { isLocalisedRoute } = useLocalisation()
 
@@ -144,7 +143,7 @@ export const usePage = function (): HblIUsePage {
 
     // Write parameters to current url without reloading the page
     function updateUri (params: any): void {
-        const url = new URL(runtimeConfig.public.appBaseUrl + currentRoute.value.path)
+        const url = new URL(useRequestURL().origin + currentRoute.value.path)
         url.search = new URLSearchParams(params).toString()
         window.history.pushState(
             {},

@@ -10,18 +10,12 @@ For all available configs take a look in the
 
 Shopware 6 example .env: 
 ```
-APP_BASE_URL            = 'http://localhost:3000'
-
 PLATFORM                = 'shopware'
 PLATFORM_BASE_URL       = 'http://my-shopware'
 API_BASE_URL            = 'http://my-shopware/store-api'
 API_SW_ACCESS_KEY       = 'XXXXXXXXXXXXXXX'
 API_CLIENT_ID           = 'XXXXXXXXXXXXXXX'
 API_CLIENT_SECRET       = 'XXXXXXXXXXXXXXX'
-
-# Shopware Config
-SW_PAYMENT_FINISH_URL   = 'http://localhost:3000/checkout/success'
-SW_PAYMENT_ERROR_URL    = 'http://localhost:3000/checkout/error'
 ```
 
 ## Composables

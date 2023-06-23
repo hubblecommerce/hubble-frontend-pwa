@@ -1,6 +1,6 @@
 import { ref, Ref } from 'vue'
 import { LocationQuery } from 'vue-router'
-import { useRuntimeConfig } from '#app'
+import { useRequestURL } from '#app'
 import { defineStore, storeToRefs } from 'pinia'
 import { HblIUseCheckout, HblPaymentMethod, HblShippingMethod } from '@/utils/types'
 import {
@@ -38,7 +38,6 @@ export const useCheckout = function (): HblIUseCheckout {
     const { deleteCart } = useCart()
     const { showNotification } = useNotification()
     const { currentRoute } = useRouter()
-    const config = useRuntimeConfig()
     const { navigateToI18n } = useLocalisation()
 
     const checkoutStore = useCheckoutStore()
@@ -205,8 +204,8 @@ export const useCheckout = function (): HblIUseCheckout {
             const response = await PaymentShippingShopware.handlePaymentMethod(
                 {
                     orderId,
-                    finishUrl: `${config.public.swPaymentFinishUrl}?orderId=${orderId}`,
-                    errorUrl: `${config.public.swPaymentErrorUrl}?orderId=${orderId}`,
+                    finishUrl: `${useRequestURL().origin}/checkout/success?orderId=${orderId}`,
+                    errorUrl: `${useRequestURL().origin}/checkout/error?orderId=${orderId}`,
                     // TODO: patch api client
                     // @ts-ignore
                     ...(dataBag != null && { ...dataBag })
