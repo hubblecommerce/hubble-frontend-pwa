@@ -18,7 +18,8 @@ export default defineNuxtConfig({
         resolve: {
             alias: {
                 // @ts-ignore
-                '@hubblecommerce/hubble/platforms/shopware/api-client': fileURLToPath(new URL('../src/platforms/shopware/api-client/generated/index.ts', import.meta.url))
+                '@hubblecommerce/hubble/platforms/shopware/api-client': fileURLToPath(new URL('../src/platforms/shopware/api-client/generated/index.ts', import.meta.url)),
+                '@hubblecommerce/hubble/platforms/shopware/request': fileURLToPath(new URL('../src/platforms/shopware/api-client/generated/core/request.ts', import.meta.url))
             }
         }
     }

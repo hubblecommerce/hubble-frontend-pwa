@@ -1,5 +1,5 @@
 {
-    "extends": "./playground/.nuxt/tsconfig.json",
+    "extends": "./__tests__/module/fixture/.nuxt/tsconfig.json",
     "module": "es2022",
     "moduleResolution": "Node",
     "include": [
@@ -10,8 +10,8 @@
     ],
     "compilerOptions": {
         "paths": {
-            "@hubblecommerce/hubble/platforms/shopware/api-client": ["../src/platforms/shopware/api-client/generated/index"],
-            "@hubblecommerce/hubble/platforms/shopware/request": ["../src/platforms/shopware/api-client/generated/core/request"],
+            "@hubblecommerce/hubble/platforms/shopware/api-client": ["../../../src/platforms/shopware/api-client/generated/index"],
+            "@hubblecommerce/hubble/platforms/shopware/request": ["../../../src/platforms/shopware/api-client/generated/core/request"],
             "~~": [
                 "."
             ],
@@ -46,22 +46,22 @@
                 ".hubble/public"
             ],
             "#app": [
-                "../node_modules/nuxt/dist/app"
+                "../../../node_modules/nuxt/dist/app"
             ],
             "#app/*": [
-                "../node_modules/nuxt/dist/app/*"
+                "../../../node_modules/nuxt/dist/app/*"
             ],
             "vue-demi": [
-                "../node_modules/nuxt/dist/app/compat/vue-demi"
+                "../../../node_modules/nuxt/dist/app/compat/vue-demi"
             ],
             "pinia": [
                 "pinia/dist/pinia"
             ],
             "#head": [
-                "../node_modules/nuxt/dist/head/runtime"
+                "../../../node_modules/nuxt/dist/head/runtime"
             ],
             "#head/*": [
-                "../node_modules/nuxt/dist/head/runtime/*"
+                "../../../node_modules/nuxt/dist/head/runtime/*"
             ],
             "#components": [
                 ".nuxt/components"
