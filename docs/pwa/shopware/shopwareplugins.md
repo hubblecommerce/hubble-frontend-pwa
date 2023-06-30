@@ -110,7 +110,10 @@ const pluginIsActive = config.public.mySamplePluginActive
 You can look up all the dumped configs in _/platform-plugins/pluginConfig.json_.
 
 ## What about configurations that shouldn't be exposed to the frontend?
-If a configuration key contains the words “secret” or “private” the configuration will be ignored to prevent exposing it to the frontend.
+If a configuration key contains the words "secret", "private" or "password" the configuration will be ignored to prevent exposing it to the frontend.
+In case you want to include only specific config keys you can do so by creating a _/platform-plugins/pluginConfigWhitelist.json_ file.
+The file should contain an array of configuration keys as strings. The configuration script will automatically only consider 
+keys of the whitelist and generates the pluginConfig.json.
 
 ## I changed configuration of my plugin, but I can't see any changes
 Everytime your configuration changes you have to dump and fetch them from your Shopware. 
