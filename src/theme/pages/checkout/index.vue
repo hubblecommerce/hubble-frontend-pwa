@@ -158,9 +158,9 @@
                             <template #actions="actionProps">
                                 <portal to="checkoutNavigation">
                                     <div class="navigation flex flex-col flex-wrap justify-between items-center gap-4 lg:flex-row lg:flex-nowrap lg:items-center lg:gap-2">
-                                        <div v-if="step === 'contact'" class="link link-hover cursor-pointer order-2 lg:order-1">
+                                        <MiscLink v-if="step === 'contact'" to="/cart" class="link link-hover cursor-pointer order-2 lg:order-1">
                                             {{ t('checkout.contact.navigation.back') }}
-                                        </div>
+                                        </MiscLink>
                                         <button
                                             v-if="step === 'contact'"
                                             class="btn btn-primary w-full order-1 lg:w-auto lg:order-2"
