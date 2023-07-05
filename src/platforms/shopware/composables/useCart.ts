@@ -1,5 +1,5 @@
 import { Ref, ref, watch } from 'vue'
-import { useCookie, useRuntimeConfig } from '#app'
+import { CookieOptions, useCookie, useRuntimeConfig } from '#app'
 import { defineStore } from 'pinia'
 import { useNotification, usePlatform, hblMapCart, hblMapMiniCart } from '#imports'
 import { HblCart, HblIUseCart, HblMiniCart, HblLineItem, MiniCartItem } from '@/utils/types'
@@ -9,7 +9,7 @@ export const useCart = defineStore('use-cart', (): HblIUseCart => {
     const cart: Ref<HblCart | null> = ref(null)
     const miniCart: Ref<HblMiniCart | null> = ref(null)
 
-    const { cartCookie } = useRuntimeConfig().public
+    const { cartCookie } = useRuntimeConfig().public as { cartCookie: { name: string, options: CookieOptions } }
     const error: Ref = ref(false)
     const loading: Ref<boolean> = ref(false)
     const { setSessionToken } = usePlatform()

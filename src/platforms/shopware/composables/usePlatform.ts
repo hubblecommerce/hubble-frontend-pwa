@@ -1,6 +1,6 @@
 import { defineStore, storeToRefs } from 'pinia'
 import { ref, Ref } from 'vue'
-import { useCookie } from '#app'
+import { CookieOptions, useCookie } from '#app'
 import {
     useRuntimeConfig,
     useCustomer,
@@ -24,15 +24,21 @@ export const usePlatform = defineStore('use-platform', (): HblIUsePlatform => {
     const loading: Ref<boolean> = ref(false)
 
     const runtimeConfig = useRuntimeConfig()
-    const apiUrl = runtimeConfig.public.apiBaseUrl
-    const apiAuthToken = runtimeConfig.public.apiSwAccessKey
+    const apiUrl = runtimeConfig.public.apiBaseUrl as string
+    const apiAuthToken = runtimeConfig.public.apiSwAccessKey as string
 
-    const platformLanguages = runtimeConfig.public.platformLanguages
+    const platformLanguages = runtimeConfig.public.platformLanguages as {
+        route: string,
+        id: string,
+        key: string,
+        name: string
+    }[]
 
     function setSessionToken (token: string | null): void {
         session.value.sessionToken = token
 
-        const cookie = useCookie(runtimeConfig.public.sessionCookie.name, runtimeConfig.public.sessionCookie.options)
+        const sessionCookie = runtimeConfig.public.sessionCookie as { name: string, options: CookieOptions }
+        const cookie = useCookie(sessionCookie.name, sessionCookie.options)
 
         if (cookie.value !== token) {
             cookie.value = token
@@ -50,7 +56,7 @@ export const usePlatform = defineStore('use-platform', (): HblIUsePlatform => {
         error.value = false
 
         try {
-            const { sessionCookie } = useRuntimeConfig().public
+            const { sessionCookie } = useRuntimeConfig().public as { sessionCookie: { name: string, options: CookieOptions }  }
             const cookie = useCookie(sessionCookie.name)
 
             if (cookie.value === undefined) {

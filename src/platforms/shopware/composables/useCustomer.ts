@@ -1,5 +1,5 @@
 import { ref, Ref, watch } from 'vue'
-import { useCookie } from '#app'
+import { CookieOptions, useCookie } from '#app'
 import { defineStore, storeToRefs } from 'pinia'
 import {
     useCart,
@@ -43,7 +43,8 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
     // is related to a customer
     if (process.client) {
         watch(customer, (newVal) => {
-            const cookie = useCookie(runtimeConfig.public.customerCookie.name, runtimeConfig.public.customerCookie.options)
+            const customerCookie = runtimeConfig.public.customerCookie as { name: string, options: CookieOptions }
+            const cookie = useCookie(customerCookie.name, customerCookie.options)
 
             if (newVal != null) {
                 if (cookie.value !== '1') {
@@ -387,7 +388,7 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
         try {
             await ProfileShopware.sendRecoveryMail({
                 email,
-                storefrontUrl: platformBaseUrl
+                storefrontUrl: platformBaseUrl as string
             })
 
             loading.value = false
