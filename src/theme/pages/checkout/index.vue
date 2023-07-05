@@ -282,6 +282,8 @@ definePageMeta({
 const { t } = useI18n()
 const placeOrderForm = ref()
 
+console.log(placeOrderForm)
+
 /*
  * Checkout Step Navigation
  */
@@ -312,6 +314,10 @@ function selectStep (stepName: string): void {
     if (stepName === 'summary' && (paymentError.value || paymentEmpty.value)) {
         showNotification('Please select a valid payment method.', 'error')
         return
+    }
+
+    if (stepName === 'summary') {
+        placeOrderForm.value = ref()
     }
 
     step.value = stepName
