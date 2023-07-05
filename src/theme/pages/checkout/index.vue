@@ -282,8 +282,6 @@ definePageMeta({
 const { t } = useI18n()
 const placeOrderForm = ref()
 
-console.log(placeOrderForm)
-
 /*
  * Checkout Step Navigation
  */

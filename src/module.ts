@@ -176,7 +176,7 @@ export default defineNuxtModule<ModuleOptions>({
             await fs.copy(resolve(join(platformPluginsDir, 'pluginMapping.json')), resolve(join(targetDir, options.pluginsDirName, 'pluginMapping.json')))
         }
         const pluginMapping = await fs.readJson(resolve(join(targetDir, options.pluginsDirName, 'pluginMapping.json')))
-        nuxt.options.runtimeConfig.public.pluginMapping = defu(nuxt.options.runtimeConfig.public.pluginMapping, pluginMapping)
+        nuxt.options.runtimeConfig.public.pluginMapping = defu(nuxt.options.runtimeConfig.public.pluginMapping as any, pluginMapping)
 
         await asyncCopyDirs(validRootDirs, targetDir)
 
