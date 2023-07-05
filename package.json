@@ -56,7 +56,7 @@
         "i18n:import": "node bin/hubble-cli.js i18n-import"
     },
     "lint-staged": {
-        "*.{js,vue}": "eslint --fix"
+        "*.{ts,js,vue}": "eslint --fix"
     },
     "dependencies": {
         "@heroicons/vue": "^2.0.16",
@@ -88,7 +88,7 @@
         "@typescript-eslint/eslint-plugin": "^5.54.1",
         "@typescript-eslint/parser": "^5.54.1",
         "cypress": "^12.15.0",
-        "eslint": "8.35.0",
+        "eslint": "^8.44.0",
         "eslint-plugin-vue": "^9.9.0",
         "husky": "^8.0.3",
         "lint-staged": "^13.1.2",
