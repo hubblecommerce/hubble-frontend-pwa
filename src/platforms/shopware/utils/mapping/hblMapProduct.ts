@@ -44,12 +44,30 @@ export function hblMapProduct (swProduct: SwProduct, swProductConfigurator?: Pro
     // calculatedPrice = price configured on settings base page of product
     let price = swProduct.calculatedPrice != null ? hblMapPrice(swProduct.calculatedPrice) : null
 
-    // calculatedPrices = price based on advanced price rules
-    // is an array because you can have tier-prices (prices based on quantity)
-    // @ts-ignore
     if (swProduct.calculatedPrices?.length > 0) {
         // @ts-ignore
-        price = hblMapPrice(swProduct.calculatedPrices[0])
+        price = hblMapPrice(swProduct.calculatedPrices[swProduct.calculatedPrices.length - 1])
+    }
+
+    const variantsFrom = swProduct.calculatedCheapestPrice?.unitPrice !== swProduct.calculatedPrice?.unitPrice && swProduct.calculatedCheapestPrice.variantId !== swProduct.id
+    // Shopware needs to set variantListing data to extensions, not implemented yet
+    const isParent= swProduct.extensions?.variantListing?.displayParent === true && parentId === null
+    const priceRange = swProduct.calculatedPrices?.length > 0 || (isParent && variantsFrom)
+
+    let cheapestPrice = null
+    if (swProduct.calculatedCheapestPrice != null) {
+        // @ts-ignore
+        cheapestPrice = hblMapPrice(swProduct.calculatedCheapestPrice)
+    }
+
+    const tierPrices = []
+    if (swProduct.calculatedPrices?.length > 0) {
+        swProduct.calculatedPrices?.map((price) => {
+            tierPrices.push({
+                ...hblMapPrice(price),
+                qty: price.quantity
+            })
+        })
     }
 
     return {
@@ -64,7 +82,11 @@ export function hblMapProduct (swProduct: SwProduct, swProductConfigurator?: Pro
         active: swProduct.available,
         stock: swProduct.stock,
         // @ts-ignore
+        priceRange,
         price,
+        variantsFrom,
+        cheapestPrice,
+        tierPrices,
         deliveryTime: swProduct.deliveryTime?.name,
         manufacturer: swProduct.manufacturer != null ? hblMapManufacturer(swProduct.manufacturer) : null,
         metaTitle: swProduct.translated.metaTitle,

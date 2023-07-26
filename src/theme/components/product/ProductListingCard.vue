@@ -9,18 +9,21 @@
         <div class="card-body justify-between gap-4">
             <h2 class="card-title items-start" v-text="data.name" />
             <div class="card-text">
-                <div class="flex gap-2 items-center text-base">
-                    <div v-if="data.price?.regularPrice" :class="{ 'text-secondary': data.price?.specialPrice}">
-                        {{ formatPrice(data.price?.regularPrice) }}
+                <div :class="{ 'text-error': hasSpecialPrice}" class="text-xl font-medium">
+                    <div v-if="data?.variantsFrom" class="text-base-700 text-sm font-light">
+                        {{ t('productCard.variantsFrom') }}: {{ formatPrice(data?.cheapestPrice?.regularPrice) }}
                     </div>
-                    <div v-if="data.price?.specialPrice" class="line-through text-sm">
+
+                    <span v-if="data?.priceRange">{{ t('productCard.from') }}</span> {{ formatPrice(data.price?.regularPrice) }}
+
+                    <span v-if="hasSpecialPrice" class="line-through text-xs text-base-content">
                         {{ formatPrice(data.price?.specialPrice) }}
-                    </div>
+                    </span>
                 </div>
             </div>
             <div class="card-actions justify-center xl:justify-between">
                 <MiscLink no-prefetch :to="data.url" class="btn btn-primary text-center" role="button">
-                    Details
+                    {{ t('productCard.details') }}
                 </MiscLink>
                 <button
                     :class="{ 'loading': cartLoading }"
@@ -29,7 +32,7 @@
                     role="button"
                     @click="onAddToCart()"
                 >
-                    Add To Cart
+                    {{ t('productCard.addToCart') }}
                 </button>
             </div>
         </div>
@@ -40,8 +43,11 @@
 import { computed, ref, watch } from 'vue'
 import { useImage } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
+import { useI18n } from 'vue-i18n'
 import { HblProduct } from '@/utils/types'
 import { useCart, useNotification, useCurrency, useLocalisation } from '#imports'
+
+const { t } = useI18n()
 
 const props = defineProps<{
     data: HblProduct
@@ -83,3 +89,20 @@ watch(cartError, (val) => {
     min-height: 84px;
 }
 </style>
+
+<i18n>
+{
+    "en": {
+        "productCard.variantsFrom": "Variants from",
+        "productCard.from": "from",
+        "productCard.details": "Details",
+        "productCard.addToCart": "Add to cart"
+    },
+    "de": {
+        "productCard.variantsFrom": "Varianten ab",
+        "productCard.from": "ab",
+        "productCard.details": "Details",
+        "productCard.addToCart": "In den Warenkorb"
+    }
+}
+</i18n>
