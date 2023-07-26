@@ -82,6 +82,16 @@ class ShopwareClient {
                 additionalProperties: true
             }
 
+            spec.components.responses.ContextTokenResponse = {
+                type: "object",
+                properties: {
+                    contextToken: {
+                        description: "Context token identifying the current user session.",
+                        type: "string"
+                    }
+                }
+            }
+
             const specTargetLocation = fileURLToPath(new URL('../api-client/openapi3.json', import.meta.url))
             const data = JSON.stringify(spec)
             fse.writeFileSync(specTargetLocation, data)
@@ -98,7 +108,7 @@ class ShopwareClient {
             input: specTargetLocation,
             output: genTargetLocation,
             request: fileURLToPath(new URL('../api-client/request.ts', import.meta.url)),
-            postfix: 'Shopware',
+            postfixServices: 'Shopware',
             useUnionTypes: true
         })
     }
