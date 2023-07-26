@@ -1,7 +1,7 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { ContextTokenResponse } from '../models/ContextTokenResponse';
 import type { Country } from '../models/Country';
 import type { CountryState } from '../models/CountryState';
 import type { Criteria } from '../models/Criteria';
@@ -34,7 +34,7 @@ export class SystemContextShopware {
      * Modify the current context
      * Used for switching the context. A typical example would be changing the language or changing the currency.
      * @param requestBody
-     * @returns ContextTokenResponse Returns the context token. Use that as your `sw-context-token` header for subsequent requests. Redirect if getRedirectUrl is set.
+     * @returns any
      * @throws ApiError
      */
     public static updateContext(
@@ -72,7 +72,7 @@ export class SystemContextShopware {
              */
             countryStateId?: string;
         },
-    ): CancelablePromise<ContextTokenResponse> {
+    ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'PATCH',
             url: '/context',

@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -15,7 +16,7 @@ export type PaymentMethod = {
     position?: number;
     active?: boolean;
     afterOrderEnabled?: boolean;
-    customFields?: any;
+    customFields?: Record<string, any>;
     mediaId?: string;
     /**
      * Runtime field, cannot be used as part of the criteria.
@@ -33,9 +34,13 @@ export type PaymentMethod = {
      * Runtime field, cannot be used as part of the criteria.
      */
     readonly refundable?: boolean;
+    /**
+     * Runtime field, cannot be used as part of the criteria.
+     */
+    shortName?: string;
     readonly createdAt: string;
     readonly updatedAt?: string;
-    translated?: any;
+    translated?: Record<string, any>;
     media?: Media;
 };
 

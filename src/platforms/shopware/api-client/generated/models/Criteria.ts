@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -41,7 +42,7 @@ export type Criteria = {
     /**
      * Used to fetch associations which are not fetched by default.
      */
-    associations?: any;
+    associations?: Record<string, any>;
     /**
      * Used to perform aggregations on the search result. For more information, see [Search Queries > Aggregations](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#aggregations)
      */

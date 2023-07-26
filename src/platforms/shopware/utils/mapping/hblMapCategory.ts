@@ -17,7 +17,7 @@ export function hblMapCategory (swCategory: SwCategory): HblCategory {
         // @ts-ignore
         metaDescription: swCategory.metaDescription,
         // @ts-ignore
-        url: swCategory.seoUrls[0].seoPathInfo.startsWith('/') ? swCategory.seoUrls[0].seoPathInfo : '/' + swCategory.seoUrls[0].seoPathInfo,
+        url: swCategory.seoUrls?.[0].seoPathInfo.startsWith('/') ? swCategory.seoUrls?.[0].seoPathInfo : '/' + swCategory.seoUrls?.[0].seoPathInfo,
         pathInfo: `/navigation/${swCategory.id}`
     }
 }

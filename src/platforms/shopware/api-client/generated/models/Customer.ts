@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -38,13 +39,14 @@ export type Customer = {
     guest?: boolean;
     firstLogin?: string;
     lastLogin?: string;
-    newsletter?: boolean;
     birthday?: string;
     readonly lastOrderDate?: string;
     readonly orderCount?: number;
     readonly orderTotalAmount?: number;
-    customFields?: any;
+    readonly reviewCount?: number;
+    customFields?: Record<string, any>;
     readonly tagIds?: Array<string>;
+    accountType: string;
     createdById?: string;
     updatedById?: string;
     readonly createdAt: string;

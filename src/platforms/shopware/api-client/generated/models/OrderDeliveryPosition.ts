@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -16,9 +17,9 @@ export type OrderDeliveryPosition = {
         unitPrice: number;
         totalPrice: number;
         quantity: number;
-        calculatedTaxes?: any;
-        taxRules?: any;
-        referencePrice?: any;
+        calculatedTaxes?: Record<string, any>;
+        taxRules?: Record<string, any>;
+        referencePrice?: Record<string, any>;
         listPrice?: {
             price?: number;
             discount?: number;
@@ -31,7 +32,7 @@ export type OrderDeliveryPosition = {
     unitPrice?: number;
     totalPrice?: number;
     quantity?: number;
-    customFields?: any;
+    customFields?: Record<string, any>;
     readonly createdAt: string;
     readonly updatedAt?: string;
 };

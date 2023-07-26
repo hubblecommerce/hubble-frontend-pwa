@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -22,7 +23,11 @@ export type SeoUrlJsonApi = (resource & {
      * Runtime field, cannot be used as part of the criteria.
      */
     url?: string;
-    customFields?: any;
+    customFields?: Record<string, any>;
+    /**
+     * Runtime field, cannot be used as part of the criteria.
+     */
+    isValid?: boolean;
     readonly createdAt: string;
     readonly updatedAt?: string;
 });

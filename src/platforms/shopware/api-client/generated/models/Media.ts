@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -14,7 +15,7 @@ export type Media = {
     readonly uploadedAt?: string;
     readonly fileName?: string;
     readonly fileSize?: number;
-    readonly metaData?: any;
+    readonly metaData?: Record<string, any>;
     alt?: string;
     title?: string;
     /**
@@ -26,10 +27,10 @@ export type Media = {
      */
     hasFile?: boolean;
     private?: boolean;
-    customFields?: any;
+    customFields?: Record<string, any>;
     readonly createdAt: string;
     readonly updatedAt?: string;
-    translated?: any;
+    translated?: Record<string, any>;
     thumbnails?: Array<MediaThumbnail>;
 };
 

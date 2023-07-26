@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -17,11 +18,11 @@ export type Document = {
     orderId: string;
     documentMediaFileId?: string;
     orderVersionId?: string;
-    config: any;
+    config: Record<string, any>;
     sent?: boolean;
     static?: boolean;
     deepLinkCode: string;
-    customFields?: any;
+    customFields?: Record<string, any>;
     readonly createdAt: string;
     readonly updatedAt?: string;
     documentType?: DocumentType;

@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -13,7 +14,7 @@ export type EntitySearchResult = (Struct & {
     /**
      * Contains aggregated data. A simple example is the determination of the average price from a product search query.
      */
-    aggregations?: Array<any>;
+    aggregations?: Array<Record<string, any>>;
     /**
      * The actual page. This can be used for pagination.
      */

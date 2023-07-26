@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -11,19 +12,19 @@ export type ProductListingResult = (EntitySearchResult & {
      */
     currentFilters?: {
         navigationId?: string;
-        manufacturer?: Array<any>;
+        manufacturer?: Array<Record<string, any>>;
         price?: {
             min?: number;
             max?: number;
         };
         rating?: number;
         'shipping-free'?: boolean;
-        properties?: Array<any>;
+        properties?: Array<Record<string, any>>;
     };
     /**
      * Contains the available sorting. These can be used to show a sorting select-box in the product listing.
      */
-    availableSortings?: Array<any>;
+    availableSortings?: Array<Record<string, any>>;
     sorting?: string;
     elements?: Array<Product>;
 });

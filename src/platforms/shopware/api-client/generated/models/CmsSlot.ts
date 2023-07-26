@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -13,14 +14,15 @@ export type CmsSlot = {
     type: string;
     slot: string;
     locked?: boolean;
-    config?: any;
-    customFields?: any;
-    readonly data?: any;
+    config?: Record<string, any>;
+    customFields?: Record<string, any>;
+    readonly data?: Record<string, any>;
     blockId: string;
+    fieldConfig?: Record<string, any>;
     cmsBlockVersionId?: string;
     readonly createdAt: string;
     readonly updatedAt?: string;
-    translated?: any;
+    translated?: Record<string, any>;
     block?: CmsBlock;
 };
 

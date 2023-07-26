@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -16,9 +17,9 @@ export type DocumentBaseConfig = {
     filenameSuffix?: string;
     global: boolean;
     documentNumber?: string;
-    config?: any;
+    config?: Record<string, any>;
     readonly createdAt: string;
-    customFields?: any;
+    customFields?: Record<string, any>;
     readonly updatedAt?: string;
     logo?: Media;
 };

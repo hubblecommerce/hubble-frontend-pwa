@@ -34,7 +34,7 @@ export const usePlatform = defineStore('use-platform', (): HblIUsePlatform => {
         name: string
     }[]
 
-    function setSessionToken (token: string | null): void {
+    function setSessionToken (token: string | null | undefined): void {
         session.value.sessionToken = token
 
         const sessionCookie = runtimeConfig.public.sessionCookie as { name: string, options: CookieOptions }

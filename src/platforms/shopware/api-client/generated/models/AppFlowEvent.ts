@@ -1,11 +1,12 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
 
 /**
- * Added since version: 6.0.0.0
+ * Added since version: 6.5.2.0
  */
-export type MessageQueueStats = {
+export type AppFlowEvent = {
     id?: string;
     readonly createdAt: string;
     readonly updatedAt?: string;

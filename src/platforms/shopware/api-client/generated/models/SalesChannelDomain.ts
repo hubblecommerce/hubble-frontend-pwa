@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -17,7 +18,7 @@ export type SalesChannelDomain = {
     currencyId: string;
     snippetSetId: string;
     hreflangUseOnlyLocale?: boolean;
-    customFields?: any;
+    customFields?: Record<string, any>;
     readonly createdAt: string;
     readonly updatedAt?: string;
     language?: Language;

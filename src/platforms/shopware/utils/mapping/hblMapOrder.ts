@@ -11,13 +11,13 @@ export function hblMapOrder (swOrder: SwOrder): HblOrder {
         // @ts-ignore
         email: swOrder.orderCustomer.email,
         // @ts-ignore
-        shippingAddress: hblMapCustomerAddress(swOrder.deliveries[0].shippingOrderAddress),
+        shippingAddress: hblMapCustomerAddress(swOrder.deliveries?.[0].shippingOrderAddress),
         // @ts-ignore
         billingAddress: hblMapCustomerAddress(swOrder.billingAddress),
         // @ts-ignore
-        shippingMethod: hblMapShippingMethod(swOrder.deliveries[0].shippingMethod),
+        shippingMethod: hblMapShippingMethod(swOrder.deliveries?.[0].shippingMethod),
         // @ts-ignore
-        paymentMethod: hblMapPaymentMethod(swOrder.transactions[0].paymentMethod),
+        paymentMethod: hblMapPaymentMethod(swOrder.transactions?.[0].paymentMethod),
         // TODO: patch api client
         // @ts-ignore
         lineItems: hblMapOrderLineItems(swOrder.lineItems),

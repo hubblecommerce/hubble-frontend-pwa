@@ -1,7 +1,7 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { ContextTokenResponse } from '../models/ContextTokenResponse';
 import type { Customer } from '../models/Customer';
 import type { CustomerAddress } from '../models/CustomerAddress';
 import type { CustomerGroup } from '../models/CustomerGroup';
@@ -16,7 +16,7 @@ export class LoginRegistrationShopware {
      * Log in a customer
      * Logs in customers given their credentials.
      * @param requestBody
-     * @returns ContextTokenResponse A successful login returns a context token which is associated with the logged in user. Use that as your `sw-context-token` header for subsequent requests.
+     * @returns any
      * @throws ApiError
      */
     public static loginCustomer(
@@ -30,7 +30,7 @@ export class LoginRegistrationShopware {
              */
             password: string;
         },
-    ): CancelablePromise<ContextTokenResponse> {
+    ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/account/login',
@@ -45,10 +45,10 @@ export class LoginRegistrationShopware {
     /**
      * Log out a customer
      * Logs out a customer.
-     * @returns ContextTokenResponse A successful logout returns a context token for the anonymous user. Use that as your `sw-context-token` header for subsequent requests.
+     * @returns any
      * @throws ApiError
      */
-    public static logoutCustomer(): CancelablePromise<ContextTokenResponse> {
+    public static logoutCustomer(): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/account/logout',

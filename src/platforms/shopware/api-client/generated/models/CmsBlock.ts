@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -29,7 +30,7 @@ export type CmsBlock = {
         tablet?: boolean;
     };
     sectionId: string;
-    customFields?: any;
+    customFields?: Record<string, any>;
     versionId?: string;
     cmsSectionVersionId?: string;
     readonly createdAt: string;

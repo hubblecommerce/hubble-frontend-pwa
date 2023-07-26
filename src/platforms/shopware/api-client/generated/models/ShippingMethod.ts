@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -17,7 +18,7 @@ export type ShippingMethod = {
     name: string;
     active?: boolean;
     position?: number;
-    customFields?: any;
+    customFields?: Record<string, any>;
     mediaId?: string;
     deliveryTimeId: string;
     taxType: string;
@@ -25,7 +26,7 @@ export type ShippingMethod = {
     trackingUrl?: string;
     readonly createdAt: string;
     readonly updatedAt?: string;
-    translated?: any;
+    translated?: Record<string, any>;
     deliveryTime?: DeliveryTime;
     availabilityRule?: Rule;
     prices?: ShippingMethodPrice;

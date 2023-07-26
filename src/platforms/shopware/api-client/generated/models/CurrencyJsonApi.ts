@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -19,7 +20,8 @@ export type CurrencyJsonApi = (resource & {
      * Runtime field, cannot be used as part of the criteria.
      */
     isSystemDefault?: boolean;
-    customFields?: any;
+    taxFreeFrom?: number;
+    customFields?: Record<string, any>;
     itemRounding: {
         decimals?: number;
         interval?: number;
@@ -30,9 +32,8 @@ export type CurrencyJsonApi = (resource & {
         interval?: number;
         roundForNet?: boolean;
     };
-    taxFreeFrom?: number;
     readonly createdAt: string;
     readonly updatedAt?: string;
-    translated?: any;
+    translated?: Record<string, any>;
 });
 

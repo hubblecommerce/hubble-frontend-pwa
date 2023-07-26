@@ -3,7 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { linkage } from './linkage';
-
-export type relationshipToOne = linkage;
-
+/**
+ * Accepted response content types
+ */
+export type accept = string;

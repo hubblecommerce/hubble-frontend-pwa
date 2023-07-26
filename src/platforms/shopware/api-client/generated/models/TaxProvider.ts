@@ -4,10 +4,16 @@
 /* eslint-disable */
 
 /**
- * Added since version: 6.3.1.0
+ * Added since version: 6.5.0.0
  */
-export type App = {
+export type TaxProvider = {
     id?: string;
+    active?: boolean;
+    name: string;
+    priority: number;
+    processUrl?: string;
+    appId?: string;
+    customFields?: Record<string, any>;
     readonly createdAt: string;
     readonly updatedAt?: string;
     translated?: Record<string, any>;

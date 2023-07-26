@@ -1,6 +1,6 @@
 # How to set up Shopware 6 to work with hubble PWA
 
-1. Setup Shopware 6 (Version >= 6.4.20.2) your preferred way: [Shopware 6 installation overview](https://developer.shopware.com/docs/guides/installation/overview)
+1. Setup Shopware 6 (Version >= 6.5.3.3) your preferred way: [Shopware 6 installation overview](https://developer.shopware.com/docs/guides/installation/overview)
 2. Install the [official Shopware 6 PWA plugin](https://github.com/elkmod/SwagShopwarePwa). 
 This is a required plugin with useful API endpoints to make hubble PWA work with Shopware 
 3. After you successfully installed Shopware 6. Go to your Shopware 6 admin and create an [integration](https://docs.shopware.com/en/shopware-6-en/settings/system/integrationen?category=shopware-6-en/settings/system), 

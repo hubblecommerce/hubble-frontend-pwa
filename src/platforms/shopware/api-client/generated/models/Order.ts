@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -30,8 +31,8 @@ export type Order = {
     price?: {
         netPrice: number;
         totalPrice: number;
-        calculatedTaxes?: any;
-        taxRules?: any;
+        calculatedTaxes?: Record<string, any>;
+        taxRules?: Record<string, any>;
         positionPrice: number;
         rawTotal: number;
         taxStatus: string;
@@ -44,9 +45,9 @@ export type Order = {
         unitPrice: number;
         totalPrice: number;
         quantity: number;
-        calculatedTaxes?: any;
-        taxRules?: any;
-        referencePrice?: any;
+        calculatedTaxes?: Record<string, any>;
+        taxRules?: Record<string, any>;
+        referencePrice?: Record<string, any>;
         listPrice?: {
             price?: number;
             discount?: number;
@@ -62,7 +63,7 @@ export type Order = {
     affiliateCode?: string;
     campaignCode?: string;
     customerComment?: string;
-    customFields?: any;
+    customFields?: Record<string, any>;
     createdById?: string;
     updatedById?: string;
     readonly createdAt: string;
