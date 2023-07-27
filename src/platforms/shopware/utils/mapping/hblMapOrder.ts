@@ -11,11 +11,7 @@ export function hblMapOrder (swOrder: SwOrder): HblOrder {
         // @ts-ignore
         email: swOrder.orderCustomer.email,
         // @ts-ignore
-        shippingAddress: hblMapCustomerAddress(swOrder.deliveries?.[0].shippingOrderAddress),
-        // @ts-ignore
         billingAddress: hblMapCustomerAddress(swOrder.billingAddress),
-        // @ts-ignore
-        shippingMethod: hblMapShippingMethod(swOrder.deliveries?.[0].shippingMethod),
         // @ts-ignore
         paymentMethod: hblMapPaymentMethod(swOrder.transactions?.[0].paymentMethod),
         // TODO: patch api client
@@ -25,6 +21,10 @@ export function hblMapOrder (swOrder: SwOrder): HblOrder {
         // @ts-ignore
         orderDate: swOrder.orderDate,
         // @ts-ignore
-        status: swOrder.stateMachineState.translated.name
+        status: swOrder.stateMachineState.translated.name,
+        // @ts-ignore
+        ...(swOrder.deliveries?.length > 0 && { shippingMethod: hblMapShippingMethod(swOrder.deliveries?.[0].shippingMethod) }),
+        // @ts-ignore
+        ...(swOrder.deliveries?.length > 0 && { shippingAddress: hblMapCustomerAddress(swOrder.deliveries?.[0].shippingOrderAddress) })
     }
 }

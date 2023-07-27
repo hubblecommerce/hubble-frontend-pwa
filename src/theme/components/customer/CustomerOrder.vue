@@ -1,6 +1,6 @@
 <template>
     <div class="grid grid-cols-12 gap-6 lg:gap-12">
-        <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
+        <div v-if="order.shippingAddress" class="col-span-12 md:col-span-6 flex flex-col gap-2">
             <div class="text-2xl">
                 Shipping Address
             </div>
@@ -16,7 +16,7 @@
                 <CustomerAddressRenderer :address="order.billingAddress" />
             </div>
         </div>
-        <div class="col-span-12 md:col-span-6 flex flex-col gap-2">
+        <div v-if="order.shippingMethod" class="col-span-12 md:col-span-6 flex flex-col gap-2">
             <div class="text-2xl">
                 Shipping Method
             </div>
@@ -43,7 +43,8 @@
                 <div class="avatar indicator mr-4">
                     <span class="indicator-item indicator-bottom badge badge-secondary">{{ item.quantity }}</span>
                     <div class="w-20">
-                        <img :src="item.media.url" :alt="item.name">
+                        <img v-if="item?.media?.url" :src="item.media.url" :alt="item.name">
+                        <img v-else src="~/assets/product/placeholder-image.png" class="d-block h-auto" :alt="item.name">
                     </div>
                 </div>
 
@@ -70,7 +71,7 @@
                             {{ formatPrice(order.totals.subTotal) }}
                         </td>
                     </tr>
-                    <tr>
+                    <tr v-if="order.shippingMethod">
                         <td>Shipping</td>
                         <td class="text-right">
                             {{ formatPrice(order.shippingMethod.price) }}

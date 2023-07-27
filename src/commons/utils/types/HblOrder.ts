@@ -16,12 +16,12 @@ export interface HblOrder {
     id: string,
     orderNumber: string,
     email: string,
-    shippingAddress: HblCustomerShippingAddress,
     billingAddress: HblCustomerBillingAddress,
-    shippingMethod: HblShippingMethod,
     paymentMethod: HblPaymentMethod,
     lineItems: HblOrderLineItem[],
     totals: HblTotals,
     orderDate: string,
-    status: string
+    status: string,
+    shippingAddress?: HblCustomerShippingAddress,
+    shippingMethod?: HblShippingMethod
 }
