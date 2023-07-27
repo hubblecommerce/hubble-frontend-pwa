@@ -40,6 +40,8 @@
         "dev:build:analyze": "nuxi analyze playground",
         "dev:prepare": "rm -rf ./playground/.hubble && nuxt-module-build --stub && nuxi prepare playground && husky install",
         "test:integration": "rm -rf __tests__/module/fixture/.hubble && nuxt-module-build --stub && nuxi prepare __tests__/module/fixture && vitest",
+        "lint": "eslint src --ext .ts,.js,.vue",
+        "lint:fix": "eslint src --fix --ext .ts,.js,.vue",
         "test:e2e": "start-server-and-test test:prepare:e2e http://localhost:3000 test:cypress:run",
         "test:prepare:e2e": "nuxt-module-build --stub && nuxi prepare __tests__/module/fixture && nuxi dev __tests__/module/fixture",
         "test:cypress:run": "cypress run",
