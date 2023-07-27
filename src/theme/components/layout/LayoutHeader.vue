@@ -22,7 +22,7 @@
                                 <SwatchIcon class="h-5 w-5" fill="none" />
                             </div>
                         </label>
-                        <div tabindex="0" class="card card-compact dropdown-content w-52 bg-base-100 shadow">
+                        <div tabindex="0" class="card card-compact dropdown-content w-52 mt-3 bg-base-100 shadow">
                             <div class="card-body">
                                 <select v-model="colorMode.preference" class="select select-primary max-w-xs">
                                     <option disabled selected>
