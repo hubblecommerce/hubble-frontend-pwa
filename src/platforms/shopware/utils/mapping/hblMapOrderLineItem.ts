@@ -1,6 +1,6 @@
 import { OrderLineItem as SwOrderLineItem } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 import { HblOrderLineItem } from '@/utils/types'
-import { hblMapMedia } from '#imports'
+import { hblMapMedia, hblMapOrderLineItemDownloads } from '#imports'
 
 export function hblMapOrderLineItem (swOrderLineItem: SwOrderLineItem): HblOrderLineItem {
     return {
@@ -11,6 +11,7 @@ export function hblMapOrderLineItem (swOrderLineItem: SwOrderLineItem): HblOrder
         media: hblMapMedia(swOrderLineItem.cover),
         quantity: swOrderLineItem.quantity,
         // @ts-ignore
-        price: swOrderLineItem.totalPrice
+        price: swOrderLineItem.totalPrice,
+        ...(swOrderLineItem?.downloads?.length > 0 && { downloads: hblMapOrderLineItemDownloads(swOrderLineItem.downloads) })
     }
 }

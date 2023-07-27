@@ -59,6 +59,16 @@
                             {{ formatPrice(item.price) }}
                         </div>
                     </div>
+                    <div class="flex flex-col">
+                        <div
+                            v-for="download in filterDownloads(item.downloads)"
+                            :key="download.id"
+                            class="cursor-pointer"
+                            @click="downloadFile(download)"
+                        >
+                            {{ download.fileName }}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -102,12 +112,31 @@
 </template>
 
 <script setup lang="ts">
-import { useCurrency } from '#imports'
+import { useCurrency, useCustomer } from '#imports'
 import { HblOrder } from '@/utils/types'
+const { getOrderLineItemDownload } = useCustomer()
 
 const props = defineProps<{
     order: HblOrder
 }>()
 
 const { formatPrice } = useCurrency()
+
+function filterDownloads (downloads) {
+    return downloads?.filter(download => download.canBeDownloaded)
+}
+
+async function downloadFile (download) {
+    const blob = await getOrderLineItemDownload(props.order.id, download.id)
+
+    const blobURL = window.URL.createObjectURL(blob)
+    const tempLink = document.createElement('a')
+    tempLink.style.display = 'none'
+    tempLink.href = blobURL
+    tempLink.setAttribute('download', download.fileName)
+    document.body.appendChild(tempLink)
+    tempLink.click()
+    document.body.removeChild(tempLink)
+    window.URL.revokeObjectURL(blobURL)
+}
 </script>

@@ -364,7 +364,12 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
                     },
                     lineItems: {
                         associations: {
-                            cover: {}
+                            cover: {},
+                            downloads: {
+                                associations: {
+                                    media: {}
+                                }
+                            }
                         }
                     },
                     billingAddress: {
@@ -389,6 +394,19 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
             loading.value = false
             error.value = e
             throw new Error(e as string)
+        }
+    }
+
+    async function getOrderLineItemDownload (orderId: string, downloadId: string): Promise<Blob | void> {
+        loading.value = true
+        error.value = false
+
+        try {
+            loading.value = false
+            return await OrderShopware.orderDownloadFile(orderId, downloadId)
+        } catch (e) {
+            loading.value = false
+            error.value = e
         }
     }
 
@@ -623,6 +641,7 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
         updateCustomerAddress,
         deleteCustomerAddress,
         getOrders,
+        getOrderLineItemDownload,
         setDefaultBilling,
         setDefaultShipping,
         requireNewPassword,
