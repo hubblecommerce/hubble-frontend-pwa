@@ -14,9 +14,7 @@
         </client-only>
 
         <div v-if="error" class="alert alert-error">
-            <div>
-                <span> {{ error }}</span>
-            </div>
+            <span> {{ error }}</span>
         </div>
 
         <button
