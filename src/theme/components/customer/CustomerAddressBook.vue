@@ -34,12 +34,14 @@
     </div>
 
     <input id="address-form-modal" v-model="modalState" type="checkbox" class="modal-toggle">
-    <label for="address-form-modal" class="modal modal-bottom sm:modal-middle cursor-pointer">
-        <label class="modal-box relative" for="">
+    <div class="modal modal-top sm:modal-middle">
+        <div class="modal-box relative">
             <div class="btn btn-sm btn-circle absolute right-2 top-2" @click="modalState = false">
                 <XMarkIcon class="h-4 w-4" />
             </div>
-            <div class="text-2xl mb-2">{{ t(`customer.address.book.action${formAction}`) }} {{ t('customer.address.book.address') }}</div>
+            <div class="text-2xl mb-2">
+                {{ t(`customer.address.book.action${formAction}`) }} {{ t('customer.address.book.address') }}
+            </div>
             <form ref="addressBookForm" class="w-full relative flex flex-col" @submit.prevent="onFormSubmit()">
                 <CustomerAddressForm v-if="formAction === 'Add' || formAction === 'Edit'" :model-value="formData" />
                 <CustomerAddressRenderer v-if="formAction === 'Delete'" :address="formData" />
@@ -65,8 +67,9 @@
                     {{ t(`customer.address.book.action${formAction}`) }} {{ t('customer.address.book.address') }}
                 </button>
             </form>
-        </label>
-    </label>
+        </div>
+        <label class="modal-backdrop cursor-pointer" for="address-form-modal">Close</label>
+    </div>
 </template>
 
 <script setup lang="ts">
