@@ -157,14 +157,14 @@ export const usePage = function (): HblIUsePage {
         error.value = false
 
         try {
-            let options: any = []
+            const options: any = []
             Object.keys(selectedOptions).forEach((key) => {
                 options.push(selectedOptions[key])
             })
 
             // Set selected option to end of array, to force shopware to respond with a matching variant
             // even the selected option is not available
-            options.push(options.splice(options.indexOf(switchedOption), 1)[0]);
+            options.push(options.splice(options.indexOf(switchedOption), 1)[0])
 
             const matchingVariant = await ProductShopware.searchProductVariantIds(parentId, {
                 options,
@@ -180,16 +180,16 @@ export const usePage = function (): HblIUsePage {
             }
 
             const response = await __request(OpenAPI, {
-                method: "POST",
-                url: "/product/{productId}",
+                method: 'POST',
+                url: '/product/{productId}',
                 path: {
                     // @ts-ignore
-                    "productId": matchingVariant?.variantId
+                    productId: matchingVariant?.variantId
                 },
                 body: {
                     associations: {
                         ...associations,
-                        crossSellings: {},
+                        crossSellings: {}
                     }
                 }
             }) as { product: swProduct, configurator: Array<PropertyGroup> }

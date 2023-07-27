@@ -53,6 +53,9 @@
         ],
         "vue/no-multiple-template-root": [
             "off"
+        ],
+        "no-useless-return": [
+            "off"
         ]
     }
 }

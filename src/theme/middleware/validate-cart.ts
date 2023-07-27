@@ -1,4 +1,4 @@
-import destr from 'destr'
+import { destr } from 'destr'
 import { CookieOptions, defineNuxtRouteMiddleware, useNuxtApp } from '#app'
 import { storeToRefs } from 'pinia'
 import { useCart, useLocalisation } from '#imports'

@@ -1,9 +1,9 @@
 import { ref, Ref } from 'vue'
 import { useNuxtApp, navigateTo } from '#app'
-import { useRoute } from '#imports'
 import { NavigateToOptions } from '#app/composables/router'
-import { HblIUseLocalisation } from '@/utils/types'
 import { NavigationFailure, RouteLocationRaw, RouteLocationNormalized } from 'vue-router'
+import { useRoute } from '#imports'
+import { HblIUseLocalisation } from '@/utils/types'
 
 const entityPathInfo = ref(null)
 
@@ -45,7 +45,7 @@ export const useLocalisation = function (targetRoute?: RouteLocationNormalized):
         const locale = isLocalisedRoute(route.path)
 
         if (locale) {
-            if (typeof target === 'string' ) {
+            if (typeof target === 'string') {
                 if (!target.startsWith('/')) {
                     target = '/' + target
                 }

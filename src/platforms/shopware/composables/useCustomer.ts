@@ -301,7 +301,7 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
         try {
             const response = await OrderShopware.readOrder({
                 limit: 10,
-                ['total-count-mode']: 2,
+                'total-count-mode': 2,
                 ...(params?.page != null && { page: params?.page }),
                 associations: {
                     deliveries: {
@@ -337,11 +337,11 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
                 ...(filter != null && { filter })
             })
 
-            let mappedData = {
+            const mappedData = {
                 limit: response.orders?.limit,
                 page: response.orders?.page,
                 total: response.orders?.total,
-                data: params?.id != null ? hblMapOrder(response.orders.elements[0]) : hblMapOrders(response.orders.elements)
+                data: params?.id != null ? hblMapOrder(response.orders?.elements[0]) : hblMapOrders(response.orders?.elements)
             }
 
             loading.value = false
@@ -437,7 +437,7 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
                 ...(dateOfBirth != null && {
                     birthdayDay: dateOfBirth.getDate(),
                     birthdayMonth: dateOfBirth.getMonth() + 1,
-                    birthdayYear: dateOfBirth.getFullYear(),
+                    birthdayYear: dateOfBirth.getFullYear()
                 })
             })
 

@@ -102,7 +102,10 @@ const { showNotification } = useNotification()
 const emit = defineEmits(['updateBefore:paymentMethod', 'updateAfter:paymentMethod'])
 
 const props = defineProps({
-    currentStep: String
+    currentStep: {
+        type: String,
+        default: ''
+    }
 })
 
 const selectedMethodId: Ref<string | null> = session?.value?.paymentMethod?.id != null ? ref(session?.value?.paymentMethod?.id) : ref(null)

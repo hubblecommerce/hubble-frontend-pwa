@@ -1,4 +1,5 @@
 <template>
+    <!-- eslint-disable-next-line vue/no-v-html -->
     <div v-if="content.data?.content != null" v-html="content.data.content" />
 </template>
 

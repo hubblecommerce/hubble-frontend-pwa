@@ -27,6 +27,8 @@ const props = withDefaults(defineProps<Props>(), {
     text: false,
     round: false,
     circle: false,
+    height: '',
+    width: '',
     size: 'medium',
     repeat: 1,
     animated: true,

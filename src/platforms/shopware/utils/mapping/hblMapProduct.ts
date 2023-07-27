@@ -1,5 +1,4 @@
-import { Product as SwProduct } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { PropertyGroup } from '@hubblecommerce/hubble/platforms/shopware/api-client'
+import { Product as SwProduct, PropertyGroup } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 import { HblProduct } from '@/utils/types'
 import { hblMapMedia, hblMapManufacturer, hblMapPrice, hblMapProductMedia, hblMapVariantGroups } from '#imports'
 
@@ -42,17 +41,18 @@ export function hblMapProduct (swProduct: SwProduct, swProductConfigurator?: Pro
     }
 
     // calculatedPrice = price configured on settings base page of product
-    let price = swProduct.calculatedPrice != null ? hblMapPrice(swProduct.calculatedPrice) : null
+    let price = hblMapPrice(swProduct.calculatedPrice)
 
-    if (swProduct.calculatedPrices?.length > 0) {
+    if (swProduct.calculatedPrices != null && swProduct.calculatedPrices?.length > 0) {
         // @ts-ignore
         price = hblMapPrice(swProduct.calculatedPrices[swProduct.calculatedPrices.length - 1])
     }
 
-    const variantsFrom = swProduct.calculatedCheapestPrice?.unitPrice !== swProduct.calculatedPrice?.unitPrice && swProduct.calculatedCheapestPrice.variantId !== swProduct.id
+    const variantsFrom = swProduct.calculatedCheapestPrice?.unitPrice !== swProduct.calculatedPrice?.unitPrice && swProduct.calculatedCheapestPrice?.variantId !== swProduct.id
     // Shopware needs to set variantListing data to extensions, not implemented yet
-    const isParent= swProduct.extensions?.variantListing?.displayParent === true && parentId === null
-    const priceRange = swProduct.calculatedPrices?.length > 0 || (isParent && variantsFrom)
+    // @ts-ignore
+    const isParent = swProduct.extensions?.variantListing?.displayParent === true && parentId === null
+    const priceRange = swProduct.calculatedPrices != null && (swProduct.calculatedPrices?.length > 0 || (isParent && variantsFrom))
 
     let cheapestPrice = null
     if (swProduct.calculatedCheapestPrice != null) {
@@ -60,10 +60,10 @@ export function hblMapProduct (swProduct: SwProduct, swProductConfigurator?: Pro
         cheapestPrice = hblMapPrice(swProduct.calculatedCheapestPrice)
     }
 
-    const tierPrices = []
-    if (swProduct.calculatedPrices?.length > 0) {
+    const tierPrices: any = []
+    if (swProduct.calculatedPrices != null && swProduct.calculatedPrices?.length > 0) {
         swProduct.calculatedPrices?.map((price) => {
-            tierPrices.push({
+            return tierPrices.push({
                 ...hblMapPrice(price),
                 qty: price.quantity
             })
@@ -73,24 +73,24 @@ export function hblMapProduct (swProduct: SwProduct, swProductConfigurator?: Pro
     return {
         // @ts-ignore
         id: swProduct.id,
-        name: swProduct.translated.name,
-        description: swProduct.translated.description,
+        name: swProduct.translated?.name,
+        description: swProduct.translated?.description,
         sku: swProduct.productNumber,
         pathInfo,
         url,
         // @ts-ignore
         active: swProduct.available,
         stock: swProduct.stock,
-        // @ts-ignore
         priceRange,
         price,
         variantsFrom,
+        // @ts-ignore
         cheapestPrice,
         tierPrices,
         deliveryTime: swProduct.deliveryTime?.name,
         manufacturer: swProduct.manufacturer != null ? hblMapManufacturer(swProduct.manufacturer) : null,
-        metaTitle: swProduct.translated.metaTitle,
-        metaDescription: swProduct.translated.metaDescription,
+        metaTitle: swProduct.translated?.metaTitle,
+        metaDescription: swProduct.translated?.metaDescription,
         ...(variants != null && { variants }),
         ...(defaultOptions != null && { defaultOptions }),
         ...(parentId != null && { parentId }),

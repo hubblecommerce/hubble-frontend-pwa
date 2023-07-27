@@ -3,7 +3,7 @@ import { fileURLToPath } from 'url'
 import { defineNuxtModule, extendPages, installModule } from '@nuxt/kit'
 import { Nuxt } from '@nuxt/schema'
 // @ts-ignore
-import fs from 'fs-extra'
+import * as fs from 'fs-extra'
 import { defu } from 'defu'
 import { CookieOptions } from 'nuxt/app'
 import { globby } from 'globby'
@@ -211,7 +211,7 @@ export default defineNuxtModule<ModuleOptions>({
         })
 
         // Add utils/mapping to auto imports to be able to override mapping functions on project level
-        nuxt.hook("imports:dirs", (dirs) => {
+        nuxt.hook('imports:dirs', (dirs) => {
             dirs.push(resolve(join(targetDir, 'utils/mapping')))
         })
 

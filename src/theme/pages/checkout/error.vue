@@ -10,7 +10,7 @@
         </div>
 
         <client-only>
-            <CheckoutPayment @update-after:paymentMethod="paymentMethodId = $event" />
+            <CheckoutPayment @update-after:payment-method="paymentMethodId = $event" />
         </client-only>
 
         <div v-if="error" class="alert alert-error">

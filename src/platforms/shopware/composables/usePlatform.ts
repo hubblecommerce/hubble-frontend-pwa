@@ -35,6 +35,7 @@ export const usePlatform = defineStore('use-platform', (): HblIUsePlatform => {
     }[]
 
     function setSessionToken (token: string | null | undefined): void {
+        // @ts-ignore
         session.value.sessionToken = token
 
         const sessionCookie = runtimeConfig.public.sessionCookie as { name: string, options: CookieOptions }
@@ -56,7 +57,7 @@ export const usePlatform = defineStore('use-platform', (): HblIUsePlatform => {
         error.value = false
 
         try {
-            const { sessionCookie } = useRuntimeConfig().public as { sessionCookie: { name: string, options: CookieOptions }  }
+            const { sessionCookie } = useRuntimeConfig().public as { sessionCookie: { name: string, options: CookieOptions } }
             const cookie = useCookie(sessionCookie.name)
 
             if (cookie.value === undefined) {

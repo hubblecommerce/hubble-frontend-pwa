@@ -55,7 +55,7 @@ setDefaultOptions()
 function setDefaultOptions () {
     props.variants.forEach((group) => {
         group.options.forEach((option) => {
-            if (props.defaultOptions.includes(option.id)) {
+            if (props.defaultOptions?.includes(option.id)) {
                 selectedOptions.value[group.id] = option.id
             }
         })
@@ -73,6 +73,7 @@ async function onVariantChange (switchedOption: string, switchedGroup: string) {
     emit('loading', false)
 
     if (error.value) {
+        // eslint-disable-next-line no-console
         console.log(error.value)
         showNotification(error.value.toString(), 'error', true)
         return
