@@ -135,7 +135,7 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
                 await setSessionToken(response.contextToken)
                 await getSession()
 
-                navigateToI18n('/customer/login')
+                await navigateToI18n('/customer/login')
                 return
             }
 
@@ -192,7 +192,11 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
 
             // TODO: patch api client
             // @ts-ignore
-            await LoginRegistrationShopware.register(requestBody)
+            const response = await LoginRegistrationShopware.register(requestBody)
+
+            if (response.doubleOptInRegistration) {
+                showNotification('Please confirm your registration by clicking on the link in the email we send you.', 'success')
+            }
 
             // Refresh session data
             await getSession()
@@ -208,6 +212,18 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
             }
             loading.value = false
             error.value = e
+            throw e
+        }
+    }
+
+    async function registerConfirm (formData: { em: string, hash: string }): Promise<void> {
+        loading.value = true
+
+        try {
+            await LoginRegistrationShopware.registerConfirm(formData)
+            loading.value = false
+        } catch (e) {
+            loading.value = false
             throw e
         }
     }
@@ -569,7 +585,6 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
             await NewsletterShopware.confirmNewsletter(formData)
 
             loading.value = false
-            return
         } catch (e) {
             loading.value = false
             throw e
@@ -600,6 +615,7 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
         login,
         logout,
         register,
+        registerConfirm,
         updateShippingAddress,
         updateBillingAddress,
         getCustomerAddresses,

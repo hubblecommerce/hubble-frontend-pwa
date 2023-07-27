@@ -12,6 +12,7 @@ export interface HblIUseCustomer {
     updateShippingAddress (shippingAddress: HblCustomerShippingAddress): Promise<HblCustomerShippingAddress | void>,
     updateBillingAddress (billingAddress: HblCustomerBillingAddress): Promise<HblCustomerBillingAddress | void>,
     register(formData: HblRegisterCustomerForm): Promise<HblCustomer | void>,
+    registerConfirm (formData: { em: string, hash: string }): Promise<void>,
     getCustomerAddresses (): Promise<HblCustomerBillingAddress[] | HblCustomerShippingAddress[]>,
     addCustomerAddress (address: HblCustomerBillingAddress | HblCustomerShippingAddress): Promise<HblCustomerBillingAddress | HblCustomerShippingAddress | void>,
     updateCustomerAddress (address: HblCustomerBillingAddress | HblCustomerShippingAddress): Promise<HblCustomerBillingAddress | HblCustomerShippingAddress | void>,
