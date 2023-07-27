@@ -1,6 +1,6 @@
 <template>
     <header>
-        <nav class="bg-base-100 shadow-md relative z-50">
+        <nav class="bg-base-100 shadow-md relative z-40">
             <div class="navbar container m-auto px-2 lg:px-6">
                 <div class="navbar-start">
                     <LayoutNavigationMobile :navigation="navigation" />
