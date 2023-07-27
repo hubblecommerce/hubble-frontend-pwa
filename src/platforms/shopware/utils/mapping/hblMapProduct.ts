@@ -40,24 +40,49 @@ export function hblMapProduct (swProduct: SwProduct, swProductConfigurator?: Pro
         parentId = swProduct.parentId
     }
 
-    // calculatedPrice = price configured on settings base page of product
-    let price = hblMapPrice(swProduct.calculatedPrice)
+    const _cheapest = swProduct?.calculatedCheapestPrice
 
-    if (swProduct.calculatedPrices != null && swProduct.calculatedPrices?.length > 0) {
+    const _real = swProduct?.calculatedPrices != null && swProduct?.calculatedPrices?.length > 0
+        ? swProduct?.calculatedPrices[0]
+        : swProduct?.calculatedPrice
+
+    // @TODO: platform need to provide variantListingConfig
+    // @ts-ignore
+    const _displayParent = swProduct?.variantListingConfig?.displayParent && swProduct?.parentId === null
+
+    // @TODO: platform need to provide cheapestPrice
+    const displayFromVariants = !!swProduct?.parentId &&
         // @ts-ignore
-        price = hblMapPrice(swProduct.calculatedPrices[swProduct.calculatedPrices.length - 1])
+        swProduct?.cheapestPrice?.hasRange &&
+        // @ts-ignore
+        !!swProduct?.cheapestPrice?.parentId &&
+        _real?.unitPrice !== _cheapest?.unitPrice &&
+        _cheapest?.unitPrice
+
+    const displayFrom = swProduct?.calculatedPrices != null && (swProduct?.calculatedPrices?.length > 1 || !!(_displayParent && displayFromVariants))
+
+    const _price = () => {
+        if (displayFrom && swProduct?.calculatedPrices != null && swProduct?.calculatedPrices?.length > 1) {
+            const lowest = swProduct?.calculatedPrices?.reduce(
+                (previous, current) => {
+                    return current.unitPrice < previous.unitPrice ? current : previous
+                }
+            )
+            return lowest || _cheapest
+        }
+        return _real
     }
 
-    const variantsFrom = swProduct.calculatedCheapestPrice?.unitPrice !== swProduct.calculatedPrice?.unitPrice && swProduct.calculatedCheapestPrice?.variantId !== swProduct.id
-    // Shopware needs to set variantListing data to extensions, not implemented yet
-    // @ts-ignore
-    const isParent = swProduct.extensions?.variantListing?.displayParent === true && parentId === null
-    const priceRange = swProduct.calculatedPrices != null && (swProduct.calculatedPrices?.length > 0 || (isParent && variantsFrom))
+    const price = hblMapPrice(_price())
+
+    const variantsFrom = displayFromVariants
+
+    const priceRange = displayFrom
 
     let cheapestPrice = null
     if (swProduct.calculatedCheapestPrice != null) {
         // @ts-ignore
-        cheapestPrice = hblMapPrice(swProduct.calculatedCheapestPrice)
+        cheapestPrice = hblMapPrice(_cheapest)
     }
 
     const tierPrices: any = []

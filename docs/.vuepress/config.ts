@@ -57,6 +57,7 @@ export default defineUserConfig({
                         '/pwa/shopware/shopwareplugins',
                         '/pwa/shopware/shopwareemotion',
                         '/pwa/shopware/mulitlanguage',
+                        '/pwa/shopware/trade-offs',
                     ]
                 },
                 {

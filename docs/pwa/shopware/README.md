@@ -6,3 +6,4 @@ It supports natively:
 - [x] [Shopware 6 Plugins](/pwa/shopware/shopwareplugins.html)
 - [x] [Shopware 6 Emotion Worlds](/pwa/shopware/shopwareemotion.html)
 - [x] [Shopware 6 i18n](/pwa/shopware/mulitlanguage.html)
+- [x] [Shopware 6 Trade-offs](/pwa/shopware/limitations.html)
