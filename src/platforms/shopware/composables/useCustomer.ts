@@ -123,13 +123,36 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
     }
 
     async function logout (): Promise<void> {
-        customer.value = null
-        await setSessionToken(null)
+        loading.value = true
+        error.value = false
 
-        const { getCart } = useCart()
-        await getCart()
+        try {
+            const response = await LoginRegistrationShopware.logoutCustomer()
+            loading.value = false
 
-        navigateToI18n('/customer/login')
+            if (response.contextToken !== undefined) {
+                customer.value = null
+                await setSessionToken(response.contextToken)
+                await getSession()
+
+                navigateToI18n('/customer/login')
+                return
+            }
+
+            throw new Error('Something went wrong please try again')
+        } catch (e) {
+            const error = e as any
+
+            if (error.body[0]?.detail != null) {
+                showNotification(error.body[0]?.detail, 'error', true)
+            } else {
+                showNotification(error, 'error', true)
+            }
+
+            loading.value = false
+            error.value = e
+            throw e
+        }
     }
 
     async function register (formData: HblRegisterCustomerForm): Promise<HblCustomer | void> {
