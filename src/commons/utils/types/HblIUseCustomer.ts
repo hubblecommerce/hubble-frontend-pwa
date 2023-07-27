@@ -25,5 +25,6 @@ export interface HblIUseCustomer {
     editCustomerEmail (formData: { email: string, emailConfirmation: string, password: string }): Promise<void>,
     editCustomerPassword (formData: { password: string, newPassword: string, newPasswordConfirm: string }): Promise<void>,
     editCustomerNewsletter (formData: { email: string, option: string, storefrontUrl: string }): Promise<void>,
+    confirmCustomerNewsletter (formData: { em: string, hash: string }): Promise<void>,
     editCustomerPayment (paymentId: string): Promise<void>
 }

@@ -522,6 +522,32 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
             }
         }
 
+        if (formData.option === 'subscribe') {
+            try {
+                await NewsletterShopware.subscribeToNewsletter(formData)
+
+                loading.value = false
+                return
+            } catch (e) {
+                loading.value = false
+                error.value = e
+                throw e
+            }
+        }
+
+        if (formData.option === 'confirmSubscribe') {
+            try {
+                await NewsletterShopware.subscribeToNewsletter(formData)
+
+                loading.value = false
+                return
+            } catch (e) {
+                loading.value = false
+                error.value = e
+                throw e
+            }
+        }
+
         if (formData.option === 'unsubscribe') {
             try {
                 await NewsletterShopware.unsubscribeToNewsletter({ email: formData.email })
@@ -533,6 +559,20 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
                 error.value = e
                 throw e
             }
+        }
+    }
+
+    async function confirmCustomerNewsletter (formData: { em: string, hash: string }): Promise<void> {
+        loading.value = true
+
+        try {
+            await NewsletterShopware.confirmNewsletter(formData)
+
+            loading.value = false
+            return
+        } catch (e) {
+            loading.value = false
+            throw e
         }
     }
 
@@ -575,6 +615,7 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
         editCustomerEmail,
         editCustomerPassword,
         editCustomerNewsletter,
+        confirmCustomerNewsletter,
         editCustomerPayment
     }
 })
