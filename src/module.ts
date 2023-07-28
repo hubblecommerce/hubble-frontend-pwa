@@ -3,7 +3,7 @@ import { fileURLToPath } from 'url'
 import { defineNuxtModule, extendPages, installModule } from '@nuxt/kit'
 import { Nuxt } from '@nuxt/schema'
 // @ts-ignore
-import * as fs from 'fs-extra'
+import fs from 'fs-extra'
 import { defu } from 'defu'
 import { CookieOptions } from 'nuxt/app'
 import { globby } from 'globby'
