@@ -94,7 +94,8 @@
                     </div>
                 </div>
 
-                <button type="submit" :disabled="loading" :class="{ 'loading': loading }" class="btn btn-secondary mt-9">
+                <button type="submit" :disabled="loading" class="btn btn-secondary mt-9">
+                    <span v-if="loading" class="loading" />
                     {{ t('customer.edit.password.modalSubmit') }}
                 </button>
             </form>

@@ -45,17 +45,23 @@
             v-if="!resetPassword"
             type="submit"
             class="btn btn-primary btn-block mt-8"
+            :disabled="loading"
             @click.prevent="onLoginClick()"
-            v-text="loading ? t('customerLogin.loading') : t('customerLogin.login')"
-        />
+        >
+            <span v-if="loading" class="loading" />
+            <span v-text="loading ? t('customerLogin.loading') : t('customerLogin.login')" />
+        </button>
 
         <button
             v-if="resetPassword"
             type="submit"
             class="btn btn-primary btn-block mt-8"
+            :disabled="loading"
             @click.prevent="onResetPasswordClick()"
-            v-text="loading ? t('customerLogin.loading') : t('customerLogin.reset')"
-        />
+        >
+            <span v-if="loading" class="loading" />
+            <span v-text="loading ? t('customerLogin.loading') : t('customerLogin.reset')" />
+        </button>
 
         <div class="link link-hover text-center text-sm mt-4" @click="resetPassword = !resetPassword">
             <span v-if="!resetPassword">{{ t('customerLogin.passwordReset') }}</span>

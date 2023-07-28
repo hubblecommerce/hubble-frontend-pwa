@@ -20,10 +20,10 @@
         <button
             type="submit"
             :disabled="loading"
-            :class="{ 'loading': loading }"
             class="btn btn-primary"
             @click.prevent="onSubmit()"
         >
+            <span v-if="loading" class="loading" />
             Reset Payment
         </button>
     </div>
