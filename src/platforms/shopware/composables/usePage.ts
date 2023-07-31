@@ -97,7 +97,7 @@ export const usePage = function (): HblIUsePage {
                 ...(search != null && { search }),
                 ...(page != null && { p: page }),
                 // @ts-ignore
-                ...(manufacturer?.length > 0 && { manufacturer }),
+                ...(manufacturer?.length > 0 && { manufacturer: manufacturer.join('|') }),
                 // @ts-ignore
                 ...(price?.min !== '' && { 'min-price': price.min }),
                 // @ts-ignore
@@ -105,7 +105,7 @@ export const usePage = function (): HblIUsePage {
                 // @ts-ignore
                 ...(rating?.min !== '' && { rating: rating.min }),
                 ...(shipping != null && { 'shipping-free': shipping }),
-                ...(cleanedProps.length > 0 && { properties: cleanedProps })
+                ...(cleanedProps.length > 0 && { properties: cleanedProps.join('|') })
             }
 
             const requestBody = {
@@ -228,12 +228,12 @@ export const usePage = function (): HblIUsePage {
             ...(order != null && { order }),
             ...(limit != null && typeof limit === 'string' && { limit: parseInt(limit) }),
             ...(p != null && { p }),
-            ...(manufacturer != null && typeof manufacturer === 'string' && { manufacturer: manufacturer.split(',') }),
+            ...(manufacturer != null && typeof manufacturer === 'string' && { manufacturer }),
             ...(minPrice != null && { 'min-price': minPrice }),
             ...(maxPrice != null && { 'max-price': maxPrice }),
             ...(rating != null && { rating }),
             ...(shipping != null && { 'shipping-free': (shipping === 'true') }),
-            ...(properties != null && typeof properties === 'string' && { properties: properties.split(',') }),
+            ...(properties != null && typeof properties === 'string' && { properties }),
             ...(search != null && { search })
         }
     }
