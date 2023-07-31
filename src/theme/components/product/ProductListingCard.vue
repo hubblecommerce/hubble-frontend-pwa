@@ -26,12 +26,12 @@
                     {{ t('productCard.details') }}
                 </MiscLink>
                 <button
-                    :class="{ 'loading': cartLoading }"
                     :disabled="cartLoading"
                     class="btn btn-secondary text-center"
                     role="button"
                     @click="onAddToCart()"
                 >
+                    <span v-if="cartLoading" class="loading" />
                     {{ t('productCard.addToCart') }}
                 </button>
             </div>

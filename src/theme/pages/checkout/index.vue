@@ -141,10 +141,10 @@
                                 </MiscLink>
                                 <button
                                     class="btn btn-primary w-full order-1 lg:w-auto lg:order-2"
-                                    :class="{ 'loading': customerLoading }"
                                     :disabled="customerLoading"
                                     @click.prevent="onUpdateContact()"
                                 >
+                                    <span v-if="customerLoading" class="loading" />
                                     <span>{{ t('checkout.contact.navigation.forward') }}</span>
                                 </button>
                             </div>
@@ -164,10 +164,10 @@
                                         <button
                                             v-if="step === 'contact'"
                                             class="btn btn-primary w-full order-1 lg:w-auto lg:order-2"
-                                            :class="{ 'loading': actionProps.loading }"
                                             :disabled="actionProps.loading"
                                             @click.prevent="actionProps.submit(afterContactSubmit)"
                                         >
+                                            <span v-if="actionProps.loading" class="loading" />
                                             <span>{{ t('checkout.contact.navigation.forward') }}</span>
                                         </button>
                                     </div>
@@ -234,10 +234,10 @@
                                 <button
                                     type="submit"
                                     :disabled="actionProps.loading"
-                                    :class="{ 'loading': actionProps.loading }"
                                     class="btn btn-primary w-full order-1 lg:w-auto lg:order-2"
                                     @click.prevent="actionProps.onSubmit()"
                                 >
+                                    <span v-if="actionProps.loading" class="loading" />
                                     {{ t('checkout.summary.navigation.place.order') }}
                                 </button>
                             </div>

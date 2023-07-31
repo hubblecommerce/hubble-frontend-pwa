@@ -79,6 +79,7 @@
                         }"
                     />
                 </div>
+                <label class="modal-backdrop cursor-pointer" for="payment-modal">Close</label>
             </div>
         </template>
     </div>

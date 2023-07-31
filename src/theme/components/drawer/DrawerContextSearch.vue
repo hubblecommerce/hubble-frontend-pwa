@@ -18,7 +18,8 @@
                     placeholder="Browse our offer"
                     class="input input-bordered w-full focus:input-primary"
                 >
-                <button class="btn btn-square" :class="{'loading': loading}">
+                <button class="btn btn-square">
+                    <span v-if="loading" class="loading" />
                     <MagnifyingGlassIcon v-if="!loading" class="h-5 w-5" />
                 </button>
             </div>

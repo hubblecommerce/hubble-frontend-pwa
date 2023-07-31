@@ -9,7 +9,7 @@
                     >{{ selectedFilters[availableFilter.id].length }}</span>
                     <label tabindex="0" class="btn btn-sm">{{ availableFilter.name }}</label>
                 </div>
-                <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+                <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 z-10">
                     <li v-for="option in availableFilter.options" :key="option.id" class="form-control">
                         <label :for="option.id" class="label cursor-pointer justify-start">
                             <input
@@ -39,7 +39,7 @@
                     />
                     <label tabindex="0" class="btn btn-sm">{{ availableFilter.name }}</label>
                 </div>
-                <ul tabindex="0" class="dropdown-content p-2 shadow bg-base-100 rounded-box w-52">
+                <ul tabindex="0" class="dropdown-content p-2 shadow bg-base-100 rounded-box w-52 z-10">
                     <li class="form-control">
                         <label :for="availableFilter.id" class="label">
                             <span class="label-text">{{ Math.round(selectedFilters[availableFilter.id].max) }}</span>

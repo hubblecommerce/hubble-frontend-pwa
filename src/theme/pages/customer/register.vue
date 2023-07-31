@@ -15,9 +15,9 @@
                     <div class="navigation flex justify-between items-center">
                         <button
                             class="btn btn-primary btn-block"
-                            :class="{ 'loading': actionProps.loading }"
                             @click.prevent="actionProps.submit(afterRegisterSubmit)"
                         >
+                            <span v-if="actionProps.loading" class="loading" />
                             <span v-if="!actionProps.loading">{{ t('customer.register.registerButton') }}</span>
                             <span v-if="actionProps.loading">{{ t('customer.register.loadingState') }}</span>
                         </button>

@@ -9,7 +9,7 @@
                 <p v-if="product.deliveryTime">
                     Delivery Time: {{ product.deliveryTime }}
                 </p>
-                
+
                 <div v-if="product.tierPrices.length > 0" class="">
                     <div v-for="(tierPrice, index) in product.tierPrices" :key="index">
                         <div v-if="index === 0">
@@ -52,7 +52,8 @@
                         >
                     </div>
 
-                    <button :class="{'loading': loading}" :disabled="loading" class="btn btn-primary w-full flex-shrink" @click="onClickAddToCart(qty, product.id)">
+                    <button :disabled="loading" class="btn btn-primary w-full flex-shrink" @click="onClickAddToCart(qty, product.id)">
+                        <span v-if="loading" class="loading" />
                         <span v-if="!loading">Add to cart</span>
                     </button>
                 </div>

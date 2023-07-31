@@ -1,6 +1,6 @@
 <template>
     <header>
-        <nav class="bg-base-100 shadow-md relative z-50">
+        <nav class="bg-base-100 shadow-md relative z-40">
             <div class="navbar container m-auto px-2 lg:px-6">
                 <div class="navbar-start">
                     <LayoutNavigationMobile :navigation="navigation" />
@@ -22,7 +22,7 @@
                                 <SwatchIcon class="h-5 w-5" fill="none" />
                             </div>
                         </label>
-                        <div tabindex="0" class="card card-compact dropdown-content w-52 bg-base-100 shadow">
+                        <div tabindex="0" class="card card-compact dropdown-content w-52 mt-3 bg-base-100 shadow">
                             <div class="card-body">
                                 <select v-model="colorMode.preference" class="select select-primary max-w-xs">
                                     <option disabled selected>
@@ -89,34 +89,7 @@ const colorMode = useColorMode()
 const themes = [
     'system',
     'light',
-    'dark',
-    'cupcake',
-    'bumblebee',
-    'emerald',
-    'corporate',
-    'synthwave',
-    'retro',
-    'cyberpunk',
-    'valentine',
-    'halloween',
-    'garden',
-    'forest',
-    'aqua',
-    'lofi',
-    'pastel',
-    'fantasy',
-    'wireframe',
-    'black',
-    'luxury',
-    'dracula',
-    'cmyk',
-    'autumn',
-    'business',
-    'acid',
-    'lemonade',
-    'night',
-    'coffee',
-    'winter'
+    'dark'
 ]
 
 const {
