@@ -19,6 +19,7 @@ export interface HblIUseCustomer {
     deleteCustomerAddress (addressId: string): Promise<void>,
     getOrders (params?: { id?: string, page?: number }): Promise<{ data: HblOrder | HblOrder[], total: number, page: number, limit: number }>,
     getOrderLineItemDownload (orderId: string, downloadId: string): Promise<Blob | void>,
+    getOrderDocumentDownload (orderId: string, downloadId: string): Promise<Document | void>,
     setDefaultBilling (id: string): Promise<void>,
     setDefaultShipping (id: string): Promise<void>,
     requireNewPassword (email: string): Promise<void>,

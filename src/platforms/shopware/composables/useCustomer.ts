@@ -23,7 +23,7 @@ import {
     HblOrder
 } from '@/utils/types'
 import {
-    AddressShopware,
+    AddressShopware, Document, DocumentShopware,
     LoginRegistrationShopware, NewsletterShopware,
     OrderShopware, ProfileShopware,
     SystemContextShopware
@@ -399,6 +399,19 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
         }
     }
 
+    async function getOrderDocumentDownload (orderId: string, downloadId: string): Promise<Document | void> {
+        loading.value = true
+        error.value = false
+
+        try {
+            loading.value = false
+            return await DocumentShopware.download(orderId, downloadId)
+        } catch (e) {
+            loading.value = false
+            error.value = e
+        }
+    }
+
     async function getOrderLineItemDownload (orderId: string, downloadId: string): Promise<Blob | void> {
         loading.value = true
         error.value = false
@@ -616,6 +629,7 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
         deleteCustomerAddress,
         getOrders,
         getOrderLineItemDownload,
+        getOrderDocumentDownload,
         setDefaultBilling,
         setDefaultShipping,
         requireNewPassword,
