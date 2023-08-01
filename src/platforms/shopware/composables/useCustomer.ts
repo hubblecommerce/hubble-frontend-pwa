@@ -543,45 +543,6 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
         loading.value = true
         error.value = false
 
-        if (formData.option === 'direct') {
-            try {
-                await NewsletterShopware.subscribeToNewsletter(formData)
-
-                loading.value = false
-                return
-            } catch (e) {
-                loading.value = false
-                error.value = e
-                throw e
-            }
-        }
-
-        if (formData.option === 'subscribe') {
-            try {
-                await NewsletterShopware.subscribeToNewsletter(formData)
-
-                loading.value = false
-                return
-            } catch (e) {
-                loading.value = false
-                error.value = e
-                throw e
-            }
-        }
-
-        if (formData.option === 'confirmSubscribe') {
-            try {
-                await NewsletterShopware.subscribeToNewsletter(formData)
-
-                loading.value = false
-                return
-            } catch (e) {
-                loading.value = false
-                error.value = e
-                throw e
-            }
-        }
-
         if (formData.option === 'unsubscribe') {
             try {
                 await NewsletterShopware.unsubscribeToNewsletter({ email: formData.email })
@@ -593,6 +554,17 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
                 error.value = e
                 throw e
             }
+        }
+
+        try {
+            await NewsletterShopware.subscribeToNewsletter(formData)
+
+            loading.value = false
+            return
+        } catch (e) {
+            loading.value = false
+            error.value = e
+            throw e
         }
     }
 
