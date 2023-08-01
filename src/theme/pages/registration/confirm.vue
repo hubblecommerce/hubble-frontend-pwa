@@ -2,7 +2,7 @@
     <div class="container m-auto p-10">
         <div class="flex justify-center">
             <div v-if="loading" class="flex gap-2">
-                <MiscSkeleton circle size="small" :repeat="3" />
+                <ArrowPathIcon class="w-6 h-6 mr-4 animate-spin" />
             </div>
             <div v-if="confirmationFailed" class="flex gap-2">
                 <XCircleIcon class="w-6 h-6" />
@@ -18,8 +18,7 @@
 import { onMounted, ref } from 'vue'
 import { useRouter } from '#app'
 import { useI18n } from 'vue-i18n'
-import { XCircleIcon } from '@heroicons/vue/24/outline'
-import MiscSkeleton from '../../components/misc/MiscSkeleton.vue'
+import { XCircleIcon, ArrowPathIcon } from '@heroicons/vue/24/outline'
 import { useCustomer, useLocalisation, useNotification, usePlatform } from '#imports'
 
 const customerStore = useCustomer()
@@ -58,6 +57,9 @@ onMounted(async function () {
             loading.value = false
             confirmationFailed.value = true
         }
+    } else {
+        showNotification(t('registration.confirm.error'), 'error')
+        await navigateToI18n('/customer/login')
     }
 })
 </script>
