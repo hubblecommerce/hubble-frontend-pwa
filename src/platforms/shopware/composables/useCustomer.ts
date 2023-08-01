@@ -127,6 +127,7 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
         error.value = false
 
         try {
+            const { getCart } = useCart()
             const response = await LoginRegistrationShopware.logoutCustomer()
             loading.value = false
 
@@ -135,6 +136,7 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
                 await setSessionToken(response.contextToken)
                 await getSession()
 
+                await getCart()
                 await navigateToI18n('/customer/login')
                 return
             }
