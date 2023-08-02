@@ -4,7 +4,7 @@ import { HblPaymentMethod } from '@/utils/types/HblPaymentMethod'
 import { HblTotals } from '@/utils/types/HblCart'
 import { HblMedia } from '@/utils/types/HblMedia'
 import { HblOrderLineItemDownload } from '@/utils/types/HblOrderLineItemDownload'
-import { HblOrderDocument } from './HblOrderDocument'
+import { HblOrderDocument } from '@/utils/types/HblOrderDocument'
 
 export interface HblOrderLineItem {
     id: string,
