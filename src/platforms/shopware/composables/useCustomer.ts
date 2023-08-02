@@ -404,8 +404,9 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
         error.value = false
 
         try {
+            const document = await DocumentShopware.download(orderId, downloadId)
             loading.value = false
-            return await DocumentShopware.download(orderId, downloadId)
+            return document
         } catch (e) {
             loading.value = false
             error.value = e
