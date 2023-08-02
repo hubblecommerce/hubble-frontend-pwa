@@ -28,6 +28,7 @@
             <div class="h-full px-6 py-3 overflow-y-auto w-full md:w-96 bg-base-100 text-base-content">
                 <misc-plugin-slot name="layouts-default-drawer-overlay-before" :events="{}" :data="{}" />
                 <LazyDrawerContextCart v-if="drawerContext === 'cart'" />
+                <LazyDrawerContextWishlist v-if="drawerContext === 'wishlist'" />
                 <LazyDrawerContextSearch v-if="drawerContext === 'search'" />
                 <misc-plugin-slot name="layouts-default-drawer-overlay-after" :events="{}" :data="{}" />
             </div>

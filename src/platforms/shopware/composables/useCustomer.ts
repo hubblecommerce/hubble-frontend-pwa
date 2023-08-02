@@ -3,6 +3,7 @@ import { CookieOptions, useCookie } from '#app'
 import { defineStore, storeToRefs } from 'pinia'
 import {
     useCart,
+    useWishlist,
     useNotification,
     usePlatform,
     useRuntimeConfig,
@@ -92,6 +93,7 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
             const platformStore = usePlatform()
             const { session } = storeToRefs(platformStore)
             const { getCart } = useCart()
+            const { getWishlist } = useWishlist()
 
             if (session?.value?.sessionToken === null) {
                 await getCart()
@@ -103,6 +105,7 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
             if (response.contextToken !== undefined) {
                 await setSessionToken(response.contextToken)
                 await getSession()
+                await getWishlist()
                 return response.contextToken
             }
 
@@ -128,6 +131,9 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
 
         try {
             const { getCart } = useCart()
+            const wishlistStore = useWishlist()
+            const { miniWishlist } = storeToRefs(wishlistStore)
+
             const response = await LoginRegistrationShopware.logoutCustomer()
             loading.value = false
 
@@ -137,6 +143,8 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
                 await getSession()
 
                 await getCart()
+                miniWishlist.value = []
+
                 await navigateToI18n('/customer/login')
                 return
             }

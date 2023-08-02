@@ -62,6 +62,21 @@
                     <div
                         tabindex="0"
                         class="btn btn-ghost btn-circle"
+                        @click="toggleDrawer('wishlist', 'right')"
+                        @keydown.enter="toggleDrawer('wishlist', 'right')"
+                    >
+                        <div class="indicator">
+                            <HeartIcon class="h-5 w-5" />
+
+                            <client-only>
+                                <span v-if="miniWishlist?.length > 0" class="badge badge-sm indicator-item" v-text="miniWishlist?.length" />
+                            </client-only>
+                        </div>
+                    </div>
+
+                    <div
+                        tabindex="0"
+                        class="btn btn-ghost btn-circle"
                         @click="toggleDrawer('cart', 'right')"
                         @keydown.enter="toggleDrawer('cart', 'right')"
                     >
@@ -80,10 +95,10 @@
 </template>
 
 <script setup lang="ts">
-import { ShoppingCartIcon, MagnifyingGlassIcon, SwatchIcon, UserIcon } from '@heroicons/vue/24/outline'
+import { ShoppingCartIcon, MagnifyingGlassIcon, SwatchIcon, UserIcon, HeartIcon } from '@heroicons/vue/24/outline'
 import { showError, useAsyncData } from '#app'
 import { storeToRefs } from 'pinia'
-import { useNavigation, useColorMode, useCart, useDrawer } from '#imports'
+import { useNavigation, useColorMode, useCart, useDrawer, useWishlist } from '#imports'
 
 const colorMode = useColorMode()
 const themes = [
@@ -100,6 +115,9 @@ const { toggleDrawer } = useDrawer()
 
 const cartStore = useCart()
 const { miniCart } = storeToRefs(cartStore)
+
+const wishlistStore = useWishlist()
+const { miniWishlist } = storeToRefs(wishlistStore)
 
 const { data, error } = await useAsyncData(() => getNavigation())
 navigation.value = data.value

@@ -1,0 +1,108 @@
+<template>
+    <Transition name="fade" mode="out-in">
+        <div v-if="wishlist?.products.length > 0" class="flex flex-col gap-2">
+            <div
+                v-for="product in wishlist.products"
+                :key="product.index"
+                class="relative flex items-start p-3 border rounded"
+            >
+                <div class="avatar indicator mr-4">
+                    <div class="w-16 h-16 border rounded border-base-300">
+                        <img :src="product.media?.url" :alt="product.name">
+                    </div>
+                </div>
+                <div class="flex flex-col justify-between w-full">
+                    <div class="w-full flex justify-between gap-2">
+                        <div class="w-full pr-12">
+                            <div class="font-bold leading-5">
+                                {{ product.name }}
+                            </div>
+                            <div v-if="product.sku != null" class="text-xs leading-4 text-gray-500 font-medium mt-1">
+                                {{ `${t('wishlist.product.articleNumber')} ${product.sku}` }}
+                            </div>
+                        </div>
+                        <div v-if="isInteractive" class="absolute right-0 top-0 btn btn-ghost w-13 h-13" @click="onRemoveProduct(product)">
+                            <TrashIcon class="w-5 h-5" />
+                        </div>
+                    </div>
+                    <div v-if="product.price.regularPrice != null" class="self-end w-full text-sm leading-5 text-right mt-1">
+                        <div v-if="product.price.specialPrice && product.price.specialPrice > 0" :class="{ 'line-through text-xs': product.price.specialPrice }">
+                            {{ formatPrice(product.price.specialPrice) }}
+                        </div>
+                        <div :class="{ 'text-secondary': product.price.specialPrice }">
+                            <template v-if="product.price.regularPrice < 0">
+                                - {{ formatPrice(product.price.regularPrice * -1) }}
+                            </template>
+                            <template v-else-if="product.price.regularPrice > 0">
+                                {{ formatPrice(product.price.regularPrice) }}
+                            </template>
+                            <template v-else />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div v-else>
+            {{ t('wishlist.empty') }}
+        </div>
+    </Transition>
+</template>
+
+<script setup lang="ts">
+import { storeToRefs } from 'pinia'
+import { useI18n } from 'vue-i18n'
+import { TrashIcon } from '@heroicons/vue/24/outline'
+import { useNuxtApp } from '#app'
+import { useWishlist, useCurrency } from '#imports'
+import { HblProduct } from '@/utils/types'
+
+const { t } = useI18n()
+
+interface WishlistListProps {
+    isInteractive?: boolean
+}
+
+const props = withDefaults(defineProps<WishlistListProps>(), {
+    isInteractive: true
+})
+
+const wishlistStore = useWishlist()
+const { wishlist, loading, error } = storeToRefs(wishlistStore)
+const { removeFromWishlist } = wishlistStore
+
+const { formatPrice } = useCurrency()
+
+const { $hblBus } = useNuxtApp()
+async function onRemoveProduct (product: HblProduct) {
+    await removeFromWishlist(product.id)
+
+    if (!error.value) {
+        $hblBus.$emit('removeFromWishlist', { product })
+    }
+}
+</script>
+
+<style lang="scss" scoped>
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+}
+</style>
+
+<i18n>
+{
+    "en": {
+        "wishlist.product.articleNumber": "Article no.:",
+        "wishlist.empty": "Your wishlist is empty"
+    },
+    "de": {
+        "wishlist.product.articleNumber": "Artikel-Nr.:",
+        "wishlist.empty": "Ihr Warenkorb ist leer"
+    }
+}
+</i18n>

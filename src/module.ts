@@ -68,6 +68,7 @@ export interface ModuleOptions {
     pluginsConfigFileName: string,
     sessionCookie: Cookie,
     cartCookie: Cookie,
+    wishlistCookie: Cookie,
     customerCookie: Cookie,
     setCustomerLoggedInHeader: boolean,
     redirectDefaultLanguage: boolean,
@@ -101,6 +102,14 @@ export default defineNuxtModule<ModuleOptions>({
         },
         cartCookie: {
             name: 'hubble-cart',
+            options: {
+                maxAge: 60 * 60 * 24 * 30,
+                sameSite: 'lax',
+                path: '/'
+            }
+        },
+        wishlistCookie: {
+            name: 'hubble-wishlist',
             options: {
                 maxAge: 60 * 60 * 24 * 30,
                 sameSite: 'lax',
@@ -228,6 +237,11 @@ export default defineNuxtModule<ModuleOptions>({
         nuxt.options.runtimeConfig.public.cartCookie = {
             name: options.cartCookie.name,
             options: options.cartCookie.options
+        }
+
+        nuxt.options.runtimeConfig.public.wishlistCookie = {
+            name: options.wishlistCookie.name,
+            options: options.wishlistCookie.options
         }
 
         nuxt.options.runtimeConfig.public.customerCookie = {
