@@ -48,6 +48,7 @@ export const useWishlist = defineStore('use-wishlist', (): HblIUseWishlist => {
             loading.value = false
         } catch (e) {
             handleWishlistApiError(e)
+            showNotification(error.value, 'success')
         }
     }
 
@@ -67,6 +68,7 @@ export const useWishlist = defineStore('use-wishlist', (): HblIUseWishlist => {
             loading.value = false
         } catch (e) {
             handleWishlistApiError(e)
+            showNotification(error.value, 'success')
         }
     }
 
@@ -82,6 +84,8 @@ export const useWishlist = defineStore('use-wishlist', (): HblIUseWishlist => {
             } else {
                 error.value = 'Login to create your own wishlist'
             }
+            wishlist.value = null
+            miniWishlist.value = []
         } else {
             error.value = e
         }

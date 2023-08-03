@@ -5,9 +5,7 @@
                 <img v-if="isLoading || data.media == null" src="~/assets/product/placeholder-image.png" class="d-block m-auto mw-100" height="300" :alt="data.name">
                 <img v-else :src="image.src" :alt="data.name">
             </MiscLink>
-            <button v-if="!isLoading" class="btn btn-primary btn-circle absolute bottom-2 right-2" @click.prevent="toggleWishlist">
-                <HeartIcon class="h-5 w-5" :class="{'fill-green-100': isOnWishlist }" />
-            </button>
+            <WishlistProductToggleButton :product="data" />
         </figure>
         <div class="card-body justify-between gap-4">
             <h2 class="card-title items-start" v-text="data.name" />
@@ -47,9 +45,8 @@ import { computed, ref, watch } from 'vue'
 import { useImage } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
-import { HeartIcon } from '@heroicons/vue/24/outline'
 import { HblProduct } from '@/utils/types'
-import { useCart, useNotification, useCurrency, useLocalisation, useWishlist } from '#imports'
+import { useCart, useNotification, useCurrency, useLocalisation } from '#imports'
 
 const { t } = useI18n()
 
@@ -59,15 +56,9 @@ const props = defineProps<{
 
 const { formatPrice } = useCurrency()
 const { navigateToI18n } = useLocalisation()
-const wishlistStore = useWishlist()
-const { miniWishlist } = storeToRefs(wishlistStore)
-const { addToWishlist, removeFromWishlist } = wishlistStore
 
 const hasSpecialPrice = computed(() => {
     return props.data?.price?.specialPrice
-})
-const isOnWishlist = computed(() => {
-    return miniWishlist.value?.includes(props.data.id)
 })
 
 const image = ref({
@@ -86,14 +77,6 @@ async function onAddToCart () {
     }
 
     await addToCart(1, props.data.id)
-}
-
-async function toggleWishlist () {
-    if (!miniWishlist.value?.includes(props.data.id)) {
-        await addToWishlist(props.data.id)
-    } else {
-        await removeFromWishlist(props.data.id)
-    }
 }
 
 const { showNotification } = useNotification()

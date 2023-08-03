@@ -1,9 +1,10 @@
 <template>
     <div class="card bg-base-100 shadow-xl">
         <div class="card-body">
-            <button class="btn btn-ghost absolute top-6 right-8" @click="toggleWishlist">
-                <HeartIcon class="h-5 w-5" :class="{'fill-green-100': isOnWishlist}" />
-            </button>
+            <WishlistProductToggleButton
+                :product="product"
+                class=" absolute top-6 right-8"
+            />
             <h2 class="card-title" v-text="product.name" />
             <div class="text-xs" v-text="product.sku" />
 
@@ -74,9 +75,8 @@ import { ref, watch, computed, onBeforeUnmount } from 'vue'
 import { useNuxtApp } from '#app'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
-import { HeartIcon } from '@heroicons/vue/24/outline'
 import { HblProduct } from '@/utils/types'
-import { useCart, useWishlist, useNotification, useCurrency } from '#imports'
+import { useCart, useNotification, useCurrency } from '#imports'
 
 const { t } = useI18n()
 
@@ -90,16 +90,10 @@ const qty = ref<number>(1)
 const cartStore = useCart()
 const { loading: cartLoading, error: cartError } = storeToRefs(cartStore)
 const { addToCart } = cartStore
-const wishlistStore = useWishlist()
-const { error: wishlistError, miniWishlist } = storeToRefs(wishlistStore)
-const { addToWishlist, removeFromWishlist } = wishlistStore
 const { showNotification } = useNotification()
 const variantLoading = ref(false)
 const loading = computed(() => {
     return cartLoading.value || variantLoading.value
-})
-const isOnWishlist = computed(() => {
-    return miniWishlist.value?.includes(product.value.id)
 })
 
 async function onClickAddToCart (qty: number, id: string) {
@@ -110,18 +104,7 @@ async function onClickAddToCart (qty: number, id: string) {
     }
 }
 
-async function toggleWishlist () {
-    if (!miniWishlist.value?.includes(product.value.id)) {
-        await addToWishlist(product.value.id)
-    } else {
-        await removeFromWishlist(product.value.id)
-    }
-}
-
 watch(cartError, (value) => {
-    showNotification(value, 'error', true)
-})
-watch(wishlistError, (value) => {
     showNotification(value, 'error', true)
 })
 
