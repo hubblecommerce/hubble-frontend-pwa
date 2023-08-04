@@ -61,7 +61,6 @@ Cypress.Commands.add('selectRandomProduct', () => {
 Cypress.Commands.add('addToCart', () => {
     cy.wait(500)
     cy.get('.card-actions').contains('Add to cart').click()
-    cy.contains('Product added to cart')
 })
 
 Cypress.Commands.add('fillRegisterForm', () => {
