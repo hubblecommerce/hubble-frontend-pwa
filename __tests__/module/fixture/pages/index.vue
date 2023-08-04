@@ -4,12 +4,12 @@
             <Title>Module fixture</Title>
         </Head>
         <div>Load composable from appropriate platform: {{ apiUrl }}</div>
-        <div>Load overridden composable from project root: {{ cart }}</div>
+        <div>Load overridden composable from project root: {{ additionalRef }}</div>
         <div>RuntimeConfig | meta.category.title: {{ config.meta.category.title }}</div>
         <div>RuntimeConfig | testPluginConfig1: {{ config.testPluginConfig1 }}</div>
         <div>RuntimeConfig | testPluginConfig2: {{ config.testPluginConfig2 }}</div>
         <MiscModuleTestComponent />
-        <ProductDetail />
+        <MiscSkeleton />
         <ProductDetailPlugin />
         <div>{{ t('index.translationTest') }}</div>
         <MiscPluginSlot name="test-plugin-slot" :data="{}" :events="{}" />
@@ -27,10 +27,10 @@
 
 <script setup>
 import { useI18n } from 'vue-i18n'
-import { useCart, usePlatform } from '#imports'
+import { useNotification, usePlatform } from '#imports'
 
 const { apiUrl } = usePlatform()
-const { cart } = useCart()
+const { additionalRef } = useNotification()
 const config = useRuntimeConfig().public
 const { t } = useI18n()
 </script>
