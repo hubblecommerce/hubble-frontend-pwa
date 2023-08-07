@@ -3,6 +3,7 @@
         <Head>
             <Title>Module fixture</Title>
         </Head>
+        <client-only>hydration: true</client-only>
         <div>Load composable from appropriate platform: {{ apiUrl }}</div>
         <div>Load overridden composable from project root: {{ additionalRef }}</div>
         <div>RuntimeConfig | meta.category.title: {{ config.meta.category.title }}</div>
