@@ -7,6 +7,7 @@ export interface HblIUseWishlist {
     getWishlist (): Promise<HblWishlist | void>,
     addToWishlist (productId: string): Promise<void>,
     removeFromWishlist (productId: string): Promise<void>,
+    clearWishlist (): void,
     loading: Ref<boolean>,
     error: Ref,
 }

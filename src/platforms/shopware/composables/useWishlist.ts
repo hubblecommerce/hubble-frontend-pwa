@@ -48,7 +48,7 @@ export const useWishlist = defineStore('use-wishlist', (): HblIUseWishlist => {
             loading.value = false
         } catch (e) {
             handleWishlistApiError(e)
-            showNotification(error.value, 'success')
+            showNotification(error.value, 'error')
         }
     }
 
@@ -68,7 +68,7 @@ export const useWishlist = defineStore('use-wishlist', (): HblIUseWishlist => {
             loading.value = false
         } catch (e) {
             handleWishlistApiError(e)
-            showNotification(error.value, 'success')
+            showNotification(error.value, 'error')
         }
     }
 
@@ -84,8 +84,7 @@ export const useWishlist = defineStore('use-wishlist', (): HblIUseWishlist => {
             } else {
                 error.value = 'Login to create your own wishlist'
             }
-            wishlist.value = null
-            miniWishlist.value = []
+            clearWishlist()
         } else {
             error.value = e
         }
@@ -100,6 +99,11 @@ export const useWishlist = defineStore('use-wishlist', (): HblIUseWishlist => {
         cookie.value = miniWishlist.value
     }
 
+    function clearWishlist (): void {
+        wishlist.value = []
+        miniWishlist.value = []
+    }
+
     watch(wishlist, (value, oldValue, onCleanup) => {
         saveWishlist()
     })
@@ -110,6 +114,7 @@ export const useWishlist = defineStore('use-wishlist', (): HblIUseWishlist => {
         getWishlist,
         addToWishlist,
         removeFromWishlist,
+        clearWishlist,
         loading,
         error
     }

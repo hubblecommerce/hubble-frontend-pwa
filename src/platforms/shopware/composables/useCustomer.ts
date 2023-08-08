@@ -132,7 +132,7 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
         try {
             const { getCart } = useCart()
             const wishlistStore = useWishlist()
-            const { miniWishlist } = storeToRefs(wishlistStore)
+            const { clearWishlist } = wishlistStore
 
             const response = await LoginRegistrationShopware.logoutCustomer()
             loading.value = false
@@ -143,7 +143,7 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
                 await getSession()
 
                 await getCart()
-                miniWishlist.value = []
+                clearWishlist()
 
                 await navigateToI18n('/customer/login')
                 return
