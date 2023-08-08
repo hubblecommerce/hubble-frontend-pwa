@@ -38,7 +38,7 @@ async function toggleWishlist () {
         await addToWishlist(props.product.id)
 
         if (!error.value) {
-            $hblBus.$emit('removeFromWishlist', { product: props.product })
+            $hblBus.$emit('addToWishlist', { product: props.product })
         }
     } else {
         await removeFromWishlist(props.product.id)
