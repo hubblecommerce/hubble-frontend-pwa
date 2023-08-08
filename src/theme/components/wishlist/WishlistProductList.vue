@@ -9,7 +9,9 @@
                 <div class="flex w-full">
                     <div class="avatar indicator mr-4">
                         <div class="w-16 h-16 border rounded border-base-300">
-                            <img :src="product.media?.url" :alt="product.name">
+                            <MiscLink no-prefetch :to="product?.url">
+                                <img :src="product.media?.url" :alt="product.name">
+                            </MiscLink>
                         </div>
                     </div>
                     <div class="flex flex-col justify-between w-full">
