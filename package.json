@@ -43,7 +43,7 @@
         "lint": "eslint src --ext .ts,.js,.vue",
         "lint:fix": "eslint src --fix --ext .ts,.js,.vue",
         "test:e2e": "start-server-and-test test:prepare:e2e http://localhost:3000 test:cypress:run",
-        "test:prepare:e2e": "nuxt-module-build --stub && nuxi prepare __tests__/module/fixture && nuxi dev __tests__/module/fixture",
+        "test:prepare:e2e": "nuxt-module-build && nuxi build __tests__/module/fixture && node __tests__/module/fixture/.output/server/index.mjs",
         "test:cypress:run": "cypress run",
         "upgrade": "nuxi upgrade --force",
         "coverage": "vitest run --coverage",
