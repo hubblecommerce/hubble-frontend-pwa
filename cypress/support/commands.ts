@@ -124,6 +124,7 @@ Cypress.Commands.add('loginCustomer', (email: string, pw: string) => {
     }).as('apiGetWishlist')
 
     cy.visit('/')
+    cy.waitForHydration()
     // click on customer navigation icon
     cy.get('.navbar-end > div:nth-child(3) > a').click()
 
