@@ -33,8 +33,7 @@ describe('Platform: Shopware', () => {
             cy.wait('@apiProductList')
             cy.url().should('include', id)
         })
-
-        cy.get('body').click()
+        cy.get('.dropdown .btn').contains('Manufacturer').prev().click()
         cy.contains('Reset all filter').click().should('not.exist')
     })
 
@@ -73,9 +72,6 @@ describe('Platform: Shopware', () => {
         }).as('apiRemoveLineItem')
 
         cy.visit('/')
-        cy.selectRandomProduct()
-        cy.addToCart()
-
         cy.selectRandomProduct()
         cy.addToCart()
 

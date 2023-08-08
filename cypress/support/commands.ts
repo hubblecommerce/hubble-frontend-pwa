@@ -72,8 +72,14 @@ Cypress.Commands.add('selectRandomProduct', () => {
 })
 
 Cypress.Commands.add('addToCart', () => {
+    cy.intercept({
+        method: 'POST',
+        url: '/store-api/checkout/cart/line-item'
+    }).as('apiAddLineItem')
+
     cy.wait(500)
     cy.get('.card-actions').contains('Add to cart').click()
+    cy.wait('@apiAddLineItem')
 })
 
 Cypress.Commands.add('fillAddressForm', (formSelector) => {
