@@ -2,7 +2,7 @@
     <button class="btn btn-primary btn-circle absolute bottom-2 right-2" @click.prevent="toggleWishlist">
         <client-only>
             <ArrowPathIcon v-if="loading" class="h-5 w-5 animate-spin" />
-            <HeartIcon v-else class="h-5 w-5" :class="{'fill-green-100': isOnWishlist }" />
+            <HeartIcon v-else class="h-5 w-5" :class="{'fill-current': isOnWishlist }" />
             <template #fallback>
                 <HeartIcon class="h-5 w-5" />
             </template>
