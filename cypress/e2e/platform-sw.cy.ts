@@ -180,7 +180,7 @@ describe('Platform: Shopware', () => {
         cy.loginCustomer(email, pw)
 
         // click on customer navigation icon
-        cy.wait(1000)
+        cy.wait(10000)
         cy.get('.navbar-end > div:nth-child(3) .btn.btn-ghost').click()
 
         // click logout button in customer navigation
@@ -192,7 +192,7 @@ describe('Platform: Shopware', () => {
         cy.loginCustomer(email, pw)
 
         // open customer/account via customer navigation
-        cy.wait(1000)
+        cy.wait(10000)
         cy.get('.navbar-end > div:nth-child(3) .btn.btn-ghost').click()
         cy.get('.navbar-end > div:nth-child(3) .menu.menu-compact li:nth-child(2)').click()
 
