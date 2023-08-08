@@ -39,6 +39,8 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
     const { showNotification } = useNotification()
     const runtimeConfig = useRuntimeConfig()
     const { navigateToI18n } = useLocalisation()
+    const { getCart } = useCart()
+    const { getWishlist, clearWishlist } = useWishlist()
 
     // Set cookie if user is logged in to differ between session isset (context-token exists) and session
     // is related to a customer
@@ -92,8 +94,6 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
         try {
             const platformStore = usePlatform()
             const { session } = storeToRefs(platformStore)
-            const { getCart } = useCart()
-            const { getWishlist } = useWishlist()
 
             if (session?.value?.sessionToken === null) {
                 await getCart()
@@ -130,10 +130,6 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
         error.value = false
 
         try {
-            const { getCart } = useCart()
-            const wishlistStore = useWishlist()
-            const { clearWishlist } = wishlistStore
-
             const response = await LoginRegistrationShopware.logoutCustomer()
             loading.value = false
 
