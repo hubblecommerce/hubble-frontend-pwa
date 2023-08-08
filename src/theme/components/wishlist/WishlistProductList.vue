@@ -45,7 +45,7 @@
 
                 <button :disabled="cartLoading" class="btn btn-sm btn-primary small h-4 w-full flex-shrink" @click="onClickAddToCart(1, product)">
                     <span v-if="cartLoading" class="loading" />
-                    <span v-if="!cartLoading">Add to cart</span>
+                    <span v-if="!cartLoading">{{ t('wishlist.product.addToCart') }}</span>
                 </button>
             </div>
         </div>
@@ -108,11 +108,13 @@ async function onClickAddToCart (qty: number, product: HblProduct) {
 {
     "en": {
         "wishlist.product.articleNumber": "Article no.:",
+        "wishlist.product.addToCart": "Add to cart",
         "wishlist.empty": "Your wishlist is empty"
     },
     "de": {
         "wishlist.product.articleNumber": "Artikel-Nr.:",
-        "wishlist.empty": "Ihr Warenkorb ist leer"
+        "wishlist.product.addToCart": "Zum Warenkorb hinzufügen",
+        "wishlist.empty": "Ihre Wunschliste ist leer"
     }
 }
 </i18n>
