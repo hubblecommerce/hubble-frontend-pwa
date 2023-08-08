@@ -36,6 +36,8 @@ declare global {
         interface Chainable {
             selectRandomProduct (): Chainable<void>
             addToCart (): Chainable<void>
+            addToWishlist (): Chainable<void>
+            openWishlist(): Chainable<void>
             fillRegisterForm (): Chainable<void>
             acceptToC (): Chainable<void>
             fillAddressForm (formSelector): Chainable<void>
@@ -80,6 +82,27 @@ Cypress.Commands.add('addToCart', () => {
     cy.wait(500)
     cy.get('.card-actions').contains('Add to cart').click()
     cy.wait('@apiAddLineItem')
+})
+
+Cypress.Commands.add('addToWishlist', () => {
+    cy.intercept({
+        method: 'POST',
+        url: '/store-api/customer/wishlist'
+    }).as('addToWishlist')
+
+    cy.wait(500)
+    cy.get('.card-body > .btn.btn-circle').click()
+    cy.wait('@addToWishlist')
+})
+
+Cypress.Commands.add('openWishlist', () => {
+    cy.intercept({
+        method: 'POST',
+        url: '/store-api/customer/wishlist'
+    }).as('getCustomerWishlist')
+
+    cy.get('.navbar-end > .btn:nth-last-child(2)').click()
+    cy.wait('@getCustomerWishlist')
 })
 
 Cypress.Commands.add('fillAddressForm', (formSelector) => {

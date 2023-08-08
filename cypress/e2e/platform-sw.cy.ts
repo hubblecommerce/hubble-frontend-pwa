@@ -207,4 +207,70 @@ describe('Platform: Shopware', () => {
         cy.get('#firstName').should('have.value', 'e2eFirstname')
         cy.get('#lastName').should('have.value', 'e2eLastname')
     })
+
+    it('user needs to be logged in to use wishlist', () => {
+        cy.visit('/')
+        cy.waitForHydration()
+
+        cy.openWishlist()
+        cy.get('.drawer-side').contains('Login to create your own wishlist')
+    })
+
+    it('add product to wishlist', () => {
+        cy.loginCustomer(email, pw)
+
+        // click on customer navigation icon
+        cy.visit('/')
+
+        cy.selectRandomProduct()
+        cy.addToWishlist()
+
+        // wishlist off-canvas
+        cy.openWishlist()
+        cy.get('.drawer-side .avatar').should('have.lengthOf', 1)
+    })
+
+    it('remove product from wishlist', () => {
+        cy.intercept({
+            method: 'DELETE',
+            url: '/store-api/customer/wishlist/delete/**'
+        }).as('removeFromWishlist')
+
+        cy.loginCustomer(email, pw)
+        cy.visit('/')
+        cy.waitForHydration()
+
+        // wishlist off-canvas
+        cy.openWishlist()
+
+        // remove item from wishlist
+        cy.get('.flex.flex-col.gap-6 > div > .flex.flex-col.gap-2').children().then(($element) => {
+            const count = $element.length
+            cy.get('.drawer-side .absolute.right-0.top-0.btn.btn-ghost.w-13.h-13').first().click()
+            cy.wait('@removeFromWishlist').wait(1000)
+
+            if (count > 1) {
+                cy.get('.flex.flex-col.gap-6 > div > .flex.flex-col.gap-2').children().then(($element) => {
+                    const newCount = $element.length
+                    expect($element.length).to.equal(count - 1)
+                })
+            } else {
+                cy.get('.flex.flex-col.gap-6 > div').contains('Your wishlist is empty')
+            }
+        })
+
+        // test removing over wishlist button
+        cy.visit('/')
+        cy.waitForHydration()
+
+        // add product to wishlist
+        cy.selectRandomProduct()
+        cy.addToWishlist()
+
+        // remove same product again from wishlist
+        cy.get('.card-body > .btn.btn-circle').click()
+        cy.wait('@removeFromWishlist').wait(1000)
+
+        cy.get('.card-body > .btn.btn-circle').should('not.have.class', 'fill-current')
+    })
 })
