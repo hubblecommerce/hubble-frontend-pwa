@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -26,8 +27,16 @@ export type Category = {
     productAssignmentType: string;
     visible?: boolean;
     active?: boolean;
+    /**
+     * Runtime field, cannot be used as part of the criteria.
+     */
+    cmsPageIdSwitched?: boolean;
+    /**
+     * Runtime field, cannot be used as part of the criteria.
+     */
+    visibleChildCount?: number;
     name: string;
-    customFields?: any;
+    customFields?: Record<string, any>;
     linkType?: string;
     internalLink?: string;
     externalLink?: string;
@@ -38,9 +47,10 @@ export type Category = {
     keywords?: string;
     cmsPageId?: string;
     cmsPageVersionId?: string;
+    customEntityTypeId?: string;
     readonly createdAt: string;
     readonly updatedAt?: string;
-    translated?: any;
+    translated?: Record<string, any>;
     parent?: Category;
     children?: Array<Category>;
     media?: Media;

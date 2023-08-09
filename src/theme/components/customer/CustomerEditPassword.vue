@@ -23,8 +23,8 @@
     </div>
 
     <input id="editPasswordModal" v-model="showPasswordEditModal" type="checkbox" class="modal-toggle">
-    <label for="editPasswordModal" class="modal cursor-pointer">
-        <label class="modal-box relative w-11/12 max-w-4xl pt-4 px-6 pb-8" for="">
+    <div class="modal">
+        <div class="modal-box relative w-11/12 max-w-4xl pt-4 px-6 pb-8">
             <div class="flex justify-between items-center pt-3 pb-5 border-b border-base-300 mb-6">
                 <h4>{{ t('customer.edit.password.modalTitle') }}</h4>
                 <label for="editPasswordModal" class="btn btn-ghost text-error">
@@ -94,10 +94,14 @@
                     </div>
                 </div>
 
-                <button type="submit" :disabled="loading" :class="{ 'loading': loading }" class="btn btn-secondary mt-9">{{ t('customer.edit.password.modalSubmit') }}</button>
+                <button type="submit" :disabled="loading" class="btn btn-secondary mt-9">
+                    <span v-if="loading" class="loading" />
+                    {{ t('customer.edit.password.modalSubmit') }}
+                </button>
             </form>
-        </label>
-    </label>
+        </div>
+        <label class="modal-backdrop cursor-pointer" for="editPasswordModal">Close</label>
+    </div>
 </template>
 
 <script setup lang="ts">

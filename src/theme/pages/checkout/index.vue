@@ -141,10 +141,10 @@
                                 </MiscLink>
                                 <button
                                     class="btn btn-primary w-full order-1 lg:w-auto lg:order-2"
-                                    :class="{ 'loading': customerLoading }"
                                     :disabled="customerLoading"
                                     @click.prevent="onUpdateContact()"
                                 >
+                                    <span v-if="customerLoading" class="loading" />
                                     <span>{{ t('checkout.contact.navigation.forward') }}</span>
                                 </button>
                             </div>
@@ -158,16 +158,16 @@
                             <template #actions="actionProps">
                                 <portal to="checkoutNavigation">
                                     <div class="navigation flex flex-col flex-wrap justify-between items-center gap-4 lg:flex-row lg:flex-nowrap lg:items-center lg:gap-2">
-                                        <div v-if="step === 'contact'" class="link link-hover cursor-pointer order-2 lg:order-1">
+                                        <MiscLink v-if="step === 'contact'" to="/cart" class="link link-hover cursor-pointer order-2 lg:order-1">
                                             {{ t('checkout.contact.navigation.back') }}
-                                        </div>
+                                        </MiscLink>
                                         <button
                                             v-if="step === 'contact'"
                                             class="btn btn-primary w-full order-1 lg:w-auto lg:order-2"
-                                            :class="{ 'loading': actionProps.loading }"
                                             :disabled="actionProps.loading"
                                             @click.prevent="actionProps.submit(afterContactSubmit)"
                                         >
+                                            <span v-if="actionProps.loading" class="loading" />
                                             <span>{{ t('checkout.contact.navigation.forward') }}</span>
                                         </button>
                                     </div>
@@ -234,10 +234,10 @@
                                 <button
                                     type="submit"
                                     :disabled="actionProps.loading"
-                                    :class="{ 'loading': actionProps.loading }"
                                     class="btn btn-primary w-full order-1 lg:w-auto lg:order-2"
                                     @click.prevent="actionProps.onSubmit()"
                                 >
+                                    <span v-if="actionProps.loading" class="loading" />
                                     {{ t('checkout.summary.navigation.place.order') }}
                                 </button>
                             </div>
@@ -312,6 +312,10 @@ function selectStep (stepName: string): void {
     if (stepName === 'summary' && (paymentError.value || paymentEmpty.value)) {
         showNotification('Please select a valid payment method.', 'error')
         return
+    }
+
+    if (stepName === 'summary') {
+        placeOrderForm.value = ref()
     }
 
     step.value = stepName

@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -18,7 +19,7 @@ export type OrderCustomer = {
     title?: string;
     vatIds?: Array<string>;
     customerNumber?: string;
-    customFields?: any;
+    customFields?: Record<string, any>;
     readonly createdAt: string;
     readonly updatedAt?: string;
     salutation?: Salutation;

@@ -15,6 +15,10 @@ export interface HblPrice {
     taxRate: string,
 }
 
+export interface HblTierPrice extends HblPrice {
+    qty: number
+}
+
 export interface HblVariantOption {
     id: string,
     name: string,
@@ -39,6 +43,10 @@ export interface HblProduct {
     active: boolean,
     stock: number,
     price: HblPrice,
+    priceRange: boolean,
+    variantsFrom: boolean,
+    cheapestPrice: HblPrice,
+    tierPrices: HblTierPrice[],
     deliveryTime?: string,
     manufacturer?: HblManufacturer | null,
     metaTitle?: string,

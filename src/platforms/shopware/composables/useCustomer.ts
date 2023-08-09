@@ -1,8 +1,9 @@
 import { ref, Ref, watch } from 'vue'
-import { useCookie } from '#app'
+import { CookieOptions, useCookie } from '#app'
 import { defineStore, storeToRefs } from 'pinia'
 import {
     useCart,
+    useWishlist,
     useNotification,
     usePlatform,
     useRuntimeConfig,
@@ -23,7 +24,7 @@ import {
     HblOrder
 } from '@/utils/types'
 import {
-    AddressShopware,
+    AddressShopware, Document, DocumentShopware,
     LoginRegistrationShopware, NewsletterShopware,
     OrderShopware, ProfileShopware,
     SystemContextShopware
@@ -38,12 +39,15 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
     const { showNotification } = useNotification()
     const runtimeConfig = useRuntimeConfig()
     const { navigateToI18n } = useLocalisation()
+    const { getCart } = useCart()
+    const { getWishlist, clearWishlist } = useWishlist()
 
     // Set cookie if user is logged in to differ between session isset (context-token exists) and session
     // is related to a customer
     if (process.client) {
         watch(customer, (newVal) => {
-            const cookie = useCookie(runtimeConfig.public.customerCookie.name, runtimeConfig.public.customerCookie.options)
+            const customerCookie = runtimeConfig.public.customerCookie as { name: string, options: CookieOptions }
+            const cookie = useCookie(customerCookie.name, customerCookie.options)
 
             if (newVal != null) {
                 if (cookie.value !== '1') {
@@ -90,7 +94,6 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
         try {
             const platformStore = usePlatform()
             const { session } = storeToRefs(platformStore)
-            const { getCart } = useCart()
 
             if (session?.value?.sessionToken === null) {
                 await getCart()
@@ -102,6 +105,7 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
             if (response.contextToken !== undefined) {
                 await setSessionToken(response.contextToken)
                 await getSession()
+                await getWishlist()
                 return response.contextToken
             }
 
@@ -122,13 +126,39 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
     }
 
     async function logout (): Promise<void> {
-        customer.value = null
-        await setSessionToken(null)
+        loading.value = true
+        error.value = false
 
-        const { getCart } = useCart()
-        await getCart()
+        try {
+            const response = await LoginRegistrationShopware.logoutCustomer()
+            loading.value = false
 
-        navigateToI18n('/customer/login')
+            if (response.contextToken !== undefined) {
+                customer.value = null
+                await setSessionToken(response.contextToken)
+                await getSession()
+
+                await getCart()
+                clearWishlist()
+
+                await navigateToI18n('/customer/login')
+                return
+            }
+
+            throw new Error('Something went wrong please try again')
+        } catch (e) {
+            const error = e as any
+
+            if (error.body[0]?.detail != null) {
+                showNotification(error.body[0]?.detail, 'error', true)
+            } else {
+                showNotification(error, 'error', true)
+            }
+
+            loading.value = false
+            error.value = e
+            throw e
+        }
     }
 
     async function register (formData: HblRegisterCustomerForm): Promise<HblCustomer | void> {
@@ -168,7 +198,11 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
 
             // TODO: patch api client
             // @ts-ignore
-            await LoginRegistrationShopware.register(requestBody)
+            const response = await LoginRegistrationShopware.register(requestBody)
+
+            if (response.doubleOptInRegistration) {
+                showNotification('Please confirm your registration by clicking on the link in the email we send you.', 'success')
+            }
 
             // Refresh session data
             await getSession()
@@ -184,6 +218,18 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
             }
             loading.value = false
             error.value = e
+            throw e
+        }
+    }
+
+    async function registerConfirm (formData: { em: string, hash: string }): Promise<void> {
+        loading.value = true
+
+        try {
+            await LoginRegistrationShopware.registerConfirm(formData)
+            loading.value = false
+        } catch (e) {
+            loading.value = false
             throw e
         }
     }
@@ -300,7 +346,7 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
         try {
             const response = await OrderShopware.readOrder({
                 limit: 10,
-                ['total-count-mode']: 2,
+                'total-count-mode': 2,
                 ...(params?.page != null && { page: params?.page }),
                 associations: {
                     deliveries: {
@@ -324,7 +370,12 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
                     },
                     lineItems: {
                         associations: {
-                            cover: {}
+                            cover: {},
+                            downloads: {
+                                associations: {
+                                    media: {}
+                                }
+                            }
                         }
                     },
                     billingAddress: {
@@ -336,11 +387,11 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
                 ...(filter != null && { filter })
             })
 
-            let mappedData = {
+            const mappedData = {
                 limit: response.orders?.limit,
                 page: response.orders?.page,
                 total: response.orders?.total,
-                data: params?.id != null ? hblMapOrder(response.orders.elements[0]) : hblMapOrders(response.orders.elements)
+                data: params?.id != null ? hblMapOrder(response.orders?.elements[0]) : hblMapOrders(response.orders?.elements)
             }
 
             loading.value = false
@@ -349,6 +400,33 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
             loading.value = false
             error.value = e
             throw new Error(e as string)
+        }
+    }
+
+    async function getOrderDocumentDownload (orderId: string, downloadId: string): Promise<Document | void> {
+        loading.value = true
+        error.value = false
+
+        try {
+            const document = await DocumentShopware.download(orderId, downloadId)
+            loading.value = false
+            return document
+        } catch (e) {
+            loading.value = false
+            error.value = e
+        }
+    }
+
+    async function getOrderLineItemDownload (orderId: string, downloadId: string): Promise<Blob | void> {
+        loading.value = true
+        error.value = false
+
+        try {
+            loading.value = false
+            return await OrderShopware.orderDownloadFile(orderId, downloadId)
+        } catch (e) {
+            loading.value = false
+            error.value = e
         }
     }
 
@@ -387,7 +465,7 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
         try {
             await ProfileShopware.sendRecoveryMail({
                 email,
-                storefrontUrl: platformBaseUrl
+                storefrontUrl: platformBaseUrl as string
             })
 
             loading.value = false
@@ -436,7 +514,7 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
                 ...(dateOfBirth != null && {
                     birthdayDay: dateOfBirth.getDate(),
                     birthdayMonth: dateOfBirth.getMonth() + 1,
-                    birthdayYear: dateOfBirth.getFullYear(),
+                    birthdayYear: dateOfBirth.getFullYear()
                 })
             })
 
@@ -485,19 +563,6 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
         loading.value = true
         error.value = false
 
-        if (formData.option === 'direct') {
-            try {
-                await NewsletterShopware.subscribeToNewsletter(formData)
-
-                loading.value = false
-                return
-            } catch (e) {
-                loading.value = false
-                error.value = e
-                throw e
-            }
-        }
-
         if (formData.option === 'unsubscribe') {
             try {
                 await NewsletterShopware.unsubscribeToNewsletter({ email: formData.email })
@@ -509,6 +574,30 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
                 error.value = e
                 throw e
             }
+        }
+
+        try {
+            await NewsletterShopware.subscribeToNewsletter(formData)
+
+            loading.value = false
+            return
+        } catch (e) {
+            loading.value = false
+            error.value = e
+            throw e
+        }
+    }
+
+    async function confirmCustomerNewsletter (formData: { em: string, hash: string }): Promise<void> {
+        loading.value = true
+
+        try {
+            await NewsletterShopware.confirmNewsletter(formData)
+
+            loading.value = false
+        } catch (e) {
+            loading.value = false
+            throw e
         }
     }
 
@@ -536,6 +625,7 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
         login,
         logout,
         register,
+        registerConfirm,
         updateShippingAddress,
         updateBillingAddress,
         getCustomerAddresses,
@@ -543,6 +633,8 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
         updateCustomerAddress,
         deleteCustomerAddress,
         getOrders,
+        getOrderLineItemDownload,
+        getOrderDocumentDownload,
         setDefaultBilling,
         setDefaultShipping,
         requireNewPassword,
@@ -551,6 +643,7 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
         editCustomerEmail,
         editCustomerPassword,
         editCustomerNewsletter,
+        confirmCustomerNewsletter,
         editCustomerPayment
     }
 })

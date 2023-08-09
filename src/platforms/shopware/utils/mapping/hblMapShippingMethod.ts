@@ -12,7 +12,7 @@ export function hblMapShippingMethod (swShippingMethod: SwShippingMethod): HblSh
         media: hblMapMedia(swShippingMethod.media),
         name: swShippingMethod.translated.name,
         // @ts-ignore
-        price: swShippingMethod.prices[0]?.currencyPrice[0]?.gross,
+        price: swShippingMethod.prices?.[0]?.currencyPrice?.[0]?.gross,
         tax: swShippingMethod.tax?.taxRate,
         // @ts-ignore
         position: swShippingMethod.position != null ? swShippingMethod.position : 1

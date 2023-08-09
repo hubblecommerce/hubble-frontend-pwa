@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -11,7 +12,7 @@ export type SystemConfig = {
     id?: string;
     configurationKey: string;
     configurationValue: {
-        _value?: any;
+        _value?: Record<string, any>;
     };
     salesChannelId?: string;
     readonly createdAt: string;

@@ -2,17 +2,20 @@
     <ul class="menu menu-horizontal p-0">
         <li v-for="entry in navigation" :key="entry.id">
             <template v-if="entry.children?.length > 0">
-                <MiscLink no-prefetch :to="entry.url">
-                    {{ entry.name }}
-                    <ChevronDownIcon class="fill-current h-4 w-4" />
-                </MiscLink>
-                <ul class="p-2 bg-base-100">
-                    <li v-for="childEntry in entry.children" :key="childEntry.id">
-                        <MiscLink no-prefetch :to="childEntry.url">
-                            {{ childEntry.name }}
+                <details>
+                    <summary>
+                        <MiscLink no-prefetch :to="entry.url">
+                            {{ entry.name }}
                         </MiscLink>
-                    </li>
-                </ul>
+                    </summary>
+                    <ul class="p-2 bg-base-100">
+                        <li v-for="childEntry in entry.children" :key="childEntry.id">
+                            <MiscLink no-prefetch :to="childEntry.url">
+                                {{ childEntry.name }}
+                            </MiscLink>
+                        </li>
+                    </ul>
+                </details>
             </template>
 
             <template v-else>

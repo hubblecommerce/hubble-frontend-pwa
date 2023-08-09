@@ -41,7 +41,7 @@ index 263f616a..3016df5b 100644
 @@ -24,6 +24,6 @@ export type Media = {
      readonly createdAt: string;
      readonly updatedAt?: string;
-     translated?: any;
+     translated?: Record<string, any>;
 -    thumbnails?: MediaThumbnail;
 +    thumbnails?: Array<MediaThumbnail>;
  };

@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -11,7 +12,7 @@ export type DocumentType = {
     technicalName: string;
     readonly createdAt: string;
     readonly updatedAt?: string;
-    customFields?: any;
-    translated?: any;
+    customFields?: Record<string, any>;
+    translated?: Record<string, any>;
 };
 

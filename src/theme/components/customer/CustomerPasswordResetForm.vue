@@ -31,9 +31,12 @@
         <button
             type="submit"
             class="btn btn-primary btn-sm"
+            :disabled="loading"
             @click.prevent="onResetPasswordClick()"
-            v-text="loading ? 'Loading...' : 'Reset Password'"
-        />
+        >
+            <span v-if="loading" class="loading" />
+            <span v-text="loading ? 'Loading...' : 'Reset Password'" />
+        </button>
     </form>
 </template>
 

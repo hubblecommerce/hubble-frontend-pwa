@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -126,13 +127,13 @@ export class OrderShopware {
      * Download a file included in the given order and with the given id. Access must be granted.
      * @param orderId
      * @param downloadId
-     * @returns any An arbitrary binary file.
+     * @returns binary An arbitrary binary file.
      * @throws ApiError
      */
     public static orderDownloadFile(
         orderId: string,
         downloadId: string,
-    ): CancelablePromise<any> {
+    ): CancelablePromise<Blob> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/order/download/{orderId}/{downloadId}',

@@ -12,11 +12,14 @@ export interface HblIUseCustomer {
     updateShippingAddress (shippingAddress: HblCustomerShippingAddress): Promise<HblCustomerShippingAddress | void>,
     updateBillingAddress (billingAddress: HblCustomerBillingAddress): Promise<HblCustomerBillingAddress | void>,
     register(formData: HblRegisterCustomerForm): Promise<HblCustomer | void>,
+    registerConfirm (formData: { em: string, hash: string }): Promise<void>,
     getCustomerAddresses (): Promise<HblCustomerBillingAddress[] | HblCustomerShippingAddress[]>,
     addCustomerAddress (address: HblCustomerBillingAddress | HblCustomerShippingAddress): Promise<HblCustomerBillingAddress | HblCustomerShippingAddress | void>,
     updateCustomerAddress (address: HblCustomerBillingAddress | HblCustomerShippingAddress): Promise<HblCustomerBillingAddress | HblCustomerShippingAddress | void>,
     deleteCustomerAddress (addressId: string): Promise<void>,
     getOrders (params?: { id?: string, page?: number }): Promise<{ data: HblOrder | HblOrder[], total: number, page: number, limit: number }>,
+    getOrderLineItemDownload (orderId: string, downloadId: string): Promise<Blob | void>,
+    getOrderDocumentDownload (orderId: string, downloadId: string): Promise<Document | void>,
     setDefaultBilling (id: string): Promise<void>,
     setDefaultShipping (id: string): Promise<void>,
     requireNewPassword (email: string): Promise<void>,
@@ -25,5 +28,6 @@ export interface HblIUseCustomer {
     editCustomerEmail (formData: { email: string, emailConfirmation: string, password: string }): Promise<void>,
     editCustomerPassword (formData: { password: string, newPassword: string, newPasswordConfirm: string }): Promise<void>,
     editCustomerNewsletter (formData: { email: string, option: string, storefrontUrl: string }): Promise<void>,
+    confirmCustomerNewsletter (formData: { em: string, hash: string }): Promise<void>,
     editCustomerPayment (paymentId: string): Promise<void>
 }

@@ -10,22 +10,20 @@
         </div>
 
         <client-only>
-            <CheckoutPayment @update-after:paymentMethod="paymentMethodId = $event" />
+            <CheckoutPayment @update-after:payment-method="paymentMethodId = $event" />
         </client-only>
 
         <div v-if="error" class="alert alert-error">
-            <div>
-                <span> {{ error }}</span>
-            </div>
+            <span> {{ error }}</span>
         </div>
 
         <button
             type="submit"
             :disabled="loading"
-            :class="{ 'loading': loading }"
             class="btn btn-primary"
             @click.prevent="onSubmit()"
         >
+            <span v-if="loading" class="loading" />
             Reset Payment
         </button>
     </div>

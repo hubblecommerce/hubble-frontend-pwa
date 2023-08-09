@@ -40,7 +40,7 @@ index 87f0428f..7cd10f08 100644
 +++ b/src/platforms/shopware/api-client/generated/models/Category.ts
 @@ -42,9 +42,9 @@ export type Category = {
      readonly updatedAt?: string;
-     translated?: any;
+     translated?: Record<string, any>;
      parent?: Category;
 -    children?: Category;
 +    children?: Array<Category>;

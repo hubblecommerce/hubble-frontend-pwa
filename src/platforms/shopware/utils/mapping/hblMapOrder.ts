@@ -1,6 +1,6 @@
 import { Order as SwOrder } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 import { HblOrder } from '@/utils/types'
-import { hblMapOrderLineItems, hblMapCustomerAddress, hblMapShippingMethod, hblMapPaymentMethod, hblMapTotals } from '#imports'
+import { hblMapOrderLineItems, hblMapCustomerAddress, hblMapShippingMethod, hblMapPaymentMethod, hblMapTotals, hblMapOrderDocuments } from '#imports'
 
 export function hblMapOrder (swOrder: SwOrder): HblOrder {
     return {
@@ -11,13 +11,9 @@ export function hblMapOrder (swOrder: SwOrder): HblOrder {
         // @ts-ignore
         email: swOrder.orderCustomer.email,
         // @ts-ignore
-        shippingAddress: hblMapCustomerAddress(swOrder.deliveries[0].shippingOrderAddress),
-        // @ts-ignore
         billingAddress: hblMapCustomerAddress(swOrder.billingAddress),
         // @ts-ignore
-        shippingMethod: hblMapShippingMethod(swOrder.deliveries[0].shippingMethod),
-        // @ts-ignore
-        paymentMethod: hblMapPaymentMethod(swOrder.transactions[0].paymentMethod),
+        paymentMethod: hblMapPaymentMethod(swOrder.transactions?.[0].paymentMethod),
         // TODO: patch api client
         // @ts-ignore
         lineItems: hblMapOrderLineItems(swOrder.lineItems),
@@ -25,6 +21,12 @@ export function hblMapOrder (swOrder: SwOrder): HblOrder {
         // @ts-ignore
         orderDate: swOrder.orderDate,
         // @ts-ignore
-        status: swOrder.stateMachineState.translated.name
+        status: swOrder.stateMachineState.translated.name,
+        // @ts-ignore
+        documents: hblMapOrderDocuments(swOrder.documents),
+        // @ts-ignore
+        ...(swOrder.deliveries?.length > 0 && { shippingMethod: hblMapShippingMethod(swOrder.deliveries?.[0].shippingMethod) }),
+        // @ts-ignore
+        ...(swOrder.deliveries?.length > 0 && { shippingAddress: hblMapCustomerAddress(swOrder.deliveries?.[0].shippingOrderAddress) })
     }
 }

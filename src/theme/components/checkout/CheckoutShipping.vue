@@ -73,7 +73,10 @@ const emit = defineEmits<{
 }>()
 
 const props = defineProps({
-    currentStep: String
+    currentStep: {
+        type: String,
+        default: ''
+    }
 })
 
 const selectedMethodId: Ref<string | null> = ref(session?.value?.shippingMethod?.id != null ? session?.value?.shippingMethod?.id : null)

@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -10,9 +11,9 @@ export type Locale = {
     code: string;
     name: string;
     territory: string;
-    customFields?: any;
+    customFields?: Record<string, any>;
     readonly createdAt: string;
     readonly updatedAt?: string;
-    translated?: any;
+    translated?: Record<string, any>;
 };
 

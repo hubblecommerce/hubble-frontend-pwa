@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -13,8 +14,8 @@ export type ShippingMethodPrice = {
     calculationRuleId?: string;
     quantityStart?: number;
     quantityEnd?: number;
-    currencyPrice?: any;
-    customFields?: any;
+    currencyPrice?: Record<string, any>;
+    customFields?: Record<string, any>;
     readonly createdAt: string;
     readonly updatedAt?: string;
 };

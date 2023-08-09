@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -15,17 +16,13 @@ export type OrderTransactionCaptureRefund = {
     stateId: string;
     externalReference?: string;
     reason?: string;
-    /**
-     * Runtime field, cannot be used as part of the criteria.
-     */
-    totalAmount?: number;
     amount: {
         unitPrice: number;
         totalPrice: number;
         quantity: number;
-        calculatedTaxes?: any;
-        taxRules?: any;
-        referencePrice?: any;
+        calculatedTaxes?: Record<string, any>;
+        taxRules?: Record<string, any>;
+        referencePrice?: Record<string, any>;
         listPrice?: {
             price?: number;
             discount?: number;
@@ -35,7 +32,7 @@ export type OrderTransactionCaptureRefund = {
             price?: number;
         };
     };
-    customFields?: any;
+    customFields?: Record<string, any>;
     readonly createdAt: string;
     readonly updatedAt?: string;
     stateMachineState?: StateMachineState;

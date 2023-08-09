@@ -63,7 +63,8 @@
         </div>
 
         <div class="col-span-12 py-3">
-            <button type="submit" :class="{ 'loading': loadingPersonalForm }" class="btn btn-outline" :disabled="loadingPersonalForm">
+            <button type="submit" class="btn btn-outline" :disabled="loadingPersonalForm">
+                <span v-if="loadingPersonalForm" class="loading" />
                 {{ t('customer.edit.form.submit') }}
             </button>
         </div>

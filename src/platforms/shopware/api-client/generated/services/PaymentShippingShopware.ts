@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -62,7 +63,7 @@ export class PaymentShippingShopware {
         /**
          * aggregation result
          */
-        aggregations?: any;
+        aggregations?: Record<string, any>;
         elements?: Array<ShippingMethod>;
     }> {
         return __request(OpenAPI, {

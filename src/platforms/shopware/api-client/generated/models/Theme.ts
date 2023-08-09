@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -13,17 +14,17 @@ export type Theme = {
     name: string;
     author: string;
     description?: string;
-    labels?: any;
-    helpTexts?: any;
-    customFields?: any;
+    labels?: Record<string, any>;
+    helpTexts?: Record<string, any>;
+    customFields?: Record<string, any>;
     previewMediaId?: string;
     parentThemeId?: string;
-    baseConfig?: any;
-    configValues?: any;
+    baseConfig?: Record<string, any>;
+    configValues?: Record<string, any>;
     active: boolean;
     readonly createdAt: string;
     readonly updatedAt?: string;
-    translated?: any;
+    translated?: Record<string, any>;
     media?: Media;
 };
 

@@ -1,6 +1,6 @@
 import { Ref, ref } from 'vue'
 import { RouteLocationNormalizedLoaded } from 'vue-router'
-import { useRouter } from '#app'
+import { useRouter, useRequestURL } from '#app'
 import {
     HblIUsePage,
     HblPage,
@@ -17,7 +17,7 @@ import {
     Product as swProduct
 } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 import { request as __request } from '@hubblecommerce/hubble/platforms/shopware/request'
-import { useLocalisation, useRuntimeConfig, hblMapPage, hblMapProductListing, hblMapProduct } from '#imports'
+import { useLocalisation, hblMapPage, hblMapProductListing, hblMapProduct } from '#imports'
 
 const associations = {
     media: {},
@@ -32,7 +32,6 @@ export const usePage = function (): HblIUsePage {
     const loading: Ref<boolean> = ref(false)
     const error: Ref = ref(false)
     const page: Ref<HblPage | null> = ref(null)
-    const runtimeConfig = useRuntimeConfig()
     const { currentRoute } = useRouter()
     const { isLocalisedRoute } = useLocalisation()
 
@@ -98,7 +97,7 @@ export const usePage = function (): HblIUsePage {
                 ...(search != null && { search }),
                 ...(page != null && { p: page }),
                 // @ts-ignore
-                ...(manufacturer?.length > 0 && { manufacturer }),
+                ...(manufacturer?.length > 0 && { manufacturer: manufacturer.join('|') }),
                 // @ts-ignore
                 ...(price?.min !== '' && { 'min-price': price.min }),
                 // @ts-ignore
@@ -106,7 +105,7 @@ export const usePage = function (): HblIUsePage {
                 // @ts-ignore
                 ...(rating?.min !== '' && { rating: rating.min }),
                 ...(shipping != null && { 'shipping-free': shipping }),
-                ...(cleanedProps.length > 0 && { properties: cleanedProps })
+                ...(cleanedProps.length > 0 && { properties: cleanedProps.join('|') })
             }
 
             const requestBody = {
@@ -144,7 +143,7 @@ export const usePage = function (): HblIUsePage {
 
     // Write parameters to current url without reloading the page
     function updateUri (params: any): void {
-        const url = new URL(runtimeConfig.public.appBaseUrl + currentRoute.value.path)
+        const url = new URL(useRequestURL().origin + currentRoute.value.path)
         url.search = new URLSearchParams(params).toString()
         window.history.pushState(
             {},
@@ -158,14 +157,14 @@ export const usePage = function (): HblIUsePage {
         error.value = false
 
         try {
-            let options: any = []
+            const options: any = []
             Object.keys(selectedOptions).forEach((key) => {
                 options.push(selectedOptions[key])
             })
 
             // Set selected option to end of array, to force shopware to respond with a matching variant
             // even the selected option is not available
-            options.push(options.splice(options.indexOf(switchedOption), 1)[0]);
+            options.push(options.splice(options.indexOf(switchedOption), 1)[0])
 
             const matchingVariant = await ProductShopware.searchProductVariantIds(parentId, {
                 options,
@@ -181,16 +180,16 @@ export const usePage = function (): HblIUsePage {
             }
 
             const response = await __request(OpenAPI, {
-                method: "POST",
-                url: "/product/{productId}",
+                method: 'POST',
+                url: '/product/{productId}',
                 path: {
                     // @ts-ignore
-                    "productId": matchingVariant?.variantId
+                    productId: matchingVariant?.variantId
                 },
                 body: {
                     associations: {
                         ...associations,
-                        crossSellings: {},
+                        crossSellings: {}
                     }
                 }
             }) as { product: swProduct, configurator: Array<PropertyGroup> }
@@ -229,12 +228,12 @@ export const usePage = function (): HblIUsePage {
             ...(order != null && { order }),
             ...(limit != null && typeof limit === 'string' && { limit: parseInt(limit) }),
             ...(p != null && { p }),
-            ...(manufacturer != null && typeof manufacturer === 'string' && { manufacturer: manufacturer.split(',') }),
+            ...(manufacturer != null && typeof manufacturer === 'string' && { manufacturer }),
             ...(minPrice != null && { 'min-price': minPrice }),
             ...(maxPrice != null && { 'max-price': maxPrice }),
             ...(rating != null && { rating }),
             ...(shipping != null && { 'shipping-free': (shipping === 'true') }),
-            ...(properties != null && typeof properties === 'string' && { properties: properties.split(',') }),
+            ...(properties != null && typeof properties === 'string' && { properties }),
             ...(search != null && { search })
         }
     }

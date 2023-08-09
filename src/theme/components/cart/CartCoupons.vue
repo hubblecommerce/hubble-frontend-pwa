@@ -11,7 +11,8 @@
                 :placeholder="t('cart.cartCoupons.placeholder')"
                 class="w-full input input-bordered"
             >
-            <button :class="{ 'loading': loading }" class="btn">
+            <button :disabled="loading" class="btn">
+                <span v-if="loading" class="loading" />
                 {{ t('cart.cartCoupons.label') }}
             </button>
         </div>

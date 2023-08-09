@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -30,10 +31,6 @@ export type ProductJsonApi = (resource & {
     readonly available?: boolean;
     isCloseout?: boolean;
     readonly displayGroup?: string;
-    /**
-     * @deprecated
-     */
-    mainVariantId?: string;
     manufacturerNumber?: string;
     ean?: string;
     purchaseSteps?: number;
@@ -64,21 +61,22 @@ export type ProductJsonApi = (resource & {
     metaTitle?: string;
     packUnit?: string;
     packUnitPlural?: string;
-    customFields?: any;
-    calculatedPrice?: any;
+    customFields?: Record<string, any>;
+    calculatedPrice?: Record<string, any>;
     calculatedPrices?: Array<any>;
     /**
      * Runtime field, cannot be used as part of the criteria.
      */
     calculatedMaxPurchase?: number;
-    calculatedCheapestPrice?: any;
+    calculatedCheapestPrice?: Record<string, any>;
     /**
      * Runtime field, cannot be used as part of the criteria.
      */
     isNew?: boolean;
+    sortedProperties?: Record<string, any>;
     readonly createdAt: string;
     readonly updatedAt?: string;
-    translated?: any;
+    translated?: Record<string, any>;
     relationships?: any;
 });
 

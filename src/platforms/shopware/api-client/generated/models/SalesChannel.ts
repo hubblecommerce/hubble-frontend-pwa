@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -33,14 +34,14 @@ export type SalesChannel = {
     name: string;
     shortName?: string;
     taxCalculationType?: string;
-    configuration?: any;
+    configuration?: Record<string, any>;
     active?: boolean;
     hreflangActive?: boolean;
     maintenance?: boolean;
-    customFields?: any;
+    customFields?: Record<string, any>;
     readonly createdAt: string;
     readonly updatedAt?: string;
-    translated?: any;
+    translated?: Record<string, any>;
     language?: Language;
     currency?: Currency;
     paymentMethod?: PaymentMethod;

@@ -1,5 +1,4 @@
-import { Product as SwProduct } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { PropertyGroup } from '@hubblecommerce/hubble/platforms/shopware/api-client'
+import { Product as SwProduct, PropertyGroup } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 import { HblProduct } from '@/utils/types'
 import { hblMapMedia, hblMapManufacturer, hblMapPrice, hblMapProductMedia, hblMapVariantGroups } from '#imports'
 
@@ -41,34 +40,82 @@ export function hblMapProduct (swProduct: SwProduct, swProductConfigurator?: Pro
         parentId = swProduct.parentId
     }
 
-    // calculatedPrice = price configured on settings base page of product
-    let price = swProduct.calculatedPrice != null ? hblMapPrice(swProduct.calculatedPrice) : null
+    const _cheapest = swProduct?.calculatedCheapestPrice
 
-    // calculatedPrices = price based on advanced price rules
-    // is an array because you can have tier-prices (prices based on quantity)
+    const _real = swProduct?.calculatedPrices != null && swProduct?.calculatedPrices?.length > 0
+        ? swProduct?.calculatedPrices[0]
+        : swProduct?.calculatedPrice
+
+    // @TODO: platform need to provide variantListingConfig
     // @ts-ignore
-    if (swProduct.calculatedPrices?.length > 0) {
+    const _displayParent = swProduct?.variantListingConfig?.displayParent && swProduct?.parentId === null
+
+    // @TODO: platform need to provide cheapestPrice
+    const displayFromVariants = !!swProduct?.parentId &&
         // @ts-ignore
-        price = hblMapPrice(swProduct.calculatedPrices[0])
+        swProduct?.cheapestPrice?.hasRange &&
+        // @ts-ignore
+        !!swProduct?.cheapestPrice?.parentId &&
+        _real?.unitPrice !== _cheapest?.unitPrice &&
+        _cheapest?.unitPrice
+
+    const displayFrom = swProduct?.calculatedPrices != null && (swProduct?.calculatedPrices?.length > 1 || !!(_displayParent && displayFromVariants))
+
+    const _price = () => {
+        if (displayFrom && swProduct?.calculatedPrices != null && swProduct?.calculatedPrices?.length > 1) {
+            const lowest = swProduct?.calculatedPrices?.reduce(
+                (previous, current) => {
+                    return current.unitPrice < previous.unitPrice ? current : previous
+                }
+            )
+            return lowest || _cheapest
+        }
+        return _real
+    }
+
+    const price = hblMapPrice(_price())
+
+    const variantsFrom = displayFromVariants
+
+    const priceRange = displayFrom
+
+    let cheapestPrice = null
+    if (swProduct.calculatedCheapestPrice != null) {
+        // @ts-ignore
+        cheapestPrice = hblMapPrice(_cheapest)
+    }
+
+    const tierPrices: any = []
+    if (swProduct.calculatedPrices != null && swProduct.calculatedPrices?.length > 0) {
+        swProduct.calculatedPrices?.map((price) => {
+            return tierPrices.push({
+                ...hblMapPrice(price),
+                qty: price.quantity
+            })
+        })
     }
 
     return {
         // @ts-ignore
         id: swProduct.id,
-        name: swProduct.translated.name,
-        description: swProduct.translated.description,
+        name: swProduct.translated?.name,
+        description: swProduct.translated?.description,
         sku: swProduct.productNumber,
         pathInfo,
         url,
         // @ts-ignore
         active: swProduct.available,
         stock: swProduct.stock,
-        // @ts-ignore
+        priceRange,
         price,
+        variantsFrom,
+        // @ts-ignore
+        cheapestPrice,
+        tierPrices,
         deliveryTime: swProduct.deliveryTime?.name,
         manufacturer: swProduct.manufacturer != null ? hblMapManufacturer(swProduct.manufacturer) : null,
-        metaTitle: swProduct.translated.metaTitle,
-        metaDescription: swProduct.translated.metaDescription,
+        metaTitle: swProduct.translated?.metaTitle,
+        metaDescription: swProduct.translated?.metaDescription,
         ...(variants != null && { variants }),
         ...(defaultOptions != null && { defaultOptions }),
         ...(parentId != null && { parentId }),

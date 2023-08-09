@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -26,7 +27,7 @@ export type CmsSection = {
         desktop?: boolean;
         tablet?: boolean;
     };
-    customFields?: any;
+    customFields?: Record<string, any>;
     cmsPageVersionId?: string;
     readonly createdAt: string;
     readonly updatedAt?: string;

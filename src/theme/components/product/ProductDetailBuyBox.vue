@@ -1,6 +1,10 @@
 <template>
     <div class="card bg-base-100 shadow-xl">
         <div class="card-body">
+            <WishlistProductToggleButton
+                :product="product"
+                class=" absolute top-6 right-8"
+            />
             <h2 class="card-title" v-text="product.name" />
             <div class="text-xs" v-text="product.sku" />
 
@@ -10,7 +14,17 @@
                     Delivery Time: {{ product.deliveryTime }}
                 </p>
 
-                <div class="flex gap-2 items-center">
+                <div v-if="product.tierPrices.length > 0" class="">
+                    <div v-for="(tierPrice, index) in product.tierPrices" :key="index">
+                        <div v-if="index === 0">
+                            {{ t('detail.tierPrices.until') }} {{ tierPrice.qty }} {{ t('detail.tierPrices.pcs') }} {{ formatPrice(tierPrice.regularPrice) }}
+                        </div>
+                        <div v-else>
+                            {{ t('detail.tierPrices.from') }} {{ product.tierPrices[index - 1]?.qty + 1 }} {{ t('detail.tierPrices.pcs') }} {{ formatPrice(tierPrice.regularPrice) }} <span v-if="index < product.tierPrices.length - 1">|</span>
+                        </div>
+                    </div>
+                </div>
+                <div v-else class="flex gap-2 items-center">
                     <div v-if="product.price?.regularPrice" :class="{ 'text-secondary': product.price?.specialPrice}">
                         {{ formatPrice(product.price?.regularPrice) }}
                     </div>
@@ -42,7 +56,8 @@
                         >
                     </div>
 
-                    <button :class="{'loading': loading}" :disabled="loading" class="btn btn-primary w-full flex-shrink" @click="onClickAddToCart(qty, product.id)">
+                    <button :disabled="loading" class="btn btn-primary w-full flex-shrink" @click="onClickAddToCart(qty, product.id)">
+                        <span v-if="loading" class="loading" />
                         <span v-if="!loading">Add to cart</span>
                     </button>
                 </div>
@@ -59,8 +74,11 @@
 import { ref, watch, computed, onBeforeUnmount } from 'vue'
 import { useNuxtApp } from '#app'
 import { storeToRefs } from 'pinia'
+import { useI18n } from 'vue-i18n'
 import { HblProduct } from '@/utils/types'
 import { useCart, useNotification, useCurrency } from '#imports'
+
+const { t } = useI18n()
 
 const props = defineProps<{
     productData: HblProduct
@@ -103,3 +121,18 @@ onBeforeUnmount(() => {
     $hblBus.$off('productVariantChanged', eventListenerBuyBox)
 })
 </script>
+
+<i18n>
+{
+    "en": {
+        "detail.tierPrices.from": "from",
+        "detail.tierPrices.until": "until",
+        "detail.tierPrices.pcs": "pc"
+    },
+    "de": {
+        "detail.tierPrices.from": "ab",
+        "detail.tierPrices.until": "bis",
+        "detail.tierPrices.pcs": "Stück"
+    }
+}
+</i18n>

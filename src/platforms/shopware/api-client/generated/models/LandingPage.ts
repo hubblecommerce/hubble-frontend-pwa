@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -13,8 +14,8 @@ export type LandingPage = {
     versionId?: string;
     active?: boolean;
     name: string;
-    customFields?: any;
-    slotConfig?: any;
+    customFields?: Record<string, any>;
+    slotConfig?: Record<string, any>;
     metaTitle?: string;
     metaDescription?: string;
     keywords?: string;
@@ -23,7 +24,7 @@ export type LandingPage = {
     cmsPageVersionId?: string;
     readonly createdAt: string;
     readonly updatedAt?: string;
-    translated?: any;
+    translated?: Record<string, any>;
     cmsPage?: CmsPage;
     seoUrls?: SeoUrl;
 };

@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -23,18 +24,18 @@ export type OrderLineItem = {
     referencedId?: string;
     quantity: number;
     label: string;
-    payload?: any;
+    payload?: Record<string, any>;
     good?: boolean;
     removable?: boolean;
     stackable?: boolean;
     position: number;
     states: Array<string>;
-    priceDefinition?: any;
+    priceDefinition?: Record<string, any>;
     unitPrice?: number;
     totalPrice?: number;
     description?: string;
     type?: string;
-    customFields?: any;
+    customFields?: Record<string, any>;
     readonly createdAt: string;
     readonly updatedAt?: string;
     cover?: Media;

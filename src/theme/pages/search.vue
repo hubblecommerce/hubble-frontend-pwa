@@ -5,7 +5,8 @@
             <form class="form-control" @submit.prevent="submitSearch()">
                 <div class="input-group">
                     <input id="search" v-model="term" type="text" class="input input-bordered lg:input-lg">
-                    <button class="btn lg:btn-lg" :class="{'loading': loading}">
+                    <button class="btn lg:btn-lg">
+                        <span v-if="loading" class="loading" />
                         <MagnifyingGlassIcon v-if="!loading" class="h-5 lg:h-6 h-5 lg:w-6" />
                     </button>
                 </div>
