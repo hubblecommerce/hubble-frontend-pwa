@@ -219,8 +219,8 @@ describe('Platform: Shopware', () => {
     it('add product to wishlist', () => {
         cy.loginCustomer(email, pw)
 
-        // click on customer navigation icon
         cy.visit('/')
+        cy.waitForHydration()
 
         cy.selectRandomProduct()
         cy.addToWishlist()
@@ -247,7 +247,7 @@ describe('Platform: Shopware', () => {
         cy.get('.flex.flex-col.gap-6 > div > .flex.flex-col.gap-2').children().then(($element) => {
             const count = $element.length
             cy.get('.drawer-side .absolute.right-0.top-0.btn.btn-ghost.w-13.h-13').first().click()
-            cy.wait('@removeFromWishlist').wait(1000)
+            cy.wait('@removeFromWishlist')
 
             if (count > 1) {
                 cy.get('.flex.flex-col.gap-6 > div > .flex.flex-col.gap-2').children().then(($element) => {
@@ -269,7 +269,7 @@ describe('Platform: Shopware', () => {
 
         // remove same product again from wishlist
         cy.get('.card-body > .btn.btn-circle').click()
-        cy.wait('@removeFromWishlist').wait(1000)
+        cy.wait('@removeFromWishlist')
 
         cy.get('.card-body > .btn.btn-circle').should('not.have.class', 'fill-current')
     })
