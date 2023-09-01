@@ -52,7 +52,7 @@ npm i @hubblecommerce/hubble
 3. Add the module to nuxt.config.ts
 ```js
 modules: [
-    ['@hubblecommerce/hubble']
+    '@hubblecommerce/hubble'
 ]
 ```
 
