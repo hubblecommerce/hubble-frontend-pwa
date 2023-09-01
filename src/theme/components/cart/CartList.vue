@@ -92,7 +92,7 @@ async function onRemoveLineItem (lineItem: HblLineItem) {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
 .fade-enter-active,
 .fade-leave-active {
     transition: opacity 0.2s ease;

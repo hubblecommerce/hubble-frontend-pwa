@@ -153,6 +153,7 @@ const passwordRepeatInput = ref()
 const passwordRepeat = ref('')
 const dobInput = ref()
 const dateOfBirth = ref('')
+// eslint-disable-next-line
 const createAccount = ref(!props.guestForm)
 const billingSameAsShipping = ref(true)
 const shippingAddress: Ref<HblCustomerShippingAddress> = ref({
@@ -226,7 +227,7 @@ async function onSubmit (callback: CallableFunction): Promise<void> {
 }
 </script>
 
-<style lang="scss">
+<style lang="postcss">
 #register-dob[type="date"]::-webkit-inner-spin-button,
 #register-dob[type="date"]::-webkit-calendar-picker-indicator {
     display: none;

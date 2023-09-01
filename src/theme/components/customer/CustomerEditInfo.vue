@@ -150,7 +150,7 @@ async function onSubmitPersonalForm () {
 }
 </script>
 
-<style lang="scss">
+<style lang="postcss">
 #register-dob[type="date"]::-webkit-inner-spin-button,
 #register-dob[type="date"]::-webkit-calendar-picker-indicator {
     display: none;
