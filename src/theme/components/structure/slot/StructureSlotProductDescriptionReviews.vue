@@ -32,7 +32,7 @@ const product = inject<HblProduct>(hblDetailData)
 const activeTab = ref('tab-1')
 </script>
 
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
 .fade-enter-active,
 .fade-leave-active {
     transition: opacity 0.1s ease;

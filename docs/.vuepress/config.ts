@@ -25,6 +25,7 @@ export default defineUserConfig({
                         '/pwa/what/installation',
                         '/pwa/what/roadmap',
                         '/pwa/what/contact',
+                        '/pwa/what/troubleshooting',
                     ]
                 },
                 {
