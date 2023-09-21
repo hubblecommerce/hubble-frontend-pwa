@@ -6,8 +6,6 @@ export { ApiError } from './core/ApiError';
 export { CancelablePromise, CancelError } from './core/CancelablePromise';
 export { OpenAPI } from './core/OpenAPI';
 export type { OpenAPIConfig } from './core/OpenAPI';
-export { request } from './core/request';
-
 export type { accept } from './models/accept';
 export type { AccountNewsletterRecipientResult } from './models/AccountNewsletterRecipientResult';
 export type { AclRole } from './models/AclRole';
