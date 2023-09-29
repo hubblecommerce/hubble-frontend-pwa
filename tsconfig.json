@@ -12,68 +12,80 @@
         "paths": {
             "@hubblecommerce/hubble/platforms/shopware/api-client": ["../src/platforms/shopware/api-client/generated/index"],
             "@hubblecommerce/hubble/platforms/shopware/request": ["../src/platforms/shopware/api-client/generated/core/request"],
-            "~~": [
-                "."
-            ],
-            "~~/*": [
-                "./*"
-            ],
-            "@@": [
-                "."
-            ],
-            "@@/*": [
-                "./*"
-            ],
             "~": [
-                ".hubble"
+                "../.hubble"
             ],
             "~/*": [
-                ".hubble/*"
+                "../.hubble/*"
             ],
             "@": [
-                ".hubble"
+                "../.hubble"
             ],
             "@/*": [
-                ".hubble/*"
+                "../.hubble/*"
+            ],
+            "~~": [
+                ".."
+            ],
+            "~~/*": [
+                "../*"
+            ],
+            "@@": [
+                ".."
+            ],
+            "@@/*": [
+                "../*"
             ],
             "assets": [
-                ".hubble/assets"
+                "../.hubble/assets"
             ],
             "assets/*": [
-                ".hubble/assets/*"
+                "../.hubble/assets/*"
             ],
             "public": [
-                ".hubble/public"
+                "../.hubble/public"
             ],
             "#app": [
-                "../node_modules/nuxt/dist/app"
+                "../../node_modules/nuxt/dist/app"
             ],
             "#app/*": [
-                "../node_modules/nuxt/dist/app/*"
+                "../../node_modules/nuxt/dist/app/*"
             ],
             "vue-demi": [
-                "../node_modules/nuxt/dist/app/compat/vue-demi"
+                "../../node_modules/nuxt/dist/app/compat/vue-demi"
             ],
             "pinia": [
-                "pinia/dist/pinia"
+                "../../node_modules/pinia/dist/pinia"
             ],
-            "#head": [
-                "../node_modules/nuxt/dist/head/runtime"
+            "#color-mode-options": [
+                "./color-mode-options.mjs"
             ],
-            "#head/*": [
-                "../node_modules/nuxt/dist/head/runtime/*"
+            "@intlify/shared": [
+                "../../node_modules/@intlify/shared/dist/shared.esm-bundler"
             ],
-            "#components": [
-                ".nuxt/components"
+            "@intlify/core-base": [
+                "../../node_modules/@intlify/core-base/dist/core-base.esm-bundler"
+            ],
+            "@intlify/devtools-if": [
+                "../../node_modules/@intlify/devtools-if/dist/devtools-if.esm-bundler"
+            ],
+            "vue-i18n": [
+                "../../node_modules/vue-i18n/dist/vue-i18n.esm-bundler"
+            ],
+            "#vue-router": [
+                "./vue-router"
             ],
             "#imports": [
-                ".nuxt/imports"
+                "./imports"
             ],
             "#build": [
-                ".nuxt"
+                "."
             ],
             "#build/*": [
-                ".nuxt/*"
+                "./*"
+            ],
+            "#components": [
+                "./components"
             ]
         }
     },

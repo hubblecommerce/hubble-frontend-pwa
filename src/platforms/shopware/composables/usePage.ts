@@ -1,6 +1,8 @@
 import { Ref, ref } from 'vue'
 import { RouteLocationNormalizedLoaded } from 'vue-router'
-import { useRouter, useRequestURL } from '#app'
+import { joinURL } from 'ufo'
+import { getRequestURL as h3GetRequestUrl } from 'h3'
+import { useRouter, useRuntimeConfig } from '#app'
 import {
     HblIUsePage,
     HblPage,
@@ -18,6 +20,7 @@ import {
 } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 import { request as __request } from '@hubblecommerce/hubble/platforms/shopware/request'
 import { useLocalisation, hblMapPage, hblMapProductListing, hblMapProduct } from '#imports'
+import { useRequestEvent } from '#app/composables/ssr'
 
 const associations = {
     media: {},
@@ -26,6 +29,15 @@ const associations = {
             media: {}
         }
     }
+}
+
+export function getRequestURL () {
+    if (process.server) {
+        const url: any = h3GetRequestUrl(useRequestEvent())
+        url.pathname = joinURL(useRuntimeConfig().app.baseURL, url.pathname)
+        return url
+    }
+    return new URL(window.location.href)
 }
 
 export const usePage = function (): HblIUsePage {
@@ -143,7 +155,7 @@ export const usePage = function (): HblIUsePage {
 
     // Write parameters to current url without reloading the page
     function updateUri (params: any): void {
-        const url = new URL(useRequestURL().origin + currentRoute.value.path)
+        const url = new URL(getRequestURL().origin + currentRoute.value.path)
         url.search = new URLSearchParams(params).toString()
         window.history.pushState(
             {},

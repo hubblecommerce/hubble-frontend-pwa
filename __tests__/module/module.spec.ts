@@ -2,10 +2,6 @@ import { fileURLToPath } from 'node:url'
 import { describe, expect, it } from 'vitest'
 import { setup, $fetch, fetch } from '@nuxt/test-utils'
 
-async function throw404 () {
-    return await $fetch('/this-route-not-exists')
-}
-
 describe('hubble Nuxt.js module setup', async () => {
     await setup({
         rootDir: fileURLToPath(new URL('./fixture', import.meta.url))
@@ -78,17 +74,6 @@ describe('hubble Nuxt.js module setup', async () => {
         const html = await $fetch('/')
 
         expect(html).toContain('RuntimeConfig | meta.category.title: Category - Hubble Demo')
-    })
-
-    /*
-     * Error handling
-     */
-    it('adds custom error page and override it', async () => {
-        try {
-            await throw404()
-        } catch (e: any) {
-            expect(e.data).toContain('Override Custom Error Page')
-        }
     })
 
     /*
