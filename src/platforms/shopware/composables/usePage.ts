@@ -1,5 +1,7 @@
 import { Ref, ref } from 'vue'
 import { RouteLocationNormalizedLoaded } from 'vue-router'
+import { joinURL } from 'ufo'
+import { getRequestURL as h3GetRequestUrl } from 'h3'
 import { useRouter, useRuntimeConfig } from '#app'
 import {
     HblIUsePage,
@@ -19,7 +21,6 @@ import {
 import { request as __request } from '@hubblecommerce/hubble/platforms/shopware/request'
 import { useLocalisation, hblMapPage, hblMapProductListing, hblMapProduct } from '#imports'
 import { useRequestEvent } from '#app/composables/ssr'
-import { joinURL } from 'ufo'
 
 const associations = {
     media: {},
@@ -32,7 +33,7 @@ const associations = {
 
 export function getRequestURL () {
     if (process.server) {
-        const url: any = getRequestURL(useRequestEvent())
+        const url: any = h3GetRequestUrl(useRequestEvent())
         url.pathname = joinURL(useRuntimeConfig().app.baseURL, url.pathname)
         return url
     }
