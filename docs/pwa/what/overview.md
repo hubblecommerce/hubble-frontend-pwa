@@ -10,6 +10,12 @@
 - [x] Excellent performance and usability
 - [x] Toolbox / framework for creating your own shop frontend
 
+## Documentation
+Run `npm run docs:dev` to see the developer documentation or take a look at `/docs`. <br>
+Or visit the documentation online at [docs.hubblecommerce.io](https://docs.hubblecommerce.io/).
+
+<iframe width="100%" height="415" src="https://www.youtube.com/embed/V11Wo0h7j_8?si=H4jWFJA4sad0dfi-" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 ## Links
 [Demo](https://hubble-pwa-demo.vercel.app/) |
 [Website](https://www.hubblecommerce.io/de)

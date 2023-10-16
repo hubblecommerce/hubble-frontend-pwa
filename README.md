@@ -13,7 +13,10 @@
 - [x] Toolbox / framework for creating your own shop frontend
 
 ## Documentation
-Run `npm run docs:dev` to see the developer documentation or take a look at `/docs`.
+Run `npm run docs:dev` to see the developer documentation or take a look at `/docs`. </br>
+Or visit the documentation online at [docs.hubblecommerce.io](https://docs.hubblecommerce.io/).
+
+[![hubble PWA Introduction for Developers on YouTube](https://img.youtube.com/vi/V11Wo0h7j_8/0.jpg)](https://www.youtube.com/watch?v=V11Wo0h7j_8)
 
 ## Links
 [Demo](https://hubble-pwa-demo.vercel.app/) |
