@@ -1,6 +1,6 @@
 import { ref, Ref } from 'vue'
 import { useNuxtApp, navigateTo } from '#imports'
-import { NavigateToOptions } from '#imports/composables/router'
+import type { NavigateToOptions } from '#app/composables/router'
 import { NavigationFailure, RouteLocationRaw, RouteLocationNormalized } from 'vue-router'
 import { useRoute } from '#imports'
 import { HblIUseLocalisation } from '@/utils/types'

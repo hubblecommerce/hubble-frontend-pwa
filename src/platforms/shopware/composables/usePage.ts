@@ -20,7 +20,7 @@ import {
 } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 import { request as __request } from '@hubblecommerce/hubble/platforms/shopware/request'
 import { useLocalisation, hblMapPage, hblMapProductListing, hblMapProduct } from '#imports'
-import { useRequestEvent } from '#imports/composables/ssr'
+import { useRequestEvent } from '#imports'
 
 const associations = {
     media: {},
