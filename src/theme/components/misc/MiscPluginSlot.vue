@@ -30,7 +30,7 @@
 * Component needs to be placed in a directory containing 'plugin' in path name
 */
 import { ref, useSlots, computed, resolveComponent } from 'vue'
-import { useRuntimeConfig } from '#app'
+import { useRuntimeConfig } from '#imports'
 
 const props = defineProps({
     name: {

@@ -22,7 +22,7 @@
 
 <script setup lang="ts">
 import { ref, Ref, onMounted } from 'vue'
-import { showError, useRouter } from '#app'
+import { showError, useRouter } from '#imports'
 import { MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
 import { usePage, useSearch, useNotification } from '#imports'
 import { HblProductListing as ProductListingType } from '@/utils/types'

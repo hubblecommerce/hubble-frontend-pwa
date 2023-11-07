@@ -4,7 +4,7 @@
 
 <script setup lang="ts">
 import { onBeforeUnmount, ref, Ref } from 'vue'
-import { useNuxtApp } from '#app'
+import { useNuxtApp } from '#imports'
 
 const props = defineProps<{
     nameData: string

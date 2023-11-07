@@ -73,7 +73,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useNuxtApp } from '#app'
+import { useNuxtApp } from '#imports'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/vue/24/outline'
 import { hblUseForm } from '@/utils/helper'
 import { useCustomer, useNotification } from '#imports'

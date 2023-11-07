@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { showError } from '#app'
+import { showError } from '#imports'
 import { HblProductListing, HblProductListingFilterCurrent } from '@/utils/types'
 import { usePage } from '#imports'
 

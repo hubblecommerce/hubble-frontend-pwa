@@ -31,7 +31,7 @@
 
 <script setup lang="ts">
 import { ref, Ref } from 'vue'
-import { useRouter } from '#app'
+import { useRouter } from '#imports'
 import { storeToRefs } from 'pinia'
 import { useCheckout, usePlatform, useLocalisation } from '#imports'
 

@@ -1,4 +1,4 @@
-import { defineNuxtPlugin, useRuntimeConfig, useCookie } from '#app'
+import { defineNuxtPlugin, useRuntimeConfig, useCookie } from '#imports'
 import { storeToRefs } from 'pinia'
 import { useCart } from '#imports'
 

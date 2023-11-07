@@ -1,4 +1,4 @@
-import { defineNuxtLink } from '#app'
+import { defineNuxtLink } from '#imports'
 
 export default defineNuxtLink({
     componentName: 'MiscDefineLink'

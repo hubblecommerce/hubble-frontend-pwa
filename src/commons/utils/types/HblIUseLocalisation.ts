@@ -1,6 +1,6 @@
 import { Ref } from 'vue'
 import { NavigationFailure, RouteLocationRaw } from 'vue-router'
-import { NavigateToOptions } from '#app/composables/router'
+import { NavigateToOptions } from '#imports/composables/router'
 
 export interface HblIUseLocalisation {
     isLocalisedRoute (path: string): false | string,

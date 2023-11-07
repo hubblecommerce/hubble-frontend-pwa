@@ -85,7 +85,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { showError, useRouter } from '#app'
+import { showError, useRouter } from '#imports'
 import { HblProductListing, HblProductListingFilter, HblProductListingFilterCurrent } from '@/utils/types'
 import { usePage } from '#imports'
 

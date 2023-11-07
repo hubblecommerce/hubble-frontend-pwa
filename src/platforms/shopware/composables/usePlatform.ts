@@ -1,6 +1,6 @@
 import { defineStore, storeToRefs } from 'pinia'
 import { ref, Ref } from 'vue'
-import { CookieOptions, useCookie } from '#app'
+import { CookieOptions, useCookie } from '#imports'
 import {
     useRuntimeConfig,
     useCustomer,

@@ -16,7 +16,7 @@ import type { OpenAPIConfig } from './OpenAPI';
 import { usePlatform } from '#imports'
 // @ts-ignore
 import { OpenAPI } from './OpenAPI'
-import { useCookie, useNuxtApp } from '#app'
+import { useCookie, useNuxtApp } from '#imports'
 // @ts-ignore
 import { hblGetRequestCookie } from '@/utils/helper'
 import { Pinia, storeToRefs } from 'pinia'

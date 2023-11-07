@@ -24,7 +24,7 @@ import {
     ChevronRightIcon,
     ChevronDoubleRightIcon
 } from '@heroicons/vue/20/solid'
-import { showError } from '#app'
+import { showError } from '#imports'
 import { usePage } from '#imports'
 import { HblProductListing, HblProductListingFilterCurrent } from '@/utils/types'
 

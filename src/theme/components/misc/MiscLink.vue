@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useRoute } from '#app'
+import { useRoute } from '#imports'
 import { useLocalisation } from '#imports'
 
 const props = defineProps({

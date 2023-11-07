@@ -1,6 +1,6 @@
 import { ref, Ref } from 'vue'
 import { LocationQuery } from 'vue-router'
-import { useRequestURL } from '#app'
+import { useRequestURL } from '#imports'
 import { defineStore, storeToRefs } from 'pinia'
 import { HblIUseCheckout, HblPaymentMethod, HblShippingMethod } from '@/utils/types'
 import {

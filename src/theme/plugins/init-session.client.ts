@@ -1,4 +1,4 @@
-import { defineNuxtPlugin } from '#app'
+import { defineNuxtPlugin } from '#imports'
 import { usePlatform } from '#imports'
 
 export default defineNuxtPlugin(async () => {

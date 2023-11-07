@@ -49,7 +49,7 @@
 import { onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
-import { useNuxtApp } from '#app'
+import { useNuxtApp } from '#imports'
 import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/vue/24/outline'
 import { useCart } from '#imports'
 

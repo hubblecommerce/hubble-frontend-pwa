@@ -39,7 +39,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useNuxtApp } from '#app'
+import { useNuxtApp } from '#imports'
 import { HblProduct, HblVariantGroup } from '@/utils/types'
 import { useNotification, usePage } from '#imports'
 

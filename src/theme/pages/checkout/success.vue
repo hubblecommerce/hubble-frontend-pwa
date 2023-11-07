@@ -61,7 +61,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, Ref } from 'vue'
-import { useRouter, useNuxtApp } from '#app'
+import { useRouter, useNuxtApp } from '#imports'
 import { storeToRefs } from 'pinia'
 import { useCustomer, useLocalisation } from '#imports'
 import { HblOrder } from '@/utils/types'

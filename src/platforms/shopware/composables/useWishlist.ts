@@ -1,5 +1,5 @@
 import { Ref, ref, watch } from 'vue'
-import { CookieOptions, useCookie, useRuntimeConfig } from '#app'
+import { CookieOptions, useCookie, useRuntimeConfig } from '#imports'
 import { defineStore, storeToRefs } from 'pinia'
 import { hblMapWishlist, useCustomer, useNotification } from '#imports'
 import { HblWishlist, HblIUseWishlist, HblProduct } from '@/utils/types'
