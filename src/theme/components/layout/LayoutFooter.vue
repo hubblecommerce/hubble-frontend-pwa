@@ -1,28 +1,37 @@
 <template>
     <footer>
-        <div class="bg-base-200">
-            <div class="footer container m-auto px-6 py-10 text-base-content">
-                <div>
-                    <span class="footer-title">Services</span>
-                    <a class="link link-hover">Branding</a>
-                    <a class="link link-hover">Design</a>
-                    <a class="link link-hover">Marketing</a>
-                    <a class="link link-hover">Advertisement</a>
+        <div class="bg-base-100 lg:border-t">
+            <div class="footer gap-y-0 container m-auto px-0 py-10 text-base-content max-lg:divide-y">
+                <div class="max-lg:collapse max-lg:collapse-arrow px-6 max-lg:border-t gap-0">
+                    <input class="lg:hidden" type="radio" name="footer-accordion">
+                    <span class="footer-title opacity-100 collapse-title text-neutral lg:p-0 lg:min-h-0 lg:pb-6">Services</span>
+                    <div class="max-lg:collapse-content flex flex-col gap-4">
+                        <a class="visible link link-hover text-base">Branding</a>
+                        <a class="visible link link-hover text-base">Design</a>
+                        <a class="visible link link-hover text-base">Marketing</a>
+                        <a class="visible link link-hover text-base">Advertisement</a>
+                    </div>
                 </div>
-                <div>
-                    <span class="footer-title">Company</span>
-                    <a class="link link-hover">About us</a>
-                    <a class="link link-hover">Contact</a>
-                    <a class="link link-hover">Jobs</a>
-                    <a class="link link-hover">Press kit</a>
+                <div class="max-lg:collapse max-lg:collapse-arrow px-6 gap-0">
+                    <input class="lg:hidden" type="radio" name="footer-accordion">
+                    <span class="footer-title opacity-100 collapse-title text-base-300 lg:p-0 lg:min-h-0 lg:pb-6">Company</span>
+                    <div class="max-lg:collapse-content flex flex-col gap-4">
+                        <a class="visible link link-hover text-base">About us</a>
+                        <a class="visible link link-hover text-base">Contact</a>
+                        <a class="visible link link-hover text-base">Jobs</a>
+                        <a class="visible link link-hover text-base">Press kit</a>
+                    </div>
                 </div>
-                <div>
-                    <span class="footer-title">Legal</span>
-                    <a class="link link-hover">Terms of use</a>
-                    <a class="link link-hover">Privacy policy</a>
-                    <a class="link link-hover">Cookie policy</a>
+                <div class="max-lg:collapse max-lg:collapse-arrow px-6 gap-0">
+                    <input class="lg:hidden" type="radio" name="footer-accordion">
+                    <span class="footer-title opacity-100 collapse-title text-base-300 lg:p-0 lg:min-h-0 lg:pb-6">Legal</span>
+                    <div class="max-lg:collapse-content flex flex-col gap-4">
+                        <a class="visible link link-hover text-base">Terms of use</a>
+                        <a class="visible link link-hover text-base">Privacy policy</a>
+                        <a class="visible link link-hover text-base">Cookie policy</a>
+                    </div>
                 </div>
-                <div>
+                <div class="px-6 gap-0">
                     <span class="footer-title">Newsletter</span>
                     <div class="form-control w-80">
                         <label class="label">
@@ -65,3 +74,12 @@
 </template>
 
 <script setup lang="ts"></script>
+
+<style>
+    .link {
+        @apply opacity-80;
+    }
+    .link-hover:hover {
+        @apply text-primary;
+    }
+</style>

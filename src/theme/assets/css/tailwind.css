@@ -2,5 +2,6 @@
 @import 'tailwindcss/components';
 
 @import './custom.pcss';
+@import './font-face.pcss';
 
 @import 'tailwindcss/utilities';
