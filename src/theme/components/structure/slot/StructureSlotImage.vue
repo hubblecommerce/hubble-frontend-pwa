@@ -13,6 +13,6 @@ const props = defineProps<{
 <style lang="postcss" scoped>
 .structure-slot-image {
     min-height: 200px;
-    max-height: 350px
+    max-height: 470px
 }
 </style>

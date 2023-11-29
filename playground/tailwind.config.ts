@@ -20,7 +20,6 @@ export default {
                     "neutral": "#1B1B24",
                     "base-100": "#F7F7F7",
                     "base-200": "#E7E8E9",
-                    "base-300": "#1B1B24",
                     "info": "#3ABFF8",
                     "success": "#36D399",
                     "warning": "#FBBD23",
