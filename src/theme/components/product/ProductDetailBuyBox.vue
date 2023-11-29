@@ -1,5 +1,5 @@
 <template>
-    <div class="card bg-base-100 shadow-xl">
+    <div class="card bg-base-100">
         <div class="card-body">
             <WishlistProductToggleButton
                 :product="product"
@@ -72,9 +72,9 @@
 
 <script setup lang="ts">
 import { ref, watch, computed, onBeforeUnmount } from 'vue'
-import { useNuxtApp } from '#app'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
+import { useNuxtApp } from '#app'
 import { HblProduct } from '@/utils/types'
 import { useCart, useNotification, useCurrency } from '#imports'
 

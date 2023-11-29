@@ -1,6 +1,6 @@
 <template>
     <template v-if="!Array.isArray(media)">
-        <div class="carousel carousel-center max-w-md p-4 space-x-4 bg-neutral rounded-box">
+        <div class="carousel carousel-center max-w-md p-4 space-x-4 rounded-box">
             <div class="carousel-item">
                 <img :src="media.url" :alt="media.alt">
             </div>
@@ -8,8 +8,8 @@
     </template>
 
     <template v-if="Array.isArray(media)">
-        <div class="carousel carousel-center rounded-box bg-neutral">
-            <div v-for="(medium, index) in media" :key="index" class="carousel-item w-full bg-neutral">
+        <div class="carousel carousel-center rounded-box">
+            <div v-for="(medium, index) in media" :key="index" class="carousel-item w-full">
                 <img :src="medium.url" :alt="medium.alt" class="m-auto">
             </div>
         </div>
