@@ -9,11 +9,11 @@ export default defineBuildConfig({
                 copy({
                     targets: [
                         {
-                            src: [ './src/theme/', './src/commons/' ],
+                            src: ['./src/theme/', './src/commons/'],
                             dest: './dist'
                         },
                         {
-                            src: [ './src/platforms/shopware/composables/', './src/platforms/shopware/utils/' ],
+                            src: ['./src/platforms/shopware/composables/', './src/platforms/shopware/utils/'],
                             dest: './dist/platforms/shopware'
                         }
                     ]
