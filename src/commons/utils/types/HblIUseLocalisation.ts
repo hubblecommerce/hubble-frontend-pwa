@@ -1,4 +1,4 @@
-import { Ref } from 'vue'
+import { type Ref } from 'vue'
 import { NavigationFailure, RouteLocationRaw } from 'vue-router'
 import type { NavigateToOptions } from '#app/composables/router'
 

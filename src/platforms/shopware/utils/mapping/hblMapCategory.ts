@@ -1,5 +1,5 @@
-import { Category as SwCategory } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { HblCategory } from '@/utils/types'
+import { type Category as SwCategory } from '@hubblecommerce/hubble/platforms/shopware/api-client'
+import { type HblCategory } from '@/utils/types'
 import { hblMapMedia } from '#imports'
 
 export function hblMapCategory (swCategory: SwCategory): HblCategory {

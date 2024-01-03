@@ -5,9 +5,9 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, ref, Ref } from 'vue'
+import { onBeforeUnmount, ref, type Ref } from 'vue'
 import { useNuxtApp } from '#imports'
-import { HblManufacturer } from '@/utils/types'
+import { type HblManufacturer } from '@/utils/types'
 
 interface ProductDetailManufacturerProps {
     manufacturerData: HblManufacturer,

@@ -64,9 +64,9 @@
 
 <script setup lang="ts">
 import { useAsyncData, useRoute } from '#imports'
-import { onMounted, ref, Ref } from 'vue'
+import { onMounted, ref, type Ref } from 'vue'
 import { useCustomer, useLocalisation } from '#imports'
-import { HblOrder } from '@/utils/types'
+import { type HblOrder } from '@/utils/types'
 
 /*
 * Redirect to /customer/login if customer is not logged in

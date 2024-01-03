@@ -1,5 +1,5 @@
-import { HblShippingMethod } from '@/utils/types/HblShippingMethod'
-import { HblPaymentMethod } from '@/utils/types/HblPaymentMethod'
+import { type HblShippingMethod } from '@/utils/types/HblShippingMethod'
+import { type HblPaymentMethod } from '@/utils/types/HblPaymentMethod'
 
 export interface HblSession {
     sessionToken: string | null,

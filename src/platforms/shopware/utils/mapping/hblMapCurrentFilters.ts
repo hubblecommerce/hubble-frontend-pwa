@@ -1,5 +1,5 @@
-import { ProductListingResult } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { HblProductListingFilterCurrent } from '@/utils/types'
+import { type ProductListingResult } from '@hubblecommerce/hubble/platforms/shopware/api-client'
+import { type HblProductListingFilterCurrent } from '@/utils/types'
 
 export function hblMapCurrentFilters (swCurrentFilters: ProductListingResult['currentFilters'], swFilters: any): HblProductListingFilterCurrent {
     const obj: HblProductListingFilterCurrent = {}

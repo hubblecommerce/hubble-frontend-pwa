@@ -1,4 +1,4 @@
-import { HblPageType, HblSection } from '@/utils/types'
+import { type HblPageType, type HblSection } from '@/utils/types'
 
 const hblDefaultStructure: HblSection[] = [
     {

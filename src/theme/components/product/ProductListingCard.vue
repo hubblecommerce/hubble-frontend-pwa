@@ -45,7 +45,7 @@ import { computed, ref, watch } from 'vue'
 import { useImage } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
-import { HblProduct } from '@/utils/types'
+import { type HblProduct } from '@/utils/types'
 import { useCart, useNotification, useCurrency, useLocalisation } from '#imports'
 
 const { t } = useI18n()

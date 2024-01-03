@@ -4,6 +4,7 @@ import { setup, $fetch, fetch } from '@nuxt/test-utils'
 
 describe('hubble Nuxt.js module setup', async () => {
     await setup({
+        // @ts-ignore
         rootDir: fileURLToPath(new URL('./fixture', import.meta.url))
     })
 

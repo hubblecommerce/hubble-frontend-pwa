@@ -51,7 +51,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, watch, ref, Ref } from 'vue'
+import { onMounted, watch, ref, type Ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { useNuxtApp } from '#imports'

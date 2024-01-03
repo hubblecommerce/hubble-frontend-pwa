@@ -4,7 +4,7 @@
 
 <script setup lang="ts">
 import { useHead } from '#imports'
-import { HblCategory } from '@/utils/types'
+import { type HblCategory } from '@/utils/types'
 
 const props = defineProps<{
     data: HblCategory

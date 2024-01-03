@@ -1,9 +1,9 @@
-import { ProductListingResult } from '@hubblecommerce/hubble/platforms/shopware/api-client'
+import { type ProductListingResult } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 import {
-    HblProductListingFilterBoolean,
-    HblProductListingFilterMixed,
-    HblProductListingFilterMulti,
-    HblProductListingFilterRange
+    type HblProductListingFilterBoolean,
+    type HblProductListingFilterMixed,
+    type HblProductListingFilterMulti,
+    type HblProductListingFilterRange
 } from '@/utils/types'
 
 export function hblMapFilters (swFilters: ProductListingResult['aggregations']): HblProductListingFilterMixed[] {

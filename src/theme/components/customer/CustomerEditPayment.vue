@@ -54,7 +54,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, watch, ref, Ref } from 'vue'
+import { onMounted, watch, ref, type Ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
 import { useCheckout, useCustomer, useNotification } from '#imports'

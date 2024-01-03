@@ -1,5 +1,5 @@
-import { HblProduct } from '@/utils/types/HblProduct'
-import { HblMedia } from '@/utils/types/HblMedia'
+import { type HblProduct } from '@/utils/types/HblProduct'
+import { type HblMedia } from '@/utils/types/HblMedia'
 
 export interface HblFilterOption {
     id: string,

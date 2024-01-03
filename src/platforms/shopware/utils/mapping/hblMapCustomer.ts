@@ -1,5 +1,5 @@
-import { SalesChannelContext } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { HblCustomer } from '@/utils/types'
+import { type SalesChannelContext } from '@hubblecommerce/hubble/platforms/shopware/api-client'
+import { type HblCustomer } from '@/utils/types'
 import { hblMapCustomerAddress } from '#imports'
 
 export function hblMapCustomer (customer: SalesChannelContext['customer']): HblCustomer {

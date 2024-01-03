@@ -1,5 +1,5 @@
-import { Order as SwOrder } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { HblOrder } from '@/utils/types'
+import { type Order as SwOrder } from '@hubblecommerce/hubble/platforms/shopware/api-client'
+import { type HblOrder } from '@/utils/types'
 import { hblMapOrderLineItems, hblMapCustomerAddress, hblMapShippingMethod, hblMapPaymentMethod, hblMapTotals, hblMapOrderDocuments } from '#imports'
 
 export function hblMapOrder (swOrder: SwOrder): HblOrder {

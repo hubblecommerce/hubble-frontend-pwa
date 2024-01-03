@@ -31,7 +31,9 @@
         </div>
         <LayoutFooterLight />
         <LayoutNotifications />
-        <MiscLoadingBar ref="loading" />
+        <client-only>
+            <MiscLoadingBar ref="loading" />
+        </client-only>
     </div>
 </template>
 

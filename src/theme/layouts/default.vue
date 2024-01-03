@@ -2,7 +2,7 @@
     <div
         class="default-layout"
         :class="{ 'drawer drawer-end': drawerDirection === 'right', 'drawer': drawerDirection === 'left' }"
-        :style="!drawerState ? 'height: auto !important;' : ''"
+        :style="!drawerState ? 'height:auto !important;' : ''"
     >
         <input id="default-layout-drawer" v-model="drawerState" type="checkbox" class="drawer-toggle">
 
@@ -20,7 +20,9 @@
             <misc-plugin-slot name="layouts-default-footer-after" :events="{}" :data="{}" />
 
             <LayoutNotifications />
-            <MiscLoadingBar ref="loading" />
+            <client-only>
+                <MiscLoadingBar ref="loading" />
+            </client-only>
         </div>
 
         <div class="drawer-side z-50">

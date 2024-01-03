@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import { computed, ref, shallowRef, defineAsyncComponent, resolveComponent, onMounted } from 'vue'
-import { HblBlock } from '@/utils/types'
+import { type HblBlock } from '@/utils/types'
 import { hblToUpperCamelCase, hblRegisterIntersectionObserver, hblGetStructureBackgroundStyles } from '@/utils/helper'
 
 const props = defineProps<{

@@ -1,6 +1,12 @@
-import { ref, Ref, watch } from 'vue'
-import { CookieOptions, useCookie } from '#imports'
+import { ref, type Ref, watch } from 'vue'
+import { type CookieOptions, useCookie } from '#imports'
 import { defineStore, storeToRefs } from 'pinia'
+import {
+    AddressShopware, Document, DocumentShopware,
+    LoginRegistrationShopware, NewsletterShopware,
+    OrderShopware, ProfileShopware,
+    SystemContextShopware
+} from '@hubblecommerce/hubble/platforms/shopware/api-client'
 import {
     useCart,
     useWishlist,
@@ -23,12 +29,6 @@ import {
     HblRegisterCustomerForm,
     HblOrder
 } from '@/utils/types'
-import {
-    AddressShopware, Document, DocumentShopware,
-    LoginRegistrationShopware, NewsletterShopware,
-    OrderShopware, ProfileShopware,
-    SystemContextShopware
-} from '@hubblecommerce/hubble/platforms/shopware/api-client'
 
 export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
     const customer: Ref<HblCustomer | null> = ref(null)

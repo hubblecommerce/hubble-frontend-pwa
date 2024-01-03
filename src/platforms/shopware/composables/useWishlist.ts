@@ -1,9 +1,9 @@
-import { Ref, ref, watch } from 'vue'
-import { CookieOptions, useCookie, useRuntimeConfig } from '#imports'
+import { type Ref, ref, watch } from 'vue'
+import { type CookieOptions, useCookie, useRuntimeConfig } from '#imports'
 import { defineStore, storeToRefs } from 'pinia'
 import { hblMapWishlist, useCustomer, useNotification } from '#imports'
-import { HblWishlist, HblIUseWishlist, HblProduct } from '@/utils/types'
 import { WishlistShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client'
+import { type HblWishlist, type HblIUseWishlist, type HblProduct } from '@/utils/types'
 
 export const useWishlist = defineStore('use-wishlist', (): HblIUseWishlist => {
     const wishlist: Ref<HblWishlist | null> = ref(null)

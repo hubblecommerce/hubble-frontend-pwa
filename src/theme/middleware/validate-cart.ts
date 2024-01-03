@@ -1,5 +1,5 @@
 import { destr } from 'destr'
-import { CookieOptions, defineNuxtRouteMiddleware, useNuxtApp } from '#imports'
+import { type CookieOptions, defineNuxtRouteMiddleware, useNuxtApp } from '#imports'
 import { storeToRefs } from 'pinia'
 import { useCart, useLocalisation } from '#imports'
 import { hblGetRequestCookie } from '@/utils/helper'

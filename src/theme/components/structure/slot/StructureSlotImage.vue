@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { HblSlot } from '@/utils/types'
+import { type HblSlot } from '@/utils/types'
 
 const props = defineProps<{
     content: HblSlot

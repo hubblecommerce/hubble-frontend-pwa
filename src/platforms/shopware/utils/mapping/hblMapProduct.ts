@@ -1,5 +1,5 @@
-import { Product as SwProduct, PropertyGroup } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { HblProduct } from '@/utils/types'
+import { type Product as SwProduct, type PropertyGroup } from '@hubblecommerce/hubble/platforms/shopware/api-client'
+import { type HblProduct } from '@/utils/types'
 import { hblMapMedia, hblMapManufacturer, hblMapPrice, hblMapProductMedia, hblMapVariantGroups } from '#imports'
 
 export function hblMapProduct (swProduct: SwProduct, swProductConfigurator?: PropertyGroup[]): HblProduct {

@@ -39,8 +39,8 @@
 </template>
 
 <script setup lang="ts">
-import { Bars3Icon, ChevronRightIcon } from '@heroicons/vue/20/solid'
-import { HblNavigation } from '@/utils/types'
+import { Bars3Icon } from '@heroicons/vue/20/solid'
+import { type HblNavigation } from '@/utils/types'
 
 const props = defineProps<{
     navigation: HblNavigation

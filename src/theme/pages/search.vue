@@ -21,11 +21,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, Ref, onMounted } from 'vue'
+import { ref, type Ref, onMounted } from 'vue'
 import { showError, useRouter } from '#imports'
 import { MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
 import { usePage, useSearch, useNotification } from '#imports'
-import { HblProductListing as ProductListingType } from '@/utils/types'
+import { type HblProductListing as ProductListingType } from '@/utils/types'
 
 const { currentRoute } = useRouter()
 const { updateUri, loading, error, parseParamsFromQuery } = usePage()

@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import { Ref, watch, ref } from 'vue'
+import { type Ref, watch, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { ArrowPathIcon } from '@heroicons/vue/24/outline'

@@ -1,7 +1,7 @@
-import { Ref } from 'vue'
-import { HblSalutation } from '@/utils/types/HblSalutation'
-import { HblSession } from '@/utils/types/HblSession'
-import { HblCountry } from '@/utils/types/HblCountry'
+import { type Ref } from 'vue'
+import { type HblSalutation } from '@/utils/types/HblSalutation'
+import { type HblSession } from '@/utils/types/HblSession'
+import { type HblCountry } from '@/utils/types/HblCountry'
 
 export interface HblIUsePlatform {
     loading: Ref<boolean>,

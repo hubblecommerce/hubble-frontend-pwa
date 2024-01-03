@@ -39,9 +39,8 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useNuxtApp } from '#imports'
-import { HblProduct, HblVariantGroup } from '@/utils/types'
-import { useNotification, usePage } from '#imports'
+import { type HblProduct, type HblVariantGroup } from '@/utils/types'
+import { useNuxtApp, useNotification, usePage } from '#imports'
 
 const props = defineProps<{
     variants: HblVariantGroup[],

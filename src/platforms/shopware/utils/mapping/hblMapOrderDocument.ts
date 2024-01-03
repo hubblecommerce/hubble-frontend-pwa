@@ -1,5 +1,5 @@
-import { Document as SwDocument } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { HblOrderDocument } from '@/utils/types'
+import { type Document as SwDocument } from '@hubblecommerce/hubble/platforms/shopware/api-client'
+import { type HblOrderDocument } from '@/utils/types'
 
 export function hblMapOrderDocument (document: SwDocument): HblOrderDocument {
     return {

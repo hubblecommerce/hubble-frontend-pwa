@@ -19,9 +19,8 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { showError } from '#imports'
-import { HblProductListing, HblProductListingFilterCurrent } from '@/utils/types'
-import { usePage } from '#imports'
+import { showError, usePage } from '#imports'
+import { type HblProductListing, type HblProductListingFilterCurrent } from '@/utils/types'
 
 const props = defineProps<{
     limit: number

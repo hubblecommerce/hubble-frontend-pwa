@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { HblSlot } from '@/utils/types'
+import { type HblSlot } from '@/utils/types'
 import { hblToUpperCamelCase } from '@/utils/helper'
 
 const props = defineProps<{

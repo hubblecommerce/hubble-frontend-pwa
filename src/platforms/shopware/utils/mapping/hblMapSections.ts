@@ -1,5 +1,5 @@
-import { CmsSection } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { HblSection } from '@/utils/types'
+import { type CmsSection } from '@hubblecommerce/hubble/platforms/shopware/api-client'
+import { type HblSection } from '@/utils/types'
 import { hblMapMedia, hblMapBlocks } from '#imports'
 
 export function hblMapSections (swSections: CmsSection[]): HblSection[] {
