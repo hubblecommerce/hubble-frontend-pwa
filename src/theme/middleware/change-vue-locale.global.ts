@@ -1,4 +1,4 @@
-import { defineNuxtRouteMiddleware, navigateTo, useRuntimeConfig } from '#app'
+import { defineNuxtRouteMiddleware, navigateTo, useRuntimeConfig } from '#imports'
 import { useLocalisation } from '#imports'
 
 export default defineNuxtRouteMiddleware((to) => {

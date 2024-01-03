@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { useRouter } from '#app'
+import { useRouter } from '#imports'
 import { useI18n } from 'vue-i18n'
 import { XCircleIcon, ArrowPathIcon } from '@heroicons/vue/24/outline'
 import { useCustomer, useLocalisation, useNotification, usePlatform } from '#imports'

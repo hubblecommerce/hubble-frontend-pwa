@@ -96,7 +96,7 @@
 
 <script setup lang="ts">
 import { ShoppingCartIcon, MagnifyingGlassIcon, SwatchIcon, UserIcon, HeartIcon } from '@heroicons/vue/24/outline'
-import { showError, useAsyncData } from '#app'
+import { showError, useAsyncData } from '#imports'
 import { storeToRefs } from 'pinia'
 import { useNavigation, useColorMode, useCart, useDrawer, useWishlist } from '#imports'
 

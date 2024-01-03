@@ -1,5 +1,5 @@
 import { type Ref, ref, watch } from 'vue'
-import { type CookieOptions, useCookie, useRuntimeConfig } from '#app'
+import { type CookieOptions, useCookie, useRuntimeConfig } from '#imports'
 import { defineStore, storeToRefs } from 'pinia'
 import { hblMapWishlist, useCustomer, useNotification } from '#imports'
 import { WishlistShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client'

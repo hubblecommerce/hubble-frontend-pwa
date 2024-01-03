@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from '#app'
+import { useRouter } from '#imports'
 import { useLocalisation } from '#imports'
 const { currentRoute } = useRouter()
 const hash = currentRoute.value.query?.hash

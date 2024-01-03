@@ -2,7 +2,7 @@ import { type Ref, ref } from 'vue'
 import { type RouteLocationNormalizedLoaded } from 'vue-router'
 import { joinURL } from 'ufo'
 import { getRequestURL as h3GetRequestUrl } from 'h3'
-import { useRouter, useRuntimeConfig } from '#app'
+import { useRouter, useRuntimeConfig } from '#imports'
 import {
     ProductShopware,
     PwaShopware,
@@ -11,7 +11,7 @@ import {
     Product as swProduct
 } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 import { request as __request } from '@hubblecommerce/hubble/platforms/shopware/request'
-import { useRequestEvent } from '#app/composables/ssr'
+import { useLocalisation, hblMapPage, hblMapProductListing, hblMapProduct, useRequestEvent } from '#imports'
 import {
     HblIUsePage,
     HblPage,
@@ -20,7 +20,6 @@ import {
     HblProductListingFilterCurrent
 } from '@/utils/types'
 import { hblUseDefaultStructure } from '@/utils/helper'
-import { useLocalisation, hblMapPage, hblMapProductListing, hblMapProduct } from '#imports'
 
 const associations = {
     media: {},

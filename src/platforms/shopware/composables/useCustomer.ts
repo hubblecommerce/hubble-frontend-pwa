@@ -1,5 +1,5 @@
 import { ref, type Ref, watch } from 'vue'
-import { type CookieOptions, useCookie } from '#app'
+import { type CookieOptions, useCookie } from '#imports'
 import { defineStore, storeToRefs } from 'pinia'
 import {
     AddressShopware, Document, DocumentShopware,

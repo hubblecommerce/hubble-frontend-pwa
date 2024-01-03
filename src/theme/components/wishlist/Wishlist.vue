@@ -17,7 +17,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useNuxtApp } from '#app'
+import { useNuxtApp } from '#imports'
 import { useWishlist } from '#imports'
 
 const wishlistStore = useWishlist()

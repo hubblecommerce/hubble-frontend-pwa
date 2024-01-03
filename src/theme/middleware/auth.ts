@@ -1,4 +1,4 @@
-import { defineNuxtRouteMiddleware } from '#app'
+import { defineNuxtRouteMiddleware } from '#imports'
 import { useCustomer } from '#imports'
 
 export default defineNuxtRouteMiddleware(async () => {

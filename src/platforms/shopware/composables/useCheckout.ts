@@ -1,6 +1,6 @@
 import { ref, type Ref } from 'vue'
 import { type LocationQuery } from 'vue-router'
-import { useRequestURL } from '#app'
+import { useRequestURL } from '#imports'
 import { defineStore, storeToRefs } from 'pinia'
 import {
     OrderShopware,

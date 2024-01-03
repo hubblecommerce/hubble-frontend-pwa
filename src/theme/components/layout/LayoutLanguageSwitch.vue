@@ -23,7 +23,7 @@
 <script setup lang="ts">
 import { watch, ref, computed } from 'vue'
 import { LanguageIcon } from '@heroicons/vue/24/outline'
-import { useNuxtApp } from '#app'
+import { useNuxtApp } from '#imports'
 import { useLocalisation, usePage, usePlatform } from '#imports'
 
 const { vueApp } = useNuxtApp()

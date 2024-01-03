@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { useHead } from '#app'
+import { useHead } from '#imports'
 import { type HblCategory } from '@/utils/types'
 
 const props = defineProps<{

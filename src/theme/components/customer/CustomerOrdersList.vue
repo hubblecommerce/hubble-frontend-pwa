@@ -58,7 +58,7 @@
 <script setup lang="ts">
 import { computed, ref, type Ref, reactive } from 'vue'
 import { storeToRefs } from 'pinia'
-import { showError } from '#app'
+import { showError } from '#imports'
 import {
     ChevronLeftIcon,
     ChevronDoubleLeftIcon,

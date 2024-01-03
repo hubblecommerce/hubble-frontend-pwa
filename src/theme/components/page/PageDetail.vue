@@ -4,7 +4,7 @@
 
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import { useHead, useNuxtApp } from '#app'
+import { useHead, useNuxtApp } from '#imports'
 import { type HblProduct } from '@/utils/types'
 
 const props = defineProps<{

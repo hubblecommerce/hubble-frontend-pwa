@@ -128,7 +128,7 @@
 import { ref, type Ref, withDefaults } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
-import { useNuxtApp } from '#app'
+import { useNuxtApp } from '#imports'
 import { EyeIcon, EyeSlashIcon, CalendarIcon } from '@heroicons/vue/24/outline'
 import { type HblCustomerBillingAddress, type HblCustomerShippingAddress } from '@/utils/types'
 import { hblUseForm } from '@/utils/helper'

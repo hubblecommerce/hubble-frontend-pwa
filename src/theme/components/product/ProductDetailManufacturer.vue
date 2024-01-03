@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import { onBeforeUnmount, ref, type Ref } from 'vue'
-import { useNuxtApp } from '#app'
+import { useNuxtApp } from '#imports'
 import { type HblManufacturer } from '@/utils/types'
 
 interface ProductDetailManufacturerProps {

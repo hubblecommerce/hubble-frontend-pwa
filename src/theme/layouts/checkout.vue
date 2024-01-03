@@ -40,7 +40,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useNuxtApp } from '#app'
+import { useNuxtApp } from '#imports'
 
 const { t } = useI18n()
 const nuxtApp = useNuxtApp()

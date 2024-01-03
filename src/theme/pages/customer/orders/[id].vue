@@ -63,7 +63,7 @@
 </template>
 
 <script setup lang="ts">
-import { useAsyncData, useRoute } from '#app'
+import { useAsyncData, useRoute } from '#imports'
 import { onMounted, ref, type Ref } from 'vue'
 import { useCustomer, useLocalisation } from '#imports'
 import { type HblOrder } from '@/utils/types'

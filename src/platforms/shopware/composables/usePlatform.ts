@@ -1,8 +1,9 @@
 import { defineStore, storeToRefs } from 'pinia'
 import { ref, type Ref } from 'vue'
 import { SystemContextShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { type CookieOptions, useCookie } from '#app'
 import {
+    type CookieOptions, 
+    useCookie,
     useRuntimeConfig,
     useCustomer,
     hblMapSession,

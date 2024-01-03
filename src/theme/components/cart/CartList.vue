@@ -62,7 +62,7 @@
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
 import { BanknotesIcon, TrashIcon } from '@heroicons/vue/24/outline'
-import { useNuxtApp } from '#app'
+import { useNuxtApp } from '#imports'
 import { useCart, useCurrency } from '#imports'
 import { type HblLineItem } from '@/utils/types'
 
