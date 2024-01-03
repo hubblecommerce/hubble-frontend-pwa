@@ -1,6 +1,6 @@
-import { Ref } from 'vue'
-import { HblCustomer, HblCustomerBillingAddress, HblCustomerShippingAddress, HblRegisterCustomerForm } from '@/utils/types/HblCustomer'
-import { HblOrder } from '@/utils/types/HblOrder'
+import { type Ref } from 'vue'
+import { type HblCustomer, type HblCustomerBillingAddress, type HblCustomerShippingAddress, type HblRegisterCustomerForm } from '@/utils/types/HblCustomer'
+import { type HblOrder } from '@/utils/types/HblOrder'
 
 export interface HblIUseCustomer {
     customer: Ref<HblCustomer | null>,

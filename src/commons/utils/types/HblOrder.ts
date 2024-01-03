@@ -1,10 +1,10 @@
-import { HblCustomerBillingAddress, HblCustomerShippingAddress } from '@/utils/types/HblCustomer'
-import { HblShippingMethod } from '@/utils/types/HblShippingMethod'
-import { HblPaymentMethod } from '@/utils/types/HblPaymentMethod'
-import { HblTotals } from '@/utils/types/HblCart'
-import { HblMedia } from '@/utils/types/HblMedia'
-import { HblOrderLineItemDownload } from '@/utils/types/HblOrderLineItemDownload'
-import { HblOrderDocument } from '@/utils/types/HblOrderDocument'
+import { type HblCustomerBillingAddress, type HblCustomerShippingAddress } from '@/utils/types/HblCustomer'
+import { type HblShippingMethod } from '@/utils/types/HblShippingMethod'
+import { type HblPaymentMethod } from '@/utils/types/HblPaymentMethod'
+import { type HblTotals } from '@/utils/types/HblCart'
+import { type HblMedia } from '@/utils/types/HblMedia'
+import { type HblOrderLineItemDownload } from '@/utils/types/HblOrderLineItemDownload'
+import { type HblOrderDocument } from '@/utils/types/HblOrderDocument'
 
 export interface HblOrderLineItem {
     id: string,

@@ -54,7 +54,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useNuxtApp } from '#app'
-import { HblProduct, HblProductListing } from '@/utils/types'
+import { type HblProduct, type HblProductListing } from '@/utils/types'
 
 interface ProductListingProps {
     data: HblProductListing,

@@ -64,7 +64,7 @@ import { useI18n } from 'vue-i18n'
 import { BanknotesIcon, TrashIcon } from '@heroicons/vue/24/outline'
 import { useNuxtApp } from '#app'
 import { useCart, useCurrency } from '#imports'
-import { HblLineItem } from '@/utils/types'
+import { type HblLineItem } from '@/utils/types'
 
 const { t } = useI18n()
 

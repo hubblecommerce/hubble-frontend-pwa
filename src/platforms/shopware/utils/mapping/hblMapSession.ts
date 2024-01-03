@@ -1,5 +1,5 @@
-import { SalesChannelContext } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { HblSession } from '@/utils/types'
+import { type SalesChannelContext } from '@hubblecommerce/hubble/platforms/shopware/api-client'
+import { type HblSession } from '@/utils/types'
 import { hblMapShippingMethod, hblMapPaymentMethod } from '#imports'
 
 export function hblMapSession (swPlatform: SalesChannelContext): HblSession {

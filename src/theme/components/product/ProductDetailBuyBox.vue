@@ -75,7 +75,7 @@ import { ref, watch, computed, onBeforeUnmount } from 'vue'
 import { useNuxtApp } from '#app'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
-import { HblProduct } from '@/utils/types'
+import { type HblProduct } from '@/utils/types'
 import { useCart, useNotification, useCurrency } from '#imports'
 
 const { t } = useI18n()

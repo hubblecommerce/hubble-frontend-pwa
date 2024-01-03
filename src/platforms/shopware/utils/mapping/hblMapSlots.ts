@@ -1,5 +1,5 @@
-import { CmsSlot } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { HblMedia, HblProductListing, HblSlot } from '@/utils/types'
+import { type CmsSlot } from '@hubblecommerce/hubble/platforms/shopware/api-client'
+import { type HblMedia, type HblProductListing, type HblSlot } from '@/utils/types'
 import { hblMapMedia, hblMapProductListing } from '#imports'
 
 export function hblMapSlots (swSlots: CmsSlot[]): HblSlot[] {

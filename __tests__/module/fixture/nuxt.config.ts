@@ -4,6 +4,7 @@ import hubble from '../../..'
 // @ts-ignore
 export default defineNuxtConfig({
     modules: [
+        // @ts-ignore
         hubble
     ],
     hubble: {
@@ -17,8 +18,20 @@ export default defineNuxtConfig({
     vite: {
         resolve: {
             alias: {
+                // @ts-ignore
                 '@hubblecommerce/hubble/platforms/shopware/api-client': fileURLToPath(new URL('../../../src/platforms/shopware/api-client/generated/index.ts', import.meta.url)),
+                // @ts-ignore
                 '@hubblecommerce/hubble/platforms/shopware/request': fileURLToPath(new URL('../../../src/platforms/shopware/api-client/generated/core/request.ts', import.meta.url))
+            }
+        }
+    },
+    typescript: {
+        tsConfig: {
+            compilerOptions: {
+                paths: {
+                    '@hubblecommerce/hubble/platforms/shopware/api-client': ['../../../src/platforms/shopware/api-client/generated/index'],
+                    '@hubblecommerce/hubble/platforms/shopware/request': ['../../../src/platforms/shopware/api-client/generated/core/request']
+                }
             }
         }
     }

@@ -33,8 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import { ChevronDownIcon } from '@heroicons/vue/20/solid'
-import { HblNavigation } from '@/utils/types'
+import { type HblNavigation } from '@/utils/types'
 
 const props = defineProps<{
     navigation: HblNavigation

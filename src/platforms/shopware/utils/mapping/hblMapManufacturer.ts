@@ -1,5 +1,5 @@
-import { ProductManufacturer } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { HblManufacturer } from '@/utils/types'
+import { type ProductManufacturer } from '@hubblecommerce/hubble/platforms/shopware/api-client'
+import { type HblManufacturer } from '@/utils/types'
 import { hblMapMedia } from '#imports'
 
 export function hblMapManufacturer (swManufacturer: ProductManufacturer): HblManufacturer {

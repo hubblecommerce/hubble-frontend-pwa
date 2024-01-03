@@ -1,5 +1,5 @@
-import { Ref } from 'vue'
-import { HblWishlist } from '@/utils/types/HblWishlist'
+import { type Ref } from 'vue'
+import { type HblWishlist } from '@/utils/types/HblWishlist'
 
 export interface HblIUseWishlist {
     wishlist: Ref<HblWishlist | null>,

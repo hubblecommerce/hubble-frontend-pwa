@@ -1,5 +1,5 @@
-import { ref, Ref } from 'vue'
-import { HblIUseNotification, HblNotificationOptions, HblNotification } from '@/utils/types'
+import { ref, type Ref } from 'vue'
+import { type HblIUseNotification, type HblNotificationOptions, type HblNotification } from '@/utils/types'
 
 const notifications: Ref<HblNotification[]> = ref([])
 let notificationDefaultDisplayTime = 5

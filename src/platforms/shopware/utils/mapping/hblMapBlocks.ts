@@ -1,5 +1,5 @@
-import { CmsBlock } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { HblBlock } from '@/utils/types'
+import { type CmsBlock } from '@hubblecommerce/hubble/platforms/shopware/api-client'
+import { type HblBlock } from '@/utils/types'
 import { hblMapMedia, hblMapSlots } from '#imports'
 
 export function hblMapBlocks (swBlocks: CmsBlock[]): HblBlock[] {

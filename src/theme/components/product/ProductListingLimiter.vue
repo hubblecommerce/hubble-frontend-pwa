@@ -16,7 +16,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { showError } from '#app'
-import { HblProductListing, HblProductListingFilterCurrent } from '@/utils/types'
+import { type HblProductListing, type HblProductListingFilterCurrent } from '@/utils/types'
 import { usePage } from '#imports'
 
 const props = defineProps<{

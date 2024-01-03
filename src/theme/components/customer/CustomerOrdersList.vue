@@ -56,7 +56,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, Ref, reactive } from 'vue'
+import { computed, ref, type Ref, reactive } from 'vue'
 import { storeToRefs } from 'pinia'
 import { showError } from '#app'
 import {
@@ -65,7 +65,7 @@ import {
     ChevronRightIcon,
     ChevronDoubleRightIcon
 } from '@heroicons/vue/20/solid'
-import { HblOrder } from '@/utils/types'
+import { type HblOrder } from '@/utils/types'
 import { useCustomer, useCurrency } from '#imports'
 
 /*

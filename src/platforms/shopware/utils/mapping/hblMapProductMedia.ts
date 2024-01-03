@@ -1,5 +1,5 @@
-import { ProductMedia } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { HblMedia } from '@/utils/types'
+import { type ProductMedia } from '@hubblecommerce/hubble/platforms/shopware/api-client'
+import { type HblMedia } from '@/utils/types'
 import { hblMapMedia } from '#imports'
 
 export function hblMapProductMedia (swMedia: ProductMedia[]): HblMedia[] | null {

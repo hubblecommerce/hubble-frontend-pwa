@@ -1,16 +1,14 @@
 import path, { basename, extname, join, resolve } from 'path'
 import { fileURLToPath } from 'url'
 import { defineNuxtModule, extendPages, installModule } from '@nuxt/kit'
-import { Nuxt } from '@nuxt/schema'
 // @ts-ignore
 import fs from 'fs-extra'
 import { defu } from 'defu'
-import { CookieOptions } from 'nuxt/app'
 import { globby } from 'globby'
 import { watch } from 'chokidar'
-import { Config } from 'tailwindcss'
+import { type Config } from 'tailwindcss'
 import daisyui from 'daisyui'
-import type { NuxtPage } from '@nuxt/schema'
+import type { NuxtPage, Nuxt } from '@nuxt/schema'
 
 // Set configs of configured platform
 async function setDefaultRuntimeConfigs (nuxt: Nuxt) {
@@ -58,7 +56,7 @@ const asyncCopyDirs = async (sourceDirs: string[], targetDir: string, options: R
 
 export interface Cookie {
     name: string,
-    options: CookieOptions
+    options: any
 }
 
 export interface ModuleOptions {

@@ -1,5 +1,5 @@
-import { PropertyGroupOption } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { HblVariantOption } from '@/utils/types'
+import { type PropertyGroupOption } from '@hubblecommerce/hubble/platforms/shopware/api-client'
+import { type HblVariantOption } from '@/utils/types'
 import { hblMapMedia } from '#imports'
 
 export function hblMapVariantOption (swPropertyOption: PropertyGroupOption): HblVariantOption {

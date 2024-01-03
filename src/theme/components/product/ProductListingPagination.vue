@@ -26,7 +26,7 @@ import {
 } from '@heroicons/vue/20/solid'
 import { showError } from '#app'
 import { usePage } from '#imports'
-import { HblProductListing, HblProductListingFilterCurrent } from '@/utils/types'
+import { type HblProductListing, type HblProductListingFilterCurrent } from '@/utils/types'
 
 interface ProductListingPaginationProps {
     page: number,

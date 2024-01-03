@@ -20,8 +20,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, Ref } from 'vue'
-import { HblBlock, HblSection } from '@/utils/types'
+import { computed, type Ref } from 'vue'
+import { type HblBlock, type HblSection } from '@/utils/types'
 import { hblGetStructureBackgroundStyles } from '@/utils/helper'
 
 const props = defineProps<{

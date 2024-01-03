@@ -1,8 +1,8 @@
-import { HblCategory } from '@/utils/types/HblCategory'
-import { HblProduct } from '@/utils/types/HblProduct'
-import { HblMedia } from '@/utils/types/HblMedia'
-import { HblCms } from '@/utils/types/HblCms'
-import { HblProductListing } from '@/utils/types/HblProductListing'
+import { type HblCategory } from '@/utils/types/HblCategory'
+import { type HblProduct } from '@/utils/types/HblProduct'
+import { type HblMedia } from '@/utils/types/HblMedia'
+import { type HblCms } from '@/utils/types/HblCms'
+import { type HblProductListing } from '@/utils/types/HblProductListing'
 
 export interface HblSlot {
     type?: string

@@ -1,16 +1,8 @@
-import { Ref, ref } from 'vue'
-import { RouteLocationNormalizedLoaded } from 'vue-router'
+import { type Ref, ref } from 'vue'
+import { type RouteLocationNormalizedLoaded } from 'vue-router'
 import { joinURL } from 'ufo'
 import { getRequestURL as h3GetRequestUrl } from 'h3'
 import { useRouter, useRuntimeConfig } from '#app'
-import {
-    HblIUsePage,
-    HblPage,
-    HblProduct,
-    HblProductListing,
-    HblProductListingFilterCurrent
-} from '@/utils/types'
-import { hblUseDefaultStructure } from '@/utils/helper'
 import {
     ProductShopware,
     PwaShopware,
@@ -19,8 +11,16 @@ import {
     Product as swProduct
 } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 import { request as __request } from '@hubblecommerce/hubble/platforms/shopware/request'
-import { useLocalisation, hblMapPage, hblMapProductListing, hblMapProduct } from '#imports'
 import { useRequestEvent } from '#app/composables/ssr'
+import {
+    HblIUsePage,
+    HblPage,
+    HblProduct,
+    HblProductListing,
+    HblProductListingFilterCurrent
+} from '@/utils/types'
+import { hblUseDefaultStructure } from '@/utils/helper'
+import { useLocalisation, hblMapPage, hblMapProductListing, hblMapProduct } from '#imports'
 
 const associations = {
     media: {},

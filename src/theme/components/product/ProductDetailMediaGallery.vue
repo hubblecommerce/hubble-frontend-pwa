@@ -17,9 +17,9 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, ref, Ref } from 'vue'
+import { onBeforeUnmount, ref, type Ref } from 'vue'
 import { useNuxtApp } from '#app'
-import { HblMedia } from '@/utils/types'
+import { type HblMedia } from '@/utils/types'
 import placeholderImage from '@/assets/product/placeholder-image.png'
 
 interface ProductDetailMediaGalleryProps {

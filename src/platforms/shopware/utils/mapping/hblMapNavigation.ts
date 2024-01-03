@@ -1,5 +1,5 @@
-import { NavigationRouteResponse } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { HblNavigation } from '@/utils/types'
+import { type NavigationRouteResponse } from '@hubblecommerce/hubble/platforms/shopware/api-client'
+import { type HblNavigation } from '@/utils/types'
 
 export function hblMapNavigation (swNavigation: NavigationRouteResponse): HblNavigation {
     // @ts-ignore
