@@ -138,9 +138,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { DocumentIcon } from '@heroicons/vue/24/outline'
-import { HblOrderDocument } from '../../../commons/utils/types/HblOrderDocument'
-import { HblOrderLineItemDownload } from '../../../commons/utils/types/HblOrderLineItemDownload'
-import { HblOrder } from '@/utils/types'
+import { type HblOrderDocument, type HblOrderLineItemDownload, type HblOrder } from '@/utils/types'
 import { useCurrency, useCustomer, useNotification } from '#imports'
 
 const props = defineProps<{

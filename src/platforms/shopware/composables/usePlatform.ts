@@ -1,6 +1,7 @@
 import { defineStore, storeToRefs } from 'pinia'
-import { ref, Ref } from 'vue'
-import { CookieOptions, useCookie } from '#app'
+import { ref, type Ref } from 'vue'
+import { SystemContextShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client'
+import { type CookieOptions, useCookie } from '#app'
 import {
     useRuntimeConfig,
     useCustomer,
@@ -10,7 +11,6 @@ import {
     hblMapCountries
 } from '#imports'
 import { HblIUsePlatform, HblSession, HblSalutation, HblCountry } from '@/utils/types'
-import { SystemContextShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 
 export const usePlatform = defineStore('use-platform', (): HblIUsePlatform => {
     const session: Ref<HblSession> = ref({

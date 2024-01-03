@@ -1,5 +1,5 @@
-import { ref, Ref } from 'vue'
-import { HblIUseDrawer } from '@/utils/types'
+import { ref, type Ref } from 'vue'
+import { type HblIUseDrawer } from '@/utils/types'
 
 const drawerState: Ref<boolean> = ref(false)
 const drawerContext: Ref<string> = ref('')

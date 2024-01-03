@@ -1,5 +1,5 @@
-import { ProductListingResult } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { HblProductListing } from '@/utils/types'
+import { type ProductListingResult } from '@hubblecommerce/hubble/platforms/shopware/api-client'
+import { type HblProductListing } from '@/utils/types'
 import { hblMapSortings, hblMapCurrentFilters, hblMapFilters, hblMapProducts } from '#imports'
 
 export function hblMapProductListing (swProductListing: ProductListingResult): HblProductListing {

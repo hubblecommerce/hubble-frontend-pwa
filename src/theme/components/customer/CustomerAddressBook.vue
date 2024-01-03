@@ -74,10 +74,10 @@
 
 <script setup lang="ts">
 import { XMarkIcon } from '@heroicons/vue/20/solid'
-import { ref, Ref, watch } from 'vue'
+import { ref, type Ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
-import { HblCustomerBillingAddress, HblCustomerShippingAddress } from '@/utils/types'
+import { type HblCustomerBillingAddress, type HblCustomerShippingAddress } from '@/utils/types'
 import { hblUseForm } from '@/utils/helper'
 import { useCustomer, useNotification } from '#imports'
 

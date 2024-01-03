@@ -12,7 +12,7 @@
 import { computed, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { usePlatform } from '#imports'
-import { HblCustomerBillingAddress, HblCustomerShippingAddress } from '@/utils/types'
+import { type HblCustomerBillingAddress, type HblCustomerShippingAddress } from '@/utils/types'
 
 const props = defineProps<{
     address: HblCustomerBillingAddress | HblCustomerShippingAddress

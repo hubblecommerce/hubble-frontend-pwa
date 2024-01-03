@@ -1,4 +1,4 @@
-import { HblMedia } from '@/utils/types/HblMedia'
+import { type HblMedia } from '@/utils/types/HblMedia'
 
 export interface HblManufacturer {
     id: string,

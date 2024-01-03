@@ -1,5 +1,5 @@
-import { OrderLineItem as SwOrderLineItem } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { HblOrderLineItem } from '@/utils/types'
+import { type OrderLineItem as SwOrderLineItem } from '@hubblecommerce/hubble/platforms/shopware/api-client'
+import { type HblOrderLineItem } from '@/utils/types'
 import { hblMapOrderLineItem } from '#imports'
 
 export function hblMapOrderLineItems (swOrderLineItem: SwOrderLineItem[]): HblOrderLineItem[] {

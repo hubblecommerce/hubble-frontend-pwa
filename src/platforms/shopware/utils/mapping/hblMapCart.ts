@@ -1,5 +1,5 @@
-import { Cart as SwCart } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { HblCart } from '@/utils/types'
+import { type Cart as SwCart } from '@hubblecommerce/hubble/platforms/shopware/api-client'
+import { type HblCart } from '@/utils/types'
 import { hblMapLineItems, hblMapTotals } from '#imports'
 
 export function hblMapCart (cart: SwCart): HblCart {

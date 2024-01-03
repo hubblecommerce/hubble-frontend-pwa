@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { HblCms } from '@/utils/types'
+import { type HblCms } from '@/utils/types'
 
 const props = defineProps<{
     data: HblCms

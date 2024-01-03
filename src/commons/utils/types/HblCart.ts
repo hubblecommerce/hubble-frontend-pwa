@@ -1,5 +1,5 @@
-import { HblMedia } from '@/utils/types/HblMedia'
-import { HblPrice } from '@/utils/types/HblProduct'
+import { type HblMedia } from '@/utils/types/HblMedia'
+import { type HblPrice } from '@/utils/types/HblProduct'
 
 export interface HblTotals {
     subTotal: number,

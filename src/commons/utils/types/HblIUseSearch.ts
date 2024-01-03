@@ -1,5 +1,5 @@
-import { Ref } from 'vue'
-import { HblProductListing } from '@/utils/types'
+import { type Ref } from 'vue'
+import { type HblProductListing } from '@/utils/types'
 
 export interface HblIUseSearch {
     loading: Ref<boolean>,

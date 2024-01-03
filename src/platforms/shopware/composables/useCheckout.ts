@@ -1,14 +1,14 @@
-import { ref, Ref } from 'vue'
-import { LocationQuery } from 'vue-router'
+import { ref, type Ref } from 'vue'
+import { type LocationQuery } from 'vue-router'
 import { useRequestURL } from '#app'
 import { defineStore, storeToRefs } from 'pinia'
-import { HblIUseCheckout, HblPaymentMethod, HblShippingMethod } from '@/utils/types'
 import {
     OrderShopware,
     PaymentMethodShopware,
     PaymentShippingShopware,
     SystemContextShopware
 } from '@hubblecommerce/hubble/platforms/shopware/api-client'
+import { type HblIUseCheckout, type HblPaymentMethod, type HblShippingMethod } from '@/utils/types'
 import {
     useNotification,
     useCart,

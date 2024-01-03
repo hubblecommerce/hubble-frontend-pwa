@@ -1,7 +1,7 @@
-import { Ref } from 'vue'
+import { type Ref } from 'vue'
 import { LocationQuery } from 'vue-router'
-import { HblShippingMethod } from '@/utils/types/HblShippingMethod'
-import { HblPaymentMethod } from '@/utils/types/HblPaymentMethod'
+import { type HblShippingMethod } from '@/utils/types/HblShippingMethod'
+import { type HblPaymentMethod } from '@/utils/types/HblPaymentMethod'
 
 export interface HblIUseCheckout {
     loading: Ref<boolean>,

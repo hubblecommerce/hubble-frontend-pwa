@@ -1,6 +1,6 @@
-import { Ref } from 'vue'
-import { HblCart } from '@/utils/types/HblCart'
-import { HblMiniCart } from '@/utils/types/HblMiniCart'
+import { type Ref } from 'vue'
+import { type HblCart } from '@/utils/types/HblCart'
+import { type HblMiniCart } from '@/utils/types/HblMiniCart'
 
 export interface HblIUseCart {
     cart: Ref<HblCart | null>,

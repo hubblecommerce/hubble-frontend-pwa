@@ -1,8 +1,8 @@
-import { Ref } from 'vue'
+import { type Ref } from 'vue'
 import { RouteLocationNormalizedLoaded } from 'vue-router'
-import { HblPage } from '@/utils/types/HblPage'
-import { HblProductListing, HblProductListingFilterCurrent } from '@/utils/types/HblProductListing'
-import { HblProduct } from '@/utils/types/HblProduct'
+import { type HblPage } from '@/utils/types/HblPage'
+import { type HblProductListing, type HblProductListingFilterCurrent } from '@/utils/types/HblProductListing'
+import { type HblProduct } from '@/utils/types/HblProduct'
 
 export interface HblIUsePage {
     loading: Ref<boolean>,
