@@ -12,11 +12,11 @@ import {
 import { request as __request } from '@hubblecommerce/hubble/platforms/shopware/request'
 import { useLocalisation, hblMapPage, hblMapProductListing, hblMapProduct, useRequestEvent, useRouter, useRuntimeConfig } from '#imports'
 import {
-    HblIUsePage,
-    HblPage,
-    HblProduct,
-    HblProductListing,
-    HblProductListingFilterCurrent
+    type HblIUsePage,
+    type HblPage,
+    type HblProduct,
+    type HblProductListing,
+    type HblProductListingFilterCurrent
 } from '@/utils/types'
 import { hblUseDefaultStructure } from '@/utils/helper'
 

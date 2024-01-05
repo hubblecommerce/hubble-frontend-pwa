@@ -1,6 +1,6 @@
 import { ref, type Ref } from 'vue'
 import { ProductShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { HblIUseSearch, HblProductListing } from '@/utils/types'
+import { type HblIUseSearch, type HblProductListing } from '@/utils/types'
 import { hblMapProductListing } from '#imports'
 
 export function useSearch (): HblIUseSearch {

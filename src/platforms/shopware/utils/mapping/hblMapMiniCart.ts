@@ -1,4 +1,4 @@
-import { HblCart, HblMiniCart, MiniCartItem } from '@/utils/types'
+import { type HblCart, type HblMiniCart, type MiniCartItem } from '@/utils/types'
 
 export function hblMapMiniCart (cart: HblCart): HblMiniCart {
     let quantity = 0

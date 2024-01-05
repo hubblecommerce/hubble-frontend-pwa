@@ -2,7 +2,7 @@ import { type Ref, ref, watch } from 'vue'
 import { defineStore } from 'pinia'
 import { CartShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 import { useNotification, usePlatform, hblMapCart, hblMapMiniCart, useCookie, useRuntimeConfig } from '#imports'
-import { HblCart, HblIUseCart, HblMiniCart, HblLineItem, MiniCartItem } from '@/utils/types'
+import { type HblCart, type HblIUseCart, type HblMiniCart, type HblLineItem, type MiniCartItem } from '@/utils/types'
 
 export const useCart = defineStore('use-cart', (): HblIUseCart => {
     const cart: Ref<HblCart | null> = ref(null)

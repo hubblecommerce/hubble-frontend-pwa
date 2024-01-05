@@ -1,4 +1,4 @@
-import { HblPage } from '@/utils/types'
+import { type HblPage } from '@/utils/types'
 import { hblMapCategory, hblMapBreadcrumb, hblMapProduct, hblMapSections } from '#imports'
 
 export function hblMapPage (swPage: any): HblPage {

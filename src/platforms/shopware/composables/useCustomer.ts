@@ -22,12 +22,12 @@ import {
     useCookie
 } from '#imports'
 import {
-    HblCustomer,
-    HblCustomerShippingAddress,
-    HblCustomerBillingAddress,
-    HblIUseCustomer,
-    HblRegisterCustomerForm,
-    HblOrder
+    type HblCustomer,
+    type HblCustomerShippingAddress,
+    type HblCustomerBillingAddress,
+    type HblIUseCustomer,
+    type HblRegisterCustomerForm,
+    type HblOrder
 } from '@/utils/types'
 
 export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {

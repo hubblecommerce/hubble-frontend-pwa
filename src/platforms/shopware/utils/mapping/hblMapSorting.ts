@@ -1,4 +1,4 @@
-import { HblProductListingSorting } from '@/utils/types'
+import { type HblProductListingSorting } from '@/utils/types'
 
 export function hblMapSorting (swSorting: any): HblProductListingSorting {
     return {

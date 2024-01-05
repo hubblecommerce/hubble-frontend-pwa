@@ -10,7 +10,7 @@ import {
     hblMapCustomer,
     hblMapCountries
 } from '#imports'
-import { HblIUsePlatform, HblSession, HblSalutation, HblCountry } from '@/utils/types'
+import { type HblIUsePlatform, type HblSession, type HblSalutation, type HblCountry } from '@/utils/types'
 
 export const usePlatform = defineStore('use-platform', (): HblIUsePlatform => {
     const session: Ref<HblSession> = ref({

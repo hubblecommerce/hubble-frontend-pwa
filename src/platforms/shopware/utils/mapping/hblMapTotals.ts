@@ -1,4 +1,4 @@
-import { HblTotals } from '@/utils/types'
+import { type HblTotals } from '@/utils/types'
 
 export function hblMapTotals (price: any): HblTotals {
     return {
