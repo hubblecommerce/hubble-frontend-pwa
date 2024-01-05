@@ -1,6 +1,5 @@
-import { defineNuxtPlugin, useRuntimeConfig, useCookie } from '#imports'
 import { storeToRefs } from 'pinia'
-import { useCart } from '#imports'
+import { defineNuxtPlugin, useRuntimeConfig, useCookie, useCart } from '#imports'
 
 export default defineNuxtPlugin(() => {
     const { cartCookie } = useRuntimeConfig().public

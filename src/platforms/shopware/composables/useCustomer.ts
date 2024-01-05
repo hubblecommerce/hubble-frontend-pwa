@@ -1,5 +1,4 @@
 import { ref, type Ref, watch } from 'vue'
-import { type CookieOptions, useCookie } from '#imports'
 import { defineStore, storeToRefs } from 'pinia'
 import {
     AddressShopware, Document, DocumentShopware,
@@ -19,7 +18,8 @@ import {
     hblMapOrder,
     hblMapOrders,
     swMapCustomerAddress,
-    useLocalisation
+    useLocalisation,
+    useCookie
 } from '#imports'
 import {
     HblCustomer,
@@ -46,7 +46,7 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
     // is related to a customer
     if (process.client) {
         watch(customer, (newVal) => {
-            const customerCookie = runtimeConfig.public.customerCookie as { name: string, options: CookieOptions }
+            const customerCookie = runtimeConfig.public.customerCookie as { name: string, options: any }
             const cookie = useCookie(customerCookie.name, customerCookie.options)
 
             if (newVal != null) {

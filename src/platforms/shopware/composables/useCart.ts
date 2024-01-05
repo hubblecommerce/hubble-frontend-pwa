@@ -1,15 +1,14 @@
 import { type Ref, ref, watch } from 'vue'
-import { type CookieOptions, useCookie, useRuntimeConfig } from '#imports'
 import { defineStore } from 'pinia'
 import { CartShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { useNotification, usePlatform, hblMapCart, hblMapMiniCart } from '#imports'
+import { useNotification, usePlatform, hblMapCart, hblMapMiniCart, useCookie, useRuntimeConfig } from '#imports'
 import { HblCart, HblIUseCart, HblMiniCart, HblLineItem, MiniCartItem } from '@/utils/types'
 
 export const useCart = defineStore('use-cart', (): HblIUseCart => {
     const cart: Ref<HblCart | null> = ref(null)
     const miniCart: Ref<HblMiniCart | null> = ref(null)
 
-    const { cartCookie } = useRuntimeConfig().public as { cartCookie: { name: string, options: CookieOptions } }
+    const { cartCookie } = useRuntimeConfig().public as { cartCookie: { name: string, options: any } }
     const error: Ref = ref(false)
     const loading: Ref<boolean> = ref(false)
     const { setSessionToken } = usePlatform()

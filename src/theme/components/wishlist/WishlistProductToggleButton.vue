@@ -14,8 +14,7 @@
 import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { ArrowPathIcon, HeartIcon } from '@heroicons/vue/24/outline'
-import { useNuxtApp } from '#imports'
-import { useWishlist } from '#imports'
+import { useWishlist, useNuxtApp } from '#imports'
 import { type HblProduct } from '@/utils/types'
 
 const props = defineProps<{

@@ -24,8 +24,7 @@ import {
     ChevronRightIcon,
     ChevronDoubleRightIcon
 } from '@heroicons/vue/20/solid'
-import { showError } from '#imports'
-import { usePage } from '#imports'
+import { usePage, showError } from '#imports'
 import { type HblProductListing, type HblProductListingFilterCurrent } from '@/utils/types'
 
 interface ProductListingPaginationProps {

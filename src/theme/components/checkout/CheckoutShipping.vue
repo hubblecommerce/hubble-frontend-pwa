@@ -54,8 +54,7 @@
 import { onMounted, watch, ref, type Ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
-import { useNuxtApp } from '#imports'
-import { useCheckout, useNotification, usePlatform, useCurrency } from '#imports'
+import { useCheckout, useNotification, usePlatform, useCurrency, useNuxtApp } from '#imports'
 
 const { t } = useI18n()
 const { $hblBus } = useNuxtApp()

@@ -31,9 +31,8 @@
 
 <script setup lang="ts">
 import { ref, type Ref } from 'vue'
-import { useRouter } from '#imports'
 import { storeToRefs } from 'pinia'
-import { useCheckout, usePlatform, useLocalisation } from '#imports'
+import { useCheckout, usePlatform, useLocalisation, useRouter } from '#imports'
 
 const { currentRoute } = useRouter()
 const orderId = currentRoute?.value?.query?.orderId?.toString()

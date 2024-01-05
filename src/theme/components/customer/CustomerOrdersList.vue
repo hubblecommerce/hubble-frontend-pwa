@@ -58,7 +58,6 @@
 <script setup lang="ts">
 import { computed, ref, type Ref, reactive } from 'vue'
 import { storeToRefs } from 'pinia'
-import { showError } from '#imports'
 import {
     ChevronLeftIcon,
     ChevronDoubleLeftIcon,
@@ -66,7 +65,7 @@ import {
     ChevronDoubleRightIcon
 } from '@heroicons/vue/20/solid'
 import { type HblOrder } from '@/utils/types'
-import { useCustomer, useCurrency } from '#imports'
+import { useCustomer, useCurrency, showError } from '#imports'
 
 /*
  * Fetch Orders

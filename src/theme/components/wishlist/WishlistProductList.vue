@@ -61,8 +61,7 @@
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
 import { TrashIcon } from '@heroicons/vue/24/outline'
-import { useNuxtApp } from '#imports'
-import { useWishlist, useCurrency, useCart } from '#imports'
+import { useWishlist, useCurrency, useCart, useNuxtApp } from '#imports'
 import { type HblProduct } from '@/utils/types'
 
 const { t } = useI18n()

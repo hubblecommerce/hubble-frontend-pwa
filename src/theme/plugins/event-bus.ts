@@ -1,5 +1,5 @@
-import { defineNuxtPlugin } from '#imports'
 import mitt from 'mitt'
+import { defineNuxtPlugin } from '#imports'
 const emitter = mitt()
 
 /*

@@ -16,10 +16,9 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { useRouter } from '#imports'
 import { useI18n } from 'vue-i18n'
 import { XCircleIcon, ArrowPathIcon } from '@heroicons/vue/24/outline'
-import { useCustomer, useLocalisation, useNotification, usePlatform } from '#imports'
+import { useRouter, useCustomer, useLocalisation, useNotification, usePlatform } from '#imports'
 
 const customerStore = useCustomer()
 const { registerConfirm } = customerStore

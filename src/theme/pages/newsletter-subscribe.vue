@@ -21,10 +21,9 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useAsyncData, useRouter } from '#imports'
 import { useI18n } from 'vue-i18n'
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/vue/24/outline'
-import { useCustomer } from '#imports'
+import { useAsyncData, useRouter, useCustomer } from '#imports'
 
 const customerStore = useCustomer()
 const { confirmCustomerNewsletter } = customerStore

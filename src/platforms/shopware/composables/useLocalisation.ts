@@ -1,9 +1,8 @@
 import { ref, Ref } from 'vue'
-import { useNuxtApp, navigateTo } from '#imports'
-import type { NavigateToOptions } from '#app/composables/router'
+import { type NavigateToOptions } from '#app/composables/router'
 import { NavigationFailure, RouteLocationRaw, RouteLocationNormalized } from 'vue-router'
-import { useRoute } from '#imports'
-import { HblIUseLocalisation } from '@/utils/types'
+import { useRoute, useNuxtApp, navigateTo } from '#imports'
+import { type HblIUseLocalisation } from '@/utils/types'
 
 const entityPathInfo = ref(null)
 

@@ -2,7 +2,6 @@ import { defineStore, storeToRefs } from 'pinia'
 import { ref, type Ref } from 'vue'
 import { SystemContextShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 import {
-    type CookieOptions, 
     useCookie,
     useRuntimeConfig,
     useCustomer,
@@ -39,7 +38,7 @@ export const usePlatform = defineStore('use-platform', (): HblIUsePlatform => {
         // @ts-ignore
         session.value.sessionToken = token
 
-        const sessionCookie = runtimeConfig.public.sessionCookie as { name: string, options: CookieOptions }
+        const sessionCookie = runtimeConfig.public.sessionCookie as { name: string, options: any }
         const cookie = useCookie(sessionCookie.name, sessionCookie.options)
 
         if (cookie.value !== token) {
@@ -58,7 +57,7 @@ export const usePlatform = defineStore('use-platform', (): HblIUsePlatform => {
         error.value = false
 
         try {
-            const { sessionCookie } = useRuntimeConfig().public as { sessionCookie: { name: string, options: CookieOptions } }
+            const { sessionCookie } = useRuntimeConfig().public as { sessionCookie: { name: string, options: any } }
             const cookie = useCookie(sessionCookie.name)
 
             if (cookie.value === undefined) {

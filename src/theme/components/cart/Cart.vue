@@ -49,9 +49,8 @@
 import { onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
-import { useNuxtApp } from '#imports'
 import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/vue/24/outline'
-import { useCart } from '#imports'
+import { useCart, useNuxtApp } from '#imports'
 
 const { t } = useI18n()
 

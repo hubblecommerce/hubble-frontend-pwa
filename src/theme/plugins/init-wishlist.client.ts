@@ -1,6 +1,5 @@
-import { defineNuxtPlugin, useRuntimeConfig, useCookie } from '#imports'
 import { storeToRefs } from 'pinia'
-import { useWishlist } from '#imports'
+import { defineNuxtPlugin, useRuntimeConfig, useCookie, useWishlist } from '#imports'
 
 export default defineNuxtPlugin(() => {
     const { wishlistCookie } = useRuntimeConfig().public

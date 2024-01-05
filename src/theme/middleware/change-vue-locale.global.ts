@@ -1,5 +1,4 @@
-import { defineNuxtRouteMiddleware, navigateTo, useRuntimeConfig } from '#imports'
-import { useLocalisation } from '#imports'
+import { defineNuxtRouteMiddleware, navigateTo, useRuntimeConfig, useLocalisation } from '#imports'
 
 export default defineNuxtRouteMiddleware((to) => {
     const config = useRuntimeConfig()

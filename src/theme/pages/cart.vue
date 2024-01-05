@@ -38,8 +38,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useNuxtApp } from '#imports'
-import { useCart } from '#imports'
+import { useCart, useNuxtApp } from '#imports'
 
 const cartStore = useCart()
 const { cart, loading, error } = storeToRefs(cartStore)

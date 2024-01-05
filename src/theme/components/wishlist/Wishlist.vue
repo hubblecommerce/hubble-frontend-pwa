@@ -15,10 +15,9 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useNuxtApp } from '#imports'
-import { useWishlist } from '#imports'
+import { useWishlist, useNuxtApp } from '#imports'
 
 const wishlistStore = useWishlist()
 const { wishlist, loading, error } = storeToRefs(wishlistStore)

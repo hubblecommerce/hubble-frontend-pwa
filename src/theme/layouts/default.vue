@@ -40,8 +40,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useNuxtApp } from '#imports'
-import { useDrawer } from '#imports'
+import { useDrawer, useNuxtApp } from '#imports'
 
 const loading = ref(null)
 const nuxtApp = useNuxtApp()

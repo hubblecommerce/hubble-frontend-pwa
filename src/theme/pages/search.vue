@@ -22,9 +22,8 @@
 
 <script setup lang="ts">
 import { ref, type Ref, onMounted } from 'vue'
-import { showError, useRouter } from '#imports'
 import { MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
-import { usePage, useSearch, useNotification } from '#imports'
+import { showError, useRouter, usePage, useSearch, useNotification } from '#imports'
 import { type HblProductListing as ProductListingType } from '@/utils/types'
 
 const { currentRoute } = useRouter()

@@ -1,6 +1,5 @@
 import { ref, type Ref } from 'vue'
 import { type LocationQuery } from 'vue-router'
-import { useRequestURL } from '#imports'
 import { defineStore, storeToRefs } from 'pinia'
 import {
     OrderShopware,
@@ -15,7 +14,8 @@ import {
     useRouter,
     hblMapPaymentMethods,
     hblMapShippingMethods,
-    useLocalisation
+    useLocalisation,
+    useRequestURL
 } from '#imports'
 
 export const useCheckoutStore = defineStore('use-checkout', () => {

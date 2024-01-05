@@ -10,8 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from '#imports'
-import { useLocalisation } from '#imports'
+import { useLocalisation, useRouter } from '#imports'
 const { currentRoute } = useRouter()
 const hash = currentRoute.value.query?.hash
 const { navigateToI18n } = useLocalisation()

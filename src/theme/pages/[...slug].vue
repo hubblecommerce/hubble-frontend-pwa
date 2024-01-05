@@ -13,8 +13,7 @@
 
 <script setup lang="ts">
 import { computed, resolveComponent, provide, onBeforeUnmount, onMounted } from 'vue'
-import { showError, useRoute, useAsyncData } from '#imports'
-import { useLocalisation, usePage } from '#imports'
+import { showError, useRoute, useAsyncData, useLocalisation, usePage } from '#imports'
 import { hblDetailData } from '@/utils/helper'
 
 /*
