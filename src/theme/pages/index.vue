@@ -65,9 +65,6 @@
 <script setup>
 import { useI18n } from 'vue-i18n'
 import { CheckCircleIcon } from '@heroicons/vue/24/outline'
-import { useRuntimeConfig } from '#imports'
- 
-const config = useRuntimeConfig().public
 
 const { t } = useI18n()
 </script>

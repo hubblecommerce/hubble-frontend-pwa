@@ -3,7 +3,7 @@ import { type HblOrderLineItemDownload } from '@/utils/types'
 
 export function hblMapOrderLineItemDownload (orderLineItemDownload: SwOrderLineItemDownload): HblOrderLineItemDownload {
     return {
-        id: orderLineItemDownload.id,
+        id: orderLineItemDownload.id != null ? orderLineItemDownload.id : '',
         fileName: `${orderLineItemDownload.media?.fileName}.${orderLineItemDownload.media?.fileExtension}`,
         canBeDownloaded: orderLineItemDownload.accessGranted
     }

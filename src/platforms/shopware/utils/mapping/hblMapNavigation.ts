@@ -22,7 +22,7 @@ export function hblMapNavigation (swNavigation: NavigationRouteResponse): HblNav
 
         return {
             id: item.id,
-            name: item.translated.name,
+            name: item?.translated?.name,
             url,
             children
         }

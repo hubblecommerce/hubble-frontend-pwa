@@ -1,7 +1,7 @@
 import { ref, type Ref, watch } from 'vue'
 import { defineStore, storeToRefs } from 'pinia'
 import {
-    AddressShopware, Document, DocumentShopware,
+    AddressShopware, type Document, DocumentShopware,
     LoginRegistrationShopware, NewsletterShopware,
     OrderShopware, ProfileShopware,
     SystemContextShopware
@@ -403,7 +403,7 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
         }
     }
 
-    async function getOrderDocumentDownload (orderId: string, downloadId: string): Promise<Document | void> {
+    async function getOrderDocumentDownload (orderId: string, downloadId: string): Promise<any> {
         loading.value = true
         error.value = false
 

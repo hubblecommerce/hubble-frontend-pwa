@@ -46,6 +46,7 @@ onMounted(async function () {
         }
 
         try {
+            // @ts-ignore
             await registerConfirm(formData)
 
             await getSession()

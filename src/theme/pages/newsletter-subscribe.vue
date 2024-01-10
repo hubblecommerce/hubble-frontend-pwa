@@ -42,6 +42,7 @@ if (em && hash) {
         hash
     }
 
+    // @ts-ignore
     const { error } = await useAsyncData(() => confirmCustomerNewsletter(formData))
 
     if (!error.value) {

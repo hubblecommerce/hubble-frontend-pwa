@@ -4,7 +4,7 @@
 
         <StructureSection
             v-for="(section, index) in page?.structure"
-            :key="section.id"
+            :key="index"
             :count="index"
             :content="section"
         />

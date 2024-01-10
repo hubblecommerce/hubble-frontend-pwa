@@ -19,7 +19,7 @@ export function hblMapCustomerAddress (swAddress: SwCustomerAddress | OrderAddre
         lastName: swAddress.lastName,
         ...(swAddress.company != null && { company: swAddress.company }),
         street: swAddress.street,
-        zipcode: swAddress.zipcode,
+        zipcode: swAddress.zipcode != null ? swAddress.zipcode : '',
         city: swAddress.city,
         country: swAddress.countryId,
         ...(swAddress.phoneNumber != null && { phone: swAddress.phoneNumber })

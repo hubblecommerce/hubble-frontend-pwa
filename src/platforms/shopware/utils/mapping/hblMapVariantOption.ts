@@ -6,7 +6,7 @@ export function hblMapVariantOption (swPropertyOption: PropertyGroupOption): Hbl
     return {
         // @ts-ignore
         id: swPropertyOption.id,
-        name: swPropertyOption.translated.name,
+        name: swPropertyOption?.translated?.name,
         ...(swPropertyOption.colorHexCode != null && { color: swPropertyOption.colorHexCode }),
         ...(swPropertyOption.media != null && { media: hblMapMedia(swPropertyOption.media) })
     }

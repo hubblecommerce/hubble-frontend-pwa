@@ -3,7 +3,7 @@ import { type HblOrderDocument } from '@/utils/types'
 
 export function hblMapOrderDocument (document: SwDocument): HblOrderDocument {
     return {
-        id: document.id,
+        id: document?.id != null ? document?.id : '',
         deepLinkCode: document.deepLinkCode,
         fileName: buildFileName(document),
         date: document.config.documentDate

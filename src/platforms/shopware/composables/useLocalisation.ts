@@ -1,6 +1,6 @@
-import { ref, Ref } from 'vue'
+import { ref, type Ref } from 'vue'
 import { type NavigateToOptions } from '#app/composables/router'
-import { NavigationFailure, RouteLocationRaw, RouteLocationNormalized } from 'vue-router'
+import type { NavigationFailure, RouteLocationRaw, RouteLocationNormalized } from 'vue-router'
 import { useRoute, useNuxtApp, navigateTo } from '#imports'
 import { type HblIUseLocalisation } from '@/utils/types'
 
@@ -39,7 +39,7 @@ export const useLocalisation = function (targetRoute?: RouteLocationNormalized):
         vueApp.config.globalProperties.$i18n.locale = locale
     }
 
-    function navigateToI18n (to: RouteLocationRaw, options?: NavigateToOptions): Promise<void | NavigationFailure> | RouteLocationRaw {
+    function navigateToI18n (to: RouteLocationRaw, options?: NavigateToOptions): false | void | RouteLocationRaw | Promise<false | void | NavigationFailure> {
         let target = to
         const locale = isLocalisedRoute(route.path)
 

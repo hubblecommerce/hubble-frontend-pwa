@@ -22,5 +22,5 @@ export function hblMapSlots (swSlots: CmsSlot[]): HblSlot[] {
             ...(productListing != null && { productListing }),
             ...(media != null && { media })
         }
-    })
+    }) as HblSlot[]
 }

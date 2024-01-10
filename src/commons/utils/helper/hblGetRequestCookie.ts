@@ -1,4 +1,4 @@
-import { NuxtApp } from '#imports'
+import { type NuxtApp } from '#app'
 
 export function hblGetRequestCookie (app: NuxtApp, cookieName: string): string | null {
     const cookieHeader = app.ssrContext?.event.req.headers.cookie

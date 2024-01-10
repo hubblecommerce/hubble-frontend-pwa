@@ -12,6 +12,7 @@ export function hblMapOrderLineItem (swOrderLineItem: SwOrderLineItem): HblOrder
         quantity: swOrderLineItem.quantity,
         // @ts-ignore
         price: swOrderLineItem.totalPrice,
-        ...(swOrderLineItem?.downloads?.length > 0 && { downloads: hblMapOrderLineItemDownloads(swOrderLineItem.downloads) })
+        // @ts-ignore
+        ...(swOrderLineItem?.downloads?.length > 0 && { downloads: hblMapOrderLineItemDownloads(swOrderLineItem?.downloads) })
     }
 }

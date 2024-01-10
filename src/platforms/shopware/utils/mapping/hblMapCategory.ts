@@ -8,10 +8,10 @@ export function hblMapCategory (swCategory: SwCategory): HblCategory {
         id: swCategory.id,
         // @ts-ignore
         active: swCategory.active,
-        name: swCategory.translated.name,
+        name: swCategory?.translated?.name,
         // @ts-ignore
         media: hblMapMedia(swCategory.media),
-        description: swCategory.translated.description,
+        description: swCategory?.translated?.description,
         // @ts-ignore
         metaTitle: swCategory.metaTitle,
         // @ts-ignore

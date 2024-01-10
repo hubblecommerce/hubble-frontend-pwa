@@ -7,8 +7,8 @@ export function hblMapManufacturer (swManufacturer: ProductManufacturer): HblMan
         // @ts-ignore
         id: swManufacturer.id,
         link: swManufacturer.link,
-        name: swManufacturer.translated.name,
-        description: swManufacturer.translated.description,
+        name: swManufacturer?.translated?.name,
+        description: swManufacturer?.translated?.description,
         // @ts-ignore
         media: hblMapMedia(swManufacturer.media)
     }

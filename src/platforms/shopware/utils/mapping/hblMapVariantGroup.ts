@@ -6,7 +6,7 @@ export function hblMapVariantGroup (swPropertyGroup: PropertyGroup): HblVariantG
     return {
         // @ts-ignore
         id: swPropertyGroup.id,
-        name: swPropertyGroup.translated.name,
+        name: swPropertyGroup?.translated?.name,
         // Todo patch api
         // @ts-ignore
         options: hblMapPropertyOptions(swPropertyGroup.options)

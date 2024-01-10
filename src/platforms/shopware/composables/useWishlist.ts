@@ -71,7 +71,7 @@ export const useWishlist = defineStore('use-wishlist', (): HblIUseWishlist => {
         }
     }
 
-    function handleWishlistApiError (e) {
+    function handleWishlistApiError (e: any) {
         if (e.statusCode === 404) {
             wishlist.value = null
         } else if (e.statusCode === 403) {
@@ -99,7 +99,7 @@ export const useWishlist = defineStore('use-wishlist', (): HblIUseWishlist => {
     }
 
     function clearWishlist (): void {
-        wishlist.value = []
+        wishlist.value = null
         miniWishlist.value = []
     }
 

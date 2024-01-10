@@ -6,8 +6,8 @@ import {
     ProductShopware,
     PwaShopware,
     OpenAPI,
-    PropertyGroup,
-    Product as swProduct
+    type PropertyGroup,
+    type Product as swProduct
 } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 import { request as __request } from '@hubblecommerce/hubble/platforms/shopware/request'
 import { useLocalisation, hblMapPage, hblMapProductListing, hblMapProduct, useRequestEvent, useRouter, useRuntimeConfig } from '#imports'
