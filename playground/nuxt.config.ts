@@ -29,10 +29,13 @@ export default defineNuxtConfig({
         tsConfig: {
             compilerOptions: {
                 paths: {
-                    '@hubblecommerce/hubble/platforms/shopware/api-client': ['../src/platforms/shopware/api-client/generated/index'],
-                    '@hubblecommerce/hubble/platforms/shopware/request': ['../src/platforms/shopware/api-client/generated/core/request']
+                    '@hubblecommerce/hubble/platforms/shopware/api-client': ['../../src/platforms/shopware/api-client/generated/index'],
+                    '@hubblecommerce/hubble/platforms/shopware/request': ['../../src/platforms/shopware/api-client/generated/core/request']
                 }
-            }
+            },
+            include: [
+                '../../src/**/*'
+            ]
         }
     }
 })
