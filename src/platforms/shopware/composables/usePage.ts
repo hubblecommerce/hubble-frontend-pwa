@@ -167,14 +167,10 @@ export const usePage = function (): HblIUsePage {
         error.value = false
 
         try {
-            const options: any = []
-            Object.keys(selectedOptions).forEach((key) => {
-                options.push(selectedOptions[key])
+            const options: any = {}
+            Object.keys(selectedOptions).map((key) => {
+                options[selectedOptions[key]] = selectedOptions[key]
             })
-
-            // Set selected option to end of array, to force shopware to respond with a matching variant
-            // even the selected option is not available
-            options.push(options.splice(options.indexOf(switchedOption), 1)[0])
 
             const matchingVariant = await ProductShopware.searchProductVariantIds(parentId, {
                 options,
