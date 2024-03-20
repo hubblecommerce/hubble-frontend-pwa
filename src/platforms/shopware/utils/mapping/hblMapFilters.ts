@@ -9,52 +9,67 @@ import {
 export function hblMapFilters (swFilters: ProductListingResult['aggregations']): HblProductListingFilterMixed[] {
     const filters = []
 
-    const manufacturerFilter: HblProductListingFilterMulti = {
-        id: 'manufacturer',
-        name: 'Manufacturer',
-        type: 'multi',
-        // TODO Patch api
-        // @ts-ignore
-        options: swFilters.manufacturer.entities.map((manufacturer) => {
-            return {
-                id: manufacturer.id,
-                name: manufacturer.translated.name
-            }
-        })
+    // @ts-ignore
+    if (swFilters?.manufacturer != null) {
+        const manufacturerFilter: HblProductListingFilterMulti = {
+            id: 'manufacturer',
+            name: 'Manufacturer',
+            type: 'multi',
+            // @ts-ignore
+            options: swFilters.manufacturer.entities.map((manufacturer) => {
+                return {
+                    id: manufacturer.id,
+                    name: manufacturer.translated.name
+                }
+            })
+        }
+
+        filters.push(manufacturerFilter)
     }
 
-    const priceFilter: HblProductListingFilterRange = {
-        id: 'price',
-        type: 'range',
-        name: 'HblPrice',
-        // TODO Patch api
-        // @ts-ignore
-        min: swFilters.price.min,
-        // @ts-ignore
-        max: swFilters.price.max,
-        // @ts-ignore
-        avg: swFilters.price.avg,
-        // @ts-ignore
-        sum: swFilters.price.sum
+    // @ts-ignore
+    if (swFilters?.price != null) {
+        const priceFilter: HblProductListingFilterRange = {
+            id: 'price',
+            type: 'range',
+            name: 'price',
+            // @ts-ignore
+            min: swFilters.price.min,
+            // @ts-ignore
+            max: swFilters.price.max,
+            // @ts-ignore
+            avg: swFilters.price.avg,
+            // @ts-ignore
+            sum: swFilters.price.sum
+        }
+
+        filters.push(priceFilter)
     }
 
-    const ratingFilter: HblProductListingFilterRange = {
-        id: 'rating',
-        type: 'range',
-        name: 'Rating',
-        // TODO Patch api
-        // @ts-ignore
-        max: swFilters.rating.max != null ? swFilters.rating.max : '0',
-        min: '0'
+    // @ts-ignore
+    if (swFilters?.rating != null) {
+        const ratingFilter: HblProductListingFilterRange = {
+            id: 'rating',
+            type: 'range',
+            name: 'Rating',
+            // @ts-ignore
+            max: swFilters?.rating?.max != null ? swFilters?.rating?.max : '0',
+            min: '0'
+        }
+
+        filters.push(ratingFilter)
     }
 
-    const shippingFilter: HblProductListingFilterBoolean = {
-        id: 'shipping-free',
-        type: 'boolean',
-        name: 'Shipping free'
-    }
+    // @ts-ignore
+    if (swFilters?.['shipping-free'] != null) {
+        const shippingFilter: HblProductListingFilterBoolean = {
+            id: 'shipping-free',
+            type: 'boolean',
+            name: 'Shipping free'
+        }
 
-    filters.push(manufacturerFilter, priceFilter, ratingFilter, shippingFilter)
+        filters.push(shippingFilter)
+    }
 
     // TODO Patch api
     // @ts-ignore
@@ -67,7 +82,9 @@ export function hblMapFilters (swFilters: ProductListingResult['aggregations']):
             options: entity.options.map((option) => {
                 return {
                     id: option.id,
-                    name: option.name
+                    name: option.name,
+                    colorHexCode: option.colorHexCode,
+                    media: option.media
                 }
             })
         }
