@@ -1,14 +1,15 @@
 import path, { basename, extname, join, resolve } from 'path'
 import { fileURLToPath } from 'url'
 import { defineNuxtModule, extendPages, installModule } from '@nuxt/kit'
-// @ts-ignore
-import fs from 'fs-extra'
 import { defu } from 'defu'
 import { globby } from 'globby'
 import { watch } from 'chokidar'
 import { type Config } from 'tailwindcss'
 import daisyui from 'daisyui'
 import type { NuxtPage, Nuxt } from '@nuxt/schema'
+import fse from 'fs-extra'
+// eslint-disable-next-line import/no-named-as-default-member
+const { pathExists, readJson, copy, emptyDir, remove } = fse
 
 // Set configs of configured platform
 async function setDefaultRuntimeConfigs (nuxt: Nuxt) {
@@ -30,10 +31,10 @@ async function setDefaultRuntimeConfigs (nuxt: Nuxt) {
 
 // Set configs of installed platform plugins
 async function setPlatformPluginRuntimeConfigs (nuxt: Nuxt, pluginsConfigPath: string) {
-    const pluginsConfigExists = await fs.pathExists(pluginsConfigPath)
+    const pluginsConfigExists = await pathExists(pluginsConfigPath)
 
     if (pluginsConfigExists) {
-        const pluginConfigs = await fs.readJson(pluginsConfigPath)
+        const pluginConfigs = await readJson(pluginsConfigPath)
         nuxt.options.runtimeConfig.public = defu(nuxt.options.runtimeConfig.public, pluginConfigs)
     }
 }
@@ -49,7 +50,7 @@ const getLastSectionOfPath = (thePath: string) => {
 const asyncCopyDirs = async (sourceDirs: string[], targetDir: string, options: Record<any, any> = {}) => {
     await Promise.all(
         sourceDirs.map(async (sourceDir) => {
-            await fs.copy(sourceDir, join(targetDir, basename(sourceDir)), options)
+            await copy(sourceDir, join(targetDir, basename(sourceDir)), options)
         })
     )
 }
@@ -161,11 +162,11 @@ export default defineNuxtModule<ModuleOptions>({
             }
         })
 
-        await fs.emptyDir(targetDir)
-        await fs.copy(resolve(join(commonsDir, 'utils')), resolve(join(targetDir, 'utils')))
-        await fs.copy(baseDir, targetDir)
-        await fs.copy(resolve(join(platformDir, 'composables')), resolve(join(targetDir, 'composables')))
-        await fs.copy(resolve(join(platformDir, 'utils')), resolve(join(targetDir, 'utils')))
+        await emptyDir(targetDir)
+        await copy(resolve(join(commonsDir, 'utils')), resolve(join(targetDir, 'utils')))
+        await copy(baseDir, targetDir)
+        await copy(resolve(join(platformDir, 'composables')), resolve(join(targetDir, 'composables')))
+        await copy(resolve(join(platformDir, 'utils')), resolve(join(targetDir, 'utils')))
 
         const platformPluginsDirs = await listAllDirs(platformPluginsDir)
 
@@ -178,11 +179,11 @@ export default defineNuxtModule<ModuleOptions>({
 
         // File inheritance for pluginMapping.json
         // Set mapping to runtimeConfig, can be overridden via nuxt config file
-        const pluginMappingExists = await fs.pathExists(resolve(join(platformPluginsDir, 'pluginMapping.json')))
+        const pluginMappingExists = await pathExists(resolve(join(platformPluginsDir, 'pluginMapping.json')))
         if (pluginMappingExists) {
-            await fs.copy(resolve(join(platformPluginsDir, 'pluginMapping.json')), resolve(join(targetDir, options.pluginsDirName, 'pluginMapping.json')))
+            await copy(resolve(join(platformPluginsDir, 'pluginMapping.json')), resolve(join(targetDir, options.pluginsDirName, 'pluginMapping.json')))
         }
-        const pluginMapping = await fs.readJson(resolve(join(targetDir, options.pluginsDirName, 'pluginMapping.json')))
+        const pluginMapping = await readJson(resolve(join(targetDir, options.pluginsDirName, 'pluginMapping.json')))
         nuxt.options.runtimeConfig.public.pluginMapping = defu(nuxt.options.runtimeConfig.public.pluginMapping as any, pluginMapping)
 
         await asyncCopyDirs(validRootDirs, targetDir)
@@ -307,8 +308,8 @@ export default defineNuxtModule<ModuleOptions>({
         /*
          * i18n
          */
-        const availableLocales = await fs.readJson(targetDir + '/locales/availableLocales.json')
-        const platformLanguages = await fs.readJson(targetDir + '/locales/platformLanguages.json')
+        const availableLocales = await readJson(targetDir + '/locales/availableLocales.json')
+        const platformLanguages = await readJson(targetDir + '/locales/platformLanguages.json')
 
         const defaultLocale = Object.keys(availableLocales)[0]
         nuxt.options.runtimeConfig.public.redirectDefaultLanguage = options.redirectDefaultLanguage
@@ -365,7 +366,7 @@ export default defineNuxtModule<ModuleOptions>({
                 }
 
                 if (event === 'add' || event === 'change') {
-                    await fs.copy(filePath, newDestination)
+                    await copy(filePath, newDestination)
                 }
 
                 // TODO: if deleted file was an override of platform plugin, copy platform plugin file
@@ -373,13 +374,13 @@ export default defineNuxtModule<ModuleOptions>({
                     const modulePath = filePath.replace(nuxt.options.rootDir, baseDir)
 
                     // @ts-ignore
-                    fs.pathExists(modulePath, async (err, exists) => {
+                    pathExists(modulePath, async (err, exists) => {
                         if (exists) {
                             // copy from module
-                            await fs.copy(modulePath, newDestination)
+                            await copy(modulePath, newDestination)
                         } else if (!exists) {
                             // path does not exist in module just remove from srcDir
-                            await fs.remove(newDestination)
+                            await remove(newDestination)
                         } else if (err) {
                             // eslint-disable-next-line no-console
                             console.log('err occurred: ', err)
@@ -397,15 +398,14 @@ export default defineNuxtModule<ModuleOptions>({
 
                 const rootPath = filePath.replace(baseDir, nuxt.options.rootDir)
 
-                // @ts-ignore
-                fs.pathExists(rootPath, async (err, exists) => {
+                pathExists(rootPath, async (err, exists) => {
                     if (!exists) {
                         if (event === 'add' || event === 'change') {
-                            fs.copy(filePath, newDestination)
+                            await copy(filePath, newDestination)
                         }
 
                         if (event === 'unlink') {
-                            await fs.remove(newDestination)
+                            await remove(newDestination)
                         }
                     } else if (err) {
                         // eslint-disable-next-line no-console
@@ -422,11 +422,11 @@ export default defineNuxtModule<ModuleOptions>({
                 }
 
                 if (event === 'add' || event === 'change') {
-                    fs.copy(filePath, newDestination)
+                    copy(filePath, newDestination)
                 }
 
                 if (event === 'unlink') {
-                    fs.remove(newDestination)
+                    remove(newDestination)
                 }
             })
         }
