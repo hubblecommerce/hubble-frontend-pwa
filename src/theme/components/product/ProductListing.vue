@@ -81,4 +81,18 @@ if (listing.value.products.length > 0) {
 function onListingCardClick (product: HblProduct, index: number) {
     $hblBus.$emit('clickProductListingCard', { id: 'category', name: 'Category', product, index })
 }
+
+// Reload listing page when browser navigation is used
+const router = useRouter()
+function onHistoryChange () {
+    router.go(0)
+}
+
+onMounted(() => {
+    window.addEventListener('popstate', onHistoryChange)
+})
+
+onUnmounted(() => {
+    window.removeEventListener('popstate', onHistoryChange)
+})
 </script>
