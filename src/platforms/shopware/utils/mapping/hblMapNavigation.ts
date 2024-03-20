@@ -11,13 +11,12 @@ export function hblMapNavigation (swNavigation: NavigationRouteResponse): HblNav
         }
 
         let url = null
-        // @ts-ignore
-        if (item.seoUrls.length > 0) {
-            // @ts-ignore
+        if (item.seoUrls != null && item.seoUrls?.length > 0) {
             if (item.seoUrls[0].seoPathInfo !== undefined) {
-                // @ts-ignore
                 url = '/' + item.seoUrls[0].seoPathInfo
             }
+        } else {
+            url = `/navigation/${item.id}`
         }
 
         return {

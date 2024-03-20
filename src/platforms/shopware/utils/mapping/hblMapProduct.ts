@@ -14,7 +14,7 @@ export function hblMapProduct (swProduct: SwProduct, swProductConfigurator?: Pro
     if (firstUrl?.isCanonical) {
         url = firstUrl?.seoPathInfo
     }
-    if (!url.startsWith('/')) {
+    if (!url?.startsWith('/')) {
         url = '/' + url
     }
 
