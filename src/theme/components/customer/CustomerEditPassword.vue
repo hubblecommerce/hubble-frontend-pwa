@@ -4,15 +4,15 @@
             <label for="currentPassword" class="label">
                 <span class="label-text">{{ t('customer.edit.form.password.label') }}</span>
             </label>
-            <div class="input-group">
+            <div class="join">
                 <input
                     id="currentPassword"
                     disabled
                     value="****************"
                     type="password"
-                    class="input input-bordered w-full border-r-0"
+                    class="input input-bordered w-full border-r-0 join-item"
                 >
-                <div class="btn btn-square cursor-not-allowed">
+                <div class="btn btn-square cursor-not-allowed join-item">
                     <LockClosedIcon class="w-5 h-5" />
                 </div>
             </div>
@@ -38,16 +38,16 @@
                     <label for="editPassword" class="label">
                         <span class="label-text">{{ t('customer.edit.form.password.label') }}</span>
                     </label>
-                    <div class="input-group">
+                    <div class="join">
                         <input
                             id="editPassword"
                             v-model="formData.newPassword"
                             required
                             :type="showPassword ? 'text' : 'password'"
                             :placeholder="t('customer.edit.form.password.placeholder')"
-                            class="input input-bordered w-full border-r-0"
+                            class="input input-bordered w-full border-r-0 join-item"
                         >
-                        <div class="btn btn-square" tabindex="0" @click.prevent="showPassword = !showPassword" @keypress.space.prevent="showPassword = !showPassword">
+                        <div class="btn btn-square join-item" tabindex="0" @click.prevent="showPassword = !showPassword" @keypress.space.prevent="showPassword = !showPassword">
                             <EyeIcon v-if="!showPassword" class="w-5 h-5" />
                             <EyeSlashIcon v-else class="w-5 h-5" />
                         </div>
@@ -58,16 +58,16 @@
                     <label for="editPasswordConfirmation" class="label">
                         <span class="label-text">{{ t('customer.edit.form.passwordConfirmation.label') }}</span>
                     </label>
-                    <div class="input-group">
+                    <div class="join">
                         <input
                             id="editPasswordConfirmation"
                             v-model="formData.newPasswordConfirm"
                             required
                             :type="showPassword ? 'text' : 'password'"
                             :placeholder="t('customer.edit.form.passwordConfirmation.placeholder')"
-                            class="input input-bordered w-full border-r-0"
+                            class="input input-bordered w-full border-r-0 join-item"
                         >
-                        <div class="btn btn-square" @click.prevent="showPassword = !showPassword">
+                        <div class="btn btn-square join-item" @click.prevent="showPassword = !showPassword">
                             <EyeIcon v-if="!showPassword" class="w-5 h-5" />
                             <EyeSlashIcon v-else class="w-5 h-5" />
                         </div>
@@ -78,16 +78,16 @@
                     <label for="oldPassword" class="label">
                         <span class="label-text">{{ t('customer.edit.form.oldPassword.label') }}</span>
                     </label>
-                    <div class="input-group">
+                    <div class="join">
                         <input
                             id="oldPassword"
                             v-model="formData.password"
                             required
                             :type="showPassword ? 'text' : 'password'"
                             :placeholder="t('customer.edit.form.oldPassword.placeholder')"
-                            class="input input-bordered w-full border-r-0"
+                            class="input input-bordered w-full border-r-0 join-item"
                         >
-                        <div class="btn btn-square" @click.prevent="showPassword = !showPassword">
+                        <div class="btn btn-square join-item" @click.prevent="showPassword = !showPassword">
                             <EyeIcon v-if="!showPassword" class="w-5 h-5" />
                             <EyeSlashIcon v-else class="w-5 h-5" />
                         </div>

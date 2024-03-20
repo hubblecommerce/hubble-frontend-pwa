@@ -3,12 +3,12 @@
         <label for="limiter" class="label sr-only">
             <span class="label-text">Show items per page</span>
         </label>
-        <div class="input-group input-group-sm">
-            <span>Show</span>
-            <select id="limiter" v-model="selectedLimit" class="select select-sm" @change="setLimit(selectedLimit)">
+        <div class="join">
+            <span class="btn btn-sm no-animation join-item">Show</span>
+            <select id="limiter" v-model="selectedLimit" class="select select-sm join-item" @change="setLimit(selectedLimit)">
                 <option v-for="availableLimit in availableLimits" :key="availableLimit" :value="availableLimit" v-text="availableLimit" />
             </select>
-            <span>from {{ total }}</span>
+            <span class="btn btn-sm no-animation join-item">from {{ total }}</span>
         </div>
     </div>
 </template>

@@ -1,7 +1,7 @@
 <template>
     <form class="w-full form-control" @submit.prevent="onSubmit()">
         <label for="applyCoupon" class="sr-only">{{ t('cart.cartCoupons.label') }}</label>
-        <div class="w-full input-group">
+        <div class="w-full join">
             <input
                 id="applyCoupon"
                 v-model="code"
@@ -9,9 +9,9 @@
                 required
                 type="text"
                 :placeholder="t('cart.cartCoupons.placeholder')"
-                class="w-full input input-bordered"
+                class="w-full input input-bordered join-item"
             >
-            <button :disabled="loading" class="btn">
+            <button :disabled="loading" class="btn join-item">
                 <span v-if="loading" class="loading" />
                 {{ t('cart.cartCoupons.label') }}
             </button>

@@ -10,15 +10,15 @@
             </div>
         </div>
         <form class="form-control" @submit.prevent="submitSearch()">
-            <div class="input-group">
+            <div class="join">
                 <input
                     ref="searchInput"
                     v-model="term"
                     type="text"
                     placeholder="Browse our offer"
-                    class="input input-bordered w-full focus:input-primary"
+                    class="input input-bordered w-full focus:input-primary join-item"
                 >
-                <button class="btn btn-square">
+                <button class="btn btn-square join-item">
                     <span v-if="loading" class="loading" />
                     <MagnifyingGlassIcon v-if="!loading" class="h-5 w-5" />
                 </button>

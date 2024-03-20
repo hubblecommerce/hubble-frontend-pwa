@@ -48,15 +48,15 @@
             <label for="register-dob" class="label">
                 <span class="label-text">{{ t('customer.edit.form.dob.label') }}</span>
             </label>
-            <div class="input-group">
+            <div class="join">
                 <input
                     id="register-dob"
                     ref="dobInput"
                     v-model="personalFormData.dateOfBirth"
                     type="date"
-                    class="input input-bordered w-full border-r-0"
+                    class="input input-bordered w-full border-r-0 join-item"
                 >
-                <div class="btn btn-square" @click="dobInput.showPicker()">
+                <div class="btn btn-square join-item" @click="dobInput.showPicker()">
                     <CalendarIcon class="w-5 h-5" />
                 </div>
             </div>

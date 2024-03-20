@@ -5,18 +5,18 @@
         </div>
         <div v-else-if="orders != null" class="space-y-4">
             <div class="flex justify-center">
-                <div class="btn-group flex-nowrap">
-                    <button :disabled="orderListing.page === 1" class="btn btn-sm" @click="selectPage(1)">
+                <div class="join flex-nowrap">
+                    <button :disabled="orderListing.page === 1" class="btn btn-sm join-item" @click="selectPage(1)">
                         <ChevronDoubleLeftIcon class="h-5 w-5" />
                     </button>
-                    <button :disabled="orderListing.page - 1 < 1" class="btn btn-sm" @click="selectPage(orderListing.page - 1)">
+                    <button :disabled="orderListing.page - 1 < 1" class="btn btn-sm join-item" @click="selectPage(orderListing.page - 1)">
                         <ChevronLeftIcon class="h-5 w-5" />
                     </button>
-                    <button class="btn btn-sm btn-ghost normal-case" v-text="`Page ${orderListing.page} of ${maxPage}`" />
-                    <button class="btn btn-sm" :disabled="orderListing.page + 1 > maxPage" @click="selectPage(orderListing.page + 1)">
+                    <button class="btn btn-sm btn-ghost normal-case no-animation join-item" v-text="`Page ${orderListing.page} of ${maxPage}`" />
+                    <button class="btn btn-sm join-item" :disabled="orderListing.page + 1 > maxPage" @click="selectPage(orderListing.page + 1)">
                         <ChevronRightIcon class="h-5 w-5" />
                     </button>
-                    <button :disabled="orderListing.page + 1 > maxPage" class="btn btn-sm" @click="selectPage(maxPage)">
+                    <button :disabled="orderListing.page + 1 > maxPage" class="btn btn-sm join-item" @click="selectPage(maxPage)">
                         <ChevronDoubleRightIcon class="h-5 w-5" />
                     </button>
                 </div>
