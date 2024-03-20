@@ -31,7 +31,11 @@ const associations = {
 
 export function getRequestURL () {
     if (process.server) {
-        const url: any = h3GetRequestUrl(useRequestEvent())
+        const reqEvent = useRequestEvent()
+        if (reqEvent == null) {
+            return
+        }
+        const url: any = h3GetRequestUrl(reqEvent)
         url.pathname = joinURL(useRuntimeConfig().app.baseURL, url.pathname)
         return url
     }
@@ -168,7 +172,7 @@ export const usePage = function (): HblIUsePage {
 
         try {
             const options: any = {}
-            Object.keys(selectedOptions).map((key) => {
+            Object.keys(selectedOptions).forEach((key) => {
                 options[selectedOptions[key]] = selectedOptions[key]
             })
 
