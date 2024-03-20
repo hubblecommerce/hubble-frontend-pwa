@@ -5,7 +5,7 @@ import { hblMapMedia, hblMapSlots } from '#imports'
 export function hblMapBlocks (swBlocks: CmsBlock[]): HblBlock[] {
     return swBlocks.map((block: CmsBlock) => {
         return {
-            id: block._uniqueIdentifier,
+            id: block.versionId as string,
             type: block.type,
             // @ts-ignore
             slots: hblMapSlots(block.slots),
