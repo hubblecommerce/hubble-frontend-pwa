@@ -4,10 +4,10 @@
             <div class="hero-content col-start-1 row-start-1 w-full flex-col justify-between gap-10 lg:flex-row lg:items-end lg:gap-0 xl:gap-20">
                 <div class="lg:pl-10 lg:pb-64 lg:pt-16">
                     <div class="mb-2 py-4 text-center lg:py-10 lg:text-left">
-                        <h1 class="font-title mb-2 text-4xl font-extrabold sm:text-5xl lg:text-7xl">
+                        <h1 class="mb-2 text-4xl font-extrabold sm:text-5xl lg:text-7xl">
                             {{ t('hubble PWA') }}
                         </h1>
-                        <h2 class="font-title text-lg font-extrabold sm:text-2xl lg:text-3xl">
+                        <h2 class="text-lg sm:text-2xl lg:text-3xl">
                             The interface for your headless E-Commerce Platform
                         </h2>
                     </div>
@@ -15,7 +15,7 @@
                         <div class="my-2 flex max-w-sm flex-col gap-2 text-left">
                             <div class="flex gap-2">
                                 <CheckCircleIcon class="h-6 w-6" />
-                                An open source project
+                                Open Source
                             </div>
                             <div class="flex gap-2">
                                 <CheckCircleIcon class="h-6 w-6" />
@@ -27,24 +27,20 @@
                             </div>
                             <div class="flex gap-2">
                                 <CheckCircleIcon class="h-6 w-6" />
-                                Covers all common e-commerce features
+                                Fully customizable default theme
+                            </div>
+                            <div class="flex gap-2">
+                                <CheckCircleIcon class="h-6 w-6" />
+                                Based on TailwindCSS and daisyUi
                             </div>
                             <div class="flex gap-2">
                                 <CheckCircleIcon class="h-6 w-6" />
                                 Excellent performance and usability
                             </div>
                         </div>
-                        <div class="mockup-code border-base-content w-full flex-1 max-w-xs lg:max-w-none border-2 border-opacity-20 bg-transparent pb-6 text-left text-current lg:mx-0">
-                            <pre data-prefix="$"><code>npx @hubblecommerce/launcher &lt;project-name&gt;</code></pre>
+                        <div class="mockup-code w-full flex-1 max-w-xs lg:max-w-none border-2 border-primary-content/50 bg-base-100/20 pb-6 text-left text-current lg:mx-0">
+                            <pre data-prefix="$"><code>npm i @hubblecommerce/hubble</code></pre>
                         </div>
-                    </div>
-                    <div class="mt-4 flex flex-1 justify-center space-x-2 lg:mt-6 lg:justify-start">
-                        <MiscLink no-prefetch to="/navigation/a515ae260223466f8e37471d279e6406" class="btn btn-ghost btn-active lg:btn-lg normal-case">
-                            Shop cloths
-                        </MiscLink>
-                        <MiscLink no-prefetch to="/customer/login" class="btn lg:btn-lg normal-case">
-                            Login
-                        </MiscLink>
                     </div>
                 </div>
             </div>
