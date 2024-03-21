@@ -7,6 +7,8 @@
         <input id="default-layout-drawer" v-model="drawerState" type="checkbox" class="drawer-toggle">
 
         <div class="drawer-content relative">
+            <NuxtLoadingIndicator color="oklch(var(--p))" />
+
             <misc-plugin-slot name="layouts-default-header-before" :events="{}" :data="{}" />
             <LayoutHeader />
             <misc-plugin-slot name="layouts-default-header-after" :events="{}" :data="{}" />
@@ -20,9 +22,6 @@
             <misc-plugin-slot name="layouts-default-footer-after" :events="{}" :data="{}" />
 
             <LayoutNotifications />
-            <client-only>
-                <MiscLoadingBar ref="loading" />
-            </client-only>
         </div>
 
         <div class="drawer-side z-50">
@@ -39,21 +38,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
 import { useDrawer, useNuxtApp } from '#imports'
 
-const loading = ref(null)
 const nuxtApp = useNuxtApp()
 const { drawerState, drawerContext, toggleDrawer, drawerDirection, closeDrawer } = useDrawer()
 
-nuxtApp.hook('page:start', () => {
-    // @ts-ignore
-    loading.value?.start()
-})
-
 nuxtApp.hook('page:finish', () => {
-    // @ts-ignore
-    loading.value?.finish()
     window.scrollTo(0, 0)
     closeDrawer()
 })
