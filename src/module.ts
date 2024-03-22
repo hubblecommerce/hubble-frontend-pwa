@@ -7,6 +7,7 @@ import { watch } from 'chokidar'
 import { type Config } from 'tailwindcss'
 import daisyui from 'daisyui'
 import type { NuxtPage, Nuxt } from '@nuxt/schema'
+import type { ModuleOptions as i18nModuleOptions } from '@nuxtjs/i18n'
 import fse from 'fs-extra'
 // eslint-disable-next-line import/no-named-as-default-member
 const { pathExists, readJson, copy, emptyDir, remove } = fse
@@ -71,7 +72,7 @@ export interface ModuleOptions {
     customerCookie: Cookie,
     setCustomerLoggedInHeader: boolean,
     redirectDefaultLanguage: boolean,
-    intlify: Record<string, Record<never, never>>
+    i18n: i18nModuleOptions
 }
 
 export default defineNuxtModule<ModuleOptions>({
@@ -125,7 +126,7 @@ export default defineNuxtModule<ModuleOptions>({
         },
         setCustomerLoggedInHeader: false,
         redirectDefaultLanguage: false,
-        intlify: {}
+        i18n: {}
     },
     async setup (options, nuxt) {
         if (process.env.PLATFORM == null || process.env.PLATFORM === '') {
@@ -308,45 +309,27 @@ export default defineNuxtModule<ModuleOptions>({
         /*
          * i18n
          */
-        const availableLocales = await readJson(targetDir + '/locales/availableLocales.json')
+        const availableLocalesObj = await readJson(targetDir + '/locales/availableLocales.json')
+        const availableLocales = Object.keys(availableLocalesObj)
         const platformLanguages = await readJson(targetDir + '/locales/platformLanguages.json')
 
-        const defaultLocale = Object.keys(availableLocales)[0]
+        const defaultLocale = availableLocales[0]
         nuxt.options.runtimeConfig.public.redirectDefaultLanguage = options.redirectDefaultLanguage
         nuxt.options.runtimeConfig.public.platformLanguages = platformLanguages
 
         if (availableLocales) {
-            const intlifyDefaultOptions = {
-                localeDir: 'locales/langs',
-                vueI18n: {
-                    ...(defaultLocale !== undefined && { locale: defaultLocale }),
-                    ...(defaultLocale !== undefined && { fallbackLocale: defaultLocale }),
-                    ...(defaultLocale !== undefined && { messages: { ...availableLocales } })
-                }
+            // Temporary fix for https://github.com/nuxt-modules/i18n/issues/2809:
+            // node_modules/@nuxtjs/i18n/dist/module.mjs L:698 -> return mergeConfigLocales([options, ...configs]);
+            const i18nDefaultOptions = {
+                locales: availableLocales,
+                defaultLocale,
+                strategy: 'prefix_and_default'
             }
+            const mergedI18nOptions = defu(options.i18n, i18nDefaultOptions)
 
-            const mergedIntlifyOptions = defu(options.intlify, intlifyDefaultOptions)
-
-            await installModule('@intlify/nuxt3', mergedIntlifyOptions)
-
-            extendPages(extendPagesHook)
+            await installModule('@nuxtjs/i18n', mergedI18nOptions)
         } else {
             throw new Error('Missing /locales/availableLocales file')
-        }
-
-        function extendPagesHook (pages: NuxtPage[]) {
-            const result: NuxtPage[] = []
-            for (const page of pages) {
-                for (const locale of Object.keys(availableLocales)) {
-                    result.push({
-                        name: `${locale}-${page.name}`,
-                        path: `/${locale}${page.path}`,
-                        file: page.file
-                    })
-                }
-            }
-
-            pages.push(...result)
         }
 
         // Dev only: register new file-watcher based on file inheritance

@@ -1,5 +1,4 @@
 import { fileURLToPath } from 'url'
-import eslintPlugin from 'vite-plugin-eslint'
 // @ts-ignore
 import hubble from '..'
 
@@ -14,9 +13,6 @@ export default defineNuxtConfig({
         compressPublicAssets: true
     },
     vite: {
-        plugins: [
-            eslintPlugin()
-        ],
         resolve: {
             alias: {
                 // @ts-ignore
@@ -37,5 +33,8 @@ export default defineNuxtConfig({
                 '../../src/**/*'
             ]
         }
+    },
+    hubble: {
+        redirectDefaultLanguage: true
     }
 })
