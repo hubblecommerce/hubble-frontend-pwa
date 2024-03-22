@@ -3,8 +3,8 @@
         <label for="sorter" class="label sr-only">
             <span class="label-text">Sort by</span>
         </label>
-        <div class="input-group input-group-sm">
-            <span>Sort by</span>
+        <div class="join">
+            <span class="btn btn-sm no-animation join-item">Sort by</span>
             <select id="sorter" v-model="selectedSorting" class="select select-sm" @change="setSorting(selectedSorting)">
                 <option
                     v-for="item in availableSorting"

@@ -24,7 +24,7 @@
                     {{ t('customerLogin.passwordTitle') }}
                 </span>
             </label>
-            <div class="input-group">
+            <div class="join">
                 <input
                     id="password"
                     v-model="password"
@@ -32,9 +32,9 @@
                     name="password"
                     :type="showPassword ? 'text' : 'password'"
                     :placeholder="t('customerLogin.passwordPlaceholder')"
-                    class="input input-bordered w-full border-r-0"
+                    class="input input-bordered w-full border-r-0 join-item"
                 >
-                <div class="btn btn-square" tabindex="0" @click="showPassword = !showPassword" @keypress.space.prevent="showPassword = !showPassword">
+                <div class="btn btn-square join-item" tabindex="0" @click="showPassword = !showPassword" @keypress.space.prevent="showPassword = !showPassword">
                     <EyeIcon v-if="!showPassword" class="w-5 h-5" />
                     <EyeSlashIcon v-else class="w-5 h-5" />
                 </div>

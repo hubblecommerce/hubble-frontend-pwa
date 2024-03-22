@@ -1,16 +1,16 @@
 <template>
-    <div class="btn-group flex-nowrap">
-        <button :disabled="page === 1" class="btn btn-sm" @click="selectPage(1)">
+    <div class="join flex-nowrap">
+        <button :disabled="page === 1" class="btn btn-sm join-item" @click="selectPage(1)">
             <ChevronDoubleLeftIcon class="h-5 w-5" />
         </button>
-        <button :disabled="page - 1 < 1" class="btn btn-sm" @click="selectPage(page - 1)">
+        <button :disabled="page - 1 < 1" class="btn btn-sm join-item" @click="selectPage(page - 1)">
             <ChevronLeftIcon class="h-5 w-5" />
         </button>
-        <button class="btn btn-sm btn-ghost normal-case" v-text="`Page ${page} of ${maxPage}`" />
-        <button class="btn btn-sm" :disabled="page + 1 > maxPage" @click="selectPage(page + 1)">
+        <button class="btn btn-sm btn-ghost normal-case join-item no-animation" v-text="`Page ${page} of ${maxPage}`" />
+        <button class="btn btn-sm join-item" :disabled="page + 1 > maxPage" @click="selectPage(page + 1)">
             <ChevronRightIcon class="h-5 w-5" />
         </button>
-        <button :disabled="page + 1 > maxPage" class="btn btn-sm" @click="selectPage(maxPage)">
+        <button :disabled="page + 1 > maxPage" class="btn btn-sm join-item" @click="selectPage(maxPage)">
             <ChevronDoubleRightIcon class="h-5 w-5" />
         </button>
     </div>

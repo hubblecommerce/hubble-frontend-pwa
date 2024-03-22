@@ -4,15 +4,15 @@
             <label for="currentEmail" class="label">
                 <span class="label-text">{{ t('customer.edit.form.email.label') }}</span>
             </label>
-            <div class="input-group">
+            <div class="join">
                 <input
                     id="currentEmail"
                     v-model="customer.email"
                     disabled
                     type="text"
-                    class="input input-bordered w-full border-r-0"
+                    class="input input-bordered w-full border-r-0 join-item"
                 >
-                <div class="btn btn-square cursor-not-allowed">
+                <div class="btn btn-square cursor-not-allowed join-item">
                     <LockClosedIcon class="w-5 h-5" />
                 </div>
             </div>
@@ -68,16 +68,16 @@
                     <label for="register-password" class="label">
                         <span class="label-text">{{ t('customer.edit.form.password.label') }}</span>
                     </label>
-                    <div class="input-group">
+                    <div class="join">
                         <input
                             id="register-password"
                             v-model="formData.password"
                             required
                             :type="showPassword ? 'text' : 'password'"
                             :placeholder="t('customer.edit.form.password.placeholder')"
-                            class="input input-bordered w-full border-r-0"
+                            class="input input-bordered w-full border-r-0 join-item"
                         >
-                        <div class="btn btn-square" tabindex="0" @click.prevent="showPassword = !showPassword" @keypress.space.prevent="showPassword = !showPassword">
+                        <div class="btn btn-square join-item" tabindex="0" @click.prevent="showPassword = !showPassword" @keypress.space.prevent="showPassword = !showPassword">
                             <EyeIcon v-if="!showPassword" class="w-5 h-5" />
                             <EyeSlashIcon v-else class="w-5 h-5" />
                         </div>

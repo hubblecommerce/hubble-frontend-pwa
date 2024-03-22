@@ -11,7 +11,7 @@ describe('Platform: Shopware', () => {
         cy.selectFirstCategory()
         cy.get('body').click()
 
-        cy.get('.input-group').contains('Show').next().select(0)
+        cy.get('.join').contains('Show').next().select(0)
 
         cy.url().should('include', 'limit=1')
         cy.get('.grid .card').should('have.length', 1)

@@ -31,29 +31,19 @@
         </div>
         <LayoutFooterLight />
         <LayoutNotifications />
-        <client-only>
-            <MiscLoadingBar ref="loading" />
-        </client-only>
+        <NuxtLoadingIndicator color="oklch(var(--p))" />
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useNuxtApp } from '#imports'
 
 const { t } = useI18n()
 const nuxtApp = useNuxtApp()
-const loading = ref(null)
-
-nuxtApp.hook('page:start', () => {
-    // @ts-ignore
-    loading.value?.start()
-})
 
 nuxtApp.hook('page:finish', () => {
-    // @ts-ignore
-    loading.value?.finish()
     window.scrollTo(0, 0)
 })
 

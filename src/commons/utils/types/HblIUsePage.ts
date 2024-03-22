@@ -1,5 +1,5 @@
 import { type Ref } from 'vue'
-import { RouteLocationNormalizedLoaded } from 'vue-router'
+import { type RouteLocationNormalizedLoaded } from 'vue-router'
 import { type HblPage } from '@/utils/types/HblPage'
 import { type HblProductListing, type HblProductListingFilterCurrent } from '@/utils/types/HblProductListing'
 import { type HblProduct } from '@/utils/types/HblProduct'

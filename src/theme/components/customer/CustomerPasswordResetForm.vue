@@ -1,6 +1,6 @@
 <template>
     <form ref="passwordResetForm" class="form-control flex space-y-4">
-        <label for="password" class="input-group input-group-vertical input-group-sm">
+        <label for="password">
             <span>Password</span>
             <input
                 id="password"
@@ -13,7 +13,7 @@
             >
         </label>
 
-        <label for="passwordRepeat" class="input-group input-group-vertical input-group-sm">
+        <label for="passwordRepeat">
             <span>Repeat Password</span>
             <input
                 id="passwordRepeat"

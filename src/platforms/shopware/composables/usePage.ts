@@ -31,7 +31,11 @@ const associations = {
 
 export function getRequestURL () {
     if (process.server) {
-        const url: any = h3GetRequestUrl(useRequestEvent())
+        const reqEvent = useRequestEvent()
+        if (reqEvent == null) {
+            return
+        }
+        const url: any = h3GetRequestUrl(reqEvent)
         url.pathname = joinURL(useRuntimeConfig().app.baseURL, url.pathname)
         return url
     }
@@ -167,14 +171,10 @@ export const usePage = function (): HblIUsePage {
         error.value = false
 
         try {
-            const options: any = []
+            const options: any = {}
             Object.keys(selectedOptions).forEach((key) => {
-                options.push(selectedOptions[key])
+                options[selectedOptions[key]] = selectedOptions[key]
             })
-
-            // Set selected option to end of array, to force shopware to respond with a matching variant
-            // even the selected option is not available
-            options.push(options.splice(options.indexOf(switchedOption), 1)[0])
 
             const matchingVariant = await ProductShopware.searchProductVariantIds(parentId, {
                 options,
