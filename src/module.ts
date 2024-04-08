@@ -319,7 +319,7 @@ export default defineNuxtModule<ModuleOptions>({
 
         if (availableLocales) {
             // Temporary fix for https://github.com/nuxt-modules/i18n/issues/2809:
-            // node_modules/@nuxtjs/i18n/dist/module.mjs L:698 -> return mergeConfigLocales([options, ...configs]);
+            // node_modules/@nuxtjs/i18n/dist/module.mjs L:737 -> return mergeConfigLocales([options, ...configs]);
             const i18nDefaultOptions = {
                 locales: availableLocales,
                 defaultLocale,
