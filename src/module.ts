@@ -1,12 +1,10 @@
 import path, { basename, extname, join, resolve } from 'path'
 import { fileURLToPath } from 'url'
-import { defineNuxtModule, extendPages, installModule } from '@nuxt/kit'
+import { defineNuxtModule, installModule } from '@nuxt/kit'
 import { defu } from 'defu'
 import { globby } from 'globby'
 import { watch } from 'chokidar'
-import { type Config } from 'tailwindcss'
-import daisyui from 'daisyui'
-import type { NuxtPage, Nuxt } from '@nuxt/schema'
+import type { Nuxt } from '@nuxt/schema'
 import type { ModuleOptions as i18nModuleOptions } from '@nuxtjs/i18n'
 import fse from 'fs-extra'
 // eslint-disable-next-line import/no-named-as-default-member
@@ -189,6 +187,11 @@ export default defineNuxtModule<ModuleOptions>({
 
         await asyncCopyDirs(validRootDirs, targetDir)
 
+        const tailwindConfigExist = await pathExists(resolve(join(nuxt.options.rootDir, 'tailwind.config.ts')))
+        if (tailwindConfigExist) {
+            await copy(resolve(join(nuxt.options.rootDir, 'tailwind.config.ts')), resolve(join(targetDir, 'tailwind.config.ts')))
+        }
+
         // Set srcDir of nuxt base layer
         for (const layer of nuxt.options._layers) {
             if (layer.configFile === 'nuxt.config') {
@@ -272,32 +275,8 @@ export default defineNuxtModule<ModuleOptions>({
         /*
          * Theming
          */
-        // @ts-ignore
-        nuxt.hook('tailwindcss:config', (twConfig: Config) => {
-            let configOverrides: Config = {
-                content: [],
-                plugins: [
-                    daisyui
-                ]
-            }
-            configOverrides = defu(twConfig, configOverrides)
-
-            configOverrides.content = [
-                join(targetDir, 'components/**/*.{vue,js}'),
-                join(targetDir, 'layouts/**/*.vue'),
-                join(targetDir, 'pages/**/*.vue'),
-                join(targetDir, 'composables/**/*.{js,ts}'),
-                join(targetDir, 'plugins/**/*.{js,ts}'),
-                join(targetDir, 'App.{js,ts,vue}'),
-                join(targetDir, 'app.{js,ts,vue}')
-            ]
-
-            // Need to set via Object.assign because we cannot update the reference of the object
-            Object.assign(twConfig, configOverrides)
-        })
-
         await installModule('@nuxtjs/tailwindcss', {
-            configPath: join(nuxt.options.rootDir, 'tailwind.config.ts')
+            configPath: join(targetDir, 'tailwind.config.ts')
         })
 
         await installModule('@nuxtjs/color-mode', {
