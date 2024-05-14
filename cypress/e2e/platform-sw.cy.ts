@@ -5,6 +5,10 @@ describe('Platform: Shopware', () => {
     const email = customFaker.internet.exampleEmail()
     const pw = customFaker.internet.password()
 
+    beforeEach(() => {
+        cy.viewport(1920, 1080)
+    })
+
     it('limits a listing', () => {
         cy.visit('/')
         cy.waitForHydration()
