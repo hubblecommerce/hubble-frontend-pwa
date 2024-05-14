@@ -10,6 +10,15 @@ export default defineNuxtConfig({
     hubble: {
         redirectDefaultLanguage: true
     },
+    i18n: {
+        locales: [
+            'en',
+            'de'
+        ],
+        defaultLocale: 'en',
+        strategy: 'prefix_and_default',
+        detectBrowserLanguage: false
+    },
     runtimeConfig: {
         public: {
             testPluginConfig2: 'Plugin config 2 overridden by nuxt.config'

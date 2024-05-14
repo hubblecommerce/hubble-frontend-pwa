@@ -288,28 +288,10 @@ export default defineNuxtModule<ModuleOptions>({
         /*
          * i18n
          */
-        const availableLocalesObj = await readJson(targetDir + '/locales/availableLocales.json')
-        const availableLocales = Object.keys(availableLocalesObj)
         const platformLanguages = await readJson(targetDir + '/locales/platformLanguages.json')
-
-        const defaultLocale = availableLocales[0]
         nuxt.options.runtimeConfig.public.redirectDefaultLanguage = options.redirectDefaultLanguage
         nuxt.options.runtimeConfig.public.platformLanguages = platformLanguages
-
-        if (availableLocales) {
-            // Temporary fix for https://github.com/nuxt-modules/i18n/issues/2809:
-            // node_modules/@nuxtjs/i18n/dist/module.mjs L:737 -> return mergeConfigLocales([options, ...configs]);
-            const i18nDefaultOptions = {
-                locales: availableLocales,
-                defaultLocale,
-                strategy: 'prefix_and_default'
-            }
-            const mergedI18nOptions = defu(options.i18n, i18nDefaultOptions)
-
-            await installModule('@nuxtjs/i18n', mergedI18nOptions)
-        } else {
-            throw new Error('Missing /locales/availableLocales file')
-        }
+        await installModule('@nuxtjs/i18n')
 
         // Dev only: register new file-watcher based on file inheritance
         if (nuxt.options.dev) {
