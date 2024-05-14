@@ -1,5 +1,5 @@
 <template>
-    <div v-if="availableLanguages.length > 0" class="dropdown dropdown-end hidden md:block">
+    <div v-if="availableLanguages != null && availableLanguages.length > 0" class="dropdown dropdown-end hidden md:block">
         <label tabindex="0" class="btn btn-ghost btn-circle">
             <div class="indicator">
                 <LanguageIcon class="h-5 w-5" fill="none" />
@@ -32,7 +32,7 @@ const { entityPathInfo } = useLocalisation()
 const { getPage } = usePage()
 
 const availableLanguages = computed(() => {
-    return platformLanguages.filter((platformLang) => {
+    return platformLanguages?.filter((platformLang) => {
         // Intlify transforms platformLanguages.json to platformLanguages.json?import
         // @ts-ignore
         return vueApp.config.globalProperties.$i18n.availableLocales.includes(platformLang.route)
@@ -54,11 +54,11 @@ watch(selectedLanguage, async (newLang: string) => {
             route += `/${newLang}`
 
             if (response.type === 'category') {
-                route += response.category.url
+                route += response?.category?.url
             }
 
             if (response.type === 'detail') {
-                route += response.detail.url
+                route += response?.detail?.url
             }
 
             if (query !== '') {
@@ -72,7 +72,7 @@ watch(selectedLanguage, async (newLang: string) => {
         const currentPath = window.location.pathname.substring(1)
         const routeParts = currentPath?.split('/')
 
-        const match = platformLanguages.find((lang) => {
+        const match = platformLanguages?.find((lang) => {
             // @ts-ignore
             return lang.route === routeParts[0]
         })
@@ -90,5 +90,11 @@ watch(selectedLanguage, async (newLang: string) => {
     }
 
     window.location.href = route
+})
+
+useHead({
+    htmlAttrs: {
+        lang: selectedLanguage?.value
+    }
 })
 </script>

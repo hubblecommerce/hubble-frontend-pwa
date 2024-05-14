@@ -6,6 +6,7 @@ import { config } from 'dotenv'
 import lmify from 'lmify'
 import { $fetch } from 'ofetch'
 import { fetch } from 'node-fetch-native'
+import { Readable } from 'stream'
 
 const playgroundPath = path.resolve(path.join(process.env.INIT_CWD, 'playground'))
 const playgroundExists = await fse.pathExists(playgroundPath)
@@ -40,7 +41,7 @@ function downloadFile (fileUrl, outputLocationPath) {
         method: 'GET'
     }).then((response) => {
         return new Promise((resolve, reject) => {
-            response.body.pipe(writer)
+            Readable.fromWeb(response.body).pipe(writer)
 
             let error = null
             writer.on('error', (err) => {
@@ -118,7 +119,7 @@ async function dumpBundles (authResponse) {
 
         return [response._data.buildArtifact, response._data.bundleConfig, null]
     } catch (e) {
-         
+
         console.error(e)
     }
 }

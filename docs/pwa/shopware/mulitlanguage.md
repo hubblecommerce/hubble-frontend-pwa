@@ -1,6 +1,11 @@
 # i18n
 
-For translations the module @intlify/nuxt3 is used.
+For translations the module [@nuxtjs/i18n](https://i18n.nuxtjs.org/) is used.
+
+::: warning
+Since @hubblecommerce/hubble-frontend-pwa version 2.6.0 @intlify/nuxt3 was replaced by @nuxtjs/i18n.
+:::
+
 The middleware `change-vue-locale.global.ts` sets the language depending on the
 current localisation key of the url.
 
@@ -8,10 +13,9 @@ Following files are related to the translation process:
 ```text
 /components
     /misc
-        /MiscDefineLink.ts
         /MiscLink.vue
 /locales
-    /availableLocales.json
+    /availableLocales.json (deprecated since 2.6.0)
     /platformLanguages.json
 /middleware
     /change-vue-locale.global.ts
@@ -21,11 +25,23 @@ Following files are related to the translation process:
             /sw-languages.js
         /composables
             /useLocalisation.ts
+/theme
+    /components
+        /layout
+            /LayoutLanguageSwitch.vue
 ```
 
 ### Configuration
+The module is preinstalled and registered, so you can configure it by using the i18n property in nuxt.config root 
+right away. 
+See the official [@nuxtjs/i18n documentation](https://i18n.nuxtjs.org/docs/options) for all possible module options.
+
 hubble sets some default configuration for intlify and vueI18n, to override them, they
 have to be set via hubble module options.
+
+::: warning
+Since @hubblecommerce/hubble-frontend-pwa version 2.6.0 @intlify/nuxt3 was replaced by @nuxtjs/i18n.
+:::
 
 ```js
 export default defineNuxtConfig({
@@ -84,6 +100,9 @@ export default defineNuxtRouteMiddleware((to, from) => {
 ```
 
 ### `locales/availableLocales.json`
+::: warning
+Deprecated since @hubblecommerce/hubble-frontend-pwa version 2.6.0
+:::
 Contains an array of language keys, used to generate localised routes of all available pages.
 The first language is set as the default / fallback language.
 
@@ -97,7 +116,7 @@ To connect a localised route to a platform language, add a "route" to the object
 ```js
 [
     {
-        "route": "de", // <= key from locales/availableLocales.json
+        "route": "de", // <= key from nuxt.config.ts -> i18n -> locales
         "id": "2fbb5fe2e29a4d70aa5854ce7ce3e20b",
         "code": "de-DE",
         "name": "Deutsch"
@@ -144,13 +163,27 @@ const { t } = useI18n()
 1. Add the required language in Admin -> Settings -> Languages
 2. Add the new language to your Sales-Channel in Sales-Channel -> Base Settings -> Languages
 3. Assign the language to an existing domain of your Sales-Channel or create a new domain
-4. Create a `/locales/availableLocales.json` file and define the languages you want to provide
-5. Download and save all languages available for your Sales-Channel from Shopware by execute this script in your projects root dir:
+4. Create a `/locales/availableLocales.json` file and define the languages you want to provide (deprecated since 2.6.0)
+5. Set @nuxtjs/i18n module options in nuxt.config.ts e.g.:
+```typescript
+export default defineNuxtConfig({
+    i18n: {
+        locales: [
+            'en',
+            'de'
+        ],
+        defaultLocale: 'en',
+        strategy: 'prefix_and_default',
+        detectBrowserLanguage: false
+    }
+})
+```
+6. Download and save all languages available for your Sales-Channel from Shopware by execute this script in your projects root dir:
 ```shell
 npm run hubble dev:sw sw-languages
 ```
-6. Edit the created `locales/platformLanguages.json` file and assign an available locale to
-   a downloaded language by adding a "route" key and the language key as a value. 
+7. Edit the created `locales/platformLanguages.json` file and assign an available locale to
+   a downloaded language by adding a "route" key and the language key (which you set in the nuxt.config.ts -> i18n -> locales) as a value. 
 
 ## Translation CSV export / import 
 

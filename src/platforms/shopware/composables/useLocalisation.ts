@@ -9,8 +9,7 @@ const entityPathInfo = ref(null)
 export const useLocalisation = function (targetRoute?: RouteLocationNormalized): HblIUseLocalisation {
     const { vueApp } = useNuxtApp()
     const route = targetRoute != null ? targetRoute : useRoute()
-
-    const defaultLocale = ref(vueApp.config.globalProperties.$i18n?.fallbackLocale) as Ref<string>
+    const defaultLocale = ref(vueApp?.config?.globalProperties?.$i18n?.defaultLocale) as Ref<string>
 
     /*
      * Function to check, if a path is a possible translated route
@@ -28,7 +27,7 @@ export const useLocalisation = function (targetRoute?: RouteLocationNormalized):
 
         const routeLocale = routeParts[0]
 
-        if (vueApp.config.globalProperties.$i18n?.availableLocales.includes(routeLocale)) {
+        if (vueApp?.config?.globalProperties?.$i18n?.availableLocales?.includes(routeLocale)) {
             return routeLocale
         }
 
@@ -36,7 +35,9 @@ export const useLocalisation = function (targetRoute?: RouteLocationNormalized):
     }
 
     function setLocale (locale: string): void {
-        vueApp.config.globalProperties.$i18n.locale = locale
+        if (vueApp?.config?.globalProperties?.$i18n?.locale != null) {
+            vueApp.config.globalProperties.$i18n.locale = locale
+        }
     }
 
     function navigateToI18n (to: RouteLocationRaw, options?: NavigateToOptions): false | void | RouteLocationRaw | Promise<false | void | NavigationFailure> {

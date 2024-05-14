@@ -5,6 +5,10 @@ describe('Platform: Shopware', () => {
     const email = customFaker.internet.exampleEmail()
     const pw = customFaker.internet.password()
 
+    beforeEach(() => {
+        cy.viewport(1920, 1080)
+    })
+
     it('limits a listing', () => {
         cy.visit('/')
         cy.waitForHydration()
@@ -42,7 +46,7 @@ describe('Platform: Shopware', () => {
         cy.waitForHydration()
 
         // click search button in customer navigation
-        cy.get('.navbar-end > div:nth-child(2)').click()
+        cy.get('.navbar-end > div:nth-child(3)').click()
         cy.get('.drawer-side .form-control input').type('product')
         cy.get('.drawer-side .grid.grid-cols-2.gap-2').children().should('have.length.at.least', 1)
 
@@ -182,10 +186,10 @@ describe('Platform: Shopware', () => {
         // click on customer navigation icon
         cy.visit('/')
         cy.waitForHydration()
-        cy.get('.navbar-end > div:nth-child(3) .btn.btn-ghost').click()
+        cy.get('.navbar-end > div:nth-child(4) .btn.btn-ghost').click()
 
         // click logout button in customer navigation
-        cy.get('.navbar-end > div:nth-child(3) .menu.menu-compact li:last').click()
+        cy.get('.navbar-end > div:nth-child(4) .menu.menu-compact li:last').click()
         cy.url().should('include', 'customer/login')
     })
 
@@ -195,8 +199,8 @@ describe('Platform: Shopware', () => {
         // open customer/account via customer navigation
         cy.visit('/')
         cy.waitForHydration()
-        cy.get('.navbar-end > div:nth-child(3) .btn.btn-ghost').click()
-        cy.get('.navbar-end > div:nth-child(3) .menu.menu-compact li:nth-child(2)').click()
+        cy.get('.navbar-end > div:nth-child(4) .btn.btn-ghost').click()
+        cy.get('.navbar-end > div:nth-child(4) .menu.menu-compact li:nth-child(2)').click()
 
         // change account data
         cy.get('#firstName').clear().type('e2eFirstname')

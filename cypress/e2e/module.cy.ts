@@ -1,4 +1,8 @@
 describe('TailwindCSS and DaisyUI integration', () => {
+    beforeEach(() => {
+        cy.viewport(1920, 1080)
+    })
+
     it('apply tailwind utility classes', () => {
         cy.visit('/')
         cy.get('#tailwind-utility')

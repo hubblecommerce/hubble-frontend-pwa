@@ -1,12 +1,11 @@
 import path, { basename, extname, join, resolve } from 'path'
 import { fileURLToPath } from 'url'
-import { defineNuxtModule, extendPages, installModule } from '@nuxt/kit'
+import { defineNuxtModule, installModule } from '@nuxt/kit'
 import { defu } from 'defu'
 import { globby } from 'globby'
 import { watch } from 'chokidar'
-import { type Config } from 'tailwindcss'
-import daisyui from 'daisyui'
-import type { NuxtPage, Nuxt } from '@nuxt/schema'
+import type { Nuxt } from '@nuxt/schema'
+import type { ModuleOptions as i18nModuleOptions } from '@nuxtjs/i18n'
 import fse from 'fs-extra'
 // eslint-disable-next-line import/no-named-as-default-member
 const { pathExists, readJson, copy, emptyDir, remove } = fse
@@ -71,7 +70,7 @@ export interface ModuleOptions {
     customerCookie: Cookie,
     setCustomerLoggedInHeader: boolean,
     redirectDefaultLanguage: boolean,
-    intlify: Record<string, Record<never, never>>
+    i18n: i18nModuleOptions
 }
 
 export default defineNuxtModule<ModuleOptions>({
@@ -125,7 +124,7 @@ export default defineNuxtModule<ModuleOptions>({
         },
         setCustomerLoggedInHeader: false,
         redirectDefaultLanguage: false,
-        intlify: {}
+        i18n: {}
     },
     async setup (options, nuxt) {
         if (process.env.PLATFORM == null || process.env.PLATFORM === '') {
@@ -187,6 +186,11 @@ export default defineNuxtModule<ModuleOptions>({
         nuxt.options.runtimeConfig.public.pluginMapping = defu(nuxt.options.runtimeConfig.public.pluginMapping as any, pluginMapping)
 
         await asyncCopyDirs(validRootDirs, targetDir)
+
+        const tailwindConfigExist = await pathExists(resolve(join(nuxt.options.rootDir, 'tailwind.config.ts')))
+        if (tailwindConfigExist) {
+            await copy(resolve(join(nuxt.options.rootDir, 'tailwind.config.ts')), resolve(join(targetDir, 'tailwind.config.ts')))
+        }
 
         // Set srcDir of nuxt base layer
         for (const layer of nuxt.options._layers) {
@@ -271,32 +275,8 @@ export default defineNuxtModule<ModuleOptions>({
         /*
          * Theming
          */
-        // @ts-ignore
-        nuxt.hook('tailwindcss:config', (twConfig: Config) => {
-            let configOverrides: Config = {
-                content: [],
-                plugins: [
-                    daisyui
-                ]
-            }
-            configOverrides = defu(twConfig, configOverrides)
-
-            configOverrides.content = [
-                join(targetDir, 'components/**/*.{vue,js}'),
-                join(targetDir, 'layouts/**/*.vue'),
-                join(targetDir, 'pages/**/*.vue'),
-                join(targetDir, 'composables/**/*.{js,ts}'),
-                join(targetDir, 'plugins/**/*.{js,ts}'),
-                join(targetDir, 'App.{js,ts,vue}'),
-                join(targetDir, 'app.{js,ts,vue}')
-            ]
-
-            // Need to set via Object.assign because we cannot update the reference of the object
-            Object.assign(twConfig, configOverrides)
-        })
-
         await installModule('@nuxtjs/tailwindcss', {
-            configPath: join(nuxt.options.rootDir, 'tailwind.config.ts')
+            configPath: join(targetDir, 'tailwind.config.ts')
         })
 
         await installModule('@nuxtjs/color-mode', {
@@ -308,46 +288,10 @@ export default defineNuxtModule<ModuleOptions>({
         /*
          * i18n
          */
-        const availableLocales = await readJson(targetDir + '/locales/availableLocales.json')
         const platformLanguages = await readJson(targetDir + '/locales/platformLanguages.json')
-
-        const defaultLocale = Object.keys(availableLocales)[0]
         nuxt.options.runtimeConfig.public.redirectDefaultLanguage = options.redirectDefaultLanguage
         nuxt.options.runtimeConfig.public.platformLanguages = platformLanguages
-
-        if (availableLocales) {
-            const intlifyDefaultOptions = {
-                localeDir: 'locales/langs',
-                vueI18n: {
-                    ...(defaultLocale !== undefined && { locale: defaultLocale }),
-                    ...(defaultLocale !== undefined && { fallbackLocale: defaultLocale }),
-                    ...(defaultLocale !== undefined && { messages: { ...availableLocales } })
-                }
-            }
-
-            const mergedIntlifyOptions = defu(options.intlify, intlifyDefaultOptions)
-
-            await installModule('@intlify/nuxt3', mergedIntlifyOptions)
-
-            extendPages(extendPagesHook)
-        } else {
-            throw new Error('Missing /locales/availableLocales file')
-        }
-
-        function extendPagesHook (pages: NuxtPage[]) {
-            const result: NuxtPage[] = []
-            for (const page of pages) {
-                for (const locale of Object.keys(availableLocales)) {
-                    result.push({
-                        name: `${locale}-${page.name}`,
-                        path: `/${locale}${page.path}`,
-                        file: page.file
-                    })
-                }
-            }
-
-            pages.push(...result)
-        }
+        await installModule('@nuxtjs/i18n')
 
         // Dev only: register new file-watcher based on file inheritance
         if (nuxt.options.dev) {
