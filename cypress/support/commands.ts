@@ -54,12 +54,7 @@ Cypress.Commands.add('waitForHydration', (timeout = 10000) => {
 })
 
 Cypress.Commands.add('selectFirstCategory', () => {
-    if (Cypress.config('viewportWidth') < Cypress.env('mobileViewportWidthBreakpoint')) {
-        cy.get('.navbar-start .dropdown .btn-ghost').click()
-        cy.get('.menu.menu-compact > li:first > details > summary > a').click()
-    } else {
-        cy.get('.menu.menu-horizontal > li:first > details > summary > a').click()
-    }
+    cy.get('.menu.menu-horizontal > li:first > details > summary > a').click()
 })
 
 Cypress.Commands.add('selectRandomProduct', () => {
@@ -149,7 +144,7 @@ Cypress.Commands.add('loginCustomer', (email: string, pw: string) => {
     cy.visit('/')
     cy.waitForHydration()
     // click on customer navigation icon
-    cy.get('.navbar-end > div:nth-child(3) > a').click()
+    cy.get('.navbar-end > div:nth-child(4) > a').click()
 
     cy.get('form').within(($form) => {
         cy.get('#username').type(email)
@@ -162,5 +157,5 @@ Cypress.Commands.add('loginCustomer', (email: string, pw: string) => {
     cy.wait('@apiGetWishlist')
 
     // wait for logged state isset in app
-    cy.get('.navbar-end > div:nth-child(3) .text-success svg')
+    cy.get('.navbar-end > div:nth-child(4) .text-success svg')
 })
