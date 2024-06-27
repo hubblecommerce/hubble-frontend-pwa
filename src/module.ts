@@ -192,6 +192,11 @@ export default defineNuxtModule<ModuleOptions>({
             await copy(resolve(join(nuxt.options.rootDir, 'tailwind.config.ts')), resolve(join(targetDir, 'tailwind.config.ts')))
         }
 
+        const customErrorExist = await pathExists(resolve(join(nuxt.options.rootDir, 'error.vue')))
+        if (customErrorExist) {
+            await copy(resolve(join(nuxt.options.rootDir, 'error.vue')), resolve(join(targetDir, 'error.vue')))
+        }
+
         // Set srcDir of nuxt base layer
         for (const layer of nuxt.options._layers) {
             if (layer.configFile === 'nuxt.config') {
@@ -261,9 +266,9 @@ export default defineNuxtModule<ModuleOptions>({
         }
 
         // Add custom error page
-        nuxt.hook('app:resolve', (app) => {
-            app.errorComponent = resolve(join(targetDir, 'components/misc/MiscError.vue'))
-        })
+        // nuxt.hook('app:resolve', (app) => {
+        //     app.errorComponent = resolve(join(targetDir, 'components/misc/MiscError.vue'))
+        // })
 
         // Performance: Remove dynamic import prefetching
         nuxt.hook('build:manifest', (manifest) => {
