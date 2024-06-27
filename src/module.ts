@@ -298,7 +298,7 @@ export default defineNuxtModule<ModuleOptions>({
             const excludedDirectories = [...options.dirBlacklist.map(__blacklistedDir => `${nuxt.options.rootDir}/${__blacklistedDir}/**`)]
 
             const toTargetPath = (oldPath: string) => {
-                return resolve(oldPath.replace(nuxt.options.rootDir, targetDir))
+                return resolve(oldPath.replace(path.normalize(nuxt.options.rootDir), targetDir))
             }
 
             // TODO: Write generic function for watchers
