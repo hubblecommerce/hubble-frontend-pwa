@@ -87,7 +87,7 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
         }
     }
 
-    async function login (username: string, password: string): Promise<string> {
+    async function login (username: string, password: string): Promise<void> {
         loading.value = true
         error.value = false
 
@@ -99,21 +99,17 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
                 await getCart()
             }
 
-            const response = await LoginRegistrationShopware.loginCustomer({ username, password })
+            await LoginRegistrationShopware.loginCustomer({ username, password })
             loading.value = false
 
-            if (response.contextToken !== undefined) {
-                await setSessionToken(response.contextToken)
-                await getSession()
-                await getWishlist()
-                return response.contextToken
-            }
+            await getSession()
+            await getWishlist()
 
-            throw new Error('Something went wrong please try again')
+            return
         } catch (e) {
             const error = e as any
 
-            if (error.body[0]?.detail != null) {
+            if (error.body?.[0]?.detail != null) {
                 showNotification(error.body[0]?.detail, 'error', true)
             } else {
                 showNotification(error, 'error', true)
@@ -130,22 +126,17 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
         error.value = false
 
         try {
-            const response = await LoginRegistrationShopware.logoutCustomer()
+            await LoginRegistrationShopware.logoutCustomer()
             loading.value = false
 
-            if (response.contextToken !== undefined) {
-                customer.value = null
-                await setSessionToken(response.contextToken)
-                await getSession()
+            customer.value = null
+            await setSessionToken(null)
+            await getSession()
+            await getCart()
+            clearWishlist()
 
-                await getCart()
-                clearWishlist()
-
-                await navigateToI18n('/customer/login')
-                return
-            }
-
-            throw new Error('Something went wrong please try again')
+            await navigateToI18n('/customer/login')
+            return
         } catch (e) {
             const error = e as any
 
@@ -159,6 +150,18 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
             error.value = e
             throw e
         }
+    }
+
+    async function logoutGuest (): Promise<void> {
+        customer.value = null
+        await setSessionToken(null)
+        await getSession()
+
+        await getCart()
+        clearWishlist()
+
+        await navigateToI18n('/customer/login')
+        return
     }
 
     async function register (formData: HblRegisterCustomerForm): Promise<HblCustomer | void> {
@@ -346,7 +349,7 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
         try {
             const response = await OrderShopware.readOrder({
                 limit: 10,
-                'total-count-mode': 2,
+                'total-count-mode': 'next-pages',
                 ...(params?.page != null && { page: params?.page }),
                 associations: {
                     deliveries: {
@@ -382,15 +385,20 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
                         associations: {
                             salutation: {}
                         }
-                    }
+                    },
+                    stateMachineState: {}
                 },
                 ...(filter != null && { filter })
             })
 
             const mappedData = {
+                // @ts-ignore
                 limit: response.orders?.limit,
+                // @ts-ignore
                 page: response.orders?.page,
+                // @ts-ignore
                 total: response.orders?.total,
+                // @ts-ignore
                 data: params?.id != null ? hblMapOrder(response.orders?.elements[0]) : hblMapOrders(response.orders?.elements)
             }
 
@@ -624,6 +632,7 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
         getCustomer,
         login,
         logout,
+        logoutGuest,
         register,
         registerConfirm,
         updateShippingAddress,
