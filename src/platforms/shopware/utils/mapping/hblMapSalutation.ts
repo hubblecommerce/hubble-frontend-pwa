@@ -3,7 +3,6 @@ import { type HblSalutation } from '@/utils/types'
 
 export function hblMapSalutation (salutation: SwSalutation): HblSalutation {
     return {
-        // @ts-ignore
         id: salutation.id,
         name: salutation.translated?.displayName
     }

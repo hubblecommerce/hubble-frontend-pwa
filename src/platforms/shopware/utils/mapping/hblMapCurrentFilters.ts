@@ -8,32 +8,22 @@ export function hblMapCurrentFilters (swCurrentFilters: ProductListingResult['cu
         obj.navigationId = swCurrentFilters.navigationId
     }
 
-    // TODO Patch api
-    // @ts-ignore
     if (swCurrentFilters.search != null) {
-        // @ts-ignore
         obj.search = swCurrentFilters.search
     }
 
-    // @ts-ignore
     obj.manufacturer = swCurrentFilters?.manufacturer
 
-    // @ts-ignore
     obj.price = {
-        // @ts-ignore
         min: swCurrentFilters.price.min !== 0 ? swCurrentFilters.price.min : '',
-        // @ts-ignore
         max: swCurrentFilters.price.max !== 0 ? swCurrentFilters.price.max : ''
     }
 
-    // @ts-ignore
     obj.rating = {
         min: '',
-        // @ts-ignore
         max: swCurrentFilters.rating !== null ? swCurrentFilters.rating : ''
     }
 
-    // @ts-ignore
     obj['shipping-free'] = swCurrentFilters['shipping-free']
 
     // @ts-ignore

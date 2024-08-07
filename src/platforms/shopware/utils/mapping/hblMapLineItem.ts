@@ -4,7 +4,6 @@ import { hblMapMedia, hblMapPrice } from '#imports'
 
 export function hblMapLineItem (lineItem: SwLineItem): HblLineItem {
     return {
-        // @ts-ignore
         id: lineItem.id,
         // @ts-ignore
         itemId: lineItem.referencedId,

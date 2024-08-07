@@ -12,7 +12,6 @@ export function hblMapCustomerAddress (swAddress: SwCustomerAddress | OrderAddre
     }
 
     return {
-        // @ts-ignore
         id: swAddress.id,
         salutation: salutationId,
         firstName: swAddress.firstName,

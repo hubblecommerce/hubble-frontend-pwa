@@ -4,7 +4,6 @@ import { hblMapMedia } from '#imports'
 
 export function hblMapManufacturer (swManufacturer: ProductManufacturer): HblManufacturer {
     return {
-        // @ts-ignore
         id: swManufacturer.id,
         link: swManufacturer.link,
         name: swManufacturer?.translated?.name,

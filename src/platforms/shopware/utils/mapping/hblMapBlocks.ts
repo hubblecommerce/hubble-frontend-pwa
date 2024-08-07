@@ -7,7 +7,6 @@ export function hblMapBlocks (swBlocks: CmsBlock[]): HblBlock[] {
         return {
             id: block.versionId as string,
             type: block.type,
-            // @ts-ignore
             slots: hblMapSlots(block.slots),
             ...(block.cssClass != null && { cssClass: block.cssClass }),
             ...(block.backgroundColor != null && { backgroundColor: block.backgroundColor }),

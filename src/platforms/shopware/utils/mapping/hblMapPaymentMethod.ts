@@ -4,7 +4,6 @@ import { hblMapMedia } from '#imports'
 
 export function hblMapPaymentMethod (swPaymentMethod: SwPaymentMethod): HblPaymentMethod {
     return {
-        // @ts-ignore
         id: swPaymentMethod.id,
         // Todo patch api
         // @ts-ignore

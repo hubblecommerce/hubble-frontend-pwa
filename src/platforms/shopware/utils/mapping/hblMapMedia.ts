@@ -8,7 +8,6 @@ export function hblMapMedia (swMedia: SwMedia): HblMedia | null {
 
     return {
         id: swMedia.id,
-        // @ts-ignore
         url: swMedia.url,
         // @ts-ignore
         thumbnails: swMedia.thumbnails,

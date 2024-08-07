@@ -4,7 +4,6 @@ import { hblMapMedia } from '#imports'
 
 export function hblMapShippingMethod (swShippingMethod: SwShippingMethod): HblShippingMethod {
     return {
-        // @ts-ignore
         id: swShippingMethod.id,
         deliveryTime: swShippingMethod?.deliveryTime?.translated?.name,
         description: swShippingMethod?.translated?.description,
@@ -14,7 +13,6 @@ export function hblMapShippingMethod (swShippingMethod: SwShippingMethod): HblSh
         // @ts-ignore
         price: swShippingMethod.prices?.[0]?.currencyPrice?.[0]?.gross,
         tax: swShippingMethod.tax?.taxRate,
-        // @ts-ignore
         position: swShippingMethod.position != null ? swShippingMethod.position : 1
     }
 }
