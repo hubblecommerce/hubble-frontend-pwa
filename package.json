@@ -1,6 +1,6 @@
 {
     "name": "@hubblecommerce/hubble",
-    "version": "2.7.0",
+    "version": "2.8.0",
     "description": "PWA for eCommerce frameworks based on NuxtJs",
     "author": "hubble commerce",
     "license": "MIT",
@@ -49,7 +49,7 @@
         "coverage": "vitest run --coverage",
         "docs:dev": "vuepress dev docs",
         "docs:build": "vuepress build docs",
-        "sw:dev:generate-api": "node bin/hubble-cli.js dev:sw open-api-generate && git apply src/platforms/shopware/api-client/*.patch --verbose",
+        "sw:dev:generate-api": "node bin/hubble-cli.js dev:sw open-api-generate",
         "sw:dev:patch-api": "git format-patch -1 $COMMIT -o src/platforms/shopware/api-client/",
         "sw:install-plugins": "node bin/hubble-cli.js dev:sw sw-plugins-assets",
         "sw:config-plugins": "node bin/hubble-cli.js dev:sw sw-plugins-config",
