@@ -26,7 +26,8 @@ const associations = {
         associations: {
             media: {}
         }
-    }
+    },
+    seoUrls: {}
 }
 
 export function getRequestURL () {
@@ -132,6 +133,7 @@ export const usePage = function (): HblIUsePage {
             if (navigationId) {
                 response = await ProductShopware.readProductListing(
                     navigationId as string,
+                    true,
                     // TODO Patch api
                     // @ts-ignore
                     requestBody
