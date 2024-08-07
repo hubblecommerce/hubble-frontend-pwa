@@ -1,7 +1,0 @@
-- New useCustomer function named logoutGuest to logout guest customers, because logout request is allowed for logged in customers only
-- Store API responses of login and register don't include context anymore, context token is now set based on response header instead
-- CartShopware.removeLineItem request body has changed and requires an object with an ids property 
-- CartShopware.addLineItem request body has changed and requires id for each item instead of referenceId 
-- usePage associations requires now seoUrls to resolve seoUrls 
-- ProductShopware.readProductListing function parameters changes, second parameter is now swIncludeSeoUrls boolean
-- Unused property pathInfo was removed from HblProduct type and mapping
