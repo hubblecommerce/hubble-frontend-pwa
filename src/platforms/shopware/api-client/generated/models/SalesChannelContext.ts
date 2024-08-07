@@ -2,9 +2,13 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
+import type { Country } from './Country';
+import type { Currency } from './Currency';
+import type { Customer } from './Customer';
+import type { CustomerAddress } from './CustomerAddress';
+import type { PaymentMethod } from './PaymentMethod';
+import type { ShippingMethod } from './ShippingMethod';
 import type { Struct } from './Struct';
-
 export type SalesChannelContext = (Struct & {
     /**
      * Context the user session
@@ -24,19 +28,7 @@ export type SalesChannelContext = (Struct & {
         name?: string;
         displayGross?: boolean;
     };
-    /**
-     * Currency associated with the current user
-     */
-    currency?: {
-        isoCode?: string;
-        factor?: number;
-        symbol?: string;
-        shortName?: string;
-        name?: string;
-        position?: number;
-        decimalPrecision?: number;
-        isSystemDefault?: boolean;
-    };
+    currency?: Currency;
     /**
      * Information about the current sales channel
      */
@@ -70,70 +62,14 @@ export type SalesChannelContext = (Struct & {
         taxRate?: number;
         name?: string;
     }>;
-    /**
-     * Information about the current customer - `null` if the customer is not logged in
-     */
-    customer?: {
-        groupId?: string;
-        defaultPaymentMethodId?: string;
-        salesChannelId?: string;
-        languageId?: string;
-        lastPaymentMethodId?: string;
-        defaultBillingAddressId?: string;
-        defaultShippingAddressId?: string;
-        customerNumber?: string;
-        salutationId?: string;
-        firstName?: string;
-        lastName?: string;
-        company?: string;
-        password?: string;
-        email?: string;
-        title?: string;
-        affiliateCode?: string;
-        campaignCode?: string;
-        active?: boolean;
-        doubleOptInRegistration?: boolean;
-        doubleOptInEmailSentDate?: string;
-        doubleOptInConfirmDate?: string;
-        hash?: string;
-        guest?: boolean;
-        firstLogin?: string;
-        lastLogin?: string;
-        newsletter?: boolean;
-        birthday?: string;
-        lastOrderDate?: string;
-        orderCount?: number;
-        legacyEncoder?: string;
-        legacyPassword?: string;
-        autoIncrement?: number;
-        remoteAddress?: string;
+    customer?: Customer;
+    paymentMethod?: PaymentMethod;
+    shippingLocation?: {
+        apiAlias?: 'cart_delivery_shipping_location';
+        country?: Country;
+        address?: CustomerAddress;
     };
-    /**
-     * Selected payment method
-     */
-    paymentMethod?: {
-        pluginId?: string;
-        handlerIdentifier?: string;
-        name?: string;
-        description?: string;
-        position?: number;
-        active?: boolean;
-        availabilityRuleId?: string;
-        mediaId?: string;
-        formattedHandlerIdentifier?: string;
-    };
-    /**
-     * Selected shipping method
-     */
-    shippingMethod?: {
-        name?: string;
-        active?: boolean;
-        description?: string;
-        trackingUrl?: string;
-        deliveryTimeId?: string;
-        availabilityRuleId?: string;
-        mediaId?: string;
-    };
+    shippingMethod?: ShippingMethod;
     /**
      * Core context with general configuration values and state
      */
@@ -142,6 +78,7 @@ export type SalesChannelContext = (Struct & {
         currencyId?: string;
         currencyFactor?: number;
         currencyPrecision?: number;
+        languageIdChain?: Array<string>;
         scope?: string;
         source?: string;
         taxState?: string;

@@ -2,14 +2,12 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { resource } from './resource';
-
 /**
  * Added since version: 6.0.0.0
  */
 export type CountryJsonApi = (resource & {
-    id?: string;
+    id: string;
     name: string;
     iso?: string;
     position?: number;
@@ -41,6 +39,16 @@ export type CountryJsonApi = (resource & {
     readonly createdAt: string;
     readonly updatedAt?: string;
     translated?: Record<string, any>;
-    relationships?: any;
+    relationships?: {
+        states?: {
+            links?: {
+                related?: string;
+            };
+            data?: Array<{
+                type?: string;
+                id?: string;
+            }>;
+        };
+    };
 });
 

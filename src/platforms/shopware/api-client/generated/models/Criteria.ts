@@ -2,7 +2,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 /**
  * Search parameters. For more information, see our documentation on [Search Queries](https://shopware.stoplight.io/docs/store-api/docs/concepts/search-queries.md#structure)
  */
@@ -69,12 +68,8 @@ export type Criteria = {
      */
     fields?: Array<string>;
     /**
-     * Whether the total for the total number of hits should be determined for the search query. 0 = disabled total count, 1 = calculate exact total amount (slow), 2 = calculate only for next page (fast)
+     * Whether the total for the total number of hits should be determined for the search query. none = disabled total count, exact = calculate exact total amount (slow), next-pages = calculate only for next page (fast)
      */
-    'total-count-mode'?: 0 | 1 | 2;
-    /**
-     * Restricts the output to the defined fields
-     */
-    includes?: any;
+    'total-count-mode'?: 'none' | 'exact' | 'next-pages';
 };
 

@@ -2,13 +2,11 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { data } from './data';
 import type { links } from './links';
 import type { meta } from './meta';
 import type { pagination } from './pagination';
 import type { resource } from './resource';
-
 export type success = {
     meta?: meta;
     /**

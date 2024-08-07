@@ -2,12 +2,11 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 /**
  * Added since version: 6.1.0.0
  */
 export type ProductCrossSelling = {
-    id?: string;
+    id: string;
     name: string;
     position: number;
     sortBy?: string;

@@ -2,15 +2,13 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { Media } from './Media';
 import type { PropertyGroup } from './PropertyGroup';
-
 /**
  * Added since version: 6.0.0.0
  */
 export type PropertyGroupOption = {
-    id?: string;
+    id: string;
     groupId: string;
     name: string;
     position?: number;
@@ -21,6 +19,7 @@ export type PropertyGroupOption = {
     readonly updatedAt?: string;
     translated?: Record<string, any>;
     media?: Media;
-    group?: PropertyGroup;
+    group: PropertyGroup;
+    option: string;
 };
 

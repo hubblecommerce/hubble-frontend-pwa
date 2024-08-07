@@ -2,12 +2,10 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { attributes } from './attributes';
 import type { links } from './links';
 import type { meta } from './meta';
 import type { relationships } from './relationships';
-
 /**
  * "Resource objects" appear in a JSON API document to represent resources.
  */

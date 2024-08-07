@@ -2,14 +2,12 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { SalesChannel } from './SalesChannel';
-
 /**
  * Added since version: 6.0.0.0
  */
 export type SystemConfig = {
-    id?: string;
+    id: string;
     configurationKey: string;
     configurationValue: {
         _value?: Record<string, any>;

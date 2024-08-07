@@ -2,14 +2,13 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { Media } from './Media';
-
+import type { MediaThumbnail } from './MediaThumbnail';
 /**
  * Added since version: 6.0.0.0
  */
 export type ProductMedia = {
-    id?: string;
+    id: string;
     versionId?: string;
     productId: string;
     productVersionId?: string;
@@ -19,5 +18,6 @@ export type ProductMedia = {
     readonly createdAt: string;
     readonly updatedAt?: string;
     media?: Media;
+    thumbnails?: MediaThumbnail;
 };
 

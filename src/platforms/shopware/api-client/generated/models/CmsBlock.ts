@@ -2,15 +2,12 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { CmsSlot } from './CmsSlot';
 import type { Media } from './Media';
-
 /**
  * Added since version: 6.0.0.0
  */
 export type CmsBlock = {
-    _uniqueIdentifier: string,
     id?: string;
     position: number;
     type: string;
@@ -36,6 +33,7 @@ export type CmsBlock = {
     readonly createdAt: string;
     readonly updatedAt?: string;
     backgroundMedia?: Media;
-    slots?: CmsSlot[];
+    slots: Array<CmsSlot>;
+    apiAlias: 'cms_block';
 };
 

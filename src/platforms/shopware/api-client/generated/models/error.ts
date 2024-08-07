@@ -2,10 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { links } from './links';
 import type { meta } from './meta';
-
 export type error = {
     /**
      * A unique identifier for this particular occurrence of the problem.
@@ -28,6 +26,10 @@ export type error = {
      * A human-readable explanation specific to this occurrence of the problem.
      */
     detail?: string;
+    /**
+     * A human-readable description of the problem.
+     */
+    description?: string;
     source?: {
         /**
          * A JSON Pointer [RFC6901] to the associated entity in the request document [e.g. "/data" for a primary data object, or "/data/attributes/title" for a specific attribute].

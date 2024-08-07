@@ -2,10 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
-import type { Struct } from './Struct';
-
-export type AccountNewsletterRecipientResult = (Struct & {
-    status?: string;
-});
+export type AccountNewsletterRecipientResult = {
+    status: 'undefined' | 'notSet' | 'direct' | 'optIn' | 'optOut';
+    apiAlias: 'account_newsletter_recipient';
+};
 

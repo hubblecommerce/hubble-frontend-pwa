@@ -2,24 +2,22 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { AccountNewsletterRecipientResult } from '../models/AccountNewsletterRecipientResult';
 import type { Criteria } from '../models/Criteria';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-
 export class NewsletterShopware {
-
     /**
      * Fetch newsletter recipients
      * Perform a filtered search for newsletter recipients.
      * @param requestBody
-     * @returns any
+     * @returns AccountNewsletterRecipientResult
      * @throws ApiError
      */
     public static readNewsletterRecipient(
         requestBody?: Criteria,
-    ): CancelablePromise<any> {
+    ): CancelablePromise<Array<AccountNewsletterRecipientResult>> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/account/newsletter-recipient',
@@ -27,7 +25,6 @@ export class NewsletterShopware {
             mediaType: 'application/json',
         });
     }
-
     /**
      * Confirm a newsletter registration
      * You have to use the hash from the link sent out via email to confirm the user registration.
@@ -54,7 +51,6 @@ export class NewsletterShopware {
             mediaType: 'application/json',
         });
     }
-
     /**
      * Create or remove a newsletter subscription
      * This route is used to create/remove/confirm a newsletter subscription.
@@ -78,7 +74,7 @@ export class NewsletterShopware {
             /**
              * Defines what should be done.
              */
-            option: any;
+            option: string;
             /**
              * Url of the storefront of the shop. This will be used for generating the link to the /newsletter/confirm inside the confirm email.
              */
@@ -86,7 +82,7 @@ export class NewsletterShopware {
             /**
              * Identifier of the salutation.
              */
-            salutationId?: any;
+            salutationId?: string;
             /**
              * First name
              */
@@ -114,7 +110,7 @@ export class NewsletterShopware {
             /**
              * Identifier of the language.
              */
-            languageId?: any;
+            languageId?: string;
             /**
              * Custom field data that should be added to the subscription.
              */
@@ -128,7 +124,6 @@ export class NewsletterShopware {
             mediaType: 'application/json',
         });
     }
-
     /**
      * Remove a newsletter subscription
      * Removes a newsletter recipient from the mailing lists.
@@ -151,5 +146,4 @@ export class NewsletterShopware {
             mediaType: 'application/json',
         });
     }
-
 }

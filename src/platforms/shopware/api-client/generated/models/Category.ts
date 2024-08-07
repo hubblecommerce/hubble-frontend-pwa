@@ -2,16 +2,15 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { CmsPage } from './CmsPage';
 import type { Media } from './Media';
 import type { SeoUrl } from './SeoUrl';
-
+import type { Tag } from './Tag';
 /**
  * Added since version: 6.0.0.0
  */
 export type Category = {
-    id?: string;
+    id: string;
     versionId?: string;
     parentId?: string;
     parentVersionId?: string;
@@ -19,10 +18,10 @@ export type Category = {
     afterCategoryVersionId?: string;
     mediaId?: string;
     displayNestedProducts: boolean;
-    readonly breadcrumb?: Array<any>;
+    readonly breadcrumb: Array<string>;
     readonly level?: number;
     readonly path?: string;
-    readonly childCount?: number;
+    readonly childCount: number;
     type: string;
     productAssignmentType: string;
     visible?: boolean;
@@ -50,11 +49,13 @@ export type Category = {
     customEntityTypeId?: string;
     readonly createdAt: string;
     readonly updatedAt?: string;
-    translated?: Record<string, any>;
+    translated: Record<string, any>;
     parent?: Category;
-    children?: Array<Category>;
+    children: Array<Category> | null;
     media?: Media;
+    tags?: Array<Tag>;
     cmsPage?: CmsPage;
     seoUrls?: Array<SeoUrl>;
+    apiAlias?: 'category';
 };
 

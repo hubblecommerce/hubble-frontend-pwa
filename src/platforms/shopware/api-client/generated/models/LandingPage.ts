@@ -2,15 +2,13 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { CmsPage } from './CmsPage';
 import type { SeoUrl } from './SeoUrl';
-
 /**
  * Added since version: 6.4.0.0
  */
 export type LandingPage = {
-    id?: string;
+    id: string;
     versionId?: string;
     active?: boolean;
     name: string;
@@ -26,6 +24,7 @@ export type LandingPage = {
     readonly updatedAt?: string;
     translated?: Record<string, any>;
     cmsPage?: CmsPage;
-    seoUrls?: SeoUrl;
+    seoUrls?: Array<SeoUrl>;
+    apiAlias: 'landing_page';
 };
 

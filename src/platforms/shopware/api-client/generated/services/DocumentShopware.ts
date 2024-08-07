@@ -4,13 +4,10 @@
 /* eslint-disable */
 import type { Criteria } from '../models/Criteria';
 import type { Document } from '../models/Document';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-
 export class DocumentShopware {
-
     /**
      * Download generated document
      * Returns blob file of a generated document to download.
@@ -36,5 +33,4 @@ export class DocumentShopware {
             mediaType: 'application/json',
         });
     }
-
 }

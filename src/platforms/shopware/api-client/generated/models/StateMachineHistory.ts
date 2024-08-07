@@ -2,9 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { StateMachineState } from './StateMachineState';
-
 /**
  * Added since version: 6.0.0.0
  */

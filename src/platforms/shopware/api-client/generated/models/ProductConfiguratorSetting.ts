@@ -2,15 +2,13 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { Media } from './Media';
 import type { PropertyGroupOption } from './PropertyGroupOption';
-
 /**
  * Added since version: 6.0.0.0
  */
 export type ProductConfiguratorSetting = {
-    id?: string;
+    id: string;
     versionId?: string;
     productId: string;
     productVersionId?: string;

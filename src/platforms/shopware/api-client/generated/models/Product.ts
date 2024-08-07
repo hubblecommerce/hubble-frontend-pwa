@@ -2,10 +2,11 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
+import type { CalculatedPrice } from './CalculatedPrice';
 import type { Category } from './Category';
 import type { CmsPage } from './CmsPage';
 import type { DeliveryTime } from './DeliveryTime';
+import type { ListPrice } from './ListPrice';
 import type { MainCategory } from './MainCategory';
 import type { ProductConfiguratorSetting } from './ProductConfiguratorSetting';
 import type { ProductCrossSelling } from './ProductCrossSelling';
@@ -15,15 +16,16 @@ import type { ProductMedia } from './ProductMedia';
 import type { ProductReview } from './ProductReview';
 import type { ProductStream } from './ProductStream';
 import type { PropertyGroupOption } from './PropertyGroupOption';
+import type { ReferencePrice } from './ReferencePrice';
 import type { SeoUrl } from './SeoUrl';
+import type { Tag } from './Tag';
 import type { Tax } from './Tax';
 import type { Unit } from './Unit';
-
 /**
- * Added since version: 6.0.0.0
+ * Represents a product along with detailed information required to display a variant selection.
  */
 export type Product = {
-    id?: string;
+    id: string;
     versionId?: string;
     parentId?: string;
     parentVersionId?: string;
@@ -38,12 +40,12 @@ export type Product = {
     cmsPageId?: string;
     cmsPageVersionId?: string;
     productNumber: string;
-    stock: number;
     restockTime?: number;
     active?: boolean;
-    readonly availableStock?: number;
     readonly available?: boolean;
     isCloseout?: boolean;
+    readonly availableStock?: number;
+    stock: number;
     readonly displayGroup?: string;
     manufacturerNumber?: string;
     ean?: string;
@@ -64,6 +66,7 @@ export type Product = {
     readonly propertyIds?: Array<string>;
     readonly optionIds?: Array<string>;
     readonly streamIds?: Array<string>;
+    readonly tagIds?: Array<string>;
     readonly categoryIds?: Array<string>;
     readonly childCount?: number;
     readonly sales?: number;
@@ -76,13 +79,25 @@ export type Product = {
     packUnit?: string;
     packUnitPlural?: string;
     customFields?: Record<string, any>;
-    calculatedPrice?: Record<string, any>;
-    calculatedPrices?: Array<any>;
+    calculatedPrice: CalculatedPrice;
+    calculatedPrices: Array<CalculatedPrice>;
     /**
      * Runtime field, cannot be used as part of the criteria.
      */
     calculatedMaxPurchase?: number;
-    calculatedCheapestPrice?: Record<string, any>;
+    calculatedCheapestPrice?: (CalculatedPrice & {
+        unitPrice?: number;
+        quantity?: number;
+        totalPrice?: number;
+        referencePrice?: ReferencePrice | null;
+        listPrice?: ListPrice | null;
+        regulationPrice?: {
+            price: number;
+        } | null;
+        hasRange?: boolean;
+        variantId?: string | null;
+        apiAlias?: 'calculated_cheapest_price';
+    });
     /**
      * Runtime field, cannot be used as part of the criteria.
      */
@@ -91,9 +106,9 @@ export type Product = {
     readonly createdAt: string;
     readonly updatedAt?: string;
     translated?: Record<string, any>;
-    downloads?: ProductDownload;
+    downloads?: Array<ProductDownload>;
     parent?: Product;
-    children?: Product;
+    children?: Array<Product>;
     deliveryTime?: DeliveryTime;
     tax?: Tax;
     manufacturer?: ProductManufacturer;
@@ -102,16 +117,21 @@ export type Product = {
     cmsPage?: CmsPage;
     canonicalProduct?: Product;
     media?: Array<ProductMedia>;
-    crossSellings?: ProductCrossSelling;
-    configuratorSettings?: ProductConfiguratorSetting;
-    productReviews?: ProductReview;
-    mainCategories?: MainCategory;
-    seoUrls?: SeoUrl;
-    options?: PropertyGroupOption;
-    properties?: PropertyGroupOption;
-    categories?: Category;
-    streams?: ProductStream;
-    categoriesRo?: Category;
-    seoCategory?: Category;
+    crossSellings?: Array<ProductCrossSelling>;
+    configuratorSettings?: Array<ProductConfiguratorSetting>;
+    productReviews?: Array<ProductReview>;
+    mainCategories?: Array<MainCategory>;
+    seoUrls?: Array<SeoUrl>;
+    options?: Array<PropertyGroupOption>;
+    properties?: Array<PropertyGroupOption>;
+    categories?: Array<Category>;
+    streams?: Array<ProductStream>;
+    categoriesRo?: Array<Category>;
+    tags?: Array<Tag>;
+    seoCategory: Category;
+    apiAlias: 'product';
+    variantListingConfig?: {
+        displayParent?: boolean;
+    } | null;
 };
 

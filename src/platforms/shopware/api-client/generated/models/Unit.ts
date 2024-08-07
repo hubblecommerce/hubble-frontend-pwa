@@ -2,12 +2,11 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 /**
  * Added since version: 6.0.0.0
  */
 export type Unit = {
-    id?: string;
+    id: string;
     shortCode: string;
     name: string;
     customFields?: Record<string, any>;

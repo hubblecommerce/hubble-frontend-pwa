@@ -2,14 +2,12 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { resource } from './resource';
-
 /**
  * Added since version: 6.0.0.0
  */
 export type ShippingMethodJsonApi = (resource & {
-    id?: string;
+    id: string;
     name: string;
     active?: boolean;
     position?: number;
@@ -19,9 +17,65 @@ export type ShippingMethodJsonApi = (resource & {
     taxType: string;
     description?: string;
     trackingUrl?: string;
+    technicalName?: string;
     readonly createdAt: string;
     readonly updatedAt?: string;
     translated?: Record<string, any>;
-    relationships?: any;
+    relationships?: {
+        deliveryTime?: {
+            links?: {
+                related?: string;
+            };
+            data?: {
+                type?: string;
+                id?: string;
+            };
+        };
+        availabilityRule?: {
+            links?: {
+                related?: string;
+            };
+            data?: {
+                type?: string;
+                id?: string;
+            };
+        };
+        prices?: {
+            links?: {
+                related?: string;
+            };
+            data?: Array<{
+                type?: string;
+                id?: string;
+            }>;
+        };
+        media?: {
+            links?: {
+                related?: string;
+            };
+            data?: {
+                type?: string;
+                id?: string;
+            };
+        };
+        tags?: {
+            links?: {
+                related?: string;
+            };
+            data?: Array<{
+                type?: string;
+                id?: string;
+            }>;
+        };
+        tax?: {
+            links?: {
+                related?: string;
+            };
+            data?: {
+                type?: string;
+                id?: string;
+            };
+        };
+    };
 });
 

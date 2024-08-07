@@ -2,17 +2,15 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { Salutation } from './Salutation';
-
 /**
  * Added since version: 6.0.0.0
  */
 export type OrderCustomer = {
-    id?: string;
+    id: string;
     versionId?: string;
     email: string;
-    salutationId: string;
+    salutationId?: string;
     firstName: string;
     lastName: string;
     company?: string;

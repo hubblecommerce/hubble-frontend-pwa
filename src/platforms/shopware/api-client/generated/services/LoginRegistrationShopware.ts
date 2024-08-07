@@ -5,13 +5,10 @@
 import type { Customer } from '../models/Customer';
 import type { CustomerAddress } from '../models/CustomerAddress';
 import type { CustomerGroup } from '../models/CustomerGroup';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-
 export class LoginRegistrationShopware {
-
     /**
      * Log in a customer
      * Logs in customers given their credentials.
@@ -41,7 +38,6 @@ export class LoginRegistrationShopware {
             },
         });
     }
-
     /**
      * Log out a customer
      * Logs out a customer.
@@ -57,7 +53,6 @@ export class LoginRegistrationShopware {
             },
         });
     }
-
     /**
      * Confirm a customer registration
      * Confirms a customer registration when double opt-in is activated.
@@ -90,7 +85,6 @@ export class LoginRegistrationShopware {
             },
         });
     }
-
     /**
      * Register a customer
      * Registers a customer. Used both for normal customers and guest customers.See the Guide "Register a customer" for more information on customer registration.
@@ -171,7 +165,6 @@ export class LoginRegistrationShopware {
             mediaType: 'application/json',
         });
     }
-
     /**
      * Fetch registration settings for customer group
      * @param customerGroupId Customer group id
@@ -189,5 +182,4 @@ export class LoginRegistrationShopware {
             },
         });
     }
-
 }
