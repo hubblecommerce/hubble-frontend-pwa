@@ -59,7 +59,7 @@ export const useCart = defineStore('use-cart', (): HblIUseCart => {
             const items = []
             items.push(id)
 
-            const response = await CartShopware.removeLineItem(items)
+            const response = await CartShopware.removeLineItem({ ids: items })
 
             if (response.token !== undefined) {
                 setSessionToken(response.token)
@@ -81,6 +81,7 @@ export const useCart = defineStore('use-cart', (): HblIUseCart => {
         return CartShopware.updateLineItem(
             {
                 items: [
+                    // @ts-ignore
                     {
                         id: lineItem.id,
                         quantity: updatedQty
@@ -95,8 +96,8 @@ export const useCart = defineStore('use-cart', (): HblIUseCart => {
             {
                 items: [
                     {
+                        id: itemId,
                         type: 'product',
-                        referencedId: itemId,
                         quantity: qty
                     }
                 ]
@@ -157,6 +158,7 @@ export const useCart = defineStore('use-cart', (): HblIUseCart => {
             const response = await CartShopware.addLineItem(
                 {
                     items: [
+                        // @ts-ignore
                         {
                             type: 'promotion',
                             referencedId: code
