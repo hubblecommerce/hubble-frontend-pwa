@@ -2,10 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { StateMachineState } from './StateMachineState';
 import type { StateMachineTransition } from './StateMachineTransition';
-
 /**
  * Added since version: 6.0.0.0
  */
@@ -14,7 +12,7 @@ export type StateMachine = {
     readonly createdAt: string;
     readonly updatedAt?: string;
     translated?: Record<string, any>;
-    states?: StateMachineState;
-    transitions?: StateMachineTransition;
+    states?: Array<StateMachineState>;
+    transitions?: Array<StateMachineTransition>;
 };
 

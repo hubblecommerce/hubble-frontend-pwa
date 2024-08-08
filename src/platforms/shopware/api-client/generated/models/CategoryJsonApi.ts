@@ -2,14 +2,12 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { resource } from './resource';
-
 /**
  * Added since version: 6.0.0.0
  */
 export type CategoryJsonApi = (resource & {
-    id?: string;
+    id: string;
     versionId?: string;
     parentId?: string;
     parentVersionId?: string;
@@ -17,7 +15,7 @@ export type CategoryJsonApi = (resource & {
     afterCategoryVersionId?: string;
     mediaId?: string;
     displayNestedProducts: boolean;
-    readonly breadcrumb?: Array<any>;
+    readonly breadcrumb?: Array<Record<string, any>>;
     readonly level?: number;
     readonly path?: string;
     readonly childCount?: number;
@@ -49,6 +47,61 @@ export type CategoryJsonApi = (resource & {
     readonly createdAt: string;
     readonly updatedAt?: string;
     translated?: Record<string, any>;
-    relationships?: any;
+    relationships?: {
+        parent?: {
+            links?: {
+                related?: string;
+            };
+            data?: {
+                type?: string;
+                id?: string;
+            };
+        };
+        children?: {
+            links?: {
+                related?: string;
+            };
+            data?: Array<{
+                type?: string;
+                id?: string;
+            }>;
+        };
+        media?: {
+            links?: {
+                related?: string;
+            };
+            data?: {
+                type?: string;
+                id?: string;
+            };
+        };
+        tags?: {
+            links?: {
+                related?: string;
+            };
+            data?: Array<{
+                type?: string;
+                id?: string;
+            }>;
+        };
+        cmsPage?: {
+            links?: {
+                related?: string;
+            };
+            data?: {
+                type?: string;
+                id?: string;
+            };
+        };
+        seoUrls?: {
+            links?: {
+                related?: string;
+            };
+            data?: Array<{
+                type?: string;
+                id?: string;
+            }>;
+        };
+    };
 });
 

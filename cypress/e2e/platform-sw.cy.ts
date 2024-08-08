@@ -62,6 +62,7 @@ describe('Platform: Shopware', () => {
 
         // cart off-canvas menu
         cy.get('.navbar-end .btn:last').click()
+        cy.wait(500)
         cy.get('.drawer-side .avatar').should('have.lengthOf', 1)
 
         // cart page
@@ -71,8 +72,8 @@ describe('Platform: Shopware', () => {
 
     it('removes product from cart', () => {
         cy.intercept({
-            method: 'DELETE',
-            url: '/store-api/**'
+            method: 'POST',
+            url: '/store-api/checkout/cart/line-item/delete'
         }).as('apiRemoveLineItem')
 
         cy.visit('/')
@@ -81,6 +82,7 @@ describe('Platform: Shopware', () => {
 
         // cart off-canvas menu
         cy.get('.navbar-end .btn:last').click()
+        cy.wait(500)
 
         cy.get('.flex.flex-col.gap-6 > div > .flex.flex-col.gap-2').children().then(($element) => {
             const count = $element.length
@@ -107,6 +109,7 @@ describe('Platform: Shopware', () => {
 
         // navigates from cart off-canvas menu to checkout
         cy.get('.navbar-end .btn:last').click()
+        cy.wait(500)
         cy.get('.drawer-side').contains('Checkout').click()
 
         // registers in checkout as guest on checkout contact section

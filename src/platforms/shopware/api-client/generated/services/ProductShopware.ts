@@ -12,13 +12,10 @@ import type { ProductListingCriteria } from '../models/ProductListingCriteria';
 import type { ProductListingFlags } from '../models/ProductListingFlags';
 import type { ProductListingResult } from '../models/ProductListingResult';
 import type { ProductReview } from '../models/ProductReview';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-
 export class ProductShopware {
-
     /**
      * Export product export
      * @param accessKey Access Key
@@ -39,17 +36,18 @@ export class ProductShopware {
             },
         });
     }
-
     /**
      * Fetch a product listing by category
      * Fetches a product listing for a specific category. It also provides filters, sortings and property aggregations, analogous to the /search endpoint.
      * @param categoryId Identifier of a category.
+     * @param swIncludeSeoUrls Determines if the response must contain a SeoUrl entity for a product entity
      * @param requestBody
      * @returns ProductListingResult Returns a product listing containing all products and additional fields to display a listing.
      * @throws ApiError
      */
     public static readProductListing(
         categoryId: string,
+        swIncludeSeoUrls?: boolean,
         requestBody?: (ProductListingCriteria & ProductListingFlags),
     ): CancelablePromise<ProductListingResult> {
         return __request(OpenAPI, {
@@ -58,11 +56,59 @@ export class ProductShopware {
             path: {
                 'categoryId': categoryId,
             },
+            headers: {
+                'sw-include-seo-urls': swIncludeSeoUrls,
+            },
             body: requestBody,
             mediaType: 'application/json',
         });
     }
-
+    /**
+     * Search for products
+     * Performs a search for products which can be used to display a product listing.
+     * @param requestBody
+     * @returns ProductListingResult Returns a product listing containing all products and additional fields to display a listing.
+     * @throws ApiError
+     */
+    public static searchPage(
+        requestBody?: ({
+            /**
+             * Using the search parameter, the server performs a text search on all records based on their data model and weighting as defined in the entity definition using the SearchRanking flag.
+             */
+            search: string;
+        } & ProductListingCriteria & ProductListingFlags),
+    ): CancelablePromise<ProductListingResult> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/search',
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+    /**
+     * Search for products (suggest)
+     * Can be used to implement search previews or suggestion listings, that don’t require any interaction.
+     * @param requestBody
+     * @returns ProductListingResult Returns a product listing containing all products and additional fields.
+     *
+     * Note: Aggregations, currentFilters and availableSortings are empty in this response. If you need them to display a listing, use the /search route instead.
+     * @throws ApiError
+     */
+    public static searchSuggest(
+        requestBody: ({
+            /**
+             * Using the search parameter, the server performs a text search on all records based on their data model and weighting as defined in the entity definition using the SearchRanking flag.
+             */
+            search: string;
+        } & ProductListingFlags),
+    ): CancelablePromise<ProductListingResult> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/search-suggest',
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
     /**
      * Fetch cross-selling groups of a product
      * This route is used to load the cross sellings for a product. A product has several cross selling definitions in which several products are linked. The route returns the cross sellings together with the linked products
@@ -81,16 +127,17 @@ export class ProductShopware {
             },
         });
     }
-
     /**
      * Fetch a single product
      * This route is used to load a single product with the corresponding details. In addition to loading the data, the best variant of the product is determined when a parent id is passed.
      * @param productId Product ID
+     * @param requestBody
      * @returns ProductDetailResponse Product information along with variant groups and options
      * @throws ApiError
      */
     public static readProductDetail(
         productId: string,
+        requestBody?: Criteria,
     ): CancelablePromise<ProductDetailResponse> {
         return __request(OpenAPI, {
             method: 'POST',
@@ -98,12 +145,13 @@ export class ProductShopware {
             path: {
                 'productId': productId,
             },
+            body: requestBody,
+            mediaType: 'application/json',
         });
     }
-
     /**
      * Fetch a list of products
-     * List products that match the given criteria. For performance ressons a limit should always be set.
+     * List products that match the given criteria. For performance reasons a limit should always be set.
      * @param requestBody
      * @returns any Entity search result containing products
      * @throws ApiError
@@ -120,7 +168,6 @@ export class ProductShopware {
             mediaType: 'application/json',
         });
     }
-
     /**
      * Fetch product reviews
      * Perform a filtered search for product reviews.
@@ -145,7 +192,6 @@ export class ProductShopware {
             mediaType: 'application/json',
         });
     }
-
     /**
      * Save a product review
      * Saves a review for a product. Reviews have to be activated in the settings.
@@ -168,15 +214,15 @@ export class ProductShopware {
             /**
              * The title of the review.
              */
-            title: any;
+            title: string;
             /**
              * The content of review.
              */
-            content: any;
+            content: string;
             /**
              * The review rating for the product.
              */
-            points: any;
+            points: number;
         },
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
@@ -189,7 +235,6 @@ export class ProductShopware {
             mediaType: 'application/json',
         });
     }
-
     /**
      * Search for a matching variant by product options.
      * Performs a search for product variants and returns the best matching variant.
@@ -221,53 +266,4 @@ export class ProductShopware {
             mediaType: 'application/json',
         });
     }
-
-    /**
-     * Search for products (suggest)
-     * Can be used to implement search previews or suggestion listings, that don’t require any interaction.
-     * @param requestBody
-     * @returns ProductListingResult Returns a product listing containing all products and additional fields.
-     *
-     * Note: Aggregations, currentFilters and availableSortings are empty in this response. If you need them to display a listing, use the /search route instead.
-     * @throws ApiError
-     */
-    public static searchSuggest(
-        requestBody: ({
-            /**
-             * Using the search parameter, the server performs a text search on all records based on their data model and weighting as defined in the entity definition using the SearchRanking flag.
-             */
-            search: string;
-        } & ProductListingFlags),
-    ): CancelablePromise<ProductListingResult> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/search-suggest',
-            body: requestBody,
-            mediaType: 'application/json',
-        });
-    }
-
-    /**
-     * Search for products
-     * Performs a search for products which can be used to display a product listing.
-     * @param requestBody
-     * @returns ProductListingResult Returns a product listing containing all products and additional fields to display a listing.
-     * @throws ApiError
-     */
-    public static searchPage(
-        requestBody?: ({
-            /**
-             * Using the search parameter, the server performs a text search on all records based on their data model and weighting as defined in the entity definition using the SearchRanking flag.
-             */
-            search: string;
-        } & ProductListingCriteria & ProductListingFlags),
-    ): CancelablePromise<ProductListingResult> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/search',
-            body: requestBody,
-            mediaType: 'application/json',
-        });
-    }
-
 }

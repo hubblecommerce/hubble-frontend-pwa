@@ -2,12 +2,11 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 /**
  * Added since version: 6.0.0.0
  */
 export type MailTemplateType = {
-    id?: string;
+    id: string;
     name: string;
     technicalName: string;
     customFields?: Record<string, any>;

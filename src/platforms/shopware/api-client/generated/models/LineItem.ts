@@ -2,13 +2,13 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
+import type { LineItemType } from './LineItemType';
 export type LineItem = {
-    id?: string;
+    id: string;
     referencedId?: string;
     label?: string;
     quantity?: number;
-    type?: string;
+    type: LineItemType;
     good?: boolean;
     description?: string;
     removable?: boolean;

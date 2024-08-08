@@ -2,16 +2,14 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { Media } from './Media';
 import type { OrderDeliveryPosition } from './OrderDeliveryPosition';
 import type { OrderLineItemDownload } from './OrderLineItemDownload';
-
 /**
  * Added since version: 6.0.0.0
  */
 export type OrderLineItem = {
-    id?: string;
+    id: string;
     versionId?: string;
     orderId: string;
     orderVersionId?: string;
@@ -39,9 +37,9 @@ export type OrderLineItem = {
     readonly createdAt: string;
     readonly updatedAt?: string;
     cover?: Media;
-    orderDeliveryPositions?: OrderDeliveryPosition;
-    downloads?: OrderLineItemDownload;
+    orderDeliveryPositions?: Array<OrderDeliveryPosition>;
+    downloads?: Array<OrderLineItemDownload>;
     parent?: OrderLineItem;
-    children: OrderLineItem;
+    children: Array<OrderLineItem>;
 };
 

@@ -2,14 +2,12 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { resource } from './resource';
-
 /**
  * Added since version: 6.0.0.0
  */
 export type ProductJsonApi = (resource & {
-    id?: string;
+    id: string;
     versionId?: string;
     parentId?: string;
     parentVersionId?: string;
@@ -24,12 +22,12 @@ export type ProductJsonApi = (resource & {
     cmsPageId?: string;
     cmsPageVersionId?: string;
     productNumber: string;
-    stock: number;
     restockTime?: number;
     active?: boolean;
-    readonly availableStock?: number;
     readonly available?: boolean;
     isCloseout?: boolean;
+    readonly availableStock?: number;
+    stock: number;
     readonly displayGroup?: string;
     manufacturerNumber?: string;
     ean?: string;
@@ -50,6 +48,7 @@ export type ProductJsonApi = (resource & {
     readonly propertyIds?: Array<string>;
     readonly optionIds?: Array<string>;
     readonly streamIds?: Array<string>;
+    readonly tagIds?: Array<string>;
     readonly categoryIds?: Array<string>;
     readonly childCount?: number;
     readonly sales?: number;
@@ -63,7 +62,7 @@ export type ProductJsonApi = (resource & {
     packUnitPlural?: string;
     customFields?: Record<string, any>;
     calculatedPrice?: Record<string, any>;
-    calculatedPrices?: Array<any>;
+    calculatedPrices?: Array<Record<string, any>>;
     /**
      * Runtime field, cannot be used as part of the criteria.
      */
@@ -77,6 +76,214 @@ export type ProductJsonApi = (resource & {
     readonly createdAt: string;
     readonly updatedAt?: string;
     translated?: Record<string, any>;
-    relationships?: any;
+    relationships?: {
+        downloads?: {
+            links?: {
+                related?: string;
+            };
+            data?: Array<{
+                type?: string;
+                id?: string;
+            }>;
+        };
+        parent?: {
+            links?: {
+                related?: string;
+            };
+            data?: {
+                type?: string;
+                id?: string;
+            };
+        };
+        children?: {
+            links?: {
+                related?: string;
+            };
+            data?: Array<{
+                type?: string;
+                id?: string;
+            }>;
+        };
+        deliveryTime?: {
+            links?: {
+                related?: string;
+            };
+            data?: {
+                type?: string;
+                id?: string;
+            };
+        };
+        tax?: {
+            links?: {
+                related?: string;
+            };
+            data?: {
+                type?: string;
+                id?: string;
+            };
+        };
+        manufacturer?: {
+            links?: {
+                related?: string;
+            };
+            data?: {
+                type?: string;
+                id?: string;
+            };
+        };
+        unit?: {
+            links?: {
+                related?: string;
+            };
+            data?: {
+                type?: string;
+                id?: string;
+            };
+        };
+        cover?: {
+            links?: {
+                related?: string;
+            };
+            data?: {
+                type?: string;
+                id?: string;
+            };
+        };
+        cmsPage?: {
+            links?: {
+                related?: string;
+            };
+            data?: {
+                type?: string;
+                id?: string;
+            };
+        };
+        canonicalProduct?: {
+            links?: {
+                related?: string;
+            };
+            data?: {
+                type?: string;
+                id?: string;
+            };
+        };
+        media?: {
+            links?: {
+                related?: string;
+            };
+            data?: Array<{
+                type?: string;
+                id?: string;
+            }>;
+        };
+        crossSellings?: {
+            links?: {
+                related?: string;
+            };
+            data?: Array<{
+                type?: string;
+                id?: string;
+            }>;
+        };
+        configuratorSettings?: {
+            links?: {
+                related?: string;
+            };
+            data?: Array<{
+                type?: string;
+                id?: string;
+            }>;
+        };
+        productReviews?: {
+            links?: {
+                related?: string;
+            };
+            data?: Array<{
+                type?: string;
+                id?: string;
+            }>;
+        };
+        mainCategories?: {
+            links?: {
+                related?: string;
+            };
+            data?: Array<{
+                type?: string;
+                id?: string;
+            }>;
+        };
+        seoUrls?: {
+            links?: {
+                related?: string;
+            };
+            data?: Array<{
+                type?: string;
+                id?: string;
+            }>;
+        };
+        options?: {
+            links?: {
+                related?: string;
+            };
+            data?: Array<{
+                type?: string;
+                id?: string;
+            }>;
+        };
+        properties?: {
+            links?: {
+                related?: string;
+            };
+            data?: Array<{
+                type?: string;
+                id?: string;
+            }>;
+        };
+        categories?: {
+            links?: {
+                related?: string;
+            };
+            data?: Array<{
+                type?: string;
+                id?: string;
+            }>;
+        };
+        streams?: {
+            links?: {
+                related?: string;
+            };
+            data?: Array<{
+                type?: string;
+                id?: string;
+            }>;
+        };
+        categoriesRo?: {
+            links?: {
+                related?: string;
+            };
+            data?: Array<{
+                type?: string;
+                id?: string;
+            }>;
+        };
+        tags?: {
+            links?: {
+                related?: string;
+            };
+            data?: Array<{
+                type?: string;
+                id?: string;
+            }>;
+        };
+        seoCategory?: {
+            links?: {
+                related?: string;
+            };
+            data?: {
+                type?: string;
+                id?: string;
+            };
+        };
+    };
 });
 

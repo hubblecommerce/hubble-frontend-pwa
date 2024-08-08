@@ -4,13 +4,10 @@
 /* eslint-disable */
 import type { Criteria } from '../models/Criteria';
 import type { PaymentMethod } from '../models/PaymentMethod';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-
 export class PaymentMethodShopware {
-
     /**
      * Loads all available payment methods
      * @param requestBody
@@ -42,5 +39,4 @@ export class PaymentMethodShopware {
             mediaType: 'application/json',
         });
     }
-
 }

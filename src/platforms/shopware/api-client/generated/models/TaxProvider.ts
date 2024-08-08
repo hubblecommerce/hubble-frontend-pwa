@@ -2,12 +2,11 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 /**
  * Added since version: 6.5.0.0
  */
 export type TaxProvider = {
-    id?: string;
+    id: string;
     active?: boolean;
     name: string;
     priority: number;

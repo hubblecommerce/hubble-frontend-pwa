@@ -4,13 +4,10 @@
 /* eslint-disable */
 import type { Criteria } from '../models/Criteria';
 import type { ShippingMethod } from '../models/ShippingMethod';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-
 export class PaymentShippingShopware {
-
     /**
      * Initiate a payment for an order
      * This generic endpoint is should be called to initiate a payment flow after an order has been created. The details of the payment flow can differ depending on the payment integration and might require calling additional operations or the setup of webhooks.
@@ -35,7 +32,7 @@ export class PaymentShippingShopware {
              */
             errorUrl?: string;
         },
-    ): CancelablePromise<any> {
+    ): CancelablePromise<Record<string, any>> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/handle-payment',
@@ -43,7 +40,6 @@ export class PaymentShippingShopware {
             mediaType: 'application/json',
         });
     }
-
     /**
      * Fetch shipping methods
      * Perform a filtered search for shipping methods.
@@ -76,5 +72,4 @@ export class PaymentShippingShopware {
             mediaType: 'application/json',
         });
     }
-
 }

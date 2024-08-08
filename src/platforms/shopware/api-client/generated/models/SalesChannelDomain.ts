@@ -2,16 +2,14 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { Currency } from './Currency';
 import type { Language } from './Language';
 import type { SalesChannel } from './SalesChannel';
-
 /**
  * Added since version: 6.0.0.0
  */
 export type SalesChannelDomain = {
-    id?: string;
+    id: string;
     url: string;
     salesChannelId: string;
     languageId: string;

@@ -4,7 +4,6 @@ import { hblMapMedia, hblMapOrderLineItemDownloads } from '#imports'
 
 export function hblMapOrderLineItem (swOrderLineItem: SwOrderLineItem): HblOrderLineItem {
     return {
-        // @ts-ignore
         id: swOrderLineItem.id,
         name: swOrderLineItem.label,
         // @ts-ignore

@@ -2,12 +2,11 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 /**
  * Added since version: 6.1.0.0
  */
 export type MainCategory = {
-    id?: string;
+    id: string;
     productId: string;
     productVersionId?: string;
     categoryId: string;

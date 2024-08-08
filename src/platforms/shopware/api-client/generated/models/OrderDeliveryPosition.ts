@@ -2,12 +2,11 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 /**
  * Added since version: 6.0.0.0
  */
 export type OrderDeliveryPosition = {
-    id?: string;
+    id: string;
     versionId?: string;
     orderDeliveryId: string;
     orderDeliveryVersionId?: string;

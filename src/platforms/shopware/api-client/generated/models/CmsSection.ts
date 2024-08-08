@@ -2,11 +2,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { CmsBlock } from './CmsBlock';
 import type { CmsPage } from './CmsPage';
 import type { Media } from './Media';
-
 /**
  * Added since version: 6.0.0.0
  */
@@ -33,6 +31,7 @@ export type CmsSection = {
     readonly updatedAt?: string;
     page?: CmsPage;
     backgroundMedia?: Media;
-    blocks?: CmsBlock[];
+    blocks: Array<CmsBlock>;
+    apiAlias: 'cms_section';
 };
 

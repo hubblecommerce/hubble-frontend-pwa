@@ -2,10 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { LineItem } from './LineItem';
 import type { Struct } from './Struct';
-
 export type Cart = (Struct & {
     /**
      * Name of the cart - for example `guest-cart`

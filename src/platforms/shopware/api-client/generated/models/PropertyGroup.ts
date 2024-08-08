@@ -2,14 +2,12 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { PropertyGroupOption } from './PropertyGroupOption';
-
 /**
  * Added since version: 6.0.0.0
  */
 export type PropertyGroup = {
-    id?: string;
+    id: string;
     name: string;
     description?: string;
     displayType: string;
@@ -21,6 +19,6 @@ export type PropertyGroup = {
     readonly createdAt: string;
     readonly updatedAt?: string;
     translated?: Record<string, any>;
-    options?: PropertyGroupOption;
+    options?: Array<PropertyGroupOption>;
 };
 

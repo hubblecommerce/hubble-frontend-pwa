@@ -20,8 +20,8 @@ export type OpenAPIConfig = {
 };
 
 export const OpenAPI: OpenAPIConfig = {
-    BASE: 'http://localhost/store-api',
-    VERSION: '6.5.3.3',
+    BASE: 'https://sw661-playground.dmf-kunden.com/store-api',
+    VERSION: '6.6.1.2',
     WITH_CREDENTIALS: false,
     CREDENTIALS: 'include',
     TOKEN: undefined,

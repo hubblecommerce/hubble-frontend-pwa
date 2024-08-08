@@ -2,14 +2,12 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { resource } from './resource';
-
 /**
  * Added since version: 6.0.0.0
  */
 export type PaymentMethodJsonApi = (resource & {
-    id?: string;
+    id: string;
     name: string;
     readonly distinguishableName?: string;
     description?: string;
@@ -37,10 +35,25 @@ export type PaymentMethodJsonApi = (resource & {
     /**
      * Runtime field, cannot be used as part of the criteria.
      */
+    readonly recurring?: boolean;
+    /**
+     * Runtime field, cannot be used as part of the criteria.
+     */
     shortName?: string;
+    technicalName?: string;
     readonly createdAt: string;
     readonly updatedAt?: string;
     translated?: Record<string, any>;
-    relationships?: any;
+    relationships?: {
+        media?: {
+            links?: {
+                related?: string;
+            };
+            data?: {
+                type?: string;
+                id?: string;
+            };
+        };
+    };
 });
 

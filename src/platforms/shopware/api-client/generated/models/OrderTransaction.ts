@@ -2,16 +2,14 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { OrderTransactionCapture } from './OrderTransactionCapture';
 import type { PaymentMethod } from './PaymentMethod';
 import type { StateMachineState } from './StateMachineState';
-
 /**
  * Added since version: 6.0.0.0
  */
 export type OrderTransaction = {
-    id?: string;
+    id: string;
     versionId?: string;
     orderId: string;
     orderVersionId?: string;
@@ -38,6 +36,6 @@ export type OrderTransaction = {
     readonly updatedAt?: string;
     stateMachineState?: StateMachineState;
     paymentMethod?: PaymentMethod;
-    captures?: OrderTransactionCapture;
+    captures?: Array<OrderTransactionCapture>;
 };
 

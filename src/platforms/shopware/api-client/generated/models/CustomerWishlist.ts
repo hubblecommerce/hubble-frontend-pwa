@@ -2,12 +2,11 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 /**
  * Added since version: 6.3.4.0
  */
 export type CustomerWishlist = {
-    id?: string;
+    id: string;
     customerId: string;
     customFields?: Record<string, any>;
     readonly createdAt: string;

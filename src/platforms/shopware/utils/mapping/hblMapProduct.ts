@@ -5,12 +5,10 @@ import { hblMapMedia, hblMapManufacturer, hblMapPrice, hblMapProductMedia, hblMa
 export function hblMapProduct (swProduct: SwProduct, swProductConfigurator?: PropertyGroup[]): HblProduct {
     let firstUrl = null
     if (swProduct?.seoUrls != null) {
-        // @ts-ignore
         firstUrl = swProduct.seoUrls[0]
     }
 
     let url = firstUrl?.pathInfo
-    const pathInfo = firstUrl?.pathInfo
     if (firstUrl?.isCanonical) {
         url = firstUrl?.seoPathInfo
     }
@@ -46,8 +44,6 @@ export function hblMapProduct (swProduct: SwProduct, swProductConfigurator?: Pro
         ? swProduct?.calculatedPrices[0]
         : swProduct?.calculatedPrice
 
-    // @TODO: platform need to provide variantListingConfig
-    // @ts-ignore
     const _displayParent = swProduct?.variantListingConfig?.displayParent && swProduct?.parentId === null
 
     // @TODO: platform need to provide cheapestPrice
@@ -56,7 +52,9 @@ export function hblMapProduct (swProduct: SwProduct, swProductConfigurator?: Pro
         swProduct?.cheapestPrice?.hasRange &&
         // @ts-ignore
         !!swProduct?.cheapestPrice?.parentId &&
+        // @ts-ignore
         _real?.unitPrice !== _cheapest?.unitPrice &&
+        // @ts-ignore
         _cheapest?.unitPrice
 
     const displayFrom = swProduct?.calculatedPrices != null && (swProduct?.calculatedPrices?.length > 1 || !!(_displayParent && displayFromVariants))
@@ -101,7 +99,6 @@ export function hblMapProduct (swProduct: SwProduct, swProductConfigurator?: Pro
         name: swProduct.translated?.name,
         description: swProduct.translated?.description,
         sku: swProduct.productNumber,
-        pathInfo,
         url,
         // @ts-ignore
         active: swProduct.available,

@@ -8,7 +8,6 @@ export function hblMapSections (swSections: CmsSection[]): HblSection[] {
             type: section.type,
             name: section.name,
             sizingMode: section.sizingMode != null ? section.sizingMode : 'boxed',
-            // @ts-ignore
             blocks: hblMapBlocks(section.blocks),
             ...(section.cssClass != null && { cssClass: section.cssClass }),
             ...(section.backgroundColor != null && { backgroundColor: section.backgroundColor }),

@@ -4,13 +4,10 @@
 /* eslint-disable */
 import type { Criteria } from '../models/Criteria';
 import type { CustomerAddress } from '../models/CustomerAddress';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-
 export class AddressShopware {
-
     /**
      * Delete an address of a customer
      * Delete an address of customer.
@@ -38,7 +35,6 @@ export class AddressShopware {
             },
         });
     }
-
     /**
      * Modify an address of a customer
      * Modifies an existing address of a customer.
@@ -61,7 +57,6 @@ export class AddressShopware {
             mediaType: 'application/json',
         });
     }
-
     /**
      * Fetch addresses of a customer
      * Lists all addresses of the current customer and allows filtering them based on a criteria.
@@ -79,7 +74,6 @@ export class AddressShopware {
             mediaType: 'application/json',
         });
     }
-
     /**
      * Change a customer's default shipping address
      * Updates the default (preselected) shipping addresses of a customer.
@@ -98,7 +92,6 @@ export class AddressShopware {
             },
         });
     }
-
     /**
      * Change a customer's default billing address
      * Updates the default (preselected) billing addresses of a customer.
@@ -117,7 +110,6 @@ export class AddressShopware {
             },
         });
     }
-
     /**
      * Create a new address for a customer
      * Creates a new address for a customer.
@@ -135,5 +127,4 @@ export class AddressShopware {
             mediaType: 'application/json',
         });
     }
-
 }

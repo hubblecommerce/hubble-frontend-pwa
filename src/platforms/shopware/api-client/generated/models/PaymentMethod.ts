@@ -2,14 +2,12 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { Media } from './Media';
-
 /**
  * Added since version: 6.0.0.0
  */
 export type PaymentMethod = {
-    id?: string;
+    id: string;
     name: string;
     readonly distinguishableName?: string;
     description?: string;
@@ -37,7 +35,12 @@ export type PaymentMethod = {
     /**
      * Runtime field, cannot be used as part of the criteria.
      */
+    readonly recurring?: boolean;
+    /**
+     * Runtime field, cannot be used as part of the criteria.
+     */
     shortName?: string;
+    technicalName?: string;
     readonly createdAt: string;
     readonly updatedAt?: string;
     translated?: Record<string, any>;

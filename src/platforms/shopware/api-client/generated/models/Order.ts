@@ -2,7 +2,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { Currency } from './Currency';
 import type { Document } from './Document';
 import type { Language } from './Language';
@@ -13,12 +12,11 @@ import type { OrderLineItem } from './OrderLineItem';
 import type { OrderTransaction } from './OrderTransaction';
 import type { StateMachineState } from './StateMachineState';
 import type { Tag } from './Tag';
-
 /**
  * Added since version: 6.0.0.0
  */
 export type Order = {
-    id?: string;
+    id: string;
     versionId?: string;
     orderNumber?: string;
     billingAddressId: string;
@@ -27,7 +25,7 @@ export type Order = {
     languageId: string;
     salesChannelId: string;
     orderDateTime: string;
-    readonly orderDate?: string;
+    readonly orderDate: string;
     price?: {
         netPrice: number;
         totalPrice: number;
@@ -63,21 +61,22 @@ export type Order = {
     affiliateCode?: string;
     campaignCode?: string;
     customerComment?: string;
+    source?: string;
     customFields?: Record<string, any>;
     createdById?: string;
     updatedById?: string;
     readonly createdAt: string;
     readonly updatedAt?: string;
-    stateMachineState?: StateMachineState;
+    stateMachineState: StateMachineState;
     orderCustomer?: OrderCustomer;
     currency?: Currency;
     language?: Language;
-    addresses?: OrderAddress;
+    addresses?: Array<OrderAddress>;
     billingAddress?: OrderAddress;
-    deliveries?: OrderDelivery;
-    lineItems?: OrderLineItem;
-    transactions?: OrderTransaction;
-    documents?: Document;
-    tags?: Tag;
+    deliveries?: Array<OrderDelivery>;
+    lineItems?: Array<OrderLineItem>;
+    transactions?: Array<OrderTransaction>;
+    documents: Array<Document>;
+    tags?: Array<Tag>;
 };
 

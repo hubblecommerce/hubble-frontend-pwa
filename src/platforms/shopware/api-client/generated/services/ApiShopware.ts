@@ -5,9 +5,7 @@
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-
 export class ApiShopware {
-
     /**
      * Access point for different api logics which are provided by apps over script hooks
      * @param hook Dynamic hook which used to build the hook name
@@ -25,5 +23,4 @@ export class ApiShopware {
             },
         });
     }
-
 }

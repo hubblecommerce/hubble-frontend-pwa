@@ -4,7 +4,6 @@ import { hblMapSortings, hblMapCurrentFilters, hblMapFilters, hblMapProducts } f
 
 export function hblMapProductListing (swProductListing: ProductListingResult): HblProductListing {
     return {
-        // @ts-ignore
         products: hblMapProducts(swProductListing.elements),
         currentSorting: swProductListing.sorting,
         availableSorting: hblMapSortings(swProductListing.availableSortings),

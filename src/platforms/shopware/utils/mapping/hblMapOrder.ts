@@ -4,7 +4,6 @@ import { hblMapOrderLineItems, hblMapCustomerAddress, hblMapShippingMethod, hblM
 
 export function hblMapOrder (swOrder: SwOrder): HblOrder {
     return {
-        // @ts-ignore
         id: swOrder.id,
         // @ts-ignore
         orderNumber: swOrder.orderNumber,

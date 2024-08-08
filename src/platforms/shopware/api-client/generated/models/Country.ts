@@ -2,14 +2,12 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { CountryState } from './CountryState';
-
 /**
  * Added since version: 6.0.0.0
  */
 export type Country = {
-    id?: string;
+    id: string;
     name: string;
     iso?: string;
     position?: number;
@@ -41,6 +39,6 @@ export type Country = {
     readonly createdAt: string;
     readonly updatedAt?: string;
     translated?: Record<string, any>;
-    states?: CountryState;
+    states?: Array<CountryState>;
 };
 

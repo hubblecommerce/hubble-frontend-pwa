@@ -2,16 +2,14 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { Country } from './Country';
 import type { CountryState } from './CountryState';
 import type { Salutation } from './Salutation';
-
 /**
  * Added since version: 6.0.0.0
  */
 export type OrderAddress = {
-    id?: string;
+    id: string;
     versionId?: string;
     countryId: string;
     countryStateId?: string;

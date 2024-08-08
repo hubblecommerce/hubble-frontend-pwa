@@ -2,27 +2,25 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { AccountNewsletterRecipientResult } from '../models/AccountNewsletterRecipientResult';
 import type { Criteria } from '../models/Criteria';
 import type { Customer } from '../models/Customer';
 import type { Struct } from '../models/Struct';
 import type { SuccessResponse } from '../models/SuccessResponse';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-
 export class ProfileShopware {
-
     /**
      * Fetch newsletter recipients
      * Perform a filtered search for newsletter recipients.
      * @param requestBody
-     * @returns any
+     * @returns AccountNewsletterRecipientResult
      * @throws ApiError
      */
     public static readNewsletterRecipient(
         requestBody?: Criteria,
-    ): CancelablePromise<any> {
+    ): CancelablePromise<Array<AccountNewsletterRecipientResult>> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/account/newsletter-recipient',
@@ -30,7 +28,6 @@ export class ProfileShopware {
             mediaType: 'application/json',
         });
     }
-
     /**
      * Change the customer's information
      * Make changes to a customer's account, like changing their name, salutation or title.
@@ -81,7 +78,6 @@ export class ProfileShopware {
             mediaType: 'application/json',
         });
     }
-
     /**
      * Change the customer's email address
      * Changes a customer's email address to a new email address, using their current password as a validation.
@@ -112,7 +108,6 @@ export class ProfileShopware {
             mediaType: 'application/json',
         });
     }
-
     /**
      * Change the customer's language.
      * Changes the language of the logged in customer
@@ -135,7 +130,6 @@ export class ProfileShopware {
             mediaType: 'application/json',
         });
     }
-
     /**
      * Change the customer's password
      * Changes a customer's password using their current password as a validation.
@@ -166,7 +160,6 @@ export class ProfileShopware {
             mediaType: 'application/json',
         });
     }
-
     /**
      * Change the customer's default payment method
      * Changes a customer's default (preselected) payment method.
@@ -185,7 +178,6 @@ export class ProfileShopware {
             },
         });
     }
-
     /**
      * Checks if the customer recovery entry for a given hash is expired.
      * This can be used to validate a provided hash has a valid and not expired customer recovery hash.
@@ -208,7 +200,6 @@ export class ProfileShopware {
             mediaType: 'application/json',
         });
     }
-
     /**
      * Get information about current customer
      * Returns information about the current customer.
@@ -226,7 +217,6 @@ export class ProfileShopware {
             mediaType: 'application/json',
         });
     }
-
     /**
      * Delete the customer's profile
      * Deletes a customer profile along with their addresses, wishlists and associated data. Created orders and their payment/shipping information (addresses) and reviews are not deleted.
@@ -239,7 +229,6 @@ export class ProfileShopware {
             url: '/account/customer',
         });
     }
-
     /**
      * Reset a password with recovery credentials
      * This operation is Step 2 of the password reset flow. It is required to conduct Step 1 "Send a password recovery mail" in order to obtain the required credentials for this step.Resets a customer's password using credentials from a password recovery mail as a validation.
@@ -270,7 +259,6 @@ export class ProfileShopware {
             mediaType: 'application/json',
         });
     }
-
     /**
      * Send a password recovery mail
      * This operation is Step 1 of the password reset flow. Make sure to implement Step 2 "Reset password with recovery credentials" in order to allow for the complete flow in your application. Sends a recovery mail containing a link with credentials that allows a customer to reset their password.
@@ -299,5 +287,4 @@ export class ProfileShopware {
             mediaType: 'application/json',
         });
     }
-
 }

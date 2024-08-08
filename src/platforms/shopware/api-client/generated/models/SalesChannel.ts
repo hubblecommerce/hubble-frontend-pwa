@@ -2,7 +2,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { Category } from './Category';
 import type { Country } from './Country';
 import type { Currency } from './Currency';
@@ -10,12 +9,11 @@ import type { Language } from './Language';
 import type { PaymentMethod } from './PaymentMethod';
 import type { SalesChannelDomain } from './SalesChannelDomain';
 import type { ShippingMethod } from './ShippingMethod';
-
 /**
  * Added since version: 6.0.0.0
  */
 export type SalesChannel = {
-    id?: string;
+    id: string;
     languageId: string;
     customerGroupId: string;
     currencyId: string;
@@ -47,7 +45,7 @@ export type SalesChannel = {
     paymentMethod?: PaymentMethod;
     shippingMethod?: ShippingMethod;
     country?: Country;
-    domains?: SalesChannelDomain;
+    domains?: Array<SalesChannelDomain>;
     navigationCategory?: Category;
     footerCategory?: Category;
     serviceCategory?: Category;

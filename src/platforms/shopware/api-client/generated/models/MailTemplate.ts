@@ -2,10 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { MailTemplateMedia } from './MailTemplateMedia';
 import type { MailTemplateType } from './MailTemplateType';
-
 /**
  * Added since version: 6.0.0.0
  */
@@ -20,6 +18,6 @@ export type MailTemplate = {
     readonly updatedAt?: string;
     translated?: Record<string, any>;
     mailTemplateType?: MailTemplateType;
-    media?: MailTemplateMedia;
+    media?: Array<MailTemplateMedia>;
 };
 

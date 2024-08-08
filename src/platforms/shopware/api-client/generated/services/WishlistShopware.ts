@@ -5,13 +5,10 @@
 import type { Criteria } from '../models/Criteria';
 import type { SuccessResponse } from '../models/SuccessResponse';
 import type { WishlistLoadRouteResponse } from '../models/WishlistLoadRouteResponse';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-
 export class WishlistShopware {
-
     /**
      * Add a product to a wishlist
      * Adds a product to a customers wishlist.
@@ -35,7 +32,6 @@ export class WishlistShopware {
             },
         });
     }
-
     /**
      * Fetch a wishlist
      * Fetch a customer's wishlist. Products on the wishlist can be filtered using a criteria object.
@@ -58,7 +54,6 @@ export class WishlistShopware {
             mediaType: 'application/json',
         });
     }
-
     /**
      * Create a wishlist for a customer
      * Create a new wishlist for a logged in customer or extend the existing wishlist given a set of products.
@@ -87,7 +82,6 @@ export class WishlistShopware {
             mediaType: 'application/json',
         });
     }
-
     /**
      * Remove a product from a wishlist
      * Removes a product from a customer's wishlist.
@@ -114,5 +108,4 @@ export class WishlistShopware {
             },
         });
     }
-
 }

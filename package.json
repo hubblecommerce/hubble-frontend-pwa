@@ -1,6 +1,6 @@
 {
     "name": "@hubblecommerce/hubble",
-    "version": "2.7.0",
+    "version": "2.8.0",
     "description": "PWA for eCommerce frameworks based on NuxtJs",
     "author": "hubble commerce",
     "license": "MIT",
@@ -49,7 +49,7 @@
         "coverage": "vitest run --coverage",
         "docs:dev": "vuepress dev docs",
         "docs:build": "vuepress build docs",
-        "sw:dev:generate-api": "node bin/hubble-cli.js dev:sw open-api-generate && git apply src/platforms/shopware/api-client/*.patch --verbose",
+        "sw:dev:generate-api": "node bin/hubble-cli.js dev:sw open-api-generate",
         "sw:dev:patch-api": "git format-patch -1 $COMMIT -o src/platforms/shopware/api-client/",
         "sw:install-plugins": "node bin/hubble-cli.js dev:sw sw-plugins-assets",
         "sw:config-plugins": "node bin/hubble-cli.js dev:sw sw-plugins-config",
@@ -79,8 +79,8 @@
         "portal-vue": "^3.0.0",
         "ufo": "^1.3.0",
         "untyped": "^1.2.2",
-        "unzipper": "^0.10.11",
-        "vitest": "^1.1.1"
+        "unzipper": "^0.12.3",
+        "vitest": "^2.0.5"
     },
     "devDependencies": {
         "@faker-js/faker": "^8.0.2",
@@ -93,10 +93,10 @@
         "eslint": "^8.44.0",
         "eslint-plugin-import": "^2.29.1",
         "eslint-plugin-vue": "^9.9.0",
-        "husky": "^8.0.3",
+        "husky": "^9.1.4",
         "lint-staged": "^15.2.0",
-        "nuxt": "^3.12.2",
-        "openapi-typescript-codegen": "^0.26.0",
+        "nuxt": "^3.12.4",
+        "openapi-typescript-codegen": "^0.29.0",
         "rollup-plugin-copy": "^3.4.0",
         "start-server-and-test": "^2.0.0",
         "typescript": "^5.3.3",

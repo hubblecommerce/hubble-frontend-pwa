@@ -2,16 +2,16 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { OrderLineItem } from './OrderLineItem';
 import type { OrderTransactionCaptureRefund } from './OrderTransactionCaptureRefund';
-
 /**
  * Added since version: 6.4.12.0
  */
 export type OrderTransactionCaptureRefundPosition = {
-    id?: string;
+    id: string;
+    versionId?: string;
     refundId: string;
+    refundVersionId?: string;
     orderLineItemId: string;
     orderLineItemVersionId?: string;
     externalReference?: string;
