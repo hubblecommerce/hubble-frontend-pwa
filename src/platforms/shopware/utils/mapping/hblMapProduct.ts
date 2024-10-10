@@ -9,6 +9,7 @@ export function hblMapProduct (swProduct: SwProduct, swProductConfigurator?: Pro
     }
 
     let url = firstUrl?.pathInfo
+    const pathInfo = url
     if (firstUrl?.isCanonical) {
         url = firstUrl?.seoPathInfo
     }
@@ -113,6 +114,7 @@ export function hblMapProduct (swProduct: SwProduct, swProductConfigurator?: Pro
         manufacturer: swProduct.manufacturer != null ? hblMapManufacturer(swProduct.manufacturer) : null,
         metaTitle: swProduct.translated?.metaTitle,
         metaDescription: swProduct.translated?.metaDescription,
+        pathInfo,
         ...(variants != null && { variants }),
         ...(defaultOptions != null && { defaultOptions }),
         ...(parentId != null && { parentId }),

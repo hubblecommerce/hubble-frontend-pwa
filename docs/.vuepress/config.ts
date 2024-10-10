@@ -1,9 +1,12 @@
-import { defineUserConfig, defaultTheme } from 'vuepress'
+import { viteBundler } from '@vuepress/bundler-vite'
+import { defaultTheme } from '@vuepress/theme-default'
+import { defineUserConfig } from 'vuepress'
 
 export default defineUserConfig({
     lang: 'en-US',
     title: 'hubble PWA Docs',
     description: 'Developer Documentation for hubble PWA',
+    bundler: viteBundler(),
     theme: defaultTheme({
         contributors: false,
         lastUpdated: false,
@@ -14,6 +17,7 @@ export default defineUserConfig({
             { text: 'Github', link: 'https://github.com/hubblecommerce/hubble-frontend-pwa/tree/hubble-next' },
         ],
         sidebar: {
+            '/': [],
             '/pwa/': [
                 {
                     text: 'What is hubble PWA?',

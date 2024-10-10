@@ -1,6 +1,6 @@
 {
     "name": "@hubblecommerce/hubble",
-    "version": "2.9.0",
+    "version": "2.10.0",
     "description": "PWA for eCommerce frameworks based on NuxtJs",
     "author": "hubble commerce",
     "license": "MIT",
@@ -66,10 +66,12 @@
         "@nuxt/kit": "^3.2.3",
         "@nuxtjs/color-mode": "^3.2.0",
         "@nuxtjs/i18n": "^8.2.0",
-        "@nuxtjs/tailwindcss": "^6.4.1",
         "@pinia/nuxt": "^0.5.1",
+        "@vuepress/bundler-vite": "^2.0.0-rc.18",
+        "@vuepress/theme-default": "^2.0.0-rc.54",
         "@vueuse/core": "^11.0.3",
         "@vueuse/nuxt": "^11.0.3",
+        "autoprefixer": "^10.4.20",
         "csvtojson": "^2.0.10",
         "daisyui": "^4.7.3",
         "fs-extra": "^11.1.0",
@@ -77,6 +79,8 @@
         "lmify": "^0.3.0",
         "mitt": "^3.0.0",
         "portal-vue": "^3.0.0",
+        "postcss": "^8.4.47",
+        "tailwindcss": "^3.4.13",
         "ufo": "^1.3.0",
         "untyped": "^1.2.2",
         "unzipper": "^0.12.3",
@@ -95,12 +99,12 @@
         "eslint-plugin-vue": "^9.9.0",
         "husky": "^9.1.4",
         "lint-staged": "^15.2.10",
-        "nuxt": "^3.13.0",
+        "nuxt": "^3.13.2",
         "openapi-typescript-codegen": "^0.29.0",
         "rollup-plugin-copy": "^3.4.0",
         "start-server-and-test": "^2.0.0",
         "typescript": "^5.3.3",
         "vite-plugin-eslint": "^1.8.1",
-        "vuepress": "2.0.0-beta.68"
+        "vuepress": "^2.0.0-rc.18"
     }
 }

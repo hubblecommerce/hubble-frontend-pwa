@@ -1,17 +1,19 @@
 :root {
   // brand colors
-  --c-brand: #A20158;
-  --c-brand-light: #c0026b;
+  --vp-c-accent: #A20158;
+  --vp-c-accent-bg: #c0026b;
+  --vp-c-accent-hover: #A20158;
 
-  --c-tip: #A20158;
+  --vp-c-acc: #A20158;
 }
 
-html.dark {
+[data-theme=dark] {
   // brand colors darkmode
-  --c-brand: #d00171;
-  --c-brand-light: #f60189;
+  --vp-c-accent: #d00171;
+  --vp-c-accent-bg: #f60189;
+  --vp-c-accent-hover: #d00171;
 
-  --c-tip: #d00171;
+  --vp-c-acc: #d00171;
 }
 
 // Handle darkmode logo inside contents
@@ -23,7 +25,7 @@ html.dark {
   display: none;
 }
 
-html.dark {
+[data-theme=dark] {
   .logo-bright {
     display: none;
   }
@@ -39,4 +41,8 @@ html.dark {
 
 .contains-task-list li {
   list-style-type: none;
+}
+
+.vp-page-nav .route-link {
+  border: none;
 }

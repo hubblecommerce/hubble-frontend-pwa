@@ -265,11 +265,6 @@ export default defineNuxtModule<ModuleOptions>({
             nuxt.options.vite.optimizeDeps?.exclude?.push('@hubblecommerce/hubble')
         }
 
-        // Add custom error page
-        // nuxt.hook('app:resolve', (app) => {
-        //     app.errorComponent = resolve(join(targetDir, 'components/misc/MiscError.vue'))
-        // })
-
         // Performance: Remove dynamic import prefetching
         nuxt.hook('build:manifest', (manifest) => {
             for (const key in manifest) {
@@ -280,9 +275,16 @@ export default defineNuxtModule<ModuleOptions>({
         /*
          * Theming
          */
-        await installModule('@nuxtjs/tailwindcss', {
-            configPath: join(targetDir, 'tailwind.config.ts')
-        })
+        // Set Standard installation guide: https://tailwindcss.com/docs/guides/nuxtjs as default
+        // can be overridden via nuxt.config
+        nuxt.options.css.push(resolve(join(targetDir, 'assets/css/tailwind.css')))
+        const tailwindPostCSSPlugins = {
+            tailwindcss: {
+                config: resolve(join(targetDir, 'tailwind.config.ts'))
+            },
+            autoprefixer: {}
+        }
+        nuxt.options.postcss.plugins = { ...tailwindPostCSSPlugins, ...nuxt.options.postcss.plugins }
 
         await installModule('@nuxtjs/color-mode', {
             preference: 'system', // default theme
