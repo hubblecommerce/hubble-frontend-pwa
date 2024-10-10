@@ -68,6 +68,8 @@
         "@nuxtjs/i18n": "^8.2.0",
         "@nuxtjs/tailwindcss": "^6.4.1",
         "@pinia/nuxt": "^0.5.1",
+        "@vuepress/bundler-vite": "^2.0.0-rc.18",
+        "@vuepress/theme-default": "^2.0.0-rc.54",
         "@vueuse/core": "^11.0.3",
         "@vueuse/nuxt": "^11.0.3",
         "csvtojson": "^2.0.10",
@@ -101,6 +103,6 @@
         "start-server-and-test": "^2.0.0",
         "typescript": "^5.3.3",
         "vite-plugin-eslint": "^1.8.1",
-        "vuepress": "2.0.0-beta.68"
+        "vuepress": "^2.0.0-rc.18"
     }
 }
