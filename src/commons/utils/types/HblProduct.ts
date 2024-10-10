@@ -37,6 +37,7 @@ export interface HblProduct {
     name: string,
     description?: string,
     sku: string,
+    pathInfo: string,
     url: string,
     media?: HblMedia[] | HblMedia,
     active: boolean,
