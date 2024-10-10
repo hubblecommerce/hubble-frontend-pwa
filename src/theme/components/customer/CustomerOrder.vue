@@ -21,7 +21,7 @@
                 {{ t('customer.order.shippingMethod') }}
             </div>
             <div>
-                <div>{{ order.shippingMethod.name }} - {{ formatPrice(order.shippingMethod.price) }}</div>
+                <div>{{ order.shippingMethod.name }}</div>
                 <div>{{ t('customer.order.deliveryTime') }}: {{ order.shippingMethod.deliveryTime }}</div>
             </div>
         </div>

@@ -23,6 +23,7 @@ export function hblMapOrder (swOrder: SwOrder): HblOrder {
         status: swOrder.stateMachineState.translated.name,
         // @ts-ignore
         documents: hblMapOrderDocuments(swOrder.documents),
+        shippingTotal: swOrder.shippingTotal != null ? swOrder.shippingTotal : null,
         // @ts-ignore
         ...(swOrder.deliveries?.length > 0 && { shippingMethod: hblMapShippingMethod(swOrder.deliveries?.[0].shippingMethod) }),
         // @ts-ignore
