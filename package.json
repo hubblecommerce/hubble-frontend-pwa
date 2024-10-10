@@ -1,6 +1,6 @@
 {
     "name": "@hubblecommerce/hubble",
-    "version": "2.9.0",
+    "version": "2.10.0",
     "description": "PWA for eCommerce frameworks based on NuxtJs",
     "author": "hubble commerce",
     "license": "MIT",
@@ -95,7 +95,7 @@
         "eslint-plugin-vue": "^9.9.0",
         "husky": "^9.1.4",
         "lint-staged": "^15.2.10",
-        "nuxt": "^3.13.0",
+        "nuxt": "^3.13.2",
         "openapi-typescript-codegen": "^0.29.0",
         "rollup-plugin-copy": "^3.4.0",
         "start-server-and-test": "^2.0.0",
