@@ -27,5 +27,6 @@ export interface HblOrder {
     status: string,
     documents: HblOrderDocument[],
     shippingAddress?: HblCustomerShippingAddress,
-    shippingMethod?: HblShippingMethod
+    shippingMethod?: HblShippingMethod,
+    shippingTotal: number | null
 }
