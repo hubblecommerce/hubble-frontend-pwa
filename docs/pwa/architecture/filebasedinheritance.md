@@ -35,6 +35,20 @@ cp node_modules/@hubblecommerce/hubble/dist/theme/components/layout/LayoutHeader
 3. customize the file just created
 4. rebuild the application
 
+## File watcher 
+The most important folders and files are watched by default and automatically updated by the HMR. However, new folders
+and files in the project's base directory must first be registered for HMR:
+
+```ts
+// nuxt.config.ts
+hubble: {
+    watchPaths: [
+        'additional-directory-to-watch',
+        'additional-file-to-watch.js'
+    ]
+}
+```
+
 ## .hubble Directory
 Never customize files directly inside .hubble or the changes will be overwritten on next application build. 
 There is no need for this directory to be versioned, so don't forget to add it to your .gitignore. 

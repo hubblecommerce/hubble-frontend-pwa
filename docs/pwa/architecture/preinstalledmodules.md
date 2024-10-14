@@ -6,7 +6,9 @@ These modules are automatically installed and [configured](/pwa/configuration.ht
 ### Theme
 - @heroicons/vue
 - @nuxtjs/color-mode
-- @nuxtjs/tailwindcss
+- tailwindcss
+- postcss
+- autoprefixer
 - daisyui
 - portal-vue
 - sass

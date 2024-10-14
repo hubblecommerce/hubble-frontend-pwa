@@ -70,7 +70,9 @@ export interface ModuleOptions {
     customerCookie: Cookie,
     setCustomerLoggedInHeader: boolean,
     redirectDefaultLanguage: boolean,
-    i18n: i18nModuleOptions
+    i18n: i18nModuleOptions,
+    watchPaths: string[],
+    setTailwindPostcss: boolean
 }
 
 export default defineNuxtModule<ModuleOptions>({
@@ -124,7 +126,22 @@ export default defineNuxtModule<ModuleOptions>({
         },
         setCustomerLoggedInHeader: false,
         redirectDefaultLanguage: false,
-        i18n: {}
+        i18n: {},
+        watchPaths: [
+            'assets',
+            'components',
+            'composables',
+            'i18n',
+            'layouts',
+            'middleware',
+            'modules',
+            'pages',
+            'plugins',
+            'public',
+            'utils',
+            'tailwind.config.ts'
+        ],
+        setTailwindPostcss: true
     },
     async setup (options, nuxt) {
         if (process.env.PLATFORM == null || process.env.PLATFORM === '') {
@@ -278,13 +295,18 @@ export default defineNuxtModule<ModuleOptions>({
         // Set Standard installation guide: https://tailwindcss.com/docs/guides/nuxtjs as default
         // can be overridden via nuxt.config
         nuxt.options.css.push(resolve(join(targetDir, 'assets/css/tailwind.css')))
-        const tailwindPostCSSPlugins = {
-            tailwindcss: {
-                config: resolve(join(targetDir, 'tailwind.config.ts'))
-            },
-            autoprefixer: {}
+
+        if (options?.setTailwindPostcss) {
+            const tailwindPostCSSPlugins = {
+                'postcss-import': {},
+                'tailwindcss/nesting': {},
+                tailwindcss: {
+                    config: resolve(join(targetDir, 'tailwind.config.ts'))
+                },
+                autoprefixer: {}
+            }
+            nuxt.options.postcss.plugins = { ...tailwindPostCSSPlugins, ...nuxt.options.postcss.plugins }
         }
-        nuxt.options.postcss.plugins = { ...tailwindPostCSSPlugins, ...nuxt.options.postcss.plugins }
 
         await installModule('@nuxtjs/color-mode', {
             preference: 'system', // default theme
@@ -308,8 +330,13 @@ export default defineNuxtModule<ModuleOptions>({
                 return resolve(oldPath.replace(path.normalize(nuxt.options.rootDir), targetDir))
             }
 
-            // TODO: Write generic function for watchers
-            watch(nuxt.options.rootDir, { ignoreInitial: true, ignored: excludedDirectories }).on('all', async (event, filePath) => {
+            let watchPaths = options?.watchPaths?.map((path) => {
+                return join(nuxt.options.rootDir, path)
+            })
+            // Filter duplicates of merging defaults with given module options
+            watchPaths = watchPaths.filter((value, index) => watchPaths.indexOf(value) === index)
+
+            watch(watchPaths, { ignoreInitial: true, ignored: excludedDirectories }).on('all', async (event, filePath) => {
                 const newDestination = toTargetPath(filePath)
 
                 if (newDestination === '') {
@@ -320,7 +347,6 @@ export default defineNuxtModule<ModuleOptions>({
                     await copy(filePath, newDestination)
                 }
 
-                // TODO: if deleted file was an override of platform plugin, copy platform plugin file
                 if (event === 'unlink') {
                     const modulePath = filePath.replace(nuxt.options.rootDir, baseDir)
 
