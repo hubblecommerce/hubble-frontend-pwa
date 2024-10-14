@@ -9,7 +9,9 @@ To keep the development process clear, all components of the default theme relat
 approach. That means templating, business logic and styling are capsuled in one file each component.
 
 ## Tailwind CSS + daisyUI
-As a solid base Tailwind CSS is integrated via [@nuxtjs/tailwindcss](https://tailwindcss.nuxtjs.org/).
+As a solid base Tailwind CSS is integrated as a [standard installation](https://tailwindcss.com/docs/guides/nuxtjs).
+The registered postcss plugins can be deactivated with the module option `setTailwindPostcss` set to `false`.
+
 And because we don't like class bloated templates, we decided to use [daisyUI](https://daisyui.com/) a Tailwind CSS 
 component library.
 
