@@ -38,14 +38,11 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useNuxtApp } from '#imports'
+import { useDrawer, useNuxtApp } from '#imports'
 
 const { t } = useI18n()
 const nuxtApp = useNuxtApp()
-
-nuxtApp.hook('page:finish', () => {
-    window.scrollTo(0, 0)
-})
+useDrawer()
 
 onMounted(() => {
     nuxtApp.$hblBus.$emit('viewCheckout')

@@ -38,15 +38,9 @@
 </template>
 
 <script setup lang="ts">
-import { useDrawer, useNuxtApp } from '#imports'
+import { useDrawer } from '#imports'
 
-const nuxtApp = useNuxtApp()
-const { drawerState, drawerContext, toggleDrawer, drawerDirection, closeDrawer } = useDrawer()
-
-nuxtApp.hook('page:finish', () => {
-    window.scrollTo(0, 0)
-    closeDrawer()
-})
+const { drawerState, drawerContext, toggleDrawer, drawerDirection } = useDrawer()
 </script>
 
 <style lang="postcss">
