@@ -40,8 +40,7 @@
         "dev:build:analyze": "nuxi analyze playground",
         "dev:prepare": "rm -rf ./playground/.hubble && nuxt-module-build --stub && nuxi prepare playground && husky",
         "test:integration": "rm -rf __tests__/module/fixture/.hubble && nuxt-module-build --stub && nuxi prepare __tests__/module/fixture && vitest",
-        "lint": "eslint src --ext .ts,.js,.vue",
-        "lint:fix": "eslint src --fix --ext .ts,.js,.vue",
+        "lint": "eslint .",
         "test:e2e": "start-server-and-test test:prepare:e2e http://localhost:3000 test:cypress:run",
         "test:prepare:e2e": "nuxt-module-build && nuxi build __tests__/module/fixture && node __tests__/module/fixture/.output/server/index.mjs",
         "test:cypress:run": "cypress run",
@@ -63,6 +62,7 @@
     "dependencies": {
         "@heroicons/vue": "^2.0.16",
         "@json2csv/node": "^7.0.1",
+        "@nuxt/eslint-config": "^0.6.1",
         "@nuxt/kit": "^3.2.3",
         "@nuxtjs/color-mode": "^3.2.0",
         "@nuxtjs/i18n": "^8.2.0",
@@ -74,6 +74,7 @@
         "autoprefixer": "^10.4.20",
         "csvtojson": "^2.0.10",
         "daisyui": "^4.7.3",
+        "eslint": "^9.14.0",
         "fs-extra": "^11.1.0",
         "globby": "^14.0.0",
         "lmify": "^0.3.0",
@@ -91,12 +92,7 @@
         "@nuxt/module-builder": "^0.8.0",
         "@nuxt/schema": "^3.2.3",
         "@nuxt/test-utils": "^3.5.3",
-        "@nuxtjs/eslint-config-typescript": "^12.0.0",
-        "@typescript-eslint/eslint-plugin": "^7.14.1",
         "cypress": "^13.14.1",
-        "eslint": "^8.44.0",
-        "eslint-plugin-import": "^2.29.1",
-        "eslint-plugin-vue": "^9.9.0",
         "husky": "^9.1.4",
         "lint-staged": "^15.2.10",
         "nuxt": "^3.14.159",
@@ -104,7 +100,6 @@
         "rollup-plugin-copy": "^3.4.0",
         "start-server-and-test": "^2.0.0",
         "typescript": "^5.3.3",
-        "vite-plugin-eslint": "^1.8.1",
         "vuepress": "^2.0.0-rc.18"
     }
 }
