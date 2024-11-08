@@ -44,7 +44,7 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
 
     // Set cookie if user is logged in to differ between session isset (context-token exists) and session
     // is related to a customer
-    if (process.client) {
+    if (import.meta.client) {
         watch(customer, (newVal) => {
             const customerCookie = runtimeConfig.public.customerCookie as { name: string, options: any }
             const cookie = useCookie(customerCookie.name, customerCookie.options)
@@ -95,6 +95,7 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
             const platformStore = usePlatform()
             const { session } = storeToRefs(platformStore)
 
+            // @ts-ignore
             if (session?.value?.sessionToken === null) {
                 await getCart()
             }

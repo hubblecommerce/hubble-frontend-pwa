@@ -31,7 +31,7 @@ const associations = {
 }
 
 export function getRequestURL () {
-    if (process.server) {
+    if (import.meta.server) {
         const reqEvent = useRequestEvent()
         if (reqEvent == null) {
             return
@@ -238,7 +238,7 @@ export const usePage = function (): HblIUsePage {
 
         return {
             ...(order != null && { order }),
-            ...(limit != null && typeof limit === 'string' && { limit: parseInt(limit) }),
+            ...(limit != null && typeof limit === 'string' && { limit: Number.parseInt(limit) }),
             ...(p != null && { p }),
             ...(manufacturer != null && typeof manufacturer === 'string' && { manufacturer }),
             ...(minPrice != null && { 'min-price': minPrice }),

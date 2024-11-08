@@ -9,7 +9,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
     const { miniCart } = storeToRefs(cartStore)
     const { navigateToI18n } = useLocalisation(to)
 
-    if (process.server) {
+    if (import.meta.server) {
         const serverCookie = app.$config.public.cartCookie as { name: string, options: any }
         const cookie = hblGetRequestCookie(app, serverCookie.name)
         // https://v3.nuxtjs.org/api/composables/use-cookie/#decode
