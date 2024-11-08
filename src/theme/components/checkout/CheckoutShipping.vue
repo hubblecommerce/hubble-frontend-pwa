@@ -65,9 +65,9 @@ const { session } = storeToRefs(platformStore)
 const { formatPrice } = useCurrency()
 const { showNotification } = useNotification()
 
-// eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
     (event: 'update-before:shippingMethod', id: string): void
+    // eslint-disable-next-line @typescript-eslint/unified-signatures
     (event: 'update-after:shippingMethod', id: string): void
 }>()
 

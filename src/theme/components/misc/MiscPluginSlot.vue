@@ -40,11 +40,13 @@ const props = defineProps({
     data: {
         type: Object,
         required: false,
+        // eslint-disable-next-line vue/require-valid-default-prop
         default: () => { return false }
     },
     events: {
         type: Object,
         required: false,
+        // eslint-disable-next-line vue/require-valid-default-prop
         default: () => { return false }
     }
 })
