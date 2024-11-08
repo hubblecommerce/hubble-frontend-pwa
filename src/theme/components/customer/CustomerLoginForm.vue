@@ -129,6 +129,7 @@ async function onResetPasswordClick () {
         username.value = ''
         password.value = ''
     } catch (e) {
+        console.error(e)
     }
 }
 </script>
