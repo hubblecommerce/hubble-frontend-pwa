@@ -32,6 +32,7 @@ export const customFaker = new Faker({
 })
 
 declare global {
+    // eslint-disable-next-line @typescript-eslint/no-namespace
     namespace Cypress {
         interface Chainable {
             selectRandomProduct (): Chainable<void>
@@ -63,7 +64,7 @@ Cypress.Commands.add('selectRandomProduct', () => {
     let count
     cy.get('.grid .card').then(($value) => {
         count = $value.length
-        const randomIndex = Math.floor(Math.random() * parseInt(count)) + 1
+        const randomIndex = Math.floor(Math.random() * Number.parseInt(count)) + 1
         cy.get(`.grid .card:nth-child(${randomIndex})`).contains('Details').click()
     })
 })
