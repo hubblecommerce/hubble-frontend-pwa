@@ -125,7 +125,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, type Ref, withDefaults } from 'vue'
+import { ref, type Ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
 import { EyeIcon, EyeSlashIcon, CalendarIcon } from '@heroicons/vue/24/outline'
