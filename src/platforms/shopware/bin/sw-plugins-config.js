@@ -12,11 +12,13 @@ const main = async function () {
         throw new Error(swPlugins.authErrorMsg)
     }
 
+    // eslint-disable-next-line no-unused-vars
     const [buildArtifact, bundleConfig, buildError] = await swPlugins.dumpBundles(authResponse)
     if (buildError) {
         throw new Error(buildError)
     }
 
+    // eslint-disable-next-line no-unused-vars
     const [removeResponse, removeError] = await swPlugins.removeConfigFile()
     if (removeError) {
         throw new Error(removeError)

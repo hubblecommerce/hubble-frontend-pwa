@@ -20,6 +20,10 @@ export function useDrawer (): HblIUseDrawer {
         drawerContext.value = ''
     }
 
+    useRuntimeHook('page:finish', () => {
+        closeDrawer()
+    })
+
     return {
         drawerState,
         drawerContext,

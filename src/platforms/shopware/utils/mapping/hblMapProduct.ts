@@ -1,6 +1,63 @@
 import { type Product as SwProduct, type PropertyGroup } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 import { type HblProduct } from '@/utils/types'
-import { hblMapMedia, hblMapManufacturer, hblMapPrice, hblMapProductMedia, hblMapVariantGroups } from '#imports'
+import {
+    hblMapMedia,
+    hblMediaIncludes,
+    hblMapManufacturer,
+    hblManufacturerIncludes,
+    hblMapPrice,
+    hblPriceIncludes,
+    hblMapProductMedia,
+    hblProductMediaIncludes,
+    hblMapVariantGroups,
+    hblVariantGroupsIncludes,
+} from '#imports'
+
+export const hblProductIncludes = {
+    'product': [
+        'id',
+        'translated',
+        'name',
+        'description',
+        'productNumber',
+        'seoUrls',
+        'available',
+        'stock',
+        'calculatedCheapestPrice',
+        'calculatedPrices',
+        'calculatedPrice',
+        'variantListingConfig',
+        'parentId',
+        'deliveryTime',
+        'manufacturer',
+        'metaTitle',
+        'metaDescription',
+        'configurator',
+        'optionIds',
+        'media',
+        'cover',
+    ],
+    'calculated_cheapest_price': [
+        'unitPrice',
+        'variantId',
+        'listPrice',
+        'calculatedTaxes'
+    ],
+    'seo_url': [
+        'pathInfo',
+        'isCanonical',
+        'seoPathInfo'
+    ],
+    'delivery_time': [
+        'name',
+        'translated'
+    ],
+    ...hblProductMediaIncludes,
+    ...hblMediaIncludes,
+    ...hblVariantGroupsIncludes,
+    ...hblPriceIncludes,
+    ...hblManufacturerIncludes
+}
 
 export function hblMapProduct (swProduct: SwProduct, swProductConfigurator?: PropertyGroup[]): HblProduct {
     let firstUrl = null
@@ -45,9 +102,9 @@ export function hblMapProduct (swProduct: SwProduct, swProductConfigurator?: Pro
         ? swProduct?.calculatedPrices[0]
         : swProduct?.calculatedPrice
 
+    // @TODO: platform need to provide cheapestPrice
     const _displayParent = swProduct?.variantListingConfig?.displayParent && swProduct?.parentId === null
 
-    // @TODO: platform need to provide cheapestPrice
     const displayFromVariants = !!swProduct?.parentId &&
         // @ts-ignore
         swProduct?.cheapestPrice?.hasRange &&
@@ -110,7 +167,7 @@ export function hblMapProduct (swProduct: SwProduct, swProductConfigurator?: Pro
         // @ts-ignore
         cheapestPrice,
         tierPrices,
-        deliveryTime: swProduct.deliveryTime?.name,
+        deliveryTime: swProduct.deliveryTime?.translated?.name,
         manufacturer: swProduct.manufacturer != null ? hblMapManufacturer(swProduct.manufacturer) : null,
         metaTitle: swProduct.translated?.metaTitle,
         metaDescription: swProduct.translated?.metaDescription,

@@ -10,7 +10,7 @@ import {
     type Product as swProduct
 } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 import { request as __request } from '@hubblecommerce/hubble/platforms/shopware/request'
-import { useLocalisation, hblMapPage, hblMapProductListing, hblMapProduct, useRequestEvent, useRouter, useRuntimeConfig } from '#imports'
+import { useLocalisation, hblMapPage, hblPageIncludes, hblMapProductListing, hblProductListingIncludes, hblMapProduct, hblProductIncludes, useRequestEvent, useRouter, useRuntimeConfig } from '#imports'
 import {
     type HblIUsePage,
     type HblPage,
@@ -31,7 +31,7 @@ const associations = {
 }
 
 export function getRequestURL () {
-    if (process.server) {
+    if (import.meta.server) {
         const reqEvent = useRequestEvent()
         if (reqEvent == null) {
             return
@@ -65,6 +65,7 @@ export const usePage = function (): HblIUsePage {
             }
 
             const requestBody = {
+                includes: hblPageIncludes,
                 associations,
                 path,
                 ...params
@@ -124,6 +125,7 @@ export const usePage = function (): HblIUsePage {
             }
 
             const requestBody = {
+                includes: hblProductListingIncludes,
                 associations,
                 ...params
             }
@@ -199,6 +201,7 @@ export const usePage = function (): HblIUsePage {
                     productId: matchingVariant?.variantId
                 },
                 body: {
+                    includes: hblProductIncludes,
                     associations: {
                         ...associations,
                         crossSellings: {}
@@ -238,7 +241,7 @@ export const usePage = function (): HblIUsePage {
 
         return {
             ...(order != null && { order }),
-            ...(limit != null && typeof limit === 'string' && { limit: parseInt(limit) }),
+            ...(limit != null && typeof limit === 'string' && { limit: Number.parseInt(limit) }),
             ...(p != null && { p }),
             ...(manufacturer != null && typeof manufacturer === 'string' && { manufacturer }),
             ...(minPrice != null && { 'min-price': minPrice }),

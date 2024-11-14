@@ -1,6 +1,17 @@
 import { type CmsSlot } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 import { type HblMedia, type HblProductListing, type HblSlot } from '@/utils/types'
-import { hblMapMedia, hblMapProductListing } from '#imports'
+import { hblMapMedia, hblMediaIncludes, hblMapProductListing, hblProductListingIncludes } from '#imports'
+
+export const hblSlotIncludes = {
+    'cms_slot': [
+        'type',
+        'slot',
+        'data',
+        'media',
+    ],
+    ...hblMediaIncludes,
+    ...hblProductListingIncludes
+}
 
 export function hblMapSlots (swSlots: CmsSlot[]): HblSlot[] {
     let productListing: HblProductListing | null = null

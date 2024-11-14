@@ -1,6 +1,22 @@
 import { type Cart as SwCart } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 import { type HblCart } from '@/utils/types'
-import { hblMapLineItems, hblMapTotals } from '#imports'
+import { hblMapLineItems, hblLineItemsIncludes, hblMapTotals, hblTotalsIncludes } from '#imports'
+
+export const hblCartIncludes = {
+    'cart': [
+        'token',
+        'lineItems',
+        'price',
+        'deliveries',
+        'customerComment',
+        'errors'
+    ],
+    'cart_delivery': [
+        'shippingCosts'
+    ],
+    ...hblLineItemsIncludes,
+    ...hblTotalsIncludes,
+}
 
 export function hblMapCart (cart: SwCart): HblCart {
     return {

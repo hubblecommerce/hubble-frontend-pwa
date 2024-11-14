@@ -1,5 +1,33 @@
 import { type HblPage } from '@/utils/types'
-import { hblMapCategory, hblMapBreadcrumb, hblMapProduct, hblMapSections } from '#imports'
+import {
+    hblMapCategory,
+    hblCategoryIncludes,
+    hblMapBreadcrumb,
+    hblMapProduct,
+    hblProductIncludes,
+    hblMapSections,
+    hblSectionIncludes
+} from '#imports'
+
+export const hblPageIncludes = {
+    'pwa_page_result': [
+        'resourceIdentifier',
+        'canonicalPathInfo',
+        'resourceType',
+        'cmsPage',
+        'breadcrumb',
+        'product',
+        'configurator',
+        'category',
+    ],
+    'cms_page': [
+        'name',
+        'sections',
+    ],
+    ...hblSectionIncludes,
+    ...hblProductIncludes,
+    ...hblCategoryIncludes
+}
 
 export function hblMapPage (swPage: any): HblPage {
     const obj = {

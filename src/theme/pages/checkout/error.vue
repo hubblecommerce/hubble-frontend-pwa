@@ -40,7 +40,7 @@ const { resetPayment, loading, error, handlePayment } = useCheckout()
 const { navigateToI18n } = useLocalisation()
 
 const paymentMethodId: Ref<string | null> = ref(null)
-if (process.client) {
+if (import.meta.client) {
     const platformStore = usePlatform()
     const { session } = storeToRefs(platformStore)
     paymentMethodId.value = session?.value?.paymentMethod?.id != null ? session?.value?.paymentMethod?.id : null

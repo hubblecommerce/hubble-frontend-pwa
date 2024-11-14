@@ -12,6 +12,7 @@
             module.default(args)
         }
     } catch (e) {
+        // eslint-disable-next-line no-console
         console.log(e)
         if (e.code === 'MODULE_NOT_FOUND') {
             // eslint-disable-next-line no-console

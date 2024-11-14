@@ -1,5 +1,5 @@
 import { type Ref } from 'vue'
-import { LocationQuery } from 'vue-router'
+import type { LocationQuery } from 'vue-router'
 import { type HblShippingMethod } from '@/utils/types/HblShippingMethod'
 import { type HblPaymentMethod } from '@/utils/types/HblPaymentMethod'
 

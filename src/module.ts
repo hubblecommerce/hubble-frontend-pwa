@@ -1,5 +1,5 @@
-import path, { basename, extname, join, resolve } from 'path'
-import { fileURLToPath } from 'url'
+import path, { basename, extname, join, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { defineNuxtModule, installModule } from '@nuxt/kit'
 import { defu } from 'defu'
 import { globby } from 'globby'
@@ -7,7 +7,6 @@ import { watch } from 'chokidar'
 import type { Nuxt } from '@nuxt/schema'
 import type { ModuleOptions as i18nModuleOptions } from '@nuxtjs/i18n'
 import fse from 'fs-extra'
-// eslint-disable-next-line import/no-named-as-default-member
 const { pathExists, readJson, copy, emptyDir, remove } = fse
 
 // Set configs of configured platform
@@ -22,7 +21,6 @@ async function setDefaultRuntimeConfigs (nuxt: Nuxt) {
         nuxt.options.runtimeConfig.public = defu(nuxt.options.runtimeConfig.public, defaultPublicRuntimeConfig)
         nuxt.options.runtimeConfig = defu(nuxt.options.runtimeConfig, defaultPrivateRuntimeConfig)
     } catch (e) {
-        // eslint-disable-next-line no-console
         console.error(e)
         throw Error
     }
@@ -145,7 +143,6 @@ export default defineNuxtModule<ModuleOptions>({
     },
     async setup (options, nuxt) {
         if (process.env.PLATFORM == null || process.env.PLATFORM === '') {
-            // eslint-disable-next-line no-console
             console.error('Please provide a valid .env file')
             return
         }
@@ -235,7 +232,6 @@ export default defineNuxtModule<ModuleOptions>({
 
         // To make resolveComponent() with variable component name possible, set all structure components as global
         nuxt.hook('components:extend', (components) => {
-            // eslint-disable-next-line array-callback-return
             components.map((component) => {
                 // @ts-ignore
                 if (component.shortPath.includes('/components/structure') || component.shortPath.includes('plugin')) {

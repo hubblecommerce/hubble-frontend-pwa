@@ -7,17 +7,23 @@ import type { CartItems } from '../models/CartItems';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
+import type { Criteria } from '../models/Criteria'
 export class CartShopware {
     /**
      * Fetch or create a cart
      * Used to fetch the current cart or for creating a new one.
+     * @param requestBody
      * @returns Cart Cart
      * @throws ApiError
      */
-    public static readCart(): CancelablePromise<Cart> {
+    public static readCart(
+        requestBody: Criteria,
+    ): CancelablePromise<Cart> {
         return __request(OpenAPI, {
-            method: 'GET',
+            method: 'POST',
             url: '/checkout/cart',
+            body: requestBody,
+            mediaType: 'application/json',
         });
     }
     /**
