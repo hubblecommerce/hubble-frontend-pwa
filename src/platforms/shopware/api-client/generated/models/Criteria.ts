@@ -71,5 +71,9 @@ export type Criteria = {
      * Whether the total for the total number of hits should be determined for the search query. none = disabled total count, exact = calculate exact total amount (slow), next-pages = calculate only for next page (fast)
      */
     'total-count-mode'?: 'none' | 'exact' | 'next-pages';
+    /**
+     * The includes parameter allows you to restrict the returned fields.
+     */
+    includes?: Record<string, Array<string>>;
 };
 
