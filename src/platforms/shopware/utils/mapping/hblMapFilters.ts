@@ -6,6 +6,21 @@ import {
     type HblProductListingFilterRange
 } from '@/utils/types'
 
+export const hblFiltersIncludes = {
+    'price_aggregation': [
+        'min',
+        'max',
+        'avg',
+        'sum'
+    ],
+    'manufacturer_aggregation': [
+        'entities'
+    ],
+    'properties_aggregation': [
+        'entities'
+    ],
+}
+
 export function hblMapFilters (swFilters: ProductListingResult['aggregations']): HblProductListingFilterMixed[] {
     const filters = []
 

@@ -1,6 +1,30 @@
 import { type ProductListingResult } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 import { type HblProductListing } from '@/utils/types'
-import { hblMapSortings, hblMapCurrentFilters, hblMapFilters, hblMapProducts } from '#imports'
+import {
+    hblMapSortings,
+    hblSortingsIncludes,
+    hblMapCurrentFilters,
+    hblMapFilters,
+    hblFiltersIncludes,
+    hblMapProducts,
+    hblProductsIncludes
+} from '#imports'
+
+export const hblProductListingIncludes = {
+    'product_listing': [
+        'elements',
+        'sorting',
+        'availableSortings',
+        'currentFilters',
+        'aggregations',
+        'total',
+        'limit',
+        'page'
+    ],
+    ...hblProductsIncludes,
+    ...hblSortingsIncludes,
+    ...hblFiltersIncludes
+}
 
 export function hblMapProductListing (swProductListing: ProductListingResult): HblProductListing {
     return {

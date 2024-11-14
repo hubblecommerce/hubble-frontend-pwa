@@ -1,6 +1,21 @@
 import { type CmsBlock } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 import { type HblBlock } from '@/utils/types'
-import { hblMapMedia, hblMapSlots } from '#imports'
+import { hblMapMedia, hblMediaIncludes, hblMapSlots, hblSlotIncludes } from '#imports'
+
+export const hblBlockIncludes = {
+    'cms_block': [
+        'versionId',
+        'type',
+        'slots',
+        'cssClass',
+        'backgroundColor',
+        'backgroundMedia',
+        'backgroundMediaMode',
+        'sectionPosition',
+    ],
+    ...hblSlotIncludes,
+    ...hblMediaIncludes
+}
 
 export function hblMapBlocks (swBlocks: CmsBlock[]): HblBlock[] {
     return swBlocks.map((block: CmsBlock) => {

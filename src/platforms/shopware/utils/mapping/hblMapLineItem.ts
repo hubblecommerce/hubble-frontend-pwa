@@ -1,6 +1,21 @@
 import { type LineItem as SwLineItem } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 import { type HblLineItem } from '@/utils/types'
-import { hblMapMedia, hblMapPrice } from '#imports'
+import { hblMapMedia, hblMediaIncludes, hblMapPrice, hblPriceIncludes } from '#imports'
+
+export const hblLineItemIncludes = {
+    'cart_line_item': [
+        'id',
+        'referencedId',
+        'payload',
+        'label',
+        'quantity',
+        'type',
+        'cover',
+        'price'
+    ],
+    ...hblMediaIncludes,
+    ...hblPriceIncludes
+}
 
 export function hblMapLineItem (lineItem: SwLineItem): HblLineItem {
     return {

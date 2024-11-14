@@ -1,6 +1,14 @@
 import { type ProductMedia } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 import { type HblMedia } from '@/utils/types'
-import { hblMapMedia } from '#imports'
+import { hblMapMedia, hblMediaIncludes } from '#imports'
+
+export const hblProductMediaIncludes = {
+    'product_media': [
+        'position',
+        'media'
+    ],
+    ...hblMediaIncludes
+}
 
 export function hblMapProductMedia (swMedia: ProductMedia[]): HblMedia[] | null {
     if (swMedia === null) {

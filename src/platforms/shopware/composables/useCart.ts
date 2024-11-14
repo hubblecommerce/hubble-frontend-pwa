@@ -1,7 +1,7 @@
 import { type Ref, ref, watch } from 'vue'
 import { defineStore } from 'pinia'
 import { CartShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { useNotification, usePlatform, hblMapCart, hblMapMiniCart, useCookie, useRuntimeConfig } from '#imports'
+import { useNotification, usePlatform, hblMapCart, hblCartIncludes, hblMapMiniCart, useCookie, useRuntimeConfig } from '#imports'
 import { type HblCart, type HblIUseCart, type HblMiniCart, type HblLineItem, type MiniCartItem } from '@/utils/types'
 
 export const useCart = defineStore('use-cart', (): HblIUseCart => {
@@ -20,7 +20,9 @@ export const useCart = defineStore('use-cart', (): HblIUseCart => {
 
         try {
             // @ts-ignore
-            const response = await CartShopware.readCart()
+            const response = await CartShopware.readCart({
+                includes: hblCartIncludes
+            })
 
             if (response.token !== undefined) {
                 setSessionToken(response.token)
@@ -80,6 +82,7 @@ export const useCart = defineStore('use-cart', (): HblIUseCart => {
     function updateLineItem (lineItem: HblLineItem | MiniCartItem, updatedQty: number) {
         return CartShopware.updateLineItem(
             {
+                includes: hblCartIncludes,
                 items: [
                     // @ts-ignore
                     {
@@ -110,14 +113,7 @@ export const useCart = defineStore('use-cart', (): HblIUseCart => {
         loading.value = true
 
         try {
-            const lineItem = miniCart.value?.items.find((item) => {
-                return item.itemId === itemId
-            })
-
-            const updatedQty = lineItem ? lineItem.qty + qty : null
-
-            // @ts-ignore
-            const response = lineItem ? await updateLineItem(lineItem, updatedQty) : await addLineItem(itemId, qty)
+            const response = await addLineItem(itemId, qty)
 
             if (response.token !== undefined) {
                 setSessionToken(response.token)
@@ -157,6 +153,7 @@ export const useCart = defineStore('use-cart', (): HblIUseCart => {
 
             const response = await CartShopware.addLineItem(
                 {
+                    includes: hblCartIncludes,
                     items: [
                         // @ts-ignore
                         {

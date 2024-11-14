@@ -1,6 +1,18 @@
 import { type ProductManufacturer } from '@hubblecommerce/hubble/platforms/shopware/api-client'
 import { type HblManufacturer } from '@/utils/types'
-import { hblMapMedia } from '#imports'
+import { hblMapMedia, hblMediaIncludes } from '#imports'
+
+export const hblManufacturerIncludes = {
+    'product_manufacturer': [
+        'id',
+        'link',
+        'translated',
+        'name',
+        'description',
+        'media',
+    ],
+    ...hblMediaIncludes
+}
 
 export function hblMapManufacturer (swManufacturer: ProductManufacturer): HblManufacturer {
     return {
