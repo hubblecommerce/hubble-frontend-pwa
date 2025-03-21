@@ -152,7 +152,7 @@ export default defineNuxtModule<ModuleOptions>({
         nuxt.options.build.transpile.push(runtimeDir)
 
         // Install pinia for store management
-        await installModule('@pinia/nuxt', { disableVuex: true })
+        await installModule('@pinia/nuxt')
 
         // Install VueUse for useful helper composables
         await installModule('@vueuse/nuxt')

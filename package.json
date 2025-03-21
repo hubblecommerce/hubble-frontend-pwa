@@ -65,7 +65,7 @@
         "@nuxt/eslint-config": "^0.7.1",
         "@nuxtjs/color-mode": "^3.2.0",
         "@nuxtjs/i18n": "^9.3.3",
-        "@pinia/nuxt": "^0.7.0",
+        "@pinia/nuxt": "^0.10.1",
         "@vuepress/bundler-vite": "^2.0.0-rc.18",
         "@vuepress/theme-default": "^2.0.0-rc.54",
         "@vueuse/core": "^13.0.0",
