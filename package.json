@@ -67,7 +67,7 @@
         "@nuxtjs/i18n": "^9.4.0",
         "@pinia/nuxt": "^0.11.0",
         "@tailwindcss/postcss": "^4.0.17",
-        "@vuepress/bundler-vite": "^2.0.0-rc.18",
+        "@vuepress/bundler-vite": "^2.0.0-rc.21",
         "@vuepress/theme-default": "^2.0.0-rc.54",
         "@vueuse/core": "^13.0.0",
         "@vueuse/nuxt": "^13.0.0",
@@ -100,6 +100,6 @@
         "sass-embedded": "^1.80.7",
         "start-server-and-test": "^2.0.0",
         "typescript": "^5.8.3",
-        "vuepress": "^2.0.0-rc.18"
+        "vuepress": "^2.0.0-rc.21"
     }
 }
