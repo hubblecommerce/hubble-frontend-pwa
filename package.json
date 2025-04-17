@@ -90,7 +90,7 @@
         "@nuxt/module-builder": "^0.8.0",
         "@nuxt/schema": "^3.16.2",
         "@nuxt/test-utils": "^3.5.3",
-        "cypress": "^14.2.0",
+        "cypress": "^14.3.0",
         "daisyui": "^5.0.9",
         "husky": "^9.1.4",
         "lint-staged": "^15.2.10",
