@@ -4,7 +4,7 @@
             <Bars3Icon class="h-5 w-5" />
         </label>
 
-        <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
+        <ul tabindex="0" class="menu w-full menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
             <li v-for="entry in navigation" :key="entry.id">
                 <template v-if="entry.children?.length > 0">
                     <details>

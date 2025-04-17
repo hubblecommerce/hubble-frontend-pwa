@@ -5,9 +5,9 @@
                 <LanguageIcon class="h-5 w-5" fill="none" />
             </div>
         </label>
-        <div tabindex="0" class="card card-compact dropdown-content w-52 mt-3 bg-base-100 shadow">
+        <div tabindex="0" class="card card-sm dropdown-content w-52 mt-3 bg-base-100 shadow">
             <div class="card-body">
-                <select v-model="selectedLanguage" class="select select-primary max-w-xs">
+                <select v-model="selectedLanguage" class="select select-ghost select-primary max-w-xs">
                     <option disabled selected>
                         Language
                     </option>

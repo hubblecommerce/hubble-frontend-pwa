@@ -1,16 +1,16 @@
 <template>
-    <div class="form-control">
+    <fieldset class="fieldset">
         <label for="limiter" class="label sr-only">
-            <span class="label-text">Show items per page</span>
+            <span>Show items per page</span>
         </label>
         <div class="join">
             <span class="btn btn-sm no-animation join-item">Show</span>
-            <select id="limiter" v-model="selectedLimit" class="select select-sm join-item" @change="setLimit(selectedLimit)">
+            <select id="limiter" v-model="selectedLimit" class="select select-ghost select-sm join-item" @change="setLimit(selectedLimit)">
                 <option v-for="availableLimit in availableLimits" :key="availableLimit" :value="availableLimit" v-text="availableLimit" />
             </select>
             <span class="btn btn-sm no-animation join-item">from {{ total }}</span>
         </div>
-    </div>
+    </fieldset>
 </template>
 
 <script setup lang="ts">

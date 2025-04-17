@@ -1,110 +1,94 @@
 <template>
     <div class="grid grid-cols-12 gap-2">
-        <div class="form-control col-span-12">
-            <label :for="`${id}-salutation`" class="label">
-                <span class="label-text">Salutation</span>
-            </label>
+        <fieldset class="fieldset col-span-12">
+            <label :for="`${id}-salutation`" class="label">Salutation</label>
 
-            <select :id="`${id}-salutation`" v-model="form.salutation" required class="select select-bordered w-full">
+            <select :id="`${id}-salutation`" v-model="form.salutation" required class="select w-full">
                 <option v-for="salutation in salutations" :key="salutation.id" :value="salutation.id">
                     {{ salutation.name }}
                 </option>
             </select>
-        </div>
+        </fieldset>
 
-        <div class="form-control col-span-12 lg:col-span-6">
-            <label :for="`${id}-firstName`" class="label">
-                <span class="label-text">Firstname</span>
-            </label>
+        <fieldset class="fieldset col-span-12 lg:col-span-6">
+            <label :for="`${id}-firstName`" class="label">Firstname</label>
             <input
                 :id="`${id}-firstName`"
                 v-model="form.firstName"
                 required
                 type="text"
                 placeholder="Firstname"
-                class="input input-bordered w-full"
+                class="input w-full"
             >
-        </div>
+        </fieldset>
 
-        <div class="form-control col-span-12 lg:col-span-6">
-            <label :for="`${id}-lastName`" class="label">
-                <span class="label-text">Lastname</span>
-            </label>
+        <fieldset class="fieldset col-span-12 lg:col-span-6">
+            <label :for="`${id}-lastName`" class="label">Lastname</label>
             <input
                 :id="`${id}-lastName`"
                 v-model="form.lastName"
                 required
                 type="text"
                 placeholder="Lastname"
-                class="input input-bordered w-full"
+                class="input w-full"
             >
-        </div>
+        </fieldset>
 
-        <div class="form-control col-span-12">
-            <label :for="`${id}-company`" class="label">
-                <span class="label-text">Company (optional)</span>
-            </label>
+        <fieldset class="fieldset col-span-12">
+            <label :for="`${id}-company`" class="label">Company (optional)</label>
             <input
                 :id="`${id}-company`"
                 v-model="form.company"
                 type="text"
                 placeholder="Company (optional)"
-                class="input input-bordered w-full"
+                class="input w-full"
             >
-        </div>
+        </fieldset>
 
-        <div class="form-control col-span-12">
-            <label :for="`${id}-street`" class="label">
-                <span class="label-text">Street and Number</span>
-            </label>
+        <fieldset class="fieldset col-span-12">
+            <label :for="`${id}-street`" class="label">Street and Number</label>
             <input
                 :id="`${id}-street`"
                 v-model="form.street"
                 required
                 type="text"
                 placeholder="Street"
-                class="input input-bordered w-full"
+                class="input w-full"
             >
-        </div>
+        </fieldset>
 
-        <div class="form-control col-span-12 lg:col-span-4">
-            <label :for="`${id}-zipcode`" class="label">
-                <span class="label-text">Zipcode</span>
-            </label>
+        <fieldset class="fieldset col-span-12 lg:col-span-4">
+            <label :for="`${id}-zipcode`" class="label">Zipcode</label>
             <input
                 :id="`${id}-zipcode`"
                 v-model="form.zipcode"
                 required
                 type="text"
                 placeholder="Zipcode"
-                class="input input-bordered w-full"
+                class="input w-full"
             >
-        </div>
+        </fieldset>
 
-        <div class="form-control col-span-12 lg:col-span-8">
-            <label :for="`${id}-city`" class="label">
-                <span class="label-text">City</span>
-            </label>
+        <fieldset class="fieldset col-span-12 lg:col-span-8">
+            <label :for="`${id}-city`" class="label">City</label>
             <input
                 :id="`${id}-city`"
                 v-model="form.city"
                 required
                 type="text"
                 placeholder="City"
-                class="input input-bordered w-full"
+                class="input w-full"
             >
-        </div>
+        </fieldset>
 
-        <div class="form-control col-span-12">
-            <label :for="`${id}-country`" class="label">
-                <span class="label-text">Country</span>
-            </label>
-            <select :id="`${id}-country`" v-model="form.country" required class="select select-bordered w-full">
+        <fieldset class="fieldset col-span-12">
+            <label :for="`${id}-country`" class="label">Country</label>
+            <select :id="`${id}-country`" v-model="form.country" required class="select w-full">
                 <option v-for="country in countries" :key="country.id" :value="country.id">
                     {{ country.name }}
                 </option>
             </select>
-        </div>
+        </fieldset>
     </div>
 </template>
 

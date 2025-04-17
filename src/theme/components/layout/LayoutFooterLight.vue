@@ -1,7 +1,7 @@
 <template>
     <footer>
         <div class="bg-neutral text-neutral-content">
-            <div class="footer m-auto items-center py-4 px-6">
+            <div class="footer md:footer-horizontal m-auto items-center py-4 px-6">
                 <div class="items-center grid-flow-col">
                     <svg
                         width="36"

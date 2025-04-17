@@ -1,42 +1,44 @@
 <template>
-    <form ref="passwordResetForm" class="form-control flex space-y-4">
-        <label for="password">
-            <span>Password</span>
-            <input
-                id="password"
-                v-model="password"
-                required
-                name="password"
-                type="password"
-                placeholder="Your new password"
-                class="input input-bordered input-sm"
+    <form ref="passwordResetForm" class="flex space-y-4">
+        <fieldset class="fieldset">
+            <label for="password">
+                <span>Password</span>
+                <input
+                    id="password"
+                    v-model="password"
+                    required
+                    name="password"
+                    type="password"
+                    placeholder="Your new password"
+                    class="input input-sm"
+                >
+            </label>
+
+            <label for="passwordRepeat">
+                <span>Repeat Password</span>
+                <input
+                    id="passwordRepeat"
+                    v-model="passwordRepeat"
+                    required
+                    name="password"
+                    type="password"
+                    placeholder="Repeat your ne password"
+                    class="input input-sm"
+                >
+            </label>
+
+            <div v-if="error" class="alert alert-error" v-text="error?.body[0]?.detail" />
+
+            <button
+                type="submit"
+                class="btn btn-primary btn-sm"
+                :disabled="loading"
+                @click.prevent="onResetPasswordClick()"
             >
-        </label>
-
-        <label for="passwordRepeat">
-            <span>Repeat Password</span>
-            <input
-                id="passwordRepeat"
-                v-model="passwordRepeat"
-                required
-                name="password"
-                type="password"
-                placeholder="Repeat your ne password"
-                class="input input-bordered input-sm"
-            >
-        </label>
-
-        <div v-if="error" class="alert alert-error" v-text="error?.body[0]?.detail" />
-
-        <button
-            type="submit"
-            class="btn btn-primary btn-sm"
-            :disabled="loading"
-            @click.prevent="onResetPasswordClick()"
-        >
-            <span v-if="loading" class="loading" />
-            <span v-text="loading ? 'Loading...' : 'Reset Password'" />
-        </button>
+                <span v-if="loading" class="loading" />
+                <span v-text="loading ? 'Loading...' : 'Reset Password'" />
+            </button>
+        </fieldset>
     </form>
 </template>
 
