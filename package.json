@@ -11,8 +11,7 @@
     },
     "exports": {
         ".": {
-            "import": "./dist/module.mjs",
-            "require": "./dist/module.cjs"
+            "import": "./dist/module.mjs"
         },
         "./platforms/shopware/api-client": {
             "import": "./dist/platforms/shopware/api-client/generated/index.mjs"
@@ -21,8 +20,14 @@
             "import": "./dist/platforms/shopware/api-client/generated/core/request.mjs"
         }
     },
-    "main": "./dist/module.cjs",
-    "types": "./dist/types.d.ts",
+    "main": "./dist/module.mjs",
+    "typesVersions": {
+        "*": {
+            ".": [
+                "./dist/types.d.mts"
+            ]
+        }
+    },
     "files": [
         "bin",
         "dist"
@@ -87,7 +92,7 @@
     "devDependencies": {
         "@faker-js/faker": "^9.2.0",
         "@nuxt/kit": "^3.16.2",
-        "@nuxt/module-builder": "^0.8.0",
+        "@nuxt/module-builder": "^1.0.1",
         "@nuxt/schema": "^3.16.2",
         "@nuxt/test-utils": "^3.5.3",
         "cypress": "^14.3.0",
