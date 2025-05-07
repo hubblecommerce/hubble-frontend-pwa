@@ -28,7 +28,7 @@
                         :disabled="loading"
                         :name="variantGroup.id"
                         :value="variantOption.id"
-                        class="sr-only radio"
+                        class="sr-only"
                         @change="onVariantChange(variantGroup.id, variantOption.id)"
                     >
                 </label>

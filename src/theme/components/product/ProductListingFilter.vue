@@ -11,7 +11,7 @@
                 </div>
                 <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 z-10">
                     <li v-for="option in availableFilter.options" :key="option.id">
-                        <fieldset class="fieldset">
+                        <fieldset class="flex gap-2">
                             <input
                                 :id="option.id"
                                 v-model="selectedFilters[availableFilter.id]"
