@@ -14,7 +14,6 @@ These modules are automatically installed and [configured](/pwa/configuration.ht
 - sass
 
 ### Multilanguage
-- @intlify/nuxt3 (deprecated since 2.6.0)
 - @nuxtjs/i18n
 
 ### State Management

@@ -35,7 +35,7 @@ The dynamic page resolves dynamic components and assumes the provided data to ha
 ### Default Structures
 Platforms like Shopware 6 provide such generic data with their Emotionworlds. In case of your platform doesn't provide 
 structural data for requested pages and only response entities' data, hubble comes with some 
-[default structures](https://github.com/hubblecommerce/hubble-frontend-pwa/blob/hubble-next/src/runtime/commons/utils/useDefaultStructure.ts) 
+[default structures](https://github.com/hubblecommerce/hubble-frontend-pwa/blob/main/src/commons/utils/helper/hblUseDefaultStructure.ts) 
 for the most common page types.
 
 #### Example for set default structure entity / page type:

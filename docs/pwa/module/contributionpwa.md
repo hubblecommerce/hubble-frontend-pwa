@@ -15,11 +15,11 @@ npm install
 **4**: Setup hubble for module development:
 - Create .env files in playground and `__tests__/module/fixture`
 - Run `npm run dev:prepare` to generate type stubs.
-- Use `npm run dev` to start [playground](./playground) in development mode.
+- Use `npm run dev` to start the playground in development mode.
 
 **5**: Test production build:
 - Use `npm run prepack` to bundle module source code 
-- Use `npm run dev:build` to build [playground](./playground) in production mode 
+- Use `npm run dev:build` to build the folder playground in production mode 
 - Use `node playground/.output/server/index.mjs` to start node server
 
 **6**: Tracking the original repository as a remote fork: <br>
