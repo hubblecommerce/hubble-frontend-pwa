@@ -1,5 +1,5 @@
 <template>
-    <ul class="menu menu-horizontal p-0">
+    <ul class="menu w-full menu-horizontal p-0">
         <li v-for="entry in navigation" :key="entry.id">
             <template v-if="entry.children?.length > 0">
                 <details>

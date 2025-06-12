@@ -2,12 +2,12 @@
     <h4 class="mb-5 lg:mb-4">
         {{ t('customer.edit.newsletter.title') }}
     </h4>
-    <div class="form-control mb-6">
+    <fieldset class="fieldset mb-6">
         <label class="relative flex gap-4 items-center cursor-pointer">
             <input v-model="newsletterSubscription" type="checkbox" class="toggle toggle-primary">
-            <span class="label-text text-base font-light leading-6">{{ t('customer.edit.newsletter.text') }}</span>
+            <span class="text-base font-light leading-6">{{ t('customer.edit.newsletter.text') }}</span>
         </label>
-    </div>
+    </fieldset>
     <div v-if="loading" class="inline-flex py-2 px-3 border rounded border-base-700 bg-base-300">
         <ArrowPathIcon class="w-6 h-6 mr-4 animate-spin" />
         {{ t('customer.edit.newsletter.stateButtonLoading') }}

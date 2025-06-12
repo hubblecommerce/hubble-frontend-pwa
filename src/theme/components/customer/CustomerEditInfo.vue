@@ -1,66 +1,58 @@
 <template>
     <form ref="personalForm" class="grid grid-cols-12 gap-3 p-4 lg:p-0 border lg:border-none rounded bg-base-100" @submit.prevent="onSubmitPersonalForm()">
-        <div class="form-control col-span-12 lg:col-span-6">
-            <label for="salutation" class="label">
-                <span class="label-text">{{ t('customer.edit.form.label.salutation') }}</span>
-            </label>
+        <fieldset class="fieldset col-span-12 lg:col-span-6">
+            <label for="salutation" class="label">{{ t('customer.edit.form.label.salutation') }}</label>
 
             <div class="flex flex-wrap gap-6">
-                <select id="salutation" v-model="personalFormData.salutationId" required class="select select-bordered w-full">
+                <select id="salutation" v-model="personalFormData.salutationId" required class="select w-full">
                     <option v-for="salutation in salutations" :key="salutation.id" :value="salutation.id">
                         {{ salutation.name }}
                     </option>
                 </select>
             </div>
-        </div>
+        </fieldset>
 
         <div class="col-span-12 grid grid-cols-12 gap-3 lg:gap-6">
-            <div class="form-control col-span-12 lg:col-span-6">
-                <label for="firstName" class="label">
-                    <span class="label-text">{{ t('customer.edit.form.label.firstname') }}</span>
-                </label>
+            <fieldset class="fieldset col-span-12 lg:col-span-6">
+                <label for="firstName" class="label">{{ t('customer.edit.form.label.firstname') }}</label>
                 <input
                     id="firstName"
                     v-model="personalFormData.firstName"
                     required
                     type="text"
                     :placeholder="t('customer.edit.form.placeholder.firstname')"
-                    class="input input-bordered w-full"
+                    class="input w-full"
                 >
-            </div>
+            </fieldset>
 
-            <div class="form-control col-span-12 lg:col-span-6">
-                <label for="lastName" class="label">
-                    <span class="label-text">{{ t('customer.edit.form.label.lastname') }}</span>
-                </label>
+            <fieldset class="fieldset col-span-12 lg:col-span-6">
+                <label for="lastName" class="label">{{ t('customer.edit.form.label.lastname') }}</label>
                 <input
                     id="lastName"
                     v-model="personalFormData.lastName"
                     required
                     type="text"
                     :placeholder="t('customer.address.form.placeholder.lastname')"
-                    class="input input-bordered w-full"
+                    class="input w-full"
                 >
-            </div>
+            </fieldset>
         </div>
 
-        <div class="form-control col-span-12">
-            <label for="register-dob" class="label">
-                <span class="label-text">{{ t('customer.edit.form.dob.label') }}</span>
-            </label>
+        <fieldset class="fieldset col-span-12">
+            <label for="register-dob" class="label">{{ t('customer.edit.form.dob.label') }}</label>
             <div class="join">
                 <input
                     id="register-dob"
                     ref="dobInput"
                     v-model="personalFormData.dateOfBirth"
                     type="date"
-                    class="input input-bordered w-full border-r-0 join-item"
+                    class="input w-full border-r-0 join-item"
                 >
                 <div class="btn btn-square join-item" @click="dobInput.showPicker()">
                     <CalendarIcon class="w-5 h-5" />
                 </div>
             </div>
-        </div>
+        </fieldset>
 
         <div class="col-span-12 py-3">
             <button type="submit" class="btn btn-outline" :disabled="loadingPersonalForm">

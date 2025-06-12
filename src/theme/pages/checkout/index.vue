@@ -91,17 +91,17 @@
                             </div>
 
                             <div class="flex flex-wrap gap-2">
-                                <div class="form-control w-full">
+                                <fieldset class="fieldset w-full">
                                     <label for="customer-email" class="label">
-                                        <span class="label-text">E-Mail</span>
+                                        <span>E-Mail</span>
                                     </label>
                                     <input
                                         id="customer-email"
                                         v-model="customer.email"
-                                        class="input input-bordered w-full"
+                                        class="input w-full"
                                         disabled
                                     >
-                                </div>
+                                </fieldset>
                             </div>
                         </div>
 
@@ -200,50 +200,50 @@
         <template v-if="step === 'summary'">
             <CartTotals />
 
-            <div class="form-control">
-                <label for="order-comment" class="sr-only label">
-                    <span class="label-text">{{ t('checkout.summary.comment.placeholder') }}</span>
-                </label>
-                <textarea id="order-comment" v-model="orderComment" class="textarea textarea-bordered border-base-300 h-24" :placeholder="t('checkout.summary.comment.placeholder')" />
-            </div>
+            <fieldset class="fieldset">
+                <label for="order-comment" class="sr-only label">{{ t('checkout.summary.comment.placeholder') }}</label>
+                <textarea id="order-comment" v-model="orderComment" class="textarea border-base-300 h-24" :placeholder="t('checkout.summary.comment.placeholder')" />
+            </fieldset>
 
-            <form ref="placeOrderForm" class="form-control gap-2">
-                <label class="label cursor-pointer">
-                    <input type="checkbox" required class="checkbox checkbox-primary mr-4">
-                    <span class="label-text mr-auto">{{ t('checkout.summary.tac') }}</span>
-                </label>
+            <form ref="placeOrderForm">
+                <fieldset class="fieldset gap-2">
+                    <label class="label cursor-pointer py-2 px-1">
+                        <input type="checkbox" required class="checkbox checkbox-primary mr-4">
+                        <span class="mr-auto">{{ t('checkout.summary.tac') }}</span>
+                    </label>
 
-                <label class="label cursor-pointer">
-                    <input type="checkbox" required class="checkbox checkbox-primary mr-4">
-                    <span class="label-text mr-auto">{{ t('checkout.summary.policy') }}</span>
-                </label>
+                    <label class="label cursor-pointer py-2 px-1">
+                        <input type="checkbox" class="checkbox checkbox-primary mr-4">
+                        <span class="mr-auto">{{ t('checkout.summary.policy') }}</span>
+                    </label>
 
-                <MiscPluginSlot
-                    name="pages-checkout-place-order"
-                    :data="{ form: placeOrderForm }"
-                    :events="slotEvents"
-                />
+                    <MiscPluginSlot
+                        name="pages-checkout-place-order"
+                        :data="{ form: placeOrderForm }"
+                        :events="slotEvents"
+                    />
 
-                <CheckoutPlaceOrder v-if="defaultPlaceOrder" :form="placeOrderForm">
-                    <template #actions="actionProps">
-                        <portal to="checkoutNavigation">
-                            <div class="navigation flex flex-col flex-wrap justify-between items-center gap-4 lg:flex-row lg:flex-nowrap lg:items-center lg:gap-2">
-                                <div class="link link-hover cursor-pointer order-2 lg:order-1" @click="selectStep('payment')">
-                                    {{ t('checkout.summary.navigation.back') }}
+                    <CheckoutPlaceOrder v-if="defaultPlaceOrder" :form="placeOrderForm">
+                        <template #actions="actionProps">
+                            <portal to="checkoutNavigation">
+                                <div class="navigation flex flex-col flex-wrap justify-between items-center gap-4 lg:flex-row lg:flex-nowrap lg:items-center lg:gap-2">
+                                    <div class="link link-hover cursor-pointer order-2 lg:order-1" @click="selectStep('payment')">
+                                        {{ t('checkout.summary.navigation.back') }}
+                                    </div>
+                                    <button
+                                        type="submit"
+                                        :disabled="actionProps.loading"
+                                        class="btn btn-primary w-full order-1 lg:w-auto lg:order-2"
+                                        @click.prevent="actionProps.onSubmit()"
+                                    >
+                                        <span v-if="actionProps.loading" class="loading" />
+                                        {{ t('checkout.summary.navigation.place.order') }}
+                                    </button>
                                 </div>
-                                <button
-                                    type="submit"
-                                    :disabled="actionProps.loading"
-                                    class="btn btn-primary w-full order-1 lg:w-auto lg:order-2"
-                                    @click.prevent="actionProps.onSubmit()"
-                                >
-                                    <span v-if="actionProps.loading" class="loading" />
-                                    {{ t('checkout.summary.navigation.place.order') }}
-                                </button>
-                            </div>
-                        </portal>
-                    </template>
-                </CheckoutPlaceOrder>
+                            </portal>
+                        </template>
+                    </CheckoutPlaceOrder>
+                </fieldset>
             </form>
         </template>
 

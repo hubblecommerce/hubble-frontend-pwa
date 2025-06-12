@@ -9,20 +9,22 @@
                 <XMarkIcon class="w-5 h-5" />
             </div>
         </div>
-        <form class="form-control" @submit.prevent="submitSearch()">
-            <div class="join">
-                <input
-                    ref="searchInput"
-                    v-model="term"
-                    type="text"
-                    placeholder="Browse our offer"
-                    class="input input-bordered w-full focus:input-primary join-item"
-                >
-                <button class="btn btn-square join-item">
-                    <span v-if="loading" class="loading" />
-                    <MagnifyingGlassIcon v-if="!loading" class="h-5 w-5" />
-                </button>
-            </div>
+        <form @submit.prevent="submitSearch()">
+            <fieldset class="fieldset">
+                <div class="join">
+                    <input
+                        ref="searchInput"
+                        v-model="term"
+                        type="text"
+                        placeholder="Browse our offer"
+                        class="input w-full focus:input-primary join-item"
+                    >
+                    <button class="btn btn-square join-item">
+                        <span v-if="loading" class="loading" />
+                        <MagnifyingGlassIcon v-if="!loading" class="h-5 w-5" />
+                    </button>
+                </div>
+            </fieldset>
         </form>
         <div v-if="searchResult?.total > 0">
             <MiscLink :to="`/search?search=${term}`" class="w-full btn btn-sm btn-secondary mb-4">

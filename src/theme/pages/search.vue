@@ -2,14 +2,16 @@
     <div class="search-page container m-auto p-6 flex flex-col gap-4">
         <div class="flex flex-col lg:flex-row gap-2 justify-center items-center">
             <label for="search" class="text-2xl">Search for:</label>
-            <form class="form-control" @submit.prevent="submitSearch()">
-                <div class="join">
-                    <input id="search" v-model="term" type="text" class="input input-bordered lg:input-lg join-item">
-                    <button class="btn lg:btn-lg join-item">
-                        <span v-if="loading" class="loading" />
-                        <MagnifyingGlassIcon v-if="!loading" class="h-5 lg:h-6 h-5 lg:w-6" />
-                    </button>
-                </div>
+            <form @submit.prevent="submitSearch()">
+                <fieldset class="fieldset">
+                    <div class="join">
+                        <input id="search" v-model="term" type="text" class="input lg:input-lg join-item">
+                        <button class="btn lg:btn-lg join-item">
+                            <span v-if="loading" class="loading" />
+                            <MagnifyingGlassIcon v-if="!loading" class="h-5 lg:h-6 h-5 lg:w-6" />
+                        </button>
+                    </div>
+                </fieldset>
             </form>
         </div>
 

@@ -3,10 +3,8 @@
         <div class="flex flex-wrap gap-3">
             <h4>{{ t('customer.register.form.contactTitle') }}</h4>
 
-            <div class="form-control w-full">
-                <label for="register-email" class="label">
-                    <span class="label-text">{{ t('customer.register.form.email.label') }}</span>
-                </label>
+            <fieldset class="fieldset w-full">
+                <label for="register-email" class="label">{{ t('customer.register.form.email.label') }}</label>
                 <input
                     id="register-email"
                     v-model="email"
@@ -14,23 +12,19 @@
                     type="email"
                     inputmode="email"
                     :placeholder="t('customer.register.form.email.placeholder')"
-                    class="input input-bordered w-full"
+                    class="input w-full"
                 >
-            </div>
+            </fieldset>
 
-            <div v-if="guestForm" class="form-control">
-                <label class="label cursor-pointer">
-                    <input v-model="createAccount" type="checkbox" checked="checked" class="checkbox mr-2">
-                    <span class="label-text">{{ t('customer.register.form.createAccount') }}</span>
-                </label>
-            </div>
+            <fieldset v-if="guestForm" class="fieldset">
+                <input v-model="createAccount" type="checkbox" checked="checked" class="checkbox mr-2">
+                <label class="label cursor-pointer">{{ t('customer.register.form.createAccount') }}</label>
+            </fieldset>
 
-            <div v-if="createAccount" class="form-control w-full">
+            <fieldset v-if="createAccount" class="fieldset w-full">
                 <div class="grid grid-cols-2 gap-3 lg:gap-6">
                     <div class="col-span-2 lg:col-span-1">
-                        <label for="register-password" class="label">
-                            <span class="label-text">{{ t('customer.register.form.password.label') }}</span>
-                        </label>
+                        <label for="register-password" class="label">{{ t('customer.register.form.password.label') }}</label>
                         <div class="join w-full">
                             <input
                                 id="register-password"
@@ -38,7 +32,7 @@
                                 required
                                 :type="showPassword ? 'text' : 'password'"
                                 :placeholder="t('customer.register.form.password.placeholder')"
-                                class="input input-bordered w-full border-r-0 join-item"
+                                class="input w-full border-r-0 join-item"
                             >
                             <div class="btn btn-square join-item" tabindex="0" @click="showPassword = !showPassword" @keypress.space.prevent="showPassword = !showPassword">
                                 <EyeIcon v-if="!showPassword" class="w-5 h-5" />
@@ -48,9 +42,7 @@
                     </div>
 
                     <div class="col-span-2 lg:col-span-1">
-                        <label for="register-password-repeat" class="label">
-                            <span class="label-text">{{ t('customer.register.form.passwordRepeat.label') }}</span>
-                        </label>
+                        <label for="register-password-repeat" class="label">{{ t('customer.register.form.passwordRepeat.label') }}</label>
                         <div class="join w-full">
                             <input
                                 id="register-password-repeat"
@@ -59,7 +51,7 @@
                                 required
                                 :type="showPassword ? 'text' : 'password'"
                                 :placeholder="t('customer.register.form.passwordRepeat.placeholder')"
-                                class="input input-bordered w-full border-r-0 join-item"
+                                class="input w-full border-r-0 join-item"
                             >
                             <div class="btn btn-square join-item" @click="showPassword = !showPassword" @keypress.space.prevent="showPassword = !showPassword">
                                 <EyeIcon v-if="!showPassword" class="w-5 h-5" />
@@ -68,27 +60,25 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </fieldset>
 
-            <div v-if="createAccount" class="form-control w-full">
+            <fieldset v-if="createAccount" class="fieldset w-full">
                 <div class="col-span-2 lg:col-span-1">
-                    <label for="register-dob" class="label">
-                        <span class="label-text">{{ t('customer.register.form.dob.label') }}</span>
-                    </label>
+                    <label for="register-dob" class="label">{{ t('customer.register.form.dob.label') }}</label>
                     <div class="join w-full">
                         <input
                             id="register-dob"
                             ref="dobInput"
                             v-model="dateOfBirth"
                             type="date"
-                            class="input input-bordered w-full border-r-0 join-item"
+                            class="input w-full border-r-0 join-item"
                         >
                         <div class="btn btn-square join-item" @click="dobInput.showPicker()">
                             <CalendarIcon class="w-5 h-5" />
                         </div>
                     </div>
                 </div>
-            </div>
+            </fieldset>
         </div>
 
         <div class="flex flex-col">

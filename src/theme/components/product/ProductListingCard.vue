@@ -1,5 +1,5 @@
 <template>
-    <div class="card card-compact bg-base-100 border border-base-200 shadow-md transition hover:shadow-xl">
+    <div class="card card-sm bg-base-100 border border-base-200 shadow-md transition hover:shadow-xl">
         <figure class="relative">
             <MiscLink no-prefetch :to="data.url">
                 <img v-if="isLoading || data.media == null" src="~/assets/product/placeholder-image.png" class="d-block m-auto mw-100" height="300" :alt="data.name">

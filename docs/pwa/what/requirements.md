@@ -9,7 +9,7 @@ Follow the links for further instructions on how to prepare each one of them to 
 [How to set up Shopware 6 to work with hubble PWA](/pwa/shopware/installation.html)
 
 ## PWA
-- [LTS Node](https://nodejs.org/en/download/package-manager/) >= 16.14.1
+- [LTS Node](https://nodejs.org/en/download/package-manager/) >= 20.x
   - Needed for running Nuxt.js
 - [Nuxt.js](https://v3.nuxtjs.org/getting-started/installation#new-project) ^3.5.3
 

@@ -1,6 +1,6 @@
 <template>
-    <div v-for="variantGroup in variants" :key="variantGroup.id" class="form-control mb-2">
-        <div class="mb-2 label-text">
+    <fieldset v-for="variantGroup in variants" :key="variantGroup.id" class="fieldset mb-2">
+        <div class="mb-2">
             {{ variantGroup.name }}
         </div>
         <div class="flex flex-wrap gap-4">
@@ -28,13 +28,13 @@
                         :disabled="loading"
                         :name="variantGroup.id"
                         :value="variantOption.id"
-                        class="sr-only radio"
+                        class="sr-only"
                         @change="onVariantChange(variantGroup.id, variantOption.id)"
                     >
                 </label>
             </div>
         </div>
-    </div>
+    </fieldset>
 </template>
 
 <script setup lang="ts">

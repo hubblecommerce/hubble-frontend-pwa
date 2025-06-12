@@ -1,5 +1,5 @@
 # Layouts
-[See the layouts on github](https://github.com/hubblecommerce/hubble-frontend-pwa/tree/main/core/layouts)
+[See the layouts on github](https://github.com/hubblecommerce/hubble-frontend-pwa/tree/main/src/theme/layouts)
 
 <img src="/assets/images/layout@2x.jpg" alt="hubble PWA Layout" style="width: 100%;" />
 

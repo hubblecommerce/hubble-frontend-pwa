@@ -1,22 +1,20 @@
 <template>
     <div class="flex flex-col lg:flex-row lg:justify-between lg:items-end gap-2 lg:gap-3">
-        <div class="w-full form-control">
-            <label for="currentPassword" class="label">
-                <span class="label-text">{{ t('customer.edit.form.password.label') }}</span>
-            </label>
+        <fieldset class="w-full fieldset">
+            <label for="currentPassword" class="label">{{ t('customer.edit.form.password.label') }}</label>
             <div class="join">
                 <input
                     id="currentPassword"
                     disabled
                     value="****************"
                     type="password"
-                    class="input input-bordered w-full border-r-0 join-item"
+                    class="input w-full border-r-0 join-item"
                 >
                 <div class="btn btn-square cursor-not-allowed join-item">
                     <LockClosedIcon class="w-5 h-5" />
                 </div>
             </div>
-        </div>
+        </fieldset>
         <label for="editPasswordModal" class="link lg:w-48 lg:py-3">
             {{ t('customer.edit.form.editPasswordAction') }}
         </label>
@@ -34,10 +32,8 @@
             </div>
 
             <form class="flex flex-col items-start gap-3" @submit.prevent="onSubmit()">
-                <div class="form-control w-full">
-                    <label for="editPassword" class="label">
-                        <span class="label-text">{{ t('customer.edit.form.password.label') }}</span>
-                    </label>
+                <fieldset class="fieldset w-full">
+                    <label for="editPassword" class="label">{{ t('customer.edit.form.password.label') }}</label>
                     <div class="join">
                         <input
                             id="editPassword"
@@ -45,19 +41,17 @@
                             required
                             :type="showPassword ? 'text' : 'password'"
                             :placeholder="t('customer.edit.form.password.placeholder')"
-                            class="input input-bordered w-full border-r-0 join-item"
+                            class="input w-full border-r-0 join-item"
                         >
                         <div class="btn btn-square join-item" tabindex="0" @click.prevent="showPassword = !showPassword" @keypress.space.prevent="showPassword = !showPassword">
                             <EyeIcon v-if="!showPassword" class="w-5 h-5" />
                             <EyeSlashIcon v-else class="w-5 h-5" />
                         </div>
                     </div>
-                </div>
+                </fieldset>
 
-                <div class="form-control w-full">
-                    <label for="editPasswordConfirmation" class="label">
-                        <span class="label-text">{{ t('customer.edit.form.passwordConfirmation.label') }}</span>
-                    </label>
+                <fieldset class="fieldset w-full">
+                    <label for="editPasswordConfirmation" class="label">{{ t('customer.edit.form.passwordConfirmation.label') }}</label>
                     <div class="join">
                         <input
                             id="editPasswordConfirmation"
@@ -65,19 +59,17 @@
                             required
                             :type="showPassword ? 'text' : 'password'"
                             :placeholder="t('customer.edit.form.passwordConfirmation.placeholder')"
-                            class="input input-bordered w-full border-r-0 join-item"
+                            class="input w-full border-r-0 join-item"
                         >
                         <div class="btn btn-square join-item" @click.prevent="showPassword = !showPassword">
                             <EyeIcon v-if="!showPassword" class="w-5 h-5" />
                             <EyeSlashIcon v-else class="w-5 h-5" />
                         </div>
                     </div>
-                </div>
+                </fieldset>
 
-                <div class="form-control w-full">
-                    <label for="oldPassword" class="label">
-                        <span class="label-text">{{ t('customer.edit.form.oldPassword.label') }}</span>
-                    </label>
+                <fieldset class="fieldset w-full">
+                    <label for="oldPassword" class="label">{{ t('customer.edit.form.oldPassword.label') }}</label>
                     <div class="join">
                         <input
                             id="oldPassword"
@@ -85,14 +77,14 @@
                             required
                             :type="showPassword ? 'text' : 'password'"
                             :placeholder="t('customer.edit.form.oldPassword.placeholder')"
-                            class="input input-bordered w-full border-r-0 join-item"
+                            class="input w-full border-r-0 join-item"
                         >
                         <div class="btn btn-square join-item" @click.prevent="showPassword = !showPassword">
                             <EyeIcon v-if="!showPassword" class="w-5 h-5" />
                             <EyeSlashIcon v-else class="w-5 h-5" />
                         </div>
                     </div>
-                </div>
+                </fieldset>
 
                 <button type="submit" :disabled="loading" class="btn btn-secondary mt-9">
                     <span v-if="loading" class="loading" />

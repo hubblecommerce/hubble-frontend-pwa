@@ -1,22 +1,20 @@
 <template>
     <div class="flex flex-col lg:flex-row lg:justify-between lg:items-end gap-2 lg:gap-3">
-        <div class="w-full form-control">
-            <label for="currentEmail" class="label">
-                <span class="label-text">{{ t('customer.edit.form.email.label') }}</span>
-            </label>
+        <fieldset class="fieldset w-full">
+            <label for="currentEmail" class="label">{{ t('customer.edit.form.email.label') }}</label>
             <div class="join">
                 <input
                     id="currentEmail"
                     v-model="customer.email"
                     disabled
                     type="text"
-                    class="input input-bordered w-full border-r-0 join-item"
+                    class="input w-full border-r-0 join-item"
                 >
                 <div class="btn btn-square cursor-not-allowed join-item">
                     <LockClosedIcon class="w-5 h-5" />
                 </div>
             </div>
-        </div>
+        </fieldset>
         <label for="editEmailModal" class="link lg:w-48 lg:py-3">
             {{ t('customer.edit.form.editEmailAction') }}
         </label>
@@ -34,10 +32,8 @@
             </div>
 
             <form class="flex flex-col items-start gap-3" @submit.prevent="onSubmit()">
-                <div class="form-control w-full">
-                    <label for="editEmail" class="label">
-                        <span class="label-text">{{ t('customer.edit.form.email.label') }}</span>
-                    </label>
+                <fieldset class="fieldset w-full">
+                    <label for="editEmail" class="label">{{ t('customer.edit.form.email.label') }}</label>
                     <input
                         id="editEmail"
                         v-model="formData.email"
@@ -45,14 +41,12 @@
                         type="email"
                         inputmode="email"
                         :placeholder="t('customer.edit.form.email.placeholder')"
-                        class="input input-bordered w-full"
+                        class="input w-full"
                     >
-                </div>
+                </fieldset>
 
-                <div class="form-control w-full">
-                    <label for="editEmailConfirmation" class="label">
-                        <span class="label-text">{{ t('customer.edit.form.emailConfirmation.label') }}</span>
-                    </label>
+                <fieldset class="fieldset w-full">
+                    <label for="editEmailConfirmation" class="label">{{ t('customer.edit.form.emailConfirmation.label') }}</label>
                     <input
                         id="editEmailConfirmation"
                         v-model="formData.emailConfirmation"
@@ -60,14 +54,12 @@
                         type="email"
                         inputmode="email"
                         :placeholder="t('customer.edit.form.emailConfirmation.placeholder')"
-                        class="input input-bordered w-full"
+                        class="input w-full"
                     >
-                </div>
+                </fieldset>
 
-                <div class="form-control w-full">
-                    <label for="register-password" class="label">
-                        <span class="label-text">{{ t('customer.edit.form.password.label') }}</span>
-                    </label>
+                <fieldset class="fieldset w-full">
+                    <label for="register-password" class="label">{{ t('customer.edit.form.password.label') }}</label>
                     <div class="join">
                         <input
                             id="register-password"
@@ -75,14 +67,14 @@
                             required
                             :type="showPassword ? 'text' : 'password'"
                             :placeholder="t('customer.edit.form.password.placeholder')"
-                            class="input input-bordered w-full border-r-0 join-item"
+                            class="input w-full border-r-0 join-item"
                         >
                         <div class="btn btn-square join-item" tabindex="0" @click.prevent="showPassword = !showPassword" @keypress.space.prevent="showPassword = !showPassword">
                             <EyeIcon v-if="!showPassword" class="w-5 h-5" />
                             <EyeSlashIcon v-else class="w-5 h-5" />
                         </div>
                     </div>
-                </div>
+                </fieldset>
 
                 <button type="submit" :disabled="loading" class="btn btn-secondary mt-9">
                     <span v-if="loading" class="loading" />

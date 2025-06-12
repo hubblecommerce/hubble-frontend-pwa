@@ -137,7 +137,6 @@ export default defineNuxtModule<ModuleOptions>({
             'plugins',
             'public',
             'utils',
-            'tailwind.config.ts'
         ],
         setTailwindPostcss: true
     },
@@ -152,7 +151,7 @@ export default defineNuxtModule<ModuleOptions>({
         nuxt.options.build.transpile.push(runtimeDir)
 
         // Install pinia for store management
-        await installModule('@pinia/nuxt', { disableVuex: true })
+        await installModule('@pinia/nuxt')
 
         // Install VueUse for useful helper composables
         await installModule('@vueuse/nuxt')
@@ -293,14 +292,7 @@ export default defineNuxtModule<ModuleOptions>({
         nuxt.options.css.push(resolve(join(targetDir, 'assets/css/tailwind.css')))
 
         if (options?.setTailwindPostcss) {
-            const tailwindPostCSSPlugins = {
-                'postcss-import': {},
-                'tailwindcss/nesting': {},
-                tailwindcss: {
-                    config: resolve(join(targetDir, 'tailwind.config.ts'))
-                },
-                autoprefixer: {}
-            }
+            const tailwindPostCSSPlugins = {'@tailwindcss/postcss': {},}
             nuxt.options.postcss.plugins = { ...tailwindPostCSSPlugins, ...nuxt.options.postcss.plugins }
         }
 

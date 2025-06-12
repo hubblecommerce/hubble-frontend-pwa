@@ -1,21 +1,23 @@
 <template>
-    <form class="w-full form-control" @submit.prevent="onSubmit()">
-        <label for="applyCoupon" class="sr-only">{{ t('cart.cartCoupons.label') }}</label>
-        <div class="w-full join">
-            <input
-                id="applyCoupon"
-                v-model="code"
-                :disabled="loading"
-                required
-                type="text"
-                :placeholder="t('cart.cartCoupons.placeholder')"
-                class="w-full input input-bordered join-item"
-            >
-            <button :disabled="loading" class="btn join-item">
-                <span v-if="loading" class="loading" />
-                {{ t('cart.cartCoupons.label') }}
-            </button>
-        </div>
+    <form class="w-full" @submit.prevent="onSubmit()">
+        <fieldset class="fieldset">
+            <label for="applyCoupon" class="sr-only">{{ t('cart.cartCoupons.label') }}</label>
+            <div class="w-full join">
+                <input
+                    id="applyCoupon"
+                    v-model="code"
+                    :disabled="loading"
+                    required
+                    type="text"
+                    :placeholder="t('cart.cartCoupons.placeholder')"
+                    class="w-full input input-bordered join-item"
+                >
+                <button :disabled="loading" class="btn join-item">
+                    <span v-if="loading" class="loading" />
+                    {{ t('cart.cartCoupons.label') }}
+                </button>
+            </div>
+        </fieldset>
     </form>
 </template>
 

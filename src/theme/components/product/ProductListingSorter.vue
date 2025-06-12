@@ -1,11 +1,9 @@
 <template>
-    <div class="form-control">
-        <label for="sorter" class="label sr-only">
-            <span class="label-text">Sort by</span>
-        </label>
+    <fieldset class="fieldset">
+        <label for="sorter" class="label sr-only">Sort by</label>
         <div class="join">
             <span class="btn btn-sm no-animation join-item">Sort by</span>
-            <select id="sorter" v-model="selectedSorting" class="select select-sm" @change="setSorting(selectedSorting)">
+            <select id="sorter" v-model="selectedSorting" class="select select-ghost select-sm" @change="setSorting(selectedSorting)">
                 <option
                     v-for="item in availableSorting"
                     :key="item.id"
@@ -14,7 +12,7 @@
                 />
             </select>
         </div>
-    </div>
+    </fieldset>
 </template>
 
 <script setup lang="ts">

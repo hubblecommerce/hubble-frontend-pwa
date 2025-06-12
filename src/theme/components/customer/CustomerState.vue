@@ -1,19 +1,21 @@
 <template>
     <template v-if="customer != null">
-        <label tabindex="0" class="btn btn-ghost btn-circle">
-            <span class="relative">
-                <UserIcon class="h-5 w-5" />
+        <div class="dropdown dropdown-end">
+            <label tabindex="0" class="btn btn-ghost btn-circle">
+                <span class="relative">
+                    <UserIcon class="h-5 w-5" />
 
-                <client-only>
-                    <span class="absolute text-success -right-1 -bottom-1 bg-success rounded-full">
-                        <CheckIcon class="h-3 w-3 text-success-content" />
-                    </span>
-                </client-only>
-            </span>
-        </label>
+                    <client-only>
+                        <span class="absolute text-success -right-1 -bottom-1 bg-success rounded-full">
+                            <CheckIcon class="h-3 w-3 text-success-content" />
+                        </span>
+                    </client-only>
+                </span>
+            </label>
 
-        <CustomerGuestNavigation v-if="customer.isGuest" />
-        <CustomerNavigation v-else />
+            <CustomerGuestNavigation v-if="customer.isGuest" />
+            <CustomerNavigation v-else />
+        </div>
     </template>
     <MiscLink
         v-else

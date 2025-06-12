@@ -1,7 +1,7 @@
 <template>
     <footer>
         <div class="bg-base-200">
-            <div class="footer container m-auto px-6 py-10 text-base-content">
+            <div class="footer md:footer-horizontal container m-auto px-6 py-10 text-base-content">
                 <div>
                     <span class="footer-title">Services</span>
                     <a class="link link-hover">Branding</a>
@@ -24,23 +24,21 @@
                 </div>
                 <div>
                     <span class="footer-title">Newsletter</span>
-                    <div class="form-control w-80">
-                        <label class="label">
-                            <span class="label-text">Enter your email address</span>
-                        </label>
+                    <fieldset class="fieldset w-80">
+                        <label class="label">Enter your email address</label>
                         <div class="relative">
-                            <input type="text" placeholder="username@site.com" class="input input-bordered w-full pr-16">
+                            <input type="text" placeholder="username@site.com" class="input w-full pr-16">
                             <button class="btn btn-primary absolute top-0 right-0 rounded-l-none">
                                 Subscribe
                             </button>
                         </div>
-                    </div>
+                    </fieldset>
                 </div>
             </div>
         </div>
 
         <div class="bg-neutral text-neutral-content">
-            <div class="footer container m-auto items-center py-4 px-6">
+            <div class="footer md:footer-horizontal container m-auto items-center py-4 px-6">
                 <div class="items-center grid-flow-col">
                     <svg
                         width="36"

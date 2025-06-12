@@ -47,7 +47,7 @@ describe('Platform: Shopware', () => {
 
         // click search button in customer navigation
         cy.get('.navbar-end > div:nth-child(3)').click()
-        cy.get('.drawer-side .form-control input').type('product')
+        cy.get('.drawer-side .fieldset input').type('product')
         cy.get('.drawer-side .grid.grid-cols-2.gap-2').children().should('have.length.at.least', 1)
 
         cy.contains('View all results').click()

@@ -45,18 +45,18 @@
             <form ref="addressBookForm" class="w-full relative flex flex-col" @submit.prevent="onFormSubmit()">
                 <CustomerAddressForm v-if="formAction === 'Add' || formAction === 'Edit'" :model-value="formData" />
                 <CustomerAddressRenderer v-if="formAction === 'Delete'" :address="formData" />
-                <div v-if="formAction === 'Add' || formAction === 'Edit'" class="form-control mt-4">
+                <fieldset v-if="formAction === 'Add' || formAction === 'Edit'" class="fieldset mt-4">
+                    <input id="useDefaultBilling" v-model="useAsDefaultBilling" type="checkbox" class="checkbox mr-2">
                     <label for="useDefaultBilling" class="label justify-start cursor-pointer">
-                        <input id="useDefaultBilling" v-model="useAsDefaultBilling" type="checkbox" class="checkbox mr-2">
-                        <span class="label-text">{{ t('customer.address.book.defaultBillingAction') }}</span>
+                        {{ t('customer.address.book.defaultBillingAction') }}
                     </label>
-                </div>
-                <div v-if="formAction === 'Add' || formAction === 'Edit'" class="form-control">
+                </fieldset>
+                <fieldset v-if="formAction === 'Add' || formAction === 'Edit'" class="fieldset">
+                    <input id="useDefaultShipping" v-model="useAsDefaultShipping" type="checkbox" class="checkbox mr-2">
                     <label for="useDefaultShipping" class="label justify-start cursor-pointer">
-                        <input id="useDefaultShipping" v-model="useAsDefaultShipping" type="checkbox" class="checkbox mr-2">
-                        <span class="label-text">{{ t('customer.address.book.defaultShippingAction') }}</span>
+                        {{ t('customer.address.book.defaultShippingAction') }}
                     </label>
-                </div>
+                </fieldset>
                 <button
                     type="submit"
                     :class="{ 'loading': loading }"

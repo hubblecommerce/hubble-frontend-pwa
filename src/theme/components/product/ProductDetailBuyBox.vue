@@ -42,19 +42,17 @@
                 />
 
                 <div class="card-actions justify-between items-end flex-nowrap">
-                    <div class="form-control w-20">
-                        <label for="quantity" class="label">
-                            <span class="label-text">Quantity</span>
-                        </label>
+                    <fieldset class="fieldset w-20">
+                        <label for="quantity" class="label">Quantity</label>
                         <input
                             id="quantity"
                             v-model="qty"
                             type="number"
                             min="1"
                             :max="product.stock"
-                            class="input input-bordered input-secondary w-full max-w-xs"
+                            class="input input-secondary w-full max-w-xs"
                         >
-                    </div>
+                    </fieldset>
 
                     <button :disabled="loading" class="btn btn-primary w-full flex-shrink" @click="onClickAddToCart(qty, product.id)">
                         <span v-if="loading" class="loading" />

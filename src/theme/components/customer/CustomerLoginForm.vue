@@ -1,11 +1,7 @@
 <template>
     <form ref="loginForm">
-        <div class="form-control">
-            <label for="email" class="label">
-                <span class="label-text">
-                    {{ t('customerLogin.mailTitle') }}
-                </span>
-            </label>
+        <fieldset class="fieldset">
+            <label for="email" class="label">{{ t('customerLogin.mailTitle') }}</label>
             <input
                 id="username"
                 v-model="username"
@@ -14,16 +10,12 @@
                 type="email"
                 inputmode="email"
                 :placeholder="t('customerLogin.mailPlaceholder')"
-                class="input input-bordered w-full"
+                class="input w-full"
             >
-        </div>
+        </fieldset>
 
-        <div v-if="!resetPassword" class="form-control mt-4">
-            <label for="password" class="label">
-                <span class="label-text">
-                    {{ t('customerLogin.passwordTitle') }}
-                </span>
-            </label>
+        <fieldset v-if="!resetPassword" class="fieldset mt-4">
+            <label for="password" class="label">{{ t('customerLogin.passwordTitle') }}</label>
             <div class="join">
                 <input
                     id="password"
@@ -32,14 +24,14 @@
                     name="password"
                     :type="showPassword ? 'text' : 'password'"
                     :placeholder="t('customerLogin.passwordPlaceholder')"
-                    class="input input-bordered w-full border-r-0 join-item"
+                    class="input w-full border-r-0 join-item"
                 >
                 <div class="btn btn-square join-item" tabindex="0" @click="showPassword = !showPassword" @keypress.space.prevent="showPassword = !showPassword">
                     <EyeIcon v-if="!showPassword" class="w-5 h-5" />
                     <EyeSlashIcon v-else class="w-5 h-5" />
                 </div>
             </div>
-        </div>
+        </fieldset>
 
         <button
             v-if="!resetPassword"

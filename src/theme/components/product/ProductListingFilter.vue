@@ -10,8 +10,8 @@
                     <label tabindex="0" class="btn btn-sm">{{ availableFilter.name }}</label>
                 </div>
                 <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 z-10">
-                    <li v-for="option in availableFilter.options" :key="option.id" class="form-control">
-                        <label :for="option.id" class="label cursor-pointer justify-start">
+                    <li v-for="option in availableFilter.options" :key="option.id">
+                        <fieldset class="flex gap-2">
                             <input
                                 :id="option.id"
                                 v-model="selectedFilters[availableFilter.id]"
@@ -20,8 +20,9 @@
                                 class="checkbox checkbox-sm"
                                 @change="applyFilter()"
                             >
-                            <span class="label-text">{{ option.name }}</span>
-                        </label>
+                            <label :for="option.id" class="label cursor-pointer justify-start">{{ option.name }}</label>
+                        </fieldset>
+
                     </li>
                 </ul>
             </div>
@@ -40,29 +41,32 @@
                     <label tabindex="0" class="btn btn-sm">{{ availableFilter.name }}</label>
                 </div>
                 <ul tabindex="0" class="dropdown-content p-2 shadow bg-base-100 rounded-box w-52 z-10">
-                    <li class="form-control">
-                        <label :for="availableFilter.id" class="label">
-                            <span class="label-text">{{ Math.round(selectedFilters[availableFilter.id].max) }}</span>
-                        </label>
-                        <input
-                            :id="availableFilter.id"
-                            v-model="selectedFilters[availableFilter.id].max"
-                            type="range"
-                            :min="Math.round(availableFilter.min)"
-                            :max="Math.round(availableFilter.max)"
-                            class="range"
-                            step="1"
-                            @change="applyFilter(1000)"
-                        >
-                        <label :for="availableFilter.id" class="label">
-                            <span class="label-text-alt">{{ Math.round(availableFilter.min) }}</span>
-                            <span class="label-text-alt">{{ Math.round(availableFilter.max) }}</span>
-                        </label>
+                    <li>
+                        <fieldset class="fieldset">
+                            <label :for="availableFilter.id" class="label">
+                                {{ Math.round(selectedFilters[availableFilter.id].max) }}
+                            </label>
+                            <input
+                                :id="availableFilter.id"
+                                v-model="selectedFilters[availableFilter.id].max"
+                                type="range"
+                                :min="Math.round(availableFilter.min)"
+                                :max="Math.round(availableFilter.max)"
+                                class="range"
+                                step="1"
+                                @change="applyFilter(1000)"
+                            >
+                            <label :for="availableFilter.id" class="label">
+                                <span>{{ Math.round(availableFilter.min) }}</span>
+                                <span>{{ Math.round(availableFilter.max) }}</span>
+                            </label>
+                        </fieldset>
+
                     </li>
                 </ul>
             </div>
 
-            <div v-if="availableFilter.type === 'boolean'" :key="availableFilter.id" class="form-control btn btn-sm">
+            <fieldset v-if="availableFilter.type === 'boolean'" :key="availableFilter.id" class="fieldset btn btn-sm">
                 <label :for="availableFilter.id" class="label cursor-pointer">
                     <input
                         :id="availableFilter.id"
@@ -74,7 +78,7 @@
                     >
                     <span>{{ availableFilter.name }}</span>
                 </label>
-            </div>
+            </fieldset>
         </template>
 
         <button v-if="filterIsset > 0" class="btn btn-sm btn-secondary" @click="resetAllFilter()">
