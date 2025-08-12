@@ -98,7 +98,7 @@
         "cypress": "^14.3.0",
         "daisyui": "^5.0.9",
         "husky": "^9.1.4",
-        "lint-staged": "^15.2.10",
+        "lint-staged": "^16.1.5",
         "nuxt": "^3.17.7",
         "openapi-typescript-codegen": "^0.29.0",
         "rollup-plugin-copy": "^3.4.0",
