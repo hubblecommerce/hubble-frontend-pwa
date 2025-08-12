@@ -22,7 +22,13 @@ import { hblDetailData } from '@/utils/helper'
 const route = useRoute()
 const { page, getPage } = usePage()
 
-const { data, error } = await useAsyncData(() => getPage(route), { initialCache: false })
+const { data, error } = await useAsyncData(
+    `page-${route.path}`,
+    () => getPage(route),
+    {
+        initialCache: false
+    }
+)
 page.value = data.value
 
 if (error.value) {
