@@ -72,8 +72,8 @@
         "@nuxtjs/i18n": "^9.5.3",
         "@pinia/nuxt": "^0.11.0",
         "@tailwindcss/postcss": "^4.1.4",
-        "@vuepress/bundler-vite": "^2.0.0-rc.22",
-        "@vuepress/theme-default": "^2.0.0-rc.97",
+        "@vuepress/bundler-vite": "^2.0.0-rc.24",
+        "@vuepress/theme-default": "^2.0.0-rc.112",
         "@vueuse/core": "^13.0.0",
         "@vueuse/nuxt": "^13.0.0",
         "csvtojson": "^2.0.10",
@@ -105,6 +105,6 @@
         "sass-embedded": "^1.80.7",
         "start-server-and-test": "^2.0.0",
         "typescript": "^5.8.3",
-        "vuepress": "^2.0.0-rc.22"
+        "vuepress": "^2.0.0-rc.24"
     }
 }
