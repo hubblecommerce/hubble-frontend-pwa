@@ -151,7 +151,7 @@ See our detailed [roadmap](/pwa/what/roadmap.html) for further information.
 
 ## Contributing
 
-Specific instructions for pull requests can be found [here](pwa/contribution/contributionpwa.md).
+Specific instructions for pull requests can be found [here](pwa/module/contributionpwa.html).
 
 ## Support
 
