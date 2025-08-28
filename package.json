@@ -1,6 +1,11 @@
 {
     "name": "@hubblecommerce/hubble",
     "version": "2.15.1",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/hubblecommerce/hubble-frontend-pwa.git"
+    },
+    "homepage": "https://github.com/hubblecommerce/hubble-frontend-pwa",
     "description": "PWA for eCommerce frameworks based on NuxtJs",
     "author": "hubble commerce",
     "license": "MIT",
