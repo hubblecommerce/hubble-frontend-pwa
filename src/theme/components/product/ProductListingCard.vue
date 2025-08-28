@@ -64,7 +64,12 @@ const hasSpecialPrice = computed(() => {
 const image = ref({
     src: Array.isArray(props.data.media) ? props.data.media[0]?.url : props.data.media?.url
 })
-const { isLoading } = useImage(image)
+
+if(image.value?.src) {
+    const { isLoading } = useImage(image)
+} else {
+    const isLoading = ref(false)
+}
 
 const cartStore = useCart()
 const { loading: cartLoading, error: cartError } = storeToRefs(cartStore)
