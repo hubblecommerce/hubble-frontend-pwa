@@ -8,7 +8,7 @@ This is **Hubble Commerce**, a headless e-commerce PWA built as a Nuxt.js module
 
 - **Main package**: `@hubblecommerce/hubble` - A Nuxt.js module for e-commerce PWAs
 - **Architecture**: File-based inheritance system with platform-specific implementations
-- **Primary platform**: Shopware 6 (via environment variable `PLATFORM=shopware`)
+- **Primary platform**: Shopware 6
 
 ## Common Development Commands
 
@@ -49,10 +49,11 @@ npm run i18n:import               # Import translations from CSV
 ### Shopware-specific Commands
 ```bash
 npm run sw:dev:generate-api       # Generate Shopware API client
-npm run sw:install-plugins        # Install Shopware plugin assets
-npm run sw:config-plugins         # Configure Shopware plugins
+npm run sw:config-plugins         # Configure Shopware plugins and generate mappings
 npm run sw:languages              # Configure languages
 ```
+
+**Note:** `sw:install-plugins` has been removed. Plugin layers must be created manually in `layers/plugin-name/`.
 
 ## Architecture
 
@@ -80,10 +81,31 @@ Files are copied to `.hubble/` directory in this inheritance order, where later 
 - **Layout components**: `components/layout/` - App-wide layout components
 
 ### Platform Integration
-- Uses environment variable `PLATFORM` (typically "shopware")
-- Platform-specific configs in `src/platforms/{platform}/config/config.ts`
+- Built for Shopware 6 platform
+- Platform-specific configs in `src/platforms/shopware/config/config.ts`
 - API clients generated from OpenAPI specs
 - Mapping utilities convert platform data to internal `Hbl` types
+
+### Plugin Layer Setup (Manual)
+Since automatic plugin installation was removed, plugins must be set up manually:
+
+1. **Create plugin layer**: `layers/plugin-name/`
+2. **Add plugin structure**:
+   ```
+   layers/plugin-name/
+   ├── components/          # Plugin Vue components
+   ├── pages/              # Plugin pages
+   ├── layouts/            # Plugin layouts (optional)
+   ├── middleware/         # Plugin middleware (optional)
+   ├── plugins/            # Plugin initialization files (optional)
+   ├── assets/             # Plugin assets (optional)
+   └── nuxt.config.ts      # Plugin layer configuration
+   ```
+3. **Configure plugin**: Run `npm run sw:config-plugins` to generate:
+   - `platform-plugins/pluginConfig.json` - Plugin runtime configuration
+   - `platform-plugins/pluginMapping.json` - Plugin slot mappings
+4. **Layer auto-discovery**: Nuxt automatically discovers plugin layers
+5. **Layer priority**: User files > Plugin layers > Main hubble layer
 
 ## Configuration Files
 
@@ -94,7 +116,7 @@ Files are copied to `.hubble/` directory in this inheritance order, where later 
 
 ## Development Workflow
 
-1. **Environment setup**: Requires `.env` file with `PLATFORM` and platform-specific credentials
+1. **Environment setup**: Requires `.env` file with Shopware API credentials
 2. **Development**: Use `npm run dev:prepare` then `npm run dev`
 3. **Testing**: Run `npm run test:integration` for Vitest tests
 4. **Code style**: Must pass `npm run lint` (automatically fixes many issues)

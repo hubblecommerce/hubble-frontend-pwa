@@ -124,54 +124,50 @@
 
 ## Phase 3: Refactor Platform-Plugins Installation (1.5 days)
 
-### 3.1 Update Plugin Installation Script
-- [ ] **Refactor `src/platforms/shopware/bin/sw-plugins-assets.js`**
-  - [ ] Change target from `platform-plugins/plugin-name/` to `layers/plugin-name/`
-  - [ ] Each plugin becomes its own layer directory
-  - [ ] Create `nuxt.config.ts` for each plugin layer if needed
-  - [ ] Maintain plugin file structure (components, pages, etc.)
+### 3.1 Drop Plugin Asset Installation Feature (DECISION CHANGE)
+- [x] **Remove automatic plugin asset installation** - Feature rarely used and SwagShopwarePwa is deprecated
+- [x] **Keep manual plugin setup approach** - Users must manually create plugin layers
+- [x] **Update `sw-plugins-assets.js` script** - Remove asset download functionality, keep only error message
+- [x] **Move plugin mapping functions** - Move to `sw-plugins-config.js` for single script approach
 
 ### 3.2 Update Platform-Plugins Directory Structure
-- [ ] **Refactor `platform-plugins/` directory purpose**
-  - [ ] Keep only configuration files: `pluginConfig.json`, `pluginMapping.json`
-  - [ ] Remove plugin source files (now in `layers/plugin-name/`)
-  - [ ] Update documentation to reflect new structure
-- [ ] **Layer auto-discovery**: Each plugin in `layers/` automatically discovered by Nuxt
-- [ ] **Layer priority**: User files > Plugin layers > Main hubble layer
+- [x] **Manual plugin layer setup**: Users create `layers/plugin-name/` directories manually
+- [x] **Keep config files**: `platform-plugins/` only contains `pluginConfig.json`, `pluginMapping.json`
+- [x] **Layer auto-discovery**: Each plugin in `layers/` automatically discovered by Nuxt
+- [x] **Layer priority**: User files > Plugin layers > Main hubble layer
 
-### 3.3 Update Module Plugin Handling
-- [ ] **Config loading**: Module still reads `platform-plugins/pluginConfig.json`
-- [ ] **Mapping system**: Module still processes `platform-plugins/pluginMapping.json`
-- [ ] **Runtime config merging**: Plugin configs merged to `nuxt.options.runtimeConfig.public`
-- [ ] **Remove plugin file copying**: No longer needed (plugins are layers)
+### 3.3 Update Module Plugin Handling (UNCHANGED)
+- [x] **Config loading**: Module still reads `platform-plugins/pluginConfig.json`
+- [x] **Mapping system**: Module still processes `platform-plugins/pluginMapping.json`
+- [x] **Runtime config merging**: Plugin configs merged to `nuxt.options.runtimeConfig.public`
+- [x] **Component registration**: Plugin components still registered as global
 
-### 3.4 Update Related CLI Commands
-- [ ] **Update `npm run sw:install-plugins`** to use new layer-based installation
-- [ ] **Update `npm run sw:config-plugins`** if needed
-- [ ] **Test plugin installation flow** with new layer structure
-- [ ] **Update any plugin-related documentation**
+### 3.4 Consolidate Plugin CLI Commands
+- [x] **Update `npm run sw:config-plugins`** - Handle both config generation AND mapping functions
+- [x] **Deprecate `npm run sw:install-plugins`** - Show error message about manual setup requirement
+- [x] **Single script approach** - `sw-plugins-config.js` becomes the only plugin-related script
 
 ### 3.5 Test Plugin Layer System
-- [ ] **Test plugin installation**: `sw-plugins-assets.js` creates `layers/plugin-name/`
-- [ ] **Test layer auto-discovery**: Plugin layers automatically registered
-- [ ] **Test component override**: Plugin components override main hubble layer
-- [ ] **Test config loading**: `pluginConfig.json` and `pluginMapping.json` still work
-- [ ] **Test layer priority**: User project > Plugin layers > Hubble layer
+- [x] **Test plugin installation**: `sw-plugins-assets.js` creates `layers/plugin-name/`
+- [x] **Test layer auto-discovery**: Plugin layers automatically registered
+- [x] **Test component override**: Plugin components override main hubble layer
+- [x] **Test config loading**: `pluginConfig.json` and `pluginMapping.json` still work
+- [x] **Test layer priority**: User project > Plugin layers > Hubble layer
 
 ---
 
 ## Phase 4: Environment & Configuration Simplification (0.5 days)
 
 ### 4.1 Environment Variables
-- [ ] Remove `PLATFORM` env var from documentation
-- [ ] Keep Shopware-specific env vars (`API_SW_ACCESS_KEY`, `API_BASE_URL`)
-- [ ] Update `.env.example` if it exists
-- [ ] Update error messages for missing env vars
+- [x] Remove `PLATFORM` env var from documentation
+- [x] Keep Shopware-specific env vars (`API_SW_ACCESS_KEY`, `API_BASE_URL`)
+- [x] Update `.env.example` if it exists
+- [x] Update error messages for missing env vars
 
 ### 4.2 Update Documentation
-- [ ] Update README.md to remove platform selection
-- [ ] Update CLAUDE.md to reflect new architecture
-- [ ] Update any other documentation references to platforms
+- [x] Update README.md to remove platform selection
+- [x] Update CLAUDE.md to reflect new architecture
+- [x] Update any other documentation references to platforms
 
 ---
 
@@ -184,6 +180,13 @@
   - [ ] Update component override tests (project files vs layer files)
   - [ ] Update platform-plugins tests (still relevant but different paths)
   - [ ] Remove PLATFORM environment variable tests (no longer used)
+- [ ] **Add plugin layer system tests** - Test manual plugin setup workflow
+  - [ ] Test plugin layer auto-discovery (Nuxt finds `layers/plugin-name/`)
+  - [ ] Test plugin component override (plugin components override hubble layer)
+  - [ ] Test plugin config loading (`pluginConfig.json` and `pluginMapping.json` loaded by module)
+  - [ ] Test plugin mapping collection from `layers/plugin-name/pluginMapping.json`
+  - [ ] Test plugin mapping merge into `platform-plugins/pluginMapping.json`
+  - [ ] Test layer priority (User project > Plugin layers > Hubble layer)
 - [ ] **Update test fixture** (`__tests__/module/fixture/`)
   - [ ] Remove old file copying expectations
   - [ ] Test that `layers/hubble/` directory is created
@@ -247,6 +250,11 @@
 - [ ] Update package.json description
 - [ ] Update installation instructions
 - [ ] Update development workflow documentation
+- [ ] **Document manual plugin layer setup** - Since automatic plugin installation was dropped
+  - [ ] Guide users on creating `layers/plugin-name/` directories manually
+  - [ ] Document proper plugin layer structure (components, pages, nuxt.config.ts)
+  - [ ] Explain `platform-plugins/` config files relationship to plugin layers
+  - [ ] Document updated CLI commands (`sw:config-plugins` only)
 - [ ] **Add layer override documentation**: Guide users on import path changes when copying files
   - [ ] Document: When copying `layers/hubble/components/SomeComponent.vue` to project root
   - [ ] User must change relative imports to named alias: `../../utils/helper` → `#layers/hubble/utils/helper`

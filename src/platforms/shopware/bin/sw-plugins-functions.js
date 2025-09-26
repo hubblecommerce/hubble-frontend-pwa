@@ -21,6 +21,7 @@ const { install, setPackageManager } = lmify
 const projectDir = playgroundExists ? playgroundPath : process.env.INIT_CWD
 const pluginsDirName = 'platform-plugins'
 const pluginsDir = path.join(projectDir, `/${pluginsDirName}`)
+const layersDir = path.join(projectDir, '/layers')
 const pluginConfigFile = 'pluginConfig.json'
 const apiBasePath = process.env.API_BASE_URL.replace('/store-api', '')
 const authRoute = '/api/oauth/token'
@@ -36,10 +37,15 @@ const configWhiteListFileName = 'pluginConfigWhitelist.json'
 
 function downloadFile (fileUrl, outputLocationPath) {
     const writer = fse.createWriteStream(outputLocationPath)
+    const downloadUrl = apiBasePath + fileUrl
 
-    return fetch(path.join(apiBasePath, fileUrl), {
+    return fetch(downloadUrl, {
         method: 'GET'
     }).then((response) => {
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`)
+        }
+
         return new Promise((resolve, reject) => {
             Readable.fromWeb(response.body).pipe(writer)
 
@@ -88,8 +94,88 @@ function capitalizeFirstLetter (string) {
 async function ensurePluginsDir () {
     try {
         await fse.ensureDir(pluginsDir)
+        await fse.ensureDir(layersDir)
     } catch (e) {
         return e
+    }
+}
+
+async function removePluginLayers () {
+    try {
+        const pluginDirs = await getDirs(pluginsDir)
+        for (const pluginDir of pluginDirs) {
+            const pluginName = path.basename(pluginDir)
+            const layerDir = path.join(layersDir, pluginName)
+            if (await fse.pathExists(layerDir)) {
+                await fse.remove(layerDir)
+            }
+        }
+        return [true, null]
+    } catch (e) {
+        return [null, e]
+    }
+}
+
+async function createPluginLayers () {
+    try {
+        const pluginDirs = await getDirs(pluginsDir)
+
+        for (const pluginDir of pluginDirs) {
+            const pluginName = path.basename(pluginDir)
+            const layerDir = path.join(layersDir, pluginName)
+
+            // Create layer directory structure
+            await fse.ensureDir(layerDir)
+
+            // Move component files to layer
+            const componentsDir = path.join(pluginDir, 'components')
+            if (await fse.pathExists(componentsDir)) {
+                await fse.move(componentsDir, path.join(layerDir, 'components'))
+            }
+
+            // Move page files to layer
+            const pagesDir = path.join(pluginDir, 'pages')
+            if (await fse.pathExists(pagesDir)) {
+                await fse.move(pagesDir, path.join(layerDir, 'pages'))
+            }
+
+            // Move layout files to layer
+            const layoutsDir = path.join(pluginDir, 'layouts')
+            if (await fse.pathExists(layoutsDir)) {
+                await fse.move(layoutsDir, path.join(layerDir, 'layouts'))
+            }
+
+            // Move middleware files to layer
+            const middlewareDir = path.join(pluginDir, 'middleware')
+            if (await fse.pathExists(middlewareDir)) {
+                await fse.move(middlewareDir, path.join(layerDir, 'middleware'))
+            }
+
+            // Move plugin files to layer
+            const pluginsSubDir = path.join(pluginDir, 'plugins')
+            if (await fse.pathExists(pluginsSubDir)) {
+                await fse.move(pluginsSubDir, path.join(layerDir, 'plugins'))
+            }
+
+            // Move assets to layer
+            const assetsDir = path.join(pluginDir, 'assets')
+            if (await fse.pathExists(assetsDir)) {
+                await fse.move(assetsDir, path.join(layerDir, 'assets'))
+            }
+
+            // Create basic nuxt.config.ts for the plugin layer if it doesn't exist
+            const layerConfigPath = path.join(layerDir, 'nuxt.config.ts')
+            if (!await fse.pathExists(layerConfigPath)) {
+                const layerConfig = `export default defineNuxtConfig({
+                                        // Plugin layer configuration for ${pluginName}
+                                    })`
+                await fse.writeFile(layerConfigPath, layerConfig)
+            }
+        }
+
+        return [true, null]
+    } catch (e) {
+        return [null, e]
     }
 }
 
@@ -119,8 +205,8 @@ async function dumpBundles (authResponse) {
 
         return [response._data.buildArtifact, response._data.bundleConfig, null]
     } catch (e) {
-
         console.error(e)
+        return [null, null, e]
     }
 }
 
@@ -200,6 +286,7 @@ async function downloadAssets (fileUrl) {
 
 async function removePluginDirs () {
     try {
+        // Only remove plugin source directories, keep config files
         const pluginDirs = await getDirs(pluginsDir)
 
         for (const pluginDir of pluginDirs) {
@@ -228,7 +315,7 @@ async function getDirs (dir) {
 
     for (const dirent of dirents) {
         if (dirent.isDirectory()) {
-            pluginDirs.push([pluginsDir, dirent.name].join('/'))
+            pluginDirs.push(path.join(dir, dirent.name))
         }
     }
 
@@ -276,19 +363,25 @@ async function installDependencies (deps) {
 async function collectPluginMapping () {
     try {
         const mapping = []
-        const pluginDirs = await getDirs(pluginsDir)
+        // Look in layers directory instead of platform-plugins
+        const pluginLayerDirs = await getDirs(layersDir)
 
-        for (const pluginDir of pluginDirs) {
-            const pluginMappingJson = await fse.readJson([pluginDir, mappingFileName].join('/'))
+        for (const pluginLayerDir of pluginLayerDirs) {
+            const pluginMappingPath = path.join(pluginLayerDir, mappingFileName)
 
-            if (pluginMappingJson) {
-                if (!Object.prototype.hasOwnProperty.call(pluginMappingJson, 'pluginSlots')) {
-                    throw new Error(`${mappingFileName} of ${pluginDir} has wrong format`)
+            // Check if mapping file exists in this layer
+            if (await fse.pathExists(pluginMappingPath)) {
+                const pluginMappingJson = await fse.readJson(pluginMappingPath)
+
+                if (pluginMappingJson) {
+                    if (!Object.prototype.hasOwnProperty.call(pluginMappingJson, 'pluginSlots')) {
+                        throw new Error(`${mappingFileName} of ${pluginLayerDir} has wrong format`)
+                    }
+
+                    pluginMappingJson.pluginSlots.forEach((slot) => {
+                        mapping.push(slot)
+                    })
                 }
-
-                pluginMappingJson.pluginSlots.forEach((slot) => {
-                    mapping.push(slot)
-                })
             }
         }
 
@@ -332,6 +425,8 @@ export {
     createPluginConfig,
     downloadAssets,
     removePluginDirs,
+    removePluginLayers,
+    createPluginLayers,
     unzipAssets,
     getDirs,
     collectDependencies,

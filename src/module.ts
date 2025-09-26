@@ -2,7 +2,6 @@ import { join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { defineNuxtModule, installModule } from '@nuxt/kit'
 import { defu } from 'defu'
-import { globby } from 'globby'
 import type { Nuxt } from '@nuxt/schema'
 import fse from 'fs-extra'
 const { pathExists, readJson, copy, emptyDir } = fse
@@ -15,10 +14,6 @@ async function setPlatformPluginRuntimeConfigs (nuxt: Nuxt, pluginsConfigPath: s
         const pluginConfigs = await readJson(pluginsConfigPath)
         nuxt.options.runtimeConfig.public = defu(nuxt.options.runtimeConfig.public, pluginConfigs)
     }
-}
-
-const listAllDirs = (dir: string) => {
-    return globby(`${dir}/*`, { onlyDirectories: true })
 }
 
 // Smart layer copying with cache
@@ -96,6 +91,19 @@ export default defineNuxtModule<ModuleOptions>({
         await installModule('@vueuse/nuxt')
 
         /*
+         * Environment validation
+         */
+        const requiredEnvVars = ['API_BASE_URL', 'API_SW_ACCESS_KEY']
+        const missingEnvVars = requiredEnvVars.filter(envVar => !process.env[envVar])
+
+        if (missingEnvVars.length > 0) {
+            throw new Error(
+                `Missing required environment variables: ${missingEnvVars.join(', ')}. ` +
+                'Please check your .env file and ensure all Shopware API credentials are configured. '
+            )
+        }
+
+        /*
          * Layer-based architecture
          */
         const sourceLayerDir = resolve(join(runtimeDir, 'layer'))
@@ -114,23 +122,12 @@ export default defineNuxtModule<ModuleOptions>({
             console.info('Hubble layer synced to layers/hubble/')
         }
 
-        // Handle platform plugins (to be refactored to individual layers in Phase 3)
-        // For now, keep existing plugin config loading for compatibility
-        const platformPluginsDirs = await listAllDirs(platformPluginsDir)
-        // TODO: In Phase 3, this will be refactored to create individual layers
-
         // File inheritance for pluginMapping.json
         const pluginMappingExists = await pathExists(resolve(join(platformPluginsDir, 'pluginMapping.json')))
         if (pluginMappingExists) {
             const pluginMapping = await readJson(resolve(join(platformPluginsDir, 'pluginMapping.json')))
             nuxt.options.runtimeConfig.public.pluginMapping = defu(nuxt.options.runtimeConfig.public.pluginMapping as any, pluginMapping)
         }
-
-        // No need for file copying or srcDir manipulation with layers
-        // Layers are auto-discovered by Nuxt from layers/ directory
-
-        // Keep basic aliases but remove targetDir-based ones (handled by layer)
-        // TODO: Review if these are still needed with layers
 
         // To make resolveComponent() with variable component name possible, set all structure components as global
         nuxt.hook('components:extend', (components) => {

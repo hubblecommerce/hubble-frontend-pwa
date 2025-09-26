@@ -18,6 +18,7 @@ const main = async function () {
         throw new Error(buildError)
     }
 
+    // Generate plugin config file
     // eslint-disable-next-line no-unused-vars
     const [removeResponse, removeError] = await swPlugins.removeConfigFile()
     if (removeError) {
@@ -31,6 +32,27 @@ const main = async function () {
 
     // eslint-disable-next-line no-console
     console.log(`Successfully built config file ${pluginConfigFile}`)
+
+    // Generate plugin mapping (moved from sw-plugins-assets.js)
+    const [pluginMapping, collectPluginMappingError] = await swPlugins.collectPluginMapping()
+    if (collectPluginMappingError) {
+        throw new Error(collectPluginMappingError)
+    }
+
+    // eslint-disable-next-line no-unused-vars
+    const [removeMappingResponse, removeMappingError] = await swPlugins.removeMapping()
+    if (removeMappingError) {
+        throw new Error(removeMappingError)
+    }
+
+    // eslint-disable-next-line no-unused-vars
+    const [setPluginMappingResponse, setPluginMappingError] = await swPlugins.setPluginMapping(pluginMapping)
+    if (setPluginMappingError) {
+        throw new Error(setPluginMappingError)
+    }
+
+    // eslint-disable-next-line no-console
+    console.log('Successfully generated plugin slot mapping')
 }
 
 export default main
