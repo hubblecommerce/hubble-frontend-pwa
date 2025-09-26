@@ -18,7 +18,7 @@ import { usePlatform } from '#imports'
 import { OpenAPI } from './OpenAPI'
 import { useCookie, useNuxtApp } from '#imports'
 // @ts-ignore
-import { hblGetRequestCookie } from '@/utils/helper'
+import { hblGetRequestCookie } from '../../utils/hblGetRequestCookie'
 import { type Pinia, storeToRefs } from 'pinia'
 
 const isDefined = <T>(value: T | null | undefined): value is Exclude<T, null | undefined> => {

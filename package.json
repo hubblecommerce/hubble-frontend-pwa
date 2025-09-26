@@ -45,7 +45,7 @@
     },
     "scripts": {
         "prepack": "nuxt-module-build build",
-        "dev": "nuxi dev playground",
+        "dev": "rm -rf ./playground/.nuxt && rm -rf ./playground/.layers rm  ./playground/.hubble-layer-sync-cache.json && nuxi dev playground",
         "dev:build": "nuxi build playground",
         "dev:build:analyze": "nuxi analyze playground",
         "dev:prepare": "rm -rf ./playground/.hubble && nuxt-module-build build --stub && nuxi prepare playground && husky",

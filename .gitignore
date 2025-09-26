@@ -53,3 +53,5 @@ Temporary Items
 # hubble
 .hubble
 playground/platform-plugins
+playground/layers
+playground/.hubble-layer-sync-cache.json
