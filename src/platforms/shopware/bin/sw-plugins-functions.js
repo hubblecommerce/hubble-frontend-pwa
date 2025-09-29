@@ -1,12 +1,9 @@
 /* eslint-disable */
 import path from 'path'
-import unzipper from 'unzipper'
 import fse from 'fs-extra'
 import { config } from 'dotenv'
 import lmify from 'lmify'
 import { $fetch } from 'ofetch'
-import { fetch } from 'node-fetch-native'
-import { Readable } from 'stream'
 
 const playgroundPath = path.resolve(path.join(process.env.INIT_CWD, 'playground'))
 const playgroundExists = await fse.pathExists(playgroundPath)
@@ -31,55 +28,8 @@ const authErrorMsg = 'Authorization failed, please check if your .env file provi
 const clientId = process.env.API_CLIENT_ID
 const clientSecret = process.env.API_CLIENT_SECRET
 const dumpBundlesRoute = '/api/_action/pwa/dump-bundles'
-const assetsZipPath = [pluginsDir, 'assets.zip'].join('/')
 const mappingFileName = 'pluginMapping.json'
 const configWhiteListFileName = 'pluginConfigWhitelist.json'
-
-function downloadFile (fileUrl, outputLocationPath) {
-    const writer = fse.createWriteStream(outputLocationPath)
-    const downloadUrl = apiBasePath + fileUrl
-
-    return fetch(downloadUrl, {
-        method: 'GET'
-    }).then((response) => {
-        if (!response.ok) {
-            throw new Error(`HTTP ${response.status}: ${response.statusText}`)
-        }
-
-        return new Promise((resolve, reject) => {
-            Readable.fromWeb(response.body).pipe(writer)
-
-            let error = null
-            writer.on('error', (err) => {
-                error = err
-                writer.close()
-                reject(err)
-            })
-            writer.on('close', () => {
-                if (!error) {
-                    resolve(true)
-                }
-                // no need to call the reject here, as it will have been called in the 'error' stream;
-            })
-        })
-    })
-}
-
-function unzipFile (inputLocationPath, outputLocationPath) {
-    return new Promise((resolve, reject) => {
-        let error = null
-        fse.createReadStream(inputLocationPath).pipe(unzipper.Extract({ path: outputLocationPath }))
-            .on('close', () => {
-                if (!error) {
-                    resolve(true)
-                }
-            })
-            .on('error', (err) => {
-                error = err
-                reject(err)
-            })
-    })
-}
 
 function camelCase (input) {
     return input.toLowerCase().replace(/-(.)/g, function (match, group1) {
@@ -273,17 +223,6 @@ async function createPluginConfig (pluginConfigs) {
     }
 }
 
-async function downloadAssets (fileUrl) {
-    try {
-        await fse.ensureDir(pluginsDir)
-        await fse.remove(assetsZipPath)
-        const response = await downloadFile(fileUrl, assetsZipPath)
-        return [response, null]
-    } catch (e) {
-        return [null, e]
-    }
-}
-
 async function removePluginDirs () {
     try {
         // Only remove plugin source directories, keep config files
@@ -294,16 +233,6 @@ async function removePluginDirs () {
         }
 
         return [true, null]
-    } catch (e) {
-        return [null, e]
-    }
-}
-
-async function unzipAssets () {
-    try {
-        const response = await unzipFile(assetsZipPath, pluginsDir)
-        await fse.remove(assetsZipPath)
-        return [response, null]
     } catch (e) {
         return [null, e]
     }
@@ -413,8 +342,6 @@ async function setPluginMapping (pluginMapping) {
 
 export {
     projectDir,
-    downloadFile,
-    unzipFile,
     camelCase,
     ensurePluginsDir,
     authorize,
@@ -423,11 +350,9 @@ export {
     removeConfigFile,
     fetchPluginConfig,
     createPluginConfig,
-    downloadAssets,
     removePluginDirs,
     removePluginLayers,
     createPluginLayers,
-    unzipAssets,
     getDirs,
     collectDependencies,
     installDependencies,
