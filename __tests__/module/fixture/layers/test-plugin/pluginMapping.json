@@ -1,0 +1,9 @@
+{
+    "pluginSlots": [
+        {
+            "slot": "test-plugin-slot",
+            "componentName": "test-plugin-slot-component",
+            "componentPath": "/components/test-plugin/TestPluginSlotComponent.vue"
+        }
+    ]
+}

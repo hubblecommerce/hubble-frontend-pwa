@@ -157,13 +157,22 @@ export default defineNuxtModule<ModuleOptions>({
         /*
          * Platform languages config
          */
-        // Read platformLanguages from layer
+        // Read platformLanguages from project root first, fallback to layer
         let platformLanguages
+        const projectPlatformLanguagesPath = resolve(join(nuxt.options.rootDir, 'locales/platformLanguages.json'))
+        const layerPlatformLanguagesPath = resolve(join(targetLayerDir, 'locales/platformLanguages.json'))
+
         try {
-            platformLanguages = await readJson(resolve(join(targetLayerDir, 'locales/platformLanguages.json')))
+            // Try to load from project root first
+            platformLanguages = await readJson(projectPlatformLanguagesPath)
         } catch {
-            console.warn('platformLanguages.json not found in layer, using empty array')
-            platformLanguages = []
+            try {
+                // Fallback to layer
+                platformLanguages = await readJson(layerPlatformLanguagesPath)
+            } catch {
+                console.warn('platformLanguages.json not found in project or layer, using empty array')
+                platformLanguages = []
+            }
         }
         nuxt.options.runtimeConfig.public.platformLanguages = platformLanguages
     }

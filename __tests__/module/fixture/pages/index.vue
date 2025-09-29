@@ -23,17 +23,37 @@
         <div id="overridden-daisyui-utility" class="btn text-black">
             Overridden DaisyUI Component
         </div>
+
+        <!-- Pinia Store Test -->
+        <div>Pinia Store - Cart Loading: {{ cartLoading }}</div>
+
+        <!-- VueUse Test -->
+        <div>VueUse Test - Counter: {{ counter }}</div>
+
+        <!-- Platform Languages Test -->
+        <div>Platform Languages Count: {{ platformLanguagesCount }}</div>
     </div>
 </template>
 
 <script setup>
 import { useI18n } from 'vue-i18n'
-import { useNotification, usePlatform } from '#imports'
+import { useNotification, usePlatform, useCart } from '#imports'
+import { useCounter } from '@vueuse/core'
 
 const { apiUrl } = usePlatform()
 const { additionalRef } = useNotification()
 const config = useRuntimeConfig().public
 const { t } = useI18n()
+
+// Test Pinia store functionality - access reactive property from store
+const cartStore = useCart()
+const cartLoading = cartStore.loading
+
+// Test VueUse composable - deterministic behavior
+const { count: counter } = useCounter(5)
+
+// Test platform languages from runtime config
+const platformLanguagesCount = Array.isArray(config.platformLanguages) ? config.platformLanguages.length : 'undefined'
 </script>
 
 <i18n>

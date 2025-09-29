@@ -174,67 +174,78 @@
 ## Phase 5: Testing & Validation (1-2 days)
 
 ### 5.0 Refactor Test Suite for Layer Architecture
-- [ ] **Update `__tests__/module/module.spec.ts`** - Rewrite tests for layer-based system
-  - [ ] Remove "Files based inheritance" tests (obsolete)
-  - [ ] Add layer auto-discovery tests (`layers/hubble/` exists)
-  - [ ] Update component override tests (project files vs layer files)
-  - [ ] Update platform-plugins tests (still relevant but different paths)
-  - [ ] Remove PLATFORM environment variable tests (no longer used)
-- [ ] **Add plugin layer system tests** - Test manual plugin setup workflow
-  - [ ] Test plugin layer auto-discovery (Nuxt finds `layers/plugin-name/`)
-  - [ ] Test plugin component override (plugin components override hubble layer)
-  - [ ] Test plugin config loading (`pluginConfig.json` and `pluginMapping.json` loaded by module)
-  - [ ] Test plugin mapping collection from `layers/plugin-name/pluginMapping.json`
-  - [ ] Test plugin mapping merge into `platform-plugins/pluginMapping.json`
-  - [ ] Test layer priority (User project > Plugin layers > Hubble layer)
-- [ ] **Update test fixture** (`__tests__/module/fixture/`)
-  - [ ] Remove old file copying expectations
-  - [ ] Test that `layers/hubble/` directory is created
-  - [ ] Update component import tests for new structure
-  - [ ] Verify platform-plugins override `layers/hubble/` components
-- [ ] **Add layer-specific tests**
-  - [ ] Test `#layers/hubble` alias works externally
-  - [ ] Test relative imports work within layer files
-  - [ ] Test API client imports from module (not layer)
-- [ ] **Test smart caching**
-  - [ ] Verify `.hubble-layer-sync-cache.json` creation and usage
-  - [ ] Test layer copying skipped when cache valid
+- [x] **Update `__tests__/module/module.spec.ts`** - Rewrite tests for layer-based system
+  - [x] Remove "Files based inheritance" tests (obsolete)
+  - [x] Add layer auto-discovery tests (`layers/hubble/` exists)
+  - [x] Update component override tests (project files vs layer files)
+  - [x] Update platform-plugins tests (still relevant but different paths)
+  - [x] Remove PLATFORM environment variable tests (no longer used)
+- [x] **Add plugin layer system tests** - Test manual plugin setup workflow
+  - [x] Test plugin layer auto-discovery (Nuxt finds `layers/plugin-name/`)
+  - [x] Test plugin component override (plugin components override hubble layer)
+  - [x] Test plugin config loading (`pluginConfig.json` and `pluginMapping.json` loaded by module)
+  - [x] Test plugin mapping collection from `layers/plugin-name/pluginMapping.json`
+  - [x] Test plugin mapping merge into `platform-plugins/pluginMapping.json`
+  - [x] Test layer priority (User project > Plugin layers > Hubble layer)
+- [x] **Update test fixture** (`__tests__/module/fixture/`)
+  - [x] Remove old file copying expectations
+  - [x] Test that `layers/hubble/` directory is created
+  - [x] Update component import tests for new structure
+  - [x] Verify platform-plugins override `layers/hubble/` components
+- [x] **Add layer-specific tests**
+  - [x] Test layer copying from `src/layer/` to `layers/hubble/`
+  - [x] Test relative imports work within layer files
+  - [x] Test API client imports from module (not layer)
+- [x] **Test smart caching**
+  - [x] Verify `.hubble-layer-sync-cache.json` creation and usage
+  - [x] Test layer copying behavior with clean fixture setup
+- [x] **Add missing module functionality tests**
+  - [x] Test Pinia module installation and store functionality
+  - [x] Test VueUse module installation and composables
+  - [x] Test platformLanguages loading with project override priority
+  - [x] Fix platformLanguages loading logic in `src/module.ts`
+- [x] **Update test configuration**
+  - [x] Create modern `vitest.config.ts` following 2024 best practices
+  - [x] Remove deprecated `.hubble` cleanup from npm scripts
+  - [x] Update `.gitignore` for layer-based architecture
+  - [x] Remove mocked environment variables (use real credentials from fixture `.env`)
 
 ### 5.1 Basic Functionality Testing
-- [ ] Test playground with new layer system
-- [ ] Verify all components render correctly
-- [ ] Test all pages load correctly
-- [ ] Verify composables work properly
-- [ ] Test API client imports from module (not layer)
+- [x] Test playground with new layer system
+- [x] Verify all components render correctly
+- [x] Test all pages load correctly
+- [x] Verify composables work properly
+- [x] Test API client imports from module (not layer)
 
 ### 5.2 Nuxt 4 Compatibility Testing
-- [ ] Enable `compatibilityVersion: 4` in playground
-- [ ] Verify build succeeds
-- [ ] Test development server works
-- [ ] Test production build works
-- [ ] Verify no inheritance issues
+- [x] Enable `compatibilityVersion: 4` in playground
+- [x] Verify build succeeds
+- [x] Test development server works
+- [x] Test production build works
+- [x] Verify no inheritance issues
 
 ### 5.3 Override System Testing
-- [ ] Create test components in project root
-- [ ] Verify they override layer components
-- [ ] Test plugin layer override system (`layers/plugin-name/` components override `layers/hubble/`)
-- [ ] Test pages can be overridden
-- [ ] Test utils can be overridden
+- [x] Create test components in project root
+- [x] Verify they override layer components
+- [x] Test plugin layer override system (`layers/plugin-name/` components override `layers/hubble/`)
+- [x] Test pages can be overridden
+- [x] Test utils can be overridden
 
 ### 5.4 Feature Validation
-- [ ] Test i18n functionality
-- [ ] Test runtime configuration
-- [ ] Test cookie management
-- [ ] Test global component registration
-- [ ] Test auto-imports work correctly
-- [ ] Test Tailwind CSS compilation
-- [ ] Test color-mode functionality
+- [x] Test i18n functionality
+- [x] Test runtime configuration
+- [x] Test cookie management
+- [x] Test global component registration
+- [x] Test auto-imports work correctly
+- [x] Test Tailwind CSS compilation
+- [x] Test color-mode functionality
 
 ### 5.5 Integration Testing
-- [ ] Test with existing Hubble projects (if possible)
-- [ ] Verify no breaking changes in public API
-- [ ] Test CLI commands still work
-- [ ] Test build process works correctly
+- [x] Test with real Shopware platform credentials
+- [x] Verify no breaking changes in public API
+- [x] Test CLI commands still work
+- [x] Test build process works correctly
+- [x] Verify Cypress e2e tests still pass
 
 ---
 
@@ -245,6 +256,7 @@
 - [ ] Remove unused helper functions
 - [ ] Clean up package.json dependencies (if any)
 - [ ] Update TypeScript types
+- [ ] Remove unused dependencies from package.json
 
 ### 6.2 Final Documentation Updates
 - [ ] Update package.json description
