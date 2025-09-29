@@ -27,6 +27,7 @@ export default defineUserConfig({
                         '/pwa/what/techstack',
                         '/pwa/what/requirements',
                         '/pwa/what/installation',
+                        '/pwa/what/migration-v3',
                         '/pwa/what/roadmap',
                         '/pwa/what/contact',
                         '/pwa/what/troubleshooting',

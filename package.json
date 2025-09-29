@@ -6,7 +6,7 @@
         "url": "git+https://github.com/hubblecommerce/hubble-frontend-pwa.git"
     },
     "homepage": "https://github.com/hubblecommerce/hubble-frontend-pwa",
-    "description": "PWA for eCommerce frameworks based on NuxtJs",
+    "description": "Nuxt module for building headless e-commerce PWAs with Shopware 6",
     "author": "hubble commerce",
     "license": "MIT",
     "type": "module",

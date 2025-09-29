@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This is **Hubble Commerce**, a headless e-commerce PWA built as a Nuxt.js module. It provides a framework for creating shop frontends, with primary support for Shopware 6.
 
 - **Main package**: `@hubblecommerce/hubble` - A Nuxt.js module for e-commerce PWAs
-- **Architecture**: File-based inheritance system with platform-specific implementations
+- **Architecture**: Nuxt layer-based system with Shopware 6 integration
 - **Primary platform**: Shopware 6
 
 ## Common Development Commands

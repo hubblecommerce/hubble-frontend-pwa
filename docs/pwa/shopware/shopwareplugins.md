@@ -1,46 +1,88 @@
 # Shopware 6 Plugins
 
 ## How to install Shopware 6 Plugins on your hubble PWA?
+
+### Step 1: Setup API Access
 1. Go to your SW6 admin and create an [Integration](https://docs.shopware.com/en/shopware-6-en/settings/system/integrationen?category=shopware-6-en/settings/system) so your PWA can communicate with your Shop programmatically.
 2. Place the generated **API_CLIENT_ID** and **API_CLIENT_SECRET** in the _.env_ file of your PWA root directory.
-3. Edit the package.json file of your PWA root directory and add following helper scripts: 
+
+### Step 2: Manual Plugin Layer Setup
+Since hubble PWA v3.0, plugins are installed as Nuxt layers that must be created manually:
+
+1. **Create plugin layer directory structure**:
+   ```
+   layers/your-plugin-name/
+   ├── components/          # Plugin Vue components
+   ├── pages/              # Plugin pages (optional)
+   ├── layouts/            # Plugin layouts (optional)
+   ├── middleware/         # Plugin middleware (optional)
+   ├── plugins/            # Plugin initialization files (optional)
+   ├── assets/             # Plugin assets (optional)
+   ├── nuxt.config.ts      # Plugin layer configuration
+   └── pluginMapping.json  # Slot mappings for this plugin
+   ```
+
+2. **Create plugin layer configuration** (`layers/your-plugin-name/nuxt.config.ts`):
+   ```ts
+   export default defineNuxtConfig({
+       // Plugin-specific configuration
+       components: [
+           {
+               path: '~/components',
+               pathPrefix: false
+           }
+       ]
+   })
+   ```
+
+### Step 3: Configure Plugin Mappings
+Add the configuration script to your package.json:
 ``` json
 "scripts": {
     ...
-    "sw:config-plugins": "hubble dev:sw sw-plugins-config",
-    "sw:install-plugins": "hubble dev:sw sw-plugins-assets"
+    "sw:config-plugins": "hubble dev:sw sw-plugins-config"
 }
 ```
 
-Now you are ready to install the Plugins of your Shopware 6 to your hubble PWA. Just execute the helper script on 
-command line:
+Then run the configuration script to generate plugin configs:
 ``` shell
-npm run sw:config-plugins && npm run sw:install-plugins 
+npm run sw:config-plugins
 ```
 
-## How does my Shopware 6 Plugin have to be structured to work with hubble PWA?
-The basic structure and PHP business logic integration does not differ from a normal Shopware 6 Plugin. 
-The difference takes place only for your frontend related code. 
-Instead of placing your frontend code in _src/Resources/app/storefront_ you place it in _src/Resources/app/pwa_.
+This will:
+- Generate `platform-plugins/pluginConfig.json` with plugin runtime configurations
+- Collect plugin mappings from all plugin layers into `platform-plugins/pluginMapping.json`
 
-Inside the pwa folder you use the Nuxt.js default directory structure:
-- assets
-- components
-- composables
-- layouts
-- middleware
-- pages
-- store
-
-::: warning 
-Plugins are used to add new files and provide components to fill slots only. Plugins are not allowed to override 
-existing files like you would do in your hubble PWA root directory (file based inheritance).
+::: tip Layer Auto-Discovery
+Plugin layers in `layers/` are automatically discovered by Nuxt. No manual registration needed!
 :::
 
+::: warning Manual Setup Required
+The automatic plugin installation (`npm run sw:install-plugins`) has been removed. Plugin layers must be created manually as described above.
+:::
+
+## How does my Shopware 6 Plugin have to be structured to work with hubble PWA?
+The basic structure and PHP business logic integration does not differ from a normal Shopware 6 Plugin.
+The difference takes place only for your frontend related code.
+Instead of placing your frontend code in _src/Resources/app/storefront_ you place it in _src/Resources/app/pwa_.
+
+Inside the pwa folder you use the Nuxt.js layer directory structure:
+- assets/         # Static assets
+- components/     # Vue components
+- composables/    # Composables
+- layouts/        # Layout components (optional)
+- middleware/     # Route middleware (optional)
+- pages/          # Pages (optional)
+- plugins/        # Plugin initialization (optional)
+- nuxt.config.ts  # Layer configuration
+- pluginMapping.json  # Slot mappings
+
+**To use the plugin**: Copy the contents of `src/Resources/app/pwa/` from your Shopware plugin to `layers/your-plugin-name/` in your hubble PWA project.
+
 ## What is meant by slots?
-The hubble PWA core code provides vue slots where you can hook in to add your plugin functionality. This way the hubble 
-core stays independent, updatable and maintainable. Should you still miss a slot, you can use the file based inheritance 
-mechanism to add a new slot which you can fill with your plugin component.
+The hubble PWA core code provides vue slots where you can hook in to add your plugin functionality. This way the hubble
+core stays independent, updatable and maintainable. Should you still miss a slot, you can use the layer override
+mechanism to add a new slot by overriding the core component in your project or plugin layer.
 
 <img src="/assets/images/shopware_plugins-1@2x.jpg" alt="hubble PWA Shopware Plugin Slots" style="width: 100%;" />
 
@@ -69,7 +111,7 @@ Simply place a pluginMapping.json in your plugins pwa directory and define a slo
 ```
 
 Corresponding slot in hubble looks like this:
-_@hubblecommerce/hubble/dist/theme/components/checkout/CheckoutPayment.vue_
+_layers/hubble/components/checkout/CheckoutPayment.vue_
 
 ```vue
 <MiscPluginSlot
@@ -88,14 +130,14 @@ You can use the _data_ property for all properties your slot component expects.
 For register event-listeners you can use the _events_ property and pass event names and handlers to it. 
 
 A collection of all used slots you can find in _/platform-plugins/pluginMapping.json_ of your projects root directory
-(after installing plugins).
+(after running the configuration script).
 
 ## How do I manage my plugin dependencies?
-In this case you just need to add **a package.json in the pwa directory of your plugin** and define dependencies like you 
-would in a normal npm based application. The installation script will recognize and install the dependencies you defined.
+In this case you just need to add **a package.json in the pwa directory of your plugin** and define dependencies like you
+would in a normal npm based application. You'll need to install these dependencies manually in your plugin layer.
 
 ## How do I access my plugin configurations?
-The plugin install script automatically dumps your plugin configurations directly from your Shopware 6 
+The plugin configuration script automatically dumps your plugin configurations directly from your Shopware 6 
 (thanks to Shopware PWA Extension). It merges all those configs and places it in _/platform-plugins/pluginConfig.json_. 
 On each build of your application the configurations are provided as runtimeConfigs.
 
@@ -144,13 +186,39 @@ Every payment method which is not shipped by Shopware 6 out of the box, need to 
 on its own. So maybe the payment plugin you installed doesn't provide any pwa related files. 
 
 ## Plugin skeleton example
-- /Resources/app/pwa
-  - /assets
-  - /components
-  - /composables
-  - /layouts
-  - /middleware
-  - /pages
-  - /store
-  - package.json
-  - pluginMapping.json
+
+### Shopware 6 Plugin Structure
+```
+YourPlugin/
+└── src/
+    └── Resources/
+        └── app/
+            └── pwa/
+                ├── assets/
+                ├── components/
+                ├── composables/
+                ├── layouts/
+                ├── middleware/
+                ├── pages/
+                ├── plugins/
+                ├── package.json
+                ├── nuxt.config.ts
+                └── pluginMapping.json
+```
+
+### Copied to hubble PWA Project
+```
+your-hubble-project/
+└── layers/
+    └── your-plugin-name/
+        ├── assets/
+        ├── components/
+        ├── composables/
+        ├── layouts/
+        ├── middleware/
+        ├── pages/
+        ├── plugins/
+        ├── package.json
+        ├── nuxt.config.ts
+        └── pluginMapping.json
+```

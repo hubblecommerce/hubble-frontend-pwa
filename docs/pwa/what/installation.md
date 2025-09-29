@@ -22,20 +22,21 @@ npm i @hubblecommerce/hubble
 ```
 
 3. Add the module to nuxt.config.ts
-```js
-modules: [
-    '@hubblecommerce/hubble'
-]
+```ts
+export default defineNuxtConfig({
+    modules: [
+        '@hubblecommerce/hubble'
+    ]
+})
 ```
 
-4. Create a .env file in project root and fill credentials
+4. Create a .env file in project root and fill your Shopware 6 credentials
 ```sh
-PLATFORM                = 'shopware'
-PLATFORM_BASE_URL       = ''
-API_BASE_URL            = ''
-API_SW_ACCESS_KEY       = ''
-API_CLIENT_ID           = ''
-API_CLIENT_SECRET       = ''
+PLATFORM_BASE_URL       = 'https://your-shopware-store.com'
+API_BASE_URL            = 'https://your-shopware-store.com/store-api'
+API_SW_ACCESS_KEY       = 'your-sales-channel-access-key'
+API_CLIENT_ID           = 'your-client-id'
+API_CLIENT_SECRET       = 'your-client-secret'
 ```
 ::: tip
 Read more about where to get the credentials in the [supported e-commerce platforms](/pwa/what/requirements.html#supported-e-commerce-platforms) section.
