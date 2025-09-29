@@ -175,5 +175,10 @@ export default defineNuxtModule<ModuleOptions>({
             }
         }
         nuxt.options.runtimeConfig.public.platformLanguages = platformLanguages
+
+        // Exclude from Vite pre-bundling to allow Nuxt to process virtual imports (#imports e.g. used in api client request function)
+        if (nuxt.options.vite) {
+            nuxt.options.vite.optimizeDeps?.exclude?.push('@hubblecommerce/hubble')
+        }
     }
 })
