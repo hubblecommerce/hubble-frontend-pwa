@@ -1,6 +1,6 @@
 {
     "name": "@hubblecommerce/hubble",
-    "version": "3.0.0-alpha.2",
+    "version": "3.0.0-alpha.3",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/hubblecommerce/hubble-frontend-pwa.git"
