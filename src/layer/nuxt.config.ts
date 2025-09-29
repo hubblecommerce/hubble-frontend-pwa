@@ -66,7 +66,9 @@ export default defineNuxtConfig({
 
     // Layer configuration
     css: [
-        join(currentDir, 'assets/css/tailwind.css')
+        // needs to be relative to work and to be able to be overridden by consumer instance
+        './assets/css/tailwind.css',
+        './app/assets/css/tailwind.css',
     ],
 
     // Component auto-imports

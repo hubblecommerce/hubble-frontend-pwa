@@ -157,21 +157,28 @@ export default defineNuxtModule<ModuleOptions>({
         /*
          * Platform languages config
          */
-        // Read platformLanguages from project root first, fallback to layer
+        // Read platformLanguages from project (app/ or root) first, fallback to layer
         let platformLanguages
-        const projectPlatformLanguagesPath = resolve(join(nuxt.options.rootDir, 'locales/platformLanguages.json'))
+        const appDir = nuxt.options.dir?.app || 'app'
+        const projectAppPlatformLanguagesPath = resolve(join(nuxt.options.rootDir, appDir, 'locales/platformLanguages.json'))
+        const projectRootPlatformLanguagesPath = resolve(join(nuxt.options.rootDir, 'locales/platformLanguages.json'))
         const layerPlatformLanguagesPath = resolve(join(targetLayerDir, 'locales/platformLanguages.json'))
 
         try {
-            // Try to load from project root first
-            platformLanguages = await readJson(projectPlatformLanguagesPath)
+            // Try to load from project app/ directory first (Nuxt 4)
+            platformLanguages = await readJson(projectAppPlatformLanguagesPath)
         } catch {
             try {
-                // Fallback to layer
-                platformLanguages = await readJson(layerPlatformLanguagesPath)
+                // Fallback to project root directory (Nuxt 3 legacy)
+                platformLanguages = await readJson(projectRootPlatformLanguagesPath)
             } catch {
-                console.warn('platformLanguages.json not found in project or layer, using empty array')
-                platformLanguages = []
+                try {
+                    // Fallback to layer
+                    platformLanguages = await readJson(layerPlatformLanguagesPath)
+                } catch {
+                    console.warn('platformLanguages.json not found in project or layer, using empty array')
+                    platformLanguages = []
+                }
             }
         }
         nuxt.options.runtimeConfig.public.platformLanguages = platformLanguages
@@ -180,5 +187,30 @@ export default defineNuxtModule<ModuleOptions>({
         if (nuxt.options.vite) {
             nuxt.options.vite.optimizeDeps?.exclude?.push('@hubblecommerce/hubble')
         }
+
+        // Plugin override system: Remove layer plugins when project has same-named plugin
+        nuxt.hook('app:resolve', (app) => {
+            const layerPlugins = app.plugins.filter(p => p.src?.includes('layers/hubble/plugins/'))
+            const projectPlugins = app.plugins.filter(p => {
+                const src = p.src || ''
+                // Project plugins are in plugins/ or app/plugins/ but NOT in layers/
+                return (src.includes('/plugins/') || src.includes('/app/plugins/')) &&
+                       !src.includes('/layers/')
+            })
+
+            // Get filenames of project plugins (normalize .client/.server suffixes)
+            const projectPluginNames = projectPlugins.map(p => {
+                const filename = p.src?.split('/').pop()?.replace(/\.(client|server)\./, '.').replace(/\.(ts|js)$/, '')
+                return filename
+            }).filter(Boolean)
+
+            // Filter out layer plugins that have project overrides
+            const filteredLayerPlugins = layerPlugins.filter(p => {
+                const filename = p.src?.split('/').pop()?.replace(/\.(client|server)\./, '.').replace(/\.(ts|js)$/, '')
+                return !projectPluginNames.includes(filename)
+            })
+
+            app.plugins = [...projectPlugins, ...filteredLayerPlugins]
+        })
     }
 })
