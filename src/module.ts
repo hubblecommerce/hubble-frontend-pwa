@@ -190,27 +190,29 @@ export default defineNuxtModule<ModuleOptions>({
 
         // Plugin override system: Remove layer plugins when project has same-named plugin
         nuxt.hook('app:resolve', (app) => {
-            const layerPlugins = app.plugins.filter(p => p.src?.includes('layers/hubble/plugins/'))
-            const projectPlugins = app.plugins.filter(p => {
-                const src = p.src || ''
-                // Project plugins are in plugins/ or app/plugins/ but NOT in layers/
-                return (src.includes('/plugins/') || src.includes('/app/plugins/')) &&
-                       !src.includes('/layers/')
-            })
-
             // Get filenames of project plugins (normalize .client/.server suffixes)
-            const projectPluginNames = projectPlugins.map(p => {
-                const filename = p.src?.split('/').pop()?.replace(/\.(client|server)\./, '.').replace(/\.(ts|js)$/, '')
-                return filename
-            }).filter(Boolean)
+            const projectPluginNames = app.plugins
+                .filter(p => {
+                    const src = p.src || ''
+                    // Project plugins are in plugins/ or app/plugins/ but NOT in layers/
+                    return (src.includes('/plugins/') || src.includes('/app/plugins/')) &&
+                           !src.includes('/layers/')
+                })
+                .map(p => {
+                    const filename = p.src?.split('/').pop()?.replace(/\.(client|server)\./, '.').replace(/\.(ts|js)$/, '')
+                    return filename
+                })
+                .filter(Boolean)
 
-            // Filter out layer plugins that have project overrides
-            const filteredLayerPlugins = layerPlugins.filter(p => {
+            // Filter out layer plugins that have project overrides (preserve original order)
+            app.plugins = app.plugins.filter(p => {
+                // Keep all non-layer plugins
+                if (!p.src?.includes('layers/hubble/plugins/')) return true
+
+                // For layer plugins, only keep if no project override exists
                 const filename = p.src?.split('/').pop()?.replace(/\.(client|server)\./, '.').replace(/\.(ts|js)$/, '')
                 return !projectPluginNames.includes(filename)
             })
-
-            app.plugins = [...projectPlugins, ...filteredLayerPlugins]
         })
     }
 })

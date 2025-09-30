@@ -67,8 +67,7 @@ export default defineNuxtConfig({
     // Layer configuration
     css: [
         // needs to be relative to work and to be able to be overridden by consumer instance
-        './assets/css/tailwind.css',
-        './app/assets/css/tailwind.css',
+        '#layers/hubble/assets/css/tailwind.css',
     ],
 
     // Component auto-imports
