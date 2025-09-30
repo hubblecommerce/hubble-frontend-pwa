@@ -39,12 +39,15 @@ export default defineNuxtConfig({
 Browse the hubble layer structure in your project:
 ```
 layers/hubble/
-├── components/     # Vue components
+├── components/    # Vue components
 ├── pages/         # Nuxt pages
 ├── composables/   # Composables
 ├── utils/         # Utility functions
+│   └── mapping/   # Data mapping functions
 ├── types/         # TypeScript types
+├── plugins/       # Plugins
 └── assets/        # Static assets
+    └── css/       # CSS files (special override behavior)
 ```
 
 ### Step 2: Copy to project root
@@ -104,3 +107,68 @@ Always update import paths when copying files from layers to project root. Forge
 ::: tip Layer Development
 You can create custom layers for organizing your own components and utilities while maintaining the override system.
 :::
+
+## CSS Override System
+
+### Automatic CSS Loading
+Hubble automatically provides default styles out-of-the-box without any configuration required from the consumer.
+
+### CSS Override Pattern
+CSS files have a **special override behavior** different from other files, because **Nuxt layers don't support overriding assets by file**:
+
+#### Default Behavior (No Configuration Needed)
+- **Hubble automatically loads** `layers/hubble/assets/css/tailwind.css`
+- **Works immediately** - consumer gets styled components without setup
+
+#### Override Behavior
+To override the default styles:
+
+1. **Create your CSS file** in one of these locations:
+   ```bash
+   # Nuxt 3 structure:
+   assets/css/tailwind.css
+
+   # Nuxt 4 structure:
+   app/assets/css/tailwind.css
+   ```
+
+2. **Add CSS to your nuxt.config.ts:**
+   ```ts
+   export default defineNuxtConfig({
+       css: [
+           'assets/css/tailwind.css'
+       ]
+   })
+   ```
+
+3. **Result**: Only your CSS loads, layer CSS is automatically excluded
+
+::: warning No Duplicate Loading
+When you provide your own CSS file, the layer CSS is **automatically disabled** to prevent conflicts. You must explicitly add your CSS to the `css` array in `nuxt.config.ts`.
+:::
+
+## Plugin Override System
+
+### Automatic Plugin Override
+Hubble automatically handles plugin overrides without any configuration needed.
+
+### Plugin Override Pattern
+When you create a plugin with the same filename as a layer plugin, the module automatically filters out the layer plugin to prevent conflicts, because **Nuxt layers don't support overriding plugins by file**.
+
+#### How It Works
+1. **Layer provides plugins** in `layers/hubble/plugins/`
+2. **Create override plugin** in your project:
+   ```bash
+   # Nuxt 3 structure:
+   plugins/event-bus.ts
+
+   # Nuxt 4 structure:
+   app/plugins/event-bus.ts
+   ```
+3. **Automatic filtering** - Layer plugin is automatically removed
+4. **Only your plugin runs** - No "Cannot redefine property" errors
+
+#### Supported Plugin Types
+- **Regular plugins**: `plugins/myPlugin.js`
+- **Client-only plugins**: `plugins/myPlugin.client.js`
+- **Server-only plugins**: `plugins/myPlugin.server.js`

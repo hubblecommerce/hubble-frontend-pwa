@@ -288,6 +288,16 @@ If you encounter issues and need to rollback:
    cp -r platform-plugins-backup/ platform-plugins/
    ```
 
+## CSS Migration Considerations
+
+### CSS Override Changes
+**Before (v2.x):** CSS files were copied to `.hubble` directory and could be overridden by placing files in project structure.
+
+**After (v3.0):** CSS has automatic loading and override detection:
+- **No action needed** if you didn't customize CSS - layer provides styles automatically
+- **If you customized CSS**: Create your CSS file in `assets/css/tailwind.css` (or `app/assets/css/tailwind.css` for Nuxt 4) and add to `css` array in `nuxt.config.ts`
+- **Layer CSS automatically disabled** when project provides override to prevent duplicates
+
 ## Troubleshooting Common Issues
 
 ### Issue: Components not rendering or build errors with import paths
