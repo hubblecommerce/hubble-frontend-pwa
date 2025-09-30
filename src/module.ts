@@ -149,7 +149,15 @@ export default defineNuxtModule<ModuleOptions>({
 
         // Conditional CSS loading: Only load layer CSS if consumer hasn't provided their own
         const appDir = nuxt.options.dir?.app || 'app'
-        const consumerAppCssPath = resolve(join(nuxt.options.rootDir, appDir, 'assets/css/tailwind.css'))
+
+        // IMPORTANT: Handle path differences between Nuxt versions
+        // - Nuxt 3: appDir = "app" (relative string)
+        // - Nuxt 4 compatibility mode: appDir = "/absolute/path/to/project/app" (absolute path)
+        // This difference is caused by compatibilityVersion: 4 changing path resolution behavior
+        const isAbsolutePath = appDir.startsWith('/')
+        const consumerAppCssPath = isAbsolutePath
+            ? resolve(join(appDir, 'assets/css/tailwind.css'))
+            : resolve(join(nuxt.options.rootDir, appDir, 'assets/css/tailwind.css'))
         const consumerRootCssPath = resolve(join(nuxt.options.rootDir, 'assets/css/tailwind.css'))
 
         const hasConsumerCSS = await pathExists(consumerAppCssPath) || await pathExists(consumerRootCssPath)
@@ -172,7 +180,10 @@ export default defineNuxtModule<ModuleOptions>({
          */
         // Read platformLanguages from project (app/ or root) first, fallback to layer
         let platformLanguages
-        const projectAppPlatformLanguagesPath = resolve(join(nuxt.options.rootDir, appDir, 'locales/platformLanguages.json'))
+        // Use same path resolution logic as CSS (handles Nuxt 3 vs Nuxt 4 compatibility mode)
+        const projectAppPlatformLanguagesPath = isAbsolutePath
+            ? resolve(join(appDir, 'locales/platformLanguages.json'))
+            : resolve(join(nuxt.options.rootDir, appDir, 'locales/platformLanguages.json'))
         const projectRootPlatformLanguagesPath = resolve(join(nuxt.options.rootDir, 'locales/platformLanguages.json'))
         const layerPlatformLanguagesPath = resolve(join(targetLayerDir, 'locales/platformLanguages.json'))
 
