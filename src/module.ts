@@ -147,6 +147,19 @@ export default defineNuxtModule<ModuleOptions>({
         // Set runtime configs
         await setPlatformPluginRuntimeConfigs(nuxt, platformPluginsConfigPath)
 
+        // Conditional CSS loading: Only load layer CSS if consumer hasn't provided their own
+        const appDir = nuxt.options.dir?.app || 'app'
+        const consumerAppCssPath = resolve(join(nuxt.options.rootDir, appDir, 'assets/css/tailwind.css'))
+        const consumerRootCssPath = resolve(join(nuxt.options.rootDir, 'assets/css/tailwind.css'))
+
+        const hasConsumerCSS = await pathExists(consumerAppCssPath) || await pathExists(consumerRootCssPath)
+
+        if (!hasConsumerCSS) {
+            // Consumer hasn't provided custom CSS, use layer default
+            nuxt.options.css = nuxt.options.css || []
+            nuxt.options.css.push('#layers/hubble/assets/css/tailwind.css')
+        }
+
         // Performance: Remove dynamic import prefetching
         // nuxt.hook('build:manifest', (manifest) => {
         //     for (const key in manifest) {
@@ -159,7 +172,6 @@ export default defineNuxtModule<ModuleOptions>({
          */
         // Read platformLanguages from project (app/ or root) first, fallback to layer
         let platformLanguages
-        const appDir = nuxt.options.dir?.app || 'app'
         const projectAppPlatformLanguagesPath = resolve(join(nuxt.options.rootDir, appDir, 'locales/platformLanguages.json'))
         const projectRootPlatformLanguagesPath = resolve(join(nuxt.options.rootDir, 'locales/platformLanguages.json'))
         const layerPlatformLanguagesPath = resolve(join(targetLayerDir, 'locales/platformLanguages.json'))
