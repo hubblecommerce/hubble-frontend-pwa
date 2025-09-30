@@ -211,31 +211,57 @@ export default defineNuxtModule<ModuleOptions>({
             nuxt.options.vite.optimizeDeps?.exclude?.push('@hubblecommerce/hubble')
         }
 
-        // Plugin override system: Remove layer plugins when project has same-named plugin
+        // Plugin override system: Remove layer plugins when project has same-named plugin but keep alphabetically order 
         nuxt.hook('app:resolve', (app) => {
-            // Get filenames of project plugins (normalize .client/.server suffixes)
-            const projectPluginNames = app.plugins
-                .filter(p => {
-                    const src = p.src || ''
-                    // Project plugins are in plugins/ or app/plugins/ but NOT in layers/
-                    return (src.includes('/plugins/') || src.includes('/app/plugins/')) &&
-                           !src.includes('/layers/')
-                })
-                .map(p => {
-                    const filename = p.src?.split('/').pop()?.replace(/\.(client|server)\./, '.').replace(/\.(ts|js)$/, '')
-                    return filename
-                })
-                .filter(Boolean)
+            // Separate plugins by source using rootDir for accurate detection
+            const rootPlugins = app.plugins.filter(p => {
+                const src = p.src || ''
+                return src.includes(nuxt.options.rootDir + '/plugins/') ||
+                    src.includes(nuxt.options.rootDir + '/app/plugins/')
+            })
 
-            // Filter out layer plugins that have project overrides (preserve original order)
-            app.plugins = app.plugins.filter(p => {
-                // Keep all non-layer plugins
-                if (!p.src?.includes('layers/hubble/plugins/')) return true
+            const layerPlugins = app.plugins.filter(p => {
+                const src = p.src || ''
+                return src.includes('layers/hubble/plugins/')
+            })
 
-                // For layer plugins, only keep if no project override exists
+            const modulePlugins = app.plugins.filter(p => {
+                return !rootPlugins.includes(p) && !layerPlugins.includes(p)
+            })
+
+            // Get root project plugin names for override detection
+            const projectPluginNames = rootPlugins.map((p) => {
+                const filename = p.src?.split('/').pop()?.replace(/\.(client|server)\./, '.').replace(/\.(ts|js)$/, '')
+                return filename
+            }).filter(Boolean)
+
+            // Filter out overridden layer plugins
+            const nonOverriddenLayerPlugins = layerPlugins.filter(p => {
                 const filename = p.src?.split('/').pop()?.replace(/\.(client|server)\./, '.').replace(/\.(ts|js)$/, '')
                 return !projectPluginNames.includes(filename)
             })
+
+            // Sort only user plugins alphabetically, preserve module plugin order
+            const sortedRootPlugins = rootPlugins.sort((a, b) => {
+                const filenameA = a.src?.split('/').pop() || ''
+                const filenameB = b.src?.split('/').pop() || ''
+                return filenameA.localeCompare(filenameB)
+            })
+
+            const sortedLayerPlugins = nonOverriddenLayerPlugins.sort((a, b) => {
+                const filenameA = a.src?.split('/').pop() || ''
+                const filenameB = b.src?.split('/').pop() || ''
+                return filenameA.localeCompare(filenameB)
+            })
+
+            // Rebuild: module plugins first (preserve order), then merged user plugins alphabetically
+            const mergedUserPlugins = [...sortedRootPlugins, ...sortedLayerPlugins].sort((a, b) => {
+                const filenameA = a.src?.split('/').pop() || ''
+                const filenameB = b.src?.split('/').pop() || ''
+                return filenameA.localeCompare(filenameB)
+            })
+
+            app.plugins = [...modulePlugins, ...mergedUserPlugins]
         })
     }
 })

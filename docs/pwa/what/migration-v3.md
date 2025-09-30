@@ -252,7 +252,35 @@ import { someUtil } from '#layers/hubble/utils/helper'
    npm run test  # (if available in your project)
    ```
 
-### Step 5: Update Build and Deployment Scripts
+### Step 5: Handle CSS Overrides (If Applicable)
+
+**If you customized CSS in v2.x:**
+
+1. **Create your CSS file** in the new structure:
+   ```bash
+   # Nuxt 3 structure:
+   touch assets/css/tailwind.css
+
+   # Nuxt 4 structure:
+   mkdir -p app/assets/css
+   touch app/assets/css/tailwind.css
+   ```
+
+2. **Add CSS to your nuxt.config.ts:**
+   ```ts
+   export default defineNuxtConfig({
+       css: [
+           'assets/css/tailwind.css'  // or 'app/assets/css/tailwind.css' for Nuxt 4
+       ]
+   })
+   ```
+
+3. **Copy your custom styles** to the new CSS file
+
+**If you didn't customize CSS:**
+- No action needed - layer provides styles automatically
+
+### Step 6: Update Build and Deployment Scripts
 
 1. **Update .gitignore:**
    ```gitignore
@@ -288,16 +316,6 @@ If you encounter issues and need to rollback:
    cp -r platform-plugins-backup/ platform-plugins/
    ```
 
-## CSS Migration Considerations
-
-### CSS Override Changes
-**Before (v2.x):** CSS files were copied to `.hubble` directory and could be overridden by placing files in project structure.
-
-**After (v3.0):** CSS has automatic loading and override detection:
-- **No action needed** if you didn't customize CSS - layer provides styles automatically
-- **If you customized CSS**: Create your CSS file in `assets/css/tailwind.css` (or `app/assets/css/tailwind.css` for Nuxt 4) and add to `css` array in `nuxt.config.ts`
-- **Layer CSS automatically disabled** when project provides override to prevent duplicates
-
 ## Troubleshooting Common Issues
 
 ### Issue: Components not rendering or build errors with import paths
@@ -313,6 +331,33 @@ If you encounter issues and need to rollback:
 1. Verify plugin layer structure in `layers/plugin-name/`
 2. Run `npm run sw:config-plugins` to regenerate mappings
 3. Check plugin layer naming for alphabetical priority
+
+### Issue: Dynamic component resolution not working
+
+**Solution:** Add component configuration for dynamic resolution:
+```ts
+export default defineNuxtConfig({
+    components: [
+        {
+            path: 'components',
+            global: true // Make structure components global for dynamic resolution
+        }
+    ]
+})
+```
+
+### Issue: Mapping function overrides not working
+
+**Solution:** Add imports configuration for mapping functions:
+```ts
+export default defineNuxtConfig({
+    imports: {
+        dirs: [
+            'utils/mapping'
+        ]
+    }
+})
+```
 
 ## Getting Help
 
