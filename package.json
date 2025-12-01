@@ -73,7 +73,7 @@
         "@heroicons/vue": "^2.0.16",
         "@json2csv/node": "^7.0.1",
         "@nuxt/eslint-config": "^1.8.0",
-        "@nuxtjs/color-mode": "^3.2.0",
+        "@nuxtjs/color-mode": "^4.0.0",
         "@nuxtjs/i18n": "^10.2.1",
         "@pinia/nuxt": "^0.11.0",
         "@tailwindcss/postcss": "^4.1.17",
