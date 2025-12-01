@@ -76,7 +76,7 @@
         "@nuxtjs/color-mode": "^3.2.0",
         "@nuxtjs/i18n": "^10.2.1",
         "@pinia/nuxt": "^0.11.0",
-        "@tailwindcss/postcss": "^4.1.4",
+        "@tailwindcss/postcss": "^4.1.17",
         "@vuepress/bundler-vite": "^2.0.0-rc.26",
         "@vuepress/theme-default": "^2.0.0-rc.120",
         "@vueuse/core": "^14.1.0",
@@ -89,7 +89,7 @@
         "mitt": "^3.0.0",
         "portal-vue": "^3.0.0",
         "postcss": "^8.4.47",
-        "tailwindcss": "^4.1.4",
+        "tailwindcss": "^4.1.17",
         "ufo": "^1.3.0"
     },
     "devDependencies": {
