@@ -1,9 +1,10 @@
-import { join, resolve } from 'node:path'
-import { fileURLToPath } from 'node:url'
-import { defineNuxtModule, installModule } from '@nuxt/kit'
-import { defu } from 'defu'
-import type { Nuxt } from '@nuxt/schema'
+import {join, resolve} from 'node:path'
+import {fileURLToPath} from 'node:url'
+import {defineNuxtModule, installModule} from '@nuxt/kit'
+import {defu} from 'defu'
+import type {Nuxt} from '@nuxt/schema'
 import fse from 'fs-extra'
+
 const { pathExists, readJson, copy, emptyDir } = fse
 
 // Set configs of installed platform plugins
@@ -60,7 +61,8 @@ async function smartCopyLayer (
 
 export interface ModuleOptions {
     pluginsDirName: string,
-    pluginsConfigFileName: string
+    pluginsConfigFileName: string,
+    layerName: string
 }
 
 export default defineNuxtModule<ModuleOptions>({
@@ -73,7 +75,11 @@ export default defineNuxtModule<ModuleOptions>({
         compatibility: {
             // Semver version of supported nuxt versions
             nuxt: '^4.0.0'
-        }
+        },
+        moduleDependencies: {
+            '@pinia/nuxt': {},
+            '@vueuse/nuxt': {}
+        },
     },
     defaults: {
         pluginsDirName: 'platform-plugins',
@@ -107,7 +113,8 @@ export default defineNuxtModule<ModuleOptions>({
          * Layer-based architecture
          */
         const sourceLayerDir = resolve(join(runtimeDir, 'layer'))
-        const targetLayerDir = resolve(join(nuxt.options.rootDir, 'layers', 'hubble'))
+        const layerName = options?.layerName ?? 'hubble'
+        const targetLayerDir = resolve(join(nuxt.options.rootDir, 'layers', layerName))
         const cacheFilePath = resolve(join(nuxt.options.rootDir, '.hubble-layer-sync-cache.json'))
         const packageJsonPath = resolve(join(runtimeDir, '..', 'package.json'))
         const packageJson = await readJson(packageJsonPath)
@@ -231,8 +238,7 @@ export default defineNuxtModule<ModuleOptions>({
 
             // Get root project plugin names for override detection
             const projectPluginNames = rootPlugins.map((p) => {
-                const filename = p.src?.split('/').pop()?.replace(/\.(client|server)\./, '.').replace(/\.(ts|js)$/, '')
-                return filename
+                return p.src?.split('/').pop()?.replace(/\.(client|server)\./, '.').replace(/\.(ts|js)$/, '')
             }).filter(Boolean)
 
             // Filter out overridden layer plugins

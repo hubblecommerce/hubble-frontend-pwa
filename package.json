@@ -45,10 +45,10 @@
     },
     "scripts": {
         "prepack": "nuxt-module-build build",
-        "dev": "rm -rf ./playground/.nuxt && rm -rf ./playground/.layers rm  ./playground/.hubble-layer-sync-cache.json && nuxi dev playground",
+        "dev": "npm run dev:prepare && nuxi dev playground",
         "dev:build": "nuxi build playground",
         "dev:build:analyze": "nuxi analyze playground",
-        "dev:prepare": "rm -rf ./playground/layers/hubble && nuxt-module-build build --stub && nuxi prepare playground && husky",
+        "dev:prepare": "rm -rf ./playground/.nuxt && rm -rf ./playground/layers rm  ./playground/.hubble-layer-sync-cache.json && nuxt-module-build build --stub && nuxi prepare playground && husky",
         "test:integration": "rm -rf __tests__/module/fixture/layers/hubble __tests__/module/fixture/.hubble-layer-sync-cache.json && nuxt-module-build build --stub && nuxi prepare __tests__/module/fixture && vitest",
         "lint": "eslint .",
         "test:e2e": "start-server-and-test test:prepare:e2e http://localhost:3000 test:cypress:run",

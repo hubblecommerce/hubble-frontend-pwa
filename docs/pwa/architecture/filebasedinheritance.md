@@ -6,7 +6,7 @@ Since hubble PWA v3.0, the customization system is based on [Nuxt layers](https:
 The hubble module automatically creates a layer at `layers/hubble/` containing all components, pages, composables, and utilities. This layer can be overridden using Nuxt's standard layer priority system.
 
 ## Layer Priority
-Hubble relies on Nuxt's standard layer priority system. Layer priority follows these rules:
+Hubble relies on Nuxt's standard layer priority system. Layer priority follows these rules (https://nuxt.com/docs/4.x/getting-started/layers#layer-priority):
 
 1. **Main project** (highest priority) - files in project root
 2. **Auto-discovered layers** - scanned alphabetically from `layers/` directory
@@ -15,14 +15,25 @@ Hubble relies on Nuxt's standard layer priority system. Layer priority follows t
 Since `layers/hubble/` is auto-discovered alphabetically, and "hubble" comes before most plugin names in the alphabet, the typical priority order becomes:
 1. **Main project** (highest priority)
 2. **Hubble core layer** (`layers/hubble/`)
-3. **Plugin layers** (`layers/payment-plugin/`, `layers/my-plugin/`, etc., lowest priority)
+3. **Plugin layers** (`layers/a-plugin/`, `layers/b-plugin/`, etc., lowest priority)
 
 ::: warning Plugin Layer Priority
-Due to alphabetical ordering, plugin layers starting with letters after "h" will have **lower priority** than the hubble core layer. To ensure plugin layers can override hubble components, consider:
-- Naming plugin layers with prefixes before "h" (e.g., `layers/addon-payment/`)
+Due to alphabetical ordering, plugin layers starting with letters before "h" will have **lower priority** than the hubble core layer. To ensure plugin layers can override hubble components, consider:
+- Naming plugin layers with prefixes after "h" (e.g., `layers/z-plugin/`)
+- Or change the name of the hubble layer via the module config (`hubble.layerName`)
 - Or explicitly configure layer order using `extends` in nuxt.config.ts
 :::
 
+::: tip Custom Hubble Layer Name
+You can also change the default name of the hubble layer via the module option layerName in the nuxt config:
+```ts
+export default defineNuxtConfig({
+    hubble: {
+        layerName: 'customName'
+    },
+})
+```
+:::
 ::: tip Explicit Layer Control
 For precise control over layer priority, use the `extends` array in your nuxt.config.ts:
 ```ts
