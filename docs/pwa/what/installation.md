@@ -6,7 +6,7 @@ so before moving on, make sure you meet the [requirements](/pwa/what/requirement
 
 ## Installation 
 
-1. Create a new Nuxt 3 Project
+1. Create a new Nuxt 4 Project
 ```sh
 npx nuxi init nuxt-app
 cd nuxt-app

@@ -42,7 +42,7 @@ so before moving on, make sure you meet the [requirements](https://docs.hubbleco
 
 ## Installation
 
-1. Create a new Nuxt 3 Project
+1. Create a new Nuxt 4 Project
 ```sh
 npx nuxi init nuxt-app
 cd nuxt-app
@@ -74,6 +74,10 @@ Read more about where to get the credentials in the [supported e-commerce platfo
 :::
 
 > **Upgrading from v2.x?** Check out our [Migration Guide](https://docs.hubblecommerce.io/pwa/what/migration-v3) for step-by-step instructions.
+>
+> **For a nuxt v3 compatible version check out: https://github.com/hubblecommerce/hubble-frontend-pwa/tree/rc2.15.0**
+> 
+
 
 ### Build modes
 
