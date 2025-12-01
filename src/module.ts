@@ -72,7 +72,7 @@ export default defineNuxtModule<ModuleOptions>({
         // Compatibility constraints
         compatibility: {
             // Semver version of supported nuxt versions
-            nuxt: '^3.16.0'
+            nuxt: '^4.0.0'
         }
     },
     defaults: {
@@ -211,7 +211,7 @@ export default defineNuxtModule<ModuleOptions>({
             nuxt.options.vite.optimizeDeps?.exclude?.push('@hubblecommerce/hubble')
         }
 
-        // Plugin override system: Remove layer plugins when project has same-named plugin but keep alphabetically order 
+        // Plugin override system: Remove layer plugins when project has same-named plugin but keep alphabetically order
         nuxt.hook('app:resolve', (app) => {
             // Separate plugins by source using rootDir for accurate detection
             const rootPlugins = app.plugins.filter(p => {
