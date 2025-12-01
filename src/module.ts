@@ -165,7 +165,7 @@ export default defineNuxtModule<ModuleOptions>({
         if (!hasConsumerCSS) {
             // Consumer hasn't provided custom CSS, use layer default
             nuxt.options.css = nuxt.options.css || []
-            nuxt.options.css.push('#layers/hubble/assets/css/tailwind.css')
+            nuxt.options.css.push(resolve(join(targetLayerDir, 'assets/css/tailwind.css')))
         }
 
         // Performance: Remove dynamic import prefetching
