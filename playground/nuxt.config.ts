@@ -52,5 +52,5 @@ export default defineNuxtConfig({
             optimizeTranslationDirective: false,
         },
     },
-    compatibilityDate: '2024-08-08'
+    compatibilityDate: '2025-12-01'
 })
