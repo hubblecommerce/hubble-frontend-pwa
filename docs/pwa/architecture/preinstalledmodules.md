@@ -24,8 +24,5 @@ These modules are automatically installed and [configured](/pwa/configuration.ht
 - @vueuse/nuxt
 
 ### Modularity
-- globby
 - lmify
 - mitt
-- untyped
-- unzipper

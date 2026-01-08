@@ -1,30 +1,11 @@
-import path, { basename, extname, join, resolve } from 'node:path'
-import { fileURLToPath } from 'node:url'
-import { defineNuxtModule, installModule } from '@nuxt/kit'
-import { defu } from 'defu'
-import { globby } from 'globby'
-import { watch } from 'chokidar'
-import type { Nuxt } from '@nuxt/schema'
-import type { ModuleOptions as i18nModuleOptions } from '@nuxtjs/i18n'
+import {join, resolve} from 'node:path'
+import {fileURLToPath} from 'node:url'
+import {defineNuxtModule, installModule} from '@nuxt/kit'
+import {defu} from 'defu'
+import type {Nuxt} from '@nuxt/schema'
 import fse from 'fs-extra'
-const { pathExists, readJson, copy, emptyDir, remove } = fse
 
-// Set configs of configured platform
-async function setDefaultRuntimeConfigs (nuxt: Nuxt) {
-    try {
-        const {
-            defaultPublicRuntimeConfig,
-            defaultPrivateRuntimeConfig
-        } = await import(`./platforms/${process.env.PLATFORM}/config/config${extname(import.meta.url)}`)
-
-        // Merge default configs with configs set in nuxt.config.js
-        nuxt.options.runtimeConfig.public = defu(nuxt.options.runtimeConfig.public, defaultPublicRuntimeConfig)
-        nuxt.options.runtimeConfig = defu(nuxt.options.runtimeConfig, defaultPrivateRuntimeConfig)
-    } catch (e) {
-        console.error(e)
-        throw Error
-    }
-}
+const { pathExists, readJson, copy, emptyDir } = fse
 
 // Set configs of installed platform plugins
 async function setPlatformPluginRuntimeConfigs (nuxt: Nuxt, pluginsConfigPath: string) {
@@ -36,41 +17,52 @@ async function setPlatformPluginRuntimeConfigs (nuxt: Nuxt, pluginsConfigPath: s
     }
 }
 
-const listAllDirs = (dir: string) => {
-    return globby(`${dir}/*`, { onlyDirectories: true })
-}
+// Smart layer copying with cache
+async function smartCopyLayer (
+    sourceLayerDir: string,
+    targetLayerDir: string,
+    cacheFilePath: string,
+    moduleVersion: string
+): Promise<boolean> {
+    const cacheExists = await pathExists(cacheFilePath)
+    const targetExists = await pathExists(targetLayerDir)
 
-const getLastSectionOfPath = (thePath: string) => {
-    return thePath.substring(thePath.lastIndexOf('/') + 1)
-}
+    let shouldCopy = false
 
-const asyncCopyDirs = async (sourceDirs: string[], targetDir: string, options: Record<any, any> = {}) => {
-    await Promise.all(
-        sourceDirs.map(async (sourceDir) => {
-            await copy(sourceDir, join(targetDir, basename(sourceDir)), options)
-        })
-    )
-}
+    if (!targetExists) {
+        shouldCopy = true
+    } else if (!cacheExists) {
+        shouldCopy = true
+    } else {
+        try {
+            const cache = await readJson(cacheFilePath)
+            if (cache.moduleVersion !== moduleVersion) {
+                shouldCopy = true
+            }
+        } catch {
+            shouldCopy = true
+        }
+    }
 
-export interface Cookie {
-    name: string,
-    options: any
+    if (shouldCopy) {
+        await emptyDir(targetLayerDir)
+        await copy(sourceLayerDir, targetLayerDir)
+
+        const cache = {
+            moduleVersion,
+            lastSync: new Date().toISOString()
+        }
+        await fse.writeJson(cacheFilePath, cache, { spaces: 2 })
+        return true
+    }
+
+    return false
 }
 
 export interface ModuleOptions {
-    targetDirName: string,
-    dirBlacklist: string[],
     pluginsDirName: string,
     pluginsConfigFileName: string,
-    sessionCookie: Cookie,
-    cartCookie: Cookie,
-    wishlistCookie: Cookie,
-    customerCookie: Cookie,
-    setCustomerLoggedInHeader: boolean,
-    redirectDefaultLanguage: boolean,
-    i18n: i18nModuleOptions,
-    watchPaths: string[],
-    setTailwindPostcss: boolean
+    layerName: string
 }
 
 export default defineNuxtModule<ModuleOptions>({
@@ -82,70 +74,18 @@ export default defineNuxtModule<ModuleOptions>({
         // Compatibility constraints
         compatibility: {
             // Semver version of supported nuxt versions
-            nuxt: '^3.0.0-rc.9'
-        }
+            nuxt: '^4.0.0'
+        },
+        moduleDependencies: {
+            '@pinia/nuxt': {},
+            '@vueuse/nuxt': {}
+        },
     },
     defaults: {
-        targetDirName: '.hubble/',
-        dirBlacklist: ['node_modules', '.hubble', '.nuxt', '.output', '.idea', 'platform-plugins'],
         pluginsDirName: 'platform-plugins',
-        pluginsConfigFileName: 'pluginConfig.json',
-        sessionCookie: {
-            name: 'hubble-session-token',
-            options: {
-                maxAge: 60 * 60 * 24 * 30,
-                sameSite: 'lax',
-                path: '/'
-            }
-        },
-        cartCookie: {
-            name: 'hubble-cart',
-            options: {
-                maxAge: 60 * 60 * 24 * 30,
-                sameSite: 'lax',
-                path: '/'
-            }
-        },
-        wishlistCookie: {
-            name: 'hubble-wishlist',
-            options: {
-                maxAge: 60 * 60 * 24 * 30,
-                sameSite: 'lax',
-                path: '/'
-            }
-        },
-        customerCookie: {
-            name: 'hubble-customer',
-            options: {
-                maxAge: 60 * 24,
-                sameSite: 'lax',
-                path: '/'
-            }
-        },
-        setCustomerLoggedInHeader: false,
-        redirectDefaultLanguage: false,
-        i18n: {},
-        watchPaths: [
-            'assets',
-            'components',
-            'composables',
-            'i18n',
-            'layouts',
-            'middleware',
-            'modules',
-            'pages',
-            'plugins',
-            'public',
-            'utils',
-        ],
-        setTailwindPostcss: true
+        pluginsConfigFileName: 'pluginConfig.json'
     },
     async setup (options, nuxt) {
-        if (process.env.PLATFORM == null || process.env.PLATFORM === '') {
-            console.error('Please provide a valid .env file')
-            return
-        }
-
         // Transpile runtime
         const runtimeDir = fileURLToPath(new URL('./', import.meta.url))
         nuxt.options.build.transpile.push(runtimeDir)
@@ -157,77 +97,44 @@ export default defineNuxtModule<ModuleOptions>({
         await installModule('@vueuse/nuxt')
 
         /*
-         * File-based inheritance logic
+         * Environment validation
          */
-        const baseDir = resolve(join(runtimeDir, 'theme'))
-        const targetDir = resolve(join(nuxt.options.rootDir, options.targetDirName))
-        const platformDir = resolve(join(runtimeDir, 'platforms', process.env.PLATFORM))
+        const requiredEnvVars = ['API_BASE_URL', 'API_SW_ACCESS_KEY']
+        const missingEnvVars = requiredEnvVars.filter(envVar => !process.env[envVar])
+
+        if (missingEnvVars.length > 0) {
+            throw new Error(
+                `Missing required environment variables: ${missingEnvVars.join(', ')}. ` +
+                'Please check your .env file and ensure all Shopware API credentials are configured. '
+            )
+        }
+
+        /*
+         * Layer-based architecture
+         */
+        const sourceLayerDir = resolve(join(runtimeDir, 'layer'))
+        const layerName = options?.layerName ?? 'hubble'
+        const targetLayerDir = resolve(join(nuxt.options.rootDir, 'layers', layerName))
+        const cacheFilePath = resolve(join(nuxt.options.rootDir, '.hubble-layer-sync-cache.json'))
+        const packageJsonPath = resolve(join(runtimeDir, '..', 'package.json'))
+        const packageJson = await readJson(packageJsonPath)
+        const moduleVersion = packageJson.version
         const platformPluginsDir = resolve(join(nuxt.options.rootDir, options.pluginsDirName))
         const platformPluginsConfigPath = resolve(join(platformPluginsDir, options.pluginsConfigFileName))
-        const commonsDir = resolve(join(runtimeDir, 'commons'))
 
-        const rootDirs = await listAllDirs(nuxt.options.rootDir)
-        const validRootDirs: string[] = []
-        rootDirs.forEach((dir) => {
-            if (!options.dirBlacklist.includes(getLastSectionOfPath(dir))) {
-                validRootDirs.push(dir)
-            }
-        })
-
-        await emptyDir(targetDir)
-        await copy(resolve(join(commonsDir, 'utils')), resolve(join(targetDir, 'utils')))
-        await copy(baseDir, targetDir)
-        await copy(resolve(join(platformDir, 'composables')), resolve(join(targetDir, 'composables')))
-        await copy(resolve(join(platformDir, 'utils')), resolve(join(targetDir, 'utils')))
-
-        const platformPluginsDirs = await listAllDirs(platformPluginsDir)
-
-        // Platform plugins are not allowed to override hubble module files, to keep the inheritance order
-        // strict and readable. Use plugin-slot for injections.
-        for (const pluginDir of platformPluginsDirs) {
-            const subDirs = await globby(`${pluginDir}/*`, { onlyDirectories: true })
-            await asyncCopyDirs(subDirs, targetDir, { overwrite: false, errorOnExist: true })
+        // Copy layer to layers/hubble/ with smart caching
+        const layerCopied = await smartCopyLayer(sourceLayerDir, targetLayerDir, cacheFilePath, moduleVersion)
+        if (layerCopied) {
+            // eslint-disable-next-line no-console
+            console.info('Hubble layer synced to layers/hubble/')
         }
 
         // File inheritance for pluginMapping.json
-        // Set mapping to runtimeConfig, can be overridden via nuxt config file
         const pluginMappingExists = await pathExists(resolve(join(platformPluginsDir, 'pluginMapping.json')))
         if (pluginMappingExists) {
-            await copy(resolve(join(platformPluginsDir, 'pluginMapping.json')), resolve(join(targetDir, options.pluginsDirName, 'pluginMapping.json')))
+            const pluginMapping = await readJson(resolve(join(platformPluginsDir, 'pluginMapping.json')))
+            nuxt.options.runtimeConfig.public.pluginMapping = defu(nuxt.options.runtimeConfig.public.pluginMapping as any, pluginMapping)
         }
-        const pluginMapping = await readJson(resolve(join(targetDir, options.pluginsDirName, 'pluginMapping.json')))
-        nuxt.options.runtimeConfig.public.pluginMapping = defu(nuxt.options.runtimeConfig.public.pluginMapping as any, pluginMapping)
-
-        await asyncCopyDirs(validRootDirs, targetDir)
-
-        const tailwindConfigExist = await pathExists(resolve(join(nuxt.options.rootDir, 'tailwind.config.ts')))
-        if (tailwindConfigExist) {
-            await copy(resolve(join(nuxt.options.rootDir, 'tailwind.config.ts')), resolve(join(targetDir, 'tailwind.config.ts')))
-        }
-
-        const customErrorExist = await pathExists(resolve(join(nuxt.options.rootDir, 'error.vue')))
-        if (customErrorExist) {
-            await copy(resolve(join(nuxt.options.rootDir, 'error.vue')), resolve(join(targetDir, 'error.vue')))
-        }
-
-        // Set srcDir of nuxt base layer
-        for (const layer of nuxt.options._layers) {
-            if (layer.configFile === 'nuxt.config') {
-                layer.config.srcDir = resolve(join(layer.config.srcDir, options.targetDirName))
-            }
-        }
-
-        const baseAliases = {
-            '~~': nuxt.options.rootDir,
-            '@@': nuxt.options.rootDir,
-
-            '~': targetDir,
-            '@': targetDir,
-
-            assets: path.join(targetDir, 'assets'),
-            public: path.join(targetDir, 'public')
-        }
-        nuxt.options.alias = { ...nuxt.options.alias, ...baseAliases }
 
         // To make resolveComponent() with variable component name possible, set all structure components as global
         nuxt.hook('components:extend', (components) => {
@@ -241,159 +148,126 @@ export default defineNuxtModule<ModuleOptions>({
 
         // Add utils/mapping to auto imports to be able to override mapping functions on project level
         nuxt.hook('imports:dirs', (dirs) => {
-            dirs.push(resolve(join(targetDir, 'utils/mapping')))
+            dirs.push(resolve(join(targetLayerDir, 'utils/mapping')))
         })
 
         // Set runtime configs
-        await setDefaultRuntimeConfigs(nuxt)
         await setPlatformPluginRuntimeConfigs(nuxt, platformPluginsConfigPath)
 
-        // Set configs from module options
-        nuxt.options.runtimeConfig.public.sessionCookie = {
-            name: options.sessionCookie.name,
-            options: options.sessionCookie.options
+        // Conditional CSS loading: Only load layer CSS if consumer hasn't provided their own
+        const appDir = nuxt.options.dir?.app || 'app'
+
+        // IMPORTANT: Handle path differences between Nuxt versions
+        // - Nuxt 3: appDir = "app" (relative string)
+        // - Nuxt 4 compatibility mode: appDir = "/absolute/path/to/project/app" (absolute path)
+        // This difference is caused by compatibilityVersion: 4 changing path resolution behavior
+        const isAbsolutePath = appDir.startsWith('/')
+        const consumerAppCssPath = isAbsolutePath
+            ? resolve(join(appDir, 'assets/css/tailwind.css'))
+            : resolve(join(nuxt.options.rootDir, appDir, 'assets/css/tailwind.css'))
+        const consumerRootCssPath = resolve(join(nuxt.options.rootDir, 'assets/css/tailwind.css'))
+
+        const hasConsumerCSS = await pathExists(consumerAppCssPath) || await pathExists(consumerRootCssPath)
+
+        if (!hasConsumerCSS) {
+            // Consumer hasn't provided custom CSS, use layer default
+            nuxt.options.css = nuxt.options.css || []
+            nuxt.options.css.push(resolve(join(targetLayerDir, 'assets/css/tailwind.css')))
         }
 
-        nuxt.options.runtimeConfig.public.cartCookie = {
-            name: options.cartCookie.name,
-            options: options.cartCookie.options
+        // Performance: Remove dynamic import prefetching
+        // nuxt.hook('build:manifest', (manifest) => {
+        //     for (const key in manifest) {
+        //         manifest[key].dynamicImports = []
+        //     }
+        // })
+
+        /*
+         * Platform languages config
+         */
+        // Read platformLanguages from project (app/ or root) first, fallback to layer
+        let platformLanguages
+        // Use same path resolution logic as CSS (handles Nuxt 3 vs Nuxt 4 compatibility mode)
+        const projectAppPlatformLanguagesPath = isAbsolutePath
+            ? resolve(join(appDir, 'locales/platformLanguages.json'))
+            : resolve(join(nuxt.options.rootDir, appDir, 'locales/platformLanguages.json'))
+        const projectRootPlatformLanguagesPath = resolve(join(nuxt.options.rootDir, 'locales/platformLanguages.json'))
+        const layerPlatformLanguagesPath = resolve(join(targetLayerDir, 'locales/platformLanguages.json'))
+
+        try {
+            // Try to load from project app/ directory first (Nuxt 4)
+            platformLanguages = await readJson(projectAppPlatformLanguagesPath)
+        } catch {
+            try {
+                // Fallback to project root directory (Nuxt 3 legacy)
+                platformLanguages = await readJson(projectRootPlatformLanguagesPath)
+            } catch {
+                try {
+                    // Fallback to layer
+                    platformLanguages = await readJson(layerPlatformLanguagesPath)
+                } catch {
+                    console.warn('platformLanguages.json not found in project or layer, using empty array')
+                    platformLanguages = []
+                }
+            }
         }
+        nuxt.options.runtimeConfig.public.platformLanguages = platformLanguages
 
-        nuxt.options.runtimeConfig.public.wishlistCookie = {
-            name: options.wishlistCookie.name,
-            options: options.wishlistCookie.options
-        }
-
-        nuxt.options.runtimeConfig.public.customerCookie = {
-            name: options.customerCookie.name,
-            options: options.customerCookie.options
-        }
-
-        nuxt.options.runtimeConfig.public.setCustomerLoggedInHeader = options.setCustomerLoggedInHeader
-
-        // Vite only: exclude module from optimizeDeps to prevent vite from optimize #app and #import inside
-        // of module
+        // Exclude from Vite pre-bundling to allow Nuxt to process virtual imports (#imports e.g. used in api client request function)
         if (nuxt.options.vite) {
             nuxt.options.vite.optimizeDeps?.exclude?.push('@hubblecommerce/hubble')
         }
 
-        // Performance: Remove dynamic import prefetching
-        nuxt.hook('build:manifest', (manifest) => {
-            for (const key in manifest) {
-                manifest[key].dynamicImports = []
-            }
+        // Plugin override system: Remove layer plugins when project has same-named plugin but keep alphabetically order
+        nuxt.hook('app:resolve', (app) => {
+            // Separate plugins by source using rootDir for accurate detection
+            const rootPlugins = app.plugins.filter(p => {
+                const src = p.src || ''
+                return src.includes(nuxt.options.rootDir + '/plugins/') ||
+                    src.includes(nuxt.options.rootDir + '/app/plugins/')
+            })
+
+            const layerPlugins = app.plugins.filter(p => {
+                const src = p.src || ''
+                return src.includes('layers/hubble/plugins/')
+            })
+
+            const modulePlugins = app.plugins.filter(p => {
+                return !rootPlugins.includes(p) && !layerPlugins.includes(p)
+            })
+
+            // Get root project plugin names for override detection
+            const projectPluginNames = rootPlugins.map((p) => {
+                return p.src?.split('/').pop()?.replace(/\.(client|server)\./, '.').replace(/\.(ts|js)$/, '')
+            }).filter(Boolean)
+
+            // Filter out overridden layer plugins
+            const nonOverriddenLayerPlugins = layerPlugins.filter(p => {
+                const filename = p.src?.split('/').pop()?.replace(/\.(client|server)\./, '.').replace(/\.(ts|js)$/, '')
+                return !projectPluginNames.includes(filename)
+            })
+
+            // Sort only user plugins alphabetically, preserve module plugin order
+            const sortedRootPlugins = rootPlugins.sort((a, b) => {
+                const filenameA = a.src?.split('/').pop() || ''
+                const filenameB = b.src?.split('/').pop() || ''
+                return filenameA.localeCompare(filenameB)
+            })
+
+            const sortedLayerPlugins = nonOverriddenLayerPlugins.sort((a, b) => {
+                const filenameA = a.src?.split('/').pop() || ''
+                const filenameB = b.src?.split('/').pop() || ''
+                return filenameA.localeCompare(filenameB)
+            })
+
+            // Rebuild: module plugins first (preserve order), then merged user plugins alphabetically
+            const mergedUserPlugins = [...sortedRootPlugins, ...sortedLayerPlugins].sort((a, b) => {
+                const filenameA = a.src?.split('/').pop() || ''
+                const filenameB = b.src?.split('/').pop() || ''
+                return filenameA.localeCompare(filenameB)
+            })
+
+            app.plugins = [...modulePlugins, ...mergedUserPlugins]
         })
-
-        /*
-         * Theming
-         */
-        // Set Standard installation guide: https://tailwindcss.com/docs/guides/nuxtjs as default
-        // can be overridden via nuxt.config
-        nuxt.options.css.push(resolve(join(targetDir, 'assets/css/tailwind.css')))
-
-        if (options?.setTailwindPostcss) {
-            const tailwindPostCSSPlugins = {'@tailwindcss/postcss': {},}
-            nuxt.options.postcss.plugins = { ...tailwindPostCSSPlugins, ...nuxt.options.postcss.plugins }
-        }
-
-        await installModule('@nuxtjs/color-mode', {
-            preference: 'system', // default theme
-            dataValue: 'theme', // activate data-theme in <html> tag
-            classSuffix: ''
-        })
-
-        /*
-         * i18n
-         */
-        const platformLanguages = await readJson(targetDir + '/locales/platformLanguages.json')
-        nuxt.options.runtimeConfig.public.redirectDefaultLanguage = options.redirectDefaultLanguage
-        nuxt.options.runtimeConfig.public.platformLanguages = platformLanguages
-        await installModule('@nuxtjs/i18n')
-
-        // Dev only: register new file-watcher based on file inheritance
-        if (nuxt.options.dev) {
-            const excludedDirectories = [...options.dirBlacklist.map(__blacklistedDir => `${nuxt.options.rootDir}/${__blacklistedDir}/**`)]
-
-            const toTargetPath = (oldPath: string) => {
-                return resolve(oldPath.replace(path.normalize(nuxt.options.rootDir), targetDir))
-            }
-
-            let watchPaths = options?.watchPaths?.map((path) => {
-                return join(nuxt.options.rootDir, path)
-            })
-            // Filter duplicates of merging defaults with given module options
-            watchPaths = watchPaths.filter((value, index) => watchPaths.indexOf(value) === index)
-
-            watch(watchPaths, { ignoreInitial: true, ignored: excludedDirectories }).on('all', async (event, filePath) => {
-                const newDestination = toTargetPath(filePath)
-
-                if (newDestination === '') {
-                    return false
-                }
-
-                if (event === 'add' || event === 'change') {
-                    await copy(filePath, newDestination)
-                }
-
-                if (event === 'unlink') {
-                    const modulePath = filePath.replace(nuxt.options.rootDir, baseDir)
-
-                    // @ts-ignore
-                    pathExists(modulePath, async (err, exists) => {
-                        if (exists) {
-                            // copy from module
-                            await copy(modulePath, newDestination)
-                        } else if (!exists) {
-                            // path does not exist in module just remove from srcDir
-                            await remove(newDestination)
-                        } else if (err) {
-                            // eslint-disable-next-line no-console
-                            console.log('err occurred: ', err)
-                        }
-                    })
-                }
-            })
-
-            watch(baseDir, { ignoreInitial: true, ignored: excludedDirectories }).on('all', (event, filePath) => {
-                const newDestination = resolve(filePath.replace(baseDir, targetDir))
-
-                if (newDestination === '') {
-                    return false
-                }
-
-                const rootPath = filePath.replace(baseDir, nuxt.options.rootDir)
-
-                pathExists(rootPath, async (err, exists) => {
-                    if (!exists) {
-                        if (event === 'add' || event === 'change') {
-                            await copy(filePath, newDestination)
-                        }
-
-                        if (event === 'unlink') {
-                            await remove(newDestination)
-                        }
-                    } else if (err) {
-                        // eslint-disable-next-line no-console
-                        console.log('err occurred: ', err)
-                    }
-                })
-            })
-
-            watch(join(platformDir, 'composables'), { ignoreInitial: true }).on('all', (event, filePath) => {
-                const newDestination = resolve(filePath.replace(join(platformDir, 'composables'), join(targetDir, 'composables')))
-
-                if (newDestination === '') {
-                    return false
-                }
-
-                if (event === 'add' || event === 'change') {
-                    copy(filePath, newDestination)
-                }
-
-                if (event === 'unlink') {
-                    remove(newDestination)
-                }
-            })
-        }
     }
 })

@@ -13,14 +13,15 @@ npm install
 ```
 
 **4**: Setup hubble for module development:
-- Create .env files in playground and `__tests__/module/fixture`
-- Run `npm run dev:prepare` to generate type stubs.
-- Use `npm run dev` to start the playground in development mode.
+- Create .env files in playground and `__tests__/module/fixture` with your Shopware 6 credentials
+- Run `npm run dev:prepare` to clean environment, build module stubs, and prepare development
+- Use `npm run dev` to start the playground in development mode
+- The module will automatically copy the layer from `src/layer/` to `playground/layers/hubble/`
 
 **5**: Test production build:
-- Use `npm run prepack` to bundle module source code 
-- Use `npm run dev:build` to build the folder playground in production mode 
-- Use `node playground/.output/server/index.mjs` to start node server
+- Use `npm run prepack` to bundle module source code
+- Use `npm run dev:build` to build the playground in production mode
+- Use `node playground/.output/server/index.mjs` to start the production server
 
 **6**: Tracking the original repository as a remote fork: <br>
 This is especially important to keep the fork up to date to the original repository (upstream).

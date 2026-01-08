@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:nuxt.com)",
+      "WebSearch"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

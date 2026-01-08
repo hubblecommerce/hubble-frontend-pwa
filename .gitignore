@@ -51,5 +51,8 @@ Temporary Items
 .apdisk
 
 # hubble
-.hubble
 playground/platform-plugins
+playground/layers
+playground/.hubble-layer-sync-cache.json
+__tests__/module/fixture/layers/hubble
+__tests__/module/fixture/.hubble-layer-sync-cache.json

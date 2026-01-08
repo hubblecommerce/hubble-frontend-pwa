@@ -9,12 +9,8 @@ export default defineBuildConfig({
                 copy({
                     targets: [
                         {
-                            src: ['./src/theme/', './src/commons/'],
+                            src: ['./src/layer/'],
                             dest: './dist'
-                        },
-                        {
-                            src: ['./src/platforms/shopware/composables/', './src/platforms/shopware/utils/'],
-                            dest: './dist/platforms/shopware'
                         }
                     ]
                 })
@@ -38,11 +34,6 @@ export default defineBuildConfig({
             outDir: './dist/platforms/shopware/bin',
             declaration: false,
             ext: 'js'
-        },
-        {
-            builder: 'mkdist',
-            input: './src/platforms/shopware/config/',
-            outDir: './dist/platforms/shopware/config'
         }
     ],
     externals: [

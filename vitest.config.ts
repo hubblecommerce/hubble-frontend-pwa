@@ -1,12 +1,8 @@
-import { defineConfig, configDefaults } from 'vitest/config'
+import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
     test: {
-        server: {
-            deps: {
-                inline: [/@nuxt\/test-utils/]
-            }
-        },
-        exclude: [...configDefaults.exclude, '**/fixture/**']
+        globals: true,
+        environment: 'node'
     }
 })

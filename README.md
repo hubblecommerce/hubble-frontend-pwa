@@ -42,7 +42,7 @@ so before moving on, make sure you meet the [requirements](https://docs.hubbleco
 
 ## Installation
 
-1. Create a new Nuxt 3 Project
+1. Create a new Nuxt 4 Project
 ```sh
 npx nuxi init nuxt-app
 cd nuxt-app
@@ -55,18 +55,29 @@ npm i @hubblecommerce/hubble
 ```
 
 3. Add the module to nuxt.config.ts
-```js
-modules: ['@hubblecommerce/hubble']
+```ts
+export default defineNuxtConfig({
+    modules: ['@hubblecommerce/hubble']
+})
 ```
 
-4. Create a .env file in project root and fill credentials
+4. Create a .env file in project root and fill your Shopware 6 credentials
 ```sh
-API_SW_ACCESS_KEY = ''
-API_BASE_URL      = ''
+PLATFORM_BASE_URL     = 'https://your-shopware-store.com'
+API_BASE_URL          = 'https://your-shopware-store.com/store-api'
+API_SW_ACCESS_KEY     = 'your-sales-channel-access-key'
+API_CLIENT_ID         = 'your-client-id'
+API_CLIENT_SECRET     = 'your-client-secret'
 ```
 ::: tip
 Read more about where to get the credentials in the [supported e-commerce platforms](https://docs.hubblecommerce.io/pwa/what/requirements.md#supported-e-commerce-platforms) section.
 :::
+
+> **Upgrading from v2.x?** Check out our [Migration Guide](https://docs.hubblecommerce.io/pwa/what/migration-v3) for step-by-step instructions.
+>
+> **For a nuxt v3 compatible version check out: https://github.com/hubblecommerce/hubble-frontend-pwa/tree/rc2.15.0**
+> 
+
 
 ### Build modes
 
@@ -86,7 +97,7 @@ node .output/server/index.mjs
 ## Features
 hubble PWA is a Nuxt.js module.
 That means it relies on all the great features of Nuxt.js like:
-- All benefits of Vue 3 and Nuxt 3
+- All benefits of Vue 3 and Nuxt 4
 - Server Side Rendering
 - Dynamic Routing
 - Code-Splitting
@@ -96,7 +107,7 @@ That means it relies on all the great features of Nuxt.js like:
 
 and enriches them to meet the demanding requirements of an e-commerce interface like:
 - [Shop connector](https://docs.hubblecommerce.io/pwa/architecture/shop-connection) including an API client and data mapping (headless)
-- [File-based inheritance (Theming)](https://docs.hubblecommerce.io/pwa/architecture/filebasedinheritance)
+- [Layer-based architecture](https://docs.hubblecommerce.io/pwa/architecture/filebasedinheritance) for easy customization and theming
 - [E-commerce optimized components](https://docs.hubblecommerce.io/pwa/architecture/components) like catalog, customer, checkout etc.
 - [Integration path for shop-plugins (Compatibility Plugins)](https://docs.hubblecommerce.io/pwa/shopware/shopwareplugins)
 
@@ -138,8 +149,7 @@ Because hubble PWA was built for Shopware 6 primarily, it supports features like
 - [Shop configuration](https://docs.hubblecommerce.io/pwa/shopware/shopwareplugins.md#how-do-i-access-my-plugin-configurations)
 
 ## Roadmap
-Thanks to the headless approach hubble is not tied to Shopware only,
-so we are constantly working on connecting other e-commerce frameworks.
+We are constantly working on this product to keep it up to date with the latest Nuxt and Shopware version.
 See our detailed [roadmap](https://docs.hubblecommerce.io/pwa/what/roadmap) for further information.
 
 ## Contributing

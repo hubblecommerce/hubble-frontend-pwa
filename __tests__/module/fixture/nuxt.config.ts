@@ -3,6 +3,9 @@ import hubble from '../../..'
 
 // @ts-ignore
 export default defineNuxtConfig({
+    future: {
+        compatibilityVersion: 4,
+    },
     modules: [
         // @ts-ignore
         hubble
@@ -44,5 +47,5 @@ export default defineNuxtConfig({
             }
         }
     },
-    compatibilityDate: '2024-08-08'
+    compatibilityDate: '2025-12-01'
 })

@@ -1,15 +1,18 @@
 # Requirements
 
-## Supported e-commerce platforms
+## Supported e-commerce platform
 
-Because hubble PWA needs some data to feed and actions to send, you need a data source like an e-commerce platform first.
-Follow the links for further instructions on how to prepare each one of them to work with hubble PWA:
+Hubble PWA v3.0 is specifically designed for **Shopware 6**. The platform abstraction has been removed to provide better performance and simpler architecture.
 
 ### Shopware 6
 [How to set up Shopware 6 to work with hubble PWA](/pwa/shopware/installation.html)
 
-## PWA
-- [LTS Node](https://nodejs.org/en/download/package-manager/) >= 20.x
-  - Needed for running Nuxt.js
-- [Nuxt.js](https://v3.nuxtjs.org/getting-started/installation#new-project) ^3.5.3
+## System Requirements
 
+### Node.js and Package Manager
+- [LTS Node.js](https://nodejs.org/en/download/package-manager/) >= 20.19.0
+- npm >= 10.8.0
+
+### Framework
+- [Nuxt.js](https://nuxt.com/docs/getting-started/installation) ^3.18.0
+- Compatible with Nuxt 4 (`compatibilityVersion: 4`)
