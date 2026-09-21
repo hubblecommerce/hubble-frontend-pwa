@@ -4,6 +4,7 @@ import {defineNuxtModule, installModule} from '@nuxt/kit'
 import {defu} from 'defu'
 import type {Nuxt} from '@nuxt/schema'
 import fse from 'fs-extra'
+import tailwindcss from '@tailwindcss/vite'
 
 const { pathExists, readJson, copy, emptyDir } = fse
 
@@ -217,6 +218,9 @@ export default defineNuxtModule<ModuleOptions>({
         if (nuxt.options.vite) {
             nuxt.options.vite.optimizeDeps?.exclude?.push('@hubblecommerce/hubble')
         }
+
+        nuxt.options.vite.plugins = nuxt.options.vite.plugins || []
+        nuxt.options.vite.plugins.push(tailwindcss())
 
         // Plugin override system: Remove layer plugins when project has same-named plugin but keep alphabetically order
         nuxt.hook('app:resolve', (app) => {

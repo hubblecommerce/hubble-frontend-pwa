@@ -76,7 +76,7 @@
         "@nuxtjs/color-mode": "^4.0.1",
         "@nuxtjs/i18n": "^10.6.0",
         "@pinia/nuxt": "^1.0.2",
-        "@tailwindcss/postcss": "^4.3.3",
+        "@tailwindcss/vite": "^4.3.3",
         "@vuepress/bundler-vite": "^2.0.0-rc.31",
         "@vuepress/theme-default": "^2.0.0-rc.134",
         "@vueuse/core": "^15.0.0",
