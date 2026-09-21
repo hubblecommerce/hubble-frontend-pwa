@@ -74,7 +74,7 @@
         "@json2csv/node": "^7.0.8",
         "@nuxt/eslint-config": "^1.8.0",
         "@nuxtjs/color-mode": "^4.0.1",
-        "@nuxtjs/i18n": "^10.2.1",
+        "@nuxtjs/i18n": "^10.6.0",
         "@pinia/nuxt": "^1.0.2",
         "@tailwindcss/postcss": "^4.3.3",
         "@vuepress/bundler-vite": "^2.0.0-rc.31",
