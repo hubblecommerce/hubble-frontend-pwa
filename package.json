@@ -71,7 +71,7 @@
     },
     "dependencies": {
         "@heroicons/vue": "^2.0.16",
-        "@json2csv/node": "^7.0.1",
+        "@json2csv/node": "^7.0.8",
         "@nuxt/eslint-config": "^1.8.0",
         "@nuxtjs/color-mode": "^4.0.0",
         "@nuxtjs/i18n": "^10.2.1",
