@@ -98,7 +98,7 @@
         "@nuxt/kit": "^4.5.2",
         "@nuxt/module-builder": "^1.0.3",
         "@nuxt/schema": "^4.5.2",
-        "@nuxt/test-utils": "^3.20.1",
+        "@nuxt/test-utils": "^4.3.2",
         "cypress": "^16.1.0",
         "husky": "^9.1.4",
         "lint-staged": "^17.5.1",
@@ -108,7 +108,7 @@
         "sass-embedded": "^1.80.7",
         "start-server-and-test": "^3.0.12",
         "typescript": "^5.8.3",
-        "vitest": "^3.2.4",
+        "vitest": "^4.1.11",
         "vuepress": "^2.0.0-rc.31"
     }
 }
