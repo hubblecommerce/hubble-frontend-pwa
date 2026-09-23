@@ -1,6 +1,6 @@
 import { fileURLToPath } from 'node:url'
 import { describe, expect, it } from 'vitest'
-import { setup, $fetch, fetch } from '@nuxt/test-utils'
+import { setup, $fetch, fetch } from '@nuxt/test-utils/e2e'
 import { existsSync } from 'node:fs'
 import { join } from 'node:path'
 
