@@ -65,7 +65,7 @@ export default defineNuxtConfig({
     },
 
     // Layer configuration
-    // CSS is now conditionally loaded by the module to allow overrides 
+    // CSS is now conditionally loaded by the module to allow overrides
 
     // Component auto-imports
     components: [
@@ -88,12 +88,6 @@ export default defineNuxtConfig({
 
     // Plugins are auto-discovered from plugins/ directory
     // No explicit plugin configuration needed for auto-discovery
-
-    postcss: {
-        plugins: {
-            '@tailwindcss/postcss': {}
-        }
-    },
 
     // Module dependencies that the layer needs
     modules: [

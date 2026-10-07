@@ -4,6 +4,17 @@
 @plugin "daisyui";
 
 /*
+  Tailwind v4's automatic content detection respects .gitignore. The layer
+  gets copied into generated, gitignored directories (e.g. playground/layers) at dev/build time,
+  so without these explicit sources Tailwind
+  never scans the actual component/page markup and emits no utility classes.
+*/
+@source '../../app.vue';
+@source '../../components';
+@source '../../layouts';
+@source '../../pages';
+
+/*
   The default border color has changed to `currentColor` in Tailwind CSS v4,
   so we've added these compatibility styles to make sure everything still
   looks the same as it did with Tailwind CSS v3.

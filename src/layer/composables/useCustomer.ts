@@ -408,7 +408,7 @@ export const useCustomer = defineStore('use-customer', (): HblIUseCustomer => {
         } catch (e) {
             loading.value = false
             error.value = e
-            throw new Error(e as string)
+            throw new Error(e as string, { cause: e })
         }
     }
 

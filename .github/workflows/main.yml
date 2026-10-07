@@ -12,10 +12,15 @@ env:
   API_BASE_URL: ${{ vars.HUBBLE_DEMO_API_BASE_URL }}
   API_SW_ACCESS_KEY: ${{ vars.HUBBLE_DEMO_API_SW_ACCESS_KEY }}
 
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
     name: Module Tests
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -23,7 +28,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20.x'
+          node-version: '22.x'
 
       - name: Install dependencies
         run: npm ci
