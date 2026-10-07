@@ -105,7 +105,7 @@
         "nuxt": "^4.5.2",
         "openapi-typescript-codegen": "^0.31.0",
         "rollup-plugin-copy": "^3.4.0",
-        "sass-embedded": "^1.105.0",
+        "sass-embedded": "^1.105.1",
         "start-server-and-test": "^3.0.12",
         "typescript": "^5.8.3",
         "vitest": "^4.1.11",
