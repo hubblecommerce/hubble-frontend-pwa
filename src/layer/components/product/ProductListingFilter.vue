@@ -88,7 +88,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, toRaw } from 'vue'
 import { showError, useRouter, usePage } from '#imports'
 import { type HblProductListing, type HblProductListingFilter, type HblProductListingFilterCurrent } from '../../types'
 
@@ -100,10 +100,10 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{(event: 'update:listing', data: HblProductListing): void}>()
-const selectedFilters = ref(structuredClone(props.currentFilters))
+const selectedFilters = ref(structuredClone(toRaw(props.currentFilters)))
 
 watch(() => props.currentFilters, (newVal) => {
-    selectedFilters.value = structuredClone(newVal)
+    selectedFilters.value = structuredClone(toRaw(newVal))
 })
 const { getProductListing, updateUri } = usePage()
 const { currentRoute } = useRouter()
