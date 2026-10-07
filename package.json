@@ -78,7 +78,7 @@
         "@pinia/nuxt": "^1.0.2",
         "@tailwindcss/vite": "^4.3.3",
         "@vuepress/bundler-vite": "^2.0.0-rc.31",
-        "@vuepress/theme-default": "^2.0.0-rc.134",
+        "@vuepress/theme-default": "^2.0.0-rc.137",
         "@vueuse/core": "^15.0.0",
         "@vueuse/integrations": "^15.0.0",
         "@vueuse/nuxt": "^15.0.0",
