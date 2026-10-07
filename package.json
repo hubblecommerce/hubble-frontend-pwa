@@ -85,7 +85,7 @@
         "csvtojson": "^2.0.10",
         "daisyui": "^5.7.43",
         "eslint": "^9.14.0",
-        "fs-extra": "^11.1.0",
+        "fs-extra": "^11.4.1",
         "lmify": "^0.3.0",
         "mitt": "^3.0.0",
         "portal-vue": "^3.0.0",
