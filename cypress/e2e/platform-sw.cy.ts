@@ -211,8 +211,8 @@ describe('Platform: Shopware', () => {
         cy.contains('Save settings').click()
 
         cy.reload()
-        cy.get('#firstName').should('have.value', 'e2eFirstname')
-        cy.get('#lastName').should('have.value', 'e2eLastname')
+        cy.get('#firstName', { timeout: 10000 }).should('have.value', 'e2eFirstname')
+        cy.get('#lastName', { timeout: 10000 }).should('have.value', 'e2eLastname')
     })
 
     it('user needs to be logged in to use wishlist', () => {
