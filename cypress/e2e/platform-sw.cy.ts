@@ -197,6 +197,11 @@ describe('Platform: Shopware', () => {
     })
 
     it('edits customer data', () => {
+        cy.intercept({
+            method: 'POST',
+            url: '/store-api/account/change-profile'
+        }).as('apiChangeProfile')
+
         cy.loginCustomer(email, pw)
 
         // open customer/account via customer navigation
@@ -209,6 +214,7 @@ describe('Platform: Shopware', () => {
         cy.get('#firstName').clear().type('e2eFirstname')
         cy.get('#lastName').clear().type('e2eLastname')
         cy.contains('Save settings').click()
+        cy.wait('@apiChangeProfile')
 
         cy.reload()
         cy.get('#firstName', { timeout: 10000 }).should('have.value', 'e2eFirstname')
