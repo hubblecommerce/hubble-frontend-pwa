@@ -77,8 +77,8 @@
         "@nuxtjs/i18n": "^10.6.0",
         "@pinia/nuxt": "^1.0.3",
         "@tailwindcss/vite": "^4.3.3",
-        "@vuepress/bundler-vite": "^2.0.0-rc.31",
-        "@vuepress/theme-default": "^2.0.0-rc.137",
+        "@vuepress/bundler-vite": "^2.0.0-rc.32",
+        "@vuepress/theme-default": "^2.0.0-rc.138",
         "@vueuse/core": "^15.0.0",
         "@vueuse/integrations": "^15.0.0",
         "@vueuse/nuxt": "^15.0.0",
@@ -109,6 +109,6 @@
         "start-server-and-test": "^3.0.13",
         "typescript": "^5.8.3",
         "vitest": "^5.1.0",
-        "vuepress": "^2.0.0-rc.31"
+        "vuepress": "^2.0.0-rc.32"
     }
 }
