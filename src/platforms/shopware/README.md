@@ -2,7 +2,7 @@
 Contains all files that are related to usage of hubble PWA with Shopware 6.
 
 ## Requirements
-- Shopware >= 6.4.14.0
+- Shopware >= 6.6
 - [SwagShopwarePwa](https://github.com/shopware/SwagShopwarePwa) = 0.3.3
 
 ## api-client

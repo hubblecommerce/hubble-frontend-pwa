@@ -1,5 +1,5 @@
 # Pages
-[See the pages on github](https://github.com/hubblecommerce/hubble-frontend-pwa/tree/hubble-next/src/theme/pages)
+[See the pages on github](https://github.com/hubblecommerce/hubble-frontend-pwa/tree/main/src/layer/pages)
 
 <img src="/assets/images/page@2x.jpg" alt="hubble PWA Pages" style="width: 100%;" />
 
@@ -33,9 +33,9 @@ The dynamic page resolves dynamic components and assumes the provided data to ha
 - _slots_ display the corresponding data directly or via a reusable _component_ 
 
 ### Default Structures
-Platforms like Shopware 6 provide such generic data with their Emotionworlds. In case of your platform doesn't provide 
+Platforms like Shopware 6 provide such generic data with their Emotionworlds. In case your shop doesn't provide 
 structural data for requested pages and only response entities' data, hubble comes with some 
-[default structures](https://github.com/hubblecommerce/hubble-frontend-pwa/blob/main/src/commons/utils/helper/hblUseDefaultStructure.ts) 
+[default structures](https://github.com/hubblecommerce/hubble-frontend-pwa/blob/main/src/layer/utils/helper/hblUseDefaultStructure.ts) 
 for the most common page types.
 
 #### Example for set default structure entity / page type:
@@ -43,10 +43,10 @@ for the most common page types.
 ```js
 if (mappedPage.structure === null) {
     const {
-        hblSetDefaultStructures,
-        hblGetDefaultStructureByType
+        setDefaultStructures,
+        getDefaultStructureByType
     } = hblUseDefaultStructure()
-    hblSetDefaultStructures()
-    mappedPage.structure = hblGetDefaultStructureByType(mappedPage.type)
+    setDefaultStructures()
+    mappedPage.structure = getDefaultStructureByType(mappedPage.type)
 }
 ```

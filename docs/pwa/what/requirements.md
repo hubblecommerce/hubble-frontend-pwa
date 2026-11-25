@@ -10,9 +10,8 @@ Hubble PWA v3.0 is specifically designed for **Shopware 6**. The platform abstra
 ## System Requirements
 
 ### Node.js and Package Manager
-- [LTS Node.js](https://nodejs.org/en/download/package-manager/) >= 20.19.0
-- npm >= 10.8.0
+- [LTS Node.js](https://nodejs.org/en/download/package-manager/) >= 22.16.0
+- npm >= 10.9.0
 
 ### Framework
-- [Nuxt.js](https://nuxt.com/docs/getting-started/installation) ^3.18.0
-- Compatible with Nuxt 4 (`compatibilityVersion: 4`)
+- [Nuxt.js](https://nuxt.com/docs/getting-started/installation) ^4.6.4

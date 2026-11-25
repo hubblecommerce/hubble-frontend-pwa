@@ -39,61 +39,12 @@ This guide focuses on installing hubble PWA as a Nuxt.js module only,
 so before moving on, make sure you meet the [requirements](/pwa/what/requirements.html) first.
 
 ## Installation
-
-1. Create a new Nuxt 3 Project
-```sh
-npx nuxi init nuxt-app
-cd nuxt-app
-npm install
-
-# Resolve pinia dependency issue 
-npm install pinia -f
-```
-
-2. Install the hubble Nuxt module
-```sh
-npm i @hubblecommerce/hubble
-```
-
-3. Add the module to nuxt.config.ts
-```js
-modules: [
-    '@hubblecommerce/hubble'
-]
-```
-
-4. Create a .env file in project root and fill credentials 
-```sh
-PLATFORM                = 'shopware'
-PLATFORM_BASE_URL       = ''
-API_BASE_URL            = ''
-API_SW_ACCESS_KEY       = ''
-API_CLIENT_ID           = ''
-API_CLIENT_SECRET       = ''
-```
-::: tip
-Read more about where to get the credentials in the [supported e-commerce platforms](/pwa/what/requirements.html#supported-e-commerce-platforms) section.
-:::
-
-### Build modes
-
-#### Development
-
-```sh
-npm run dev
-```
-
-#### Production
-
-```sh
-npm run build
-node .output/server/index.mjs
-```
+See the dedicated [installation guide](/pwa/what/installation.html) for step-by-step setup instructions.
 
 ## Features
 hubble PWA is a Nuxt.js module.
 That means it relies on all the great features of Nuxt.js like:
-- All benefits of Vue 3 and Nuxt 3 
+- All benefits of Vue 3 and Nuxt 4 
 - Server Side Rendering
 - Dynamic Routing
 - Code-Splitting
@@ -133,10 +84,8 @@ We want to make sure the interface actually feels like an intuitive, native app 
 - Mobile first design approach
 - User input feedback via decent animations and transitions
 
-Besides, hubble of course is shipped with a simple service worker for offline support.
-Feel free to adjust it to fit your caching approach needs.
-Other PWA Features like "Add to Home" or "Push Notifications" can be installed easily
-using the [official Nuxt.js PWA Module](https://pwa.nuxtjs.org/).
+Other PWA Features like "Add to Home", offline support via a service worker, or "Push Notifications" can be
+added using a Nuxt 4 compatible PWA module such as [@vite-pwa/nuxt](https://vite-pwa-org.netlify.app/frameworks/nuxt.html).
 
 ## Specialized in Shopware 6
 Because hubble PWA was built for Shopware 6 primarily, it supports features like:
@@ -145,8 +94,6 @@ Because hubble PWA was built for Shopware 6 primarily, it supports features like
 - [Shop configuration](/pwa/shopware/shopwareplugins.html#how-do-i-access-my-plugin-configurations)
 
 ## Roadmap
-Thanks to the headless approach hubble is not tied to Shopware only,
-so we are constantly working on connecting other e-commerce frameworks.
 See our detailed [roadmap](/pwa/what/roadmap.html) for further information.
 
 ## Contributing
