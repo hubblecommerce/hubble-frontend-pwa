@@ -53,27 +53,27 @@ npm run sw:config-plugins         # Configure Shopware plugins and generate mapp
 npm run sw:languages              # Configure languages
 ```
 
-**Note:** `sw:install-plugins` has been removed. Plugin layers must be created manually in `layers/plugin-name/`.
+**Note:** Plugin layers are created manually in `layers/plugin-name/` (see Plugin Layer Setup below).
 
 ## Architecture
 
-### File-based Inheritance
-The module uses a sophisticated file-based inheritance system:
+### Nuxt Layer Override System
+Customization is based on [Nuxt layers](https://nuxt.com/docs/getting-started/layers):
 
-1. **Base layer**: `src/theme/` - Core components and pages
-2. **Platform layer**: `src/platforms/shopware/` - Platform-specific implementations
-3. **Commons layer**: `src/commons/` - Shared utilities and types
-4. **Project layer**: Root directory files override module files
-5. **Plugin layer**: `platform-plugins/` - Plugin-specific overrides
+1. **Source**: `src/layer/` - All components, pages, composables, and utilities
+2. **Runtime layer**: automatically created at `layers/hubble/` (synced from `src/layer/` by the dev file watcher)
+3. **Platform code**: `src/platforms/shopware/` - Shopware-specific API client generation and CLI scripts
+4. **Project layer**: root directory files override the hubble layer (highest priority)
+5. **Plugin layer**: `layers/plugin-name/` - manually created plugin layers (lowest priority by default, alphabetical layer discovery)
 
-Files are copied to `.hubble/` directory in this inheritance order, where later layers can override earlier ones.
+Layer priority follows Nuxt's standard rules: main project > auto-discovered `layers/` (alphabetical) > `extends` array order. See `docs/pwa/architecture/filebasedinheritance.md` for the full override workflow (import alias rules, CSS/plugin override caveats).
 
 ### Key Directories
-- `src/theme/components/` - Vue components organized by feature (cart, customer, checkout, etc.)
-- `src/theme/pages/` - Nuxt.js pages
-- `src/platforms/shopware/` - Shopware-specific API client, composables, and utilities
-- `src/commons/utils/types/` - TypeScript type definitions with `Hbl` prefix
-- `playground/` - Development playground for testing the module
+- `src/layer/components/` - Vue components organized by feature (cart, customer, checkout, etc.)
+- `src/layer/pages/` - Nuxt.js pages
+- `src/layer/composables/`, `src/layer/utils/` - Composables and utility/mapping functions
+- `src/platforms/shopware/api-client/` - Generated Shopware API client
+- `playground/` - Development playground for testing the module (`playground/layers/hubble/` is the synced copy of `src/layer/`)
 
 ### Component Structure
 - **Structure components**: `components/structure/` - Global components for CMS/page building
@@ -82,12 +82,12 @@ Files are copied to `.hubble/` directory in this inheritance order, where later 
 
 ### Platform Integration
 - Built for Shopware 6 platform
-- Platform-specific configs in `src/platforms/shopware/config/config.ts`
-- API clients generated from OpenAPI specs
+- Shopware env/config defaults live in `src/layer/config/` (e.g. `.env_example`)
+- API clients generated from OpenAPI specs via `src/platforms/shopware/bin/`
 - Mapping utilities convert platform data to internal `Hbl` types
 
 ### Plugin Layer Setup (Manual)
-Since automatic plugin installation was removed, plugins must be set up manually:
+Plugins are set up manually:
 
 1. **Create plugin layer**: `layers/plugin-name/`
 2. **Add plugin structure**:
@@ -109,7 +109,7 @@ Since automatic plugin installation was removed, plugins must be set up manually
 
 ## Configuration Files
 
-- **ESLint**: `.eslintrc` - 4-space indentation, single quotes, no semicolons
+- **ESLint**: `eslint.config.js` (flat config, based on `@nuxt/eslint-config`) - 4-space indentation, single quotes, no semicolons
 - **TypeScript**: Uses Nuxt's built-in TypeScript support
 - **Vitest**: `vitest.config.ts` - Integration testing setup
 - **Module**: `src/module.ts` - Main Nuxt module definition
@@ -128,5 +128,5 @@ Since automatic plugin installation was removed, plugins must be set up manually
 - Uses Pinia for state management
 - Supports i18n with strategy 'prefix_and_default'
 - Platform plugins cannot override hubble module files (strict inheritance order)
-- Development file watcher automatically syncs changes to `.hubble/` directory
+- Development file watcher automatically syncs changes from `src/layer/` to `layers/hubble/` (tracked via `.hubble-layer-sync-cache.json`)
 - API client for Shopware is generated and may have custom patches applied
