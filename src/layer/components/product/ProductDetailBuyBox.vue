@@ -85,16 +85,19 @@ const product = ref(props.productData)
 const { formatPrice } = useCurrency()
 const qty = ref<number>(1)
 const cartStore = useCart()
-const { loading: cartLoading, error: cartError } = storeToRefs(cartStore)
+const { error: cartError } = storeToRefs(cartStore)
 const { addToCart } = cartStore
 const { showNotification } = useNotification()
 const variantLoading = ref(false)
+const isAddingToCart = ref(false)
 const loading = computed(() => {
-    return cartLoading.value || variantLoading.value
+    return isAddingToCart.value || variantLoading.value
 })
 
 async function onClickAddToCart (qty: number, id: string) {
+    isAddingToCart.value = true
     await addToCart(qty, id)
+    isAddingToCart.value = false
 
     if (!cartError.value) {
         $hblBus.$emit('addToCart', { qty, product: product.value })

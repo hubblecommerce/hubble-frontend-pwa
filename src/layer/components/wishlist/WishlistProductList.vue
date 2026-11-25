@@ -45,9 +45,9 @@
                     </div>
                 </div>
 
-                <button :disabled="cartLoading" class="btn btn-sm btn-primary small h-4 w-full flex-shrink" @click="onClickAddToCart(1, product)">
-                    <span v-if="cartLoading" class="loading" />
-                    <span v-if="!cartLoading">{{ t('wishlist.product.addToCart') }}</span>
+                <button :disabled="addingToCartId === product.id" class="btn btn-sm btn-primary small h-4 w-full flex-shrink" @click="onClickAddToCart(1, product)">
+                    <span v-if="addingToCartId === product.id" class="loading" />
+                    <span v-if="addingToCartId !== product.id">{{ t('wishlist.product.addToCart') }}</span>
                 </button>
             </div>
         </div>
@@ -58,6 +58,7 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
 import { TrashIcon } from '@heroicons/vue/24/outline'
@@ -70,8 +71,10 @@ const wishlistStore = useWishlist()
 const { wishlist, error: wishListError } = storeToRefs(wishlistStore)
 const { removeFromWishlist } = wishlistStore
 const cartStore = useCart()
-const { loading: cartLoading, error: cartError } = storeToRefs(cartStore)
+const { error: cartError } = storeToRefs(cartStore)
 const { addToCart } = cartStore
+
+const addingToCartId = ref<string | null>(null)
 
 const { formatPrice } = useCurrency()
 
@@ -85,7 +88,9 @@ async function onRemoveProduct (product: HblProduct) {
 }
 
 async function onClickAddToCart (qty: number, product: HblProduct) {
+    addingToCartId.value = product.id
     await addToCart(qty, product.id)
+    addingToCartId.value = null
 
     if (!cartError.value) {
         $hblBus.$emit('addToCart', { qty, product })

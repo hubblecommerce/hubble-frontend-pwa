@@ -27,12 +27,12 @@
                     {{ t('productCard.details') }}
                 </MiscLink>
                 <button
-                    :disabled="cartLoading"
+                    :disabled="isAddingToCart"
                     class="btn btn-secondary text-center"
                     role="button"
                     @click="onAddToCart()"
                 >
-                    <span v-if="cartLoading" class="loading" />
+                    <span v-if="isAddingToCart" class="loading" />
                     {{ t('productCard.addToCart') }}
                 </button>
             </div>
@@ -65,15 +65,13 @@ const image = ref({
     src: Array.isArray(props.data.media) ? props.data.media[0]?.url : props.data.media?.url
 })
 
-if(image.value?.src) {
-    const { isLoading } = useImage(image)
-} else {
-    const isLoading = ref(false)
-}
+const isLoading = image.value?.src ? useImage(image).isLoading : ref(false)
 
 const cartStore = useCart()
-const { loading: cartLoading, error: cartError } = storeToRefs(cartStore)
+const { error: cartError } = storeToRefs(cartStore)
 const { addToCart } = cartStore
+
+const isAddingToCart = ref(false)
 
 async function onAddToCart () {
     if (props.data.parentId != null) {
@@ -81,7 +79,9 @@ async function onAddToCart () {
         return
     }
 
+    isAddingToCart.value = true
     await addToCart(1, props.data.id)
+    isAddingToCart.value = false
 }
 
 const { showNotification } = useNotification()
