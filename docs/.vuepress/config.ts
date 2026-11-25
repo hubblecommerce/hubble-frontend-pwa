@@ -7,10 +7,11 @@ export default defineUserConfig({
     title: 'hubble PWA Docs',
     description: 'Developer Documentation for hubble PWA',
     bundler: viteBundler(),
+    userStyle: '.vuepress/styles/index.scss',
     theme: themeDefault({
         contributors: false,
         lastUpdated: false,
-        navbar: [
+        nav: [
             { text: 'PWA', link: '/pwa/what/overview' },
             { text: 'Demo', link: 'https://hubble-pwa-demo.vercel.app/' },
             { text: 'Website', link: 'https://www.hubblecommerce.io/' },
@@ -22,27 +23,27 @@ export default defineUserConfig({
                 {
                     text: 'What is hubble PWA?',
                     link: '',
-                    children: [
-                        '/pwa/what/overview',
-                        '/pwa/what/techstack',
-                        '/pwa/what/requirements',
-                        '/pwa/what/installation',
-                        '/pwa/what/migration-v3',
-                        '/pwa/what/roadmap',
-                        '/pwa/what/contact',
-                        '/pwa/what/troubleshooting',
+                    items: [
+                        { link: '/pwa/what/overview' },
+                        { link: '/pwa/what/techstack' },
+                        { link: '/pwa/what/requirements' },
+                        { link: '/pwa/what/installation' },
+                        { link: '/pwa/what/migration-v3' },
+                        { link: '/pwa/what/roadmap' },
+                        { link: '/pwa/what/contact' },
+                        { link: '/pwa/what/troubleshooting' },
                     ]
                 },
                 {
                     text: 'Architecture',
-                    children: [
-                        '/pwa/architecture/shop-connection',
-                        '/pwa/architecture/filebasedinheritance',
-                        '/pwa/architecture/pages',
-                        '/pwa/architecture/preinstalledmodules',
-                        '/pwa/architecture/usersession',
-                        '/pwa/architecture/layouts',
-                        '/pwa/architecture/components',
+                    items: [
+                        { link: '/pwa/architecture/shop-connection' },
+                        { link: '/pwa/architecture/filebasedinheritance' },
+                        { link: '/pwa/architecture/pages' },
+                        { link: '/pwa/architecture/preinstalledmodules' },
+                        { link: '/pwa/architecture/usersession' },
+                        { link: '/pwa/architecture/layouts' },
+                        { link: '/pwa/architecture/components' },
                     ]
                 },
                 {
@@ -51,29 +52,29 @@ export default defineUserConfig({
                 },
                 {
                     text: 'Theming',
-                    children: [
-                        '/pwa/theme'
+                    items: [
+                        { link: '/pwa/theme' }
                     ]
                 },
                 {
                     text: 'Shopware 6',
                     link: '/pwa/shopware',
-                    children: [
-                        '/pwa/shopware/installation',
-                        '/pwa/shopware/shopwareplugins',
-                        '/pwa/shopware/shopwareemotion',
-                        '/pwa/shopware/mulitlanguage',
-                        '/pwa/shopware/trade-offs',
+                    items: [
+                        { link: '/pwa/shopware/installation' },
+                        { link: '/pwa/shopware/shopwareplugins' },
+                        { link: '/pwa/shopware/shopwareemotion' },
+                        { link: '/pwa/shopware/mulitlanguage' },
+                        { link: '/pwa/shopware/trade-offs' },
                     ]
                 },
                 {
                     text: 'Module Development',
                     link: '/pwa/module/contributionpwa',
-                    children: [
-                        '/pwa/module/contributionpwa',
-                        '/pwa/module/tests',
-                        '/pwa/module/codinguidelines',
-                        '/pwa/module/apiclients'
+                    items: [
+                        { link: '/pwa/module/contributionpwa' },
+                        { link: '/pwa/module/tests' },
+                        { link: '/pwa/module/codinguidelines' },
+                        { link: '/pwa/module/apiclients' }
                     ]
                 }
             ]
