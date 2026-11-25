@@ -1,5 +1,5 @@
 # Components
-[See the components on github](https://github.com/hubblecommerce/hubble-frontend-pwa/tree/main/core/components)
+[See the components on github](https://github.com/hubblecommerce/hubble-frontend-pwa/tree/main/src/layer/components)
 
 <img src="/assets/images/components@2x.jpg" alt="hubble PWA Components" style="width: 100%;" />
 

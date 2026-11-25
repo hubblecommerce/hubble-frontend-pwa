@@ -11,24 +11,22 @@ current localisation key of the url.
 
 Following files are related to the translation process:
 ```text
-/components
-    /misc
-        /MiscLink.vue
-/locales
-    /availableLocales.json (deprecated since 2.6.0)
-    /platformLanguages.json
-/middleware
-    /change-vue-locale.global.ts
-/platforms
-    /shopware
-        /bin
-            /sw-languages.js
-        /composables
-            /useLocalisation.ts
-/theme
+src/layer
     /components
+        /misc
+            /MiscLink.vue
         /layout
             /LayoutLanguageSwitch.vue
+    /composables
+        /useLocalisation.ts
+    /locales
+        /availableLocales.json (deprecated since 2.6.0)
+        /platformLanguages.json
+    /middleware
+        /change-vue-locale.global.ts
+src/platforms/shopware
+    /bin
+        /sw-languages.js
 ```
 
 ### Configuration
@@ -180,7 +178,7 @@ export default defineNuxtConfig({
 ```
 6. Download and save all languages available for your Sales-Channel from Shopware by execute this script in your projects root dir:
 ```shell
-npm run hubble dev:sw sw-languages
+npm run sw:languages
 ```
 7. Edit the created `locales/platformLanguages.json` file and assign an available locale to
    a downloaded language by adding a "route" key and the language key (which you set in the nuxt.config.ts -> i18n -> locales) as a value. 

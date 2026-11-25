@@ -1,5 +1,5 @@
 # Layouts
-[See the layouts on github](https://github.com/hubblecommerce/hubble-frontend-pwa/tree/main/src/theme/layouts)
+[See the layouts on github](https://github.com/hubblecommerce/hubble-frontend-pwa/tree/main/src/layer/layouts)
 
 <img src="/assets/images/layout@2x.jpg" alt="hubble PWA Layout" style="width: 100%;" />
 
@@ -11,5 +11,5 @@ you don't set a layout for a page manually).
 The checkout layout is a lighter, distraction free version of the default layout.
 
 ## Error
-Overrides the default [Nuxt.js error page](https://nuxtjs.org/docs/directory-structure/layouts/#error-page)
-even though it's a layout.
+There is currently no layout overriding the Nuxt error page. Checkout payment errors are instead handled by a
+dedicated page: [pages/checkout/error.vue](https://github.com/hubblecommerce/hubble-frontend-pwa/blob/main/src/layer/pages/checkout/error.vue).

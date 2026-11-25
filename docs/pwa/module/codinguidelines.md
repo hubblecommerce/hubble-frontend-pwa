@@ -19,7 +19,7 @@
 
 ### Code Markup:
 - use self-closing html tags in template
-- takes into account all rules defined via eslint / prettier when programming
+- takes into account all rules defined via eslint when programming
 - uses ES6 JS Features
 
 ### SEO:

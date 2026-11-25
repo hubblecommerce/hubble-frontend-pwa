@@ -9,62 +9,52 @@ To keep the development process clear, all components of the default theme relat
 approach. That means templating, business logic and styling are capsuled in one file each component.
 
 ## Tailwind CSS + daisyUI
-As a solid base Tailwind CSS is integrated as a [standard installation](https://tailwindcss.com/docs/guides/nuxtjs).
-The registered postcss plugins can be deactivated with the module option `setTailwindPostcss` set to `false`.
+As a solid base Tailwind CSS v4 is integrated via the official 
+[`@tailwindcss/vite`](https://tailwindcss.com/docs/installation/using-vite) plugin. There is no PostCSS config and
+no module option to toggle it - it's wired directly into the Vite build.
 
 And because we don't like class bloated templates, we decided to use [daisyUI](https://daisyui.com/) a Tailwind CSS 
 component library.
 
 ### Configuration
-Simply create a `tailwind.config.ts` in your project root directory to configure your tailwind setup as usual. 
+Tailwind v4 is configured in CSS, not in a `tailwind.config.ts`. To extend the theme or daisyUI config, override
+`assets/css/tailwind.css` (see [CSS override system](/pwa/architecture/filebasedinheritance.html#css-override-system))
+and adjust it there, e.g.:
 
-```ts
-export default {
-    theme: {
-        extend: {
-            // extend Tailwind CSS as usual
-        }
-    },
-    // Extend / Create / Configure your daisyUI themes
-    daisyui: {
-        themes: [
-            {
-                mytheme: {
-                    fontFamily: "ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace",
-                    "primary": "#dc2626",
-                    "secondary": "#111827",
-                    "accent": "#f472b6",
-                    "neutral": "#111827",
-                    "base-100": "#f3f4f6",
-                    "info": "#3ABFF8",
-                    "success": "#36D399",
-                    "warning": "#FBBD23",
-                    "error": "#F87272",
-                },
-            }
-        ],
-    },
+```css
+@import 'tailwindcss';
+
+@plugin "daisyui" {
+    themes: mytheme --default;
 }
 
+@plugin "daisyui/theme" {
+    name: "mytheme";
+    --color-primary: #dc2626;
+    --color-secondary: #111827;
+    --color-accent: #f472b6;
+    --color-neutral: #111827;
+    --color-base-100: #f3f4f6;
+}
 ```
 
-## Custom Styles / PostCSS
+See the [daisyUI theme docs](https://daisyui.com/docs/themes/) for all available theme options.
+
+## Custom Styles
 If you want to override a daisyUI component or even write your own component and provide it via a semantic class name,
 you can use the assets/css directory. Start at the tailwind entry point `assets/css/tailwind.css`, where we already
 created a `custom.pcss` file for you in which you can import all your custom written CSS.
 
 ### assets/css/tailwind.css
 ```css
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
+@import 'tailwindcss';
 
-@import './custom.pcss';
-
-@import 'tailwindcss/utilities';
+@import './custom.pcss' layer(components);
+@plugin "daisyui";
 ```
 
 ### assets/css/custom.pcss
-```postcss
+```css
 /* Custom CSS Files */
 @import './components/myCustomComponent.pcss';
 ```

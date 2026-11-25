@@ -3,14 +3,13 @@
 <img src="/assets/images/shop_connector@2x.jpg" alt="hubble PWA Shop Connector" style="width: 100%;" />
 
 ## Configuration
-You can configure the platforms credentials like api base url and access-key in the .env file.
-For all available configs take a look in the 
-[platform specific config directory](https://github.com/hubblecommerce/hubble-frontend-pwa/tree/hubble-next/src/platforms/shopware/config)
+You can configure the shop credentials like api base url and access-key in the .env file.
+For all available configs take a look at the 
+[config directory](https://github.com/hubblecommerce/hubble-frontend-pwa/tree/main/src/layer/config)
 
 
 Shopware 6 example .env: 
 ```
-PLATFORM                = 'shopware'
 PLATFORM_BASE_URL       = 'http://my-shopware'
 API_BASE_URL            = 'http://my-shopware/store-api'
 API_SW_ACCESS_KEY       = 'XXXXXXXXXXXXXXX'
@@ -22,8 +21,8 @@ API_CLIENT_SECRET       = 'XXXXXXXXXXXXXXX'
 To fetch data from your e-commerce system, hubble provides you a bunch of composables which uses a platform specific
 api client and maps the responses in a typed and generalized format. 
 
-You can find all available composables inside the platform specific directory:
-_node_modules/@hubblecommerce/hubble/dist/platforms/[PLATFORM]/composables_
+You can find all available composables inside the hubble layer:
+_layers/hubble/composables_
 
 ### Usage
 For example to fetch and show the current users cart:
@@ -52,15 +51,15 @@ Should you want to access your platform api directly nevertheless, you can write
 specific api-client by yourself.
 
 You can find the api client here:
-_node_modules/@hubblecommerce/hubble/dist/platforms/[PLATFORM]/api-client_
+_src/platforms/shopware/api-client_
 
 ## Data mapping
 To simply fetch data from the api is not enough because our components expect a different data schema.
 Therefore, the response data need to be mapped first. 
 
 Every api client provides its specific mapping helper functions:
-_node_modules/@hubblecommerce/hubble/dist/platforms/[PLATFORM]/utils/mapping/dataMapping.ts_
+_layers/hubble/utils/mapping_
 
 They map the api responses to the common types our components expect:
-_node_modules/@hubblecommerce/hubble/dist/commons/utils/types_
+_layers/hubble/types_
 

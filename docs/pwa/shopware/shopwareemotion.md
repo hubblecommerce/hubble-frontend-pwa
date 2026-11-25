@@ -7,7 +7,7 @@ installation.
 
 Just like in the native Shopware 6 frontend, Emotionworlds consists of blocks and slots. The difference is, every
 slot/block is a Vue.js component. The order and structure comes from the shop api as a json response.
-All structure related files are placed in _@hubblecommerce/hubble/dist/theme/components/structure_.
+All structure related files are placed in _layers/hubble/components/structure_.
 
 ## Lazy loading large Emotionworlds
 

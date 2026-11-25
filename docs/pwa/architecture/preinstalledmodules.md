@@ -7,11 +7,10 @@ These modules are automatically installed and [configured](/pwa/configuration.ht
 - @heroicons/vue
 - @nuxtjs/color-mode
 - tailwindcss
+- @tailwindcss/vite
 - postcss
-- autoprefixer
 - daisyui
 - portal-vue
-- sass
 
 ### Multilanguage
 - @nuxtjs/i18n
