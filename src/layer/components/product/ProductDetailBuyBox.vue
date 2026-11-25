@@ -69,11 +69,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed, onBeforeUnmount } from 'vue'
+import { ref, computed, onBeforeUnmount } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
 import { type HblProduct } from '../../types'
-import { useCart, useNotification, useCurrency, useNuxtApp } from '#imports'
+import { useCart, useCurrency, useNuxtApp } from '#imports'
 
 const { t } = useI18n()
 
@@ -87,7 +87,6 @@ const qty = ref<number>(1)
 const cartStore = useCart()
 const { error: cartError } = storeToRefs(cartStore)
 const { addToCart } = cartStore
-const { showNotification } = useNotification()
 const variantLoading = ref(false)
 const isAddingToCart = ref(false)
 const loading = computed(() => {
@@ -103,10 +102,6 @@ async function onClickAddToCart (qty: number, id: string) {
         $hblBus.$emit('addToCart', { qty, product: product.value })
     }
 }
-
-watch(cartError, (value) => {
-    showNotification(value, 'error', true)
-})
 
 const { $hblBus } = useNuxtApp()
 $hblBus.$on('productVariantChanged', eventListenerBuyBox)

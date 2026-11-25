@@ -126,6 +126,14 @@ export const useCart = defineStore('use-cart', (): HblIUseCart => {
 
             return mappedData
         } catch (e) {
+            const apiError = e as any
+
+            if (apiError.body?.[0]?.detail != null) {
+                showNotification(apiError.body[0]?.detail, 'error', true)
+            } else {
+                showNotification(apiError, 'error', true)
+            }
+
             loading.value = false
             error.value = e
         }
