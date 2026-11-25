@@ -1,5 +1,5 @@
 import { viteBundler } from '@vuepress/bundler-vite'
-import { defaultTheme } from '@vuepress/theme-default'
+import { themeDefault } from '@vuepress/theme-default'
 import { defineUserConfig } from 'vuepress'
 
 export default defineUserConfig({
@@ -7,7 +7,7 @@ export default defineUserConfig({
     title: 'hubble PWA Docs',
     description: 'Developer Documentation for hubble PWA',
     bundler: viteBundler(),
-    theme: defaultTheme({
+    theme: themeDefault({
         contributors: false,
         lastUpdated: false,
         navbar: [
