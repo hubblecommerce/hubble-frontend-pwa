@@ -7,7 +7,7 @@
         <ul tabindex="0" class="menu dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
             <li v-for="entry in navigation" :key="entry.id">
                 <template v-if="entry.children?.length > 0">
-                    <details>
+                    <details name="layout-navigation-mobile">
                         <summary>
                             <MiscLink no-prefetch :to="entry.url" class="justify-between">
                                 {{ entry.name }}

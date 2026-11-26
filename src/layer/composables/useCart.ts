@@ -1,8 +1,23 @@
 import { type Ref, ref, watch } from 'vue'
 import { defineStore } from 'pinia'
 import { CartShopware } from '@hubblecommerce/hubble/platforms/shopware/api-client'
-import { useNotification, usePlatform, hblMapCart, hblCartIncludes, hblMapMiniCart, useCookie, useRuntimeConfig } from '#imports'
+import { useNotification, useNuxtApp, usePlatform, hblMapCart, hblCartIncludes, hblMapMiniCart, useCookie, useRuntimeConfig } from '#imports'
 import { type HblCart, type HblIUseCart, type HblMiniCart, type HblLineItem, type MiniCartItem } from '../types'
+
+const messages = {
+    en: {
+        addToCartSuccess: 'Product added to cart',
+        addToCartError: 'Product could not be added to cart',
+        removeFromCartSuccess: 'Product removed from cart',
+        addCouponSuccess: 'Coupon added to cart'
+    },
+    de: {
+        addToCartSuccess: 'Produkt wurde dem Warenkorb hinzugefügt',
+        addToCartError: 'Produkt konnte nicht dem Warenkorb hinzugefügt werden',
+        removeFromCartSuccess: 'Produkt wurde aus dem Warenkorb entfernt',
+        addCouponSuccess: 'Gutschein wurde dem Warenkorb hinzugefügt'
+    }
+}
 
 export const useCart = defineStore('use-cart', (): HblIUseCart => {
     const cart: Ref<HblCart | null> = ref(null)
@@ -13,6 +28,12 @@ export const useCart = defineStore('use-cart', (): HblIUseCart => {
     const loading: Ref<boolean> = ref(false)
     const { setSessionToken } = usePlatform()
     const { showNotification } = useNotification()
+    const { vueApp } = useNuxtApp()
+
+    function t (key: keyof typeof messages['en']): string {
+        const locale = vueApp?.config?.globalProperties?.$i18n?.locale as keyof typeof messages
+        return messages[locale]?.[key] ?? messages.en[key]
+    }
 
     async function getCart (): Promise<HblCart | void> {
         loading.value = true
@@ -69,7 +90,7 @@ export const useCart = defineStore('use-cart', (): HblIUseCart => {
 
             const mappedData = hblMapCart(response)
             cart.value = mappedData
-            showNotification('Product removed from cart', 'success')
+            showNotification(t('removeFromCartSuccess'), 'success')
             loading.value = false
 
             return mappedData
@@ -121,11 +142,13 @@ export const useCart = defineStore('use-cart', (): HblIUseCart => {
 
             const mappedData = hblMapCart(response)
             cart.value = mappedData
-            showNotification('Product added to cart', 'success')
+            showNotification(t('addToCartSuccess'), 'success')
             loading.value = false
 
             return mappedData
         } catch (e) {
+            showNotification(t('addToCartError'), 'error', true)
+
             loading.value = false
             error.value = e
         }
@@ -184,7 +207,7 @@ export const useCart = defineStore('use-cart', (): HblIUseCart => {
 
             const mappedData = hblMapCart(response)
             cart.value = mappedData
-            showNotification('Coupon added to cart', 'success')
+            showNotification(t('addCouponSuccess'), 'success')
             loading.value = false
 
             return mappedData

@@ -41,12 +41,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 import { useImage } from '@vueuse/core'
-import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
 import { type HblProduct } from '../../types'
-import { useCart, useNotification, useCurrency, useLocalisation } from '#imports'
+import { useCart, useCurrency, useLocalisation } from '#imports'
 
 const { t } = useI18n()
 
@@ -68,7 +67,6 @@ const image = ref({
 const isLoading = image.value?.src ? useImage(image).isLoading : ref(false)
 
 const cartStore = useCart()
-const { error: cartError } = storeToRefs(cartStore)
 const { addToCart } = cartStore
 
 const isAddingToCart = ref(false)
@@ -83,11 +81,6 @@ async function onAddToCart () {
     await addToCart(1, props.data.id)
     isAddingToCart.value = false
 }
-
-const { showNotification } = useNotification()
-watch(cartError, (val) => {
-    showNotification(val as string, 'error', true)
-})
 </script>
 
 <style scoped>
