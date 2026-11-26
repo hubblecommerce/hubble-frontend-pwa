@@ -99,7 +99,7 @@
         "@nuxt/module-builder": "^1.0.4",
         "@nuxt/schema": "^4.6.4",
         "@nuxt/test-utils": "^4.3.3",
-        "cypress": "^16.2.0",
+        "cypress": "^16.4.0",
         "husky": "^9.1.4",
         "lint-staged": "^17.6.0",
         "nuxt": "^4.6.4",
