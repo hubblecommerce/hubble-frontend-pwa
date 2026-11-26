@@ -83,7 +83,7 @@
         "@vueuse/integrations": "^15.1.0",
         "@vueuse/nuxt": "^15.1.0",
         "csvtojson": "^2.0.10",
-        "daisyui": "^5.7.50",
+        "daisyui": "^5.8.2",
         "eslint": "^10.13.0",
         "fs-extra": "^11.4.1",
         "lmify": "^0.3.0",
